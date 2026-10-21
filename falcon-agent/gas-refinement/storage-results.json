@@ -1,0 +1,77 @@
+{
+  "status": "completed",
+  "source_sha256": "a0e3121e433f8fc000219ec629c0ab361749d9190f903118e7a96a7c4c29cead",
+  "scope": "Exact metadata re-encoding; modeled Cancun creation gas, not live chain fees",
+  "excludes": [
+    "engine",
+    "tokenizer",
+    "controller",
+    "shard address directory",
+    "chain-specific data fees"
+  ],
+  "variants": [
+    {
+      "name": "shifted",
+      "sha256": "7835f25497e8cfcc3a59bfced3d43744f9eb01fca48c4c706201460d54357e57",
+      "bytes": 75005280,
+      "exact_source_roundtrip": true,
+      "tensor_count": 386,
+      "layouts": [
+        {
+          "payload_limit": 24575,
+          "shards": 3053,
+          "modeled_weight_shard_deployment_gas": 16381563508,
+          "maximum_shard_gas": 5368504
+        },
+        {
+          "payload_limit": 61439,
+          "shards": 1221,
+          "modeled_weight_shard_deployment_gas": 16289043694,
+          "maximum_shard_gas": 13345492
+        }
+      ]
+    },
+    {
+      "name": "predecoded",
+      "sha256": "6de0ee18850640f6759426c16271db946b5d626ba2087fac52cccdb9ba0e9422",
+      "bytes": 78484832,
+      "exact_source_roundtrip": true,
+      "tensor_count": 386,
+      "layouts": [
+        {
+          "payload_limit": 24575,
+          "shards": 3194,
+          "modeled_weight_shard_deployment_gas": 17112890678,
+          "maximum_shard_gas": 5368492
+        },
+        {
+          "payload_limit": 61439,
+          "shards": 1278,
+          "modeled_weight_shard_deployment_gas": 17016131054,
+          "maximum_shard_gas": 13345468
+        }
+      ]
+    },
+    {
+      "name": "fixed",
+      "sha256": "35430bdcf50d14b3894e4d72578f24df64c42bca947cf8573d6c4642a5fbdb49",
+      "bytes": 75641184,
+      "exact_source_roundtrip": true,
+      "tensor_count": 386,
+      "layouts": [
+        {
+          "payload_limit": 24575,
+          "shards": 3078,
+          "modeled_weight_shard_deployment_gas": 16514277870,
+          "maximum_shard_gas": 5368480
+        },
+        {
+          "payload_limit": 61439,
+          "shards": 1232,
+          "modeled_weight_shard_deployment_gas": 16421055512,
+          "maximum_shard_gas": 13345480
+        }
+      ]
+    }
+  ]
+}
