@@ -20,6 +20,8 @@ The 51 deployments used **257,254,365 gas** and paid **0.005238250757104 ETH**, 
 
 The 398-transaction, 892,989,640-gas full inference result later in this document is a local EVM benchmark; no paid mainnet full inference benchmark has been run.
 
+All three Solidity contracts have exact creation and runtime source matches on Sourcify: [inference engine](https://repo.sourcify.dev/4663/0x07bB8455Db0928bEBEb3E7F27A22A0599AF1b650), [model registry](https://repo.sourcify.dev/4663/0xa62C2d6fbba575732AAB38c56fCd73B2361B1D98) and [tokenizer](https://repo.sourcify.dev/4663/0x3Cf3739D8e587C3AB5706fd459e75A6fCE26d333). [Verification evidence](reports/robinhood-mainnet-verification/sourcify-verification-status.json).
+
 ## Selected trained model
 
 | Property | Value |
