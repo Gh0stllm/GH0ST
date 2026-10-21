@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "status": "PASS",
+  "startedAtUTC": "2026-10-21T04:41:56.268Z",
+  "executionEnvironment": "In-process Ganache fork; all transactions and ETH balance changes are local only.",
+  "officialReadOnlyRPC": "https://rpc.mainnet.chain.robinhood.com",
+  "upstreamWriteMethodsPermitted": false,
+  "upstreamMethodCounts": {
+    "eth_blockNumber": 1,
+    "eth_chainId": 1,
+    "eth_getBlockByNumber": 2,
+    "net_version": 1,
+    "eth_getTransactionCount": 11,
+    "eth_getCode": 8,
+    "eth_getBalance": 8,
+    "eth_getStorageAt": 15
+  },
+  "blockedUpstreamMethods": [],
+  "publicTransactionsSent": 0,
+  "assertions": [
+    "Pinned mainnet block, actual GH0ST bytecode hash and immutable index hash match",
+    "Three actual GH0ST burnFrom calls each reduce totalSupply and payer balance by exactly 200,000e18",
+    "Allowance, NFT ownership, wallet lifetime counter, aggregate burn total and metadata URI match after each mint",
+    "Actual live shard addresses, runtime hashes and logical byte ranges match all minted IDs, including partial final shard 495",
+    "Fourth lifetime mint reverts WalletMintLimit before and after transferring a minted NFT away",
+    "All public-node requests were permitted read-only methods; no public transaction or signing method was sent"
+  ],
+  "forkBlockNumber": 94008643,
+  "forkBlockHash": "0x6520d60f49af130e0c1ffb9676985363adf4fbf5bc4b1d325787d8b1769275ec",
+  "mainnetToken": "0x2eb2849cDE7957b86d0dFD4B59e450a9F9D15559",
+  "mainnetWeightIndex": "0x4a5aaA46E02b8Cbd3Fa2C39802A3E8339C98ADA0",
+  "merkleRoot": "0x3b327e697b57bae646264f3fe99fb4921c40f44d92ef0173c272f7e3edcb61d2",
+  "holder": "0x8D6B11CFdF079e27C17e05Cb7Ea81235887691c6",
+  "originalSupplyRaw": "1000000000000000000000000000",
+  "originalHolderBalanceRaw": "961995378029147534237665",
+  "localNFTAddress": "0xAFB7b8A4d90C2Df4ce640338029d54A55BEDcfC4",
+  "localDeploymentTransactionHash": "0xd632bd137f2fc8c21e9fd1255ec1cc6f1f445cecdd91bef7996741ed1111ec4c",
+  "localDeploymentGas": "1659493",
+  "mints": [
+    {
+      "tokenId": 1,
+      "localTransactionHash": "0x88dd1be43056d40ba17ce4c76a21fa3989e62a721afb6c6d7cb7750773f7fb4b",
+      "gasUsed": "156628",
+      "supplyAfterRaw": "999800000000000000000000000",
+      "holderBalanceAfterRaw": "761995378029147534237665",
+      "allowanceAfterRaw": "400000000000000000000000",
+      "tokensBurnedRaw": "200000000000000000000000"
+    },
+    {
+      "tokenId": 2,
+      "localTransactionHash": "0xde8d0e0b61983d46d6f7b994b8f88250245ffbe5d00f4e2da76a850f0fe2a137",
+      "gasUsed": "105350",
+      "supplyAfterRaw": "999600000000000000000000000",
+      "holderBalanceAfterRaw": "561995378029147534237665",
+      "allowanceAfterRaw": "200000000000000000000000",
+      "tokensBurnedRaw": "200000000000000000000000"
+    },
+    {
+      "tokenId": 495,
+      "localTransactionHash": "0xd6cb116ca4e8b4f7f62552693cb92ed29c71cf1e344cb74d42f1d429e5c38514",
+      "gasUsed": "100530",
+      "supplyAfterRaw": "999400000000000000000000000",
+      "holderBalanceAfterRaw": "361995378029147534237665",
+      "allowanceAfterRaw": "0",
+      "tokensBurnedRaw": "200000000000000000000000"
+    }
+  ],
+  "fourthMintRevert": "WalletMintLimit",
+  "afterTransferMintRevert": "WalletMintLimit",
+  "finishedAtUTC": "2026-10-21T04:42:05.099Z"
+}
