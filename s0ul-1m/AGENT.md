@@ -92,6 +92,27 @@ node scripts/s0ul-agent.mjs finalize \
 
 Every operation saves its exact signed hash before broadcasting and retains its receipt. Resume with `--resume PATH` and the same identity/options to reconcile that recorded hash; an ambiguous pending transaction is not silently replaced. For `continue`, resume reconciles any recorded pending transaction, updates state and returns without sending further steps. If inference is still running, start another `continue` invocation with a fresh output filename and retain all invocation journals. `resultOf(requestId)`, `memoryOf(owner, key)`, `taskOf(owner, id)` and `requests(requestId)` expose the result and settled outcome.
 
+## Fixed greeting tool
+
+[`S0ULAgentGreeting`](extensions/S0ULAgentGreeting.sol) is a small extension whose fixed tool message is **`Hello World`**. The [local model probes](reports/agent-hello-probes.json) returned `WAIT`, EOS for `Say Hello World`, and EOS alone for `Hello World`. The trained model did not generate the greeting text. Its actual request `2` output remains `MEM_SET|theme|dark`, EOS.
+
+The greeting extension pins the existing controller, engine, model, tokenizer and their identities. Only the original owner of a successfully executed, exactly constrained request may call `sayHello(requestId)`. It checks that request's completed EOS output and action commitment, records `used[requestId]` and emits a `Greeting` event with the fixed message and source hashes. Each request can greet once per extension deployment. It leaves the existing model, controller, memory and tasks unchanged.
+
+The extension is live on chain 4663 at `0x1a6711ad7555ab8745a8Da2c691469BDEcFA3062`. Its successful `sayHello(2)` transaction, `0x4cb5e3248a692fe983f4e85b17f6e64368fe06181b98c894fea50188c0ac3916`, used **120,787 gas** and emitted exactly one `Greeting` containing `Hello World`. The CLI verified `used(2) == true` and `messageOf(2) == "Hello World"` at canonical receipt block `94603939`. [Extension deployment](deployments/robinhood-mainnet-agent-greeting.json) · [Greeting receipt and source provenance](deployments/agent-greeting-2.json) · [Local greeting test](reports/solidity-agent-greeting-local.json).
+
+The [greeting CLI](scripts/s0ul-agent-greeting.mjs) uses separate build and deployment journals. Compile locally, deploy only when a new extension is intended, then invoke the greeting from request `2`'s original owner:
+
+```bash
+node scripts/s0ul-agent-greeting.mjs compile
+node scripts/s0ul-agent-greeting.mjs deploy \
+  --rpc "$S0UL_RPC_URL" --private-key-env S0UL_SIGNER_PRIVATE_KEY
+node scripts/s0ul-agent-greeting.mjs say \
+  --rpc "$S0UL_RPC_URL" --private-key-env S0UL_SIGNER_PRIVATE_KEY \
+  --request-id 2
+```
+
+Defaults are `exports/solidity-agent-greeting-build/contracts.json`, `deployments/robinhood-mainnet-agent-greeting.json` for deployment and `deployments/agent-greeting-2.json` for the greeting receipt. A repeated on-chain greeting for the same request reverts.
+
 ## Model limits and evidence
 
 The selected checkpoint is unchanged: `44bed666c464273e6fff84b10a4977744d9b0e923f5b6a519d7725920b500692`. Exact Solidity/Python arithmetic does not guarantee correct action arguments. In a [local integer-reference probe](reports/agent-reference-probes.json), `Add task audit.` produced the syntactically valid but wrong `TASK_ADD|ee`. A binding committed to `TASK_ADD|audit` rejects that output with `ActionMismatch`; parsing and an action mask alone would accept the wrong title. Constrain write intent explicitly and inspect rejection outcomes.
