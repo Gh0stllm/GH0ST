@@ -1,0 +1,214 @@
+TAP version 13
+# This version of µWS is not compatible with your Node.js build:
+# Error: Cannot find module '../binaries/uws_linux_x64_137.node'
+# Require stack:
+# - /workspace/scratch/8b0181446a21/GH0ST-mint-work/genesis-nft/node_modules/ganache/node_modules/@trufflesuite/uws-js-unofficial/src/uws.js
+# - /workspace/scratch/8b0181446a21/GH0ST-mint-work/genesis-nft/node_modules/ganache/dist/node/core.js
+# Falling back to a NodeJS implementation; performance may be degraded.
+# Subtest: native burn consumes exactly 200,000 GH0ST and retains no mint tokens
+ok 1 - native burn consumes exactly 200,000 GH0ST and retains no mint tokens
+  ---
+  duration_ms: 4987.203533
+  type: 'test'
+  ...
+# Subtest: any funded wallet can self-mint and cannot burn another wallet balance
+ok 2 - any funded wallet can self-mint and cannot burn another wallet balance
+  ---
+  duration_ms: 708.933083
+  type: 'test'
+  ...
+# Subtest: three lifetime mints per payer; transferring all NFTs away never resets quota
+ok 3 - three lifetime mints per payer; transferring all NFTs away never resets quota
+  ---
+  duration_ms: 2666.273545
+  type: 'test'
+  ...
+# Subtest: first/final token metadata is padded, collection metadata is fixed, unminted URI reverts
+ok 4 - first/final token metadata is padded, collection metadata is fixed, unminted URI reverts
+  ---
+  duration_ms: 1464.850116
+  type: 'test'
+  ...
+# Subtest: all 495 shard ranges and leaf bindings match the immutable index
+ok 5 - all 495 shard ranges and leaf bindings match the immutable index
+  ---
+  duration_ms: 12614.74657
+  type: 'test'
+  ...
+# Subtest: wrong, truncated and extended proofs fail without spending tokens or wallet quota
+ok 6 - wrong, truncated and extended proofs fail without spending tokens or wallet quota
+  ---
+  duration_ms: 334.480439
+  type: 'test'
+  ...
+# Subtest: changing shard bytecode invalidates its pinned proof
+ok 7 - changing shard bytecode invalidates its pinned proof
+  ---
+  duration_ms: 320.151198
+  type: 'test'
+  ...
+# Subtest: missing shard code is rejected before a burn
+ok 8 - missing shard code is rejected before a burn
+  ---
+  duration_ms: 261.409321
+  type: 'test'
+  ...
+# Subtest: index bytecode substitution cannot redirect an NFT to another shard
+ok 9 - index bytecode substitution cannot redirect an NFT to another shard
+  ---
+  duration_ms: 286.75339
+  type: 'test'
+  ...
+# Subtest: a changed burn-token runtime fails its immutable code pin
+ok 10 - a changed burn-token runtime fails its immutable code pin
+  ---
+  duration_ms: 209.017867
+  type: 'test'
+  ...
+# Subtest: duplicate and out-of-range token IDs never cause another burn
+ok 11 - duplicate and out-of-range token IDs never cause another burn
+  ---
+  duration_ms: 749.825372
+  type: 'test'
+  ...
+# Subtest: insufficient allowance rolls back every mint accounting field
+ok 12 - insufficient allowance rolls back every mint accounting field
+  ---
+  duration_ms: 344.495832
+  type: 'test'
+  ...
+# Subtest: insufficient balance rolls back every mint accounting field
+ok 13 - insufficient balance rolls back every mint accounting field
+  ---
+  duration_ms: 299.537128
+  type: 'test'
+  ...
+# Subtest: native ETH payments are rejected and cannot supplement a missing token burn
+ok 14 - native ETH payments are rejected and cannot supplement a missing token burn
+  ---
+  duration_ms: 261.137397
+  type: 'test'
+  ...
+# Subtest: RejectingReceiver failure rolls back native burn, allowance, NFT state and lifetime quota
+ok 15 - RejectingReceiver failure rolls back native burn, allowance, NFT state and lifetime quota
+  ---
+  duration_ms: 353.685748
+  type: 'test'
+  ...
+# Subtest: NonReceiver failure rolls back native burn, allowance, NFT state and lifetime quota
+ok 16 - NonReceiver failure rolls back native burn, allowance, NFT state and lifetime quota
+  ---
+  duration_ms: 327.117185
+  type: 'test'
+  ...
+# Subtest: an accepting smart wallet can mint to itself
+ok 17 - an accepting smart wallet can mint to itself
+  ---
+  duration_ms: 887.894007
+  type: 'test'
+  ...
+# Subtest: malicious token no-op burn cannot issue an NFT
+ok 18 - malicious token no-op burn cannot issue an NFT
+  ---
+  duration_ms: 269.849548
+  type: 'test'
+  ...
+# Subtest: malicious token dead-address transfer cannot issue an NFT
+ok 19 - malicious token dead-address transfer cannot issue an NFT
+  ---
+  duration_ms: 331.331387
+  type: 'test'
+  ...
+# Subtest: malicious token reverting burn cannot issue an NFT
+ok 20 - malicious token reverting burn cannot issue an NFT
+  ---
+  duration_ms: 330.189522
+  type: 'test'
+  ...
+# Subtest: receiver reentrancy cannot mint a second NFT even with its own funded allowance
+ok 21 - receiver reentrancy cannot mint a second NFT even with its own funded allowance
+  ---
+  duration_ms: 1135.05797
+  type: 'test'
+  ...
+# Subtest: propagated callback reentrancy failure rolls back the outer burn and quota
+ok 22 - propagated callback reentrancy failure rolls back the outer burn and quota
+  ---
+  duration_ms: 482.866174
+  type: 'test'
+  ...
+# Subtest: ERC721 ownership, operator approval and transfers do not cause further burns
+ok 23 - ERC721 ownership, operator approval and transfers do not cause further burns
+  ---
+  duration_ms: 1057.030159
+  type: 'test'
+  ...
+# Subtest: transferring every NFT away inside its mint callback still consumes three lifetime mints
+ok 24 - transferring every NFT away inside its mint callback still consumes three lifetime mints
+  ---
+  duration_ms: 2881.686975
+  type: 'test'
+  ...
+# Subtest: constructor rejects wrong token/index pins and a zero token address
+ok 25 - constructor rejects wrong token/index pins and a zero token address
+  ---
+  duration_ms: 120.154316
+  type: 'test'
+  ...
+# Subtest: ERC2981 and existing ERC165/ERC721 interfaces are advertised accurately
+ok 26 - ERC2981 and existing ERC165/ERC721 interfaces are advertised accurately
+  ---
+  duration_ms: 165.939453
+  type: 'test'
+  ...
+# Subtest: fixed 350-bps royalty rounds down precisely, including zero and maximum uint256 price
+ok 27 - fixed 350-bps royalty rounds down precisely, including zero and maximum uint256 price
+  ---
+  duration_ms: 220.191143
+  type: 'test'
+  ...
+# Subtest: royalty terms are identical for any token ID and before or after minting
+ok 28 - royalty terms are identical for any token ID and before or after minting
+  ---
+  duration_ms: 685.916469
+  type: 'test'
+  ...
+# Subtest: constructor rejects a zero royalty recipient and the NFT contract itself
+ok 29 - constructor rejects a zero royalty recipient and the NFT contract itself
+  ---
+  duration_ms: 67.31168
+  type: 'test'
+  ...
+# Subtest: royalty terms have no external admin route and cannot be changed by any wallet
+ok 30 - royalty terms have no external admin route and cannot be changed by any wallet
+  ---
+  duration_ms: 143.885834
+  type: 'test'
+  ...
+# Subtest: royalties do not divert primary burns, charge ordinary transfers or change mint quotas
+ok 31 - royalties do not divert primary burns, charge ordinary transfers or change mint quotas
+  ---
+  duration_ms: 858.738393
+  type: 'test'
+  ...
+# Subtest: seeded adversarial sequence preserves per-wallet quota, aggregate burn and NFT uniqueness
+ok 32 - seeded adversarial sequence preserves per-wallet quota, aggregate burn and NFT uniqueness
+  ---
+  duration_ms: 17962.366052
+  type: 'test'
+  ...
+# Subtest: 495 mints across 165 wallets burn exactly 99 million GH0ST and exhaust the collection
+ok 33 - 495 mints across 165 wallets burn exactly 99 million GH0ST and exhaust the collection
+  ---
+  duration_ms: 40912.191908
+  type: 'test'
+  ...
+1..33
+# tests 33
+# suites 0
+# pass 33
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 95552.883654
