@@ -1,0 +1,519 @@
+{
+  "contractName": "ReenteringReceiver",
+  "sourceName": "contracts/test/GenesisMocks.sol",
+  "compiler": "0.8.30+commit.73712a01.Emscripten.clang",
+  "settings": {
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "evmVersion": "shanghai"
+  },
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "token",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "nft",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bytes32[]",
+          "name": "proof",
+          "type": "bytes32[]"
+        },
+        {
+          "internalType": "bool",
+          "name": "swallow",
+          "type": "bool"
+        }
+      ],
+      "name": "configure",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bytes32[]",
+          "name": "proof",
+          "type": "bytes32[]"
+        }
+      ],
+      "name": "executeMint",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "genesis",
+      "outputs": [
+        {
+          "internalType": "contract IGenesisMint",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "nextId",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bytes",
+          "name": "",
+          "type": "bytes"
+        }
+      ],
+      "name": "onERC721Received",
+      "outputs": [
+        {
+          "internalType": "bytes4",
+          "name": "",
+          "type": "bytes4"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "reentryError",
+      "outputs": [
+        {
+          "internalType": "bytes",
+          "name": "",
+          "type": "bytes"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "reentrySucceeded",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "swallowFailure",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x6080604052348015600e575f5ffd5b506109178061001c5f395ff3fe608060405234801561000f575f5ffd5b5060043610610085575f3560e01c80638b8b1bb0116100585780638b8b1bb014610108578063a7f0b3de14610115578063ae305a251461013f578063ca6ddc2f14610152575f5ffd5b8063150b7a021461008957806347b62d10146100ba57806359703b2e146100cf57806361b8ce8c146100f1575b5f5ffd5b61009c6100973660046104e4565b610167565b6040516001600160e01b031990911681526020015b60405180910390f35b6100cd6100c83660046105c1565b610286565b005b6003546100e190610100900460ff1681565b60405190151581526020016100b1565b6100fa60015481565b6040519081526020016100b1565b6003546100e19060ff1681565b5f54610127906001600160a01b031681565b6040516001600160a01b0390911681526020016100b1565b6100cd61014d366004610616565b6102eb565b61015a6103a6565b6040516100b19190610692565b5f80546001600160a01b031633146101b15760405162461bcd60e51b81526020600482015260096024820152681ddc9bdb99c813919560ba1b604482015260640160405180910390fd5b5f54600154604051635d20d86360e11b81526001600160a01b039092169163ba41b0c6916101e4916002906004016106dd565b5f604051808303815f87803b1580156101fb575f5ffd5b505af192505050801561020c575060015b610264573d808015610239576040519150601f19603f3d011682016040523d82523d5f602084013e61023e565b606091505b50600461024b82826107c5565b5060035460ff1661025e57805160208201fd5b50610274565b6003805461ff0019166101001790555b50630a85bd0160e11b95945050505050565b5f54604051635d20d86360e11b81526001600160a01b039091169063ba41b0c6906102b990869086908690600401610880565b5f604051808303815f87803b1580156102d0575f5ffd5b505af11580156102e2573d5f5f3e3d5ffd5b50505050505050565b5f80546001600160a01b0319166001600160a01b038716179055600184905561031660028484610432565b506003805461ffff191682151561ff00191617905561033660045f61047b565b60405163095ea7b360e01b81526001600160a01b0386811660048301525f19602483015287169063095ea7b3906044016020604051808303815f875af1158015610382573d5f5f3e3d5ffd5b505050506040513d601f19601f820116820180604052508101906102e291906108bf565b600480546103b390610741565b80601f01602080910402602001604051908101604052809291908181526020018280546103df90610741565b801561042a5780601f106104015761010080835404028352916020019161042a565b820191905f5260205f20905b81548152906001019060200180831161040d57829003601f168201915b505050505081565b828054828255905f5260205f2090810192821561046b579160200282015b8281111561046b578235825591602001919060010190610450565b506104779291506104b5565b5090565b50805461048790610741565b5f825580601f10610496575050565b601f0160209004905f5260205f20908101906104b291906104b5565b50565b5b80821115610477575f81556001016104b6565b80356001600160a01b03811681146104df575f5ffd5b919050565b5f5f5f5f5f608086880312156104f8575f5ffd5b610501866104c9565b945061050f602087016104c9565b935060408601359250606086013567ffffffffffffffff811115610531575f5ffd5b8601601f81018813610541575f5ffd5b803567ffffffffffffffff811115610557575f5ffd5b886020828401011115610568575f5ffd5b959894975092955050506020019190565b5f5f83601f840112610589575f5ffd5b50813567ffffffffffffffff8111156105a0575f5ffd5b6020830191508360208260051b85010111156105ba575f5ffd5b9250929050565b5f5f5f604084860312156105d3575f5ffd5b83359250602084013567ffffffffffffffff8111156105f0575f5ffd5b6105fc86828701610579565b9497909650939450505050565b80151581146104b2575f5ffd5b5f5f5f5f5f5f60a0878903121561062b575f5ffd5b610634876104c9565b9550610642602088016104c9565b945060408701359350606087013567ffffffffffffffff811115610664575f5ffd5b61067089828a01610579565b909450925050608087013561068481610609565b809150509295509295509295565b602081525f82518060208401525f5b818110156106be57602081860181015160408684010152016106a1565b505f604082850101526040601f19601f83011684010191505092915050565b5f6040820184835260406020840152808454808352606085019150855f5260205f2092505f5b81811015610721578354835260019384019360209093019201610703565b50909695505050505050565b634e487b7160e01b5f52604160045260245ffd5b600181811c9082168061075557607f821691505b60208210810361077357634e487b7160e01b5f52602260045260245ffd5b50919050565b601f8211156107c057805f5260205f20601f840160051c8101602085101561079e5750805b601f840160051c820191505b818110156107bd575f81556001016107aa565b50505b505050565b815167ffffffffffffffff8111156107df576107df61072d565b6107f3816107ed8454610741565b84610779565b6020601f821160018114610825575f831561080e5750848201515b5f19600385901b1c1916600184901b1784556107bd565b5f84815260208120601f198516915b828110156108545787850151825560209485019460019092019101610834565b508482101561087157868401515f19600387901b60f8161c191681555b50505050600190811b01905550565b83815260406020820181905281018290525f6001600160fb1b038311156108a5575f5ffd5b8260051b8085606085013791909101606001949350505050565b5f602082840312156108cf575f5ffd5b81516108da81610609565b939250505056fea26469706673582212200aa1caf319131af458e6970953aff3822a442e805ad456286a0d2a31eeea09c864736f6c634300081e0033",
+  "deployedBytecode": "0x608060405234801561000f575f5ffd5b5060043610610085575f3560e01c80638b8b1bb0116100585780638b8b1bb014610108578063a7f0b3de14610115578063ae305a251461013f578063ca6ddc2f14610152575f5ffd5b8063150b7a021461008957806347b62d10146100ba57806359703b2e146100cf57806361b8ce8c146100f1575b5f5ffd5b61009c6100973660046104e4565b610167565b6040516001600160e01b031990911681526020015b60405180910390f35b6100cd6100c83660046105c1565b610286565b005b6003546100e190610100900460ff1681565b60405190151581526020016100b1565b6100fa60015481565b6040519081526020016100b1565b6003546100e19060ff1681565b5f54610127906001600160a01b031681565b6040516001600160a01b0390911681526020016100b1565b6100cd61014d366004610616565b6102eb565b61015a6103a6565b6040516100b19190610692565b5f80546001600160a01b031633146101b15760405162461bcd60e51b81526020600482015260096024820152681ddc9bdb99c813919560ba1b604482015260640160405180910390fd5b5f54600154604051635d20d86360e11b81526001600160a01b039092169163ba41b0c6916101e4916002906004016106dd565b5f604051808303815f87803b1580156101fb575f5ffd5b505af192505050801561020c575060015b610264573d808015610239576040519150601f19603f3d011682016040523d82523d5f602084013e61023e565b606091505b50600461024b82826107c5565b5060035460ff1661025e57805160208201fd5b50610274565b6003805461ff0019166101001790555b50630a85bd0160e11b95945050505050565b5f54604051635d20d86360e11b81526001600160a01b039091169063ba41b0c6906102b990869086908690600401610880565b5f604051808303815f87803b1580156102d0575f5ffd5b505af11580156102e2573d5f5f3e3d5ffd5b50505050505050565b5f80546001600160a01b0319166001600160a01b038716179055600184905561031660028484610432565b506003805461ffff191682151561ff00191617905561033660045f61047b565b60405163095ea7b360e01b81526001600160a01b0386811660048301525f19602483015287169063095ea7b3906044016020604051808303815f875af1158015610382573d5f5f3e3d5ffd5b505050506040513d601f19601f820116820180604052508101906102e291906108bf565b600480546103b390610741565b80601f01602080910402602001604051908101604052809291908181526020018280546103df90610741565b801561042a5780601f106104015761010080835404028352916020019161042a565b820191905f5260205f20905b81548152906001019060200180831161040d57829003601f168201915b505050505081565b828054828255905f5260205f2090810192821561046b579160200282015b8281111561046b578235825591602001919060010190610450565b506104779291506104b5565b5090565b50805461048790610741565b5f825580601f10610496575050565b601f0160209004905f5260205f20908101906104b291906104b5565b50565b5b80821115610477575f81556001016104b6565b80356001600160a01b03811681146104df575f5ffd5b919050565b5f5f5f5f5f608086880312156104f8575f5ffd5b610501866104c9565b945061050f602087016104c9565b935060408601359250606086013567ffffffffffffffff811115610531575f5ffd5b8601601f81018813610541575f5ffd5b803567ffffffffffffffff811115610557575f5ffd5b886020828401011115610568575f5ffd5b959894975092955050506020019190565b5f5f83601f840112610589575f5ffd5b50813567ffffffffffffffff8111156105a0575f5ffd5b6020830191508360208260051b85010111156105ba575f5ffd5b9250929050565b5f5f5f604084860312156105d3575f5ffd5b83359250602084013567ffffffffffffffff8111156105f0575f5ffd5b6105fc86828701610579565b9497909650939450505050565b80151581146104b2575f5ffd5b5f5f5f5f5f5f60a0878903121561062b575f5ffd5b610634876104c9565b9550610642602088016104c9565b945060408701359350606087013567ffffffffffffffff811115610664575f5ffd5b61067089828a01610579565b909450925050608087013561068481610609565b809150509295509295509295565b602081525f82518060208401525f5b818110156106be57602081860181015160408684010152016106a1565b505f604082850101526040601f19601f83011684010191505092915050565b5f6040820184835260406020840152808454808352606085019150855f5260205f2092505f5b81811015610721578354835260019384019360209093019201610703565b50909695505050505050565b634e487b7160e01b5f52604160045260245ffd5b600181811c9082168061075557607f821691505b60208210810361077357634e487b7160e01b5f52602260045260245ffd5b50919050565b601f8211156107c057805f5260205f20601f840160051c8101602085101561079e5750805b601f840160051c820191505b818110156107bd575f81556001016107aa565b50505b505050565b815167ffffffffffffffff8111156107df576107df61072d565b6107f3816107ed8454610741565b84610779565b6020601f821160018114610825575f831561080e5750848201515b5f19600385901b1c1916600184901b1784556107bd565b5f84815260208120601f198516915b828110156108545787850151825560209485019460019092019101610834565b508482101561087157868401515f19600387901b60f8161c191681555b50505050600190811b01905550565b83815260406020820181905281018290525f6001600160fb1b038311156108a5575f5ffd5b8260051b8085606085013791909101606001949350505050565b5f602082840312156108cf575f5ffd5b81516108da81610609565b939250505056fea26469706673582212200aa1caf319131af458e6970953aff3822a442e805ad456286a0d2a31eeea09c864736f6c634300081e0033",
+  "storageLayout": {
+    "storage": [
+      {
+        "astId": 1006,
+        "contract": "contracts/test/GenesisMocks.sol:ReenteringReceiver",
+        "label": "genesis",
+        "offset": 0,
+        "slot": "0",
+        "type": "t_contract(IGenesisMint)859"
+      },
+      {
+        "astId": 1008,
+        "contract": "contracts/test/GenesisMocks.sol:ReenteringReceiver",
+        "label": "nextId",
+        "offset": 0,
+        "slot": "1",
+        "type": "t_uint256"
+      },
+      {
+        "astId": 1011,
+        "contract": "contracts/test/GenesisMocks.sol:ReenteringReceiver",
+        "label": "_proof",
+        "offset": 0,
+        "slot": "2",
+        "type": "t_array(t_bytes32)dyn_storage"
+      },
+      {
+        "astId": 1013,
+        "contract": "contracts/test/GenesisMocks.sol:ReenteringReceiver",
+        "label": "swallowFailure",
+        "offset": 0,
+        "slot": "3",
+        "type": "t_bool"
+      },
+      {
+        "astId": 1015,
+        "contract": "contracts/test/GenesisMocks.sol:ReenteringReceiver",
+        "label": "reentrySucceeded",
+        "offset": 1,
+        "slot": "3",
+        "type": "t_bool"
+      },
+      {
+        "astId": 1017,
+        "contract": "contracts/test/GenesisMocks.sol:ReenteringReceiver",
+        "label": "reentryError",
+        "offset": 0,
+        "slot": "4",
+        "type": "t_bytes_storage"
+      }
+    ],
+    "types": {
+      "t_array(t_bytes32)dyn_storage": {
+        "base": "t_bytes32",
+        "encoding": "dynamic_array",
+        "label": "bytes32[]",
+        "numberOfBytes": "32"
+      },
+      "t_bool": {
+        "encoding": "inplace",
+        "label": "bool",
+        "numberOfBytes": "1"
+      },
+      "t_bytes32": {
+        "encoding": "inplace",
+        "label": "bytes32",
+        "numberOfBytes": "32"
+      },
+      "t_bytes_storage": {
+        "encoding": "bytes",
+        "label": "bytes",
+        "numberOfBytes": "32"
+      },
+      "t_contract(IGenesisMint)859": {
+        "encoding": "inplace",
+        "label": "contract IGenesisMint",
+        "numberOfBytes": "20"
+      },
+      "t_uint256": {
+        "encoding": "inplace",
+        "label": "uint256",
+        "numberOfBytes": "32"
+      }
+    }
+  },
+  "metadata": {
+    "compiler": {
+      "version": "0.8.30+commit.73712a01"
+    },
+    "language": "Solidity",
+    "output": {
+      "abi": [
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "nft",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "id",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes32[]",
+              "name": "proof",
+              "type": "bytes32[]"
+            },
+            {
+              "internalType": "bool",
+              "name": "swallow",
+              "type": "bool"
+            }
+          ],
+          "name": "configure",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "id",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes32[]",
+              "name": "proof",
+              "type": "bytes32[]"
+            }
+          ],
+          "name": "executeMint",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "genesis",
+          "outputs": [
+            {
+              "internalType": "contract IGenesisMint",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "nextId",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "",
+              "type": "bytes"
+            }
+          ],
+          "name": "onERC721Received",
+          "outputs": [
+            {
+              "internalType": "bytes4",
+              "name": "",
+              "type": "bytes4"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "reentryError",
+          "outputs": [
+            {
+              "internalType": "bytes",
+              "name": "",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "reentrySucceeded",
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "swallowFailure",
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        }
+      ],
+      "devdoc": {
+        "kind": "dev",
+        "methods": {},
+        "version": 1
+      },
+      "userdoc": {
+        "kind": "user",
+        "methods": {},
+        "version": 1
+      }
+    },
+    "settings": {
+      "compilationTarget": {
+        "contracts/test/GenesisMocks.sol": "ReenteringReceiver"
+      },
+      "evmVersion": "shanghai",
+      "libraries": {},
+      "metadata": {
+        "bytecodeHash": "ipfs"
+      },
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "remappings": []
+    },
+    "sources": {
+      "@openzeppelin/contracts/interfaces/draft-IERC6093.sol": {
+        "keccak256": "0x19fdfb0f3b89a230e7dbd1cf416f1a6b531a3ee5db4da483f946320fc74afc0e",
+        "license": "MIT",
+        "urls": [
+          "bzz-raw://3490d794728f5bfecb46820431adaff71ba374141545ec20b650bb60353fac23",
+          "dweb:/ipfs/QmPsfxjVpMcZbpE7BH93DzTpEaktESigEw4SmDzkXuJ4WR"
+        ]
+      },
+      "@openzeppelin/contracts/token/ERC20/ERC20.sol": {
+        "keccak256": "0x86b7b71a6aedefdad89b607378eeab1dcc5389b9ea7d17346d08af01d7190994",
+        "license": "MIT",
+        "urls": [
+          "bzz-raw://1dc2db8d94a21eac8efe03adf574c419b08536409b416057a2b5b95cb772c43c",
+          "dweb:/ipfs/QmZfqJCKVU1ScuX2A7s8WZdQEaikwJbDH5JBrBdKTUT4Gu"
+        ]
+      },
+      "@openzeppelin/contracts/token/ERC20/IERC20.sol": {
+        "keccak256": "0x74ed01eb66b923d0d0cfe3be84604ac04b76482a55f9dd655e1ef4d367f95bc2",
+        "license": "MIT",
+        "urls": [
+          "bzz-raw://5282825a626cfe924e504274b864a652b0023591fa66f06a067b25b51ba9b303",
+          "dweb:/ipfs/QmeCfPykghhMc81VJTrHTC7sF6CRvaA1FXVq2pJhwYp1dV"
+        ]
+      },
+      "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol": {
+        "keccak256": "0x2659248df25e34000ed214b3dc8da2160bc39874c992b477d9e2b1b3283dc073",
+        "license": "MIT",
+        "urls": [
+          "bzz-raw://c345af1b0e7ea28d1216d6a04ab28f5534a5229b9edf9ca3cd0e84950ae58d26",
+          "dweb:/ipfs/QmY63jtSrYpLRe8Gj1ep2vMDCKxGNNG3hnNVKBVnrs2nmA"
+        ]
+      },
+      "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol": {
+        "keccak256": "0xd6fa4088198f04eef10c5bce8a2f4d60554b7ec4b987f684393c01bf79b94d9f",
+        "license": "MIT",
+        "urls": [
+          "bzz-raw://f95ee0bbd4dd3ac730d066ba3e785ded4565e890dbec2fa7d3b9fe3bad9d0d6e",
+          "dweb:/ipfs/QmSLr6bHkPFWT7ntj34jmwfyskpwo97T9jZUrk5sz3sdtR"
+        ]
+      },
+      "@openzeppelin/contracts/token/ERC721/IERC721.sol": {
+        "keccak256": "0xf78f05f3b8c9f75570e85300d7b4600d7f6f6a198449273f31d44c1641adb46f",
+        "license": "MIT",
+        "urls": [
+          "bzz-raw://e28b872613b45e0e801d4995aa4380be2531147bfe2d85c1d6275f1de514fba3",
+          "dweb:/ipfs/QmeeFcfShHYaS3BdgVj78nxR28ZaVUwbvr66ud8bT6kzw9"
+        ]
+      },
+      "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol": {
+        "keccak256": "0x88cd5e3bee2e8c36b8d9058fbcaa81ad5704281b25634122234b55ea853d8055",
+        "license": "MIT",
+        "urls": [
+          "bzz-raw://8dc7e7ab5b8ea36c15027ab04221b05d1c970f47a53e9fd47ead8ca665d49c7e",
+          "dweb:/ipfs/Qmeeph7fsDyfRr8vb2L8KcDEmKPb224TAayMvgqgGAnqpL"
+        ]
+      },
+      "@openzeppelin/contracts/utils/Context.sol": {
+        "keccak256": "0x493033a8d1b176a037b2cc6a04dad01a5c157722049bbecf632ca876224dd4b2",
+        "license": "MIT",
+        "urls": [
+          "bzz-raw://6a708e8a5bdb1011c2c381c9a5cfd8a9a956d7d0a9dc1bd8bcdaf52f76ef2f12",
+          "dweb:/ipfs/Qmax9WHBnVsZP46ZxEMNRQpLQnrdE4dK8LehML1Py8FowF"
+        ]
+      },
+      "@openzeppelin/contracts/utils/introspection/IERC165.sol": {
+        "keccak256": "0x8891738ffe910f0cf2da09566928589bf5d63f4524dd734fd9cedbac3274dd5c",
+        "license": "MIT",
+        "urls": [
+          "bzz-raw://971f954442df5c2ef5b5ebf1eb245d7105d9fbacc7386ee5c796df1d45b21617",
+          "dweb:/ipfs/QmadRjHbkicwqwwh61raUEapaVEtaLMcYbQZWs9gUkgj3u"
+        ]
+      },
+      "contracts/test/GenesisMocks.sol": {
+        "keccak256": "0x7be6c9784e85d8bb0ae05e0d91a8746642e5b2e06ceb3245ca0aedce3dc0af9f",
+        "license": "MIT",
+        "urls": [
+          "bzz-raw://dfd26965c358c8579826c417a5796ba9402464f30f3ed0ff70c57c83417aac73",
+          "dweb:/ipfs/QmeMt8QzeD4x6zabH8S7xKQGjRK4JoF13t5vD1eVhr7bzk"
+        ]
+      }
+    },
+    "version": 1
+  }
+}
