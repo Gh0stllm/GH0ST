@@ -1,0 +1,1820 @@
+{
+  "status": "completed",
+  "matrix_weights": 90996736,
+  "global_symbol_entropy_bits": 5.7318406893907525,
+  "tensor_weighted_symbol_entropy_bits": 5.729603417530552,
+  "conditional_previous_symbol_entropy_bits": 5.697980694964017,
+  "ideal_symbol_coded_plus_current_other_bytes": 68969877.19621569,
+  "huffman_codes_plus_current_other_bytes_without_tables": 69278579,
+  "groups": 1421824,
+  "unique_groups_summed_per_tensor": 1421634,
+  "duplicates_within_tensors": 190,
+  "entropy_caveat": "These are empirical symbol models, not a universal impossibility theorem or bound for all algorithms.",
+  "storage_target": {
+    "gas": 1000000000,
+    "max_bytes_before_any_overhead": 5000000,
+    "max_effective_bits_per_original_parameter": 0.4389282285629209,
+    "compact_factor_needed_before_overhead": 14.4091056
+  },
+  "compressed_candidates": [
+    {
+      "transform": "bitplanes",
+      "bytes_before_zstd": 72045528,
+      "bytes_zstd": 71659694,
+      "code_deposit_gas_only": 14331938800,
+      "sha256": "71407e977745791ddaa13381e21a4497512bcb0a93a94ec91a7e112b9a59f094",
+      "roundtrip_verified": true,
+      "warning": "CPU size experiment only; needs a revised index, independent block framing and on-chain decoder. Not a deployment artifact."
+    },
+    {
+      "transform": "row_delta",
+      "bytes_before_zstd": 72045528,
+      "bytes_zstd": 71899831,
+      "code_deposit_gas_only": 14379966200,
+      "sha256": "81d1800b3cf48b679a86ddda01fadfcf512232a08ebc8d262a7158bd54c06c98",
+      "roundtrip_verified": true,
+      "warning": "CPU size experiment only; needs a revised index, independent block framing and on-chain decoder. Not a deployment artifact."
+    },
+    {
+      "transform": "symbol_bytes",
+      "bytes_before_zstd": 94794712,
+      "bytes_zstd": 70263862,
+      "code_deposit_gas_only": 14052772400,
+      "sha256": "e2ae49f77c19fa8151054b4fc29d6719d8b1e89bce28ad2ca243ea71b3df9b6c",
+      "roundtrip_verified": true,
+      "warning": "CPU size experiment only; needs a revised index, independent block framing and on-chain decoder. Not a deployment artifact."
+    }
+  ],
+  "spectral_diagnostics": [
+    {
+      "tensor": "model.embed_tokens.weight",
+      "rank": 512,
+      "rank_at_15_65x_factor_compression": 32,
+      "minimum_relative_squared_weight_error_at_that_rank": 0.5907437975088619,
+      "rank_for_99_percent_energy": 494,
+      "scope": "Best real-valued rank-r Frobenius approximation, not task error; no weights replaced or tuned."
+    },
+    {
+      "tensor": "model.layers.0.feed_forward.gate_proj.weight",
+      "rank": 512,
+      "rank_at_15_65x_factor_compression": 19,
+      "minimum_relative_squared_weight_error_at_that_rank": 0.8579585405341889,
+      "rank_for_99_percent_energy": 445,
+      "scope": "Best real-valued rank-r Frobenius approximation, not task error; no weights replaced or tuned."
+    },
+    {
+      "tensor": "model.layers.0.mamba.out_proj.weight",
+      "rank": 512,
+      "rank_at_15_65x_factor_compression": 19,
+      "minimum_relative_squared_weight_error_at_that_rank": 0.6701977694922463,
+      "rank_for_99_percent_energy": 381,
+      "scope": "Best real-valued rank-r Frobenius approximation, not task error; no weights replaced or tuned."
+    },
+    {
+      "tensor": "model.layers.0.self_attn.k_proj.weight",
+      "rank": 128,
+      "rank_at_15_65x_factor_compression": 6,
+      "minimum_relative_squared_weight_error_at_that_rank": 0.5719447702953586,
+      "rank_for_99_percent_energy": 115,
+      "scope": "Best real-valued rank-r Frobenius approximation, not task error; no weights replaced or tuned."
+    }
+  ],
+  "tensor_results": [
+    {
+      "tensor": "model.embed_tokens.weight",
+      "code_count": 16777216,
+      "symbol_entropy": 5.768984736607786,
+      "conditional_previous_symbol_entropy": 5.76445598749189,
+      "unique_64_code_groups": 261984,
+      "groups": 262144
+    },
+    {
+      "tensor": "model.layers.0.feed_forward.gate_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.761443025672479,
+      "conditional_previous_symbol_entropy": 5.749248317942797,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.0.feed_forward.up_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.754936237021332,
+      "conditional_previous_symbol_entropy": 5.7423431252565535,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.0.feed_forward.down_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.71776488768523,
+      "conditional_previous_symbol_entropy": 5.698193387516984,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.0.mamba.in_proj.weight",
+      "code_count": 864256,
+      "symbol_entropy": 5.7640232064970505,
+      "conditional_previous_symbol_entropy": 5.753625514401247,
+      "unique_64_code_groups": 13504,
+      "groups": 13504
+    },
+    {
+      "tensor": "model.layers.0.mamba.out_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.644387546487302,
+      "conditional_previous_symbol_entropy": 5.536383700578782,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.0.self_attn.q_proj.weight",
+      "code_count": 262144,
+      "symbol_entropy": 5.7625809574822195,
+      "conditional_previous_symbol_entropy": 5.7456101009986895,
+      "unique_64_code_groups": 4096,
+      "groups": 4096
+    },
+    {
+      "tensor": "model.layers.0.self_attn.k_proj.weight",
+      "code_count": 65536,
+      "symbol_entropy": 5.754499275393387,
+      "conditional_previous_symbol_entropy": 5.703974217693413,
+      "unique_64_code_groups": 1024,
+      "groups": 1024
+    },
+    {
+      "tensor": "model.layers.0.self_attn.v_proj.weight",
+      "code_count": 65536,
+      "symbol_entropy": 5.762743442332601,
+      "conditional_previous_symbol_entropy": 5.710997035159149,
+      "unique_64_code_groups": 1024,
+      "groups": 1024
+    },
+    {
+      "tensor": "model.layers.0.self_attn.o_proj.weight",
+      "code_count": 262144,
+      "symbol_entropy": 5.746425931569613,
+      "conditional_previous_symbol_entropy": 5.724407654932057,
+      "unique_64_code_groups": 4096,
+      "groups": 4096
+    },
+    {
+      "tensor": "model.layers.1.feed_forward.gate_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.729762503052957,
+      "conditional_previous_symbol_entropy": 5.714896955484974,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.1.feed_forward.up_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.728168192740921,
+      "conditional_previous_symbol_entropy": 5.71280556595461,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.1.feed_forward.down_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.744524189868451,
+      "conditional_previous_symbol_entropy": 5.730323390406605,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.1.mamba.in_proj.weight",
+      "code_count": 864256,
+      "symbol_entropy": 5.723707507332865,
+      "conditional_previous_symbol_entropy": 5.713156661128316,
+      "unique_64_code_groups": 13504,
+      "groups": 13504
+    },
+    {
+      "tensor": "model.layers.1.mamba.out_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.681793569715025,
+      "conditional_previous_symbol_entropy": 5.4527471736840525,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.1.self_attn.q_proj.weight",
+      "code_count": 262144,
+      "symbol_entropy": 5.720783546660996,
+      "conditional_previous_symbol_entropy": 5.69968595560434,
+      "unique_64_code_groups": 4096,
+      "groups": 4096
+    },
+    {
+      "tensor": "model.layers.1.self_attn.k_proj.weight",
+      "code_count": 65536,
+      "symbol_entropy": 5.735656974417882,
+      "conditional_previous_symbol_entropy": 5.680199338009847,
+      "unique_64_code_groups": 1024,
+      "groups": 1024
+    },
+    {
+      "tensor": "model.layers.1.self_attn.v_proj.weight",
+      "code_count": 65536,
+      "symbol_entropy": 5.732209260646787,
+      "conditional_previous_symbol_entropy": 5.680807899982052,
+      "unique_64_code_groups": 1024,
+      "groups": 1024
+    },
+    {
+      "tensor": "model.layers.1.self_attn.o_proj.weight",
+      "code_count": 262144,
+      "symbol_entropy": 5.760252282622785,
+      "conditional_previous_symbol_entropy": 5.744617758606714,
+      "unique_64_code_groups": 4096,
+      "groups": 4096
+    },
+    {
+      "tensor": "model.layers.2.feed_forward.gate_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.734906156298267,
+      "conditional_previous_symbol_entropy": 5.7205773375479465,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.2.feed_forward.up_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.7234897400424245,
+      "conditional_previous_symbol_entropy": 5.708060395597222,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.2.feed_forward.down_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.741857352644692,
+      "conditional_previous_symbol_entropy": 5.726378259257458,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.2.mamba.in_proj.weight",
+      "code_count": 864256,
+      "symbol_entropy": 5.711938587020675,
+      "conditional_previous_symbol_entropy": 5.699460428843009,
+      "unique_64_code_groups": 13504,
+      "groups": 13504
+    },
+    {
+      "tensor": "model.layers.2.mamba.out_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.642001969335532,
+      "conditional_previous_symbol_entropy": 5.472430338043944,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.2.self_attn.q_proj.weight",
+      "code_count": 262144,
+      "symbol_entropy": 5.721595030787329,
+      "conditional_previous_symbol_entropy": 5.699824125064408,
+      "unique_64_code_groups": 4096,
+      "groups": 4096
+    },
+    {
+      "tensor": "model.layers.2.self_attn.k_proj.weight",
+      "code_count": 65536,
+      "symbol_entropy": 5.736186286929122,
+      "conditional_previous_symbol_entropy": 5.679295974174345,
+      "unique_64_code_groups": 1024,
+      "groups": 1024
+    },
+    {
+      "tensor": "model.layers.2.self_attn.v_proj.weight",
+      "code_count": 65536,
+      "symbol_entropy": 5.73296134767252,
+      "conditional_previous_symbol_entropy": 5.6783062998487415,
+      "unique_64_code_groups": 1024,
+      "groups": 1024
+    },
+    {
+      "tensor": "model.layers.2.self_attn.o_proj.weight",
+      "code_count": 262144,
+      "symbol_entropy": 5.742112962839711,
+      "conditional_previous_symbol_entropy": 5.719485651807229,
+      "unique_64_code_groups": 4096,
+      "groups": 4096
+    },
+    {
+      "tensor": "model.layers.3.feed_forward.gate_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.733295227040181,
+      "conditional_previous_symbol_entropy": 5.718274345437591,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.3.feed_forward.up_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.731114424709725,
+      "conditional_previous_symbol_entropy": 5.715655586862022,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.3.feed_forward.down_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.736781730395007,
+      "conditional_previous_symbol_entropy": 5.719647606447547,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.3.mamba.in_proj.weight",
+      "code_count": 864256,
+      "symbol_entropy": 5.703303919510393,
+      "conditional_previous_symbol_entropy": 5.6889490568279415,
+      "unique_64_code_groups": 13504,
+      "groups": 13504
+    },
+    {
+      "tensor": "model.layers.3.mamba.out_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.648785356324206,
+      "conditional_previous_symbol_entropy": 5.465730190408916,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.3.self_attn.q_proj.weight",
+      "code_count": 262144,
+      "symbol_entropy": 5.71699756737163,
+      "conditional_previous_symbol_entropy": 5.694112220840029,
+      "unique_64_code_groups": 4096,
+      "groups": 4096
+    },
+    {
+      "tensor": "model.layers.3.self_attn.k_proj.weight",
+      "code_count": 65536,
+      "symbol_entropy": 5.724376562532434,
+      "conditional_previous_symbol_entropy": 5.663740729249938,
+      "unique_64_code_groups": 1024,
+      "groups": 1024
+    },
+    {
+      "tensor": "model.layers.3.self_attn.v_proj.weight",
+      "code_count": 65536,
+      "symbol_entropy": 5.711912015332085,
+      "conditional_previous_symbol_entropy": 5.658586221363345,
+      "unique_64_code_groups": 1024,
+      "groups": 1024
+    },
+    {
+      "tensor": "model.layers.3.self_attn.o_proj.weight",
+      "code_count": 262144,
+      "symbol_entropy": 5.741485205623865,
+      "conditional_previous_symbol_entropy": 5.722951711286828,
+      "unique_64_code_groups": 4096,
+      "groups": 4096
+    },
+    {
+      "tensor": "model.layers.4.feed_forward.gate_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.738798790461847,
+      "conditional_previous_symbol_entropy": 5.723304670203793,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.4.feed_forward.up_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.73086870716948,
+      "conditional_previous_symbol_entropy": 5.7134815564825505,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.4.feed_forward.down_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.7104053278329,
+      "conditional_previous_symbol_entropy": 5.687102863353716,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.4.mamba.in_proj.weight",
+      "code_count": 864256,
+      "symbol_entropy": 5.705429026862882,
+      "conditional_previous_symbol_entropy": 5.690724916971853,
+      "unique_64_code_groups": 13504,
+      "groups": 13504
+    },
+    {
+      "tensor": "model.layers.4.mamba.out_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.630973672694706,
+      "conditional_previous_symbol_entropy": 5.390016983234492,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.4.self_attn.q_proj.weight",
+      "code_count": 262144,
+      "symbol_entropy": 5.727106275740131,
+      "conditional_previous_symbol_entropy": 5.70403124401035,
+      "unique_64_code_groups": 4096,
+      "groups": 4096
+    },
+    {
+      "tensor": "model.layers.4.self_attn.k_proj.weight",
+      "code_count": 65536,
+      "symbol_entropy": 5.732352504727661,
+      "conditional_previous_symbol_entropy": 5.670915405110382,
+      "unique_64_code_groups": 1024,
+      "groups": 1024
+    },
+    {
+      "tensor": "model.layers.4.self_attn.v_proj.weight",
+      "code_count": 65536,
+      "symbol_entropy": 5.720014092159253,
+      "conditional_previous_symbol_entropy": 5.667108204809749,
+      "unique_64_code_groups": 1024,
+      "groups": 1024
+    },
+    {
+      "tensor": "model.layers.4.self_attn.o_proj.weight",
+      "code_count": 262144,
+      "symbol_entropy": 5.752722392320404,
+      "conditional_previous_symbol_entropy": 5.734983811258287,
+      "unique_64_code_groups": 4096,
+      "groups": 4096
+    },
+    {
+      "tensor": "model.layers.5.feed_forward.gate_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.722148346631411,
+      "conditional_previous_symbol_entropy": 5.702729078480833,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.5.feed_forward.up_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.726460313966219,
+      "conditional_previous_symbol_entropy": 5.705886669170412,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.5.feed_forward.down_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.683529849408637,
+      "conditional_previous_symbol_entropy": 5.658320150626528,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.5.mamba.in_proj.weight",
+      "code_count": 864256,
+      "symbol_entropy": 5.7307819698642835,
+      "conditional_previous_symbol_entropy": 5.709520686680791,
+      "unique_64_code_groups": 13504,
+      "groups": 13504
+    },
+    {
+      "tensor": "model.layers.5.mamba.out_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.65005067853723,
+      "conditional_previous_symbol_entropy": 5.453614049230877,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.5.self_attn.q_proj.weight",
+      "code_count": 262144,
+      "symbol_entropy": 5.731942384356067,
+      "conditional_previous_symbol_entropy": 5.7082152178535495,
+      "unique_64_code_groups": 4096,
+      "groups": 4096
+    },
+    {
+      "tensor": "model.layers.5.self_attn.k_proj.weight",
+      "code_count": 65536,
+      "symbol_entropy": 5.748897947081701,
+      "conditional_previous_symbol_entropy": 5.695850143217394,
+      "unique_64_code_groups": 1024,
+      "groups": 1024
+    },
+    {
+      "tensor": "model.layers.5.self_attn.v_proj.weight",
+      "code_count": 65536,
+      "symbol_entropy": 5.7210153687267224,
+      "conditional_previous_symbol_entropy": 5.668639950518975,
+      "unique_64_code_groups": 1024,
+      "groups": 1024
+    },
+    {
+      "tensor": "model.layers.5.self_attn.o_proj.weight",
+      "code_count": 262144,
+      "symbol_entropy": 5.754368587899995,
+      "conditional_previous_symbol_entropy": 5.738022458301037,
+      "unique_64_code_groups": 4096,
+      "groups": 4096
+    },
+    {
+      "tensor": "model.layers.6.feed_forward.gate_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.740284674343214,
+      "conditional_previous_symbol_entropy": 5.72500492866563,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.6.feed_forward.up_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.739305066312797,
+      "conditional_previous_symbol_entropy": 5.724067983074226,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.6.feed_forward.down_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.680437187338894,
+      "conditional_previous_symbol_entropy": 5.655885776201911,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.6.mamba.in_proj.weight",
+      "code_count": 864256,
+      "symbol_entropy": 5.710446022180442,
+      "conditional_previous_symbol_entropy": 5.6962270776734,
+      "unique_64_code_groups": 13504,
+      "groups": 13504
+    },
+    {
+      "tensor": "model.layers.6.mamba.out_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.603832213906813,
+      "conditional_previous_symbol_entropy": 5.329094244752561,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.6.self_attn.q_proj.weight",
+      "code_count": 262144,
+      "symbol_entropy": 5.711164542264608,
+      "conditional_previous_symbol_entropy": 5.683597610474237,
+      "unique_64_code_groups": 4096,
+      "groups": 4096
+    },
+    {
+      "tensor": "model.layers.6.self_attn.k_proj.weight",
+      "code_count": 65536,
+      "symbol_entropy": 5.652129450679684,
+      "conditional_previous_symbol_entropy": 5.551690131668656,
+      "unique_64_code_groups": 1024,
+      "groups": 1024
+    },
+    {
+      "tensor": "model.layers.6.self_attn.v_proj.weight",
+      "code_count": 65536,
+      "symbol_entropy": 5.680362272060133,
+      "conditional_previous_symbol_entropy": 5.6211110681695,
+      "unique_64_code_groups": 1024,
+      "groups": 1024
+    },
+    {
+      "tensor": "model.layers.6.self_attn.o_proj.weight",
+      "code_count": 262144,
+      "symbol_entropy": 5.756636632395707,
+      "conditional_previous_symbol_entropy": 5.739670902772011,
+      "unique_64_code_groups": 4096,
+      "groups": 4096
+    },
+    {
+      "tensor": "model.layers.7.feed_forward.gate_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.745074843834441,
+      "conditional_previous_symbol_entropy": 5.730957985595327,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.7.feed_forward.up_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.744457266798923,
+      "conditional_previous_symbol_entropy": 5.729162944036124,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.7.feed_forward.down_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.681666273246326,
+      "conditional_previous_symbol_entropy": 5.656488806244316,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.7.mamba.in_proj.weight",
+      "code_count": 864256,
+      "symbol_entropy": 5.740665600920483,
+      "conditional_previous_symbol_entropy": 5.727672747448421,
+      "unique_64_code_groups": 13504,
+      "groups": 13504
+    },
+    {
+      "tensor": "model.layers.7.mamba.out_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.683251272580719,
+      "conditional_previous_symbol_entropy": 5.3081023055065835,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.7.self_attn.q_proj.weight",
+      "code_count": 262144,
+      "symbol_entropy": 5.741078120429288,
+      "conditional_previous_symbol_entropy": 5.721907811410618,
+      "unique_64_code_groups": 4096,
+      "groups": 4096
+    },
+    {
+      "tensor": "model.layers.7.self_attn.k_proj.weight",
+      "code_count": 65536,
+      "symbol_entropy": 5.691506343251962,
+      "conditional_previous_symbol_entropy": 5.626741799282658,
+      "unique_64_code_groups": 1024,
+      "groups": 1024
+    },
+    {
+      "tensor": "model.layers.7.self_attn.v_proj.weight",
+      "code_count": 65536,
+      "symbol_entropy": 5.728948385288188,
+      "conditional_previous_symbol_entropy": 5.675880130510382,
+      "unique_64_code_groups": 1024,
+      "groups": 1024
+    },
+    {
+      "tensor": "model.layers.7.self_attn.o_proj.weight",
+      "code_count": 262144,
+      "symbol_entropy": 5.7506836798996055,
+      "conditional_previous_symbol_entropy": 5.7339628528775375,
+      "unique_64_code_groups": 4096,
+      "groups": 4096
+    },
+    {
+      "tensor": "model.layers.8.feed_forward.gate_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.736520353762412,
+      "conditional_previous_symbol_entropy": 5.718510579425617,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.8.feed_forward.up_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.731276708224499,
+      "conditional_previous_symbol_entropy": 5.712550155032449,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.8.feed_forward.down_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.6812572732231885,
+      "conditional_previous_symbol_entropy": 5.65164108697585,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.8.mamba.in_proj.weight",
+      "code_count": 864256,
+      "symbol_entropy": 5.73701560893936,
+      "conditional_previous_symbol_entropy": 5.723679707590611,
+      "unique_64_code_groups": 13504,
+      "groups": 13504
+    },
+    {
+      "tensor": "model.layers.8.mamba.out_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.660708619036938,
+      "conditional_previous_symbol_entropy": 5.350855282584947,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.8.self_attn.q_proj.weight",
+      "code_count": 262144,
+      "symbol_entropy": 5.739935169289753,
+      "conditional_previous_symbol_entropy": 5.71983807353814,
+      "unique_64_code_groups": 4096,
+      "groups": 4096
+    },
+    {
+      "tensor": "model.layers.8.self_attn.k_proj.weight",
+      "code_count": 65536,
+      "symbol_entropy": 5.7426992787626805,
+      "conditional_previous_symbol_entropy": 5.6900670402904,
+      "unique_64_code_groups": 1024,
+      "groups": 1024
+    },
+    {
+      "tensor": "model.layers.8.self_attn.v_proj.weight",
+      "code_count": 65536,
+      "symbol_entropy": 5.728339098664197,
+      "conditional_previous_symbol_entropy": 5.674875160814022,
+      "unique_64_code_groups": 1024,
+      "groups": 1024
+    },
+    {
+      "tensor": "model.layers.8.self_attn.o_proj.weight",
+      "code_count": 262144,
+      "symbol_entropy": 5.761245950084435,
+      "conditional_previous_symbol_entropy": 5.745637114855918,
+      "unique_64_code_groups": 4096,
+      "groups": 4096
+    },
+    {
+      "tensor": "model.layers.9.feed_forward.gate_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.7300841857755,
+      "conditional_previous_symbol_entropy": 5.705185657199846,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.9.feed_forward.up_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.721363678106382,
+      "conditional_previous_symbol_entropy": 5.693899999652593,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.9.feed_forward.down_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.68486237524673,
+      "conditional_previous_symbol_entropy": 5.657737136051949,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.9.mamba.in_proj.weight",
+      "code_count": 864256,
+      "symbol_entropy": 5.7249108946776985,
+      "conditional_previous_symbol_entropy": 5.710585758360248,
+      "unique_64_code_groups": 13504,
+      "groups": 13504
+    },
+    {
+      "tensor": "model.layers.9.mamba.out_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.662286200212828,
+      "conditional_previous_symbol_entropy": 5.337084997517021,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.9.self_attn.q_proj.weight",
+      "code_count": 262144,
+      "symbol_entropy": 5.721790131619335,
+      "conditional_previous_symbol_entropy": 5.698258123134056,
+      "unique_64_code_groups": 4096,
+      "groups": 4096
+    },
+    {
+      "tensor": "model.layers.9.self_attn.k_proj.weight",
+      "code_count": 65536,
+      "symbol_entropy": 5.686152486369744,
+      "conditional_previous_symbol_entropy": 5.623235246518404,
+      "unique_64_code_groups": 1024,
+      "groups": 1024
+    },
+    {
+      "tensor": "model.layers.9.self_attn.v_proj.weight",
+      "code_count": 65536,
+      "symbol_entropy": 5.680172911163124,
+      "conditional_previous_symbol_entropy": 5.466564040213326,
+      "unique_64_code_groups": 1024,
+      "groups": 1024
+    },
+    {
+      "tensor": "model.layers.9.self_attn.o_proj.weight",
+      "code_count": 262144,
+      "symbol_entropy": 5.764523251823789,
+      "conditional_previous_symbol_entropy": 5.748834116395319,
+      "unique_64_code_groups": 4096,
+      "groups": 4096
+    },
+    {
+      "tensor": "model.layers.10.feed_forward.gate_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.722399287506614,
+      "conditional_previous_symbol_entropy": 5.696740380361682,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.10.feed_forward.up_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.707998378306131,
+      "conditional_previous_symbol_entropy": 5.653065807983641,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.10.feed_forward.down_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.674092351020903,
+      "conditional_previous_symbol_entropy": 5.651731121383928,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.10.mamba.in_proj.weight",
+      "code_count": 864256,
+      "symbol_entropy": 5.734857046709863,
+      "conditional_previous_symbol_entropy": 5.7201843541260295,
+      "unique_64_code_groups": 13504,
+      "groups": 13504
+    },
+    {
+      "tensor": "model.layers.10.mamba.out_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.613237613799202,
+      "conditional_previous_symbol_entropy": 5.402305307382515,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.10.self_attn.q_proj.weight",
+      "code_count": 262144,
+      "symbol_entropy": 5.746279681525687,
+      "conditional_previous_symbol_entropy": 5.726982757555322,
+      "unique_64_code_groups": 4096,
+      "groups": 4096
+    },
+    {
+      "tensor": "model.layers.10.self_attn.k_proj.weight",
+      "code_count": 65536,
+      "symbol_entropy": 5.736810217013228,
+      "conditional_previous_symbol_entropy": 5.677523482802342,
+      "unique_64_code_groups": 1024,
+      "groups": 1024
+    },
+    {
+      "tensor": "model.layers.10.self_attn.v_proj.weight",
+      "code_count": 65536,
+      "symbol_entropy": 5.637712620277451,
+      "conditional_previous_symbol_entropy": 5.238944889460727,
+      "unique_64_code_groups": 1024,
+      "groups": 1024
+    },
+    {
+      "tensor": "model.layers.10.self_attn.o_proj.weight",
+      "code_count": 262144,
+      "symbol_entropy": 5.747535944722795,
+      "conditional_previous_symbol_entropy": 5.730819556860193,
+      "unique_64_code_groups": 4096,
+      "groups": 4096
+    },
+    {
+      "tensor": "model.layers.11.feed_forward.gate_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.741394055305108,
+      "conditional_previous_symbol_entropy": 5.724732739854567,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.11.feed_forward.up_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.7362145992639535,
+      "conditional_previous_symbol_entropy": 5.718456814511151,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.11.feed_forward.down_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.719307275988941,
+      "conditional_previous_symbol_entropy": 5.702697060846973,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.11.mamba.in_proj.weight",
+      "code_count": 864256,
+      "symbol_entropy": 5.728600295240149,
+      "conditional_previous_symbol_entropy": 5.7103709308788435,
+      "unique_64_code_groups": 13489,
+      "groups": 13504
+    },
+    {
+      "tensor": "model.layers.11.mamba.out_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.649679591188198,
+      "conditional_previous_symbol_entropy": 5.424505410039648,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.11.self_attn.q_proj.weight",
+      "code_count": 262144,
+      "symbol_entropy": 5.7592149230559375,
+      "conditional_previous_symbol_entropy": 5.741248622975225,
+      "unique_64_code_groups": 4096,
+      "groups": 4096
+    },
+    {
+      "tensor": "model.layers.11.self_attn.k_proj.weight",
+      "code_count": 65536,
+      "symbol_entropy": 5.7633484397206844,
+      "conditional_previous_symbol_entropy": 5.709691812798882,
+      "unique_64_code_groups": 1024,
+      "groups": 1024
+    },
+    {
+      "tensor": "model.layers.11.self_attn.v_proj.weight",
+      "code_count": 65536,
+      "symbol_entropy": 5.692684124014438,
+      "conditional_previous_symbol_entropy": 5.620878592356705,
+      "unique_64_code_groups": 1024,
+      "groups": 1024
+    },
+    {
+      "tensor": "model.layers.11.self_attn.o_proj.weight",
+      "code_count": 262144,
+      "symbol_entropy": 5.75968349323873,
+      "conditional_previous_symbol_entropy": 5.743778285006416,
+      "unique_64_code_groups": 4096,
+      "groups": 4096
+    },
+    {
+      "tensor": "model.layers.12.feed_forward.gate_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.741394121265923,
+      "conditional_previous_symbol_entropy": 5.724197467179037,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.12.feed_forward.up_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.736446315001966,
+      "conditional_previous_symbol_entropy": 5.719288672082721,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.12.feed_forward.down_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.726557804741283,
+      "conditional_previous_symbol_entropy": 5.710217161975761,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.12.mamba.in_proj.weight",
+      "code_count": 864256,
+      "symbol_entropy": 5.733480100275848,
+      "conditional_previous_symbol_entropy": 5.719711770133938,
+      "unique_64_code_groups": 13504,
+      "groups": 13504
+    },
+    {
+      "tensor": "model.layers.12.mamba.out_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.587310587821964,
+      "conditional_previous_symbol_entropy": 5.448527998117315,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.12.self_attn.q_proj.weight",
+      "code_count": 262144,
+      "symbol_entropy": 5.755032870827112,
+      "conditional_previous_symbol_entropy": 5.736234889780182,
+      "unique_64_code_groups": 4096,
+      "groups": 4096
+    },
+    {
+      "tensor": "model.layers.12.self_attn.k_proj.weight",
+      "code_count": 65536,
+      "symbol_entropy": 5.751508487813535,
+      "conditional_previous_symbol_entropy": 5.69672126886762,
+      "unique_64_code_groups": 1024,
+      "groups": 1024
+    },
+    {
+      "tensor": "model.layers.12.self_attn.v_proj.weight",
+      "code_count": 65536,
+      "symbol_entropy": 5.732821181277567,
+      "conditional_previous_symbol_entropy": 5.674102091142089,
+      "unique_64_code_groups": 1024,
+      "groups": 1024
+    },
+    {
+      "tensor": "model.layers.12.self_attn.o_proj.weight",
+      "code_count": 262144,
+      "symbol_entropy": 5.749136456449423,
+      "conditional_previous_symbol_entropy": 5.732103356125502,
+      "unique_64_code_groups": 4096,
+      "groups": 4096
+    },
+    {
+      "tensor": "model.layers.13.feed_forward.gate_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.738812326540301,
+      "conditional_previous_symbol_entropy": 5.721673799900563,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.13.feed_forward.up_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.741179455211534,
+      "conditional_previous_symbol_entropy": 5.723282721741211,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.13.feed_forward.down_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.728256786184912,
+      "conditional_previous_symbol_entropy": 5.712916739544197,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.13.mamba.in_proj.weight",
+      "code_count": 864256,
+      "symbol_entropy": 5.726510729793734,
+      "conditional_previous_symbol_entropy": 5.71070678511742,
+      "unique_64_code_groups": 13504,
+      "groups": 13504
+    },
+    {
+      "tensor": "model.layers.13.mamba.out_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.585549789971951,
+      "conditional_previous_symbol_entropy": 5.478730627962912,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.13.self_attn.q_proj.weight",
+      "code_count": 262144,
+      "symbol_entropy": 5.7560966555984585,
+      "conditional_previous_symbol_entropy": 5.736886951231315,
+      "unique_64_code_groups": 4096,
+      "groups": 4096
+    },
+    {
+      "tensor": "model.layers.13.self_attn.k_proj.weight",
+      "code_count": 65536,
+      "symbol_entropy": 5.743149304156798,
+      "conditional_previous_symbol_entropy": 5.686566126120334,
+      "unique_64_code_groups": 1024,
+      "groups": 1024
+    },
+    {
+      "tensor": "model.layers.13.self_attn.v_proj.weight",
+      "code_count": 65536,
+      "symbol_entropy": 5.72564201844566,
+      "conditional_previous_symbol_entropy": 5.6677492153289375,
+      "unique_64_code_groups": 1024,
+      "groups": 1024
+    },
+    {
+      "tensor": "model.layers.13.self_attn.o_proj.weight",
+      "code_count": 262144,
+      "symbol_entropy": 5.751854170536469,
+      "conditional_previous_symbol_entropy": 5.734917465346906,
+      "unique_64_code_groups": 4096,
+      "groups": 4096
+    },
+    {
+      "tensor": "model.layers.14.feed_forward.gate_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.7347921980012195,
+      "conditional_previous_symbol_entropy": 5.716610331035458,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.14.feed_forward.up_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.735916812501895,
+      "conditional_previous_symbol_entropy": 5.717800374165918,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.14.feed_forward.down_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.731384509721541,
+      "conditional_previous_symbol_entropy": 5.715829793478976,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.14.mamba.in_proj.weight",
+      "code_count": 864256,
+      "symbol_entropy": 5.735894007530608,
+      "conditional_previous_symbol_entropy": 5.722681466617975,
+      "unique_64_code_groups": 13504,
+      "groups": 13504
+    },
+    {
+      "tensor": "model.layers.14.mamba.out_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.601156882693591,
+      "conditional_previous_symbol_entropy": 5.445760669641053,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.14.self_attn.q_proj.weight",
+      "code_count": 262144,
+      "symbol_entropy": 5.750774665948206,
+      "conditional_previous_symbol_entropy": 5.7305373074036,
+      "unique_64_code_groups": 4096,
+      "groups": 4096
+    },
+    {
+      "tensor": "model.layers.14.self_attn.k_proj.weight",
+      "code_count": 65536,
+      "symbol_entropy": 5.749335012307615,
+      "conditional_previous_symbol_entropy": 5.694344962047235,
+      "unique_64_code_groups": 1024,
+      "groups": 1024
+    },
+    {
+      "tensor": "model.layers.14.self_attn.v_proj.weight",
+      "code_count": 65536,
+      "symbol_entropy": 5.703241005746653,
+      "conditional_previous_symbol_entropy": 5.622780216308933,
+      "unique_64_code_groups": 1024,
+      "groups": 1024
+    },
+    {
+      "tensor": "model.layers.14.self_attn.o_proj.weight",
+      "code_count": 262144,
+      "symbol_entropy": 5.748903943970738,
+      "conditional_previous_symbol_entropy": 5.732405953626889,
+      "unique_64_code_groups": 4096,
+      "groups": 4096
+    },
+    {
+      "tensor": "model.layers.15.feed_forward.gate_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.7364257458038175,
+      "conditional_previous_symbol_entropy": 5.718323672493453,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.15.feed_forward.up_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.735239246130906,
+      "conditional_previous_symbol_entropy": 5.71594821673245,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.15.feed_forward.down_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.723100454826091,
+      "conditional_previous_symbol_entropy": 5.707087677999428,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.15.mamba.in_proj.weight",
+      "code_count": 864256,
+      "symbol_entropy": 5.746764117886663,
+      "conditional_previous_symbol_entropy": 5.735149515463391,
+      "unique_64_code_groups": 13504,
+      "groups": 13504
+    },
+    {
+      "tensor": "model.layers.15.mamba.out_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.579273280621305,
+      "conditional_previous_symbol_entropy": 5.472257268003358,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.15.self_attn.q_proj.weight",
+      "code_count": 262144,
+      "symbol_entropy": 5.758801948453348,
+      "conditional_previous_symbol_entropy": 5.739678409133431,
+      "unique_64_code_groups": 4096,
+      "groups": 4096
+    },
+    {
+      "tensor": "model.layers.15.self_attn.k_proj.weight",
+      "code_count": 65536,
+      "symbol_entropy": 5.750334360135172,
+      "conditional_previous_symbol_entropy": 5.696266735903617,
+      "unique_64_code_groups": 1024,
+      "groups": 1024
+    },
+    {
+      "tensor": "model.layers.15.self_attn.v_proj.weight",
+      "code_count": 65536,
+      "symbol_entropy": 5.693690419565552,
+      "conditional_previous_symbol_entropy": 5.589514643056673,
+      "unique_64_code_groups": 1024,
+      "groups": 1024
+    },
+    {
+      "tensor": "model.layers.15.self_attn.o_proj.weight",
+      "code_count": 262144,
+      "symbol_entropy": 5.752195780147361,
+      "conditional_previous_symbol_entropy": 5.735737300285126,
+      "unique_64_code_groups": 4096,
+      "groups": 4096
+    },
+    {
+      "tensor": "model.layers.16.feed_forward.gate_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.736065342845532,
+      "conditional_previous_symbol_entropy": 5.717571769626971,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.16.feed_forward.up_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.73700676135422,
+      "conditional_previous_symbol_entropy": 5.718314345511511,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.16.feed_forward.down_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.72435437630479,
+      "conditional_previous_symbol_entropy": 5.708318187448192,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.16.mamba.in_proj.weight",
+      "code_count": 864256,
+      "symbol_entropy": 5.7368158091286485,
+      "conditional_previous_symbol_entropy": 5.722724286428525,
+      "unique_64_code_groups": 13504,
+      "groups": 13504
+    },
+    {
+      "tensor": "model.layers.16.mamba.out_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.587861430949807,
+      "conditional_previous_symbol_entropy": 5.472592186813815,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.16.self_attn.q_proj.weight",
+      "code_count": 262144,
+      "symbol_entropy": 5.7485606450842,
+      "conditional_previous_symbol_entropy": 5.726032726632217,
+      "unique_64_code_groups": 4096,
+      "groups": 4096
+    },
+    {
+      "tensor": "model.layers.16.self_attn.k_proj.weight",
+      "code_count": 65536,
+      "symbol_entropy": 5.737041892539983,
+      "conditional_previous_symbol_entropy": 5.677790441077773,
+      "unique_64_code_groups": 1024,
+      "groups": 1024
+    },
+    {
+      "tensor": "model.layers.16.self_attn.v_proj.weight",
+      "code_count": 65536,
+      "symbol_entropy": 5.7123213373661015,
+      "conditional_previous_symbol_entropy": 5.637817157400506,
+      "unique_64_code_groups": 1024,
+      "groups": 1024
+    },
+    {
+      "tensor": "model.layers.16.self_attn.o_proj.weight",
+      "code_count": 262144,
+      "symbol_entropy": 5.760273751054419,
+      "conditional_previous_symbol_entropy": 5.742885089849833,
+      "unique_64_code_groups": 4096,
+      "groups": 4096
+    },
+    {
+      "tensor": "model.layers.17.feed_forward.gate_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.731897090973312,
+      "conditional_previous_symbol_entropy": 5.713485158959592,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.17.feed_forward.up_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.736748501106385,
+      "conditional_previous_symbol_entropy": 5.7183020759213825,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.17.feed_forward.down_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.725258430475771,
+      "conditional_previous_symbol_entropy": 5.709007027708203,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.17.mamba.in_proj.weight",
+      "code_count": 864256,
+      "symbol_entropy": 5.738120356390578,
+      "conditional_previous_symbol_entropy": 5.725136189700458,
+      "unique_64_code_groups": 13504,
+      "groups": 13504
+    },
+    {
+      "tensor": "model.layers.17.mamba.out_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.648735119777691,
+      "conditional_previous_symbol_entropy": 5.511945218721812,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.17.self_attn.q_proj.weight",
+      "code_count": 262144,
+      "symbol_entropy": 5.7554354965275,
+      "conditional_previous_symbol_entropy": 5.73618555942972,
+      "unique_64_code_groups": 4096,
+      "groups": 4096
+    },
+    {
+      "tensor": "model.layers.17.self_attn.k_proj.weight",
+      "code_count": 65536,
+      "symbol_entropy": 5.747127003227871,
+      "conditional_previous_symbol_entropy": 5.69178554599861,
+      "unique_64_code_groups": 1024,
+      "groups": 1024
+    },
+    {
+      "tensor": "model.layers.17.self_attn.v_proj.weight",
+      "code_count": 65536,
+      "symbol_entropy": 5.693460366968164,
+      "conditional_previous_symbol_entropy": 5.613643017011046,
+      "unique_64_code_groups": 1024,
+      "groups": 1024
+    },
+    {
+      "tensor": "model.layers.17.self_attn.o_proj.weight",
+      "code_count": 262144,
+      "symbol_entropy": 5.753464476431356,
+      "conditional_previous_symbol_entropy": 5.735327201716026,
+      "unique_64_code_groups": 4096,
+      "groups": 4096
+    },
+    {
+      "tensor": "model.layers.18.feed_forward.gate_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.7335735156855545,
+      "conditional_previous_symbol_entropy": 5.714582883892017,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.18.feed_forward.up_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.738117025021379,
+      "conditional_previous_symbol_entropy": 5.720492222035843,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.18.feed_forward.down_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.728508013274555,
+      "conditional_previous_symbol_entropy": 5.712727247183133,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.18.mamba.in_proj.weight",
+      "code_count": 864256,
+      "symbol_entropy": 5.742970099042543,
+      "conditional_previous_symbol_entropy": 5.730711000306423,
+      "unique_64_code_groups": 13504,
+      "groups": 13504
+    },
+    {
+      "tensor": "model.layers.18.mamba.out_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.594539195541285,
+      "conditional_previous_symbol_entropy": 5.506806045547583,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.18.self_attn.q_proj.weight",
+      "code_count": 262144,
+      "symbol_entropy": 5.750917039000841,
+      "conditional_previous_symbol_entropy": 5.730505335109912,
+      "unique_64_code_groups": 4096,
+      "groups": 4096
+    },
+    {
+      "tensor": "model.layers.18.self_attn.k_proj.weight",
+      "code_count": 65536,
+      "symbol_entropy": 5.743294540138491,
+      "conditional_previous_symbol_entropy": 5.683286819420242,
+      "unique_64_code_groups": 1024,
+      "groups": 1024
+    },
+    {
+      "tensor": "model.layers.18.self_attn.v_proj.weight",
+      "code_count": 65536,
+      "symbol_entropy": 5.6833189736110095,
+      "conditional_previous_symbol_entropy": 5.547580238714171,
+      "unique_64_code_groups": 1024,
+      "groups": 1024
+    },
+    {
+      "tensor": "model.layers.18.self_attn.o_proj.weight",
+      "code_count": 262144,
+      "symbol_entropy": 5.75996549754649,
+      "conditional_previous_symbol_entropy": 5.74449681237383,
+      "unique_64_code_groups": 4096,
+      "groups": 4096
+    },
+    {
+      "tensor": "model.layers.19.feed_forward.gate_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.743335429525798,
+      "conditional_previous_symbol_entropy": 5.727263944434001,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.19.feed_forward.up_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.746850952504228,
+      "conditional_previous_symbol_entropy": 5.73065676938391,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.19.feed_forward.down_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.730516191085849,
+      "conditional_previous_symbol_entropy": 5.715948304101913,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.19.mamba.in_proj.weight",
+      "code_count": 864256,
+      "symbol_entropy": 5.740517397675653,
+      "conditional_previous_symbol_entropy": 5.729311021762151,
+      "unique_64_code_groups": 13504,
+      "groups": 13504
+    },
+    {
+      "tensor": "model.layers.19.mamba.out_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.609170312950169,
+      "conditional_previous_symbol_entropy": 5.545839847667064,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.19.self_attn.q_proj.weight",
+      "code_count": 262144,
+      "symbol_entropy": 5.752905435461262,
+      "conditional_previous_symbol_entropy": 5.72965549576534,
+      "unique_64_code_groups": 4096,
+      "groups": 4096
+    },
+    {
+      "tensor": "model.layers.19.self_attn.k_proj.weight",
+      "code_count": 65536,
+      "symbol_entropy": 5.735499869621652,
+      "conditional_previous_symbol_entropy": 5.664439805521134,
+      "unique_64_code_groups": 1024,
+      "groups": 1024
+    },
+    {
+      "tensor": "model.layers.19.self_attn.v_proj.weight",
+      "code_count": 65536,
+      "symbol_entropy": 5.688515765423766,
+      "conditional_previous_symbol_entropy": 5.594301414872355,
+      "unique_64_code_groups": 1024,
+      "groups": 1024
+    },
+    {
+      "tensor": "model.layers.19.self_attn.o_proj.weight",
+      "code_count": 262144,
+      "symbol_entropy": 5.759173769519963,
+      "conditional_previous_symbol_entropy": 5.743147719712539,
+      "unique_64_code_groups": 4096,
+      "groups": 4096
+    },
+    {
+      "tensor": "model.layers.20.feed_forward.gate_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.745063289954051,
+      "conditional_previous_symbol_entropy": 5.728784988004701,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.20.feed_forward.up_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.747305657013028,
+      "conditional_previous_symbol_entropy": 5.73238128435334,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.20.feed_forward.down_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.731984549954843,
+      "conditional_previous_symbol_entropy": 5.7172932042931786,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.20.mamba.in_proj.weight",
+      "code_count": 864256,
+      "symbol_entropy": 5.741851075500337,
+      "conditional_previous_symbol_entropy": 5.730765266932362,
+      "unique_64_code_groups": 13504,
+      "groups": 13504
+    },
+    {
+      "tensor": "model.layers.20.mamba.out_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.636754945763826,
+      "conditional_previous_symbol_entropy": 5.598221102970839,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.20.self_attn.q_proj.weight",
+      "code_count": 262144,
+      "symbol_entropy": 5.751963731806397,
+      "conditional_previous_symbol_entropy": 5.730840002223033,
+      "unique_64_code_groups": 4096,
+      "groups": 4096
+    },
+    {
+      "tensor": "model.layers.20.self_attn.k_proj.weight",
+      "code_count": 65536,
+      "symbol_entropy": 5.744341094599407,
+      "conditional_previous_symbol_entropy": 5.684555461167325,
+      "unique_64_code_groups": 1024,
+      "groups": 1024
+    },
+    {
+      "tensor": "model.layers.20.self_attn.v_proj.weight",
+      "code_count": 65536,
+      "symbol_entropy": 5.705324796366686,
+      "conditional_previous_symbol_entropy": 5.633402755681121,
+      "unique_64_code_groups": 1024,
+      "groups": 1024
+    },
+    {
+      "tensor": "model.layers.20.self_attn.o_proj.weight",
+      "code_count": 262144,
+      "symbol_entropy": 5.763777319805257,
+      "conditional_previous_symbol_entropy": 5.748172221883393,
+      "unique_64_code_groups": 4096,
+      "groups": 4096
+    },
+    {
+      "tensor": "model.layers.21.feed_forward.gate_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.745836235301859,
+      "conditional_previous_symbol_entropy": 5.731086225416017,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.21.feed_forward.up_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.745306673050319,
+      "conditional_previous_symbol_entropy": 5.730766356731939,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.21.feed_forward.down_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.72266345336532,
+      "conditional_previous_symbol_entropy": 5.706817056013569,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.21.mamba.in_proj.weight",
+      "code_count": 864256,
+      "symbol_entropy": 5.741067944990726,
+      "conditional_previous_symbol_entropy": 5.730079137074395,
+      "unique_64_code_groups": 13504,
+      "groups": 13504
+    },
+    {
+      "tensor": "model.layers.21.mamba.out_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.6309704915974255,
+      "conditional_previous_symbol_entropy": 5.589843373305203,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.21.self_attn.q_proj.weight",
+      "code_count": 262144,
+      "symbol_entropy": 5.748372176419069,
+      "conditional_previous_symbol_entropy": 5.72801309905552,
+      "unique_64_code_groups": 4096,
+      "groups": 4096
+    },
+    {
+      "tensor": "model.layers.21.self_attn.k_proj.weight",
+      "code_count": 65536,
+      "symbol_entropy": 5.749805194179622,
+      "conditional_previous_symbol_entropy": 5.694875515325763,
+      "unique_64_code_groups": 1024,
+      "groups": 1024
+    },
+    {
+      "tensor": "model.layers.21.self_attn.v_proj.weight",
+      "code_count": 65536,
+      "symbol_entropy": 5.718118131464541,
+      "conditional_previous_symbol_entropy": 5.657146572922994,
+      "unique_64_code_groups": 1024,
+      "groups": 1024
+    },
+    {
+      "tensor": "model.layers.21.self_attn.o_proj.weight",
+      "code_count": 262144,
+      "symbol_entropy": 5.759426040939829,
+      "conditional_previous_symbol_entropy": 5.7431373999978526,
+      "unique_64_code_groups": 4096,
+      "groups": 4096
+    },
+    {
+      "tensor": "model.layers.22.feed_forward.gate_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.746985772654478,
+      "conditional_previous_symbol_entropy": 5.731989329192072,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.22.feed_forward.up_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.745462268394157,
+      "conditional_previous_symbol_entropy": 5.7305245039770485,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.22.feed_forward.down_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.7126172553650845,
+      "conditional_previous_symbol_entropy": 5.6959638967292365,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.22.mamba.in_proj.weight",
+      "code_count": 864256,
+      "symbol_entropy": 5.7448650414360545,
+      "conditional_previous_symbol_entropy": 5.731971450086769,
+      "unique_64_code_groups": 13489,
+      "groups": 13504
+    },
+    {
+      "tensor": "model.layers.22.mamba.out_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.654167257495967,
+      "conditional_previous_symbol_entropy": 5.619998265009815,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.22.self_attn.q_proj.weight",
+      "code_count": 262144,
+      "symbol_entropy": 5.7518073427653365,
+      "conditional_previous_symbol_entropy": 5.734222689480938,
+      "unique_64_code_groups": 4096,
+      "groups": 4096
+    },
+    {
+      "tensor": "model.layers.22.self_attn.k_proj.weight",
+      "code_count": 65536,
+      "symbol_entropy": 5.748339147188657,
+      "conditional_previous_symbol_entropy": 5.695569385632515,
+      "unique_64_code_groups": 1024,
+      "groups": 1024
+    },
+    {
+      "tensor": "model.layers.22.self_attn.v_proj.weight",
+      "code_count": 65536,
+      "symbol_entropy": 5.736529987033144,
+      "conditional_previous_symbol_entropy": 5.682895209511204,
+      "unique_64_code_groups": 1024,
+      "groups": 1024
+    },
+    {
+      "tensor": "model.layers.22.self_attn.o_proj.weight",
+      "code_count": 262144,
+      "symbol_entropy": 5.761792291621857,
+      "conditional_previous_symbol_entropy": 5.746133038726467,
+      "unique_64_code_groups": 4096,
+      "groups": 4096
+    },
+    {
+      "tensor": "model.layers.23.feed_forward.gate_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.744506636563939,
+      "conditional_previous_symbol_entropy": 5.727265998553703,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.23.feed_forward.up_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.741791556152929,
+      "conditional_previous_symbol_entropy": 5.724608807174103,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.23.feed_forward.down_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.674669856944781,
+      "conditional_previous_symbol_entropy": 5.654041261046766,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.23.mamba.in_proj.weight",
+      "code_count": 864256,
+      "symbol_entropy": 5.744698843791467,
+      "conditional_previous_symbol_entropy": 5.73439576607294,
+      "unique_64_code_groups": 13504,
+      "groups": 13504
+    },
+    {
+      "tensor": "model.layers.23.mamba.out_proj.weight",
+      "code_count": 393216,
+      "symbol_entropy": 5.636274190392379,
+      "conditional_previous_symbol_entropy": 5.597729031029591,
+      "unique_64_code_groups": 6144,
+      "groups": 6144
+    },
+    {
+      "tensor": "model.layers.23.self_attn.q_proj.weight",
+      "code_count": 262144,
+      "symbol_entropy": 5.755218039249124,
+      "conditional_previous_symbol_entropy": 5.737259030923176,
+      "unique_64_code_groups": 4096,
+      "groups": 4096
+    },
+    {
+      "tensor": "model.layers.23.self_attn.k_proj.weight",
+      "code_count": 65536,
+      "symbol_entropy": 5.742866570214206,
+      "conditional_previous_symbol_entropy": 5.688379112204383,
+      "unique_64_code_groups": 1024,
+      "groups": 1024
+    },
+    {
+      "tensor": "model.layers.23.self_attn.v_proj.weight",
+      "code_count": 65536,
+      "symbol_entropy": 5.736235896730552,
+      "conditional_previous_symbol_entropy": 5.68136890195545,
+      "unique_64_code_groups": 1024,
+      "groups": 1024
+    },
+    {
+      "tensor": "model.layers.23.self_attn.o_proj.weight",
+      "code_count": 262144,
+      "symbol_entropy": 5.763271026272907,
+      "conditional_previous_symbol_entropy": 5.747071614570969,
+      "unique_64_code_groups": 4096,
+      "groups": 4096
+    }
+  ]
+}
