@@ -7,6 +7,7 @@ import { mkdtempSync, readFileSync, writeFileSync, rmSync, existsSync, mkdirSync
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { performance } from 'node:perf_hooks';
 import ganache from 'ganache';
 import { keccak256 } from 'ethers';
 
@@ -38,17 +39,32 @@ test('deployment journals resume pending hashes and reject identity drift withou
   let pausedForInterruption = false;
   let rawFailure = null;
   let readFailure = null;
+  let slowResponse = null;
+  const diagnosticCredential = 'local-test-credential';
+  const diagnosticURL = `https://diagnostic.invalid/rpc?api_key=${diagnosticCredential}`;
+  const diagnosticHex = '0x' + 'ab'.repeat(80);
   const server = createServer(async (request, response) => {
+    if (slowResponse?.selected && slowResponse.completedAt === undefined) slowResponse.overlapRequests = (slowResponse.overlapRequests ?? 0) + 1;
+    if (slowResponse?.completedAt !== undefined && slowResponse.nextRequestAt === undefined) slowResponse.nextRequestAt = performance.now();
     let body = '';
     let httpStatus = 200;
+    let delayThisResponse = false;
     for await (const part of request) body += part;
     const serve = async value => {
       try {
+        if (slowResponse && value.method === 'eth_getCode' && !slowResponse.selected) {
+          slowResponse.selected = true;
+          delayThisResponse = true;
+        }
+        if (readFailure && value.method === readFailure.method) {
+          readFailure.requestTimes ??= [];
+          readFailure.requestTimes.push(performance.now());
+        }
         if (readFailure && value.method === readFailure.method && readFailure.remaining !== 0) {
           readFailure.injections++;
           if (readFailure.remaining > 0) readFailure.remaining--;
           httpStatus = readFailure.httpStatus ?? 200;
-          return { jsonrpc: '2.0', id: value.id, error: { code: -32000, message: 'upstream request timeout' } };
+          return { jsonrpc: '2.0', id: value.id, ...(readFailure.poolBusy ? { reason: 'public_pool_busy' } : {}), error: { code: -32000, message: 'upstream request timeout', data: `url=${diagnosticURL} token=${diagnosticCredential} value=${diagnosticHex}` } };
         }
         if (value.method === 'eth_getTransactionReceipt') queriedReceiptHashes.push(value.params[0]);
         if (value.method === 'eth_sendRawTransaction') {
@@ -84,7 +100,11 @@ test('deployment journals resume pending hashes and reject identity drift withou
     try {
       const value = JSON.parse(body);
       const result = Array.isArray(value) ? await Promise.all(value.map(serve)) : await serve(value);
-      response.writeHead(httpStatus, { 'content-type': 'application/json' });
+      response.writeHead(httpStatus, { 'content-type': 'application/json', ...(readFailure?.poolBusy && httpStatus === 429 ? { 'retry-after': '1' } : {}) });
+      if (delayThisResponse) {
+        await delay(slowResponse.delayMs);
+        slowResponse.completedAt = performance.now();
+      }
       response.end(JSON.stringify(result));
     } catch (error) {
       response.writeHead(400); response.end(String(error));
@@ -138,14 +158,22 @@ test('deployment journals resume pending hashes and reject identity drift withou
   const broadcastChecks = {};
   const readRetryChecks = {};
   const chunkChecks = [];
-  const readRetryEvents = result => {
+  const readRetryEvents = (result, maximumAttempts = 3, reason = null) => {
     const events = result.stdout.trim().split('\n').filter(Boolean).map(line => JSON.parse(line)).filter(event => ['rpc_read_retry', 'rpc_read_failed'].includes(event.event));
     for (const event of events) {
-      assert.deepEqual(Object.keys(event).sort(), ['attempt', 'event', 'maximumAttempts', 'methods']);
+      const allowed = ['attempt', 'event', 'maximumAttempts', 'methods', 'status', 'code', 'reason'];
+      assert.ok(Object.keys(event).every(key => allowed.includes(key)), 'Read diagnostic exposed an unexpected field');
+      for (const key of ['attempt', 'event', 'maximumAttempts', 'methods']) assert.ok(Object.hasOwn(event, key));
       assert.deepEqual(event.methods, ['eth_getTransactionCount']);
-      assert.equal(event.maximumAttempts, 3);
-      assert.ok(Number.isSafeInteger(event.attempt) && event.attempt >= 1 && event.attempt <= 3);
+      assert.equal(event.maximumAttempts, maximumAttempts);
+      assert.ok(Number.isSafeInteger(event.attempt) && event.attempt >= 1 && event.attempt <= maximumAttempts);
+      if (reason !== null) assert.equal(event.reason, reason);
+      if (event.reason !== undefined) assert.match(event.reason, /^[a-z0-9_]{1,64}$/);
+      if (event.code !== undefined) assert.ok(typeof event.code === 'number' || /^[A-Z_]{1,64}$/.test(event.code));
     }
+    assert.equal(result.stdout.includes(diagnosticCredential) || result.stderr.includes(diagnosticCredential), false, 'RPC diagnostic credential was not redacted');
+    assert.equal(result.stdout.includes(diagnosticURL) || result.stderr.includes(diagnosticURL), false, 'RPC diagnostic URL was exposed');
+    assert.equal(result.stdout.includes(diagnosticHex) || result.stderr.includes(diagnosticHex), false, 'RPC diagnostic body was exposed');
     return events;
   };
   const rejectedWithoutSend = async (extra, pattern) => {
@@ -328,15 +356,21 @@ for seed,name in [(41,'model-a'),(42,'model-b')]:
     });
     assert.equal(completedSubtests, 6);
 
-    await t.test('a one-off read timeout retries without replaying any deployment transaction', async () => {
+    await t.test('recognized public-pool read pressure recovers on attempt six without replaying deployments', async () => {
       const before = sent.length, attemptsBefore = rawAttempts.length;
       const output = join(directory, 'read-recovered.json');
-      readFailure = { method: 'eth_getTransactionCount', remaining: 1, injections: 0 };
-      const result = await success(deploy(['--output', output]));
-      assert.equal(readFailure.injections, 1);
-      const events = readRetryEvents(result);
-      assert.equal(events.filter(event => event.event === 'rpc_read_retry').length, 1);
+      readFailure = { method: 'eth_getTransactionCount', remaining: 5, injections: 0, httpStatus: 429, poolBusy: true };
+      slowResponse = { selected: false, delayMs: 80 };
+      const result = await success(deploy(['--output', output, '--rpc-rps', '1000']));
+      assert.equal(readFailure.injections, 5);
+      const events = readRetryEvents(result, 6, 'public_pool_busy');
+      assert.equal(events.filter(event => event.event === 'rpc_read_retry').length, 5);
       assert.equal(events.filter(event => event.event === 'rpc_read_failed').length, 0);
+      assert.deepEqual(events.map(event => event.attempt), [1, 2, 3, 4, 5]);
+      const poolReadTimes = readFailure.requestTimes.slice(0, 6);
+      assert.equal(poolReadTimes.length, 6);
+      const poolRetryGaps = poolReadTimes.slice(1).map((time, index) => time - poolReadTimes[index]);
+      assert.ok(poolRetryGaps.every(gap => gap >= 990), 'Pool retry did not honor the one-second Retry-After');
       const journal = readJSON(output);
       assert.equal(journal.complete, true);
       assert.equal(journal.transactions.length, 51);
@@ -344,8 +378,13 @@ for seed,name in [(41,'model-a'),(42,'model-b')]:
       assert.equal(new Set(sent.slice(before)).size, 51);
       assert.equal(rawAttempts.length, attemptsBefore);
       assert.equal(existsSync(output + '.lock'), false);
-      readRetryChecks.one_off_timeout = { injected_failures: 1, retry_events: 1, deployment_complete: true, deployment_broadcasts: 51, duplicate_broadcasts: 0, method_only_events: true };
+      assert.ok(slowResponse.selected && slowResponse.nextRequestAt !== undefined, 'Slow-response timing probe did not run');
+      assert.equal(slowResponse.overlapRequests ?? 0, 0, 'RPC requests overlapped the slow response');
+      const cooldownMs = slowResponse.nextRequestAt - slowResponse.completedAt;
+      assert.ok(cooldownMs >= 7, `Next RPC started too soon after a slow response: ${cooldownMs}ms`);
+      readRetryChecks.public_pool_busy_recovery = { injected_failures: 5, retry_events: 5, successful_attempt: 6, retry_after_ms: 1000, observed_retry_gaps_ms: poolRetryGaps, deployment_complete: true, deployment_broadcasts: 51, duplicate_broadcasts: 0, safe_read_diagnostics: true, spacing_probe: { configured_rps: 1000, policy_cooldown_ms: 11, slow_response_ms: 80, observed_cooldown_ms: cooldownMs, overlapping_requests: 0 } };
       readFailure = null;
+      slowResponse = null;
       completedSubtests++;
     });
     assert.equal(completedSubtests, 7);
@@ -362,6 +401,9 @@ for seed,name in [(41,'model-a'),(42,'model-b')]:
         assert.equal(events.filter(event => event.event === 'rpc_read_retry').length, 2);
         assert.equal(events.filter(event => event.event === 'rpc_read_failed').length, 1);
         assert.deepEqual(events.map(event => event.attempt), [1, 2, 3]);
+        if (httpStatus !== 200) {
+          assert.ok(events.every(event => Number(event.status) === httpStatus), 'HTTP read diagnostics must expose the status');
+        }
         assert.equal(sent.length, before);
         assert.equal(rawAttempts.length, attemptsBefore);
         assert.equal(existsSync(output + '.lock'), false);
@@ -370,7 +412,7 @@ for seed,name in [(41,'model-a'),(42,'model-b')]:
         assert.equal(journal.transactions.length, 0);
         assert.equal(journal.pending, null);
         assert.match(result.stderr, /^Error: [^\n]{1,500}\n$/);
-        readRetryChecks[httpStatus === 200 ? 'persistent_timeout' : `persistent_http_${httpStatus}`] = { injected_failures: 3, retry_events: 2, failed_events: 1, deployment_complete: false, deployment_broadcasts: 0, lock_removed: true, method_only_events: true };
+        readRetryChecks[httpStatus === 200 ? 'persistent_timeout' : `persistent_http_${httpStatus}`] = { injected_failures: 3, retry_events: 2, failed_events: 1, deployment_complete: false, deployment_broadcasts: 0, lock_removed: true, safe_read_diagnostics: true };
         readFailure = null;
       }
       completedSubtests++;
