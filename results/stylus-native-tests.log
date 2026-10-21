@@ -1,0 +1,93 @@
+   Compiling lfm-int4-stylus v0.1.0 (/workspace/scratch/be1e363a306a/lfm-robinhood-benchmark/stylus-benchmark)
+warning: unexpected `cfg` condition value: `contract-client-gen`
+  --> src/lib.rs:53:1
+   |
+53 | #[storage]
+   | ^^^^^^^^^^
+   |
+   = note: expected values for `feature` are: `export-abi`
+   = note: using a cfg inside a attribute macro will use the cfgs from the destination crate and not the ones from the defining crate
+   = help: try referring to `storage` crate for guidance on how handle this unexpected cfg
+   = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+   = note: `#[warn(unexpected_cfgs)]` on by default
+   = note: this warning originates in the attribute macro `storage` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `contract-client-gen`
+  --> src/lib.rs:54:1
+   |
+54 | #[entrypoint]
+   | ^^^^^^^^^^^^^
+   |
+   = note: expected values for `feature` are: `export-abi`
+   = note: using a cfg inside a attribute macro will use the cfgs from the destination crate and not the ones from the defining crate
+   = help: try referring to `entrypoint` crate for guidance on how handle this unexpected cfg
+   = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+   = note: this warning originates in the attribute macro `entrypoint` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `contract-client-gen`
+  --> src/lib.rs:60:1
+   |
+60 | #[public]
+   | ^^^^^^^^^
+   |
+   = note: expected values for `feature` are: `export-abi`
+   = note: using a cfg inside a attribute macro will use the cfgs from the destination crate and not the ones from the defining crate
+   = help: try referring to `public` crate for guidance on how handle this unexpected cfg
+   = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+   = note: this warning originates in the attribute macro `public` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `contract-client-gen`
+  --> src/lib.rs:68:12
+   |
+68 |     pub fn dot_from_code(&self, shard: Address, activations: Bytes, rows: U256, cols: U256)
+   |            ^^^^^^^^^^^^^
+   |
+   = note: expected values for `feature` are: `export-abi`
+   = help: consider adding `contract-client-gen` as a feature in `Cargo.toml`
+   = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+
+warning: unexpected `cfg` condition value: `contract-client-gen`
+  --> src/lib.rs:82:12
+   |
+82 |     pub fn compute_and_store(&mut self, shard: Address, activations: Bytes, rows: U256, cols: U256)
+   |            ^^^^^^^^^^^^^^^^^
+   |
+   = note: expected values for `feature` are: `export-abi`
+   = help: consider adding `contract-client-gen` as a feature in `Cargo.toml`
+   = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+
+warning: unexpected `cfg` condition value: `contract-client-gen`
+  --> src/lib.rs:93:12
+   |
+93 |     pub fn result_hash(&self) -> B256 { self.result_hash.get() }
+   |            ^^^^^^^^^^^
+   |
+   = note: expected values for `feature` are: `export-abi`
+   = help: consider adding `contract-client-gen` as a feature in `Cargo.toml`
+   = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+
+warning: unexpected `cfg` condition value: `contract-client-gen`
+  --> src/lib.rs:94:12
+   |
+94 |     pub fn runs(&self) -> U256 { self.runs.get() }
+   |            ^^^^
+   |
+   = note: expected values for `feature` are: `export-abi`
+   = help: consider adding `contract-client-gen` as a feature in `Cargo.toml`
+   = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+
+warning: `lfm-int4-stylus` (lib test) generated 7 warnings
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.52s
+     Running unittests src/lib.rs (target/debug/deps/lfm_int4_stylus-ac5c2c7881c24208)
+
+running 7 tests
+test tests::invalid_dimensions_and_lengths ... ok
+test tests::missing_shard_rejected ... ok
+test tests::odd_rows_and_column_lengths ... ok
+test tests::signed_extremes ... ok
+test tests::accumulator_bound ... ok
+test tests::real_lfm_slice_matches_and_commitment_persists ... ok
+test tests::deterministic_varied_matrices ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
