@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { spawn } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import { createServer } from 'node:http';
 import { mkdtempSync, readFileSync, writeFileSync, rmSync, existsSync, mkdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -16,7 +17,8 @@ const readJSON = path => JSON.parse(readFileSync(path, 'utf8'));
 const writeJSON = (path, value) => writeFileSync(path, JSON.stringify(value, null, 2) + '\n');
 
 // Every RPC request is handled by this process's disposable Ganache provider.
-// No private key, public RPC endpoint, or external chain is used by this suite.
+// The Wallet cases use only Ganache's disposable local key, held in memory and
+// passed to a child environment. No key or raw transaction is printed or saved.
 test('deployment journals resume pending hashes and reject identity drift without duplicate contracts', { timeout: 360000 }, async t => {
   const directory = mkdtempSync(join(tmpdir(), 's0ul-cli-resume-'));
   const reportPath = join(root, 'reports/solidity-cli-resume-local.json');
@@ -31,19 +33,39 @@ test('deployment journals resume pending hashes and reject identity drift withou
     wallet: { deterministic: true, defaultBalance: 1000000 },
   });
   const sent = [];
+  const rawAttempts = [];
   const queriedReceiptHashes = [];
   let pausedForInterruption = false;
+  let rawFailure = null;
   const server = createServer(async (request, response) => {
     let body = '';
     for await (const part of request) body += part;
     const serve = async value => {
       try {
         if (value.method === 'eth_getTransactionReceipt') queriedReceiptHashes.push(value.params[0]);
+        if (value.method === 'eth_sendRawTransaction') {
+          const hash = keccak256(value.params[0]);
+          rawAttempts.push(hash);
+          if (rawFailure && !rawFailure.consumed) {
+            rawFailure.consumed = true;
+            rawFailure.hash = hash;
+            rawFailure.raw = value.params[0];
+            if (rawFailure.kind !== 'missing') {
+              const accepted = await rpc.request({ method: value.method, params: value.params });
+              sent.push(accepted);
+            }
+            return { jsonrpc: '2.0', id: value.id, error: { code: -32000, message: 'Synthetic ambiguous broadcast response' } };
+          }
+        }
         if (['eth_sendTransaction', 'eth_sendRawTransaction'].includes(value.method) && sent.length === 3 && !pausedForInterruption) {
           await rpc.request({ method: 'miner_stop', params: [] });
           pausedForInterruption = true;
         }
-        const result = await rpc.request({ method: value.method, params: value.params ?? [] });
+        let result = await rpc.request({ method: value.method, params: value.params ?? [] });
+        if (value.method === 'eth_getTransactionByHash' && rawFailure?.kind === 'mismatch' && value.params[0] === rawFailure.hash && result) {
+          rawFailure.lookupMutations = (rawFailure.lookupMutations ?? 0) + 1;
+          result = { ...result, nonce: '0x' + (BigInt(result.nonce) + 1n).toString(16) };
+        }
         if (['eth_sendTransaction', 'eth_sendRawTransaction'].includes(value.method)) sent.push(result);
         return { jsonrpc: '2.0', id: value.id, result };
       } catch (error) {
@@ -92,7 +114,19 @@ test('deployment journals resume pending hashes and reject identity drift withou
   const modelPath = join(directory, 'model-a/model.json');
   const args = ['deploy', '--rpc', endpoint, '--chain-id', '31337', '--model', modelPath, '--output', deploymentPath, '--build', buildPath, '--poll-ms', '10'];
   const deploy = extra => run([cli, ...args, ...extra]);
+  const localKey = Object.values(rpc.getInitialAccounts())[0].secretKey;
+  const walletDeploy = output => run([cli, ...args, '--output', output, '--private-key-env', 'S0UL_LOCAL_TEST_SIGNING_KEY'], {
+    env: { ...process.env, S0UL_LOCAL_TEST_SIGNING_KEY: localKey },
+  });
+  const assertRedacted = (result, output) => {
+    assert.equal(result.stdout.includes(localKey) || result.stderr.includes(localKey), false, 'CLI output exposed the local signing key');
+    assert.equal(result.stdout.includes(rawFailure.raw) || result.stderr.includes(rawFailure.raw), false, 'CLI output exposed the signed raw transaction');
+    const journalText = readFileSync(output, 'utf8');
+    assert.equal(journalText.includes(localKey), false, 'Journal exposed the local signing key');
+    assert.equal(journalText.includes(rawFailure.raw), false, 'Journal exposed the signed raw transaction');
+  };
   let completedSubtests = 0;
+  const broadcastChecks = {};
   const rejectedWithoutSend = async (extra, pattern) => {
     const before = sent.length;
     const result = await deploy(extra).finished;
@@ -196,12 +230,65 @@ for seed,name in [(41,'model-a'),(42,'model-b')]:
       await rejectedWithoutSend(['--resume', deploymentPath, '--account', '1'], /wallet|sender|signer|account/i);
       completedSubtests++;
     });
+    assert.equal(completedSubtests, 4);
 
-    assert.equal(completedSubtests, 4, 'A failed subtest prevents a success report');
+    await t.test('Wallet broadcast accepted upstream then reported as an error reconciles its exact hash once', async () => {
+      const before = sent.length, attemptsBefore = rawAttempts.length;
+      const output = join(directory, 'wallet-reconciled.json');
+      rawFailure = { kind: 'accepted', consumed: false };
+      const result = await walletDeploy(output).finished;
+      assert.ok(rawFailure.consumed, 'Proxy did not inject the ambiguous response');
+      assertRedacted(result, output);
+      assert.equal(result.code, 0, 'Wallet deployment did not complete after accepted-then-error response');
+      const events = result.stdout.trim().split('\n').map(line => JSON.parse(line));
+      const reconciled = events.filter(event => event.event === 'deployment_broadcast_reconciled');
+      assert.equal(reconciled.length, 1);
+      assert.equal(reconciled[0].hash, rawFailure.hash);
+      const journal = readJSON(output);
+      assert.equal(journal.complete, true);
+      assert.equal(journal.pending, null);
+      assert.equal(journal.transactions[0].hash, rawFailure.hash);
+      assert.equal(journal.transactions.length, 51);
+      assert.equal(rawAttempts.length - attemptsBefore, 51, 'Accepted broadcast was retried');
+      assert.equal(sent.length - before, 51);
+      assert.equal(rawAttempts.slice(attemptsBefore).filter(hash => hash === rawFailure.hash).length, 1);
+      broadcastChecks.accepted_then_error = { complete: true, reconciled_events: 1, broadcast_attempts: 51, accepted_transactions: 51, duplicate_attempts: 0, journal_redacted: true };
+      rawFailure = null;
+      completedSubtests++;
+    });
+    assert.equal(completedSubtests, 5);
+
+    await t.test('Wallet broadcast failures with missing or mismatched exact hashes preserve pending state without retries', async () => {
+      for (const kind of ['missing', 'mismatch']) {
+        const before = sent.length, attemptsBefore = rawAttempts.length;
+        const output = join(directory, `wallet-${kind}.json`);
+        rawFailure = { kind, consumed: false };
+        const result = await walletDeploy(output).finished;
+        assert.ok(rawFailure.consumed, 'Proxy did not inject the broadcast failure');
+        assertRedacted(result, output);
+        assert.notEqual(result.code, 0, 'Ambiguous mismatched/missing transaction must stop deployment');
+        assert.match(result.stderr, /^Error: [^\n]{1,500}\n$/);
+        assert.equal(result.stdout.includes('deployment_broadcast_reconciled'), false);
+        const journal = readJSON(output);
+        assert.equal(journal.complete, false);
+        assert.equal(journal.transactions.length, 0);
+        assert.equal(journal.pending.hash, rawFailure.hash);
+        assert.equal(rawAttempts.length - attemptsBefore, 1, 'Failed broadcast was retried');
+        assert.equal(sent.length - before, kind === 'missing' ? 0 : 1);
+        assert.equal(rawAttempts.slice(attemptsBefore).filter(hash => hash === rawFailure.hash).length, 1);
+        if (kind === 'mismatch') assert.ok(rawFailure.lookupMutations > 0, 'Proxy did not apply the intended transaction-identity mutation');
+        broadcastChecks[kind + '_exact_hash'] = { complete: false, pending_preserved: true, broadcast_attempts: 1, accepted_transactions: kind === 'missing' ? 0 : 1, replacement_attempts: 0, lookup_mutations: rawFailure.lookupMutations ?? 0, stderr_redacted: true, journal_redacted: true };
+        rawFailure = null;
+      }
+      completedSubtests++;
+    });
+
+    assert.equal(completedSubtests, 6, 'A failed subtest prevents a success report');
     const complete = readJSON(deploymentPath);
     mkdirSync(join(root, 'reports'), { recursive: true });
     writeJSON(reportPath, {
       format: 's0ul-cli-resume-local-v1', recorded_utc: new Date().toISOString(),
+      cli_sha256: createHash('sha256').update(readFileSync(cli)).digest('hex'),
       chain: { kind: 'loopback Ganache', chain_id: 31337, hardfork: 'shanghai', block_gas_limit: 30000000, unlimited_contract_size: false },
       fixture: { vocab_size: 512, dim: 8, layers: 1, shard_count: 48, full_trained_model: false },
       checks: ['pending hash persisted before receipt', 'missing pending transaction rejected without replacement', 'three confirmed stages reused after interruption', 'interrupted pending transaction resumed once', 'all 51 deployment stages completed', 'runtime hashes exact', 'completed resume idempotent', 'existing output rejected without resume', 'model manifest mismatch rejected', 'build identity mismatch rejected', 'substituted confirmed transaction hash rejected', 'chain mismatch rejected', 'wallet mismatch rejected'],
@@ -209,6 +296,7 @@ for seed,name in [(41,'model-a'),(42,'model-b')]:
       confirmed_prefix_at_interruption: 3, pending_transaction_index_at_interruption: 3,
       deployment_complete: complete.complete, deployment_transaction_count: complete.transactions.length,
       total_deployment_gas: complete.totalDeploymentGas,
+      wallet_broadcast_reconciliation: broadcastChecks,
       public_chain_transactions_sent: 0,
     });
   } finally {
