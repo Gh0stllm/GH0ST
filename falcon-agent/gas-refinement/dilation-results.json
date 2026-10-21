@@ -1,0 +1,301 @@
+{
+  "status": "completed",
+  "scope": "Independent synthetic signed-int16 inputs; matrix arithmetic only, NOT token inference",
+  "environment": "Local Anvil Cancun; code-size limit 98304; standard gas schedule, not a live-chain fee quote",
+  "compiler": "0.8.30+commit.73712a01.Emscripten.clang",
+  "source_sha256": "a0e3121e433f8fc000219ec629c0ab361749d9190f903118e7a96a7c4c29cead",
+  "public_transactions_broadcast": 0,
+  "kernel_deployments": {
+    "SixBitFast": {
+      "gas": 830442,
+      "runtime_bytes": 3647
+    },
+    "SixBitMul": {
+      "gas": 776873,
+      "runtime_bytes": 3393
+    },
+    "SixBitInline": {
+      "gas": 625542,
+      "runtime_bytes": 2666
+    },
+    "SixBitDirect": {
+      "gas": 556482,
+      "runtime_bytes": 2346
+    },
+    "SixBitPredecoded": {
+      "gas": 624630,
+      "runtime_bytes": 2687
+    }
+  },
+  "checks": [],
+  "benchmarks": [
+    {
+      "label": "model.embed_tokens.weight",
+      "rows": 32,
+      "cols": 512,
+      "compact_bytes": 12848,
+      "compact_deploy_gas": 2831609,
+      "variant_bytes": {
+        "SixBitDirect": 13328,
+        "SixBitPredecoded": 14096
+      },
+      "variant_deploy_gas": {
+        "SixBitDirect": 2935361,
+        "SixBitPredecoded": 3096345
+      },
+      "cases": [
+        {
+          "case": "random",
+          "gas": {
+            "SixBitFast": 566202,
+            "SixBitMul": 432728,
+            "SixBitInline": 408152,
+            "SixBitDirect": 328450,
+            "SixBitPredecoded": 271769
+          }
+        },
+        {
+          "case": "maximum",
+          "gas": {
+            "SixBitFast": 566262,
+            "SixBitMul": 432788,
+            "SixBitInline": 408212,
+            "SixBitDirect": 328510,
+            "SixBitPredecoded": 271829
+          }
+        },
+        {
+          "case": "minimum",
+          "gas": {
+            "SixBitFast": 560118,
+            "SixBitMul": 426644,
+            "SixBitInline": 402068,
+            "SixBitDirect": 322366,
+            "SixBitPredecoded": 265685
+          }
+        },
+        {
+          "case": "alternating",
+          "gas": {
+            "SixBitFast": 563190,
+            "SixBitMul": 429716,
+            "SixBitInline": 405140,
+            "SixBitDirect": 325438,
+            "SixBitPredecoded": 268757
+          }
+        },
+        {
+          "case": "zero",
+          "gas": {
+            "SixBitFast": 553974,
+            "SixBitMul": 420500,
+            "SixBitInline": 395924,
+            "SixBitDirect": 316222,
+            "SixBitPredecoded": 259541
+          }
+        }
+      ]
+    },
+    {
+      "label": "model.layers.0.feed_forward.down_proj.weight",
+      "rows": 32,
+      "cols": 768,
+      "compact_bytes": 19408,
+      "compact_deploy_gas": 4250457,
+      "variant_bytes": {
+        "SixBitDirect": 19984,
+        "SixBitPredecoded": 21136
+      },
+      "variant_deploy_gas": {
+        "SixBitDirect": 4374592,
+        "SixBitPredecoded": 4614827
+      },
+      "cases": [
+        {
+          "case": "random",
+          "gas": {
+            "SixBitFast": 828620,
+            "SixBitMul": 615020,
+            "SixBitInline": 578156,
+            "SixBitDirect": 475378,
+            "SixBitPredecoded": 391507
+          }
+        },
+        {
+          "case": "maximum",
+          "gas": {
+            "SixBitFast": 828692,
+            "SixBitMul": 615092,
+            "SixBitInline": 578228,
+            "SixBitDirect": 475450,
+            "SixBitPredecoded": 391579
+          }
+        },
+        {
+          "case": "minimum",
+          "gas": {
+            "SixBitFast": 819476,
+            "SixBitMul": 605876,
+            "SixBitInline": 569012,
+            "SixBitDirect": 466234,
+            "SixBitPredecoded": 382363
+          }
+        },
+        {
+          "case": "alternating",
+          "gas": {
+            "SixBitFast": 824084,
+            "SixBitMul": 610484,
+            "SixBitInline": 573620,
+            "SixBitDirect": 470842,
+            "SixBitPredecoded": 386971
+          }
+        },
+        {
+          "case": "zero",
+          "gas": {
+            "SixBitFast": 810260,
+            "SixBitMul": 596660,
+            "SixBitInline": 559796,
+            "SixBitDirect": 457018,
+            "SixBitPredecoded": 373147
+          }
+        }
+      ]
+    },
+    {
+      "label": "model.layers.11.mamba.in_proj.weight",
+      "rows": 32,
+      "cols": 512,
+      "compact_bytes": 12880,
+      "compact_deploy_gas": 2838579,
+      "variant_bytes": {
+        "SixBitDirect": 13328,
+        "SixBitPredecoded": 14096
+      },
+      "variant_deploy_gas": {
+        "SixBitDirect": 2935145,
+        "SixBitPredecoded": 3095229
+      },
+      "cases": [
+        {
+          "case": "random",
+          "gas": {
+            "SixBitFast": 564614,
+            "SixBitMul": 422214,
+            "SixBitInline": 397638,
+            "SixBitDirect": 328462,
+            "SixBitPredecoded": 271781
+          }
+        },
+        {
+          "case": "maximum",
+          "gas": {
+            "SixBitFast": 564662,
+            "SixBitMul": 422262,
+            "SixBitInline": 397686,
+            "SixBitDirect": 328510,
+            "SixBitPredecoded": 271829
+          }
+        },
+        {
+          "case": "minimum",
+          "gas": {
+            "SixBitFast": 558518,
+            "SixBitMul": 416118,
+            "SixBitInline": 391542,
+            "SixBitDirect": 322366,
+            "SixBitPredecoded": 265685
+          }
+        },
+        {
+          "case": "alternating",
+          "gas": {
+            "SixBitFast": 561590,
+            "SixBitMul": 419190,
+            "SixBitInline": 394614,
+            "SixBitDirect": 325438,
+            "SixBitPredecoded": 268757
+          }
+        },
+        {
+          "case": "zero",
+          "gas": {
+            "SixBitFast": 552374,
+            "SixBitMul": 409974,
+            "SixBitInline": 385398,
+            "SixBitDirect": 316222,
+            "SixBitPredecoded": 259541
+          }
+        }
+      ]
+    },
+    {
+      "label": "model.layers.23.self_attn.v_proj.weight",
+      "rows": 32,
+      "cols": 512,
+      "compact_bytes": 12816,
+      "compact_deploy_gas": 2824736,
+      "variant_bytes": {
+        "SixBitDirect": 13328,
+        "SixBitPredecoded": 14096
+      },
+      "variant_deploy_gas": {
+        "SixBitDirect": 2935397,
+        "SixBitPredecoded": 3095697
+      },
+      "cases": [
+        {
+          "case": "random",
+          "gas": {
+            "SixBitFast": 569270,
+            "SixBitMul": 451494,
+            "SixBitInline": 426918,
+            "SixBitDirect": 328450,
+            "SixBitPredecoded": 271769
+          }
+        },
+        {
+          "case": "maximum",
+          "gas": {
+            "SixBitFast": 569330,
+            "SixBitMul": 451554,
+            "SixBitInline": 426978,
+            "SixBitDirect": 328510,
+            "SixBitPredecoded": 271829
+          }
+        },
+        {
+          "case": "minimum",
+          "gas": {
+            "SixBitFast": 563186,
+            "SixBitMul": 445410,
+            "SixBitInline": 420834,
+            "SixBitDirect": 322366,
+            "SixBitPredecoded": 265685
+          }
+        },
+        {
+          "case": "alternating",
+          "gas": {
+            "SixBitFast": 566258,
+            "SixBitMul": 448482,
+            "SixBitInline": 423906,
+            "SixBitDirect": 325438,
+            "SixBitPredecoded": 268757
+          }
+        },
+        {
+          "case": "zero",
+          "gas": {
+            "SixBitFast": 557042,
+            "SixBitMul": 439266,
+            "SixBitInline": 414690,
+            "SixBitDirect": 316222,
+            "SixBitPredecoded": 259541
+          }
+        }
+      ]
+    }
+  ]
+}
