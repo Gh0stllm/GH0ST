@@ -1,0 +1,22 @@
+MODIFIED MODEL DATA
+
+All matrix-*.bin, norm.bin, conv.bin and token-*-input.bin files in this
+directory derive from Liquid AI, Inc.'s LiquidAI/LFM2.5-230M model, revision
+40cb2ad3b3044d5a41eee083a6103c8b523afa45.
+
+Source: https://huggingface.co/LiquidAI/LFM2.5-230M
+Original license: LFM Open License v1.0, included at ../../LFM-LICENSE.txt.
+
+These are modified files, not original model distributions. Dense weights
+were quantized to signed int4 with per-row Q24 scales. Normalization values
+and embedding fixtures were converted to Q16. Convolution coefficients were
+converted to Q24. Binary layout was changed to immutable contract shard
+payloads. ../manifest.json identifies each shard and its SHA-256 digest.
+
+token-*-reference.npz files contain newly computed intermediate activations
+and comparison outputs from those model weights. sigmoid.bin is a generated
+mathematical lookup table. The three reference fixtures cover only the first
+three sequence positions of the first model block.
+
+No endorsement by Liquid AI is implied. The license for standalone Solidity
+source does not replace the model-data license.
