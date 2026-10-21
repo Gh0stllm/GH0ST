@@ -1,0 +1,160 @@
+TAP version 13
+# Subtest: deployment helper binds normal creation to the selected payer, chain, calldata and zero value
+ok 1 - deployment helper binds normal creation to the selected payer, chain, calldata and zero value
+  ---
+  duration_ms: 3.851265
+  type: 'test'
+  ...
+# Subtest: deployment helper chain binding prevents a broadcast after a silent last-moment chain switch
+ok 2 - deployment helper chain binding prevents a broadcast after a silent last-moment chain switch
+  ---
+  duration_ms: 0.986694
+  type: 'test'
+  ...
+# Subtest: deployment helper catches silent account changes during code reads before requesting a signature
+ok 3 - deployment helper catches silent account changes during code reads before requesting a signature
+  ---
+  duration_ms: 1.218934
+  type: 'test'
+  ...
+# Subtest: deployment helper invalidates an account-change event even when the original account is restored
+ok 4 - deployment helper invalidates an account-change event even when the original account is restored
+  ---
+  duration_ms: 8.059838
+  type: 'test'
+  ...
+# Subtest: deployment helper invalidates a chain-change event even when chain 4663 is restored
+ok 5 - deployment helper invalidates a chain-change event even when chain 4663 is restored
+  ---
+  duration_ms: 0.958492
+  type: 'test'
+  ...
+# Subtest: deployment helper rejects a substituted token runtime before requesting a signature
+ok 6 - deployment helper rejects a substituted token runtime before requesting a signature
+  ---
+  duration_ms: 0.896198
+  type: 'test'
+  ...
+# Subtest: deployment helper rejects a substituted index runtime before requesting a signature
+ok 7 - deployment helper rejects a substituted index runtime before requesting a signature
+  ---
+  duration_ms: 0.736098
+  type: 'test'
+  ...
+# Subtest: deployment helper browser record prevents repeated deployment requests
+ok 8 - deployment helper browser record prevents repeated deployment requests
+  ---
+  duration_ms: 0.943059
+  type: 'test'
+  ...
+# Subtest: deployment helper locks Connect while deployment code checks are pending
+ok 9 - deployment helper locks Connect while deployment code checks are pending
+  ---
+  duration_ms: 0.885593
+  type: 'test'
+  ...
+# Subtest: deployment helper retains the guard after an ambiguous error following possible broadcast
+ok 10 - deployment helper retains the guard after an ambiguous error following possible broadcast
+  ---
+  duration_ms: 1.31606
+  type: 'test'
+  ...
+# Subtest: deployment helper reload during an open wallet prompt sees the persisted guard and cannot send
+ok 11 - deployment helper reload during an open wallet prompt sees the persisted guard and cannot send
+  ---
+  duration_ms: 1.765216
+  type: 'test'
+  ...
+# Subtest: deployment helper clears only an explicit reject-4001 rejection and permits a deliberate retry
+ok 12 - deployment helper clears only an explicit reject-4001 rejection and permits a deliberate retry
+  ---
+  duration_ms: 2.433562
+  type: 'test'
+  ...
+# Subtest: deployment helper clears only an explicit reject-string-4001 rejection and permits a deliberate retry
+ok 13 - deployment helper clears only an explicit reject-string-4001 rejection and permits a deliberate retry
+  ---
+  duration_ms: 0.889969
+  type: 'test'
+  ...
+# Subtest: deployment helper clears only an explicit reject-action rejection and permits a deliberate retry
+ok 14 - deployment helper clears only an explicit reject-action rejection and permits a deliberate retry
+  ---
+  duration_ms: 0.693133
+  type: 'test'
+  ...
+# Subtest: deployment helper treats an invalid transaction hash as uncertain and prevents retry
+ok 15 - deployment helper treats an invalid transaction hash as uncertain and prevents retry
+  ---
+  duration_ms: 0.726112
+  type: 'test'
+  ...
+# Subtest: deployment helper blocks missing royalty recipient before any wallet request
+ok 16 - deployment helper blocks missing royalty recipient before any wallet request
+  ---
+  duration_ms: 1.336612
+  type: 'test'
+  ...
+# Subtest: deployment helper blocks zero royalty recipient before any wallet request
+ok 17 - deployment helper blocks zero royalty recipient before any wallet request
+  ---
+  duration_ms: 1.160336
+  type: 'test'
+  ...
+# Subtest: deployment helper blocks malformed royalty recipient before any wallet request
+ok 18 - deployment helper blocks malformed royalty recipient before any wallet request
+  ---
+  duration_ms: 1.086966
+  type: 'test'
+  ...
+# Subtest: deployment helper blocks legacy five constructor arguments despite a 350-bps label before any wallet request
+ok 19 - deployment helper blocks legacy five constructor arguments despite a 350-bps label before any wallet request
+  ---
+  duration_ms: 1.49538
+  type: 'test'
+  ...
+# Subtest: deployment helper blocks 350-bps label with legacy five-argument creation calldata before any wallet request
+ok 20 - deployment helper blocks 350-bps label with legacy five-argument creation calldata before any wallet request
+  ---
+  duration_ms: 1.476512
+  type: 'test'
+  ...
+# Subtest: deployment helper blocks 350-bps label with another recipient encoded in calldata before any wallet request
+ok 21 - deployment helper blocks 350-bps label with another recipient encoded in calldata before any wallet request
+  ---
+  duration_ms: 1.589452
+  type: 'test'
+  ...
+# Subtest: deployment helper blocks display recipient differing from the sixth constructor argument before any wallet request
+ok 22 - deployment helper blocks display recipient differing from the sixth constructor argument before any wallet request
+  ---
+  duration_ms: 1.692767
+  type: 'test'
+  ...
+# Subtest: deployment helper blocks missing explicit royalty basis points before any wallet request
+ok 23 - deployment helper blocks missing explicit royalty basis points before any wallet request
+  ---
+  duration_ms: 1.696893
+  type: 'test'
+  ...
+# Subtest: deployment helper blocks a different royalty rate beneath the fixed 3.5% page text before any wallet request
+ok 24 - deployment helper blocks a different royalty rate beneath the fixed 3.5% page text before any wallet request
+  ---
+  duration_ms: 1.318434
+  type: 'test'
+  ...
+# Subtest: deployment helper blocks absent royalty standard beneath the fixed page text before any wallet request
+ok 25 - deployment helper blocks absent royalty standard beneath the fixed page text before any wallet request
+  ---
+  duration_ms: 1.374769
+  type: 'test'
+  ...
+1..25
+# tests 25
+# suites 0
+# pass 25
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 134.257893
