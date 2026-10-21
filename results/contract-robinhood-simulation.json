@@ -1,0 +1,65 @@
+{
+  "status": "rpc_simulation_only",
+  "checked_at": "2026-10-19T22:34:10.488346+00:00",
+  "chain_id": 4663,
+  "block_number": 92970675,
+  "block_hash": "0x537232102fa9bf8adf91bc1364928efb41aa17ed31aeb71e7de1bb5f8df37ffe",
+  "gas_price_wei": 20000000,
+  "transactions_broadcast": 0,
+  "contracts_deployed_on_robinhood": 0,
+  "temporary_code_and_state_overrides": true,
+  "stylus_activation_verified": false,
+  "calls": {
+    "dot": {
+      "outputs": [
+        207214,
+        -150983,
+        410232,
+        -109613
+      ],
+      "matches_reference": true
+    },
+    "commit": {
+      "commitment": "0x942bf1e07782c6cbd557e7e8c4ed5657b9628a2bd46370b42f20215f01348ecc",
+      "matches_reference": true
+    }
+  },
+  "estimates": {
+    "kernel_deployment": {
+      "gas_estimate": 346532,
+      "fee_at_quoted_gas_price_wei": 6930640000000,
+      "fee_at_quoted_gas_price_eth": "0.00000693064"
+    },
+    "weight_shard_deployment": {
+      "gas_estimate": 520770,
+      "fee_at_quoted_gas_price_wei": 10415400000000,
+      "fee_at_quoted_gas_price_eth": "0.0000104154"
+    },
+    "four_row_dot": {
+      "gas_estimate": 922728,
+      "fee_at_quoted_gas_price_wei": 18454560000000,
+      "fee_at_quoted_gas_price_eth": "0.00001845456"
+    },
+    "four_row_dot_and_first_commit": {
+      "gas_estimate": 967491,
+      "fee_at_quoted_gas_price_wei": 19349820000000,
+      "fee_at_quoted_gas_price_eth": "0.00001934982"
+    }
+  },
+  "limitations": [
+    "eth_call and eth_estimateGas do not persist computation or deploy contracts.",
+    "Code and sender funding are supplied only as temporary simulation overrides.",
+    "Estimated fees are snapshots, not actual paid receipts or guaranteed future costs.",
+    "A four-row integer projection is not a full LFM block, token or chat reply."
+  ],
+  "tiny_benchmark_deployments_plus_one_commit": {
+    "components": [
+      "kernel_deployment",
+      "weight_shard_deployment",
+      "four_row_dot_and_first_commit"
+    ],
+    "estimated_total_wei": 36695860000000,
+    "estimated_total_eth": "0.00003669586",
+    "scope": "Two small benchmark contracts plus one 4x1024 integer projection and result-hash write. Not a full model deployment or token."
+  }
+}
