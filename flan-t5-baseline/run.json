@@ -1,0 +1,65 @@
+{
+  "status": "complete",
+  "model": {
+    "model_id": "google/flan-t5-small",
+    "revision": "0fc9ddf78a1e988dac52e2dac162b0ede4fd74ab",
+    "license": "apache-2.0",
+    "selection_date": "2026-10-20",
+    "parameters_expected": 76961152,
+    "selection": "User accepted the original pretrained and instruction-tuned checkpoint below 100M parameters.",
+    "weights": "Original upstream weights; no distillation or task fine-tuning in the selected baseline.",
+    "runtime_target": "Fully on-chain tokenization, inference, memory and validated actions; offline training/export and an external transaction submitter.",
+    "stage": "Local baseline and feasibility assessment; no full-model smart-contract runtime yet."
+  },
+  "python": "3.12.14",
+  "torch": "2.14.1+cpu",
+  "transformers": "5.2.0",
+  "training_steps": 0,
+  "threads": 4,
+  "device": "cpu",
+  "max_new_tokens": 64,
+  "cases_sha256": "15f6d209e01d376ab8fe3aab12d333b422e1e1a0616d8557f2ef8593655d5850",
+  "scope": "Unmodified original model; synthetic smoke cases, not a general capability benchmark.",
+  "float32": {
+    "passed": 3,
+    "scored": 18,
+    "manual_cases": 6,
+    "seconds": 3.077146880008513,
+    "by_group": {
+      "command": {
+        "passed": 0,
+        "total": 6
+      },
+      "grounded": {
+        "passed": 2,
+        "total": 6
+      },
+      "intent": {
+        "passed": 1,
+        "total": 6
+      }
+    }
+  },
+  "int8_weight_sensitivity": {
+    "passed": 3,
+    "scored": 18,
+    "manual_cases": 6,
+    "seconds": 3.0942331950063817,
+    "by_group": {
+      "command": {
+        "passed": 0,
+        "total": 6
+      },
+      "grounded": {
+        "passed": 2,
+        "total": 6
+      },
+      "intent": {
+        "passed": 1,
+        "total": 6
+      }
+    }
+  },
+  "outputs_identical_after_int8_weight_rounding": 20,
+  "quantization_note": "Weight-only per-row quantize/dequantize; float32 execution. No integer runtime or gas claim."
+}
