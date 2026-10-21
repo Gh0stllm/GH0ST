@@ -1,0 +1,370 @@
+{
+  "model": "tiiuae/Falcon-H1-Tiny-90M-Instruct",
+  "revision": "e6389502a0b12cd8da894b395ba5bf7436873b16",
+  "training_performed": false,
+  "onchain_execution": false,
+  "prompt_mode": "four_demonstrations",
+  "labels": {
+    "A": "read balance",
+    "B": "save note",
+    "C": "request payment",
+    "D": "stop"
+  },
+  "token_ids": [
+    556,
+    557,
+    558,
+    559
+  ],
+  "full_head_multiply_accumulates": 16777216,
+  "restricted_head_multiply_accumulates": 2048,
+  "scope": "Only last vocabulary projection is reduced; all model layers and prompt prefill remain. Arguments and authorization are separate.",
+  "variants": [
+    {
+      "variant": "baseline",
+      "cases": [
+        {
+          "name": "balance",
+          "request": "Show my vault balance.",
+          "expected": "A",
+          "actual": "A",
+          "passed": true,
+          "projection_max_error": 0.0,
+          "prefill_tokens": 165
+        },
+        {
+          "name": "balance_paraphrase",
+          "request": "How much ETH is in my vault?",
+          "expected": "A",
+          "actual": "D",
+          "passed": false,
+          "projection_max_error": 0.0,
+          "prefill_tokens": 168
+        },
+        {
+          "name": "balance_short",
+          "request": "Read the balance.",
+          "expected": "A",
+          "actual": "A",
+          "passed": true,
+          "projection_max_error": 0.0,
+          "prefill_tokens": 164
+        },
+        {
+          "name": "note",
+          "request": "Save a note: buy milk.",
+          "expected": "B",
+          "actual": "B",
+          "passed": true,
+          "projection_max_error": 0.0,
+          "prefill_tokens": 167
+        },
+        {
+          "name": "note_paraphrase",
+          "request": "Remember this note: meeting at noon.",
+          "expected": "B",
+          "actual": "A",
+          "passed": false,
+          "projection_max_error": 0.0,
+          "prefill_tokens": 169
+        },
+        {
+          "name": "note_short",
+          "request": "Store a note saying hello.",
+          "expected": "B",
+          "actual": "A",
+          "passed": false,
+          "projection_max_error": 0.0,
+          "prefill_tokens": 166
+        },
+        {
+          "name": "payment",
+          "request": "Send 1 ETH to Alice.",
+          "expected": "C",
+          "actual": "B",
+          "passed": false,
+          "projection_max_error": 0.0,
+          "prefill_tokens": 167
+        },
+        {
+          "name": "payment_paraphrase",
+          "request": "Pay Alice 2 ETH.",
+          "expected": "C",
+          "actual": "B",
+          "passed": false,
+          "projection_max_error": 0.0,
+          "prefill_tokens": 166
+        },
+        {
+          "name": "payment_short",
+          "request": "Make a payment of 1 ETH to Alice.",
+          "expected": "C",
+          "actual": "B",
+          "passed": false,
+          "projection_max_error": 0.0,
+          "prefill_tokens": 170
+        },
+        {
+          "name": "stop",
+          "request": "Stop this task.",
+          "expected": "D",
+          "actual": "D",
+          "passed": true,
+          "projection_max_error": 0.0,
+          "prefill_tokens": 164
+        },
+        {
+          "name": "stop_paraphrase",
+          "request": "Cancel the task.",
+          "expected": "D",
+          "actual": "D",
+          "passed": true,
+          "projection_max_error": 0.0,
+          "prefill_tokens": 164
+        },
+        {
+          "name": "stop_short",
+          "request": "Do nothing and finish.",
+          "expected": "D",
+          "actual": "D",
+          "passed": true,
+          "projection_max_error": 0.0,
+          "prefill_tokens": 165
+        }
+      ],
+      "passed": 6,
+      "total": 12
+    },
+    {
+      "variant": "nf4_g128",
+      "cases": [
+        {
+          "name": "balance",
+          "request": "Show my vault balance.",
+          "expected": "A",
+          "actual": "A",
+          "passed": true,
+          "projection_max_error": 0.0,
+          "prefill_tokens": 165
+        },
+        {
+          "name": "balance_paraphrase",
+          "request": "How much ETH is in my vault?",
+          "expected": "A",
+          "actual": "B",
+          "passed": false,
+          "projection_max_error": 0.0,
+          "prefill_tokens": 168
+        },
+        {
+          "name": "balance_short",
+          "request": "Read the balance.",
+          "expected": "A",
+          "actual": "B",
+          "passed": false,
+          "projection_max_error": 0.0,
+          "prefill_tokens": 164
+        },
+        {
+          "name": "note",
+          "request": "Save a note: buy milk.",
+          "expected": "B",
+          "actual": "B",
+          "passed": true,
+          "projection_max_error": 0.0,
+          "prefill_tokens": 167
+        },
+        {
+          "name": "note_paraphrase",
+          "request": "Remember this note: meeting at noon.",
+          "expected": "B",
+          "actual": "B",
+          "passed": true,
+          "projection_max_error": 0.0,
+          "prefill_tokens": 169
+        },
+        {
+          "name": "note_short",
+          "request": "Store a note saying hello.",
+          "expected": "B",
+          "actual": "B",
+          "passed": true,
+          "projection_max_error": 0.0,
+          "prefill_tokens": 166
+        },
+        {
+          "name": "payment",
+          "request": "Send 1 ETH to Alice.",
+          "expected": "C",
+          "actual": "B",
+          "passed": false,
+          "projection_max_error": 0.0,
+          "prefill_tokens": 167
+        },
+        {
+          "name": "payment_paraphrase",
+          "request": "Pay Alice 2 ETH.",
+          "expected": "C",
+          "actual": "B",
+          "passed": false,
+          "projection_max_error": 0.0,
+          "prefill_tokens": 166
+        },
+        {
+          "name": "payment_short",
+          "request": "Make a payment of 1 ETH to Alice.",
+          "expected": "C",
+          "actual": "B",
+          "passed": false,
+          "projection_max_error": 0.0,
+          "prefill_tokens": 170
+        },
+        {
+          "name": "stop",
+          "request": "Stop this task.",
+          "expected": "D",
+          "actual": "B",
+          "passed": false,
+          "projection_max_error": 0.0,
+          "prefill_tokens": 164
+        },
+        {
+          "name": "stop_paraphrase",
+          "request": "Cancel the task.",
+          "expected": "D",
+          "actual": "B",
+          "passed": false,
+          "projection_max_error": 0.0,
+          "prefill_tokens": 164
+        },
+        {
+          "name": "stop_short",
+          "request": "Do nothing and finish.",
+          "expected": "D",
+          "actual": "B",
+          "passed": false,
+          "projection_max_error": 0.0,
+          "prefill_tokens": 165
+        }
+      ],
+      "passed": 4,
+      "total": 12
+    },
+    {
+      "variant": "int4_g64",
+      "cases": [
+        {
+          "name": "balance",
+          "request": "Show my vault balance.",
+          "expected": "A",
+          "actual": "A",
+          "passed": true,
+          "projection_max_error": 0.0,
+          "prefill_tokens": 165
+        },
+        {
+          "name": "balance_paraphrase",
+          "request": "How much ETH is in my vault?",
+          "expected": "A",
+          "actual": "D",
+          "passed": false,
+          "projection_max_error": 0.0,
+          "prefill_tokens": 168
+        },
+        {
+          "name": "balance_short",
+          "request": "Read the balance.",
+          "expected": "A",
+          "actual": "D",
+          "passed": false,
+          "projection_max_error": 0.0,
+          "prefill_tokens": 164
+        },
+        {
+          "name": "note",
+          "request": "Save a note: buy milk.",
+          "expected": "B",
+          "actual": "D",
+          "passed": false,
+          "projection_max_error": 0.0,
+          "prefill_tokens": 167
+        },
+        {
+          "name": "note_paraphrase",
+          "request": "Remember this note: meeting at noon.",
+          "expected": "B",
+          "actual": "D",
+          "passed": false,
+          "projection_max_error": 0.0,
+          "prefill_tokens": 169
+        },
+        {
+          "name": "note_short",
+          "request": "Store a note saying hello.",
+          "expected": "B",
+          "actual": "A",
+          "passed": false,
+          "projection_max_error": 0.0,
+          "prefill_tokens": 166
+        },
+        {
+          "name": "payment",
+          "request": "Send 1 ETH to Alice.",
+          "expected": "C",
+          "actual": "A",
+          "passed": false,
+          "projection_max_error": 0.0,
+          "prefill_tokens": 167
+        },
+        {
+          "name": "payment_paraphrase",
+          "request": "Pay Alice 2 ETH.",
+          "expected": "C",
+          "actual": "D",
+          "passed": false,
+          "projection_max_error": 0.0,
+          "prefill_tokens": 166
+        },
+        {
+          "name": "payment_short",
+          "request": "Make a payment of 1 ETH to Alice.",
+          "expected": "C",
+          "actual": "D",
+          "passed": false,
+          "projection_max_error": 0.0,
+          "prefill_tokens": 170
+        },
+        {
+          "name": "stop",
+          "request": "Stop this task.",
+          "expected": "D",
+          "actual": "D",
+          "passed": true,
+          "projection_max_error": 0.0,
+          "prefill_tokens": 164
+        },
+        {
+          "name": "stop_paraphrase",
+          "request": "Cancel the task.",
+          "expected": "D",
+          "actual": "D",
+          "passed": true,
+          "projection_max_error": 0.0,
+          "prefill_tokens": 164
+        },
+        {
+          "name": "stop_short",
+          "request": "Do nothing and finish.",
+          "expected": "D",
+          "actual": "D",
+          "passed": true,
+          "projection_max_error": 0.0,
+          "prefill_tokens": 165
+        }
+      ],
+      "passed": 4,
+      "total": 12
+    }
+  ],
+  "status": "completed"
+}
