@@ -1,0 +1,56 @@
+name: Improvement or optimization
+description: Suggest a code improvement, gas reduction, integration or documentation change.
+title: "[Improvement] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Ideas are welcome even if you do not have an implementation.
+        Label estimates and untested proposals clearly; use the same workload for before/after comparisons.
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Solidity inference
+        - Weight layout or matrix kernels
+        - Prepaid budgets or executor
+        - Agent integration
+        - Frontend or developer tooling
+        - Numerical validation
+        - Documentation
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What could be improved?
+      description: Describe the current limitation and the relevant files or interfaces.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed approach
+      description: Explain the change and why you expect it to help.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence or expected benefit
+      description: If measured, include the baseline commit, workload, tooling, before/after results and report links. If untested, say so.
+  - type: textarea
+    id: tradeoffs
+    attributes:
+      label: Tradeoffs and validation plan
+      description: Consider numerical behavior, model quality, deployment size, execution gas and compatibility where relevant.
+  - type: dropdown
+    id: participation
+    attributes:
+      label: Would you like to work on this?
+      options:
+        - Sharing an idea for discussion
+        - Interested in implementing it
+        - Already working on a prototype
