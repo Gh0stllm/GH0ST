@@ -55,6 +55,7 @@ const retryableReadMethods = new Set([
   'eth_getTransactionReceipt', 'eth_getCode', 'eth_call', 'eth_estimateGas',
   'eth_gasPrice', 'eth_maxPriorityFeePerGas', 'eth_feeHistory', 'eth_getLogs', 'net_version'
 ]);
+const rpcTimeoutMs = 15_000;
 function transientReadFailure(error) {
   if (error?.code === 'TIMEOUT' || error?.code === 'ETIMEDOUT') return true;
   const status = error?.status ?? error?.statusCode ?? error?.info?.responseStatus ?? error?.response?.status;
@@ -62,10 +63,27 @@ function transientReadFailure(error) {
   return [-32000, -32002, -32005].includes(error?.code) &&
     /^(?:(?:request|upstream|gateway|connection|network|response)\s+)*(?:timeout|timed\s+out)(?:\b|$)/i.test(String(error?.message ?? '').trim());
 }
+function readFailureDetails(error) {
+  const statusText = error?.status ?? error?.statusCode ?? error?.info?.responseStatus ?? error?.response?.statusCode;
+  const status = /^(\d{3})(\b|$)/.exec(String(statusText))?.[1];
+  const code = Number.isSafeInteger(error?.code) || ['TIMEOUT', 'ETIMEDOUT', 'SERVER_ERROR', 'NETWORK_ERROR', 'UNKNOWN_ERROR', 'BAD_DATA'].includes(error?.code) ? error.code : undefined;
+  let body;
+  try { body = JSON.parse(error?.info?.responseBody ?? 'null'); } catch { /* do not log arbitrary response text */ }
+  const candidate = body?.reason ?? body?.error?.reason ?? body?.error?.data?.reason ?? body?.data?.reason;
+  const reason = ['public_pool_busy', 'rate_limit_exceeded', 'rate_limited', 'too_many_requests', 'pool_busy', 'pool_saturated', 'quota_exceeded', 'upstream_timeout', 'request_timeout', 'upstream_unavailable'].includes(candidate) ? candidate : undefined;
+  return { ...(status ? { status: Number(status) } : {}), ...(code !== undefined ? { code } : {}), ...(reason ? { reason } : {}) };
+}
+function retryAfterMs(error) {
+  const status = readFailureDetails(error).status;
+  const header = error?.response?.headers?.['retry-after'];
+  const seconds = typeof header === 'string' && /^\d+(?:\.\d+)?$/.test(header.trim()) ? Number(header) : NaN;
+  const delay = Number.isFinite(seconds) ? Math.ceil(seconds * 1000) : typeof header === 'string' ? Math.max(0, Date.parse(header) - Date.now()) : 0;
+  return Math.max(status === 429 ? 1000 : 0, Number.isFinite(delay) ? delay : 0);
+}
 class DeploymentProvider extends JsonRpcProvider {
   constructor(url, rps, fixedNetwork) {
     const request = new FetchRequest(url);
-    request.timeout = 15_000;
+    request.timeout = rpcTimeoutMs;
     // Disable transport-level 429 retries, which would also repeat broadcasts.
     request.retryFunc = async () => false;
     super(request, fixedNetwork, { cacheTimeout: -1, batchMaxCount: 1, staticNetwork: fixedNetwork !== undefined });
@@ -76,24 +94,31 @@ class DeploymentProvider extends JsonRpcProvider {
   _send(payload) {
     const methods = (Array.isArray(payload) ? payload : [payload]).map(x => x.method);
     const readOnly = methods.every(method => retryableReadMethods.has(method));
-    const maximumAttempts = readOnly ? 3 : 1;
     const operation = this.requestQueue.then(async () => {
-      for (let attempt = 1; attempt <= maximumAttempts; ++attempt) {
+      const deadline = Date.now() + 60_000;
+      for (let attempt = 1; attempt <= (readOnly ? 6 : 1); ++attempt) {
         const wait = this.nextRequestAt - Date.now();
         if (wait > 0) await new Promise(resolve => setTimeout(resolve, wait));
-        this.nextRequestAt = Date.now() + this.requestSpacing;
         let response, failure;
         try { response = await super._send(payload); }
         catch (error) { failure = error; }
+        finally { this.nextRequestAt = Date.now() + this.requestSpacing; }
         const errors = failure ? [failure] : response.filter(x => x.error).map(x => x.error);
         if (!errors.length) return response;
-        const retry = readOnly && errors.every(transientReadFailure) && attempt < maximumAttempts;
-        if (readOnly) log({ event: retry ? 'rpc_read_retry' : 'rpc_read_failed', methods, attempt, maximumAttempts });
+        const details = errors.map(readFailureDetails);
+        const publicPoolBusy = details.every(x => x.status === 429 && x.reason === 'public_pool_busy');
+        const maximumAttempts = readOnly ? publicPoolBusy ? 6 : 3 : 1;
+        const retryAfter = Math.max(...errors.map(retryAfterMs));
+        this.nextRequestAt = Math.max(this.nextRequestAt, Date.now() + retryAfter);
+        const delay = Math.max(500 * attempt, retryAfter);
+        const retry = readOnly && errors.every(transientReadFailure) && attempt < maximumAttempts &&
+          retryAfter <= 60_000 && (!publicPoolBusy || Date.now() + Math.max(delay, this.requestSpacing) + rpcTimeoutMs <= deadline);
+        if (readOnly) log({ event: retry ? 'rpc_read_retry' : 'rpc_read_failed', methods, attempt, maximumAttempts, ...details[0] });
         if (!retry) {
           if (failure) throw failure;
           return response;
         }
-        await new Promise(resolve => setTimeout(resolve, 500 * attempt));
+        await new Promise(resolve => setTimeout(resolve, delay));
       }
     });
     this.requestQueue = operation.catch(() => {});
