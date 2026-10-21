@@ -63,11 +63,12 @@ function transientReadFailure(error) {
     /^(?:(?:request|upstream|gateway|connection|network|response)\s+)*(?:timeout|timed\s+out)(?:\b|$)/i.test(String(error?.message ?? '').trim());
 }
 class DeploymentProvider extends JsonRpcProvider {
-  constructor(url, rps) {
+  constructor(url, rps, fixedNetwork) {
     const request = new FetchRequest(url);
+    request.timeout = 15_000;
     // Disable transport-level 429 retries, which would also repeat broadcasts.
     request.retryFunc = async () => false;
-    super(request, undefined, { cacheTimeout: -1, batchMaxCount: 1 });
+    super(request, fixedNetwork, { cacheTimeout: -1, batchMaxCount: 1, staticNetwork: fixedNetwork !== undefined });
     this.requestSpacing = rps ? Math.ceil(1000 / rps) + 10 : 0;
     this.nextRequestAt = 0;
     this.requestQueue = Promise.resolve();
@@ -104,20 +105,33 @@ async function connection(expectedChain) {
   if (!options.rpc) throw Error('--rpc is required');
   const rps = Number(options['rpc-rps'] ?? (BigInt(expectedChain) === 4663n ? 3 : 0));
   if (!Number.isFinite(rps) || rps < 0 || rps > 1000) throw Error('Invalid --rpc-rps');
-  const provider = new DeploymentProvider(options.rpc, rps);
-  provider.pollingInterval = number('poll-ms', 1000, 60000);
-  const network = await provider.getNetwork();
-  if (network.chainId !== BigInt(expectedChain)) { await provider.destroy(); throw Error('RPC chain ID does not match the requested deployment'); }
-  let signer;
-  if (options['private-key-env']) {
-    const key = process.env[options['private-key-env']];
-    if (!key) throw Error('Selected private-key environment variable is empty');
-    signer = new Wallet(key, provider);
-  } else {
-    const account = options.account ?? '0';
-    signer = await provider.getSigner(/^\d+$/.test(account) ? Number(account) : account);
+  let provider = new DeploymentProvider(options.rpc, rps);
+  try {
+    // Verify the endpoint explicitly before pinning the production network or
+    // creating any signer. Static network then avoids a chain query per read.
+    const actualChain = BigInt(await provider.send('eth_chainId', []));
+    if (actualChain !== BigInt(expectedChain)) throw Error('RPC chain ID does not match the requested deployment');
+    if (actualChain === 4663n) {
+      const nextRequestAt = provider.nextRequestAt;
+      await provider.destroy();
+      provider = new DeploymentProvider(options.rpc, rps, 4663);
+      provider.nextRequestAt = nextRequestAt;
+    }
+    provider.pollingInterval = number('poll-ms', 1000, 60000);
+    let signer;
+    if (options['private-key-env']) {
+      const key = process.env[options['private-key-env']];
+      if (!key) throw Error('Selected private-key environment variable is empty');
+      signer = new Wallet(key, provider);
+    } else {
+      const account = options.account ?? '0';
+      signer = await provider.getSigner(/^\d+$/.test(account) ? Number(account) : account);
+    }
+    return { provider, signer, chainId: actualChain };
+  } catch (error) {
+    try { await provider.destroy(); } catch { /* preserve the connection error */ }
+    throw error;
   }
-  return { provider, signer, chainId: network.chainId };
 }
 
 const canonical = value => {
@@ -281,6 +295,8 @@ async function deploy(build) {
     result.gasPolicy = policy;
     write(destination, result);
     const confirmations = number('confirmations', 1, 64), timeout = number('receipt-timeout-ms', 180_000);
+    const maxNewDeployments = number('max-new-deployments', Number.MAX_SAFE_INTEGER);
+    let confirmedThisInvocation = 0;
     const saveConfirmed = async (pending, receipt) => {
       if (!receipt || receipt.status !== 1) throw Error('Deployment transaction unsuccessful; pending journal retained');
       const stage = stageAt(result.transactions.length, manifest), data = await creationFor(stage, result, manifest, build);
@@ -293,6 +309,7 @@ async function deploy(build) {
       result.totalDeploymentGas = result.transactions.reduce((sum, x) => sum + BigInt(x.gasUsed), 0n).toString();
       write(destination, result);
       await verifyIdentities(result, manifest, build, provider);
+      ++confirmedThisInvocation;
       log({ event: 'deployment_confirmed', stage: stage.key, address: entry.address, hash: entry.hash, gasUsed: entry.gasUsed });
     };
     if (result.pending) {
@@ -307,6 +324,11 @@ async function deploy(build) {
       await saveConfirmed(p, receipt);
     }
     for (let i = result.transactions.length; i < manifest.shards.length + 3; ++i) {
+      if (confirmedThisInvocation >= maxNewDeployments) {
+        log({ event: 'deployment_paused', confirmedThisInvocation, confirmedTotal: result.transactions.length, maxNewDeployments });
+        process.exitCode = 2;
+        return;
+      }
       const stage = stageAt(i, manifest), data = await creationFor(stage, result, manifest, build);
       const estimate = await provider.estimateGas({ from: sender, data, value: 0n });
       const limit = estimate + (estimate * BigInt(policy.marginBps) + 9999n) / 10000n;
@@ -423,7 +445,7 @@ async function infer(build) {
 try {
 if (!['compile', 'deploy', 'infer'].includes(command)) {
   process.stdout.write('Usage: node scripts/s0ul-solidity.mjs compile|deploy|infer --name value ...\n');
-  process.stdout.write('deploy: --rpc URL --chain-id ID --model model.json (--output NEW.json | --resume EXISTING.json) [--account 0 | --private-key-env NAME] [--max-deploy-gas 12000000] [--gas-margin-bps 2000] [--rpc-rps 3]\n');
+  process.stdout.write('deploy: --rpc URL --chain-id ID --model model.json (--output NEW.json | --resume EXISTING.json) [--account 0 | --private-key-env NAME] [--max-deploy-gas 12000000] [--gas-margin-bps 2000] [--rpc-rps 3] [--max-new-deployments N]\n');
   process.stdout.write('infer: --rpc URL --deployment deployment.json --prompt TEXT [--session ID] [--max-new-tokens 16] [--rows 32]\n');
   process.exitCode = 1;
 } else {
