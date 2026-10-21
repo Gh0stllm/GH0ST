@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
 import { spawnSync } from 'node:child_process';
 import solc from 'solc';
-import { AbiCoder, Contract, ContractFactory, JsonRpcProvider, Wallet, getAddress, getCreateAddress, keccak256 } from 'ethers';
+import { AbiCoder, Contract, ContractFactory, FetchRequest, JsonRpcProvider, Wallet, getAddress, getCreateAddress, keccak256 } from 'ethers';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const [command, ...argv] = process.argv.slice(2);
@@ -49,20 +49,51 @@ function compile() {
 
 // Public deployment RPCs may impose a per-request rate limit. Queueing all
 // payloads also covers ethers' internal nonce, fee, network and receipt calls.
+const retryableReadMethods = new Set([
+  'eth_chainId', 'eth_blockNumber', 'eth_getBalance', 'eth_getTransactionCount',
+  'eth_getBlockByNumber', 'eth_getBlockByHash', 'eth_getTransactionByHash',
+  'eth_getTransactionReceipt', 'eth_getCode', 'eth_call', 'eth_estimateGas',
+  'eth_gasPrice', 'eth_maxPriorityFeePerGas', 'eth_feeHistory', 'eth_getLogs', 'net_version'
+]);
+function transientReadFailure(error) {
+  if (error?.code === 'TIMEOUT' || error?.code === 'ETIMEDOUT') return true;
+  const status = error?.status ?? error?.statusCode ?? error?.info?.responseStatus ?? error?.response?.status;
+  if (/^(429|503)(\b|$)/.test(String(status))) return true;
+  return [-32000, -32002, -32005].includes(error?.code) &&
+    /^(?:(?:request|upstream|gateway|connection|network|response)\s+)*(?:timeout|timed\s+out)(?:\b|$)/i.test(String(error?.message ?? '').trim());
+}
 class DeploymentProvider extends JsonRpcProvider {
   constructor(url, rps) {
-    super(url, undefined, { cacheTimeout: -1, batchMaxCount: 1 });
+    const request = new FetchRequest(url);
+    // Disable transport-level 429 retries, which would also repeat broadcasts.
+    request.retryFunc = async () => false;
+    super(request, undefined, { cacheTimeout: -1, batchMaxCount: 1 });
     this.requestSpacing = rps ? Math.ceil(1000 / rps) + 10 : 0;
     this.nextRequestAt = 0;
     this.requestQueue = Promise.resolve();
   }
   _send(payload) {
-    if (!this.requestSpacing) return super._send(payload);
+    const methods = (Array.isArray(payload) ? payload : [payload]).map(x => x.method);
+    const readOnly = methods.every(method => retryableReadMethods.has(method));
+    const maximumAttempts = readOnly ? 3 : 1;
     const operation = this.requestQueue.then(async () => {
-      const wait = this.nextRequestAt - Date.now();
-      if (wait > 0) await new Promise(resolve => setTimeout(resolve, wait));
-      this.nextRequestAt = Date.now() + this.requestSpacing;
-      return super._send(payload);
+      for (let attempt = 1; attempt <= maximumAttempts; ++attempt) {
+        const wait = this.nextRequestAt - Date.now();
+        if (wait > 0) await new Promise(resolve => setTimeout(resolve, wait));
+        this.nextRequestAt = Date.now() + this.requestSpacing;
+        let response, failure;
+        try { response = await super._send(payload); }
+        catch (error) { failure = error; }
+        const errors = failure ? [failure] : response.filter(x => x.error).map(x => x.error);
+        if (!errors.length) return response;
+        const retry = readOnly && errors.every(transientReadFailure) && attempt < maximumAttempts;
+        if (readOnly) log({ event: retry ? 'rpc_read_retry' : 'rpc_read_failed', methods, attempt, maximumAttempts });
+        if (!retry) {
+          if (failure) throw failure;
+          return response;
+        }
+        await new Promise(resolve => setTimeout(resolve, 500 * attempt));
+      }
     });
     this.requestQueue = operation.catch(() => {});
     return operation;
@@ -326,7 +357,7 @@ async function deploy(build) {
     result.completedAt = new Date().toISOString();
     write(destination, result);
     log({ event: prior?.complete ? 'deployment_already_complete' : 'deployment_completed', ...result });
-  } finally { await provider?.destroy(); unlock(); }
+  } finally { try { await provider?.destroy(); } finally { unlock(); } }
 }
 
 async function infer(build) {
