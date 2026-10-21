@@ -1,0 +1,100 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> gh0st-genesis-mint@1.0.0 test
+> npm run compile && node --test --test-concurrency=1 test/*.test.mjs
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> gh0st-genesis-mint@1.0.0 compile
+> node scripts/compile.mjs
+
+[
+  {
+    "name": "GH0STGenesis",
+    "creationBytes": 8381,
+    "runtimeBytes": 6998
+  },
+  {
+    "name": "AcceptingReceiver",
+    "creationBytes": 844,
+    "runtimeBytes": 816
+  },
+  {
+    "name": "MockGH0ST",
+    "creationBytes": 3220,
+    "runtimeBytes": 2324
+  },
+  {
+    "name": "NonReceiver",
+    "creationBytes": 641,
+    "runtimeBytes": 613
+  },
+  {
+    "name": "ReenteringReceiver",
+    "creationBytes": 2355,
+    "runtimeBytes": 2327
+  },
+  {
+    "name": "RejectingReceiver",
+    "creationBytes": 898,
+    "runtimeBytes": 870
+  },
+  {
+    "name": "TransferOnReceive",
+    "creationBytes": 1065,
+    "runtimeBytes": 1037
+  }
+]
+✔ deployment helper binds normal creation to the selected payer, chain, calldata and zero value (2.798407ms)
+✔ deployment helper chain binding prevents a broadcast after a silent last-moment chain switch (0.99108ms)
+✔ deployment helper catches silent account changes during code reads before requesting a signature (0.948135ms)
+✔ deployment helper invalidates an account-change event even when the original account is restored (0.782487ms)
+✔ deployment helper invalidates a chain-change event even when chain 4663 is restored (0.794625ms)
+✔ deployment helper rejects a substituted token runtime before requesting a signature (0.802065ms)
+✔ deployment helper rejects a substituted index runtime before requesting a signature (1.687317ms)
+✔ deployment helper browser record prevents repeated deployment requests (0.736397ms)
+✔ deployment helper locks Connect while deployment code checks are pending (0.748846ms)
+This version of µWS is not compatible with your Node.js build:
+
+Error: Cannot find module '../binaries/uws_linux_x64_137.node'
+Require stack:
+- /workspace/scratch/8b0181446a21/GH0ST-mint-work/genesis-nft/node_modules/ganache/node_modules/@trufflesuite/uws-js-unofficial/src/uws.js
+- /workspace/scratch/8b0181446a21/GH0ST-mint-work/genesis-nft/node_modules/ganache/dist/node/core.js
+Falling back to a NodeJS implementation; performance may be degraded.
+
+
+✔ native burn consumes exactly 200,000 GH0ST and retains no mint tokens (4527.98556ms)
+✔ any funded wallet can self-mint and cannot burn another wallet balance (677.635699ms)
+✔ three lifetime mints per payer; transferring all NFTs away never resets quota (2573.089659ms)
+✔ first/final token metadata is padded, collection metadata is fixed, unminted URI reverts (1234.385563ms)
+✔ all 495 shard ranges and leaf bindings match the immutable index (9424.310736ms)
+✔ wrong, truncated and extended proofs fail without spending tokens or wallet quota (252.740453ms)
+✔ changing shard bytecode invalidates its pinned proof (207.586841ms)
+✔ missing shard code is rejected before a burn (187.393477ms)
+✔ index bytecode substitution cannot redirect an NFT to another shard (206.939135ms)
+✔ a changed burn-token runtime fails its immutable code pin (147.530651ms)
+✔ duplicate and out-of-range token IDs never cause another burn (622.024515ms)
+✔ insufficient allowance rolls back every mint accounting field (262.394509ms)
+✔ insufficient balance rolls back every mint accounting field (276.957865ms)
+✔ native ETH payments are rejected and cannot supplement a missing token burn (234.542806ms)
+✔ RejectingReceiver failure rolls back native burn, allowance, NFT state and lifetime quota (289.174739ms)
+✔ NonReceiver failure rolls back native burn, allowance, NFT state and lifetime quota (323.50094ms)
+✔ an accepting smart wallet can mint to itself (714.091535ms)
+✔ malicious token no-op burn cannot issue an NFT (258.43662ms)
+✔ malicious token dead-address transfer cannot issue an NFT (300.524161ms)
+✔ malicious token reverting burn cannot issue an NFT (268.6514ms)
+✔ receiver reentrancy cannot mint a second NFT even with its own funded allowance (949.57911ms)
+✔ propagated callback reentrancy failure rolls back the outer burn and quota (377.699361ms)
+✔ ERC721 ownership, operator approval and transfers do not cause further burns (803.37047ms)
+✔ transferring every NFT away inside its mint callback still consumes three lifetime mints (2091.680638ms)
+✔ constructor rejects wrong token/index pins and a zero token address (96.303233ms)
+✔ seeded adversarial sequence preserves per-wallet quota, aggregate burn and NFT uniqueness (12395.54803ms)
+✔ 495 mints across 165 wallets burn exactly 99 million GH0ST and exhaust the collection (34224.632779ms)
+ℹ tests 36
+ℹ suites 0
+ℹ pass 36
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 74933.267366
