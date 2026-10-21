@@ -1,0 +1,178 @@
+{
+  "status": "passed",
+  "environment": "local Anvil Cancun, chain 31337",
+  "compiler": "0.8.30+commit.73712a01.Emscripten.clang",
+  "engine": "ScriptedEngine TEST FIXTURE; no LLM inference",
+  "public_transactions_broadcast": 0,
+  "public_eth_spent": "0",
+  "checks": [
+    {
+      "name": "45-byte EIP-1167 runtime",
+      "passed": true
+    },
+    {
+      "name": "owner isolation",
+      "passed": true
+    },
+    {
+      "name": "initialization cannot be repeated",
+      "passed": true
+    },
+    {
+      "name": "implementation cannot be initialized",
+      "passed": true
+    },
+    {
+      "name": "unauthorized policy edit",
+      "passed": true
+    },
+    {
+      "name": "unauthorized run creation",
+      "passed": true
+    },
+    {
+      "name": "cross-agent owner cannot open",
+      "passed": true
+    },
+    {
+      "name": "token bound",
+      "passed": true
+    },
+    {
+      "name": "action bound",
+      "passed": true
+    },
+    {
+      "name": "funded budget bound",
+      "passed": true
+    },
+    {
+      "name": "policy frozen during run",
+      "passed": true
+    },
+    {
+      "name": "owner withdrawal blocked during run",
+      "passed": true
+    },
+    {
+      "name": "concurrent run blocked",
+      "passed": true
+    },
+    {
+      "name": "zero work blocked",
+      "passed": true
+    },
+    {
+      "name": "oversized work blocked",
+      "passed": true
+    },
+    {
+      "name": "unfinished inference does not act",
+      "passed": true
+    },
+    {
+      "name": "balance observation comes from on-chain balance",
+      "passed": true
+    },
+    {
+      "name": "persistent note",
+      "passed": true
+    },
+    {
+      "name": "authorized transfer changes recipient balance exactly",
+      "passed": true
+    },
+    {
+      "name": "budget tracks transfer",
+      "passed": true
+    },
+    {
+      "name": "persistent final reply",
+      "passed": true
+    },
+    {
+      "name": "completed output cannot be replayed",
+      "passed": true
+    },
+    {
+      "name": "other agent state unchanged",
+      "passed": true
+    },
+    {
+      "name": "non-allowlisted transfer blocked",
+      "passed": true
+    },
+    {
+      "name": "per-transfer cap enforced",
+      "passed": true
+    },
+    {
+      "name": "unknown action rejected",
+      "passed": true
+    },
+    {
+      "name": "reply cannot smuggle transfer fields",
+      "passed": true
+    },
+    {
+      "name": "note size enforced",
+      "passed": true
+    },
+    {
+      "name": "cumulative budget failure rolls back engine steps and balances",
+      "passed": true
+    },
+    {
+      "name": "unauthorized cancellation",
+      "passed": true
+    },
+    {
+      "name": "owner can cancel invalid model output",
+      "passed": true
+    },
+    {
+      "name": "action loop limit enforced",
+      "passed": true
+    },
+    {
+      "name": "failed transfer preserves allowance",
+      "passed": true
+    },
+    {
+      "name": "recipient reentry is rejected",
+      "passed": true
+    },
+    {
+      "name": "changed engine code rejected",
+      "passed": true
+    },
+    {
+      "name": "owner withdrawal after cancellation",
+      "passed": true
+    }
+  ],
+  "gas": {
+    "fixture_engine_deployment_excluded_from_agent_total": 464547,
+    "factory_and_shared_agent_implementation_deployment": 2063576,
+    "first_agent_clone_and_initialization": 162069,
+    "second_agent_clone_and_initialization": 162069,
+    "factory_implementation_and_one_agent_excluding_engine": 2225645,
+    "open_with_fixture": 456334,
+    "balance_action_and_next_job_with_fixture": 169567,
+    "native_transfer_and_next_job_with_fixture": 189103,
+    "final_reply_with_fixture": 152215
+  },
+  "limitations": [
+    "Agent controller and action policies only; Falcon inference is not implemented.",
+    "Local gas receipts are not Robinhood/Base receipts; exclude real inference and weight deployment."
+  ],
+  "passed_checks": 36,
+  "runtime_bytes": {
+    "AgentFactory": 823,
+    "IOnchainInference": 0,
+    "OnchainAgent": 8175,
+    "ReenteringRecipient": 472,
+    "RevertingRecipient": 112,
+    "ScriptedEngine": 1906
+  }
+}
