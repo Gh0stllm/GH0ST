@@ -1,0 +1,59 @@
+{
+  "format": "gh0st-s0ul-agent-source-verification-procedure-v1",
+  "preparedAt": "2026-10-21T21:22:44.845618+00:00",
+  "status": "VERIFIED",
+  "chainId": 4663,
+  "target": "S0ULAgent.sol:S0ULAgent",
+  "sources": [
+    "S0ULAgent.sol",
+    "S0ULActionCodec.sol"
+  ],
+  "libraryDeployment": "S0ULActionCodec uses internal pure functions and is included in the controller compilation; no separate library deployment is submitted.",
+  "compiler": {
+    "version": "0.8.30+commit.73712a01",
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "viaIR": true,
+    "evmVersion": "shanghai"
+  },
+  "buildPath": "exports/solidity-agent-build/contracts.json",
+  "cliStandardInputPath": "exports/solidity-agent-build/standard-input.json",
+  "deploymentJournalPath": "deployments/robinhood-mainnet-agent.json",
+  "procedure": [
+    {
+      "step": 1,
+      "action": "Read frozen build and CLI compiler input; verify all source SHA-256 values match the exact source files."
+    },
+    {
+      "step": 2,
+      "action": "Recompile the CLI standard input with the pinned compiler; compare ABI, creation bytecode and runtime bytecode with the controller build."
+    },
+    {
+      "step": 3,
+      "action": "Create a standard compiler input containing only the controller and its internal library. Recompile and require the target ABI and both bytecodes to match the frozen controller artifact exactly."
+    },
+    {
+      "step": 4,
+      "action": "After the root agent confirms deployment, require a complete successful chain4663 controller journal. Encode the constructor arguments and verify the creation-code Keccak256 against the recorded deployment calldata hash."
+    },
+    {
+      "step": 5,
+      "action": "Submit the exact standard compiler input, compilerVersion, contractIdentifier and creationTransactionHash to the public Sourcify v2 endpoint."
+    },
+    {
+      "step": 6,
+      "action": "Poll the returned verificationId using bounded requests. Record exact creation/runtime matches or the actual pending/failure status, without resubmitting an ambiguous request."
+    }
+  ],
+  "verificationEndpoint": "https://sourcify.dev/server/v2/verify/4663/{confirmedControllerAddress}",
+  "jobEndpoint": "https://sourcify.dev/server/v2/verify/{verificationId}",
+  "documentation": [
+    "https://docs.sourcify.dev/docs/api/",
+    "https://sourcify.dev/server/api-docs/swagger.json"
+  ],
+  "scope": "Public source verification only. No wallet, signing, transaction broadcast, chain RPC, or GitHub modification.",
+  "compilerReproductionFile": "compiler-reproduction.json",
+  "verificationResultFile": "verification-status.json"
+}
