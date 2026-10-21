@@ -1,0 +1,156 @@
+{
+  "model": "tiiuae/Falcon-H1-Tiny-90M-Instruct",
+  "revision": "e6389502a0b12cd8da894b395ba5bf7436873b16",
+  "source_sha256": "199e9960cd9be797579bd7dfc2b19f72e098e9c4cd3720afd50c815b48080578",
+  "tensor_count": 386,
+  "parameters": 91131072,
+  "payload_bytes": 182262144,
+  "scope": "Only tensor bytes. No tokenizer, runtime, index, L1 data fee or inference cost included.",
+  "versions": {
+    "numpy": "2.5.4",
+    "zstandard": "0.25.0",
+    "zipnn": "0.5.4"
+  },
+  "experiments": [
+    {
+      "name": "zstd_raw_3",
+      "bytes": 143687318,
+      "bits_per_parameter": 12.61368399133942,
+      "reduction_percent": 21.16447505412863,
+      "code_deposit_gas_only": 28737463600,
+      "sha256": "0731364077616851a8c2591886ff61472a024458fc049c0a0404f69f356b7c7c",
+      "full_payload_byte_exact_roundtrip": true,
+      "cpu_compress_and_verify_seconds": 0.287,
+      "cache_reused_and_fully_reverified": true
+    },
+    {
+      "name": "zstd_raw_19",
+      "bytes": 140910285,
+      "bits_per_parameter": 12.369900356269264,
+      "reduction_percent": 22.688122773317097,
+      "code_deposit_gas_only": 28182057000,
+      "sha256": "755d92a8f01b8128b4ab7bbcf4a84da94051386b4d76c802a500daa4dc761a9c",
+      "full_payload_byte_exact_roundtrip": true,
+      "cpu_compress_and_verify_seconds": 0.568,
+      "cache_reused_and_fully_reverified": true
+    },
+    {
+      "name": "split_bf16_zstd_19",
+      "bytes": 124274534,
+      "bits_per_parameter": 10.909520212820496,
+      "reduction_percent": 31.8154986698719,
+      "code_deposit_gas_only": 24854906800,
+      "sha256": "ca9ea0d239caf990fd87148bd843330e428432feb0ca9f36ca2253d058edf430",
+      "full_payload_byte_exact_roundtrip": true,
+      "cpu_compress_and_verify_seconds": 0.6,
+      "cache_reused_and_fully_reverified": true
+    },
+    {
+      "name": "zipnn_huffman_threads4",
+      "bytes": 123242321,
+      "bits_per_parameter": 10.818906728102572,
+      "reduction_percent": 32.38183294935892,
+      "code_deposit_gas_only": 24648464200,
+      "sha256": "f3bc1fb67ee682f69563d79966bec24849a89ba51a3cb8105c8a9c90d5d5fd73",
+      "full_payload_byte_exact_roundtrip": true,
+      "cpu_compress_and_verify_seconds": 0.429
+    },
+    {
+      "name": "zipnn_huffman_threads1",
+      "bytes": 123242321,
+      "bits_per_parameter": 10.818906728102572,
+      "reduction_percent": 32.38183294935892,
+      "code_deposit_gas_only": 24648464200,
+      "sha256": "f3bc1fb67ee682f69563d79966bec24849a89ba51a3cb8105c8a9c90d5d5fd73",
+      "full_payload_byte_exact_roundtrip": true,
+      "cpu_compress_and_verify_seconds": 0.618
+    },
+    {
+      "name": "zipnn_independent256k",
+      "bytes": 123267345,
+      "bits_per_parameter": 10.821103476100884,
+      "reduction_percent": 32.368103274369474,
+      "code_deposit_gas_only": 24653469000,
+      "sha256": "0653b19eaca7580b0b1c6c2da20177fa8aa855c4bb8e18c7594f97f8be0a89e7",
+      "full_payload_byte_exact_roundtrip": true,
+      "cpu_compress_and_verify_seconds": 0.689
+    },
+    {
+      "name": "top7_block4096",
+      "bytes": 129148850,
+      "bits_per_parameter": 11.337415190287677,
+      "reduction_percent": 29.14115506070202,
+      "code_deposit_gas_only": 25829770000,
+      "sha256": "fb1e082bf3be2988a14aec0c040cd4c913fd9682cf3533f92ad9f8fa07491ac7",
+      "full_payload_byte_exact_roundtrip": true,
+      "cpu_compress_and_verify_seconds": 3.559,
+      "blocks": 22249,
+      "block_index_bytes_u32": 89000
+    }
+  ],
+  "zero_weights": 7,
+  "nonfinite_weights": 0,
+  "raw_calldata_gas_4_16": 2911558956,
+  "entropy": {
+    "exponent_bits": 3.2690408768784467,
+    "sign_mantissa_bits": 7.971513063877024,
+    "bf16_symbol_bits": 11.224484301716947,
+    "note": "Empirical zero-order entropy; NOT a universal impossibility bound on all algorithms.",
+    "tensor_weighted_bf16_symbol_bits": 10.68185605884119
+  },
+  "rejected_codecs": [],
+  "integration_hazards": [
+    {
+      "codec": "ZipNN",
+      "threads": 4,
+      "input_buffer_mutated": true,
+      "mitigation": "An isolated copy is supplied; original digest checked before accepting every result."
+    },
+    {
+      "codec": "ZipNN",
+      "threads": 1,
+      "input_buffer_mutated": true,
+      "mitigation": "An isolated copy is supplied; original digest checked before accepting every result."
+    }
+  ],
+  "lossy_export_extra_compression": {
+    "original_bytes": 48879392,
+    "zstd19_bytes": 43952459,
+    "code_deposit_gas_only": 8790491800,
+    "quality": "Existing NF4 regressions remain; no improvement in quality",
+    "exact_roundtrip": true
+  },
+  "rank_samples": [
+    {
+      "tensor": "model.layers.0.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "numerical_rank": 512,
+      "max_rank": 512,
+      "min_singular_value": 0.024515518395388406
+    },
+    {
+      "tensor": "model.layers.19.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "numerical_rank": 128,
+      "max_rank": 128,
+      "min_singular_value": 0.9548707793911897
+    },
+    {
+      "tensor": "model.layers.9.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "numerical_rank": 128,
+      "max_rank": 128,
+      "min_singular_value": 0.5353894600675477
+    }
+  ],
+  "status": "completed"
+}
