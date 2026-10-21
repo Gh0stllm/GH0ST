@@ -1,0 +1,73 @@
+import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
+import { createServer } from 'node:http';
+import { spawn } from 'node:child_process';
+import fs from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { mkdtempSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import crypto from 'node:crypto';
+const root=fileURLToPath(new URL('../',import.meta.url));
+const require=createRequire(root+'/package.json');
+const solc=require('solc'),ganache=require('ganache');
+const {JsonRpcProvider,Wallet,ContractFactory,keccak256,toUtf8Bytes}=require('ethers');
+const started=Date.now(),directory=mkdtempSync(join(tmpdir(),'s0ul-agent-cli-'));
+const read=p=>JSON.parse(fs.readFileSync(p,'utf8'));
+const write=(p,x)=>fs.writeFileSync(p,JSON.stringify(x,null,2));
+const productionSources=Object.fromEntries(fs.readdirSync(root+'/contracts').filter(name=>name.endsWith('.sol')).map(name=>[name,{content:fs.readFileSync(root+'/contracts/'+name,'utf8')} ]));
+let build;
+try{build=read(root+'/exports/solidity-agent-build/contracts.json');}catch{}
+if(!build||Object.entries(productionSources).some(([name,source])=>build.sourceSha256?.[name]!==crypto.createHash('sha256').update(source.content).digest('hex'))){
+ const output=JSON.parse(solc.compile(JSON.stringify({language:'Solidity',sources:productionSources,settings:{optimizer:{enabled:true,runs:200},viaIR:true,evmVersion:'shanghai',outputSelection:{'*':{'*':['abi','evm.bytecode.object','evm.deployedBytecode.object']}}}})));
+ assert.equal((output.errors??[]).filter(x=>x.severity==='error').length,0);
+ build={compiler:solc.version(),optimizerRuns:200,viaIR:true,evmVersion:'shanghai',sourceSha256:Object.fromEntries(Object.entries(productionSources).map(([name,source])=>[name,crypto.createHash('sha256').update(source.content).digest('hex')])),contracts:output.contracts};
+}
+const fixtureBuildPath=join(directory,'contracts.json');write(fixtureBuildPath,build);
+const fixture=JSON.parse(solc.compile(JSON.stringify({language:'Solidity',sources:{'Mocks.sol':{content:fs.readFileSync(root+'/tests/fixtures/S0ULAgentMocks.sol','utf8')}},settings:{optimizer:{enabled:true,runs:200},viaIR:true,evmVersion:'shanghai',outputSelection:{'*':{'*':['abi','evm.bytecode.object']}}}})));
+assert.equal((fixture.errors??[]).filter(x=>x.severity==='error').length,0);
+const server=ganache.server({logging:{quiet:true},chain:{chainId:31337,hardfork:'shanghai'},miner:{blockGasLimit:32000000},wallet:{deterministic:true,defaultBalance:1000000}});
+await server.listen(0,'127.0.0.1');
+const endpoint='http://127.0.0.1:'+server.address().port;
+const provider=new JsonRpcProvider(endpoint,31337,{staticNetwork:true,cacheTimeout:-1,batchMaxCount:1});
+provider.pollingInterval=10;
+const key=Object.values(server.provider.getInitialAccounts())[0].secretKey;
+const wallet=new Wallet(key,provider),sender=await wallet.getAddress();
+const nonce=async()=>Number(BigInt(await provider.send('eth_getTransactionCount',[sender,'pending'])));
+const mine=async tx=>(await tx).wait();
+const deploy=async(a,args=[])=>{const c=await new ContractFactory(a.abi,a.evm.bytecode.object,wallet).deploy(...args,{gasLimit:10000000,nonce:await nonce()});await c.waitForDeployment();return c;};
+const mock=name=>fixture.contracts['Mocks.sol'][name];
+let proxy,activeOutput,faultNext=true,sends=0,hashDurable=0,reconciled=0;
+try{
+ const tokenizer=await deploy(build.contracts['S0ULTokenizer.sol'].S0ULTokenizer);
+ const modelId=keccak256(toUtf8Bytes('CLI mock model')),checkpoint=keccak256(toUtf8Bytes('CLI mock checkpoint'));
+ const model=await deploy(mock('MockS0ULModel'),[modelId,checkpoint]);
+ const engine=await deploy(mock('MockS0ULEngine'),[await model.getAddress(),await tokenizer.getAddress()]);
+ const token=await deploy(mock('MockS0ULBalanceToken'));
+ const base={format:'gh0st-s0ul-deployment-v1',journalVersion:2,chainId:'31337',complete:true,pending:null,shards:[],transactions:[{},{},{}],sender,model:await model.getAddress(),engine:await engine.getAddress(),tokenizer:await tokenizer.getAddress(),modelId,sourceCheckpoint:checkpoint,compiler:build.compiler,sourceSha256:build.sourceSha256};
+ for(const name of ['model','engine','tokenizer'])base[name+'CodeHash']=keccak256(await provider.getCode(base[name]));
+ const basePath=join(directory,'base.json'),agentPath=join(directory,'agent.json');write(basePath,base);
+ proxy=createServer(async(req,res)=>{let text='';for await(const x of req)text+=x;try{const payload=JSON.parse(text);assert.ok(!Array.isArray(payload),'CLI sends must be standalone');let result;try{if(payload.method==='eth_sendRawTransaction'){++sends;const h=keccak256(payload.params[0]);assert.equal(read(activeOutput).pending.hash,h);++hashDurable;result=await server.provider.request({method:payload.method,params:payload.params});if(faultNext){faultNext=false;res.writeHead(200,{'content-type':'application/json'});res.end(JSON.stringify({jsonrpc:'2.0',id:payload.id,error:{code:-32000,message:'request timeout'}}));return;}}else result=await server.provider.request({method:payload.method,params:payload.params??[]});res.writeHead(200,{'content-type':'application/json'});res.end(JSON.stringify({jsonrpc:'2.0',id:payload.id,result}));}catch(e){res.writeHead(200,{'content-type':'application/json'});res.end(JSON.stringify({jsonrpc:'2.0',id:payload.id,error:{code:e.code??-32000,message:e.message}}));}}catch(e){res.writeHead(500);res.end('test proxy error');}});
+ await new Promise(resolve=>proxy.listen(0,'127.0.0.1',resolve));
+ const common=['--rpc','http://127.0.0.1:'+proxy.address().port,'--private-key-env','S0UL_AGENT_TEST_KEY','--chain-id','31337','--rpc-rps','0','--deployment',basePath,'--build',fixtureBuildPath];
+ const run=async(command,output,args=[],expected=0)=>{activeOutput=output;const child=spawn(process.execPath,[root+'/scripts/s0ul-agent.mjs',command,...common,'--output',output,...args],{cwd:root,env:{...process.env,S0UL_AGENT_TEST_KEY:key},stdio:['ignore','pipe','pipe']});let stdout='',stderr='';child.stdout.on('data',x=>stdout+=x);child.stderr.on('data',x=>stderr+=x);const timer=setTimeout(()=>child.kill('SIGKILL'),45000);const code=await new Promise(resolve=>child.on('close',resolve));clearTimeout(timer);assert.equal(code,expected,stderr+stdout);assert.ok(!stdout.includes(key)&&!stderr.includes(key));reconciled+=(stdout.match(/reconcil/g)??[]).length;return{stdout,stderr};};
+ await run('deploy',agentPath,['--gh0st-token',await token.getAddress()]);
+ const deployed=read(agentPath);assert.ok(deployed.complete&&deployed.controllerCodeHash);
+ const beforeResume=sends;await run('deploy',agentPath,['--resume',agentPath,'--gh0st-token',await token.getAddress()]);assert.equal(sends,beforeResume);
+ const id=await engine.nextRequestId();await mine(engine.beginText('Wait.',2,{nonce:await nonce()}));
+ await mine(engine.setCompletion(id,[...Array.from(await tokenizer.encode('WAIT'),Number),2],{nonce:await nonce()}));
+ const adoptPath=join(directory,'adopt.json'),continuePath=join(directory,'continue.json'),finalizePath=join(directory,'finalize.json');
+ await run('adopt',adoptPath,['--agent',agentPath,'--request-id',String(id)]);assert.equal(read(adoptPath).bound.outcome,1);assert.equal(read(adoptPath).proposal.output,null);
+ await run('continue',continuePath,['--agent',agentPath,'--request-id',String(id),'--max-transactions','2']);
+ const continued=read(continuePath);assert.equal(continued.complete,true);assert.equal(continued.transactions.length,1);assert.equal(continued.transactions[0].plannedSteps,4);assert.deepEqual(continued.generatedTokenIds,[268,2]);
+ await run('finalize',finalizePath,['--agent',agentPath,'--request-id',String(id)]);
+ const finalized=read(finalizePath);assert.equal(finalized.bound.outcome,2);assert.equal(finalized.action.kind,0);assert.equal(finalized.action.output,'0x57414954');
+ const beforeFinalResume=sends;await run('finalize',finalizePath,['--agent',agentPath,'--request-id',String(id),'--resume',finalizePath]);assert.equal(sends,beforeFinalResume);
+ const missing=join(directory,'missing-intent.json'),beforeReject=sends;
+ await run('adopt',missing,['--agent',agentPath,'--request-id',String(id),'--action-mask','8'],1);assert.equal(sends,beforeReject);assert.equal(fs.existsSync(missing),false);
+ assert.equal(hashDurable,sends);assert.equal(sends,4);
+ const journals=[deployed,read(adoptPath),continued,finalized];for(const j of journals){const serialized=JSON.stringify(j);assert.ok(!serialized.includes(key)&&!serialized.includes(endpoint));assert.equal(j.pending,null);}
+ const report={format:'s0ul-agent-cli-local-v1',complete:true,recorded_utc:new Date().toISOString(),source_sha256:crypto.createHash('sha256').update(fs.readFileSync(root+'/scripts/s0ul-agent.mjs')).digest('hex'),controller_source_sha256:build.sourceSha256['S0ULAgent.sol'],chain:{kind:'ephemeral loopback Ganache',chain_id:31337,public_transactions:0},fixture:'Test-only mutable mock engine/model and balance token; real frozen tokenizer and controller. No trained inference run.',checks:{deployment_runtime_and_constructor_pins:true,signed_hash_persisted_before_all_broadcasts:true,accepted_send_error_reconciled_without_duplicate:true,completed_resume_no_broadcast:true,partial_owner_adoption:true,largest_bounded_batch_selected:true,continue_stops_done:true,wait_finalized:true,write_without_expected_action_rejected:true,key_rpc_url_raw_transaction_not_persisted:true},broadcast_attempts:sends,confirmed_transactions:4,elapsed_seconds:(Date.now()-started)/1000,select_snapshots_exercised:false};
+ report.gas_used={deploy:deployed.receipt.gasUsed,adopt:read(adoptPath).receipt.gasUsed,continue:continued.transactions[0].gasUsed,finalize:finalized.receipt.gasUsed};
+ fs.mkdirSync(root+'/reports',{recursive:true});write(root+'/reports/solidity-agent-cli-local.json',report);console.log(JSON.stringify({pass:true,report:root+'/reports/solidity-agent-cli-local.json',elapsed_seconds:report.elapsed_seconds,gas:report.gas_used}));
+}finally{await provider.destroy();if(proxy)await new Promise(resolve=>proxy.close(resolve));await server.close();fs.rmSync(directory,{recursive:true,force:true});}
