@@ -1,0 +1,2411 @@
+{
+  "status": "completed",
+  "scope": "Independent synthetic signed-int16 inputs; matrix arithmetic only, NOT token inference",
+  "environment": "Local Anvil Cancun; code-size limit 98304; standard gas schedule, not a live-chain fee quote",
+  "compiler": "0.8.30+commit.73712a01.Emscripten.clang",
+  "source_sha256": "a0e3121e433f8fc000219ec629c0ab361749d9190f903118e7a96a7c4c29cead",
+  "public_transactions_broadcast": 0,
+  "kernel_deployments": {
+    "SixBitFixed": {
+      "gas": 488780,
+      "runtime_bytes": 2032
+    }
+  },
+  "checks": [],
+  "benchmarks": [],
+  "matrices": [
+    {
+      "name": "model.embed_tokens.weight",
+      "shape": [
+        32768,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 225070708
+      },
+      "tiles": 512
+    },
+    {
+      "name": "model.layers.0.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 5275068
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.0.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 5274528
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.0.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFixed": 5123600
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.0.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 11629692
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.0.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFixed": 5123492
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.0.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 3516640
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.0.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 879184
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.0.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 879184
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.0.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 3516916
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.1.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 5275224
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.1.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 5275236
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.1.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFixed": 5123672
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.1.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 11630352
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.1.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFixed": 5123888
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.1.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 3516628
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.1.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 879112
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.1.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 879184
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.1.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 3516316
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.2.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 5275092
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.2.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 5274948
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.2.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFixed": 5123984
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.2.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 11629716
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.2.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFixed": 5123216
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.2.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 3516736
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.2.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 879208
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.2.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 879136
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.2.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 3516244
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.3.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 5275248
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.3.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 5274804
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.3.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFixed": 5123588
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.3.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 11630664
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.3.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFixed": 5123492
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.3.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 3516832
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.3.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 879208
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.3.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 879208
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.3.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 3516544
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.4.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 5274528
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.4.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 5274528
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.4.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFixed": 5123288
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.4.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 11630052
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.4.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFixed": 5123312
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.4.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 3516640
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.4.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 879208
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.4.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 879208
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.4.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 3516724
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.5.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 5275092
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.5.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 5275224
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.5.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFixed": 5123492
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.5.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 11629704
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.5.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFixed": 5122808
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.5.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 3516532
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.5.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 879136
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.5.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 879184
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.5.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 3516640
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.6.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 5274936
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.6.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 5275092
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.6.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFixed": 5123468
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.6.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 11629692
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.6.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFixed": 5123504
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.6.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 3516532
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.6.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 879136
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.6.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 879208
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.6.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 3516820
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.7.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 5274936
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.7.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 5274672
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.7.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFixed": 5123300
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.7.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 11630340
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.7.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFixed": 5123780
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.7.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 3516448
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.7.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 879160
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.7.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 879208
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.7.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 3516832
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.8.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 5274936
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.8.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 5275104
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.8.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFixed": 5123588
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.8.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 11631324
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.8.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFixed": 5123696
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.8.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 3516928
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.8.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 879172
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.8.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 879196
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.8.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 3516532
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.9.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 5275248
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.9.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 5275092
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.9.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFixed": 5123000
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.9.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 11629068
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.9.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFixed": 5122832
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.9.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 3516628
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.9.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 879100
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.9.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 879184
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.9.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 3516640
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.10.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 5275236
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.10.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 5274816
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.10.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFixed": 5123312
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.10.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 11630700
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.10.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFixed": 5123492
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.10.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 3516820
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.10.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 879160
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.10.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 879040
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.10.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 3516340
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.11.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 5275236
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.11.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 5275104
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.11.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFixed": 5123504
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.11.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 11629404
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.11.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFixed": 5123588
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.11.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 3516736
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.11.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 879160
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.11.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 879208
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.11.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 3516436
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.12.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 5275368
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.12.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 5274816
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.12.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFixed": 5123600
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.12.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 11630688
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.12.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFixed": 5123504
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.12.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 3516736
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.12.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 879232
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.12.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 879184
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.12.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 3516736
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.13.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 5275092
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.13.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 5275104
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.13.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFixed": 5123600
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.13.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 11630364
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.13.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFixed": 5123684
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.13.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 3516628
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.13.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 879208
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.13.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 879160
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.13.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 3516736
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.14.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 5274936
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.14.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 5275080
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.14.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFixed": 5123480
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.14.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 11629404
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.14.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFixed": 5123888
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.14.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 3516640
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.14.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 879256
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.14.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 879160
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.14.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 3516532
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.15.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 5274648
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.15.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 5275104
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.15.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFixed": 5122916
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.15.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 11630052
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.15.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFixed": 5123504
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.15.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 3516916
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.15.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 879148
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.15.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 879208
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.15.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 3516412
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.16.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 5275104
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.16.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 5274516
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.16.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFixed": 5123600
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.16.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 11631012
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.16.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFixed": 5123024
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.16.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 3516544
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.16.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 879208
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.16.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 879184
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.16.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 3516148
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.17.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 5275104
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.17.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 5275224
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.17.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFixed": 5123504
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.17.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 11630040
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.17.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFixed": 5123576
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.17.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 3516820
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.17.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 879208
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.17.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 879196
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.17.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 3516448
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.18.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 5275104
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.18.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 5274672
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.18.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFixed": 5123696
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.18.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 11630664
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.18.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFixed": 5123696
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.18.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 3516628
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.18.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 879136
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.18.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 879052
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.18.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 3516736
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.19.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 5275236
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.19.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 5274816
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.19.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFixed": 5123012
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.19.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 11630640
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.19.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFixed": 5123600
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.19.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 3516832
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.19.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 879112
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.19.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 879160
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.19.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 3516832
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.20.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 5275092
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.20.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 5273664
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.20.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFixed": 5123588
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.20.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 11628696
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.20.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFixed": 5123492
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.20.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 3516820
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.20.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 879160
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.20.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 879160
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.20.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 3516724
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.21.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 5274816
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.21.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 5274960
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.21.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFixed": 5123600
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.21.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 11629692
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.21.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFixed": 5123408
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.21.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 3516820
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.21.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 879100
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.21.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 879160
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.21.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 3516352
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.22.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 5274816
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.22.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 5274948
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.22.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFixed": 5123192
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.22.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 11630988
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.22.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFixed": 5123492
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.22.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 3516820
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.22.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 879208
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.22.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 879064
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.22.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 3516724
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.23.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 5274384
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.23.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 5274948
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.23.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFixed": 5123600
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.23.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 11630688
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.23.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFixed": 5123120
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.23.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 3516328
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.23.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 879136
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.23.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 879208
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.23.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFixed": 3516340
+      },
+      "tiles": 8
+    }
+  ],
+  "usage_gas": {
+    "SixBitFixed": 1214316532
+  },
+  "rows_verified": 165440,
+  "tiles": 2600,
+  "weight_elements": 90996736
+}
