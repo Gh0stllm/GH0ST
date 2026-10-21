@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GH0ST Genesis / Deploy</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#050708;color:#eff4f8;font:15px/1.65 ui-monospace,Consolas,monospace}
+main{max-width:900px;margin:8vh auto;padding:30px}h1{font-size:30px;letter-spacing:.1em}.cyan{color:#00dce7}
+section{padding:22px;border:1px solid #28333b;margin:24px 0}dt{color:#8c9da9}dd{margin:0 0 16px;overflow-wrap:anywhere}
+button{padding:15px 20px;background:#00dce7;color:#001316;border:0;font:inherit;cursor:pointer;margin:8px 12px 8px 0}
+button:disabled{opacity:.35;cursor:default}pre{white-space:pre-wrap;overflow-wrap:anywhere;color:#98b2c2}p{color:#a7b6bf}
+.royalty{border-color:#00dce7}.royalty dd{font-size:18px;color:#eff4f8}.royalty dd:last-child{margin-bottom:0}
+</style>
+<main><div class="cyan">[0_0] / CONTRACT DEPLOYMENT</div><h1>GH0ST GENESIS</h1>
+<p>Deploy the verified-source collection using your own wallet. This transaction creates the NFT contract; it does not mint an NFT or burn GH0ST.</p>
+<section><dl><dt>Network</dt><dd>Robinhood Chain / 4663</dd><dt>Collection</dt><dd>495 lifetime NFTs / 3 lifetime self-mints per address</dd><dt>Primary mint requirement</dt><dd>200,000 GH0ST, burned natively per NFT / 0% protocol cut of the burn</dd><dt>Metadata base URI</dt><dd id="metadata"></dd><dt>Deployment calldata hash</dt><dd id="hash"></dd><dt>Connected wallet</dt><dd id="wallet">Not connected</dd></dl></section>
+<section class="royalty"><dl><dt>Secondary resale royalty / ERC-2981</dt><dd>3.5% / 350 basis points</dd><dt>Immutable royalty recipient</dt><dd id="royaltyRecipient">Not configured</dd></dl></section>
+<p>The secondary resale royalty is marketplace-dependent. Supporting marketplaces may pay it to the recipient shown above; it does not take a cut from the primary GH0ST burn. The recipient is fixed at deployment and is never selected from the connected wallet.</p>
+<p>Public minting opens immediately after a successful deployment. There is no admin switch to delay opening or change the royalty recipient.</p>
+<p>Your wallet will show the actual deployment gas. This helper checks the chain and the exact token/index runtime bytes again before requesting the signature. It has no private-key input and loads no external scripts.</p>
+<p id="walletHelp">Use a desktop browser with your wallet extension enabled, or open this HTTPS page inside your mobile wallet browser.</p>
+<label for="walletPicker">Wallet </label><select id="walletPicker"><option value="">Detecting wallets…</option></select><br>
+<button id="connect" disabled>Connect wallet</button><button id="deploy" disabled>Deploy collection</button>
+<section><pre id="status">Validating deployment plan. No transaction sent.</pre></section>
+</main><script>
+'use strict';
+const plan=__DEPLOYMENT_PLAN__;
+const el=id=>document.getElementById(id);
+const expected={chainId:4663,tokenAddress:'0x2eb2849cde7957b86d0dfd4b59e450a9f9d15559',indexAddress:'0x4a5aaa46e02b8cbd3fa2c39802a3e8339c98ada0',tokenCodeHash:'0x7c38fa1b069b5e677034bab6219dd2f519f219f7637910131d9a0f58a05ae164',indexCodeHash:'0x837bbe58f9d52bb20e8198019a10b97e706aab9cb9e400ca229b6d1cb390c307',shardMerkleRoot:'0x3b327e697b57bae646264f3fe99fb4921c40f44d92ef0173c272f7e3edcb61d2',metadataBaseURI:'ipfs://bafybeiacuudlonut2coevovyc5t5u3hc6bjjf4ekfrzd4d5544mh4o7z2i/',collectionURI:'ipfs://bafkreigrokhivgmp763x3xbwhug5jfvk7i5b2hwlavtzb6rpld3mkwzpsq'};
+const lower=value=>typeof value==='string'?value.toLowerCase():'';
+const address=value=>/^0x[0-9a-fA-F]{40}$/.test(value)&&!/^0x0{40}$/i.test(value);
+const bytes32=value=>/^0x[0-9a-fA-F]{64}$/.test(value);
+function validatePlan(){
+ if(!plan||plan.status!=='UNSIGNED_NOT_DEPLOYED')throw Error('Deployment plan is blocked or is not an unsigned deployment. Prepare a valid plan with an explicit royalty recipient.');
+ if(plan.chainId!==expected.chainId||!plan.transaction||BigInt(plan.transaction.chainId)!==4663n)throw Error('Deployment plan must target Robinhood Chain (4663).');
+ if(plan.royaltyStandard!=='ERC-2981'||plan.royaltyBps!==350)throw Error('Deployment plan must explicitly configure ERC-2981 royalties at 350 basis points.');
+ if(!address(plan.royaltyRecipient))throw Error('An explicit nonzero royalty recipient address is required.');
+ if(!Array.isArray(plan.constructorArgs)||plan.constructorArgs.length!==6)throw Error('Deployment requires exactly six constructor arguments.');
+ const args=[expected.tokenAddress,expected.indexAddress,expected.tokenCodeHash,expected.indexCodeHash,expected.shardMerkleRoot,lower(plan.royaltyRecipient)];
+ if(plan.constructorArgs.some((value,i)=>lower(value)!==args[i]))throw Error('Constructor arguments differ from the fixed production pins or explicit royalty recipient.');
+ if(!plan.pins||['tokenAddress','indexAddress','tokenCodeHash','indexCodeHash','shardMerkleRoot'].some(key=>lower(plan.pins[key])!==expected[key]))throw Error('Token, index or shard production pins are invalid.');
+ if(!/^0x(?:[0-9a-fA-F]{2})+$/.test(plan.pins.tokenRuntime)||!/^0x(?:[0-9a-fA-F]{2})+$/.test(plan.pins.indexRuntime))throw Error('Prepared token/index runtime bytes are absent or invalid.');
+ if(plan.maxSupply!==495||plan.maxLifetimeMintsPerWallet!==3||plan.burnTokensPerNFT!==200000||plan.protocolShareOfMintTokens!==0)throw Error('Prepared primary mint rules differ from the fixed collection rules.');
+ if(plan.metadataBaseURI!==expected.metadataBaseURI||plan.collectionURI!==expected.collectionURI)throw Error('Published metadata identifiers differ.');
+ if(plan.transaction.to!=null||BigInt(plan.transaction.value)!==0n||!/^0x(?:[0-9a-fA-F]{2})+$/.test(plan.transaction.data)||!bytes32(plan.deploymentCalldataKeccak256))throw Error('Invalid zero-value contract-creation transaction.');
+ const encodedArgs=args.map((value,i)=>i===0||i===1||i===5?value.slice(2).padStart(64,'0'):value.slice(2)).join('');
+ if(plan.transaction.data.length<=2+encodedArgs.length||!lower(plan.transaction.data).endsWith(encodedArgs))throw Error('Creation calldata does not encode the exact six reviewed constructor arguments.');
+ return true;
+}
+const storageKey='gh0st-genesis-deployment-4663-'+(plan?.deploymentCalldataKeccak256||'blocked');
+const pendingSubmission='PENDING_OR_UNCERTAIN_SUBMISSION';
+let account=null,deploying=false,walletRevision=0,boundProvider=null;
+function status(text){el('status').textContent=text;}
+function recordedDeploymentMessage(saved){return saved===pendingSubmission?'A deployment request is pending or its submission status is uncertain. Check wallet activity and the Robinhood Chain explorer before attempting another deployment. This helper will not send another request.':'A deployment transaction was already submitted from this browser: '+saved+'. Inspect it before attempting another deployment.';}
+el('metadata').textContent=plan?.metadataBaseURI||'Not configured';el('hash').textContent=plan?.deploymentCalldataKeccak256||'Not prepared';
+el('royaltyRecipient').textContent=address(plan?.royaltyRecipient)?plan.royaltyRecipient:'Not configured — deployment blocked';
+el('connect').disabled=true;el('deploy').disabled=true;
+try{validatePlan();const saved=localStorage.getItem(storageKey);status(saved?recordedDeploymentMessage(saved):'Unsigned deployment prepared. Review the immutable royalty recipient above. No transaction sent.');el('connect').disabled=false;}catch(e){status('DEPLOYMENT BLOCKED\n'+(e.message||'Invalid deployment plan.'));}
+function invalidateWallet(){account=null;walletRevision++;el('wallet').textContent='Reconnect wallet';el('deploy').disabled=true;if(!deploying)status('Wallet account or chain changed. Connect again before deploying.');}
+const discoveredWallets=[];
+function addWallet(provider,name){
+ if(!provider?.request||discoveredWallets.some(w=>w.provider===provider))return;
+ discoveredWallets.push({provider,name});
+ const picker=el('walletPicker');
+ if(picker.replaceChildren&&document.createElement){
+  const selected=picker.value;picker.replaceChildren();
+  discoveredWallets.forEach((w,i)=>{const option=document.createElement('option');option.value=String(i);option.textContent=w.name;picker.appendChild(option);});
+  if(selected&&Number(selected)<discoveredWallets.length)picker.value=selected;
+ }
+ el('walletHelp').textContent='Choose your wallet, then connect. The page will request Robinhood Chain if another network is selected.';
+}
+function detectWallets(){
+ const injected=window.ethereum;
+ for(const p of injected?.providers||[])addWallet(p,p.isRabby?'Rabby':p.isMetaMask?'MetaMask':'Browser wallet');
+ addWallet(injected,injected?.isRabby?'Rabby':injected?.isMetaMask?'MetaMask':'Browser wallet');
+}
+window.addEventListener?.('eip6963:announceProvider',event=>addWallet(event.detail?.provider,event.detail?.info?.name||'Wallet'));
+if(window.dispatchEvent&&typeof Event!=='undefined')window.dispatchEvent(new Event('eip6963:requestProvider'));
+detectWallets();
+el('walletPicker').onchange=invalidateWallet;
+async function wallet(){
+ validatePlan();detectWallets();
+ const p=discoveredWallets[Number(el('walletPicker').value)||0]?.provider;
+ if(!p)throw Error('No wallet detected. Enable your wallet extension for this site and refresh. On mobile, open this URL in the wallet app browser. A regular mobile browser cannot connect without WalletConnect.');
+ if(boundProvider!==p){boundProvider?.removeListener?.('chainChanged',invalidateWallet);boundProvider?.removeListener?.('accountsChanged',invalidateWallet);p.on?.('chainChanged',invalidateWallet);p.on?.('accountsChanged',invalidateWallet);boundProvider=p;}return p;
+}
+async function checkChain(provider){const chain=await provider.request({method:'eth_chainId'});if(BigInt(chain)!==4663n)throw Error('Select Robinhood Chain (4663) in your wallet first.');}
+async function connectChain(provider){
+ if(BigInt(await provider.request({method:'eth_chainId'}))===4663n)return;
+ status('Approve switching to Robinhood Chain in your wallet.');
+ try{await provider.request({method:'wallet_switchEthereumChain',params:[{chainId:'0x1237'}]});}
+ catch(e){if(Number(e.code)===4902)throw Error('Add Robinhood Chain to your wallet: chain ID 4663, RPC https://rpc.mainnet.chain.robinhood.com, currency ETH. Then reconnect.');throw e;}
+ await checkChain(provider);
+}
+function connectionError(e){if(Number(e?.code)===-32002)return 'A wallet connection request is already pending. Open your wallet extension and approve or reject it.';if(Number(e?.code)===4001)return 'Connection or network switch was rejected. Click Connect wallet to try again.';return e.message||'Wallet connection failed.';}
+el('connect').onclick=async()=>{if(deploying)return;el('connect').disabled=true;try{
+ const p=await wallet();status('Open your wallet and approve the connection request.');
+ await p.request({method:'eth_requestAccounts'});await connectChain(p);
+ const revision=walletRevision;const accounts=await p.request({method:'eth_accounts'});await checkChain(p);
+ if(revision!==walletRevision)throw Error('Wallet changed. Connect again before deploying.');
+ account=accounts[0];if(!account)throw Error('No wallet selected.');el('wallet').textContent=account;
+ const saved=localStorage.getItem(storageKey);el('deploy').disabled=Boolean(saved);status(saved?recordedDeploymentMessage(saved):'Wallet connected. Review the configuration, then choose Deploy collection.');
+ }catch(e){invalidateWallet();status(connectionError(e));}finally{el('connect').disabled=false;}};
+el('deploy').onclick=async()=>{if(deploying)return;const deploymentAccount=account;const revision=walletRevision;deploying=true;el('connect').disabled=true;el('deploy').disabled=true;try{
+ const p=await wallet();await checkChain(p);const accounts=await p.request({method:'eth_accounts'});
+ if(!deploymentAccount||revision!==walletRevision||accounts[0]?.toLowerCase()!==deploymentAccount.toLowerCase())throw Error('Wallet changed. Connect again before deploying.');
+ if(localStorage.getItem(storageKey))throw Error('A deployment transaction is already recorded in this browser.');
+ status('Checking token and weight-index runtime code...');
+ const token=await p.request({method:'eth_getCode',params:[plan.pins.tokenAddress,'latest']});
+ const index=await p.request({method:'eth_getCode',params:[plan.pins.indexAddress,'latest']});
+ if(token.toLowerCase()!==plan.pins.tokenRuntime.toLowerCase()||index.toLowerCase()!==plan.pins.indexRuntime.toLowerCase())throw Error('Live token/index bytecode differs from the prepared pins. Deployment stopped.');
+ await checkChain(p);
+ const currentAccounts=await p.request({method:'eth_accounts'});
+ if(revision!==walletRevision||currentAccounts[0]?.toLowerCase()!==deploymentAccount.toLowerCase())throw Error('Wallet changed. Connect again before deploying.');
+ if(localStorage.getItem(storageKey))throw Error('A deployment request is already recorded in this browser.');
+ // Persist before opening the wallet prompt so a reload or ambiguous provider error cannot enable a duplicate request.
+ localStorage.setItem(storageKey,pendingSubmission);
+ status('Review the immutable 3.5% royalty recipient '+plan.royaltyRecipient+' and sign the contract-creation transaction in your wallet. Public minting opens immediately after deployment.');
+ let hash;
+ try{hash=await p.request({method:'eth_sendTransaction',params:[{from:deploymentAccount,chainId:plan.transaction.chainId,data:plan.transaction.data,value:plan.transaction.value}]});}
+ catch(e){if((e?.code===4001||e?.code==='4001'||e?.code==='ACTION_REJECTED')&&localStorage.getItem(storageKey)===pendingSubmission)localStorage.removeItem(storageKey);throw e;}
+ if(!/^0x[0-9a-fA-F]{64}$/.test(hash))throw Error('Wallet did not return a valid transaction hash; deployment submission status is uncertain.');
+ localStorage.setItem(storageKey,hash);status('Deployment submitted: '+hash+'\nWaiting for confirmation...');
+ const timer=setInterval(async()=>{try{await checkChain(p);const receipt=await p.request({method:'eth_getTransactionReceipt',params:[hash]});if(!receipt)return;clearInterval(timer);if(BigInt(receipt.status)!==1n){status('Deployment transaction reverted. Inspect '+hash+' before retrying.');return;}status('DEPLOYED\nContract: '+receipt.contractAddress+'\nTransaction: '+hash+'\nMinting is active. Record this address and verify the source before announcing it.');}catch(e){clearInterval(timer);status('Transaction submitted: '+hash+'\nCheck its receipt on the Robinhood Chain explorer. '+e.message);}},2500);
+ }catch(e){status(localStorage.getItem(storageKey)===pendingSubmission?recordedDeploymentMessage(pendingSubmission)+'\n'+(e.message||'Wallet response unavailable.'):(e.message||'Deployment failed.'));}finally{deploying=false;el('connect').disabled=false;el('deploy').disabled=!account||Boolean(localStorage.getItem(storageKey));}};
+</script></html>
