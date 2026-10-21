@@ -1,7 +1,7 @@
 {
   "format": "s0ul-cli-resume-local-v1",
-  "recorded_utc": "2026-10-21T20:34:55.924Z",
-  "cli_sha256": "2775f2e38aae8a32c76a9c153b6448e7586aa53ea1667b71d265e4fae2f1e8bb",
+  "recorded_utc": "2026-10-21T20:43:27.458Z",
+  "cli_sha256": "4dd099f6e9088d35e0e408594195b2eee1208924ea3808639ecd759507e12a96",
   "chain": {
     "kind": "loopback Ganache",
     "chain_id": 31337,
@@ -79,13 +79,29 @@
     }
   },
   "read_only_rpc_retries": {
-    "one_off_timeout": {
-      "injected_failures": 1,
-      "retry_events": 1,
+    "public_pool_busy_recovery": {
+      "injected_failures": 5,
+      "retry_events": 5,
+      "successful_attempt": 6,
+      "retry_after_ms": 1000,
+      "observed_retry_gaps_ms": [
+        1003.9081010000009,
+        1004.0811089999988,
+        1503.854346,
+        2002.535772999996,
+        2502.0005810000002
+      ],
       "deployment_complete": true,
       "deployment_broadcasts": 51,
       "duplicate_broadcasts": 0,
-      "method_only_events": true
+      "safe_read_diagnostics": true,
+      "spacing_probe": {
+        "configured_rps": 1000,
+        "policy_cooldown_ms": 11,
+        "slow_response_ms": 80,
+        "observed_cooldown_ms": 14.3402070000011,
+        "overlapping_requests": 0
+      }
     },
     "persistent_timeout": {
       "injected_failures": 3,
@@ -94,7 +110,7 @@
       "deployment_complete": false,
       "deployment_broadcasts": 0,
       "lock_removed": true,
-      "method_only_events": true
+      "safe_read_diagnostics": true
     },
     "persistent_http_429": {
       "injected_failures": 3,
@@ -103,7 +119,7 @@
       "deployment_complete": false,
       "deployment_broadcasts": 0,
       "lock_removed": true,
-      "method_only_events": true
+      "safe_read_diagnostics": true
     },
     "persistent_http_503": {
       "injected_failures": 3,
@@ -112,7 +128,7 @@
       "deployment_complete": false,
       "deployment_broadcasts": 0,
       "lock_removed": true,
-      "method_only_events": true
+      "safe_read_diagnostics": true
     }
   },
   "deployment_chunking": [
