@@ -1,0 +1,48 @@
+name: Bug report
+description: Report a reproducible problem in code, tooling or documentation.
+title: "[Bug] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve GH0ST. A minimal local reproduction is useful; no mainnet transaction is required.
+        See CONTRIBUTING.md for the relevant study environments and validation guidance.
+  - type: input
+    id: revision
+    attributes:
+      label: Commit or revision
+      description: Which commit or branch did you test?
+      placeholder: Commit SHA or branch
+    validations:
+      required: true
+  - type: input
+    id: area
+    attributes:
+      label: Affected files or subsystem
+      placeholder: "Example: falcon-agent/runtime/GH0STRuntime.sol"
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Expected and actual behavior
+      description: Explain what you expected and what happened instead.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: Include commands, minimal inputs and relevant output. For documentation, link the affected passage.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Compiler/optimizer, Python or Node versions, Anvil version, chain ID and model/export pins as applicable.
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Additional evidence
+      description: Relevant logs, reports, numerical differences or a possible fix.
