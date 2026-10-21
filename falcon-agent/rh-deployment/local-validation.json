@@ -1,0 +1,33 @@
+{
+  "status": "passed",
+  "chain_id": 31337,
+  "public_transactions_broadcast": 0,
+  "checks": [
+    "Quote creates no transaction or deployment state",
+    "Pilot quote includes exactly kernel plus first weight shard",
+    "Too-small batch cap blocks every signature",
+    "Reserve and top-up check block underfunded batch",
+    "Pilot stops after exactly two successful deployments",
+    "Deployed runtimes match exact pinned bytes",
+    "Wallet decrement equals receipt fees",
+    "Next batch top-up formula includes reserve and current balance",
+    "Remaining contract count decreases accurately",
+    "Resume deploys only next shard and stops at new limit",
+    "Cumulative fees and gas equal all saved receipts",
+    "Unknown pending hash blocks continuation without re-sending",
+    "Mid-batch fee rise stops before the next signature",
+    "Default RH chain guard rejects chain 31337"
+  ],
+  "pilot_gas_used": 14071366,
+  "pilot_contract_gas": [
+    {
+      "name": "SixBitFast",
+      "gas_used": 830442
+    },
+    {
+      "name": "weights-0000",
+      "gas_used": 13240924
+    }
+  ],
+  "scope": "Local control-flow and receipt accounting validation; no live RH fee quote or production deployment"
+}
