@@ -1,0 +1,78 @@
+{
+  "format": "s0ul-agent-local-security-v1",
+  "recorded_utc": "2026-10-21T21:24:54.779Z",
+  "chain": {
+    "kind": "in-process Ganache",
+    "chain_id": 31337,
+    "hardfork": "shanghai",
+    "block_gas_limit": 30000000,
+    "unlimited_contract_size": false,
+    "public_transactions": 0
+  },
+  "completed_cases": [
+    "python_grammar_parity",
+    "identity_pins",
+    "owner_bound_permissionless_progress",
+    "adoption_and_cancel_authority",
+    "eos_and_output_provenance",
+    "mask_and_replay",
+    "canonical_argument_commitments",
+    "memory_bounds_and_stale_revision",
+    "task_cap_and_namespace",
+    "self_balances_and_bounded_token_calls",
+    "reentrancy",
+    "real_tiny_engine_wait_eos_integration"
+  ],
+  "suite_complete": true,
+  "full_trained_model_executed": false,
+  "production_build": "Verified cached production artifact; fixtures compiled locally",
+  "compiler": {
+    "version": "0.8.30+commit.73712a01.Emscripten.clang",
+    "optimizer_runs": 200,
+    "via_ir": true,
+    "evm_version": "shanghai"
+  },
+  "source_sha256": {
+    "contracts/S0ULActionCodec.sol": "7d6bae2a521f223941b96e20bab03a2ccc3baeb446a18aaef4066d51773df866",
+    "contracts/S0ULActionGate.sol": "a0d9e7b2e3d6b2ac0b1a2e46653ecee110e036b7f506e8880bf67bc3bf5736ba",
+    "contracts/S0ULAgent.sol": "a3a11788c6b2e2d4cd898650093acd0c853e56a1e946ab0779d3a3ec97315f01",
+    "contracts/S0ULDataShard.sol": "53f1d21669f19d818ce7d423189ee884dba43e80d527aff34b61e36e06fdbab9",
+    "contracts/S0ULInference.sol": "68ca180ba4c15407b54a2f3aa01aa03c36484b72615bf11d226c2b5a8ae8d342",
+    "contracts/S0ULInt8Kernel.sol": "7241ce0f95987de3f1e55a72259ea8205be8bbb71f177ebe924030df2e8c8109",
+    "contracts/S0ULMath.sol": "c827f7e898d3df31ffa0f92ed9fac110bb591906e9ffece062abf6909747664b",
+    "contracts/S0ULMemory.sol": "dcb5d1665c4f311752cf4efb1470505e299f4fa2f2afbe1db91dbeaa5acf327e",
+    "contracts/S0ULModel.sol": "8c1e5197b142fe5943e6d00963bbfe85e4221c0d16c911628ce2682cbad2a8e1",
+    "contracts/S0ULTokenizer.sol": "9b5779d016022c49a6dd40d28a734d1707323576ba28a5b7e7e8bc6d75555115",
+    "contracts/S0ULTypes.sol": "5ca972223b3b2a8f587118b18bdf58530f39756586befa2ec8d200b41598aeed",
+    "tests/fixtures/S0ULAgentMocks.sol": "51feaf0ad6dc3c3d7e51745a8d55cc06d00c834e5832fb4a9eec913cd09c725f",
+    "tests/fixtures/S0ULActionCodecHarness.sol": "358ffad9706f2239b39c611ed5720c4f2b9137aa7a1b06fe3805bd817d6dc05c"
+  },
+  "runtime_code_bytes": {
+    "S0ULAgent": 17040,
+    "S0ULInference": 18938,
+    "S0ULTokenizer": 5071
+  },
+  "grammar": {
+    "vectors": 295,
+    "valid": 30,
+    "invalid": 265,
+    "all_exact": true,
+    "oracle": "s0ul.actions.parse_action"
+  },
+  "real_engine_integration": {
+    "source_kind": "constructed tiny fixture; not trained checkpoint",
+    "parameter_count": 4632,
+    "exact_logit_values": 1024,
+    "output_ids": [
+      268,
+      2
+    ],
+    "committed_action": "WAIT",
+    "executed": true,
+    "permissionless_batch_transactions": 22,
+    "maximum_steps_per_batch": 4,
+    "select_boundaries_observed": 2,
+    "continuation_gas": "12841556",
+    "saturation_count": "0"
+  }
+}
