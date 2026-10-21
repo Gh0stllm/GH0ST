@@ -1,0 +1,29 @@
+[package]
+name = "lfm-int4-stylus"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+
+[dependencies]
+stylus-sdk = "=0.10.10"
+alloy-primitives = { version = "=1.7.3", default-features = false }
+alloy-sol-types = { version = "=1.7.3", default-features = false }
+
+[dev-dependencies]
+stylus-sdk = { version = "=0.10.10", features = ["stylus-test"] }
+serde_json = "1"
+hex = "0.4"
+
+[features]
+export-abi = ["stylus-sdk/export-abi"]
+
+[lib]
+crate-type = ["lib", "cdylib"]
+
+[profile.release]
+codegen-units = 1
+strip = true
+lto = true
+panic = "abort"
+opt-level = 3
+
