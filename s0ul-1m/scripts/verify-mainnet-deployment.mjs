@@ -59,44 +59,78 @@ function optionsFrom(argv) {
 
 function reader(url, timeout) {
   let nextStart = 0, id = 0, active = false, requests = 0, retries = 0;
+  const reasons = new Set(['public_pool_busy', 'rate_limit_exceeded', 'rate_limited', 'too_many_requests',
+    'pool_busy', 'pool_saturated', 'quota_exceeded', 'upstream_timeout', 'request_timeout', 'upstream_unavailable']);
   const rpc = async (method, params) => {
     assert.ok(readMethods.has(method), 'RPC method is outside the read-only whitelist');
     assert.equal(active, false, 'RPC requests must remain sequential');
     active = true;
+    const deadline = Date.now() + 60000;
     try {
-      for (let attempt = 1; attempt <= 3; ++attempt) {
-        await sleep(Math.max(0, nextStart - Date.now()));
-        nextStart = Date.now() + 510; // At most two request starts per second.
+      for (let attempt = 1; attempt <= 6; ++attempt) {
+        const wait = Math.max(0, nextStart - Date.now());
+        if (Date.now() + wait >= deadline) throw Error(method + ' exceeded its 60000ms read budget');
+        await sleep(wait);
+        const remaining = deadline - Date.now();
+        if (remaining <= 0) throw Error(method + ' exceeded its 60000ms read budget');
         const controller = new AbortController();
-        const timer = setTimeout(() => controller.abort(), timeout);
-        let retryable = false;
+        const timer = setTimeout(() => controller.abort(), Math.min(timeout, remaining));
+        let retryable = false, publicPoolBusy = false, retryAfter = 0, details = {};
         try {
           const requestId = ++id;
           ++requests;
           const response = await fetch(url, { method: 'POST', headers: { 'content-type': 'application/json' },
             body: JSON.stringify({ jsonrpc: '2.0', id: requestId, method, params }), signal: controller.signal, redirect: 'error' });
           retryable = [429, 503].includes(response.status);
-          if (!response.ok) throw Error('HTTP ' + response.status);
+          if (!response.ok) {
+            details.status = response.status;
+            let body;
+            try { body = await response.json(); } catch { /* never log an arbitrary response body */ }
+            const candidate = body?.reason ?? body?.error?.reason ?? body?.error?.data?.reason ?? body?.data?.reason;
+            if (reasons.has(candidate)) details.reason = candidate;
+            if (Number.isSafeInteger(body?.error?.code)) details.code = body.error.code;
+            publicPoolBusy = response.status === 429 && details.reason === 'public_pool_busy';
+            const header = response.headers.get('retry-after');
+            const seconds = typeof header === 'string' && /^\d+(?:\.\d+)?$/.test(header.trim()) ? Number(header) : NaN;
+            const delay = Number.isFinite(seconds) ? Math.ceil(seconds * 1000) : typeof header === 'string' ? Math.max(0, Date.parse(header) - Date.now()) : 0;
+            retryAfter = Math.max(response.status === 429 ? 1000 : 0, Number.isFinite(delay) ? delay : 0);
+            throw Error('HTTP ' + response.status);
+          }
           const body = await response.json();
           assert.ok(body && !Array.isArray(body) && body.id === requestId && body.jsonrpc === '2.0', 'Invalid RPC response envelope');
           if (body.error) {
+            if (Number.isSafeInteger(body.error.code)) details.code = body.error.code;
             retryable = [-32000, -32002, -32005].includes(body.error.code) &&
               /^(?:(?:request|upstream|gateway|connection|network|response)\s+)*(?:timeout|timed\s+out)(?:\b|$)/i.test(String(body.error.message ?? '').trim());
             throw Error('RPC error ' + body.error.code);
           }
           assert.ok(Object.hasOwn(body, 'result'), 'RPC response has no result');
+          if (Date.now() >= deadline) throw Error('60000ms read budget exhausted');
           return body.result;
         } catch (error) {
           retryable ||= controller.signal.aborted || error instanceof TypeError || ['ETIMEDOUT', 'ECONNRESET'].includes(error?.code);
-          if (!retryable || attempt === 3) throw Error(method + ' failed after ' + attempt + ' attempt(s): ' + error.message);
+          if (controller.signal.aborted) details.code = 'TIMEOUT';
+          else if (['ETIMEDOUT', 'ECONNRESET'].includes(error?.code)) details.code = error.code;
+          const maximumAttempts = publicPoolBusy ? 6 : 3;
+          const delay = Math.max(500 * attempt, retryAfter);
+          if (!retryable || attempt >= maximumAttempts || Date.now() + Math.max(510, delay) >= deadline) {
+            process.stdout.write(JSON.stringify({ event: 'verification_read_failed', method, attempt, maximumAttempts, ...details }) + '\n');
+            throw Error(method + ' failed after ' + attempt + ' attempt(s): ' + error.message);
+          }
           ++retries;
-          process.stdout.write(JSON.stringify({ event: 'verification_read_retry', method, attempt }) + '\n');
-        } finally { clearTimeout(timer); }
-        await sleep(500 * attempt);
+          nextStart = Math.max(nextStart, Date.now() + delay);
+          process.stdout.write(JSON.stringify({ event: 'verification_read_retry', method, attempt, maximumAttempts, ...details }) + '\n');
+        } finally {
+          clearTimeout(timer);
+          // Pacing starts after response-body completion, including failures.
+          nextStart = Math.max(nextStart, Date.now() + 510);
+        }
       }
     } finally { active = false; }
   };
-  return { rpc, stats: () => ({ request_attempts: requests, retried_reads: retries, maximum_rps: 2, maximum_attempts_per_read: 3, timeout_ms: timeout }) };
+  return { rpc, stats: () => ({ request_attempts: requests, retried_reads: retries, maximum_rps: 2,
+    minimum_completion_spacing_ms: 510, maximum_attempts_public_pool_busy: 6, maximum_attempts_other_transient: 3,
+    overall_read_budget_ms: 60000, timeout_ms: timeout }) };
 }
 
 async function main() {
@@ -237,19 +271,38 @@ async function main() {
     process.stdout.write(JSON.stringify({ event: 'deployment_verified', stage: key, confirmed: deployments.length, total: 51 }) + '\n');
   }
   assert.equal(totalGas, BigInt(journal.totalDeploymentGas), 'Receipt gas total matches journal');
-  // Only final ABI reads share an anchor. Starting it here keeps these reads
-  // within the provider's historical-state window during normal operation.
-  const identityHead = quantity(await rpc('eth_blockNumber', []), 'Final identity head');
-  assert.ok(identityHead >= 50n, 'Final identity anchor has 50 blocks of depth');
-  const anchorNumber = identityHead - 50n, blockTag = '0x' + anchorNumber.toString(16);
-  const anchor = await rpc('eth_getBlockByNumber', [blockTag, false]);
-  assert.ok(anchor && anchor.hash, 'Fresh canonical identity anchor is available');
-  assert.equal(quantity(anchor.number, 'Identity anchor number'), anchorNumber);
+  // Keep ABI groups small enough for the provider's short state-history window.
   const newestDeployment = deployments.reduce((latest, item) => BigInt(item.block_number) > latest ? BigInt(item.block_number) : latest, 0n);
-  assert.ok(newestDeployment <= anchorNumber, 'Wait until all deployments are at least 50 blocks deep before verification');
+  const identityGroups = [];
+  let currentAnchor = null;
+  const closeGroup = async () => {
+    if (!currentAnchor) return;
+    const canonicalBlock = await rpc('eth_getBlockByNumber', [currentAnchor.tag, false]);
+    sameHex(canonicalBlock?.hash, currentAnchor.record.block_hash, 'ABI group anchor remains canonical');
+    currentAnchor.record.canonical_hash_rechecked = true;
+    currentAnchor.record.completed_utc = new Date().toISOString();
+    currentAnchor = null;
+  };
+  const getAnchor = async () => {
+    const head = quantity(await rpc('eth_blockNumber', []), 'ABI group head');
+    assert.ok(head >= 50n, 'ABI group anchor has 50 blocks of depth');
+    const number = head - 50n, tag = '0x' + number.toString(16);
+    assert.ok(newestDeployment <= number, 'Wait until all deployments are at least 50 blocks deep before verification');
+    const block = await rpc('eth_getBlockByNumber', [tag, false]);
+    assert.ok(block && block.hash, 'Fresh canonical ABI group anchor is available');
+    assert.equal(quantity(block.number, 'ABI group anchor number'), number);
+    const record = { group: identityGroups.length + 1, selected_utc: new Date().toISOString(),
+      head_when_selected: head.toString(), depth_when_selected: 50, block_number: number.toString(),
+      block_hash: block.hash, abi_read_count: 0, canonical_hash_rechecked: false };
+    identityGroups.push(record);
+    currentAnchor = { tag, record };
+  };
   const call = async (name, address, method, args = [], extra = {}) => {
+    if (currentAnchor?.record.abi_read_count >= 12) await closeGroup();
+    if (!currentAnchor) await getAnchor();
     const data = interfaces[name].encodeFunctionData(method, args);
-    const result = await rpc('eth_call', [{ to: address, data, ...extra }, blockTag]);
+    const result = await rpc('eth_call', [{ to: address, data, ...extra }, currentAnchor.tag]);
+    ++currentAnchor.record.abi_read_count;
     return interfaces[name].decodeFunctionResult(method, result);
   };
   const model = async (method, args) => call('S0ULModel', journal.model, method, args);
@@ -278,20 +331,22 @@ async function main() {
   sameHex((await call('S0ULTokenizer', journal.tokenizer, 'domainSha256'))[0], manifest.tokenizerDomainSha256, 'Tokenizer dictionary');
   const encoded = Array.from((await call('S0ULTokenizer', journal.tokenizer, 'encode', ['Wait.']))[0], Number);
   assert.deepEqual(encoded, [316, 50], 'Tokenizer Wait. golden IDs');
+  // These three reads must share a newly selected anchor, regardless of where
+  // the previous group's twelve-call boundary fell.
+  await closeGroup();
   const nextId = (await engine('nextRequestId'))[0];
   const simulatedId = (await call('S0ULInference', journal.engine, 'beginText', ['Wait.', 2], { from: sender, value: '0x0', gas: '0xb71b00' }))[0];
   assert.equal(simulatedId, nextId, 'beginText simulation return value');
   assert.equal((await engine('nextRequestId'))[0], nextId, 'Simulation did not persist a request');
-  const finalAnchor = await rpc('eth_getBlockByNumber', [blockTag, false]);
-  sameHex(finalAnchor?.hash, anchor.hash, 'Verification anchor remains canonical');
+  const simulationGroup = currentAnchor.record.group;
+  await closeGroup();
   assert.equal(quantity(await rpc('eth_chainId', []), 'Final chain ID'), 4663n);
   const report = { format: 'gh0st-s0ul-mainnet-deployment-verification-v1', verification_started_utc: startedUtc,
     verified_utc: new Date().toISOString(), complete: true,
-    chain_id: 4663, verification_mode: 'Per-contract fresh runtime snapshots, followed by one fresh 50-block-deep anchor for ABI identity reads; not an atomic snapshot of all checks.',
+    chain_id: 4663, verification_mode: 'Per-contract fresh runtime snapshots and ABI groups of at most 12 reads, each with a fresh 50-block-deep anchor and canonical hash recheck; not an atomic snapshot of all checks.',
     runtime_verification_block_range: { first: deployments[0].runtime_verification_block_number, last: deployments.at(-1).runtime_verification_block_number,
       snapshots: 51, starting_head: startingHead.toString() },
-    identity_verification_block_number: anchorNumber.toString(), identity_verification_block_hash: anchor.hash,
-    identity_anchor_depth_when_selected: 50,
+    identity_verification: { maximum_abi_reads_per_group: 12, anchor_depth_when_selected: 50, groups: identityGroups },
     read_only: true, transactions_submitted: 0, sender,
     inputs: { journal_sha256: sha(journalRaw), model_manifest_sha256: sha(manifestRaw), build_file_sha256: sha(buildRaw), build_fingerprint: fingerprint },
     model: { checkpoint_sha256: CHECKPOINT.slice(2), manifest_hash: manifest.manifestHash, model_id: expectedId,
@@ -302,7 +357,7 @@ async function main() {
       tokenizer_compiled_runtime_exact: true, tokenizer_dictionary_exact: true },
     tokenizer_check: { text: 'Wait.', encoded_ids: encoded, prompt_ids_with_bos_sep: [1, ...encoded, 3] },
     begin_text_simulation: { rpc_method: 'eth_call', text: 'Wait.', max_new_tokens: 2, from: sender, value_wei: '0',
-      simulated_request_id: simulatedId.toString(), persisted: false, inference_advanced: false },
+      simulated_request_id: simulatedId.toString(), identity_group: simulationGroup, persisted: false, inference_advanced: false },
     fees: { native_currency: 'ETH', receipt_count: 51, total_gas_used: totalGas.toString(),
       total_actual_fee_wei: totalFee.toString(), total_actual_fee_eth: formatEther(totalFee),
       calculation: 'Sum of receipt.gasUsed * receipt.effectiveGasPrice for these 51 deployment transactions.',
@@ -310,7 +365,7 @@ async function main() {
       scope: 'Includes all 48 shards, registry, tokenizer and engine. Excludes nonce-recovery transactions, other wallet activity and inference.' },
     rpc_reads: stats(), deployments,
     limits: ['Read-only verification and beginText simulation do not execute a complete mainnet inference request.',
-      'Runtime checks use separate fresh snapshots to fit the RPC historical-state window; only final ABI identity calls share the final anchor, whose canonical hash is rechecked.',
+      'Runtime checks and ABI groups use multiple fresh snapshots to fit the RPC historical-state window; each ABI group anchor is canonical-rechecked before the next group.',
       'Model and engine runtime hashes are checked against the deployment journal; exact creation bytes are checked against the supplied build.',
       'Source-publication verification is recorded separately. Receipt fees are historical costs, not future fee estimates.'] };
   mkdirSync(dirname(options.output), { recursive: true });
