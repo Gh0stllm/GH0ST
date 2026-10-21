@@ -86,12 +86,27 @@ class DeploymentProvider extends JsonRpcProvider {
     request.timeout = rpcTimeoutMs;
     // Disable transport-level 429 retries, which would also repeat broadcasts.
     request.retryFunc = async () => false;
-    super(request, fixedNetwork, { cacheTimeout: -1, batchMaxCount: 1, staticNetwork: fixedNetwork !== undefined });
+    super(request, fixedNetwork, { cacheTimeout: -1, batchMaxCount: number('rpc-batch-max', 1, 12), staticNetwork: fixedNetwork !== undefined });
     this.requestSpacing = rps ? Math.ceil(1000 / rps) + 10 : 0;
     this.nextRequestAt = 0;
     this.requestQueue = Promise.resolve();
   }
-  _send(payload) {
+  async _send(payload) {
+    if (Array.isArray(payload) && payload.length > 1 && payload.some(x => !retryableReadMethods.has(x.method))) {
+      // Ethers can group unrelated requests. Never put a send in an HTTP batch
+      // or repeat it when retrying a read from the same original group.
+      const results = [];
+      let reads = [];
+      const flushReads = async () => {
+        if (reads.length) { results.push(...await this._send(reads)); reads = []; }
+      };
+      for (const request of payload) {
+        if (retryableReadMethods.has(request.method)) reads.push(request);
+        else { await flushReads(); results.push(...await this._send(request)); }
+      }
+      await flushReads();
+      return results;
+    }
     const methods = (Array.isArray(payload) ? payload : [payload]).map(x => x.method);
     const readOnly = methods.every(method => retryableReadMethods.has(method));
     const operation = this.requestQueue.then(async () => {
@@ -321,6 +336,16 @@ async function deploy(build) {
     write(destination, result);
     const confirmations = number('confirmations', 1, 64), timeout = number('receipt-timeout-ms', 180_000);
     const maxNewDeployments = number('max-new-deployments', Number.MAX_SAFE_INTEGER);
+    const expectedNextNonce = options['expected-next-nonce'] === undefined ? null : Number(options['expected-next-nonce']);
+    if (expectedNextNonce !== null && (!Number.isSafeInteger(expectedNextNonce) || expectedNextNonce < 0)) throw Error('Invalid --expected-next-nonce');
+    let nonceGuardChecked = expectedNextNonce === null;
+    const checkNonceBeforeSigning = async nonce => {
+      if (nonceGuardChecked) return;
+      const current = Number(BigInt(await provider.send('eth_getTransactionCount', [sender, 'pending'])));
+      if (nonce !== expectedNextNonce || current !== expectedNextNonce) throw Error('Expected next nonce differs from pending sender nonce; no transaction was signed');
+      nonceGuardChecked = true;
+      log({ event: 'deployment_nonce_guard_checked', nonce: expectedNextNonce });
+    };
     let confirmedThisInvocation = 0;
     const saveConfirmed = async (pending, receipt) => {
       if (!receipt || receipt.status !== 1) throw Error('Deployment transaction unsuccessful; pending journal retained');
@@ -361,6 +386,7 @@ async function deploy(build) {
       if (limit > BigInt(policy.maxDeployGas) || (block && limit > block.gasLimit)) throw Error('Estimated deployment gas plus margin exceeds the configured cap/block limit for ' + stage.key);
       const nonce = Number(BigInt(await provider.send('eth_getTransactionCount', [sender, 'pending'])));
       if (!Number.isSafeInteger(nonce)) throw Error('Sender nonce exceeds the supported integer range');
+      if (!nonceGuardChecked && nonce !== expectedNextNonce) throw Error('Expected next nonce differs from pending sender nonce; no transaction was signed');
       const pending = { ...stage, hash: null, nonce, predictedAddress: getCreateAddress({ from: sender, nonce }),
         creationCodeKeccak256: keccak256(data), gasEstimate: estimate.toString(), gasLimit: limit.toString(), submittedAt: new Date().toISOString() };
       result.pending = pending;
@@ -370,6 +396,7 @@ async function deploy(build) {
       let transaction;
       if (signer instanceof Wallet) {
         const populated = await signer.populateTransaction({ data, nonce, gasLimit: limit, value: 0n });
+        await checkNonceBeforeSigning(nonce);
         const raw = await signer.signTransaction(populated);
         pending.hash = keccak256(raw);
         write(destination, result); // hash/address are durable before broadcast
@@ -390,6 +417,7 @@ async function deploy(build) {
           log({ event: 'deployment_broadcast_reconciled', stage: stage.key, hash: pending.hash });
         }
       } else {
+        await checkNonceBeforeSigning(nonce);
         transaction = await signer.sendTransaction({ data, nonce, gasLimit: limit, value: 0n });
         pending.hash = transaction.hash;
         write(destination, result); // durable before waiting for its receipt
@@ -470,7 +498,7 @@ async function infer(build) {
 try {
 if (!['compile', 'deploy', 'infer'].includes(command)) {
   process.stdout.write('Usage: node scripts/s0ul-solidity.mjs compile|deploy|infer --name value ...\n');
-  process.stdout.write('deploy: --rpc URL --chain-id ID --model model.json (--output NEW.json | --resume EXISTING.json) [--account 0 | --private-key-env NAME] [--max-deploy-gas 12000000] [--gas-margin-bps 2000] [--rpc-rps 3] [--max-new-deployments N]\n');
+  process.stdout.write('deploy: --rpc URL --chain-id ID --model model.json (--output NEW.json | --resume EXISTING.json) [--account 0 | --private-key-env NAME] [--max-deploy-gas 12000000] [--gas-margin-bps 2000] [--rpc-rps 3] [--rpc-batch-max 1] [--expected-next-nonce N] [--max-new-deployments N]\n');
   process.stdout.write('infer: --rpc URL --deployment deployment.json --prompt TEXT [--session ID] [--max-new-tokens 16] [--rows 32]\n');
   process.exitCode = 1;
 } else {
