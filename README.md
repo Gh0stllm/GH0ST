@@ -28,7 +28,9 @@ The **984,192-parameter S0UL model is deployed on chain 4663**: 48 weight-data c
 | Model registry | `0xa62C2d6fbba575732AAB38c56fCd73B2361B1D98` |
 | Tokenizer | `0x3Cf3739D8e587C3AB5706fd459e75A6fCE26d333` |
 
-Deployment used **257,254,365 gas** and paid **0.005238250757104 ETH** across the 51 creation receipts. A separate read-only check confirmed those receipts, tokenizer output and a simulated `beginText` call. [Receipt, fee and smoke-check report](s0ul-1m/reports/robinhood-mainnet-deployment-check.json). The full 398-transaction inference benchmark below was run locally; a paid mainnet inference benchmark has not been run.
+Deployment used **257,254,365 gas** and paid **0.005238250757104 ETH** across the 51 creation receipts. A separate read-only check confirmed those receipts, tokenizer output and a simulated `beginText` call. [Receipt, fee and smoke-check report](s0ul-1m/reports/robinhood-mainnet-deployment-check.json).
+
+**Real mainnet generation completed:** request `1` turned `Wait.` into `WAIT`, EOS (`[268, 2]`) using **398 successful transactions**, **892,989,640 gas** and **0.018193921167636 ETH**, with no failed transactions or saturation. An independent read-only checker confirmed all receipts and reread **1,024/1,024 logits** from the two on-chain decision states; every value matched the Python integer reference exactly. [Mainnet generation journal](s0ul-1m/deployments/robinhood-mainnet-generation.json) · [Independent verification and fees](s0ul-1m/reports/robinhood-mainnet-inference-check.json).
 
 The registry, tokenizer and inference engine are source verified on Sourcify with exact creation and runtime matches. [Inference engine source](https://repo.sourcify.dev/4663/0x07bB8455Db0928bEBEb3E7F27A22A0599AF1b650) · [Verification evidence](s0ul-1m/reports/robinhood-mainnet-verification/sourcify-verification-status.json).
 
@@ -36,7 +38,7 @@ The registry, tokenizer and inference engine are source verified on Sourcify wit
 
 The selected S0UL checkpoint scores **41.48%** exact correctness on the harder 540-request challenge and **58.06%** on the historical 360-request challenge. These are task-quality results, separate from execution parity.
 
-Complete trained S0UL Solidity inference matched **1,024/1,024 integer logits** for `Wait.` → `WAIT`, EOS, with zero saturation. The 128-row run used **398 transactions and 892,989,640 gas**. These are local EVM measurements; the mainnet deployment evidence is recorded separately above. [Raw evidence](s0ul-1m/reports/solidity-inference-ci-128.json).
+The earlier local EVM run matched **1,024/1,024 integer logits** for `Wait.` → `WAIT`, EOS, with zero saturation, using **398 transactions and 892,989,640 gas** at 128 rows. These local measurements are preserved separately from the subsequent mainnet receipts and fee evidence above. [Local evidence](s0ul-1m/reports/solidity-inference-ci-128.json).
 
 Historical Falcon/Qwen/Genesis deployment records are preserved as source evidence. The Qwen frontend and publication index are recovered; its original research/backend branch and the complete sub1b campaign are still missing. [Exact recovery boundaries](docs/recovery/RECOVERY.md).
 
