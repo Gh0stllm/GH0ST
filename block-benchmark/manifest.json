@@ -1,0 +1,2972 @@
+{
+  "model": {
+    "model_id": "LiquidAI/LFM2.5-230M",
+    "revision": "40cb2ad3b3044d5a41eee083a6103c8b523afa45"
+  },
+  "layer": 0,
+  "type": "complete convolution decoder block",
+  "modified_data_notice": "Derived from Liquid AI weights; modified by int4 per-row quantization, Q24 scales and Q16/Q24 coefficient packing. LFM Open License v1.0 applies.",
+  "precision": {
+    "activations": "signed int32 Q16, overflow rejected",
+    "weights": "symmetric per-row signed int4 [-7,7]",
+    "scales": "signed int32 Q24",
+    "rounding": "offline ties-to-even; runtime signed division truncates toward zero",
+    "norm": "integer square root, eps_Q32=42950",
+    "silu": "Q30 sigmoid LUT on [-16,16], step 1/64, linear interpolation"
+  },
+  "matrices": [
+    {
+      "name": "conv.in_proj",
+      "rows": 3072,
+      "columns": 1024,
+      "rows_per_step": 32,
+      "first_shard": 0,
+      "shard_count": 96
+    },
+    {
+      "name": "conv.out_proj",
+      "rows": 1024,
+      "columns": 1024,
+      "rows_per_step": 32,
+      "first_shard": 96,
+      "shard_count": 32
+    },
+    {
+      "name": "feed_forward.w1",
+      "rows": 2560,
+      "columns": 1024,
+      "rows_per_step": 32,
+      "first_shard": 128,
+      "shard_count": 80
+    },
+    {
+      "name": "feed_forward.w3",
+      "rows": 2560,
+      "columns": 1024,
+      "rows_per_step": 32,
+      "first_shard": 208,
+      "shard_count": 80
+    },
+    {
+      "name": "feed_forward.w2",
+      "rows": 1024,
+      "columns": 2560,
+      "rows_per_step": 16,
+      "first_shard": 288,
+      "shard_count": 64
+    }
+  ],
+  "shards": [
+    {
+      "file": "matrix-000.bin",
+      "matrix": "conv.in_proj",
+      "row": 0,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "a156c152b1e175e6e1f5825cdc43c7bc8399c55287eec391be93920a256a3fa8"
+    },
+    {
+      "file": "matrix-001.bin",
+      "matrix": "conv.in_proj",
+      "row": 32,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "f466cbe49db08a938e84fb8108ed6b838a1015321ca66511b59a39e92370ac30"
+    },
+    {
+      "file": "matrix-002.bin",
+      "matrix": "conv.in_proj",
+      "row": 64,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "4ba4f68da10ae9d2f8883b1b664c133bb82b5febd789013958d21c8dfcd27169"
+    },
+    {
+      "file": "matrix-003.bin",
+      "matrix": "conv.in_proj",
+      "row": 96,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "b4623a46f21ef26fee9c11e45b0b0aed308a12ae78ac42176933d18718cbfb0b"
+    },
+    {
+      "file": "matrix-004.bin",
+      "matrix": "conv.in_proj",
+      "row": 128,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "b185ee20bbd373e42da357fedd7538c963e97afeddf0b352026fe5f5101df6ae"
+    },
+    {
+      "file": "matrix-005.bin",
+      "matrix": "conv.in_proj",
+      "row": 160,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "5cc7704398de606ecc59673e87c1fec19d557a8cba3275dd81b635f3c35e8109"
+    },
+    {
+      "file": "matrix-006.bin",
+      "matrix": "conv.in_proj",
+      "row": 192,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "9d1a678e7d8cd044d06313c6f08c7327c1e958b02398cef078d3c5aa6ba933f8"
+    },
+    {
+      "file": "matrix-007.bin",
+      "matrix": "conv.in_proj",
+      "row": 224,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "ba5e7be64c8f827b8a8fbdfe21cb6890dd56e2bdedb70c216d3dc0feac3ff716"
+    },
+    {
+      "file": "matrix-008.bin",
+      "matrix": "conv.in_proj",
+      "row": 256,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "f855752dc93e10a8f90417eced0df080dcc03f9be8e54dc9a0bcec6560dcc23d"
+    },
+    {
+      "file": "matrix-009.bin",
+      "matrix": "conv.in_proj",
+      "row": 288,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "8aaa3ab593815950558c8e4fa1f4f85cb839a8b68188102c1056639e90d01241"
+    },
+    {
+      "file": "matrix-010.bin",
+      "matrix": "conv.in_proj",
+      "row": 320,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "1e18b41db367cc1b08ed9931b61e938ff278a1fd13d7f0cda9a355d16d769b60"
+    },
+    {
+      "file": "matrix-011.bin",
+      "matrix": "conv.in_proj",
+      "row": 352,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "4857b39c8a7533b481e594cdd3dda00da99989da98e929f01836434d26ca29d3"
+    },
+    {
+      "file": "matrix-012.bin",
+      "matrix": "conv.in_proj",
+      "row": 384,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "dcc506c883467de341d648120759cd7f44e3e8299a7e18267dbdae1502666828"
+    },
+    {
+      "file": "matrix-013.bin",
+      "matrix": "conv.in_proj",
+      "row": 416,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "e0e152fb20866e964475f808b4f5f9ab62e5f8415ee7412b433ca7bf2e62f14a"
+    },
+    {
+      "file": "matrix-014.bin",
+      "matrix": "conv.in_proj",
+      "row": 448,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "414ed6ba9b1a6564b74a1567b95ce96be4148a7f81d2972311004df54d688f07"
+    },
+    {
+      "file": "matrix-015.bin",
+      "matrix": "conv.in_proj",
+      "row": 480,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "23e013690a69792dc58b1e0611745f1a9bb0e8a934baa92d72a908f47afd55b2"
+    },
+    {
+      "file": "matrix-016.bin",
+      "matrix": "conv.in_proj",
+      "row": 512,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "f20d357d20692567f53f62fe154a3854442c436b4da56021f18d9c1a903b9083"
+    },
+    {
+      "file": "matrix-017.bin",
+      "matrix": "conv.in_proj",
+      "row": 544,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "7c8207f37ff31380d32cd03090d7b01271b4a5910d8bc5d88579b66cd1bf6877"
+    },
+    {
+      "file": "matrix-018.bin",
+      "matrix": "conv.in_proj",
+      "row": 576,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "22251e4490f42369eaca60371f5727acfc7b1c3b8a5ca646f015cc8d84297464"
+    },
+    {
+      "file": "matrix-019.bin",
+      "matrix": "conv.in_proj",
+      "row": 608,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "540e9cdd69457fd61a83191b8e1a341120f7948d83772f9633506c9381df852f"
+    },
+    {
+      "file": "matrix-020.bin",
+      "matrix": "conv.in_proj",
+      "row": 640,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "a747989656a759098f91c5311433172c0c4f641aa4f682a5a06a62cc7272de9a"
+    },
+    {
+      "file": "matrix-021.bin",
+      "matrix": "conv.in_proj",
+      "row": 672,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "e3e7ac35b64f6d56e6ba17cd0ee4b4b15129935947ed276b29887131e825f16a"
+    },
+    {
+      "file": "matrix-022.bin",
+      "matrix": "conv.in_proj",
+      "row": 704,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "b5b2e38f5d7e024fc2993ebf817592ddfdd3a3cca2a35267f97f1e4577245f81"
+    },
+    {
+      "file": "matrix-023.bin",
+      "matrix": "conv.in_proj",
+      "row": 736,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "0f6475a7e95d03b39a7293d9a8d25ae8e01056029fa530effc1a3a934495e0d8"
+    },
+    {
+      "file": "matrix-024.bin",
+      "matrix": "conv.in_proj",
+      "row": 768,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "77178031337dbddd29605a29065b5928590d7b87ebd4e900b841b226e033d891"
+    },
+    {
+      "file": "matrix-025.bin",
+      "matrix": "conv.in_proj",
+      "row": 800,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "c4281093b914ce2a1bcd99d40139e36b2a90634b89a554b454e70e92a4961806"
+    },
+    {
+      "file": "matrix-026.bin",
+      "matrix": "conv.in_proj",
+      "row": 832,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "a32388bb562ac9df837dc3775010c17f4dae4369e71c7c2f834195f27dc8bf57"
+    },
+    {
+      "file": "matrix-027.bin",
+      "matrix": "conv.in_proj",
+      "row": 864,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "242c8d050ab3ad7de4b5be4b8bbb4ef43112e0befbee815a52e3313837443c91"
+    },
+    {
+      "file": "matrix-028.bin",
+      "matrix": "conv.in_proj",
+      "row": 896,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "447e4dd94b997012f22b22d676120206a91dbb61359df07b4d8ae139e6978fdb"
+    },
+    {
+      "file": "matrix-029.bin",
+      "matrix": "conv.in_proj",
+      "row": 928,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "94d2139f4fa00f70291693da0d3d76b732a43bcc67e70900280f7663bc64fe53"
+    },
+    {
+      "file": "matrix-030.bin",
+      "matrix": "conv.in_proj",
+      "row": 960,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "b7f1448a8c7d3f7019b18b3e0d6edb7021c6e99d713af8cdbfa2691c06e0cd47"
+    },
+    {
+      "file": "matrix-031.bin",
+      "matrix": "conv.in_proj",
+      "row": 992,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "32b5ebb82dcf4dd568894c58635043763dcc718d8c3cd0a65094739b3bd38cb2"
+    },
+    {
+      "file": "matrix-032.bin",
+      "matrix": "conv.in_proj",
+      "row": 1024,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "f7d921913a20ec9ad375ff2c2bc83ebc038527da43f6d3631f32d70fbd0bb99a"
+    },
+    {
+      "file": "matrix-033.bin",
+      "matrix": "conv.in_proj",
+      "row": 1056,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "e42901925fd8d8cc5002d6eb34bcf46e62e7e24d04e4b7470413ff36e642d630"
+    },
+    {
+      "file": "matrix-034.bin",
+      "matrix": "conv.in_proj",
+      "row": 1088,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "5ee94bc6c753dc8edc87a8bb300de9f31aafa5337923951847eac27d04ef648f"
+    },
+    {
+      "file": "matrix-035.bin",
+      "matrix": "conv.in_proj",
+      "row": 1120,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "f6320e847574d11f543398c28a5afc3294029680fa3a3eb7fd813f40915ed6af"
+    },
+    {
+      "file": "matrix-036.bin",
+      "matrix": "conv.in_proj",
+      "row": 1152,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "52469d734fbe0427900e1c03852a904b10ea3913801298ac8c67bdd22e49e4c8"
+    },
+    {
+      "file": "matrix-037.bin",
+      "matrix": "conv.in_proj",
+      "row": 1184,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "f432baa3f16d4b9d2b3f9e6280726768e0bb2f9b46c798bd4a201906c7c3e1c7"
+    },
+    {
+      "file": "matrix-038.bin",
+      "matrix": "conv.in_proj",
+      "row": 1216,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "f285ddaef0646b3d98110539fe2eeaa3c760d74679ea422c1a4811fb79aa1dd6"
+    },
+    {
+      "file": "matrix-039.bin",
+      "matrix": "conv.in_proj",
+      "row": 1248,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "daa53275b47f56c182748b3d907acf148f264270a3234ba5bc2abd03972cf4fe"
+    },
+    {
+      "file": "matrix-040.bin",
+      "matrix": "conv.in_proj",
+      "row": 1280,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "1df82262ca8bf20a7697c3201b2f30f5cc09352219e0fcbe0c19cd18fa660d2b"
+    },
+    {
+      "file": "matrix-041.bin",
+      "matrix": "conv.in_proj",
+      "row": 1312,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "2fdf3749ca9779f2d6322194da8809a381380223357cf0e12752093475f21cba"
+    },
+    {
+      "file": "matrix-042.bin",
+      "matrix": "conv.in_proj",
+      "row": 1344,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "5f328722638fcf79c5996c4acabf34086f93ff020e0fc9ce6c8b5a9e40b14b47"
+    },
+    {
+      "file": "matrix-043.bin",
+      "matrix": "conv.in_proj",
+      "row": 1376,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "e3cc7862aab48aa5db66959df8d0279b974008c5332e7b44db4d0d1e74301a16"
+    },
+    {
+      "file": "matrix-044.bin",
+      "matrix": "conv.in_proj",
+      "row": 1408,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "3644ca97cb93cc6e62a0e567270d274e4727494fc8e7f17f186dea8ab62bcbe1"
+    },
+    {
+      "file": "matrix-045.bin",
+      "matrix": "conv.in_proj",
+      "row": 1440,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "9dadd356758b3aa0be3688c6b394719904291af87fa698b8e600939dd4254fe7"
+    },
+    {
+      "file": "matrix-046.bin",
+      "matrix": "conv.in_proj",
+      "row": 1472,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "b6fc02e2ef5ecbe32bb5d66ed25ad9d0fc5d7f235bdc8f383e23e101b3516760"
+    },
+    {
+      "file": "matrix-047.bin",
+      "matrix": "conv.in_proj",
+      "row": 1504,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "9db1ffd5ec0fd3cb8e538dccda66a77024da3a755399ff0926d65ff6ced4ab5a"
+    },
+    {
+      "file": "matrix-048.bin",
+      "matrix": "conv.in_proj",
+      "row": 1536,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "c8765fa9e599dbf1cd3fdaf6bda293e2a2551924615d38cb7e4a428ddcbeed0a"
+    },
+    {
+      "file": "matrix-049.bin",
+      "matrix": "conv.in_proj",
+      "row": 1568,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "e895fb9a519f58473acf5307eca1805ab94b9a3835a85c2e9bdb1f32c5c84595"
+    },
+    {
+      "file": "matrix-050.bin",
+      "matrix": "conv.in_proj",
+      "row": 1600,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "455d7102acc1eeea10949eaf722e64740886ebf2533b826c1fc3a7756e842943"
+    },
+    {
+      "file": "matrix-051.bin",
+      "matrix": "conv.in_proj",
+      "row": 1632,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "a2936aaac6e28c94b6c5e9602bf2e8bd85fb8cd9aae72eb67f3cf1f02e959019"
+    },
+    {
+      "file": "matrix-052.bin",
+      "matrix": "conv.in_proj",
+      "row": 1664,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "545ca2af79a32f6366172704c2c5df3b2e8f1f591b7107e7845563f1f174e950"
+    },
+    {
+      "file": "matrix-053.bin",
+      "matrix": "conv.in_proj",
+      "row": 1696,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "1d682392dbc9b12be9de2ec877700bd752a42d1716fb6827a84ea94a837e6761"
+    },
+    {
+      "file": "matrix-054.bin",
+      "matrix": "conv.in_proj",
+      "row": 1728,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "813f578d0ca9727ff320dc663378d51ab93036162844f63bfb35e4f3bd44e9e1"
+    },
+    {
+      "file": "matrix-055.bin",
+      "matrix": "conv.in_proj",
+      "row": 1760,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "c149561e24456ee29fa660ee0b4458fbc4653eaad6b47c3b433659ab086b9795"
+    },
+    {
+      "file": "matrix-056.bin",
+      "matrix": "conv.in_proj",
+      "row": 1792,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "0787504e6ed702bf9bf4f5c9b7fb039783f67c22f996e008e60e7c66b04bea7c"
+    },
+    {
+      "file": "matrix-057.bin",
+      "matrix": "conv.in_proj",
+      "row": 1824,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "94b87b6d8e2524481b7c239f5b6cd53561efa5478af229427418624d2b81dcea"
+    },
+    {
+      "file": "matrix-058.bin",
+      "matrix": "conv.in_proj",
+      "row": 1856,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "9a9c2dd37f58639a12f5fff8bc8fcd60f418b30c466c7669b067b298dc3446bb"
+    },
+    {
+      "file": "matrix-059.bin",
+      "matrix": "conv.in_proj",
+      "row": 1888,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "1fab414bc72dea10cfdeb9bb253c0e62fa42a3bc8ea26580b6cb77ca0c0b3cf7"
+    },
+    {
+      "file": "matrix-060.bin",
+      "matrix": "conv.in_proj",
+      "row": 1920,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "c446592caf6cc5677c3119ad8207537198e865847f8e5aadf0d6d16f40591568"
+    },
+    {
+      "file": "matrix-061.bin",
+      "matrix": "conv.in_proj",
+      "row": 1952,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "9e9184c58a946369149d773e6797952f4f7d467248813ac37b1ad63997d745b2"
+    },
+    {
+      "file": "matrix-062.bin",
+      "matrix": "conv.in_proj",
+      "row": 1984,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "816cbc955d360025016663ab3b8dcc9dbeb24b6ffa2d709e959b8ba48d153ecc"
+    },
+    {
+      "file": "matrix-063.bin",
+      "matrix": "conv.in_proj",
+      "row": 2016,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "61557d7513465af14c0f19886761500b1dc6f9400649bc1855c5b31772b46dde"
+    },
+    {
+      "file": "matrix-064.bin",
+      "matrix": "conv.in_proj",
+      "row": 2048,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "396048675096f9b3342c99080afd1bf4a8f83d999132398a1bdb3c57732d3c32"
+    },
+    {
+      "file": "matrix-065.bin",
+      "matrix": "conv.in_proj",
+      "row": 2080,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "4f76bc7599a4e5f1ae35b3bbd53cf3d3b67c1d1698bffdad4d406f1e2917018d"
+    },
+    {
+      "file": "matrix-066.bin",
+      "matrix": "conv.in_proj",
+      "row": 2112,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "0c6c20592d4e45bc9144da1f7cff591d087ebff2515e75ffd5e391710cd4c080"
+    },
+    {
+      "file": "matrix-067.bin",
+      "matrix": "conv.in_proj",
+      "row": 2144,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "c1549ffc50ef58c0d2db412a176e231789829d6163de8ed549316193f75105b1"
+    },
+    {
+      "file": "matrix-068.bin",
+      "matrix": "conv.in_proj",
+      "row": 2176,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "cffce1953ff5ea03191c2494981410904505da701e7f2985e3661228a9d6bb21"
+    },
+    {
+      "file": "matrix-069.bin",
+      "matrix": "conv.in_proj",
+      "row": 2208,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "607d1dd6cbff1d05755b42a2e8f516ec7324c4fb8c71b77d71197213cc2c3373"
+    },
+    {
+      "file": "matrix-070.bin",
+      "matrix": "conv.in_proj",
+      "row": 2240,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "6fb8077d58ae08fbb491d6d2f00c3d561232bf4b2830eeb6e39b468d5807fd31"
+    },
+    {
+      "file": "matrix-071.bin",
+      "matrix": "conv.in_proj",
+      "row": 2272,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "1bb9cf56265e98fe488c0aeae3c8dd24a9e8e9c3b5854724bdee302f2289888a"
+    },
+    {
+      "file": "matrix-072.bin",
+      "matrix": "conv.in_proj",
+      "row": 2304,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "ad7d3a60859ceee604f79edd7fd579a918aab169e9c0ff57d470ea274d0fbfe7"
+    },
+    {
+      "file": "matrix-073.bin",
+      "matrix": "conv.in_proj",
+      "row": 2336,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "5d9c45bd2256b44dc7ac908239bfd42e747b2f2acfbe5331cb84e82eadcb0f76"
+    },
+    {
+      "file": "matrix-074.bin",
+      "matrix": "conv.in_proj",
+      "row": 2368,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "92847dd8491282b5890794fbcef866b5232ce65576c90086682967d13d737154"
+    },
+    {
+      "file": "matrix-075.bin",
+      "matrix": "conv.in_proj",
+      "row": 2400,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "aadb474fa6720e2d04fe8ba43ea88f5a88cd4551a3d0d8202e2885ab36933230"
+    },
+    {
+      "file": "matrix-076.bin",
+      "matrix": "conv.in_proj",
+      "row": 2432,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "2cfeaacb72564f4bd3fa43c0f855dc47abb0bb61ebc789ae4efd49fda8b69214"
+    },
+    {
+      "file": "matrix-077.bin",
+      "matrix": "conv.in_proj",
+      "row": 2464,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "49f24c6479a7929901ec801f720b551794a8954e1adf88d3ff93e7743c093329"
+    },
+    {
+      "file": "matrix-078.bin",
+      "matrix": "conv.in_proj",
+      "row": 2496,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "73cb4268107dd00f7ea36574e9c0d509e8d4cd93ce9cfaf27186989a3752f911"
+    },
+    {
+      "file": "matrix-079.bin",
+      "matrix": "conv.in_proj",
+      "row": 2528,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "79171a66717ba811c09caf9132cf8b30e92638f0fb50f243c86c816c3d5b8bc5"
+    },
+    {
+      "file": "matrix-080.bin",
+      "matrix": "conv.in_proj",
+      "row": 2560,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "2f71999d2076e3064346a8b3be8b14487dd048edfc4f660ca66ed64e93a66944"
+    },
+    {
+      "file": "matrix-081.bin",
+      "matrix": "conv.in_proj",
+      "row": 2592,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "88550e4d8b31bf7bf2903d1fca00076ef23fcf04856309d00cc5524c0434b1ca"
+    },
+    {
+      "file": "matrix-082.bin",
+      "matrix": "conv.in_proj",
+      "row": 2624,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "2dfc3494263e14f3e90a88288f89f3a7600b5805fbfa8bb927e44ab9ec455275"
+    },
+    {
+      "file": "matrix-083.bin",
+      "matrix": "conv.in_proj",
+      "row": 2656,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "e7e3d56e1dda11e4b9c4213bd294d5fbb55ca2a4c0b611131584a09fb33cc68c"
+    },
+    {
+      "file": "matrix-084.bin",
+      "matrix": "conv.in_proj",
+      "row": 2688,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "c3f3816a6dd1820e79a2be48e03fe05aa10b7be4bfdd36a0652c8b5043eb82b1"
+    },
+    {
+      "file": "matrix-085.bin",
+      "matrix": "conv.in_proj",
+      "row": 2720,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "7820bb8ece8d96612f2e0ce7bedb879985800a6824025a5d582acafbdd544ad2"
+    },
+    {
+      "file": "matrix-086.bin",
+      "matrix": "conv.in_proj",
+      "row": 2752,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "35e9050aa79c11aa2937d74d13cb6f7f91abae29da80cfdd5823c985215b4713"
+    },
+    {
+      "file": "matrix-087.bin",
+      "matrix": "conv.in_proj",
+      "row": 2784,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "f0b411decbe52c9af5584aa299a40b60971e860bd6ea516c601f0f05386aa737"
+    },
+    {
+      "file": "matrix-088.bin",
+      "matrix": "conv.in_proj",
+      "row": 2816,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "b82acba72b0510684a2af040153afa7b75d509a2dc7dd2be6425ba307ba6f78b"
+    },
+    {
+      "file": "matrix-089.bin",
+      "matrix": "conv.in_proj",
+      "row": 2848,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "7a179efda973abb52e13f5040345eca96530ebe46aa27c3b8a67fc45298b8d5a"
+    },
+    {
+      "file": "matrix-090.bin",
+      "matrix": "conv.in_proj",
+      "row": 2880,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "1c3d5d2edf517f0dae90af27d0a33c7432ca7ea59c8dca1547de8659e87bd3ef"
+    },
+    {
+      "file": "matrix-091.bin",
+      "matrix": "conv.in_proj",
+      "row": 2912,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "3c8778ec0c8051c7a9dd54bea45ea59aca9407a61a283cfb504c4ec6f009b1f2"
+    },
+    {
+      "file": "matrix-092.bin",
+      "matrix": "conv.in_proj",
+      "row": 2944,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "2d7ac722c01fc99c67b58b69e8c104d578041e9ea614e0f3404579b80a12e309"
+    },
+    {
+      "file": "matrix-093.bin",
+      "matrix": "conv.in_proj",
+      "row": 2976,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "428c291447dea0d07c078583cbe345840cbaab6a1e04d9660f2c76cb929b589c"
+    },
+    {
+      "file": "matrix-094.bin",
+      "matrix": "conv.in_proj",
+      "row": 3008,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "de3b422688e473e0a5dbfb9eb7718bb36057d74563b0130c6b7730646364e1da"
+    },
+    {
+      "file": "matrix-095.bin",
+      "matrix": "conv.in_proj",
+      "row": 3040,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "a420bbde3a56c59f9719f665c55857cbfd235fa7dda60ca66f119fa736cb728b"
+    },
+    {
+      "file": "matrix-096.bin",
+      "matrix": "conv.out_proj",
+      "row": 0,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "41d5ad0a854eec61143ea2647f35cfed1cce5322776a8e7def56068af1aa6d55"
+    },
+    {
+      "file": "matrix-097.bin",
+      "matrix": "conv.out_proj",
+      "row": 32,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "9d4d06eafb24adce2d15d6f8b9017180b9773d7aa52b783ef0fc43d568ba7163"
+    },
+    {
+      "file": "matrix-098.bin",
+      "matrix": "conv.out_proj",
+      "row": 64,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "cbdbacea1f9dc1fc4c67b4945dea1308b9f60a004c58f1955278e6b1609ded83"
+    },
+    {
+      "file": "matrix-099.bin",
+      "matrix": "conv.out_proj",
+      "row": 96,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "9bcb8be32f41da93e475c35e8142b4ebb77c7e898ad12b6a36a7bace1c78316d"
+    },
+    {
+      "file": "matrix-100.bin",
+      "matrix": "conv.out_proj",
+      "row": 128,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "9d25c122823e24f25ce392452d09184cb2b40b5cd6d38da81f93d22ff7010fc1"
+    },
+    {
+      "file": "matrix-101.bin",
+      "matrix": "conv.out_proj",
+      "row": 160,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "f6a672f11ac6e8c7896edb58f77da81cde9ed4e36d08638ad440b390be258ed3"
+    },
+    {
+      "file": "matrix-102.bin",
+      "matrix": "conv.out_proj",
+      "row": 192,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "34a2b049eb2d11c3d5cdfa34750ba27c654d75f548d286f727dc106c8bf78fea"
+    },
+    {
+      "file": "matrix-103.bin",
+      "matrix": "conv.out_proj",
+      "row": 224,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "30acdd6a9b9718c5a795e50de1e87be7b6ee8824ba51d2bf630df9b5c4f4be21"
+    },
+    {
+      "file": "matrix-104.bin",
+      "matrix": "conv.out_proj",
+      "row": 256,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "61c4f85b2d04c81a42a96487abe48a40de4e54addae236fb33f11a8e969f59f1"
+    },
+    {
+      "file": "matrix-105.bin",
+      "matrix": "conv.out_proj",
+      "row": 288,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "d3213245223741c8249249968ce0ff5c2c98ae6138fc960fc00b77a4db12c2e8"
+    },
+    {
+      "file": "matrix-106.bin",
+      "matrix": "conv.out_proj",
+      "row": 320,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "c4777fc2a6ebe521cdb716bc82650d231a1f02f5607f18905cb84ac8e0df431e"
+    },
+    {
+      "file": "matrix-107.bin",
+      "matrix": "conv.out_proj",
+      "row": 352,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "bbc64206e95ea319c42b7cfebc1064e4433bdaef061ac2c66e5dd061a48873e1"
+    },
+    {
+      "file": "matrix-108.bin",
+      "matrix": "conv.out_proj",
+      "row": 384,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "8c416542643fc733773e92cc81505ed799b13e673918491dea0f52d3d92558a5"
+    },
+    {
+      "file": "matrix-109.bin",
+      "matrix": "conv.out_proj",
+      "row": 416,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "89cbd4401f383153bc53ada45b802c13d0197bce502d7ae8b6dbf26f88e1fcb0"
+    },
+    {
+      "file": "matrix-110.bin",
+      "matrix": "conv.out_proj",
+      "row": 448,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "acade9e8bd73ff55605d72e62271b1c2403062a70d35c426eca166a474728ce7"
+    },
+    {
+      "file": "matrix-111.bin",
+      "matrix": "conv.out_proj",
+      "row": 480,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "149f7d3bd04cf99936262c7084efeef0fe70b8afacdea9c8e571c9051224810e"
+    },
+    {
+      "file": "matrix-112.bin",
+      "matrix": "conv.out_proj",
+      "row": 512,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "43aac5a609a813912d397749e79c47d97a8bfe4bc92fe198f453f9600256920e"
+    },
+    {
+      "file": "matrix-113.bin",
+      "matrix": "conv.out_proj",
+      "row": 544,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "20b38019783822b06c69feb17cf99683da69e9e24c94abaef1bcfc49794b7d26"
+    },
+    {
+      "file": "matrix-114.bin",
+      "matrix": "conv.out_proj",
+      "row": 576,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "b2ebe01a65e1661e0953248d0199dd23253d3224dad492dca00ec5b8551f4d2c"
+    },
+    {
+      "file": "matrix-115.bin",
+      "matrix": "conv.out_proj",
+      "row": 608,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "a4511411b94f44836f1f6a6ba3e5d31314df5f59485fbf81c68acdd6d749b8a4"
+    },
+    {
+      "file": "matrix-116.bin",
+      "matrix": "conv.out_proj",
+      "row": 640,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "df49bd17cd4db6594775e688d580e86d5495d3851d3b42b44afddfa8c9dea6ee"
+    },
+    {
+      "file": "matrix-117.bin",
+      "matrix": "conv.out_proj",
+      "row": 672,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "84dbceaa479051798c7b06abf6de9d951fa9bbd7014ed3b5d04155a506bf0efb"
+    },
+    {
+      "file": "matrix-118.bin",
+      "matrix": "conv.out_proj",
+      "row": 704,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "42f3574984bc8d7e77f47dc43facfcdf84ceb02f7345c2aad05bf9712faca542"
+    },
+    {
+      "file": "matrix-119.bin",
+      "matrix": "conv.out_proj",
+      "row": 736,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "26b01cbccc11ce2861b38b256d8abe884a28e0ed75e23203998d7b7b9f9e6f2b"
+    },
+    {
+      "file": "matrix-120.bin",
+      "matrix": "conv.out_proj",
+      "row": 768,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "d2bf9aadf83e63f0e572cebaec54817a80c78104b097c1a3063288b4ea538a2a"
+    },
+    {
+      "file": "matrix-121.bin",
+      "matrix": "conv.out_proj",
+      "row": 800,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "563dd4240bea42b757fadfcd75f847f9717623d6b6631998813ce855e63c27ea"
+    },
+    {
+      "file": "matrix-122.bin",
+      "matrix": "conv.out_proj",
+      "row": 832,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "a81d40bb97995cc7d75594ac334445cec59b1d3f5a4672849f92af178f6d6139"
+    },
+    {
+      "file": "matrix-123.bin",
+      "matrix": "conv.out_proj",
+      "row": 864,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "235a801aae4e78f1c9608dcc5c4c5e50497f3f3d793022ddd5da289661c73713"
+    },
+    {
+      "file": "matrix-124.bin",
+      "matrix": "conv.out_proj",
+      "row": 896,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "e7cede9be203b7f65d2082b5655297d333bfb77c3146f44072d42207f8adfc7c"
+    },
+    {
+      "file": "matrix-125.bin",
+      "matrix": "conv.out_proj",
+      "row": 928,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "5981628320a53184836e0e6f72755e28c3ec9e38db19ed22940b71b6ef933b00"
+    },
+    {
+      "file": "matrix-126.bin",
+      "matrix": "conv.out_proj",
+      "row": 960,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "31b1376e795b1bfdf0d061e4ae93eb7ea3754124211bc78958ea463ada49e961"
+    },
+    {
+      "file": "matrix-127.bin",
+      "matrix": "conv.out_proj",
+      "row": 992,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "9148ccf6aa979dca2d3430da51be1ae6a5fe4ea6396a86994c01a669d88ca1b7"
+    },
+    {
+      "file": "matrix-128.bin",
+      "matrix": "feed_forward.w1",
+      "row": 0,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "693783f767f272ff23cfaca465b631c02819488341140df0dd6dea871b40f8c1"
+    },
+    {
+      "file": "matrix-129.bin",
+      "matrix": "feed_forward.w1",
+      "row": 32,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "5904173dfad680e04ceed56ad6f47213cb7db94a42fa7f07e530ae27a1f2d0bc"
+    },
+    {
+      "file": "matrix-130.bin",
+      "matrix": "feed_forward.w1",
+      "row": 64,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "fb9667132ca5375c20e90b5550b079b100b5f3abcd79b30b1ca3646c413ca26d"
+    },
+    {
+      "file": "matrix-131.bin",
+      "matrix": "feed_forward.w1",
+      "row": 96,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "16e20eb501a4d2f953cdc17a18e39df34acb10f7bf2df31a719b48e9aee79c03"
+    },
+    {
+      "file": "matrix-132.bin",
+      "matrix": "feed_forward.w1",
+      "row": 128,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "4b3f24edb2f2416a73416e4ffe48ea9b35057d27a9053033697b3c55cfb353bc"
+    },
+    {
+      "file": "matrix-133.bin",
+      "matrix": "feed_forward.w1",
+      "row": 160,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "6884292b9fceef201abf1ced9a774b37a9e399d39b24f0e31352002ecda6f381"
+    },
+    {
+      "file": "matrix-134.bin",
+      "matrix": "feed_forward.w1",
+      "row": 192,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "0ab3b76ecbafe686f58f0e8f3c936c9910679101bb02cb2acc8774de7431f95a"
+    },
+    {
+      "file": "matrix-135.bin",
+      "matrix": "feed_forward.w1",
+      "row": 224,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "fef278446b7238fef7842e41c20bf402bd8e648c29ea7fbce9c94121e9052717"
+    },
+    {
+      "file": "matrix-136.bin",
+      "matrix": "feed_forward.w1",
+      "row": 256,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "e21b7e2e14d881fc6e687bb2d05df63b108f768a5bb654d60ab58e8a9ede0796"
+    },
+    {
+      "file": "matrix-137.bin",
+      "matrix": "feed_forward.w1",
+      "row": 288,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "ff87fe9bf82abd3a77c987b250849f884724309b3b384569f6d218ebf047c676"
+    },
+    {
+      "file": "matrix-138.bin",
+      "matrix": "feed_forward.w1",
+      "row": 320,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "03840a997c8526870bc4009812d2f43c04c07ff65c9f006351327a3c857e6c23"
+    },
+    {
+      "file": "matrix-139.bin",
+      "matrix": "feed_forward.w1",
+      "row": 352,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "b2080a8062b474874e944b463bf8ec50ed9d4c17c826828c1bab5dad9a193c54"
+    },
+    {
+      "file": "matrix-140.bin",
+      "matrix": "feed_forward.w1",
+      "row": 384,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "dfc69dffc06a6ddd5a0833ad26facfbfa5d6ed53b23629be4a40680d99090667"
+    },
+    {
+      "file": "matrix-141.bin",
+      "matrix": "feed_forward.w1",
+      "row": 416,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "2da4e9f079eab1d975fe0d4edd24f9e3c90acc79cce62ce728f0e6a896cadf21"
+    },
+    {
+      "file": "matrix-142.bin",
+      "matrix": "feed_forward.w1",
+      "row": 448,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "59d6459f6722b0dd0f67840b1d8215f91f8bf8338709d588cb0ecb3c6cd2e5aa"
+    },
+    {
+      "file": "matrix-143.bin",
+      "matrix": "feed_forward.w1",
+      "row": 480,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "3f68b4877e39b5ed5a16254058d4b10a63511aab5eb55561d52a586ff0968f01"
+    },
+    {
+      "file": "matrix-144.bin",
+      "matrix": "feed_forward.w1",
+      "row": 512,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "9a1879efc37a3f13a40ce0d10e99ec2ffb1cc453a6c020c08d04b089fe6b0c6c"
+    },
+    {
+      "file": "matrix-145.bin",
+      "matrix": "feed_forward.w1",
+      "row": 544,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "1452bc79fea24cecd60a5e2df965f4b0b125566232404015b61d7a87fea24148"
+    },
+    {
+      "file": "matrix-146.bin",
+      "matrix": "feed_forward.w1",
+      "row": 576,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "203de66dfca032ff0b64c3dcaba99e5f814db3d22732c75961a099d11844e906"
+    },
+    {
+      "file": "matrix-147.bin",
+      "matrix": "feed_forward.w1",
+      "row": 608,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "73e72c2c0aab35d1dee80514da59c9363a18056f14a217c587666b3c607af8d2"
+    },
+    {
+      "file": "matrix-148.bin",
+      "matrix": "feed_forward.w1",
+      "row": 640,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "e363d80611b962f3972d7eb0d60e99de10fd8812f134ddce3fb4c6c71b3baba7"
+    },
+    {
+      "file": "matrix-149.bin",
+      "matrix": "feed_forward.w1",
+      "row": 672,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "8cc0be980d3212fbca40a424fec34852d787ab8e377cb6494c1008fe90af14fd"
+    },
+    {
+      "file": "matrix-150.bin",
+      "matrix": "feed_forward.w1",
+      "row": 704,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "bd4244148c89de685fd5f77070a79a2371a1587db2d6efb3d084ac5a61d6c5a7"
+    },
+    {
+      "file": "matrix-151.bin",
+      "matrix": "feed_forward.w1",
+      "row": 736,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "8aba322384c01e9d594d330f0b451b848686792ee62cdf4b1fb7dfcb717a336c"
+    },
+    {
+      "file": "matrix-152.bin",
+      "matrix": "feed_forward.w1",
+      "row": 768,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "837a7c548eb346d4b8dc3c951691fc949e5e5d0ca3c64d723a1e5f087af905cd"
+    },
+    {
+      "file": "matrix-153.bin",
+      "matrix": "feed_forward.w1",
+      "row": 800,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "9e62732bf9e75ddb24065ce5dbb433331fa19fed77ca0eb05af2ef4075efa03b"
+    },
+    {
+      "file": "matrix-154.bin",
+      "matrix": "feed_forward.w1",
+      "row": 832,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "c2f62bdb7988f9e3776facd5437fc5bb98982ee419e44879549364fb4be9f001"
+    },
+    {
+      "file": "matrix-155.bin",
+      "matrix": "feed_forward.w1",
+      "row": 864,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "eb6573c54577ce24d274a62af5d80a522ebcc9d51ff5f519b6d1ba5f6af04d94"
+    },
+    {
+      "file": "matrix-156.bin",
+      "matrix": "feed_forward.w1",
+      "row": 896,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "fb4405463c1a39145c4d3161f3f4b1c26570b6b7c5313d61df646d225c2e3da3"
+    },
+    {
+      "file": "matrix-157.bin",
+      "matrix": "feed_forward.w1",
+      "row": 928,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "e66eaca3e7393e334c5cf3cce3d42d54d36dfd96f8878d8bacf65f4985b48a2d"
+    },
+    {
+      "file": "matrix-158.bin",
+      "matrix": "feed_forward.w1",
+      "row": 960,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "dc5e08741b23642e1a6ae987ca91fa7d37c96d3ccffe6029d65372bbc09d3828"
+    },
+    {
+      "file": "matrix-159.bin",
+      "matrix": "feed_forward.w1",
+      "row": 992,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "f5a620c9a1c55f66d404e2aa1d4bd9024d7cf1e1d1fec413aec5d3e75b38a147"
+    },
+    {
+      "file": "matrix-160.bin",
+      "matrix": "feed_forward.w1",
+      "row": 1024,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "59436cff7f110036d21bf8784b670331e11bd2fda8523c10e8a46da40f5a069f"
+    },
+    {
+      "file": "matrix-161.bin",
+      "matrix": "feed_forward.w1",
+      "row": 1056,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "438abdc95e475e6f5cb772dcac1f8d4132cbdab3ebc6fdc606844d503b9ff2ca"
+    },
+    {
+      "file": "matrix-162.bin",
+      "matrix": "feed_forward.w1",
+      "row": 1088,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "97f6aef87bb10b9d1cee9e63ac9338f95891c62c44dae3f66185d124b790bb78"
+    },
+    {
+      "file": "matrix-163.bin",
+      "matrix": "feed_forward.w1",
+      "row": 1120,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "2bde4b53cbda6a0429c3efbe7ff41bbe9af146efbac7ac2b2e2abb1cd4d4d588"
+    },
+    {
+      "file": "matrix-164.bin",
+      "matrix": "feed_forward.w1",
+      "row": 1152,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "d41e5c3e9db54b68b8b9c034e076a51797e901530584114ac85444bcfe723dc4"
+    },
+    {
+      "file": "matrix-165.bin",
+      "matrix": "feed_forward.w1",
+      "row": 1184,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "4f50c895ae7dc33b8699abd9abf94096bd119048066322823ba5c3008bfe6ff2"
+    },
+    {
+      "file": "matrix-166.bin",
+      "matrix": "feed_forward.w1",
+      "row": 1216,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "bfc74ef9c10305b8de0fdec17a5ae78c0b18db66eab4b94644ae6b1a8e6bdeb4"
+    },
+    {
+      "file": "matrix-167.bin",
+      "matrix": "feed_forward.w1",
+      "row": 1248,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "209e5e539625889fd61ce22856b088a9d40759dd08771ba428236b4393ab1f38"
+    },
+    {
+      "file": "matrix-168.bin",
+      "matrix": "feed_forward.w1",
+      "row": 1280,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "a0d759ae7da451ac428feba19cebe16e4048cf8574c4ce4ac19c2f39dea0a9b3"
+    },
+    {
+      "file": "matrix-169.bin",
+      "matrix": "feed_forward.w1",
+      "row": 1312,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "fb7ea5624eca85c880c4be65bfbb5fd8efe2fba31f2a1206fec2315cace32087"
+    },
+    {
+      "file": "matrix-170.bin",
+      "matrix": "feed_forward.w1",
+      "row": 1344,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "1e267a3ad78789a8d09ac7a69f736ca4be437d6a1add36960508d01ecb463514"
+    },
+    {
+      "file": "matrix-171.bin",
+      "matrix": "feed_forward.w1",
+      "row": 1376,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "61da5fc922915789a6863a412467df0597e4173d2ea7e312c0486fab80067c0c"
+    },
+    {
+      "file": "matrix-172.bin",
+      "matrix": "feed_forward.w1",
+      "row": 1408,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "e0f8e2c8bedda5aeb47d3ba4bfdba8de8439bb8d829eca193e3e86926f7feddb"
+    },
+    {
+      "file": "matrix-173.bin",
+      "matrix": "feed_forward.w1",
+      "row": 1440,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "e2365ebfceb19131d23d4b954bf0cb46cedf43ed8616255c44b9397e949699c0"
+    },
+    {
+      "file": "matrix-174.bin",
+      "matrix": "feed_forward.w1",
+      "row": 1472,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "2a09ba0cdd2ad0a2889905cd9d45002bbf42b4e87332f9b07599aace29702fc4"
+    },
+    {
+      "file": "matrix-175.bin",
+      "matrix": "feed_forward.w1",
+      "row": 1504,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "5e33b4c9cb2e339e360cc03f658056e9820b83719387a9177031232a5066c997"
+    },
+    {
+      "file": "matrix-176.bin",
+      "matrix": "feed_forward.w1",
+      "row": 1536,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "6aaa30ecfb234e2d0393d17727661afbdf64495dba4b5b2ec7c4f9c9e9af9419"
+    },
+    {
+      "file": "matrix-177.bin",
+      "matrix": "feed_forward.w1",
+      "row": 1568,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "51f0ec7cae84f1c410f25483cb95b8ae95535611cfe43d2ab13a8f0f85c26129"
+    },
+    {
+      "file": "matrix-178.bin",
+      "matrix": "feed_forward.w1",
+      "row": 1600,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "7f0d0a1e7bc509c9c8b6e3eb642dca443445c5cc150532097a04c92346e7b692"
+    },
+    {
+      "file": "matrix-179.bin",
+      "matrix": "feed_forward.w1",
+      "row": 1632,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "0f591fc3882d59610e05f0e4f494b0bfcb8a9a30c099878f9702d594174712ab"
+    },
+    {
+      "file": "matrix-180.bin",
+      "matrix": "feed_forward.w1",
+      "row": 1664,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "86575f34677de9e42277cce80aab0828a6a0add1a3300b0a0f8188f2254e7146"
+    },
+    {
+      "file": "matrix-181.bin",
+      "matrix": "feed_forward.w1",
+      "row": 1696,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "52518ad743ea241d66779c0af07bd60b760f4a106929b0650b1d3dd35d7b1609"
+    },
+    {
+      "file": "matrix-182.bin",
+      "matrix": "feed_forward.w1",
+      "row": 1728,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "7a067afbb8f5fcdf97c8adb6cf1ee87068f68ecdeb5ae091ff30f4acc82d0821"
+    },
+    {
+      "file": "matrix-183.bin",
+      "matrix": "feed_forward.w1",
+      "row": 1760,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "4b910e28f14fe80dcb7e382736588eb86f0096196186c565c7a1eefc074969e6"
+    },
+    {
+      "file": "matrix-184.bin",
+      "matrix": "feed_forward.w1",
+      "row": 1792,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "caca7c6f5fdc732cd51eb101357bf4772493d7192981c9a2cdeff0ef8e690681"
+    },
+    {
+      "file": "matrix-185.bin",
+      "matrix": "feed_forward.w1",
+      "row": 1824,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "a03d99d2017c2e57816347ce8dba1a5cae3d56645fa52c8364fcb509472adcc3"
+    },
+    {
+      "file": "matrix-186.bin",
+      "matrix": "feed_forward.w1",
+      "row": 1856,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "74838c93ba9001f13b977353064141c82c9b50ea5ee09e1ae1263d48f1d6f73f"
+    },
+    {
+      "file": "matrix-187.bin",
+      "matrix": "feed_forward.w1",
+      "row": 1888,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "b093fca96d882bff9dc4e8736522b747106e2a90383c425ea5d55b44fcb0dbca"
+    },
+    {
+      "file": "matrix-188.bin",
+      "matrix": "feed_forward.w1",
+      "row": 1920,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "a9ee410f908622945b596ff7b0bd3e37c1ff5d81e7b542b40f237c1c1305320e"
+    },
+    {
+      "file": "matrix-189.bin",
+      "matrix": "feed_forward.w1",
+      "row": 1952,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "d27b37b5a161f3276c9deb2c10dba0b7ae92b0ac19a42f44374c4406bbafc5fa"
+    },
+    {
+      "file": "matrix-190.bin",
+      "matrix": "feed_forward.w1",
+      "row": 1984,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "d28f22bc6ac943adf4a0328b0fa0dcc4a81bd0206f3dfa5aaa6869745d5f5b9d"
+    },
+    {
+      "file": "matrix-191.bin",
+      "matrix": "feed_forward.w1",
+      "row": 2016,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "ae26a1bc4c6fe61e2b520fd293e002f89c36f7ba8f0e832c08527ad3e11d6a18"
+    },
+    {
+      "file": "matrix-192.bin",
+      "matrix": "feed_forward.w1",
+      "row": 2048,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "11280b66233829f96c1ce8b43fd8f3e8b608df71c34935d57d15613881476652"
+    },
+    {
+      "file": "matrix-193.bin",
+      "matrix": "feed_forward.w1",
+      "row": 2080,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "b5a3533185282fd46997fe9a137630be3a41487865b0f193e7dfc78280882f5b"
+    },
+    {
+      "file": "matrix-194.bin",
+      "matrix": "feed_forward.w1",
+      "row": 2112,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "5dbfb17428f5cd3b8ce69881d1b915f47c139572b4a11c8027c0cb211a7ad25a"
+    },
+    {
+      "file": "matrix-195.bin",
+      "matrix": "feed_forward.w1",
+      "row": 2144,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "07d2dd16a623b3cf58063e44aa5ea3c9e8c38b257fb3b0c2ef64e1a52ea72578"
+    },
+    {
+      "file": "matrix-196.bin",
+      "matrix": "feed_forward.w1",
+      "row": 2176,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "383cb5ec721338e231955f206db2601dece5b538f8753f2685ce723e8055b4b0"
+    },
+    {
+      "file": "matrix-197.bin",
+      "matrix": "feed_forward.w1",
+      "row": 2208,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "f5589e6945b8f479105ef497d01b539f052d41f7675a93d1505214e95539e6d5"
+    },
+    {
+      "file": "matrix-198.bin",
+      "matrix": "feed_forward.w1",
+      "row": 2240,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "d2cc1b23a32b5402898a882487772db5eed754149c968ed00bb41516e48e74cc"
+    },
+    {
+      "file": "matrix-199.bin",
+      "matrix": "feed_forward.w1",
+      "row": 2272,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "aad3d1f5fcff71537e2564db5fdec9ed12764f2cd783859c82e78ef7a4cb21b0"
+    },
+    {
+      "file": "matrix-200.bin",
+      "matrix": "feed_forward.w1",
+      "row": 2304,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "5241205dc65f19882014c143139365d3aab5e4d1a8014b7565b2eda165477b53"
+    },
+    {
+      "file": "matrix-201.bin",
+      "matrix": "feed_forward.w1",
+      "row": 2336,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "f1684c7b39e7533d6b55237a6b46663c8fe6910ddf32c6e8299aa4d511469a0a"
+    },
+    {
+      "file": "matrix-202.bin",
+      "matrix": "feed_forward.w1",
+      "row": 2368,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "0255ec90451d4807ef0ff953c1571d2db48e797541347702696340427beb937e"
+    },
+    {
+      "file": "matrix-203.bin",
+      "matrix": "feed_forward.w1",
+      "row": 2400,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "92342dae0506e9a93b56ca5c107fefb16a81f217f0e1d0975ccb0a465821d4b1"
+    },
+    {
+      "file": "matrix-204.bin",
+      "matrix": "feed_forward.w1",
+      "row": 2432,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "3c800eb4eaae85f62faa941d00bd07c39f43167efcde04ab16d128c6c9e01742"
+    },
+    {
+      "file": "matrix-205.bin",
+      "matrix": "feed_forward.w1",
+      "row": 2464,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "c377b25de5781138bf448088e26866edf906f2397b1709c5b5541fe781849fe3"
+    },
+    {
+      "file": "matrix-206.bin",
+      "matrix": "feed_forward.w1",
+      "row": 2496,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "f20caff55839ac8993eb49f31f880f7b85731fd994c3d962b2853303b08c19da"
+    },
+    {
+      "file": "matrix-207.bin",
+      "matrix": "feed_forward.w1",
+      "row": 2528,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "35c0aaa1fac66a7451d48209a285011e74c31f9420c35dfa43a0356aaea7bd5d"
+    },
+    {
+      "file": "matrix-208.bin",
+      "matrix": "feed_forward.w3",
+      "row": 0,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "c73323b8845377dbf2ff4aae1b897e38bcd1e8e4e71ff4d3e1a12ff0d3271519"
+    },
+    {
+      "file": "matrix-209.bin",
+      "matrix": "feed_forward.w3",
+      "row": 32,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "dab0c4343030f0f84003b76721c42781992b6bdfa4c96cb1ed78b3bc69011ad6"
+    },
+    {
+      "file": "matrix-210.bin",
+      "matrix": "feed_forward.w3",
+      "row": 64,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "9523f2611cce018ba71b423205ceea8d40658152544459f44145ac38961e6500"
+    },
+    {
+      "file": "matrix-211.bin",
+      "matrix": "feed_forward.w3",
+      "row": 96,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "b7aef60f9b794e5c38c641d5598b8a008ce223385c8ec85fa8262b95b83b64d0"
+    },
+    {
+      "file": "matrix-212.bin",
+      "matrix": "feed_forward.w3",
+      "row": 128,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "85dbbbe4e10a2717c56fa9fcbf2ccf674332319b5a58dea7358748a2fb74121b"
+    },
+    {
+      "file": "matrix-213.bin",
+      "matrix": "feed_forward.w3",
+      "row": 160,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "7b1db1f5f9b5f7a4a2eae94f357dc8bcd7bf47e08e6d1e5008e03bb693b31635"
+    },
+    {
+      "file": "matrix-214.bin",
+      "matrix": "feed_forward.w3",
+      "row": 192,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "a63882cb5940d5a03dd1ea4693de05e31a0c32318054d4869fc23696fc3d1af6"
+    },
+    {
+      "file": "matrix-215.bin",
+      "matrix": "feed_forward.w3",
+      "row": 224,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "0756883c047482d883ee78e8a03de7a653a919dac3e2c0f09c8618175152326a"
+    },
+    {
+      "file": "matrix-216.bin",
+      "matrix": "feed_forward.w3",
+      "row": 256,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "c54d29174cc4f527da14fc8998377b01cee10a283ec6afbea8f6b30a9ea0475f"
+    },
+    {
+      "file": "matrix-217.bin",
+      "matrix": "feed_forward.w3",
+      "row": 288,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "a235aee16d696cf20b66b8b4cfd39be0661118e37badd58db7eab0bdc2c5c711"
+    },
+    {
+      "file": "matrix-218.bin",
+      "matrix": "feed_forward.w3",
+      "row": 320,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "caab7572db8dde711d524328077bf10019f41933add5e509e1634ca140a52fc6"
+    },
+    {
+      "file": "matrix-219.bin",
+      "matrix": "feed_forward.w3",
+      "row": 352,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "f83bfa072c980fdfa40c2a5221e2a112df8ecf12a8b7fcbb91f493fe6de9dace"
+    },
+    {
+      "file": "matrix-220.bin",
+      "matrix": "feed_forward.w3",
+      "row": 384,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "17f773487dbc02104aa4de2d451454f3ce1c7d6927465370d7e1c4442b7167b9"
+    },
+    {
+      "file": "matrix-221.bin",
+      "matrix": "feed_forward.w3",
+      "row": 416,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "7c7f26e1b74de0d7da244102efb42f5720f95432fa46c2e1a2753192fe1f511a"
+    },
+    {
+      "file": "matrix-222.bin",
+      "matrix": "feed_forward.w3",
+      "row": 448,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "c25cda8d0f99d26354cc98727335c56f8def725d089710979844eeb9772d004d"
+    },
+    {
+      "file": "matrix-223.bin",
+      "matrix": "feed_forward.w3",
+      "row": 480,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "0b376227c3904fb275584dc0c44f9c6454ba2a565f10fef0bb07dfd78e4826f4"
+    },
+    {
+      "file": "matrix-224.bin",
+      "matrix": "feed_forward.w3",
+      "row": 512,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "840e45805a9ed50c672e9c981d0656d380063b049e22725cca13b95b50739f36"
+    },
+    {
+      "file": "matrix-225.bin",
+      "matrix": "feed_forward.w3",
+      "row": 544,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "24d64cf9c57814010614e90a44658d34866e02791b83f406ff197ea813681bad"
+    },
+    {
+      "file": "matrix-226.bin",
+      "matrix": "feed_forward.w3",
+      "row": 576,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "8f661a62b980e193e9a93a8bbb75316ad597921a2bf3c9328f45f89d1c8ea288"
+    },
+    {
+      "file": "matrix-227.bin",
+      "matrix": "feed_forward.w3",
+      "row": 608,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "2ac2b4abdb2e4cc5a89fbbf9eaecd650981bb16de1ae092c2d169ce1c359c3d3"
+    },
+    {
+      "file": "matrix-228.bin",
+      "matrix": "feed_forward.w3",
+      "row": 640,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "d35074e1ecb4f62eff1d8aa62995edf22121ad131ea2e1bfc2407bc97810e879"
+    },
+    {
+      "file": "matrix-229.bin",
+      "matrix": "feed_forward.w3",
+      "row": 672,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "893ffd680206de93a263a3799e2564e2aeb8a5e18818a1bf0dae90cac6eac161"
+    },
+    {
+      "file": "matrix-230.bin",
+      "matrix": "feed_forward.w3",
+      "row": 704,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "878ee8bfadf6bf34525dc958e2c566d25a1750ef42a1e21c17b20f5f7fa17466"
+    },
+    {
+      "file": "matrix-231.bin",
+      "matrix": "feed_forward.w3",
+      "row": 736,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "9e431be89f45f5b0f18a918742aa522a119df1ce1c8c858e7f7dfa8b84fb9a6d"
+    },
+    {
+      "file": "matrix-232.bin",
+      "matrix": "feed_forward.w3",
+      "row": 768,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "e7cd04ff2e02213208d0e1feacb2d06ae7745b4f69b811f5776e9c8dff8ddbff"
+    },
+    {
+      "file": "matrix-233.bin",
+      "matrix": "feed_forward.w3",
+      "row": 800,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "cac10cab7c6f8e2bc61245bafb88b9717618cb01884d58459840bd01c32efd6f"
+    },
+    {
+      "file": "matrix-234.bin",
+      "matrix": "feed_forward.w3",
+      "row": 832,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "7963901b231fc34a1cc580182beceafd4b8f75e5caac4ed217c98692e448e0b2"
+    },
+    {
+      "file": "matrix-235.bin",
+      "matrix": "feed_forward.w3",
+      "row": 864,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "fe575876a6ac236ff9ec52f918ec11bb40e760d3e5d06d455272457fe55adcb2"
+    },
+    {
+      "file": "matrix-236.bin",
+      "matrix": "feed_forward.w3",
+      "row": 896,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "f4d48343d0b337f90791dcae5c12cbb9180ef475c30fde756ee3a167ddc0e8db"
+    },
+    {
+      "file": "matrix-237.bin",
+      "matrix": "feed_forward.w3",
+      "row": 928,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "4e574ea487b7411ff8395201b1cf0e843cfb99b7f725585e4dc1b16d4c04d063"
+    },
+    {
+      "file": "matrix-238.bin",
+      "matrix": "feed_forward.w3",
+      "row": 960,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "a1abb6c033a5a1ee196f8142015b241bc12d23d061a69798ac940c52698259da"
+    },
+    {
+      "file": "matrix-239.bin",
+      "matrix": "feed_forward.w3",
+      "row": 992,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "e2ad27f08c6fa20095706098c8e7cc08081d1c175ddc5f6dd562103e3a98f204"
+    },
+    {
+      "file": "matrix-240.bin",
+      "matrix": "feed_forward.w3",
+      "row": 1024,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "62ce81140ab7def7d82a6c2ebc1f9882dc9c34633ea636da79a6e80b9e02e8eb"
+    },
+    {
+      "file": "matrix-241.bin",
+      "matrix": "feed_forward.w3",
+      "row": 1056,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "282a6a2c24aaed1e59ebffb5187ed193fb5e25b4f9bdbdf68d99d7041f00e4f4"
+    },
+    {
+      "file": "matrix-242.bin",
+      "matrix": "feed_forward.w3",
+      "row": 1088,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "f1f5ffa7dcbc16859d4cd3d98519e194f5c27bd827e2116d0f5d6571598b8932"
+    },
+    {
+      "file": "matrix-243.bin",
+      "matrix": "feed_forward.w3",
+      "row": 1120,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "11c292b30ea22ac126ac10fc2c5689599c5659d03af4bbd78b1aa721c02db987"
+    },
+    {
+      "file": "matrix-244.bin",
+      "matrix": "feed_forward.w3",
+      "row": 1152,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "99f5fc60977ba267b8c05aa2698867a8c802599127c4653eb48a07b59a76b9da"
+    },
+    {
+      "file": "matrix-245.bin",
+      "matrix": "feed_forward.w3",
+      "row": 1184,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "9bb820e545bafb1ae2295f9c77262d83766c382ede314b9d4c8457a5f7752f79"
+    },
+    {
+      "file": "matrix-246.bin",
+      "matrix": "feed_forward.w3",
+      "row": 1216,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "e2ace92dd724dee6a3316f842a83c60f630e050a7a0bfe375d9943825adf9e75"
+    },
+    {
+      "file": "matrix-247.bin",
+      "matrix": "feed_forward.w3",
+      "row": 1248,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "4b0aebf6b148a56a0d8dfaaf26d24701ffaa492db75e76159badbca7f0c9aad1"
+    },
+    {
+      "file": "matrix-248.bin",
+      "matrix": "feed_forward.w3",
+      "row": 1280,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "a31f873324ed01e2200d456967e5588945a3a8f91f0037b7a4ec05d7f6c9f01c"
+    },
+    {
+      "file": "matrix-249.bin",
+      "matrix": "feed_forward.w3",
+      "row": 1312,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "4b8613b0f6daad5c8fd1b50c352ea24a43b9983a95f50860d9763fc1a2b5a6f8"
+    },
+    {
+      "file": "matrix-250.bin",
+      "matrix": "feed_forward.w3",
+      "row": 1344,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "48800219748f0ed42299f704c2354df7a208147af1f431a8f075c8cc339b10c5"
+    },
+    {
+      "file": "matrix-251.bin",
+      "matrix": "feed_forward.w3",
+      "row": 1376,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "855be878fc9a31d7e4d757b2a55f109e1624859b1d4434799768de4baeb3a389"
+    },
+    {
+      "file": "matrix-252.bin",
+      "matrix": "feed_forward.w3",
+      "row": 1408,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "a5f4073e02eb908125d58df0758a89dd85e7ac9f0499b8f2332e021f308ce48c"
+    },
+    {
+      "file": "matrix-253.bin",
+      "matrix": "feed_forward.w3",
+      "row": 1440,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "46fe6dc1fc99464ef1efccbc14bb16b1c2968026727dd68a859da430a77dbd70"
+    },
+    {
+      "file": "matrix-254.bin",
+      "matrix": "feed_forward.w3",
+      "row": 1472,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "7d1fb8079b73a2e8ad8521e1cb5fc67cebfce1868d8fec9270361af9b123bd8c"
+    },
+    {
+      "file": "matrix-255.bin",
+      "matrix": "feed_forward.w3",
+      "row": 1504,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "036ee68fb8abc4aca1b469cbd40b5fde58fda823abdc12987abbc45e43b1a906"
+    },
+    {
+      "file": "matrix-256.bin",
+      "matrix": "feed_forward.w3",
+      "row": 1536,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "519b6f93b2344fc901aa221c7d3bfa27647193d4825d2f8fb97edaf706a41bf1"
+    },
+    {
+      "file": "matrix-257.bin",
+      "matrix": "feed_forward.w3",
+      "row": 1568,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "3b5ffaa8f4c5e3f833d63f7b13862a4d922facb4cde9d7847d2f3c63aa066b49"
+    },
+    {
+      "file": "matrix-258.bin",
+      "matrix": "feed_forward.w3",
+      "row": 1600,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "5635a96875a7c9ce57fc4f914125025e6658c900211e91ffb59f480df1b208f5"
+    },
+    {
+      "file": "matrix-259.bin",
+      "matrix": "feed_forward.w3",
+      "row": 1632,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "44ed8c425f61aae321713a140ebf967fbedfb49497260eb99ab8ef7eaaed3945"
+    },
+    {
+      "file": "matrix-260.bin",
+      "matrix": "feed_forward.w3",
+      "row": 1664,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "c400f78cc68856666d9b984497c746e7673e883c9548f45348da49bb4864859c"
+    },
+    {
+      "file": "matrix-261.bin",
+      "matrix": "feed_forward.w3",
+      "row": 1696,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "b450540ac50878e97d8bcb57d9db61b79d28abefd4fc83b5eaafb259751329cc"
+    },
+    {
+      "file": "matrix-262.bin",
+      "matrix": "feed_forward.w3",
+      "row": 1728,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "3571c92edb24f797432055c0b73d6813f7f03f6997dfb4bf81510195cf187510"
+    },
+    {
+      "file": "matrix-263.bin",
+      "matrix": "feed_forward.w3",
+      "row": 1760,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "34edb6d94085854c1dcb95b574c87fac057b4b96624ccf9a082ea75b4bfe5380"
+    },
+    {
+      "file": "matrix-264.bin",
+      "matrix": "feed_forward.w3",
+      "row": 1792,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "311469e66c90525e682d17f4ab0e09e4fe6340378fd23dd5edc777e582a8d345"
+    },
+    {
+      "file": "matrix-265.bin",
+      "matrix": "feed_forward.w3",
+      "row": 1824,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "29346de3fd5b2a1d2a6fa8a67621b6f5109e364deabbef469eca10cfdd6849ce"
+    },
+    {
+      "file": "matrix-266.bin",
+      "matrix": "feed_forward.w3",
+      "row": 1856,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "d4618a00ef1704a3ae5584b5a47361d3a6610a1eecb8a4458a5defdc22f468b5"
+    },
+    {
+      "file": "matrix-267.bin",
+      "matrix": "feed_forward.w3",
+      "row": 1888,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "ffa79ebbca74b636a65f09bef723727b6f0906da3028c908143fd7b0d1ea1530"
+    },
+    {
+      "file": "matrix-268.bin",
+      "matrix": "feed_forward.w3",
+      "row": 1920,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "04f899cfdfa15e0f779f947b5a046122282d26f3dc059636f25282d9b3ffbf90"
+    },
+    {
+      "file": "matrix-269.bin",
+      "matrix": "feed_forward.w3",
+      "row": 1952,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "ad41616a73564a4c0966f910f34aeb04c932a0378af59e571b9919c2bee26bd5"
+    },
+    {
+      "file": "matrix-270.bin",
+      "matrix": "feed_forward.w3",
+      "row": 1984,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "de2ffb7cafff338123c9c0720fc8f2f7bc08b60b41bef0bee8084da9c8d3644d"
+    },
+    {
+      "file": "matrix-271.bin",
+      "matrix": "feed_forward.w3",
+      "row": 2016,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "f5e34484d160f7bbbaa3e78aef891b38625bbcfc5b305337ba9317eb7d09f293"
+    },
+    {
+      "file": "matrix-272.bin",
+      "matrix": "feed_forward.w3",
+      "row": 2048,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "5053babe008c402121916a44efd9286b284d1f22663386b95ad40d54e4e82651"
+    },
+    {
+      "file": "matrix-273.bin",
+      "matrix": "feed_forward.w3",
+      "row": 2080,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "82192d853c1ba1d8f7ceaab2926e46e7c6ac1f776438ea1fb8bbf0696fd9e02c"
+    },
+    {
+      "file": "matrix-274.bin",
+      "matrix": "feed_forward.w3",
+      "row": 2112,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "ba3e2bdc515cdfb05aebea3c566b7b8c2e04467d7b919906e1a2087d8e0461a0"
+    },
+    {
+      "file": "matrix-275.bin",
+      "matrix": "feed_forward.w3",
+      "row": 2144,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "d9676c7429a75e30e410ee47d2ef30336a38d9efb4399bf241b47fb2cfe2129a"
+    },
+    {
+      "file": "matrix-276.bin",
+      "matrix": "feed_forward.w3",
+      "row": 2176,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "dab325c909976aa9b811d7b4485a83d5f216c9ab97e308dcdfbebd736768d1df"
+    },
+    {
+      "file": "matrix-277.bin",
+      "matrix": "feed_forward.w3",
+      "row": 2208,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "0823121301f171ffb228037482d05fc12c1d9bf0850aa81547ecc8a8f362a417"
+    },
+    {
+      "file": "matrix-278.bin",
+      "matrix": "feed_forward.w3",
+      "row": 2240,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "8f9348fe7cdb6815a1ac79cb03342c8adfbfc1ff8b50ce7c6b1bcaefcdb14d77"
+    },
+    {
+      "file": "matrix-279.bin",
+      "matrix": "feed_forward.w3",
+      "row": 2272,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "6d41b53e51cd1760f7589744f3fcb1bc932d1a7b48b99f31766b5244e7d305e0"
+    },
+    {
+      "file": "matrix-280.bin",
+      "matrix": "feed_forward.w3",
+      "row": 2304,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "52df3fd9d454634965a9bb8613b478a7e19ff39da1739805d66e39e631618a7c"
+    },
+    {
+      "file": "matrix-281.bin",
+      "matrix": "feed_forward.w3",
+      "row": 2336,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "5284f2fe94122d53b8da723bf24ff62ab5bc0a63416424ef8b2c7d9cb65e4759"
+    },
+    {
+      "file": "matrix-282.bin",
+      "matrix": "feed_forward.w3",
+      "row": 2368,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "529572cf43b0d6230ae915853ab3f6da5580e618cc8bfb0caa8b8cae0fbc762e"
+    },
+    {
+      "file": "matrix-283.bin",
+      "matrix": "feed_forward.w3",
+      "row": 2400,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "88bbd62e2acb2a2306165e3676472c751bf0b25545edef12654c00a6c3ab6e4b"
+    },
+    {
+      "file": "matrix-284.bin",
+      "matrix": "feed_forward.w3",
+      "row": 2432,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "0df74c4afaf4648f558746c050d34b2fc0225273618892fdd2aa7304404ece32"
+    },
+    {
+      "file": "matrix-285.bin",
+      "matrix": "feed_forward.w3",
+      "row": 2464,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "89f16268ed89215982ce815e9183eb79044ba7941f455a671beba1e5ba93318b"
+    },
+    {
+      "file": "matrix-286.bin",
+      "matrix": "feed_forward.w3",
+      "row": 2496,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "fea86dea588e6e64678cd6d5bf79a1e72b67ab6a56c5711c1968be525c40c0c3"
+    },
+    {
+      "file": "matrix-287.bin",
+      "matrix": "feed_forward.w3",
+      "row": 2528,
+      "rows": 32,
+      "bytes": 16512,
+      "sha256": "d8d8e1960445a0b1eb2786a0ca1df55f18ff479bb5b3188e9e189bfe0310d686"
+    },
+    {
+      "file": "matrix-288.bin",
+      "matrix": "feed_forward.w2",
+      "row": 0,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "0ad7a8e0f97c14dde8e0cb996d76de47b351292eb6a21f363f120ef32815e324"
+    },
+    {
+      "file": "matrix-289.bin",
+      "matrix": "feed_forward.w2",
+      "row": 16,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "961d2c3d5a418d6aaa0590ef77caf8b8e95568568a7398b8d3e3dcebbbe98bb0"
+    },
+    {
+      "file": "matrix-290.bin",
+      "matrix": "feed_forward.w2",
+      "row": 32,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "fa083aec8ee54dc92b43a38ce48e2c2e0a3930f91eecb96dbc4710954febd90b"
+    },
+    {
+      "file": "matrix-291.bin",
+      "matrix": "feed_forward.w2",
+      "row": 48,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "0e3ef9cad389d5fbb9754f355fb5feda14da0d58a70e743101a75b7544d5abc5"
+    },
+    {
+      "file": "matrix-292.bin",
+      "matrix": "feed_forward.w2",
+      "row": 64,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "7850fe06f67eb454b4e385309335d4249f44a319a445ffe29b2495114a8061a4"
+    },
+    {
+      "file": "matrix-293.bin",
+      "matrix": "feed_forward.w2",
+      "row": 80,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "2b0c253211bd5b0aba2c507bb80c110d14bce6a43c86133b8de23f57b462ba2a"
+    },
+    {
+      "file": "matrix-294.bin",
+      "matrix": "feed_forward.w2",
+      "row": 96,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "8a954e876f3c286aadefa9a195f77cc47ebbedb98b26b09bbbf55e3b90408458"
+    },
+    {
+      "file": "matrix-295.bin",
+      "matrix": "feed_forward.w2",
+      "row": 112,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "e805a8af424d04b63d92d929f61b0605e3a0c5caa9e05fddcd435a65d229d7bc"
+    },
+    {
+      "file": "matrix-296.bin",
+      "matrix": "feed_forward.w2",
+      "row": 128,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "9930b3bf6561b4ab610190c6441af1f601fa4b1e83b357e8711db057ae52441a"
+    },
+    {
+      "file": "matrix-297.bin",
+      "matrix": "feed_forward.w2",
+      "row": 144,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "32ad1022ce9b3a9db402c5a68ae6079a2b224c444c00110f81b461127d659964"
+    },
+    {
+      "file": "matrix-298.bin",
+      "matrix": "feed_forward.w2",
+      "row": 160,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "2b52a6a14448e273a6bc4f92723c2fdab72a57cbb2b97d6c215eadefde6a0eda"
+    },
+    {
+      "file": "matrix-299.bin",
+      "matrix": "feed_forward.w2",
+      "row": 176,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "0b211c67b7cb1bb582ce5a6b7d62d813c0d2c836e3849845d1ce2d7a891fb334"
+    },
+    {
+      "file": "matrix-300.bin",
+      "matrix": "feed_forward.w2",
+      "row": 192,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "055c83dedce000317fed4cd12e380d179a2108019963e6d8f91c14fafc5d7bef"
+    },
+    {
+      "file": "matrix-301.bin",
+      "matrix": "feed_forward.w2",
+      "row": 208,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "46f4e776373fba20b956a9f0b37e8cb894b249b587a889ecb093ec646000eb68"
+    },
+    {
+      "file": "matrix-302.bin",
+      "matrix": "feed_forward.w2",
+      "row": 224,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "9e9ce849a335045303b0ffe5b3bc4990fdf8d58082f3c8f029c4b5bf92b681f6"
+    },
+    {
+      "file": "matrix-303.bin",
+      "matrix": "feed_forward.w2",
+      "row": 240,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "cc19dbbca46b9125867f5f24ea82f2e62eab0119dd642689f151340e200afd23"
+    },
+    {
+      "file": "matrix-304.bin",
+      "matrix": "feed_forward.w2",
+      "row": 256,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "e923221a922e129937c04ae3fe715a1965c6fdba58184b5775370892db6316ae"
+    },
+    {
+      "file": "matrix-305.bin",
+      "matrix": "feed_forward.w2",
+      "row": 272,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "fbfae15a9674a202b23347ee1351d0a4a1f78a8548cc337c55fd88147279e8c9"
+    },
+    {
+      "file": "matrix-306.bin",
+      "matrix": "feed_forward.w2",
+      "row": 288,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "5e943b0d7e7ef932098cf035c132d7e79f064d36b23772a681f561e68adf8b2e"
+    },
+    {
+      "file": "matrix-307.bin",
+      "matrix": "feed_forward.w2",
+      "row": 304,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "91d826cacced86f1462a7a6ec40d9c52d3a5f3a0a4346c767b9342b70a15e3fe"
+    },
+    {
+      "file": "matrix-308.bin",
+      "matrix": "feed_forward.w2",
+      "row": 320,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "6fadbd933e632c175c6a86ff7f13a2ac32cb33bd92b814310e57282582c38973"
+    },
+    {
+      "file": "matrix-309.bin",
+      "matrix": "feed_forward.w2",
+      "row": 336,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "0c7df4d3301601e93b9a4b3736ea6b3c37f83e97601d9f4b9505eaba203ebbdc"
+    },
+    {
+      "file": "matrix-310.bin",
+      "matrix": "feed_forward.w2",
+      "row": 352,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "48e951219c8ed19464622108efa72cd130b06b2d6764191611159363094f1f4e"
+    },
+    {
+      "file": "matrix-311.bin",
+      "matrix": "feed_forward.w2",
+      "row": 368,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "0e82f5bc4ef609506645e282c47a9cd7c7ab47bb61553893efff8bfc89e98a1f"
+    },
+    {
+      "file": "matrix-312.bin",
+      "matrix": "feed_forward.w2",
+      "row": 384,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "50249fc6e212afde35dd39e3aaf4f8448aa5bf29a7ecbbd3743edd08ff7acfbf"
+    },
+    {
+      "file": "matrix-313.bin",
+      "matrix": "feed_forward.w2",
+      "row": 400,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "908d6dde21172d390d418da951151c75d692507b79b85b56027fbb254e10c7f2"
+    },
+    {
+      "file": "matrix-314.bin",
+      "matrix": "feed_forward.w2",
+      "row": 416,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "411393f7466c5a05fc601504e912501fb8039ccb21ecb15927c2c4a91e3ca0da"
+    },
+    {
+      "file": "matrix-315.bin",
+      "matrix": "feed_forward.w2",
+      "row": 432,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "489634d24133cfe6f530d08f729b916bac1fc136f19d706be60a1a849e6dedc4"
+    },
+    {
+      "file": "matrix-316.bin",
+      "matrix": "feed_forward.w2",
+      "row": 448,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "34c2cbdafaef8eaa801aba75f14b0c3528cacb41665b8620c7d9f3d9c45420fa"
+    },
+    {
+      "file": "matrix-317.bin",
+      "matrix": "feed_forward.w2",
+      "row": 464,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "a949270dd257d8132d339944efba39eccbc8ac67a607a9160cfad51622472746"
+    },
+    {
+      "file": "matrix-318.bin",
+      "matrix": "feed_forward.w2",
+      "row": 480,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "47f665667e698aeb8d4e0ec312a0f7427dd214f45c9f6788387cee51a1c5ac09"
+    },
+    {
+      "file": "matrix-319.bin",
+      "matrix": "feed_forward.w2",
+      "row": 496,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "08bc0998fa9d02391b6bad4da766d3dae55eb5d811d9879f93be48190c8b6c51"
+    },
+    {
+      "file": "matrix-320.bin",
+      "matrix": "feed_forward.w2",
+      "row": 512,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "e3513fa88995a8d0534073f5d1ac3148cf7df5002ecfe19fdcc7d8e522222d2e"
+    },
+    {
+      "file": "matrix-321.bin",
+      "matrix": "feed_forward.w2",
+      "row": 528,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "4524a37e53080b3488ac55ea84dbe307035a7eaed87b9ce22cfb991aeafcf392"
+    },
+    {
+      "file": "matrix-322.bin",
+      "matrix": "feed_forward.w2",
+      "row": 544,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "06bb2c7d18d6b816c86012beda8d7cb988e0d8e762897790a83b81a54e2d6731"
+    },
+    {
+      "file": "matrix-323.bin",
+      "matrix": "feed_forward.w2",
+      "row": 560,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "c08782671b4e7bc575a7d7299f03eb91b0e304629669804616aa2b043bafcb69"
+    },
+    {
+      "file": "matrix-324.bin",
+      "matrix": "feed_forward.w2",
+      "row": 576,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "20844f28dad020d4fabf399a0683fd1103f5317d51a723914bbc417fe1a822c0"
+    },
+    {
+      "file": "matrix-325.bin",
+      "matrix": "feed_forward.w2",
+      "row": 592,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "246acf7cc1ee07408b5386625e14f42f4cb7bd9d40260abc2d5a2cd105d2ec89"
+    },
+    {
+      "file": "matrix-326.bin",
+      "matrix": "feed_forward.w2",
+      "row": 608,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "11e2f282076e1656f367db8d00dc0f44bae510e9090b0b788a211ef44d6e9914"
+    },
+    {
+      "file": "matrix-327.bin",
+      "matrix": "feed_forward.w2",
+      "row": 624,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "bfd3191f4bfa2f2ff493b9e25603644b42e1f6b3ba65d312c1b9e4abb1182c78"
+    },
+    {
+      "file": "matrix-328.bin",
+      "matrix": "feed_forward.w2",
+      "row": 640,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "3347e345d6123fa4636233947d176f4316fc6a2308cc4251d00c0f23c16148a9"
+    },
+    {
+      "file": "matrix-329.bin",
+      "matrix": "feed_forward.w2",
+      "row": 656,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "22d765369a92ec905b5fac8ce83c84a7bfa525ffcea5a6d89c17919b5829297e"
+    },
+    {
+      "file": "matrix-330.bin",
+      "matrix": "feed_forward.w2",
+      "row": 672,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "0c5eca4500bc03666972aefed9f6ef5091dc9defba2d838fd5d884a80f0c72b8"
+    },
+    {
+      "file": "matrix-331.bin",
+      "matrix": "feed_forward.w2",
+      "row": 688,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "342aac9e8ae43ccf1feb2b02e9d3c9d3ec1679ce6d3deffeb46ebf0246f183b6"
+    },
+    {
+      "file": "matrix-332.bin",
+      "matrix": "feed_forward.w2",
+      "row": 704,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "4b074777c21047c8abea0d001bdb2cb46eea46651ec48eb5c07d6c0aa24af002"
+    },
+    {
+      "file": "matrix-333.bin",
+      "matrix": "feed_forward.w2",
+      "row": 720,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "ee720224fe883e7d0e957595f0c1ba464d277c9e526459665782518df0cfb35b"
+    },
+    {
+      "file": "matrix-334.bin",
+      "matrix": "feed_forward.w2",
+      "row": 736,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "6dd2d649cf37ea7742011171a72aa668e931a1611fb9d6465eb59325285a1f7d"
+    },
+    {
+      "file": "matrix-335.bin",
+      "matrix": "feed_forward.w2",
+      "row": 752,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "6176fc4d79201b3b5981e42c98be1b18d5934d7ede8402ccaddb85fdef8c0c49"
+    },
+    {
+      "file": "matrix-336.bin",
+      "matrix": "feed_forward.w2",
+      "row": 768,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "ceaa1aa52c680b51acc95ad50ef93fae14314edd7c353db32c5e051d41d6d1db"
+    },
+    {
+      "file": "matrix-337.bin",
+      "matrix": "feed_forward.w2",
+      "row": 784,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "496fe143de135629cc60beef45cd9a17a38a5331fc03c7f2fae23353c5f1de51"
+    },
+    {
+      "file": "matrix-338.bin",
+      "matrix": "feed_forward.w2",
+      "row": 800,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "e31461f17a4316bbc94dbd552f7679c253ee9336f65abe3a3f782a8dfff48053"
+    },
+    {
+      "file": "matrix-339.bin",
+      "matrix": "feed_forward.w2",
+      "row": 816,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "b668bb3bfc2635cecc6f4757d0fc2e572a93e4ffdfed8f5f179b271bb5d6d7f5"
+    },
+    {
+      "file": "matrix-340.bin",
+      "matrix": "feed_forward.w2",
+      "row": 832,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "6e7c29b7517963eecbe7e5ae0ad2866b870ee45950322a26c0f59bfdf24eb1a9"
+    },
+    {
+      "file": "matrix-341.bin",
+      "matrix": "feed_forward.w2",
+      "row": 848,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "e8be4aa2c03f931db55bdb4b0588d4cd2b51ee1dfa35709986add8efd17aed29"
+    },
+    {
+      "file": "matrix-342.bin",
+      "matrix": "feed_forward.w2",
+      "row": 864,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "5b1dcad75a1d2c2be139992f0e732f87baaf667747a7832b56522a7d1199ae14"
+    },
+    {
+      "file": "matrix-343.bin",
+      "matrix": "feed_forward.w2",
+      "row": 880,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "22f4c5545f3b9a2868cda39bf9d49b5233f35dda5067a04542d7ae082e214ce8"
+    },
+    {
+      "file": "matrix-344.bin",
+      "matrix": "feed_forward.w2",
+      "row": 896,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "722ae2c0460bc0a3c20513bd0a80fb4b658831b0767aa4a9119ebf60160d99cf"
+    },
+    {
+      "file": "matrix-345.bin",
+      "matrix": "feed_forward.w2",
+      "row": 912,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "67c255e4f665d96ad9e91637c78a5157cb308d7b73de184cebafefa900e7e46c"
+    },
+    {
+      "file": "matrix-346.bin",
+      "matrix": "feed_forward.w2",
+      "row": 928,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "c2680a36a5b07aa6abd003af6326b317dbdf1d9d68fe97ef12927f85eda6103f"
+    },
+    {
+      "file": "matrix-347.bin",
+      "matrix": "feed_forward.w2",
+      "row": 944,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "8a1cad3a4baf129b37529cc2e4ad978d137ee743eec53bea759ea7d6b00a8f9a"
+    },
+    {
+      "file": "matrix-348.bin",
+      "matrix": "feed_forward.w2",
+      "row": 960,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "d2298576822d1d18ba7093a3774928b7bde53aabfb61c58bb0d273ecbea22862"
+    },
+    {
+      "file": "matrix-349.bin",
+      "matrix": "feed_forward.w2",
+      "row": 976,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "1e42c565362474fb46b4a9b22196a2d90d5196a613f4e7d1cc5b40d21fb2ebab"
+    },
+    {
+      "file": "matrix-350.bin",
+      "matrix": "feed_forward.w2",
+      "row": 992,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "42ce974b14ec4a36dbdab2e6568a958f9844e3e9ec532be280815a09f90b3651"
+    },
+    {
+      "file": "matrix-351.bin",
+      "matrix": "feed_forward.w2",
+      "row": 1008,
+      "rows": 16,
+      "bytes": 20544,
+      "sha256": "264d560dee8d3c574a89ddab707f3f228a9d19ce4841958e018f085b9bdb7b44"
+    },
+    {
+      "file": "norm.bin",
+      "bytes": 8192,
+      "sha256": "c1c455588a45ccadca6f51363bdc54d2f19e1d4378585e292a90ac8e6e705b47"
+    },
+    {
+      "file": "conv.bin",
+      "bytes": 12288,
+      "sha256": "de7c576fa3d2ee4dbb0be0a3254004b6352c00c7ec7d5142a11cc9c529551f2e"
+    },
+    {
+      "file": "sigmoid.bin",
+      "bytes": 8196,
+      "sha256": "21b7cb495f9b3151cf6a59a76dde1c169971d5126f20836f8743f330f70d2c0b"
+    }
+  ],
+  "token_ids": [
+    1,
+    6,
+    6423
+  ],
+  "cases": [
+    {
+      "token_index": 0,
+      "token_id": 1,
+      "cosine_similarity": 0.9959770215004894,
+      "relative_l2_error": 0.09021306886105274,
+      "max_absolute_error": 0.012291520833969116,
+      "stage_max_absolute_q16": {
+        "input": 16192,
+        "norm1": 458927,
+        "in_projection": 128398,
+        "bx": 209471,
+        "convolution": 8353,
+        "out_projection": 15728,
+        "residual": 24228,
+        "norm2": 161629,
+        "w1": 70882,
+        "w3": 55306,
+        "activation": 23613,
+        "w2": 11156,
+        "output": 31288
+      },
+      "output_sha256": "1f4c1af0ac89362379cfae314518ea59f89e63f36f8abce9075a2d1485f6c488"
+    },
+    {
+      "token_index": 1,
+      "token_id": 6,
+      "cosine_similarity": 0.9925437776322978,
+      "relative_l2_error": 0.12287611306145847,
+      "max_absolute_error": 0.03866457939147949,
+      "stage_max_absolute_q16": {
+        "input": 6080,
+        "norm1": 253472,
+        "in_projection": 180107,
+        "bx": 476103,
+        "convolution": 22038,
+        "out_projection": 25341,
+        "residual": 25679,
+        "norm2": 116090,
+        "w1": 88875,
+        "w3": 31853,
+        "activation": 19050,
+        "w2": 14845,
+        "output": 40524
+      },
+      "output_sha256": "1168148714f6b799b8b3873c408dc4e2d438ef9b77cd4e33348b65cdda298049"
+    },
+    {
+      "token_index": 2,
+      "token_id": 6423,
+      "cosine_similarity": 0.9916559105982687,
+      "relative_l2_error": 0.12999145236670018,
+      "max_absolute_error": 0.027767568826675415,
+      "stage_max_absolute_q16": {
+        "input": 5088,
+        "norm1": 99929,
+        "in_projection": 206228,
+        "bx": 459450,
+        "convolution": 40470,
+        "out_projection": 39514,
+        "residual": 41370,
+        "norm2": 157463,
+        "w1": 40570,
+        "w3": 29423,
+        "activation": 5603,
+        "w2": 11168,
+        "output": 30202
+      },
+      "output_sha256": "05a7b84e80157fd4a6e990628bfcfdfd7d3a90beea8103e4ebf99cb3a54fe7ed"
+    }
+  ],
+  "matrix_multiply_accumulates_per_token": 12058624,
+  "depthwise_convolution_multiply_accumulates_per_token": 3072,
+  "total_shard_payload_bytes": 6098948,
+  "transformers_source_sha256": "d9c0ac30769b89394035bbf8c2d0d000a13ecc0c35ba3f01bfe8c120f9323445"
+}
