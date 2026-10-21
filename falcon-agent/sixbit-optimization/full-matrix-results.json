@@ -1,0 +1,2195 @@
+{
+  "status": "completed",
+  "scope": "All 217 two-dimensional matrices once with synthetic signed-int16 vectors, exact integer reference. NOT one model token or complete inference.",
+  "environment": "Local Anvil Cancun, 96KiB code limit; not a RH/Nitro execution or fee quote.",
+  "excludes": [
+    "nonlinear functions",
+    "attention and Mamba state updates",
+    "state persistence",
+    "tokenization",
+    "sampling",
+    "on-chain matrix scheduling",
+    "agent",
+    "L1 data fees"
+  ],
+  "public_transactions_broadcast": 0,
+  "weight_elements": 90996736,
+  "usage_receipt_gas": 2965180308,
+  "local_weight_tile_deploy_gas": 15623804584,
+  "tiles": 2600,
+  "rows_verified": 165440,
+  "matrices": [
+    {
+      "tensor": "model.embed_tokens.weight",
+      "shape": [
+        32768,
+        512
+      ],
+      "usage_gas": 548172290,
+      "weight_deploy_gas": 2867954858,
+      "tiles": 512
+    },
+    {
+      "tensor": "model.layers.0.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "usage_gas": 12845654,
+      "weight_deploy_gas": 67437098,
+      "tiles": 12,
+      "first_tile_opcode_profile": {}
+    },
+    {
+      "tensor": "model.layers.0.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "usage_gas": 12844938,
+      "weight_deploy_gas": 67409646,
+      "tiles": 12
+    },
+    {
+      "tensor": "model.layers.0.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "usage_gas": 12666632,
+      "weight_deploy_gas": 67563300,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.0.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "usage_gas": 28269907,
+      "weight_deploy_gas": 148549836,
+      "tiles": 27
+    },
+    {
+      "tensor": "model.layers.0.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "usage_gas": 12666140,
+      "weight_deploy_gas": 67378194,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.0.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "usage_gas": 8563892,
+      "weight_deploy_gas": 45105859,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.0.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "usage_gas": 2141592,
+      "weight_deploy_gas": 11283313,
+      "tiles": 2
+    },
+    {
+      "tensor": "model.layers.0.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "usage_gas": 2140868,
+      "weight_deploy_gas": 11214118,
+      "tiles": 2
+    },
+    {
+      "tensor": "model.layers.0.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "usage_gas": 8563962,
+      "weight_deploy_gas": 45008383,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.1.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "usage_gas": 12846347,
+      "weight_deploy_gas": 67451088,
+      "tiles": 12
+    },
+    {
+      "tensor": "model.layers.1.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "usage_gas": 12845606,
+      "weight_deploy_gas": 67381954,
+      "tiles": 12
+    },
+    {
+      "tensor": "model.layers.1.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "usage_gas": 12666464,
+      "weight_deploy_gas": 67439100,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.1.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "usage_gas": 28270713,
+      "weight_deploy_gas": 148619059,
+      "tiles": 27
+    },
+    {
+      "tensor": "model.layers.1.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "usage_gas": 12666984,
+      "weight_deploy_gas": 67585299,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.1.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "usage_gas": 8564036,
+      "weight_deploy_gas": 45189468,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.1.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "usage_gas": 2141975,
+      "weight_deploy_gas": 11297244,
+      "tiles": 2
+    },
+    {
+      "tensor": "model.layers.1.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "usage_gas": 2140828,
+      "weight_deploy_gas": 11186498,
+      "tiles": 2
+    },
+    {
+      "tensor": "model.layers.1.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "usage_gas": 8563500,
+      "weight_deploy_gas": 45050211,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.2.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "usage_gas": 12845746,
+      "weight_deploy_gas": 67492939,
+      "tiles": 12
+    },
+    {
+      "tensor": "model.layers.2.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "usage_gas": 12845448,
+      "weight_deploy_gas": 67451196,
+      "tiles": 12
+    },
+    {
+      "tensor": "model.layers.2.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "usage_gas": 12666812,
+      "weight_deploy_gas": 67439280,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.2.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "usage_gas": 28270035,
+      "weight_deploy_gas": 148605631,
+      "tiles": 27
+    },
+    {
+      "tensor": "model.layers.2.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "usage_gas": 12666236,
+      "weight_deploy_gas": 67564572,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.2.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "usage_gas": 8564008,
+      "weight_deploy_gas": 45106206,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.2.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "usage_gas": 2141394,
+      "weight_deploy_gas": 11283253,
+      "tiles": 2
+    },
+    {
+      "tensor": "model.layers.2.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "usage_gas": 2140858,
+      "weight_deploy_gas": 11227844,
+      "tiles": 2
+    },
+    {
+      "tensor": "model.layers.2.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "usage_gas": 8563574,
+      "weight_deploy_gas": 45147148,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.3.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "usage_gas": 12846170,
+      "weight_deploy_gas": 67631007,
+      "tiles": 12
+    },
+    {
+      "tensor": "model.layers.3.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "usage_gas": 12845242,
+      "weight_deploy_gas": 67437662,
+      "tiles": 12
+    },
+    {
+      "tensor": "model.layers.3.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "usage_gas": 12666276,
+      "weight_deploy_gas": 67377282,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.3.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "usage_gas": 28271087,
+      "weight_deploy_gas": 148661234,
+      "tiles": 27
+    },
+    {
+      "tensor": "model.layers.3.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "usage_gas": 12666524,
+      "weight_deploy_gas": 67564836,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.3.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "usage_gas": 8564150,
+      "weight_deploy_gas": 45147927,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.3.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "usage_gas": 2141345,
+      "weight_deploy_gas": 11283469,
+      "tiles": 2
+    },
+    {
+      "tensor": "model.layers.3.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "usage_gas": 2140930,
+      "weight_deploy_gas": 11227964,
+      "tiles": 2
+    },
+    {
+      "tensor": "model.layers.3.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "usage_gas": 8563706,
+      "weight_deploy_gas": 45064057,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.4.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "usage_gas": 12845472,
+      "weight_deploy_gas": 67699964,
+      "tiles": 12
+    },
+    {
+      "tensor": "model.layers.4.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "usage_gas": 12845068,
+      "weight_deploy_gas": 67478996,
+      "tiles": 12
+    },
+    {
+      "tensor": "model.layers.4.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "usage_gas": 12665976,
+      "weight_deploy_gas": 67377222,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.4.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "usage_gas": 28270435,
+      "weight_deploy_gas": 148661688,
+      "tiles": 27
+    },
+    {
+      "tensor": "model.layers.4.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "usage_gas": 12666352,
+      "weight_deploy_gas": 67564536,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.4.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "usage_gas": 8563998,
+      "weight_deploy_gas": 45175705,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.4.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "usage_gas": 2141231,
+      "weight_deploy_gas": 11297352,
+      "tiles": 2
+    },
+    {
+      "tensor": "model.layers.4.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "usage_gas": 2140852,
+      "weight_deploy_gas": 11186378,
+      "tiles": 2
+    },
+    {
+      "tensor": "model.layers.4.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "usage_gas": 8563988,
+      "weight_deploy_gas": 45105764,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.5.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "usage_gas": 12846275,
+      "weight_deploy_gas": 67783812,
+      "tiles": 12
+    },
+    {
+      "tensor": "model.layers.5.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "usage_gas": 12845986,
+      "weight_deploy_gas": 67604297,
+      "tiles": 12
+    },
+    {
+      "tensor": "model.layers.5.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "usage_gas": 12666660,
+      "weight_deploy_gas": 67585407,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.5.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "usage_gas": 28270501,
+      "weight_deploy_gas": 148813542,
+      "tiles": 27
+    },
+    {
+      "tensor": "model.layers.5.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "usage_gas": 12665864,
+      "weight_deploy_gas": 67564152,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.5.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "usage_gas": 8563914,
+      "weight_deploy_gas": 45174913,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.5.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "usage_gas": 2141579,
+      "weight_deploy_gas": 11297088,
+      "tiles": 2
+    },
+    {
+      "tensor": "model.layers.5.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "usage_gas": 2140932,
+      "weight_deploy_gas": 11241786,
+      "tiles": 2
+    },
+    {
+      "tensor": "model.layers.5.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "usage_gas": 8564048,
+      "weight_deploy_gas": 45188532,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.6.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "usage_gas": 12846112,
+      "weight_deploy_gas": 67782888,
+      "tiles": 12
+    },
+    {
+      "tensor": "model.layers.6.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "usage_gas": 12845618,
+      "weight_deploy_gas": 67465018,
+      "tiles": 12
+    },
+    {
+      "tensor": "model.layers.6.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "usage_gas": 12666796,
+      "weight_deploy_gas": 67564164,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.6.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "usage_gas": 28270231,
+      "weight_deploy_gas": 148716488,
+      "tiles": 27
+    },
+    {
+      "tensor": "model.layers.6.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "usage_gas": 12666524,
+      "weight_deploy_gas": 67566480,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.6.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "usage_gas": 8563824,
+      "weight_deploy_gas": 45133828,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.6.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "usage_gas": 2141148,
+      "weight_deploy_gas": 11297136,
+      "tiles": 2
+    },
+    {
+      "tensor": "model.layers.6.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "usage_gas": 2140930,
+      "weight_deploy_gas": 11228012,
+      "tiles": 2
+    },
+    {
+      "tensor": "model.layers.6.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "usage_gas": 8564240,
+      "weight_deploy_gas": 45188940,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.7.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "usage_gas": 12846160,
+      "weight_deploy_gas": 67783188,
+      "tiles": 12
+    },
+    {
+      "tensor": "model.layers.7.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "usage_gas": 12845238,
+      "weight_deploy_gas": 67492578,
+      "tiles": 12
+    },
+    {
+      "tensor": "model.layers.7.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "usage_gas": 12666903,
+      "weight_deploy_gas": 67605917,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.7.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "usage_gas": 28271049,
+      "weight_deploy_gas": 148813030,
+      "tiles": 27
+    },
+    {
+      "tensor": "model.layers.7.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "usage_gas": 12667122,
+      "weight_deploy_gas": 67709731,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.7.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "usage_gas": 8563856,
+      "weight_deploy_gas": 45188760,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.7.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "usage_gas": 2141263,
+      "weight_deploy_gas": 11297544,
+      "tiles": 2
+    },
+    {
+      "tensor": "model.layers.7.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "usage_gas": 2140878,
+      "weight_deploy_gas": 11200140,
+      "tiles": 2
+    },
+    {
+      "tensor": "model.layers.7.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "usage_gas": 8564216,
+      "weight_deploy_gas": 45188856,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.8.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "usage_gas": 12846309,
+      "weight_deploy_gas": 67796914,
+      "tiles": 12
+    },
+    {
+      "tensor": "model.layers.8.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "usage_gas": 12845854,
+      "weight_deploy_gas": 67575837,
+      "tiles": 12
+    },
+    {
+      "tensor": "model.layers.8.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "usage_gas": 12667276,
+      "weight_deploy_gas": 67584975,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.8.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "usage_gas": 28272227,
+      "weight_deploy_gas": 148908695,
+      "tiles": 27
+    },
+    {
+      "tensor": "model.layers.8.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "usage_gas": 12667126,
+      "weight_deploy_gas": 67752169,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.8.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "usage_gas": 8564284,
+      "weight_deploy_gas": 45161186,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.8.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "usage_gas": 2141387,
+      "weight_deploy_gas": 11297232,
+      "tiles": 2
+    },
+    {
+      "tensor": "model.layers.8.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "usage_gas": 2140878,
+      "weight_deploy_gas": 11200272,
+      "tiles": 2
+    },
+    {
+      "tensor": "model.layers.8.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "usage_gas": 8563952,
+      "weight_deploy_gas": 45188688,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.9.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "usage_gas": 12846937,
+      "weight_deploy_gas": 67797238,
+      "tiles": 12
+    },
+    {
+      "tensor": "model.layers.9.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "usage_gas": 12845652,
+      "weight_deploy_gas": 67478936,
+      "tiles": 12
+    },
+    {
+      "tensor": "model.layers.9.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "usage_gas": 12666347,
+      "weight_deploy_gas": 67564752,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.9.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "usage_gas": 28269931,
+      "weight_deploy_gas": 148909318,
+      "tiles": 27
+    },
+    {
+      "tensor": "model.layers.9.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "usage_gas": 12666519,
+      "weight_deploy_gas": 67877318,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.9.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "usage_gas": 8563944,
+      "weight_deploy_gas": 45133312,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.9.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "usage_gas": 2141004,
+      "weight_deploy_gas": 11297508,
+      "tiles": 2
+    },
+    {
+      "tensor": "model.layers.9.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "usage_gas": 2141472,
+      "weight_deploy_gas": 11241954,
+      "tiles": 2
+    },
+    {
+      "tensor": "model.layers.9.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "usage_gas": 8564036,
+      "weight_deploy_gas": 45188496,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.10.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "usage_gas": 12846765,
+      "weight_deploy_gas": 67769125,
+      "tiles": 12
+    },
+    {
+      "tensor": "model.layers.10.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "usage_gas": 12845422,
+      "weight_deploy_gas": 67520918,
+      "tiles": 12
+    },
+    {
+      "tensor": "model.layers.10.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "usage_gas": 12666174,
+      "weight_deploy_gas": 67294822,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.10.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "usage_gas": 28271479,
+      "weight_deploy_gas": 148881660,
+      "tiles": 27
+    },
+    {
+      "tensor": "model.layers.10.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "usage_gas": 12666624,
+      "weight_deploy_gas": 67606314,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.10.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "usage_gas": 8564046,
+      "weight_deploy_gas": 45092109,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.10.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "usage_gas": 2141192,
+      "weight_deploy_gas": 11297376,
+      "tiles": 2
+    },
+    {
+      "tensor": "model.layers.10.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "usage_gas": 2150183,
+      "weight_deploy_gas": 11256016,
+      "tiles": 2
+    },
+    {
+      "tensor": "model.layers.10.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "usage_gas": 8563736,
+      "weight_deploy_gas": 45188784,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.11.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "usage_gas": 12846316,
+      "weight_deploy_gas": 67755602,
+      "tiles": 12
+    },
+    {
+      "tensor": "model.layers.11.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "usage_gas": 12845638,
+      "weight_deploy_gas": 67464562,
+      "tiles": 12
+    },
+    {
+      "tensor": "model.layers.11.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "usage_gas": 12666240,
+      "weight_deploy_gas": 67335326,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.11.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "usage_gas": 28270489,
+      "weight_deploy_gas": 148914187,
+      "tiles": 27
+    },
+    {
+      "tensor": "model.layers.11.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "usage_gas": 12666596,
+      "weight_deploy_gas": 67564788,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.11.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "usage_gas": 8564092,
+      "weight_deploy_gas": 45161078,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.11.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "usage_gas": 2141152,
+      "weight_deploy_gas": 11297304,
+      "tiles": 2
+    },
+    {
+      "tensor": "model.layers.11.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "usage_gas": 2140904,
+      "weight_deploy_gas": 11214298,
+      "tiles": 2
+    },
+    {
+      "tensor": "model.layers.11.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "usage_gas": 8563740,
+      "weight_deploy_gas": 45133769,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.12.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "usage_gas": 12846304,
+      "weight_deploy_gas": 67672667,
+      "tiles": 12
+    },
+    {
+      "tensor": "model.layers.12.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "usage_gas": 12845280,
+      "weight_deploy_gas": 67451208,
+      "tiles": 12
+    },
+    {
+      "tensor": "model.layers.12.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "usage_gas": 12666435,
+      "weight_deploy_gas": 67336382,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.12.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "usage_gas": 28270949,
+      "weight_deploy_gas": 148619152,
+      "tiles": 27
+    },
+    {
+      "tensor": "model.layers.12.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "usage_gas": 12666524,
+      "weight_deploy_gas": 67565412,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.12.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "usage_gas": 8564118,
+      "weight_deploy_gas": 45175213,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.12.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "usage_gas": 2141204,
+      "weight_deploy_gas": 11297100,
+      "tiles": 2
+    },
+    {
+      "tensor": "model.layers.12.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "usage_gas": 2140906,
+      "weight_deploy_gas": 11228048,
+      "tiles": 2
+    },
+    {
+      "tensor": "model.layers.12.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "usage_gas": 8564094,
+      "weight_deploy_gas": 45175237,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.13.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "usage_gas": 12845932,
+      "weight_deploy_gas": 67644097,
+      "tiles": 12
+    },
+    {
+      "tensor": "model.layers.13.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "usage_gas": 12845580,
+      "weight_deploy_gas": 67450968,
+      "tiles": 12
+    },
+    {
+      "tensor": "model.layers.13.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "usage_gas": 12666440,
+      "weight_deploy_gas": 67356976,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.13.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "usage_gas": 28270569,
+      "weight_deploy_gas": 148563348,
+      "tiles": 27
+    },
+    {
+      "tensor": "model.layers.13.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "usage_gas": 12666716,
+      "weight_deploy_gas": 67564536,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.13.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "usage_gas": 8563970,
+      "weight_deploy_gas": 45147267,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.13.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "usage_gas": 2141140,
+      "weight_deploy_gas": 11297292,
+      "tiles": 2
+    },
+    {
+      "tensor": "model.layers.13.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "usage_gas": 2140856,
+      "weight_deploy_gas": 11214274,
+      "tiles": 2
+    },
+    {
+      "tensor": "model.layers.13.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "usage_gas": 8563976,
+      "weight_deploy_gas": 45105800,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.14.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "usage_gas": 12846010,
+      "weight_deploy_gas": 67713415,
+      "tiles": 12
+    },
+    {
+      "tensor": "model.layers.14.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "usage_gas": 12845592,
+      "weight_deploy_gas": 67451280,
+      "tiles": 12
+    },
+    {
+      "tensor": "model.layers.14.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "usage_gas": 12666327,
+      "weight_deploy_gas": 67356628,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.14.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "usage_gas": 28269777,
+      "weight_deploy_gas": 148646018,
+      "tiles": 27
+    },
+    {
+      "tensor": "model.layers.14.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "usage_gas": 12666908,
+      "weight_deploy_gas": 67565280,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.14.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "usage_gas": 8563996,
+      "weight_deploy_gas": 45161714,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.14.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "usage_gas": 2141228,
+      "weight_deploy_gas": 11297148,
+      "tiles": 2
+    },
+    {
+      "tensor": "model.layers.14.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "usage_gas": 2140976,
+      "weight_deploy_gas": 11242074,
+      "tiles": 2
+    },
+    {
+      "tensor": "model.layers.14.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "usage_gas": 8563744,
+      "weight_deploy_gas": 45077843,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.15.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "usage_gas": 12845630,
+      "weight_deploy_gas": 67686260,
+      "tiles": 12
+    },
+    {
+      "tensor": "model.layers.15.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "usage_gas": 12845592,
+      "weight_deploy_gas": 67451688,
+      "tiles": 12
+    },
+    {
+      "tensor": "model.layers.15.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "usage_gas": 12665712,
+      "weight_deploy_gas": 67336130,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.15.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "usage_gas": 28270349,
+      "weight_deploy_gas": 148619729,
+      "tiles": 27
+    },
+    {
+      "tensor": "model.layers.15.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "usage_gas": 12666492,
+      "weight_deploy_gas": 67544566,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.15.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "usage_gas": 8564324,
+      "weight_deploy_gas": 45188832,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.15.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "usage_gas": 2141380,
+      "weight_deploy_gas": 11297208,
+      "tiles": 2
+    },
+    {
+      "tensor": "model.layers.15.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "usage_gas": 2144061,
+      "weight_deploy_gas": 11241954,
+      "tiles": 2
+    },
+    {
+      "tensor": "model.layers.15.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "usage_gas": 8563676,
+      "weight_deploy_gas": 45105559,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.16.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "usage_gas": 12846188,
+      "weight_deploy_gas": 67672848,
+      "tiles": 12
+    },
+    {
+      "tensor": "model.layers.16.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "usage_gas": 12845054,
+      "weight_deploy_gas": 67465462,
+      "tiles": 12
+    },
+    {
+      "tensor": "model.layers.16.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "usage_gas": 12666612,
+      "weight_deploy_gas": 67336154,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.16.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "usage_gas": 28271477,
+      "weight_deploy_gas": 148675088,
+      "tiles": 27
+    },
+    {
+      "tensor": "model.layers.16.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "usage_gas": 12666056,
+      "weight_deploy_gas": 67564632,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.16.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "usage_gas": 8563888,
+      "weight_deploy_gas": 45161618,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.16.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "usage_gas": 2141116,
+      "weight_deploy_gas": 11297136,
+      "tiles": 2
+    },
+    {
+      "tensor": "model.layers.16.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "usage_gas": 2141363,
+      "weight_deploy_gas": 11241918,
+      "tiles": 2
+    },
+    {
+      "tensor": "model.layers.16.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "usage_gas": 8563244,
+      "weight_deploy_gas": 45022614,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.17.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "usage_gas": 12846353,
+      "weight_deploy_gas": 67769161,
+      "tiles": 12
+    },
+    {
+      "tensor": "model.layers.17.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "usage_gas": 12845764,
+      "weight_deploy_gas": 67451196,
+      "tiles": 12
+    },
+    {
+      "tensor": "model.layers.17.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "usage_gas": 12666684,
+      "weight_deploy_gas": 67356592,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.17.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "usage_gas": 28270321,
+      "weight_deploy_gas": 148591845,
+      "tiles": 27
+    },
+    {
+      "tensor": "model.layers.17.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "usage_gas": 12666608,
+      "weight_deploy_gas": 67565904,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.17.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "usage_gas": 8564228,
+      "weight_deploy_gas": 45188856,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.17.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "usage_gas": 2141220,
+      "weight_deploy_gas": 11297148,
+      "tiles": 2
+    },
+    {
+      "tensor": "model.layers.17.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "usage_gas": 2143380,
+      "weight_deploy_gas": 11242182,
+      "tiles": 2
+    },
+    {
+      "tensor": "model.layers.17.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "usage_gas": 8563714,
+      "weight_deploy_gas": 45119790,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.18.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "usage_gas": 12845944,
+      "weight_deploy_gas": 67644925,
+      "tiles": 12
+    },
+    {
+      "tensor": "model.layers.18.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "usage_gas": 12845259,
+      "weight_deploy_gas": 67451028,
+      "tiles": 12
+    },
+    {
+      "tensor": "model.layers.18.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "usage_gas": 12666927,
+      "weight_deploy_gas": 67356580,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.18.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "usage_gas": 28270827,
+      "weight_deploy_gas": 148522852,
+      "tiles": 27
+    },
+    {
+      "tensor": "model.layers.18.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "usage_gas": 12666680,
+      "weight_deploy_gas": 67543330,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.18.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "usage_gas": 8564036,
+      "weight_deploy_gas": 45189000,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.18.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "usage_gas": 2141228,
+      "weight_deploy_gas": 11297352,
+      "tiles": 2
+    },
+    {
+      "tensor": "model.layers.18.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "usage_gas": 2150835,
+      "weight_deploy_gas": 11241774,
+      "tiles": 2
+    },
+    {
+      "tensor": "model.layers.18.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "usage_gas": 8563820,
+      "weight_deploy_gas": 45022722,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.19.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "usage_gas": 12846036,
+      "weight_deploy_gas": 67617317,
+      "tiles": 12
+    },
+    {
+      "tensor": "model.layers.19.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "usage_gas": 12845332,
+      "weight_deploy_gas": 67451352,
+      "tiles": 12
+    },
+    {
+      "tensor": "model.layers.19.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "usage_gas": 12666323,
+      "weight_deploy_gas": 67336034,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.19.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "usage_gas": 28270789,
+      "weight_deploy_gas": 148507074,
+      "tiles": 27
+    },
+    {
+      "tensor": "model.layers.19.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "usage_gas": 12666212,
+      "weight_deploy_gas": 67357840,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.19.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "usage_gas": 8564202,
+      "weight_deploy_gas": 45174793,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.19.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "usage_gas": 2141084,
+      "weight_deploy_gas": 11297304,
+      "tiles": 2
+    },
+    {
+      "tensor": "model.layers.19.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "usage_gas": 2143150,
+      "weight_deploy_gas": 11241918,
+      "tiles": 2
+    },
+    {
+      "tensor": "model.layers.19.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "usage_gas": 8563928,
+      "weight_deploy_gas": 45022398,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.20.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "usage_gas": 12845698,
+      "weight_deploy_gas": 67520620,
+      "tiles": 12
+    },
+    {
+      "tensor": "model.layers.20.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "usage_gas": 12844238,
+      "weight_deploy_gas": 67464910,
+      "tiles": 12
+    },
+    {
+      "tensor": "model.layers.20.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "usage_gas": 12667071,
+      "weight_deploy_gas": 67293862,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.20.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "usage_gas": 28268869,
+      "weight_deploy_gas": 148502961,
+      "tiles": 27
+    },
+    {
+      "tensor": "model.layers.20.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "usage_gas": 12666008,
+      "weight_deploy_gas": 67315956,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.20.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "usage_gas": 8564256,
+      "weight_deploy_gas": 45189264,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.20.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "usage_gas": 2141212,
+      "weight_deploy_gas": 11297280,
+      "tiles": 2
+    },
+    {
+      "tensor": "model.layers.20.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "usage_gas": 2153233,
+      "weight_deploy_gas": 11241798,
+      "tiles": 2
+    },
+    {
+      "tensor": "model.layers.20.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "usage_gas": 8563846,
+      "weight_deploy_gas": 45037108,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.21.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "usage_gas": 12845460,
+      "weight_deploy_gas": 67533986,
+      "tiles": 12
+    },
+    {
+      "tensor": "model.layers.21.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "usage_gas": 12845836,
+      "weight_deploy_gas": 67451652,
+      "tiles": 12
+    },
+    {
+      "tensor": "model.layers.21.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "usage_gas": 12666556,
+      "weight_deploy_gas": 67273364,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.21.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "usage_gas": 28269765,
+      "weight_deploy_gas": 148480521,
+      "tiles": 27
+    },
+    {
+      "tensor": "model.layers.21.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "usage_gas": 12665856,
+      "weight_deploy_gas": 67294150,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.21.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "usage_gas": 8564300,
+      "weight_deploy_gas": 45188676,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.21.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "usage_gas": 2141104,
+      "weight_deploy_gas": 11297208,
+      "tiles": 2
+    },
+    {
+      "tensor": "model.layers.21.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "usage_gas": 2160698,
+      "weight_deploy_gas": 11228000,
+      "tiles": 2
+    },
+    {
+      "tensor": "model.layers.21.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "usage_gas": 8563396,
+      "weight_deploy_gas": 44994813,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.22.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "usage_gas": 12845590,
+      "weight_deploy_gas": 67603060,
+      "tiles": 12
+    },
+    {
+      "tensor": "model.layers.22.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "usage_gas": 12846660,
+      "weight_deploy_gas": 67451028,
+      "tiles": 12
+    },
+    {
+      "tensor": "model.layers.22.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "usage_gas": 12666590,
+      "weight_deploy_gas": 67252290,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.22.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "usage_gas": 28271757,
+      "weight_deploy_gas": 148719783,
+      "tiles": 27
+    },
+    {
+      "tensor": "model.layers.22.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "usage_gas": 12665832,
+      "weight_deploy_gas": 67233004,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.22.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "usage_gas": 8563916,
+      "weight_deploy_gas": 45022936,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.22.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "usage_gas": 2140976,
+      "weight_deploy_gas": 11241798,
+      "tiles": 2
+    },
+    {
+      "tensor": "model.layers.22.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "usage_gas": 2145717,
+      "weight_deploy_gas": 11214238,
+      "tiles": 2
+    },
+    {
+      "tensor": "model.layers.22.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "usage_gas": 8563728,
+      "weight_deploy_gas": 44967504,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.23.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "usage_gas": 12845288,
+      "weight_deploy_gas": 67672427,
+      "tiles": 12
+    },
+    {
+      "tensor": "model.layers.23.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "usage_gas": 12845784,
+      "weight_deploy_gas": 67450296,
+      "tiles": 12
+    },
+    {
+      "tensor": "model.layers.23.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "usage_gas": 12667778,
+      "weight_deploy_gas": 67335482,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.23.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "usage_gas": 28270827,
+      "weight_deploy_gas": 148521940,
+      "tiles": 27
+    },
+    {
+      "tensor": "model.layers.23.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "usage_gas": 12665492,
+      "weight_deploy_gas": 67252710,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.23.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "usage_gas": 8563748,
+      "weight_deploy_gas": 45161162,
+      "tiles": 8
+    },
+    {
+      "tensor": "model.layers.23.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "usage_gas": 2140884,
+      "weight_deploy_gas": 11241894,
+      "tiles": 2
+    },
+    {
+      "tensor": "model.layers.23.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "usage_gas": 2161327,
+      "weight_deploy_gas": 11200608,
+      "tiles": 2
+    },
+    {
+      "tensor": "model.layers.23.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "usage_gas": 8563332,
+      "weight_deploy_gas": 44967552,
+      "tiles": 8
+    }
+  ],
+  "kernel_deployment_gas": 830442
+}
