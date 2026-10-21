@@ -18,9 +18,22 @@ Model ID: `0x6b0817a3bc4d0ba1f03ec6e14387285e1bcda0e40fdd40d7daee2cbc3c2ff89a`.
 
 The 51 deployments used **257,254,365 gas** and paid **0.005238250757104 ETH**, calculated as the sum of `gasUsed × effectiveGasPrice` from their receipts. This covers contract creation and excludes inference or other wallet activity. A separate [read-only receipt and smoke check](reports/robinhood-mainnet-deployment-check.json) confirmed all 51 successful receipts, `Wait.` tokenization and a simulated `beginText("Wait.", 2)` call; the simulated request was not persisted. That check did not repeat the deployment CLI's runtime verification.
 
-The 398-transaction, 892,989,640-gas full inference result later in this document is a local EVM benchmark; no paid mainnet full inference benchmark has been run.
-
 All three Solidity contracts have exact creation and runtime source matches on Sourcify: [inference engine](https://repo.sourcify.dev/4663/0x07bB8455Db0928bEBEb3E7F27A22A0599AF1b650), [model registry](https://repo.sourcify.dev/4663/0xa62C2d6fbba575732AAB38c56fCd73B2361B1D98) and [tokenizer](https://repo.sourcify.dev/4663/0x3Cf3739D8e587C3AB5706fd459e75A6fCE26d333). [Verification evidence](reports/robinhood-mainnet-verification/sourcify-verification-status.json).
+
+## Verified mainnet generation
+
+Request `1` completed real inference on the deployed engine for `Wait.`, with prompt IDs `[1, 316, 50, 3]` and a two-token generation budget. It returned `[268, 2]`: `WAIT`, then EOS. The [generation journal](deployments/robinhood-mainnet-generation.json) records signed transaction hashes, receipts and both decision vectors. A separate [read-only mainnet checker](reports/robinhood-mainnet-inference-check.json) verified all 398 successful receipts and the generated-token events, then independently reread all 1,024 decision logits: 512 from the historical first-decision block and 512 from completed on-chain state. Every value matched the existing Python integer reference exactly.
+
+| Measurement | Real mainnet request `1` |
+| --- | ---: |
+| Successful transactions | 398: one `beginText`, 397 `advance` |
+| Failed transactions | 0 |
+| Inference gas | 892,989,640 |
+| Actual inference fee | 0.018193921167636 ETH |
+| Independently reread logits matching Python | 1,024 / 1,024 |
+| Saturation count | 0 |
+
+The actual fee is the sum of `gasUsed × effectiveGasPrice` from this request's receipts; it excludes deployment and other wallet activity. The checker submitted no transactions. These receipts establish persisted mainnet generation, separate from the deployment smoke simulation and the earlier local EVM benchmark below. This result covers the tested prompt and token budget.
 
 ## Selected trained model
 
@@ -126,6 +139,6 @@ Code through commit `e094cc76980b2a7d622fbf520faca5e0fbb7884c` was published to 
 
 ## Evidence boundary
 
-This is complete model inference, with bounded persistence between transactions. Local EVM gas is measured workload gas, not a Robinhood Chain fee quote. The mainnet deployment and its identity checks are recorded separately above; the local tests establish arithmetic parity for the tested inputs. They do not establish mainnet inference latency or a paid mainnet inference result.
+This is complete model inference, with bounded persistence between transactions. Local EVM gas is measured workload gas, not a Robinhood Chain fee quote. Mainnet deployment identities, generation receipts, actual fees and independently reread decision logits are recorded separately above. The local elapsed-time measurement does not establish public-chain latency; arithmetic parity applies to the tested inputs.
 
 The port preserves integer-v1 saturation and counts it. Incremental execution computes each cached token/layer once; Python's original generation recomputes whole prefixes. Their total saturation counters need not match, even when every final logit agrees. Arithmetic agreement does not improve the checkpoint's language understanding or authorize the actions it proposes.
