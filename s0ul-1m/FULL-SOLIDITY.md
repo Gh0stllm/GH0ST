@@ -2,7 +2,23 @@
 
 This implementation executes the complete integer-v1 transformer in Solidity: embeddings, four attention/FFN layers, RMS normalization, rotary positions, causal softmax attention, residuals, final normalization, tied output projection and greedy token selection. It also tokenizes user text on-chain and returns generated token IDs and decoded bytes. It produces model outputs; it does not execute agent actions.
 
-The work is isolated on [`research/GH0ST-S0UL-Solidity`](https://github.com/8tk8m2kv9f-lang/GH0ST/tree/research/GH0ST-S0UL-Solidity). The existing training workflows and trained checkpoints remain independent.
+The runtime was developed on the historical [`research/GH0ST-S0UL-Solidity`](https://github.com/8tk8m2kv9f-lang/GH0ST/tree/research/GH0ST-S0UL-Solidity) branch and is recovered in this repository. The existing training workflows and trained checkpoints remain independent.
+
+## Robinhood Chain mainnet deployment
+
+The selected trained model is deployed on **Robinhood Chain mainnet, chain ID 4663**, using **51 contracts**: 48 immutable data shards, the model registry, tokenizer and inference engine. The completed [deployment journal](deployments/robinhood-mainnet.json) records all addresses, successful creation transactions, gas and source/model identities. The deployment CLI checked each creation transaction and runtime against the verified build, all 48 shard runtime hashes against the model export, and the registry, tokenizer and engine identity pins.
+
+| Contract | Mainnet address |
+| --- | --- |
+| Inference engine | `0x07bB8455Db0928bEBEb3E7F27A22A0599AF1b650` |
+| Model registry | `0xa62C2d6fbba575732AAB38c56fCd73B2361B1D98` |
+| Tokenizer | `0x3Cf3739D8e587C3AB5706fd459e75A6fCE26d333` |
+
+Model ID: `0x6b0817a3bc4d0ba1f03ec6e14387285e1bcda0e40fdd40d7daee2cbc3c2ff89a`.
+
+The 51 deployments used **257,254,365 gas** and paid **0.005238250757104 ETH**, calculated as the sum of `gasUsed × effectiveGasPrice` from their receipts. This covers contract creation and excludes inference or other wallet activity. A separate [read-only receipt and smoke check](reports/robinhood-mainnet-deployment-check.json) confirmed all 51 successful receipts, `Wait.` tokenization and a simulated `beginText("Wait.", 2)` call; the simulated request was not persisted. That check did not repeat the deployment CLI's runtime verification.
+
+The 398-transaction, 892,989,640-gas full inference result later in this document is a local EVM benchmark; no paid mainnet full inference benchmark has been run.
 
 ## Selected trained model
 
@@ -14,6 +30,7 @@ The work is isolated on [`research/GH0ST-S0UL-Solidity`](https://github.com/8tk8
 | Selected training lane | `expand-replay-5-52`, selected using validation only |
 | Checkpoint SHA-256 | `44bed666c464273e6fff84b10a4977744d9b0e923f5b6a519d7725920b500692` |
 | Original integer bundle SHA-256 | `1f392feffdf57059ca3969c3fb8087b831ee4a9261764f9bbb1680192da60501` |
+| Canonical Solidity payload SHA-256 | `4857535018d946093b61777ec3e1b5801f9a6fc9f8f9bea13e74bf6700c476e4` |
 | Integer payload | 1,102,856 bytes, including quantization scales, normalization gains and lookup tables |
 | Portable data shards | 48, at most 23,000 payload bytes each |
 | Required deployments | 48 data contracts + model registry + tokenizer + inference engine = 51 |
@@ -86,7 +103,7 @@ The CLI writes deployment addresses, source/model identities and transaction rec
 
 The final 128-row native run passed all eight integration tests, including the full trained checkpoint, cache reuse, every decision logit, EOS, request bounds, corrupt shards, tokenizer spoof rejection and varying row budgets `[1, 3, 32, 128]`. All 67 Python checks and the component EVM suites also passed in that job. [Full native evidence](reports/solidity-inference-ci-128.json) · [Independent 32-row control](reports/solidity-inference-ganache-control.json).
 
-For the actual trained model, on-chain tokenization of `Wait.` produces prompt IDs `[1, 316, 50, 3]`; generation returns `[268, 2]` (`WAIT`, EOS). Both 512-logit decision vectors match the existing Python integer reference exactly, with zero saturation.
+For the actual trained model in the local EVM, the deployed tokenizer converts `Wait.` to prompt IDs `[1, 316, 50, 3]`; generation returns `[268, 2]` (`WAIT`, EOS). Both 512-logit decision vectors match the existing Python integer reference exactly, with zero saturation.
 
 | Measurement | Verified 128-row trained run |
 | --- | ---: |
@@ -107,6 +124,6 @@ Code through commit `e094cc76980b2a7d622fbf520faca5e0fbb7884c` was published to 
 
 ## Evidence boundary
 
-This is complete model inference, with bounded persistence between transactions. Local EVM gas is measured workload gas, not a Robinhood Chain fee quote. Public-chain inclusion, actual fees and execution limits must be checked on the intended network before broadcasting. No Robinhood Chain deployment is asserted by these local tests.
+This is complete model inference, with bounded persistence between transactions. Local EVM gas is measured workload gas, not a Robinhood Chain fee quote. The mainnet deployment and its identity checks are recorded separately above; the local tests establish arithmetic parity for the tested inputs. They do not establish mainnet inference latency or a paid mainnet inference result.
 
 The port preserves integer-v1 saturation and counts it. Incremental execution computes each cached token/layer once; Python's original generation recomputes whole prefixes. Their total saturation counters need not match, even when every final logit agrees. Arithmetic agreement does not improve the checkpoint's language understanding or authorize the actions it proposes.
