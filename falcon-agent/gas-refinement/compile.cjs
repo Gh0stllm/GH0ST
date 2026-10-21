@@ -1,0 +1,11 @@
+const fs=require('fs'),path=require('path');
+const solc=require('../../contract-benchmark/node_modules/solc');
+const names=fs.readdirSync(__dirname).filter(f=>f.endsWith('.sol'));
+const sources=Object.fromEntries(names.map(f=>[f,{content:fs.readFileSync(path.join(__dirname,f),'utf8')}]));
+const settings={optimizer:{enabled:true,runs:1000000},viaIR:true,evmVersion:'cancun',outputSelection:{'*':{'*':['abi','evm.bytecode.object','evm.deployedBytecode.object']}}};
+const result=JSON.parse(solc.compile(JSON.stringify({language:'Solidity',sources,settings})));
+for(const e of result.errors||[])process.stderr.write(e.formattedMessage+'\n');
+if((result.errors||[]).some(e=>e.severity==='error'))process.exit(1);
+const contracts=Object.assign({},...Object.values(result.contracts));
+fs.writeFileSync(path.join(__dirname,'compiled.json'),JSON.stringify({compiler:solc.version(),settings,contracts},null,2)+'\n');
+console.log(JSON.stringify({compiler:solc.version(),bytes:Object.fromEntries(Object.entries(contracts).map(([n,c])=>[n,c.evm.deployedBytecode.object.length/2]))}));
