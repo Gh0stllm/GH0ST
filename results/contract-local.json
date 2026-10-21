@@ -1,0 +1,170 @@
+{
+  "status": "local_evm_execution_only",
+  "created_at": "2026-10-19T22:33:01.534953+00:00",
+  "external_transactions_broadcast": 0,
+  "robinhood_gas_measured": false,
+  "stylus_benchmarked": false,
+  "vm": "PragueVM",
+  "compiler": "0.8.30+commit.73712a01.Emscripten.clang",
+  "compiler_settings": {
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "viaIR": true,
+    "evmVersion": "paris",
+    "outputSelection": {
+      "*": {
+        "*": [
+          "abi",
+          "evm.bytecode.object",
+          "evm.deployedBytecode.object"
+        ]
+      }
+    }
+  },
+  "packages": {
+    "web3": "8.0.0",
+    "eth-tester": "0.14.0b1",
+    "py-evm": "0.12.1b1",
+    "eth-abi": "6.0.0"
+  },
+  "kernel_deployment_gas": 339359,
+  "kernel_runtime_bytes": 1325,
+  "real_lfm_slice_measurements": [
+    {
+      "rows": 1,
+      "columns": 1024,
+      "multiply_accumulates": 1024,
+      "integer_outputs": [
+        207214
+      ],
+      "exact_integer_parity": true,
+      "weight_bytes": 512,
+      "shard_deployment_gas": 171584,
+      "calldata_transaction_gas": 276451,
+      "code_shard_transaction_gas": 271620
+    },
+    {
+      "rows": 2,
+      "columns": 1024,
+      "multiply_accumulates": 2048,
+      "integer_outputs": [
+        207214,
+        -150983
+      ],
+      "exact_integer_parity": true,
+      "weight_bytes": 1024,
+      "shard_deployment_gas": 284039,
+      "calldata_transaction_gas": 496459,
+      "code_shard_transaction_gas": 483964
+    },
+    {
+      "rows": 4,
+      "columns": 1024,
+      "multiply_accumulates": 4096,
+      "integer_outputs": [
+        207214,
+        -150983,
+        410232,
+        -109613
+      ],
+      "exact_integer_parity": true,
+      "weight_bytes": 2048,
+      "shard_deployment_gas": 509433,
+      "calldata_transaction_gas": 936935,
+      "code_shard_transaction_gas": 908608
+    }
+  ],
+  "checks": [
+    {
+      "name": "zero",
+      "calldata_matches": true,
+      "code_shard_matches": true
+    },
+    {
+      "name": "signed_extremes",
+      "calldata_matches": true,
+      "code_shard_matches": true
+    },
+    {
+      "name": "accumulator_bound",
+      "calldata_matches": true,
+      "code_shard_matches": true
+    },
+    {
+      "name": "random_1x1",
+      "calldata_matches": true,
+      "code_shard_matches": true
+    },
+    {
+      "name": "random_1x2",
+      "calldata_matches": true,
+      "code_shard_matches": true
+    },
+    {
+      "name": "random_2x3",
+      "calldata_matches": true,
+      "code_shard_matches": true
+    },
+    {
+      "name": "random_3x31",
+      "calldata_matches": true,
+      "code_shard_matches": true
+    },
+    {
+      "name": "random_4x64",
+      "calldata_matches": true,
+      "code_shard_matches": true
+    },
+    {
+      "name": "random_8x1024",
+      "calldata_matches": true,
+      "code_shard_matches": true
+    },
+    {
+      "name": "zero_rows",
+      "rejected": true
+    },
+    {
+      "name": "too_many_rows",
+      "rejected": true
+    },
+    {
+      "name": "zero_cols",
+      "rejected": true
+    },
+    {
+      "name": "too_many_cols",
+      "rejected": true
+    },
+    {
+      "name": "missing_weight",
+      "rejected": true
+    },
+    {
+      "name": "missing_activation",
+      "rejected": true
+    },
+    {
+      "name": "excess_weight",
+      "rejected": true
+    },
+    {
+      "name": "missing_code_shard",
+      "rejected": true
+    },
+    {
+      "name": "state_commitment_and_counter",
+      "passed": true
+    }
+  ],
+  "first_result_commitment_transaction_gas": 953025,
+  "repeated_same_result_transaction_gas": 916025,
+  "limitations": [
+    "Local Ethereum EVM receipts omit Robinhood-specific fee components.",
+    "Four rows of one matrix projection; no scale application, activation function, attention or token generation.",
+    "Result commitment is not storage of all layer outputs or resumable model state.",
+    "No model-quality claim follows from exact integer-kernel parity."
+  ]
+}
