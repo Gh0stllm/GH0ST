@@ -1,0 +1,1506 @@
+{
+  "unique_parameters": 76961152,
+  "matrix_parameters": 76939648,
+  "embedding_output_tied": false,
+  "encoder_layers": 8,
+  "decoder_layers": 8,
+  "hidden_width": 512,
+  "ff_width": 1024,
+  "attention_heads": 6,
+  "head_width": 64,
+  "vocab_rows": 32128,
+  "tokenizer_size": 32100,
+  "feed_forward": "gated-gelu",
+  "raw_float32_weight_bytes": 307844608,
+  "ideal_int8_matrix_bytes": 76939648,
+  "float32_row_scale_bytes": 580864,
+  "other_float32_bytes": 86016,
+  "matrix_parameter_counts": {
+    "shared.": 16449536,
+    "encoder.": 18874560,
+    "decoder.": 25166016,
+    "lm_head.": 16449536
+  },
+  "tensors": [
+    {
+      "name": "shared.weight",
+      "shape": [
+        32128,
+        512
+      ],
+      "parameters": 16449536
+    },
+    {
+      "name": "encoder.block.0.layer.0.SelfAttention.q.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "encoder.block.0.layer.0.SelfAttention.k.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "encoder.block.0.layer.0.SelfAttention.v.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "encoder.block.0.layer.0.SelfAttention.o.weight",
+      "shape": [
+        512,
+        384
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "encoder.block.0.layer.0.SelfAttention.relative_attention_bias.weight",
+      "shape": [
+        32,
+        6
+      ],
+      "parameters": 192
+    },
+    {
+      "name": "encoder.block.0.layer.0.layer_norm.weight",
+      "shape": [
+        512
+      ],
+      "parameters": 512
+    },
+    {
+      "name": "encoder.block.0.layer.1.DenseReluDense.wi_0.weight",
+      "shape": [
+        1024,
+        512
+      ],
+      "parameters": 524288
+    },
+    {
+      "name": "encoder.block.0.layer.1.DenseReluDense.wi_1.weight",
+      "shape": [
+        1024,
+        512
+      ],
+      "parameters": 524288
+    },
+    {
+      "name": "encoder.block.0.layer.1.DenseReluDense.wo.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "parameters": 524288
+    },
+    {
+      "name": "encoder.block.0.layer.1.layer_norm.weight",
+      "shape": [
+        512
+      ],
+      "parameters": 512
+    },
+    {
+      "name": "encoder.block.1.layer.0.SelfAttention.q.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "encoder.block.1.layer.0.SelfAttention.k.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "encoder.block.1.layer.0.SelfAttention.v.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "encoder.block.1.layer.0.SelfAttention.o.weight",
+      "shape": [
+        512,
+        384
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "encoder.block.1.layer.0.layer_norm.weight",
+      "shape": [
+        512
+      ],
+      "parameters": 512
+    },
+    {
+      "name": "encoder.block.1.layer.1.DenseReluDense.wi_0.weight",
+      "shape": [
+        1024,
+        512
+      ],
+      "parameters": 524288
+    },
+    {
+      "name": "encoder.block.1.layer.1.DenseReluDense.wi_1.weight",
+      "shape": [
+        1024,
+        512
+      ],
+      "parameters": 524288
+    },
+    {
+      "name": "encoder.block.1.layer.1.DenseReluDense.wo.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "parameters": 524288
+    },
+    {
+      "name": "encoder.block.1.layer.1.layer_norm.weight",
+      "shape": [
+        512
+      ],
+      "parameters": 512
+    },
+    {
+      "name": "encoder.block.2.layer.0.SelfAttention.q.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "encoder.block.2.layer.0.SelfAttention.k.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "encoder.block.2.layer.0.SelfAttention.v.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "encoder.block.2.layer.0.SelfAttention.o.weight",
+      "shape": [
+        512,
+        384
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "encoder.block.2.layer.0.layer_norm.weight",
+      "shape": [
+        512
+      ],
+      "parameters": 512
+    },
+    {
+      "name": "encoder.block.2.layer.1.DenseReluDense.wi_0.weight",
+      "shape": [
+        1024,
+        512
+      ],
+      "parameters": 524288
+    },
+    {
+      "name": "encoder.block.2.layer.1.DenseReluDense.wi_1.weight",
+      "shape": [
+        1024,
+        512
+      ],
+      "parameters": 524288
+    },
+    {
+      "name": "encoder.block.2.layer.1.DenseReluDense.wo.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "parameters": 524288
+    },
+    {
+      "name": "encoder.block.2.layer.1.layer_norm.weight",
+      "shape": [
+        512
+      ],
+      "parameters": 512
+    },
+    {
+      "name": "encoder.block.3.layer.0.SelfAttention.q.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "encoder.block.3.layer.0.SelfAttention.k.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "encoder.block.3.layer.0.SelfAttention.v.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "encoder.block.3.layer.0.SelfAttention.o.weight",
+      "shape": [
+        512,
+        384
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "encoder.block.3.layer.0.layer_norm.weight",
+      "shape": [
+        512
+      ],
+      "parameters": 512
+    },
+    {
+      "name": "encoder.block.3.layer.1.DenseReluDense.wi_0.weight",
+      "shape": [
+        1024,
+        512
+      ],
+      "parameters": 524288
+    },
+    {
+      "name": "encoder.block.3.layer.1.DenseReluDense.wi_1.weight",
+      "shape": [
+        1024,
+        512
+      ],
+      "parameters": 524288
+    },
+    {
+      "name": "encoder.block.3.layer.1.DenseReluDense.wo.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "parameters": 524288
+    },
+    {
+      "name": "encoder.block.3.layer.1.layer_norm.weight",
+      "shape": [
+        512
+      ],
+      "parameters": 512
+    },
+    {
+      "name": "encoder.block.4.layer.0.SelfAttention.q.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "encoder.block.4.layer.0.SelfAttention.k.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "encoder.block.4.layer.0.SelfAttention.v.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "encoder.block.4.layer.0.SelfAttention.o.weight",
+      "shape": [
+        512,
+        384
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "encoder.block.4.layer.0.layer_norm.weight",
+      "shape": [
+        512
+      ],
+      "parameters": 512
+    },
+    {
+      "name": "encoder.block.4.layer.1.DenseReluDense.wi_0.weight",
+      "shape": [
+        1024,
+        512
+      ],
+      "parameters": 524288
+    },
+    {
+      "name": "encoder.block.4.layer.1.DenseReluDense.wi_1.weight",
+      "shape": [
+        1024,
+        512
+      ],
+      "parameters": 524288
+    },
+    {
+      "name": "encoder.block.4.layer.1.DenseReluDense.wo.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "parameters": 524288
+    },
+    {
+      "name": "encoder.block.4.layer.1.layer_norm.weight",
+      "shape": [
+        512
+      ],
+      "parameters": 512
+    },
+    {
+      "name": "encoder.block.5.layer.0.SelfAttention.q.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "encoder.block.5.layer.0.SelfAttention.k.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "encoder.block.5.layer.0.SelfAttention.v.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "encoder.block.5.layer.0.SelfAttention.o.weight",
+      "shape": [
+        512,
+        384
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "encoder.block.5.layer.0.layer_norm.weight",
+      "shape": [
+        512
+      ],
+      "parameters": 512
+    },
+    {
+      "name": "encoder.block.5.layer.1.DenseReluDense.wi_0.weight",
+      "shape": [
+        1024,
+        512
+      ],
+      "parameters": 524288
+    },
+    {
+      "name": "encoder.block.5.layer.1.DenseReluDense.wi_1.weight",
+      "shape": [
+        1024,
+        512
+      ],
+      "parameters": 524288
+    },
+    {
+      "name": "encoder.block.5.layer.1.DenseReluDense.wo.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "parameters": 524288
+    },
+    {
+      "name": "encoder.block.5.layer.1.layer_norm.weight",
+      "shape": [
+        512
+      ],
+      "parameters": 512
+    },
+    {
+      "name": "encoder.block.6.layer.0.SelfAttention.q.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "encoder.block.6.layer.0.SelfAttention.k.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "encoder.block.6.layer.0.SelfAttention.v.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "encoder.block.6.layer.0.SelfAttention.o.weight",
+      "shape": [
+        512,
+        384
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "encoder.block.6.layer.0.layer_norm.weight",
+      "shape": [
+        512
+      ],
+      "parameters": 512
+    },
+    {
+      "name": "encoder.block.6.layer.1.DenseReluDense.wi_0.weight",
+      "shape": [
+        1024,
+        512
+      ],
+      "parameters": 524288
+    },
+    {
+      "name": "encoder.block.6.layer.1.DenseReluDense.wi_1.weight",
+      "shape": [
+        1024,
+        512
+      ],
+      "parameters": 524288
+    },
+    {
+      "name": "encoder.block.6.layer.1.DenseReluDense.wo.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "parameters": 524288
+    },
+    {
+      "name": "encoder.block.6.layer.1.layer_norm.weight",
+      "shape": [
+        512
+      ],
+      "parameters": 512
+    },
+    {
+      "name": "encoder.block.7.layer.0.SelfAttention.q.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "encoder.block.7.layer.0.SelfAttention.k.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "encoder.block.7.layer.0.SelfAttention.v.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "encoder.block.7.layer.0.SelfAttention.o.weight",
+      "shape": [
+        512,
+        384
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "encoder.block.7.layer.0.layer_norm.weight",
+      "shape": [
+        512
+      ],
+      "parameters": 512
+    },
+    {
+      "name": "encoder.block.7.layer.1.DenseReluDense.wi_0.weight",
+      "shape": [
+        1024,
+        512
+      ],
+      "parameters": 524288
+    },
+    {
+      "name": "encoder.block.7.layer.1.DenseReluDense.wi_1.weight",
+      "shape": [
+        1024,
+        512
+      ],
+      "parameters": 524288
+    },
+    {
+      "name": "encoder.block.7.layer.1.DenseReluDense.wo.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "parameters": 524288
+    },
+    {
+      "name": "encoder.block.7.layer.1.layer_norm.weight",
+      "shape": [
+        512
+      ],
+      "parameters": 512
+    },
+    {
+      "name": "encoder.final_layer_norm.weight",
+      "shape": [
+        512
+      ],
+      "parameters": 512
+    },
+    {
+      "name": "decoder.block.0.layer.0.SelfAttention.q.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.0.layer.0.SelfAttention.k.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.0.layer.0.SelfAttention.v.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.0.layer.0.SelfAttention.o.weight",
+      "shape": [
+        512,
+        384
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.0.layer.0.SelfAttention.relative_attention_bias.weight",
+      "shape": [
+        32,
+        6
+      ],
+      "parameters": 192
+    },
+    {
+      "name": "decoder.block.0.layer.0.layer_norm.weight",
+      "shape": [
+        512
+      ],
+      "parameters": 512
+    },
+    {
+      "name": "decoder.block.0.layer.1.EncDecAttention.q.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.0.layer.1.EncDecAttention.k.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.0.layer.1.EncDecAttention.v.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.0.layer.1.EncDecAttention.o.weight",
+      "shape": [
+        512,
+        384
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.0.layer.1.layer_norm.weight",
+      "shape": [
+        512
+      ],
+      "parameters": 512
+    },
+    {
+      "name": "decoder.block.0.layer.2.DenseReluDense.wi_0.weight",
+      "shape": [
+        1024,
+        512
+      ],
+      "parameters": 524288
+    },
+    {
+      "name": "decoder.block.0.layer.2.DenseReluDense.wi_1.weight",
+      "shape": [
+        1024,
+        512
+      ],
+      "parameters": 524288
+    },
+    {
+      "name": "decoder.block.0.layer.2.DenseReluDense.wo.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "parameters": 524288
+    },
+    {
+      "name": "decoder.block.0.layer.2.layer_norm.weight",
+      "shape": [
+        512
+      ],
+      "parameters": 512
+    },
+    {
+      "name": "decoder.block.1.layer.0.SelfAttention.q.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.1.layer.0.SelfAttention.k.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.1.layer.0.SelfAttention.v.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.1.layer.0.SelfAttention.o.weight",
+      "shape": [
+        512,
+        384
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.1.layer.0.layer_norm.weight",
+      "shape": [
+        512
+      ],
+      "parameters": 512
+    },
+    {
+      "name": "decoder.block.1.layer.1.EncDecAttention.q.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.1.layer.1.EncDecAttention.k.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.1.layer.1.EncDecAttention.v.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.1.layer.1.EncDecAttention.o.weight",
+      "shape": [
+        512,
+        384
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.1.layer.1.layer_norm.weight",
+      "shape": [
+        512
+      ],
+      "parameters": 512
+    },
+    {
+      "name": "decoder.block.1.layer.2.DenseReluDense.wi_0.weight",
+      "shape": [
+        1024,
+        512
+      ],
+      "parameters": 524288
+    },
+    {
+      "name": "decoder.block.1.layer.2.DenseReluDense.wi_1.weight",
+      "shape": [
+        1024,
+        512
+      ],
+      "parameters": 524288
+    },
+    {
+      "name": "decoder.block.1.layer.2.DenseReluDense.wo.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "parameters": 524288
+    },
+    {
+      "name": "decoder.block.1.layer.2.layer_norm.weight",
+      "shape": [
+        512
+      ],
+      "parameters": 512
+    },
+    {
+      "name": "decoder.block.2.layer.0.SelfAttention.q.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.2.layer.0.SelfAttention.k.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.2.layer.0.SelfAttention.v.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.2.layer.0.SelfAttention.o.weight",
+      "shape": [
+        512,
+        384
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.2.layer.0.layer_norm.weight",
+      "shape": [
+        512
+      ],
+      "parameters": 512
+    },
+    {
+      "name": "decoder.block.2.layer.1.EncDecAttention.q.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.2.layer.1.EncDecAttention.k.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.2.layer.1.EncDecAttention.v.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.2.layer.1.EncDecAttention.o.weight",
+      "shape": [
+        512,
+        384
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.2.layer.1.layer_norm.weight",
+      "shape": [
+        512
+      ],
+      "parameters": 512
+    },
+    {
+      "name": "decoder.block.2.layer.2.DenseReluDense.wi_0.weight",
+      "shape": [
+        1024,
+        512
+      ],
+      "parameters": 524288
+    },
+    {
+      "name": "decoder.block.2.layer.2.DenseReluDense.wi_1.weight",
+      "shape": [
+        1024,
+        512
+      ],
+      "parameters": 524288
+    },
+    {
+      "name": "decoder.block.2.layer.2.DenseReluDense.wo.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "parameters": 524288
+    },
+    {
+      "name": "decoder.block.2.layer.2.layer_norm.weight",
+      "shape": [
+        512
+      ],
+      "parameters": 512
+    },
+    {
+      "name": "decoder.block.3.layer.0.SelfAttention.q.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.3.layer.0.SelfAttention.k.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.3.layer.0.SelfAttention.v.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.3.layer.0.SelfAttention.o.weight",
+      "shape": [
+        512,
+        384
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.3.layer.0.layer_norm.weight",
+      "shape": [
+        512
+      ],
+      "parameters": 512
+    },
+    {
+      "name": "decoder.block.3.layer.1.EncDecAttention.q.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.3.layer.1.EncDecAttention.k.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.3.layer.1.EncDecAttention.v.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.3.layer.1.EncDecAttention.o.weight",
+      "shape": [
+        512,
+        384
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.3.layer.1.layer_norm.weight",
+      "shape": [
+        512
+      ],
+      "parameters": 512
+    },
+    {
+      "name": "decoder.block.3.layer.2.DenseReluDense.wi_0.weight",
+      "shape": [
+        1024,
+        512
+      ],
+      "parameters": 524288
+    },
+    {
+      "name": "decoder.block.3.layer.2.DenseReluDense.wi_1.weight",
+      "shape": [
+        1024,
+        512
+      ],
+      "parameters": 524288
+    },
+    {
+      "name": "decoder.block.3.layer.2.DenseReluDense.wo.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "parameters": 524288
+    },
+    {
+      "name": "decoder.block.3.layer.2.layer_norm.weight",
+      "shape": [
+        512
+      ],
+      "parameters": 512
+    },
+    {
+      "name": "decoder.block.4.layer.0.SelfAttention.q.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.4.layer.0.SelfAttention.k.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.4.layer.0.SelfAttention.v.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.4.layer.0.SelfAttention.o.weight",
+      "shape": [
+        512,
+        384
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.4.layer.0.layer_norm.weight",
+      "shape": [
+        512
+      ],
+      "parameters": 512
+    },
+    {
+      "name": "decoder.block.4.layer.1.EncDecAttention.q.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.4.layer.1.EncDecAttention.k.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.4.layer.1.EncDecAttention.v.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.4.layer.1.EncDecAttention.o.weight",
+      "shape": [
+        512,
+        384
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.4.layer.1.layer_norm.weight",
+      "shape": [
+        512
+      ],
+      "parameters": 512
+    },
+    {
+      "name": "decoder.block.4.layer.2.DenseReluDense.wi_0.weight",
+      "shape": [
+        1024,
+        512
+      ],
+      "parameters": 524288
+    },
+    {
+      "name": "decoder.block.4.layer.2.DenseReluDense.wi_1.weight",
+      "shape": [
+        1024,
+        512
+      ],
+      "parameters": 524288
+    },
+    {
+      "name": "decoder.block.4.layer.2.DenseReluDense.wo.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "parameters": 524288
+    },
+    {
+      "name": "decoder.block.4.layer.2.layer_norm.weight",
+      "shape": [
+        512
+      ],
+      "parameters": 512
+    },
+    {
+      "name": "decoder.block.5.layer.0.SelfAttention.q.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.5.layer.0.SelfAttention.k.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.5.layer.0.SelfAttention.v.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.5.layer.0.SelfAttention.o.weight",
+      "shape": [
+        512,
+        384
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.5.layer.0.layer_norm.weight",
+      "shape": [
+        512
+      ],
+      "parameters": 512
+    },
+    {
+      "name": "decoder.block.5.layer.1.EncDecAttention.q.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.5.layer.1.EncDecAttention.k.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.5.layer.1.EncDecAttention.v.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.5.layer.1.EncDecAttention.o.weight",
+      "shape": [
+        512,
+        384
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.5.layer.1.layer_norm.weight",
+      "shape": [
+        512
+      ],
+      "parameters": 512
+    },
+    {
+      "name": "decoder.block.5.layer.2.DenseReluDense.wi_0.weight",
+      "shape": [
+        1024,
+        512
+      ],
+      "parameters": 524288
+    },
+    {
+      "name": "decoder.block.5.layer.2.DenseReluDense.wi_1.weight",
+      "shape": [
+        1024,
+        512
+      ],
+      "parameters": 524288
+    },
+    {
+      "name": "decoder.block.5.layer.2.DenseReluDense.wo.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "parameters": 524288
+    },
+    {
+      "name": "decoder.block.5.layer.2.layer_norm.weight",
+      "shape": [
+        512
+      ],
+      "parameters": 512
+    },
+    {
+      "name": "decoder.block.6.layer.0.SelfAttention.q.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.6.layer.0.SelfAttention.k.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.6.layer.0.SelfAttention.v.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.6.layer.0.SelfAttention.o.weight",
+      "shape": [
+        512,
+        384
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.6.layer.0.layer_norm.weight",
+      "shape": [
+        512
+      ],
+      "parameters": 512
+    },
+    {
+      "name": "decoder.block.6.layer.1.EncDecAttention.q.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.6.layer.1.EncDecAttention.k.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.6.layer.1.EncDecAttention.v.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.6.layer.1.EncDecAttention.o.weight",
+      "shape": [
+        512,
+        384
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.6.layer.1.layer_norm.weight",
+      "shape": [
+        512
+      ],
+      "parameters": 512
+    },
+    {
+      "name": "decoder.block.6.layer.2.DenseReluDense.wi_0.weight",
+      "shape": [
+        1024,
+        512
+      ],
+      "parameters": 524288
+    },
+    {
+      "name": "decoder.block.6.layer.2.DenseReluDense.wi_1.weight",
+      "shape": [
+        1024,
+        512
+      ],
+      "parameters": 524288
+    },
+    {
+      "name": "decoder.block.6.layer.2.DenseReluDense.wo.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "parameters": 524288
+    },
+    {
+      "name": "decoder.block.6.layer.2.layer_norm.weight",
+      "shape": [
+        512
+      ],
+      "parameters": 512
+    },
+    {
+      "name": "decoder.block.7.layer.0.SelfAttention.q.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.7.layer.0.SelfAttention.k.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.7.layer.0.SelfAttention.v.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.7.layer.0.SelfAttention.o.weight",
+      "shape": [
+        512,
+        384
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.7.layer.0.layer_norm.weight",
+      "shape": [
+        512
+      ],
+      "parameters": 512
+    },
+    {
+      "name": "decoder.block.7.layer.1.EncDecAttention.q.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.7.layer.1.EncDecAttention.k.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.7.layer.1.EncDecAttention.v.weight",
+      "shape": [
+        384,
+        512
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.7.layer.1.EncDecAttention.o.weight",
+      "shape": [
+        512,
+        384
+      ],
+      "parameters": 196608
+    },
+    {
+      "name": "decoder.block.7.layer.1.layer_norm.weight",
+      "shape": [
+        512
+      ],
+      "parameters": 512
+    },
+    {
+      "name": "decoder.block.7.layer.2.DenseReluDense.wi_0.weight",
+      "shape": [
+        1024,
+        512
+      ],
+      "parameters": 524288
+    },
+    {
+      "name": "decoder.block.7.layer.2.DenseReluDense.wi_1.weight",
+      "shape": [
+        1024,
+        512
+      ],
+      "parameters": 524288
+    },
+    {
+      "name": "decoder.block.7.layer.2.DenseReluDense.wo.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "parameters": 524288
+    },
+    {
+      "name": "decoder.block.7.layer.2.layer_norm.weight",
+      "shape": [
+        512
+      ],
+      "parameters": 512
+    },
+    {
+      "name": "decoder.final_layer_norm.weight",
+      "shape": [
+        512
+      ],
+      "parameters": 512
+    },
+    {
+      "name": "lm_head.weight",
+      "shape": [
+        32128,
+        512
+      ],
+      "parameters": 16449536
+    }
+  ],
+  "gas_measured": false,
+  "note": "Tensor payloads exclude tokenizer, contracts, padding, state and caches. Parameter counts are not gas estimates."
+}
