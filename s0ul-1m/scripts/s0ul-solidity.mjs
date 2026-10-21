@@ -1,12 +1,13 @@
 #!/usr/bin/env node
 // Explicit CLI transactions only. This module never loads .env files.
-import { readFileSync, readdirSync, mkdirSync, writeFileSync } from 'node:fs';
+import { readFileSync, readdirSync, mkdirSync, writeFileSync, existsSync, renameSync, openSync, closeSync, unlinkSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
+import { hostname } from 'node:os';
 import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
 import { spawnSync } from 'node:child_process';
 import solc from 'solc';
-import { Contract, ContractFactory, JsonRpcProvider, Wallet, keccak256 } from 'ethers';
+import { AbiCoder, Contract, ContractFactory, JsonRpcProvider, Wallet, getAddress, getCreateAddress, keccak256 } from 'ethers';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const [command, ...argv] = process.argv.slice(2);
@@ -23,7 +24,9 @@ const number = (name, fallback, maximum = Number.MAX_SAFE_INTEGER) => {
 const json = path => JSON.parse(readFileSync(path, 'utf8'));
 const write = (path, value) => {
   mkdirSync(dirname(path), { recursive: true });
-  writeFileSync(path, JSON.stringify(value, (_, x) => typeof x === 'bigint' ? x.toString() : x, 2) + '\n');
+  const temporary = path + '.tmp.' + process.pid;
+  writeFileSync(temporary, JSON.stringify(value, (_, x) => typeof x === 'bigint' ? x.toString() : x, 2) + '\n', { mode: 0o600, flush: true });
+  renameSync(temporary, path);
 };
 const log = value => process.stdout.write(JSON.stringify(value, (_, x) => typeof x === 'bigint' ? x.toString() : x) + '\n');
 const digest = data => createHash('sha256').update(data).digest('hex');
@@ -44,9 +47,33 @@ function compile() {
     contracts: output.contracts };
 }
 
+// Public deployment RPCs may impose a per-request rate limit. Queueing all
+// payloads also covers ethers' internal nonce, fee, network and receipt calls.
+class DeploymentProvider extends JsonRpcProvider {
+  constructor(url, rps) {
+    super(url, undefined, { cacheTimeout: -1, batchMaxCount: 1 });
+    this.requestSpacing = rps ? Math.ceil(1000 / rps) + 10 : 0;
+    this.nextRequestAt = 0;
+    this.requestQueue = Promise.resolve();
+  }
+  _send(payload) {
+    if (!this.requestSpacing) return super._send(payload);
+    const operation = this.requestQueue.then(async () => {
+      const wait = this.nextRequestAt - Date.now();
+      if (wait > 0) await new Promise(resolve => setTimeout(resolve, wait));
+      this.nextRequestAt = Date.now() + this.requestSpacing;
+      return super._send(payload);
+    });
+    this.requestQueue = operation.catch(() => {});
+    return operation;
+  }
+}
+
 async function connection(expectedChain) {
   if (!options.rpc) throw Error('--rpc is required');
-  const provider = new JsonRpcProvider(options.rpc);
+  const rps = Number(options['rpc-rps'] ?? (BigInt(expectedChain) === 4663n ? 3 : 0));
+  if (!Number.isFinite(rps) || rps < 0 || rps > 1000) throw Error('Invalid --rpc-rps');
+  const provider = new DeploymentProvider(options.rpc, rps);
   provider.pollingInterval = number('poll-ms', 1000, 60000);
   const network = await provider.getNetwork();
   if (network.chainId !== BigInt(expectedChain)) { await provider.destroy(); throw Error('RPC chain ID does not match the requested deployment'); }
@@ -62,59 +89,229 @@ async function connection(expectedChain) {
   return { provider, signer, chainId: network.chainId };
 }
 
+const canonical = value => {
+  if (Array.isArray(value)) return '[' + value.map(canonical).join(',') + ']';
+  if (value && typeof value === 'object') return '{' + Object.keys(value).filter(key => value[key] !== undefined).sort().map(key => JSON.stringify(key) + ':' + canonical(value[key])).join(',') + '}';
+  return JSON.stringify(value);
+};
+const same = (a, b) => canonical(a) === canonical(b);
+const sameAddress = (a, b) => typeof a === 'string' && typeof b === 'string' && getAddress(a) === getAddress(b);
+const sameHex = (a, b) => typeof a === 'string' && typeof b === 'string' && a.toLowerCase() === b.toLowerCase();
+const contractNames = ['S0ULModel', 'S0ULTokenizer', 'S0ULInference'];
+function buildFingerprint(build) {
+  const artifacts = Object.fromEntries(contractNames.map(name => {
+    const artifact = build.contracts?.[name + '.sol']?.[name];
+    if (!artifact?.evm?.bytecode?.object || !artifact?.evm?.deployedBytecode?.object || !artifact.abi) throw Error('Missing deployment artifact ' + name);
+    return [name, { abi: artifact.abi, creation: keccak256('0x' + artifact.evm.bytecode.object), runtimeTemplate: keccak256('0x' + artifact.evm.deployedBytecode.object) }];
+  }));
+  return digest(canonical({ compiler: build.compiler, optimizerRuns: build.optimizerRuns, viaIR: build.viaIR, evmVersion: build.evmVersion, sourceSha256: build.sourceSha256, artifacts }));
+}
+function deploymentLock(destination) {
+  mkdirSync(dirname(destination), { recursive: true });
+  const path = destination + '.lock';
+  let descriptor;
+  try { descriptor = openSync(path, 'wx', 0o600); }
+  catch (error) {
+    if (error.code !== 'EEXIST') throw error;
+    let prior;
+    try { prior = json(path); } catch { throw Error('Deployment lock is unreadable; verify no other deployment is active before removing it'); }
+    let alive = true;
+    if (prior.host === hostname() && Number.isSafeInteger(prior.pid) && prior.pid > 0) {
+      try { process.kill(prior.pid, 0); } catch (cause) { if (cause.code === 'ESRCH') alive = false; }
+    }
+    if (alive) throw Error('Deployment journal is locked by another process; no transaction submitted');
+    unlinkSync(path);
+    descriptor = openSync(path, 'wx', 0o600);
+  }
+  writeFileSync(descriptor, JSON.stringify({ pid: process.pid, host: hostname(), started: new Date().toISOString() }));
+  return () => { closeSync(descriptor); unlinkSync(path); };
+}
+function gasPolicy(previous = {}) {
+  if (options['max-deploy-gas'] && options['deploy-gas'] && options['max-deploy-gas'] !== options['deploy-gas']) throw Error('Use only one deployment gas cap');
+  const maximum = Number(options['max-deploy-gas'] ?? options['deploy-gas'] ?? previous.maxDeployGas ?? 12_000_000);
+  const margin = Number(options['gas-margin-bps'] ?? previous.marginBps ?? 2000);
+  if (!Number.isSafeInteger(maximum) || maximum < 1 || !Number.isSafeInteger(margin) || margin < 0 || margin > 10000) throw Error('Invalid deployment gas cap or margin');
+  return { maxDeployGas: String(maximum), marginBps: margin };
+}
+function stageAt(index, manifest) {
+  if (index < manifest.shards.length) return { key: 'shard:' + index, kind: 'shard', index };
+  const kind = ['model', 'tokenizer', 'engine'][index - manifest.shards.length];
+  if (!kind) throw Error('Deployment journal has too many transactions');
+  return { key: kind, kind };
+}
+async function creationFor(stage, result, manifest, build) {
+  if (stage.kind === 'shard') return manifest.shards[stage.index].initCodeHex;
+  const name = { model: 'S0ULModel', tokenizer: 'S0ULTokenizer', engine: 'S0ULInference' }[stage.kind];
+  const artifact = build.contracts[name + '.sol'][name];
+  const a = manifest.constructor;
+  const args = stage.kind === 'model' ? [a.config, a.sourceCheckpoint, a.manifestHash, result.shards, manifest.shards.map(x => x.runtimeKeccak256), a.shardBytes] : stage.kind === 'engine' ? [result.model, result.tokenizer] : [];
+  return (await new ContractFactory(artifact.abi, artifact.evm.bytecode.object).getDeployTransaction(...args)).data;
+}
+function expectedModelId(result, manifest) {
+  const a = manifest.constructor;
+  return keccak256(AbiCoder.defaultAbiCoder().encode([
+    'tuple(uint16 vocabSize,uint16 dim,uint16 layers,uint16 heads,uint16 hiddenDim,uint16 maxSeqLen,uint32 epsQ28,uint32 attentionScaleQ14)',
+    'bytes32', 'bytes32', 'address[]', 'bytes32[]', 'uint32', 'uint256'
+  ], [a.config, a.sourceCheckpoint, a.manifestHash, result.shards, manifest.shards.map(x => x.runtimeKeccak256), a.shardBytes, manifest.payload.nbytes]));
+}
+function validateJournal(result, manifest, build, sender, chainId, manifestSha256, fingerprint) {
+  if (result.format !== 'gh0st-s0ul-deployment-v1' || result.journalVersion !== 2) throw Error('Resume requires a version-2 deployment journal');
+  if (result.chainId !== String(chainId)) throw Error('Resume chain identity mismatch');
+  if (!sameAddress(result.sender, sender)) throw Error('Resume deployer wallet mismatch');
+  if (!sameHex(result.sourceCheckpoint, manifest.constructor.sourceCheckpoint) || !sameHex(result.modelManifestHash, manifest.manifestHash) || result.modelManifestSha256 !== manifestSha256) throw Error('Resume model bundle identity mismatch');
+  if (result.buildFingerprint !== fingerprint || result.compiler !== build.compiler || !same(result.sourceSha256, build.sourceSha256)) throw Error('Resume compiler/build identity mismatch');
+  if (!Array.isArray(result.transactions) || !Array.isArray(result.shards)) throw Error('Malformed deployment journal');
+  const total = manifest.shards.length + 3;
+  if (result.transactions.length > total || (result.complete && (result.transactions.length !== total || result.pending))) throw Error('Inconsistent completed deployment journal');
+  const seen = new Set();
+  let priorNonce = -1;
+  for (let i = 0; i < result.transactions.length; ++i) {
+    const entry = result.transactions[i], stage = stageAt(i, manifest);
+    if (entry.key !== stage.key || entry.kind !== stage.kind || entry.index !== stage.index || typeof entry.hash !== 'string' || seen.has(entry.hash.toLowerCase()) || !Number.isSafeInteger(entry.nonce) || entry.nonce <= priorNonce) throw Error('Malformed, duplicate or unordered confirmed deployment transaction');
+    seen.add(entry.hash.toLowerCase()); priorNonce = entry.nonce;
+    if (!sameAddress(entry.address, entry.predictedAddress) || !sameAddress(entry.address, getCreateAddress({ from: sender, nonce: entry.nonce }))) throw Error('Confirmed deployment address/nonce mismatch');
+    if (stage.kind === 'shard') { if (!sameAddress(result.shards[i], entry.address)) throw Error('Confirmed shard address differs from journal'); }
+    else if (!sameAddress(result[stage.kind], entry.address) || !sameHex(result[stage.kind + 'CodeHash'], entry.runtimeCodeHash)) throw Error('Confirmed contract address/code hash differs from journal');
+  }
+  if (result.shards.length !== Math.min(result.transactions.length, manifest.shards.length)) throw Error('Unexpected unconfirmed shard addresses');
+  for (const [offset, kind] of ['model', 'tokenizer', 'engine'].entries()) {
+    if (result.transactions.length <= manifest.shards.length + offset && result[kind] !== undefined) throw Error('Unexpected unconfirmed ' + kind + ' address');
+  }
+  if (result.pending) {
+    const p = result.pending, stage = stageAt(result.transactions.length, manifest);
+    if (p.key !== stage.key || p.kind !== stage.kind || p.index !== stage.index || !Number.isSafeInteger(p.nonce) || p.nonce <= priorNonce || !sameAddress(p.predictedAddress, getCreateAddress({ from: sender, nonce: p.nonce })) || (p.hash && seen.has(p.hash.toLowerCase()))) throw Error('Malformed pending deployment transaction');
+  }
+}
+async function verifyMined(entry, stage, data, result, manifest, build, provider, confirmed) {
+  const [transaction, receipt, code] = await Promise.all([provider.getTransaction(entry.hash), provider.getTransactionReceipt(entry.hash), provider.getCode(entry.predictedAddress)]);
+  if (!transaction || !receipt || receipt.status !== 1) throw Error('Deployment receipt missing or unsuccessful for ' + stage.key);
+  if (transaction.to !== null || transaction.value !== 0n || !sameAddress(transaction.from, result.sender) || transaction.chainId !== BigInt(result.chainId) || transaction.nonce !== entry.nonce || !sameHex(transaction.data, data) || !sameHex(entry.creationCodeKeccak256, keccak256(data)) || !sameAddress(receipt.contractAddress, entry.predictedAddress) || !sameAddress(receipt.from, result.sender)) throw Error('Deployment transaction/receipt identity mismatch for ' + stage.key);
+  if (transaction.gasLimit !== BigInt(entry.gasLimit) || BigInt(entry.gasEstimate) <= 0n || BigInt(entry.gasEstimate) > transaction.gasLimit) throw Error('Deployment gas metadata mismatch for ' + stage.key);
+  const runtimeHash = keccak256(code);
+  if (code === '0x') throw Error('Missing deployed code for ' + stage.key);
+  if (stage.kind === 'shard' && !sameHex(runtimeHash, manifest.shards[stage.index].runtimeKeccak256)) throw Error('Deployed shard hash mismatch for ' + stage.key);
+  if (stage.kind === 'tokenizer' && !sameHex(runtimeHash, keccak256('0x' + build.contracts['S0ULTokenizer.sol'].S0ULTokenizer.evm.deployedBytecode.object))) throw Error('Deployed tokenizer code differs from compiled implementation');
+  if (confirmed && (!sameHex(runtimeHash, entry.runtimeCodeHash) || entry.blockNumber !== receipt.blockNumber || !sameHex(entry.blockHash, receipt.blockHash) || entry.gasUsed !== receipt.gasUsed.toString())) throw Error('Confirmed deployment code/receipt changed for ' + stage.key);
+  return { ...entry, address: receipt.contractAddress, runtimeCodeHash: runtimeHash, gasUsed: receipt.gasUsed.toString(), blockNumber: receipt.blockNumber, blockHash: receipt.blockHash };
+}
+async function verifyIdentities(result, manifest, build, provider) {
+  if (result.model) {
+    const m = new Contract(result.model, build.contracts['S0ULModel.sol'].S0ULModel.abi, provider);
+    const [identity, checkpoint, manifestPin, config, count, bytes, shardSize] = await Promise.all([m.modelId(), m.sourceCheckpoint(), m.manifestHash(), m.configuration(), m.shardCount(), m.payloadLength(), m.shardBytes()]);
+    if (!sameHex(identity, expectedModelId(result, manifest)) || !sameHex(identity, result.modelId) || !sameHex(checkpoint, manifest.constructor.sourceCheckpoint) || !sameHex(manifestPin, manifest.manifestHash) || count !== BigInt(result.shards.length) || bytes !== BigInt(manifest.payload.nbytes) || shardSize !== BigInt(manifest.constructor.shardBytes)) throw Error('Model registry identity mismatch');
+    for (const [key, value] of Object.entries(manifest.constructor.config)) if (config[key] !== BigInt(value)) throw Error('Model registry configuration mismatch');
+    for (let i = 0; i < result.shards.length; i += 4) await Promise.all(result.shards.slice(i, i + 4).map(async (address, offset) => {
+      const info = await m.shardInfo(i + offset);
+      if (!sameAddress(info[0], address) || !sameHex(info[1], manifest.shards[i + offset].runtimeKeccak256)) throw Error('Model registry shard pin mismatch');
+    }));
+  }
+  if (result.tokenizer) {
+    const t = new Contract(result.tokenizer, build.contracts['S0ULTokenizer.sol'].S0ULTokenizer.abi, provider);
+    if (!sameHex(await t.domainSha256(), manifest.tokenizerDomainSha256)) throw Error('Tokenizer domain identity mismatch');
+  }
+  if (result.engine) {
+    const e = new Contract(result.engine, build.contracts['S0ULInference.sol'].S0ULInference.abi, provider);
+    const [m, t, id] = await Promise.all([e.model(), e.tokenizer(), e.modelId()]);
+    if (!sameAddress(m, result.model) || !sameAddress(t, result.tokenizer) || !sameHex(id, result.modelId)) throw Error('Inference engine model/tokenizer identity mismatch');
+  }
+}
 async function deploy(build) {
   if (!options.model || !options['chain-id']) throw Error('deploy requires --model model.json and --chain-id');
-  const modelPath = resolve(options.model);
-  if (modelPath !== resolve(dirname(modelPath), 'model.json')) throw Error('--model must identify the verified model.json file');
-  // Verify every payload and shard before any transaction or signer is opened.
-  const verification = spawnSync(options.python ?? 'python', ['-m', 's0ul.solidity_export', '--verify', dirname(modelPath)],
-    { cwd: root, encoding: 'utf8' });
-  if (verification.status !== 0) throw Error('Model export integrity verification failed: ' + verification.stderr);
-  const manifest = json(modelPath);
-  const { provider, signer, chainId } = await connection(number('chain-id', 0));
-  const gasLimit = BigInt(number('deploy-gas', 12_000_000));
-  const destination = resolve(options.output ?? resolve(root, 'deployments/s0ul.json'));
-  const result = { format: 'gh0st-s0ul-deployment-v1', chainId: String(chainId),
-    sourceCheckpoint: manifest.constructor.sourceCheckpoint, modelManifestHash: manifest.manifestHash,
-    modelManifestPath: modelPath, compiler: build.compiler, sourceSha256: build.sourceSha256,
-    sender: await signer.getAddress(), shards: [], transactions: [], complete: false };
-  const record = receipt => {
-    result.transactions.push({ hash: receipt.hash, gasUsed: receipt.gasUsed.toString(), blockNumber: receipt.blockNumber });
-    write(destination, result);
-  };
-  const deployContract = async (file, name, args = []) => {
-    const a = build.contracts[file][name];
-    const contract = await new ContractFactory(a.abi, a.evm.bytecode.object, signer).deploy(...args, { gasLimit });
-    const receipt = await contract.deploymentTransaction().wait();
-    record(receipt);
-    return contract;
-  };
+  const destination = resolve(options.resume ?? options.output ?? resolve(root, 'deployments/s0ul.json'));
+  if (options.resume && options.output && resolve(options.output) !== destination) throw Error('--resume and --output must identify the same deployment journal');
+  const unlock = deploymentLock(destination);
+  let provider;
   try {
-    for (const shard of manifest.shards) {
-      if (keccak256(shard.initCodeHex) !== shard.initCodeKeccak256) throw Error('Shard init-code hash mismatch');
-      const receipt = await (await signer.sendTransaction({ data: shard.initCodeHex, gasLimit })).wait();
-      const address = receipt.contractAddress;
-      if (keccak256(await provider.getCode(address)) !== shard.runtimeKeccak256) throw Error('Deployed shard hash mismatch');
-      result.shards.push(address); record(receipt);
-      log({ event: 'shard_deployed', index: shard.index, address, gas: receipt.gasUsed });
+    const resuming = options.resume !== undefined;
+    if (!resuming && existsSync(destination)) throw Error('Deployment output already exists; use --resume PATH or choose a new --output');
+    if (resuming && !existsSync(destination)) throw Error('Resume deployment journal does not exist');
+    const prior = resuming ? json(destination) : null;
+    const policy = gasPolicy(prior?.gasPolicy);
+    const fingerprint = buildFingerprint(build);
+    const modelPath = resolve(options.model);
+    if (modelPath !== resolve(dirname(modelPath), 'model.json')) throw Error('--model must identify the verified model.json file');
+    const verification = spawnSync(options.python ?? 'python', ['-m', 's0ul.solidity_export', '--verify', dirname(modelPath)], { cwd: root, encoding: 'utf8' });
+    if (verification.status !== 0) throw Error('Model export integrity verification failed: ' + verification.stderr);
+    const manifest = json(modelPath), manifestSha256 = digest(readFileSync(modelPath));
+    const connected = await connection(number('chain-id', 0));
+    provider = connected.provider;
+    const { signer, chainId } = connected, sender = await signer.getAddress();
+    const result = prior ?? { format: 'gh0st-s0ul-deployment-v1', journalVersion: 2, chainId: String(chainId),
+      sourceCheckpoint: manifest.constructor.sourceCheckpoint, modelManifestHash: manifest.manifestHash,
+      modelManifestPath: modelPath, modelManifestSha256: manifestSha256, compiler: build.compiler,
+      sourceSha256: build.sourceSha256, buildFingerprint: fingerprint, sender, shards: [], transactions: [], pending: null, complete: false };
+    validateJournal(result, manifest, build, sender, chainId, manifestSha256, fingerprint);
+    // All confirmed entries are checked before any new signature or broadcast.
+    for (let i = 0; i < result.transactions.length; i += 4) await Promise.all(result.transactions.slice(i, i + 4).map(async (entry, offset) => {
+      const stage = stageAt(i + offset, manifest), data = await creationFor(stage, result, manifest, build);
+      await verifyMined(entry, stage, data, result, manifest, build, provider, true);
+    }));
+    await verifyIdentities(result, manifest, build, provider);
+    result.gasPolicy = policy;
+    write(destination, result);
+    const confirmations = number('confirmations', 1, 64), timeout = number('receipt-timeout-ms', 180_000);
+    const saveConfirmed = async (pending, receipt) => {
+      if (!receipt || receipt.status !== 1) throw Error('Deployment transaction unsuccessful; pending journal retained');
+      const stage = stageAt(result.transactions.length, manifest), data = await creationFor(stage, result, manifest, build);
+      const entry = await verifyMined(pending, stage, data, result, manifest, build, provider, false);
+      result.transactions.push(entry);
+      if (stage.kind === 'shard') result.shards.push(entry.address);
+      else { result[stage.kind] = entry.address; result[stage.kind + 'CodeHash'] = entry.runtimeCodeHash; }
+      if (stage.kind === 'model') result.modelId = expectedModelId(result, manifest);
+      result.pending = null;
+      result.totalDeploymentGas = result.transactions.reduce((sum, x) => sum + BigInt(x.gasUsed), 0n).toString();
+      write(destination, result);
+      await verifyIdentities(result, manifest, build, provider);
+      log({ event: 'deployment_confirmed', stage: stage.key, address: entry.address, hash: entry.hash, gasUsed: entry.gasUsed });
+    };
+    if (result.pending) {
+      const p = result.pending;
+      if (!p.hash) throw Error('Prepared transaction has no recorded hash; inspect the sender nonce before manual recovery. No replacement was submitted');
+      const stage = stageAt(result.transactions.length, manifest), data = await creationFor(stage, result, manifest, build);
+      if (!sameHex(p.creationCodeKeccak256, keccak256(data))) throw Error('Pending creation-code identity mismatch');
+      const known = await provider.getTransaction(p.hash);
+      if (!known || known.to !== null || known.nonce !== p.nonce || !sameAddress(known.from, sender) || !sameHex(known.data, data) || known.chainId !== chainId || known.value !== 0n) throw Error('Pending transaction missing or differs from journal; verify its hash/nonce before recovery. No replacement was submitted');
+      log({ event: 'deployment_waiting', stage: p.key, hash: p.hash, predictedAddress: p.predictedAddress });
+      const receipt = await provider.waitForTransaction(p.hash, confirmations, timeout);
+      await saveConfirmed(p, receipt);
     }
-    const args = manifest.constructor;
-    const model = await deployContract('S0ULModel.sol', 'S0ULModel', [args.config, args.sourceCheckpoint,
-      args.manifestHash, result.shards, manifest.shards.map(x => x.runtimeKeccak256), args.shardBytes]);
-    result.model = await model.getAddress();
-    result.modelId = await model.modelId();
-    const tokenizer = await deployContract('S0ULTokenizer.sol', 'S0ULTokenizer');
-    result.tokenizer = await tokenizer.getAddress();
-    const engine = await deployContract('S0ULInference.sol', 'S0ULInference', [result.model, result.tokenizer]);
-    result.engine = await engine.getAddress();
-    result.engineCodeHash = keccak256(await provider.getCode(result.engine));
-    result.modelCodeHash = keccak256(await provider.getCode(result.model));
-    result.tokenizerCodeHash = keccak256(await provider.getCode(result.tokenizer));
-    if ((await model.sourceCheckpoint()).toLowerCase() !== args.sourceCheckpoint.toLowerCase()) throw Error('Source checkpoint pin mismatch');
+    for (let i = result.transactions.length; i < manifest.shards.length + 3; ++i) {
+      const stage = stageAt(i, manifest), data = await creationFor(stage, result, manifest, build);
+      const estimate = await provider.estimateGas({ from: sender, data, value: 0n });
+      const limit = estimate + (estimate * BigInt(policy.marginBps) + 9999n) / 10000n;
+      const block = await provider.getBlock('latest');
+      if (limit > BigInt(policy.maxDeployGas) || (block && limit > block.gasLimit)) throw Error('Estimated deployment gas plus margin exceeds the configured cap/block limit for ' + stage.key);
+      const nonce = Number(BigInt(await provider.send('eth_getTransactionCount', [sender, 'pending'])));
+      if (!Number.isSafeInteger(nonce)) throw Error('Sender nonce exceeds the supported integer range');
+      const pending = { ...stage, hash: null, nonce, predictedAddress: getCreateAddress({ from: sender, nonce }),
+        creationCodeKeccak256: keccak256(data), gasEstimate: estimate.toString(), gasLimit: limit.toString(), submittedAt: new Date().toISOString() };
+      result.pending = pending;
+      // Reserve the exact nonce before sending; an ambiguous RPC send failure
+      // leaves a durable marker and cannot silently restart at another nonce.
+      write(destination, result);
+      let transaction;
+      if (signer instanceof Wallet) {
+        const populated = await signer.populateTransaction({ data, nonce, gasLimit: limit, value: 0n });
+        const raw = await signer.signTransaction(populated);
+        pending.hash = keccak256(raw);
+        write(destination, result); // hash/address are durable before broadcast
+        transaction = await provider.broadcastTransaction(raw);
+      } else {
+        transaction = await signer.sendTransaction({ data, nonce, gasLimit: limit, value: 0n });
+        pending.hash = transaction.hash;
+        write(destination, result); // durable before waiting for its receipt
+      }
+      if (!sameHex(transaction.hash, pending.hash)) throw Error('Broadcast transaction hash differs from the signed journal');
+      log({ event: 'deployment_pending', stage: stage.key, hash: pending.hash, predictedAddress: pending.predictedAddress, gasEstimate: pending.gasEstimate, gasLimit: pending.gasLimit });
+      const receipt = await provider.waitForTransaction(pending.hash, confirmations, timeout);
+      await saveConfirmed(pending, receipt);
+    }
+    await verifyIdentities(result, manifest, build, provider);
     result.complete = true;
-    result.totalDeploymentGas = result.transactions.reduce((sum, tx) => sum + BigInt(tx.gasUsed), 0n).toString();
-    write(destination, result); log({ event: 'deployment_completed', ...result });
-  } finally { await provider.destroy(); }
+    result.completedAt = new Date().toISOString();
+    write(destination, result);
+    log({ event: prior?.complete ? 'deployment_already_complete' : 'deployment_completed', ...result });
+  } finally { await provider?.destroy(); unlock(); }
 }
 
 async function infer(build) {
@@ -179,7 +376,7 @@ async function infer(build) {
 
 if (!['compile', 'deploy', 'infer'].includes(command)) {
   process.stdout.write('Usage: node scripts/s0ul-solidity.mjs compile|deploy|infer --name value ...\n');
-  process.stdout.write('deploy: --rpc URL --chain-id ID --model model.json --output deployment.json [--account 0 | --private-key-env NAME]\n');
+  process.stdout.write('deploy: --rpc URL --chain-id ID --model model.json (--output NEW.json | --resume EXISTING.json) [--account 0 | --private-key-env NAME] [--max-deploy-gas 12000000] [--gas-margin-bps 2000] [--rpc-rps 3]\n');
   process.stdout.write('infer: --rpc URL --deployment deployment.json --prompt TEXT [--session ID] [--max-new-tokens 16] [--rows 32]\n');
   process.exitCode = 1;
 } else {
