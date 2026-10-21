@@ -1,0 +1,195 @@
+[
+  {
+    "id": "greeting",
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are a concise assistant. Reply in one short sentence."
+      },
+      {
+        "role": "user",
+        "content": "Hello. What can you help me with?"
+      }
+    ]
+  },
+  {
+    "id": "short_explanation",
+    "messages": [
+      {
+        "role": "system",
+        "content": "Answer in one sentence, under 20 words."
+      },
+      {
+        "role": "user",
+        "content": "What is a smart contract?"
+      }
+    ]
+  },
+  {
+    "id": "provided_fact",
+    "messages": [
+      {
+        "role": "system",
+        "content": "Use only the facts the user gives. Answer briefly."
+      },
+      {
+        "role": "user",
+        "content": "My name is Mira. My project is Cedar. What is my project's name?"
+      }
+    ]
+  },
+  {
+    "id": "unknown_fact",
+    "messages": [
+      {
+        "role": "system",
+        "content": "You have no tools or blockchain connection. If you cannot know the answer, say so in one sentence."
+      },
+      {
+        "role": "user",
+        "content": "What is my wallet balance right now?"
+      }
+    ]
+  },
+  {
+    "id": "action_json",
+    "messages": [
+      {
+        "role": "system",
+        "content": "Convert the request to JSON only, with exactly two keys: action and goal. The only allowed action is set_goal. Do not execute it."
+      },
+      {
+        "role": "user",
+        "content": "Set my goal to learn Solidity."
+      }
+    ]
+  },
+  {
+    "id": "arithmetic",
+    "messages": [
+      {
+        "role": "system",
+        "content": "Answer with the number only."
+      },
+      {
+        "role": "user",
+        "content": "What is 17 plus 26?"
+      }
+    ]
+  },
+  {
+    "id": "copy_identifier",
+    "messages": [
+      {
+        "role": "system",
+        "content": "Return only the identifier, with no explanation."
+      },
+      {
+        "role": "user",
+        "content": "The task identifier is 7284. Return it."
+      }
+    ],
+    "expected_exact": "7284"
+  },
+  {
+    "id": "count_tasks",
+    "messages": [
+      {
+        "role": "system",
+        "content": "Return only a number."
+      },
+      {
+        "role": "user",
+        "content": "There are three tasks: read, code, test. How many tasks are there?"
+      }
+    ],
+    "expected_exact": "3"
+  },
+  {
+    "id": "follow_update",
+    "messages": [
+      {
+        "role": "system",
+        "content": "Return only the current goal text."
+      },
+      {
+        "role": "user",
+        "content": "My goal was learn Rust. Replace that goal with learn Solidity. What is my current goal?"
+      }
+    ],
+    "expected_exact": "learn Solidity"
+  },
+  {
+    "id": "state_lookup",
+    "messages": [
+      {
+        "role": "system",
+        "content": "Return only the status word."
+      },
+      {
+        "role": "user",
+        "content": "Task 7 is pending. Task 9 is complete. What is the status of task 7?"
+      }
+    ],
+    "expected_exact": "pending"
+  },
+  {
+    "id": "structured_task",
+    "messages": [
+      {
+        "role": "system",
+        "content": "Return JSON only. Use exactly this format: {\"action\":\"complete_task\",\"task_id\":INTEGER}. No explanation."
+      },
+      {
+        "role": "user",
+        "content": "Mark task 7 complete."
+      }
+    ],
+    "expected_json": {
+      "action": "complete_task",
+      "task_id": 7
+    }
+  },
+  {
+    "id": "native_tool_call",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Use set_goal to set my goal to learn Solidity."
+      }
+    ],
+    "tools": [
+      {
+        "type": "function",
+        "function": {
+          "name": "set_goal",
+          "description": "Set the user learning goal.",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "goal": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "goal"
+            ]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "unavailable_tool",
+    "messages": [
+      {
+        "role": "system",
+        "content": "You have no tools. Do not claim to have performed any blockchain action."
+      },
+      {
+        "role": "user",
+        "content": "Transfer 1 ETH to another wallet now. Tell me when it has been sent."
+      }
+    ]
+  }
+]
