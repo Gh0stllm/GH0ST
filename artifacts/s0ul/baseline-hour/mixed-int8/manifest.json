@@ -1,0 +1,820 @@
+{
+  "config": {
+    "dim": 128,
+    "hidden_dim": 640,
+    "max_seq_len": 128,
+    "n_heads": 4,
+    "n_layers": 4,
+    "rms_eps": 1e-05,
+    "vocab_size": 512
+  },
+  "format": "gh0st-s0ul-int8-v1",
+  "full_integer_inference": false,
+  "limitations": [
+    "Scales and normalization gains remain float32.",
+    "Quantize/dequantize quality uses floating-point activations.",
+    "Shard bytes are payload, not deployed contract code or gas measurements.",
+    "No public-chain transaction is performed by the exporter."
+  ],
+  "model": "GH0ST S0UL-1M",
+  "parameter_count": 984192,
+  "payload": {
+    "nbytes": 1010176,
+    "path": "weights.bin",
+    "sha256": "dc89ad8e545ba4f8c34933dcfa6885f753e81994920d21cbc435c68b07896b16"
+  },
+  "quantization": {
+    "activation_arithmetic": "not specified by this weight export",
+    "norm_gains": "IEEE754 float32 little endian",
+    "rounding": "nearest, ties away from zero",
+    "scales": "IEEE754 float32 little endian",
+    "weights": "symmetric INT8 per output row"
+  },
+  "shard_payload_limit_bytes": 90000,
+  "shards": [
+    {
+      "nbytes": 90000,
+      "offset": 0,
+      "path": "shard-000.bin",
+      "sha256": "2d4b61079f79dafe00f72bcbf0c058592f096547bf3e1ed1379b6ffa30f8c46e"
+    },
+    {
+      "nbytes": 90000,
+      "offset": 90000,
+      "path": "shard-001.bin",
+      "sha256": "226e956bf6ada2607bc2c60b315f5b166d06a4189118c19c854a8e404d932305"
+    },
+    {
+      "nbytes": 90000,
+      "offset": 180000,
+      "path": "shard-002.bin",
+      "sha256": "c240c6c646c2ebe95f0467a57dba98a08775c6c173eb59526d9fb24a7f0240d2"
+    },
+    {
+      "nbytes": 90000,
+      "offset": 270000,
+      "path": "shard-003.bin",
+      "sha256": "201f50eb1f00fb4dc32bf7684f98f649b88ba0ccf33c508546f8325ed147d6ff"
+    },
+    {
+      "nbytes": 90000,
+      "offset": 360000,
+      "path": "shard-004.bin",
+      "sha256": "0ad24f4daa46a878e4b178f99b03b68a693930a7991d1a3f29a7af64c4e610f3"
+    },
+    {
+      "nbytes": 90000,
+      "offset": 450000,
+      "path": "shard-005.bin",
+      "sha256": "3431118c5955fc07643dba4986647b44ca136cb60563cf02927e5435e4ca7df3"
+    },
+    {
+      "nbytes": 90000,
+      "offset": 540000,
+      "path": "shard-006.bin",
+      "sha256": "453b10ba5453c459fb72176c1fac3001f61828ef8c1fc7893076cb98e52eae7e"
+    },
+    {
+      "nbytes": 90000,
+      "offset": 630000,
+      "path": "shard-007.bin",
+      "sha256": "62feaf71b1956c4f7e4d2d79150d7e3f13c411049a72495434230df1af93ced9"
+    },
+    {
+      "nbytes": 90000,
+      "offset": 720000,
+      "path": "shard-008.bin",
+      "sha256": "7154a19385ebfb8862efed19f06311ea6ac280a9961bc89c6448e5bc685c2402"
+    },
+    {
+      "nbytes": 90000,
+      "offset": 810000,
+      "path": "shard-009.bin",
+      "sha256": "e225525f4b41b78762812a779a69e065b0f9aae17c64d8788c56dec9cc4b27f8"
+    },
+    {
+      "nbytes": 90000,
+      "offset": 900000,
+      "path": "shard-010.bin",
+      "sha256": "390371aa8d3e425c80a648d918eba6a433fef989b141d29a1645315f969be453"
+    },
+    {
+      "nbytes": 20176,
+      "offset": 990000,
+      "path": "shard-011.bin",
+      "sha256": "cea21539000f6652e6644cd75a9847ee8f6192db95f800cd757a50a5db2def75"
+    }
+  ],
+  "source_checkpoint_sha256": "3647f818b2c6a187d5127ecaf3101308fcc84320491b655c0da98098a08d4665",
+  "stage": "experimental-weight-export",
+  "tensors": [
+    {
+      "encoding": "int8-rowwise-f32-scales",
+      "name": "layers.0.attention.k.weight",
+      "nbytes": 16896,
+      "offset": 0,
+      "parameter_count": 16384,
+      "scales_count": 128,
+      "scales_dtype": "float32-le",
+      "scales_offset": 16384,
+      "sha256": "109636e9235e8a78dc2cc077572fd6065f65d7ce94a0e8b1df933c5b0560e20c",
+      "shape": [
+        128,
+        128
+      ],
+      "values_dtype": "int8",
+      "values_nbytes": 16384
+    },
+    {
+      "encoding": "int8-rowwise-f32-scales",
+      "name": "layers.0.attention.o.weight",
+      "nbytes": 16896,
+      "offset": 16896,
+      "parameter_count": 16384,
+      "scales_count": 128,
+      "scales_dtype": "float32-le",
+      "scales_offset": 33280,
+      "sha256": "8a93df6d28227b1363e3d74f49b833f7b8271e53786d8b580f06d3eea82492e5",
+      "shape": [
+        128,
+        128
+      ],
+      "values_dtype": "int8",
+      "values_nbytes": 16384
+    },
+    {
+      "encoding": "int8-rowwise-f32-scales",
+      "name": "layers.0.attention.q.weight",
+      "nbytes": 16896,
+      "offset": 33792,
+      "parameter_count": 16384,
+      "scales_count": 128,
+      "scales_dtype": "float32-le",
+      "scales_offset": 50176,
+      "sha256": "5455b69abd1bfebf8ab9828a2cd6055bae5b8aa37a504cab9442bb0ec8cc30c0",
+      "shape": [
+        128,
+        128
+      ],
+      "values_dtype": "int8",
+      "values_nbytes": 16384
+    },
+    {
+      "encoding": "int8-rowwise-f32-scales",
+      "name": "layers.0.attention.v.weight",
+      "nbytes": 16896,
+      "offset": 50688,
+      "parameter_count": 16384,
+      "scales_count": 128,
+      "scales_dtype": "float32-le",
+      "scales_offset": 67072,
+      "sha256": "244dcdc36cca5f901b7d415a592ebb27bb8920c94fec70521be7f5e6e47b8a86",
+      "shape": [
+        128,
+        128
+      ],
+      "values_dtype": "int8",
+      "values_nbytes": 16384
+    },
+    {
+      "encoding": "float32-le",
+      "name": "layers.0.attn_norm.weight",
+      "nbytes": 512,
+      "offset": 67584,
+      "parameter_count": 128,
+      "sha256": "b7696ba878c7d4387abeb2d0248500c6183b32b6fad717aba8e5f26df98be16c",
+      "shape": [
+        128
+      ],
+      "values_dtype": "float32-le"
+    },
+    {
+      "encoding": "int8-rowwise-f32-scales",
+      "name": "layers.0.ffn.down.weight",
+      "nbytes": 82432,
+      "offset": 68096,
+      "parameter_count": 81920,
+      "scales_count": 128,
+      "scales_dtype": "float32-le",
+      "scales_offset": 150016,
+      "sha256": "cf6ffa5c78adcdde4168ff1ae7957ad3b68f410069d6a05ddf6116bede6a5bf3",
+      "shape": [
+        128,
+        640
+      ],
+      "values_dtype": "int8",
+      "values_nbytes": 81920
+    },
+    {
+      "encoding": "int8-rowwise-f32-scales",
+      "name": "layers.0.ffn.up.weight",
+      "nbytes": 84480,
+      "offset": 150528,
+      "parameter_count": 81920,
+      "scales_count": 640,
+      "scales_dtype": "float32-le",
+      "scales_offset": 232448,
+      "sha256": "f5b8e60ed3bc663458345a7d63a073277bdd8bef3422d09611d46cad3a399e09",
+      "shape": [
+        640,
+        128
+      ],
+      "values_dtype": "int8",
+      "values_nbytes": 81920
+    },
+    {
+      "encoding": "float32-le",
+      "name": "layers.0.ffn_norm.weight",
+      "nbytes": 512,
+      "offset": 235008,
+      "parameter_count": 128,
+      "sha256": "44582bf5b2455cccf7c04649c5f9434bb22c169a20349efd7e424c927d9d8e3c",
+      "shape": [
+        128
+      ],
+      "values_dtype": "float32-le"
+    },
+    {
+      "encoding": "int8-rowwise-f32-scales",
+      "name": "layers.1.attention.k.weight",
+      "nbytes": 16896,
+      "offset": 235520,
+      "parameter_count": 16384,
+      "scales_count": 128,
+      "scales_dtype": "float32-le",
+      "scales_offset": 251904,
+      "sha256": "f030bec8cabbfdad434531609321c43f63d8760d9b48d56a2ee1fc78a65102fa",
+      "shape": [
+        128,
+        128
+      ],
+      "values_dtype": "int8",
+      "values_nbytes": 16384
+    },
+    {
+      "encoding": "int8-rowwise-f32-scales",
+      "name": "layers.1.attention.o.weight",
+      "nbytes": 16896,
+      "offset": 252416,
+      "parameter_count": 16384,
+      "scales_count": 128,
+      "scales_dtype": "float32-le",
+      "scales_offset": 268800,
+      "sha256": "4fb6694c28b285b19eea6e35d19ba936ff6a997e58d3a51d600750dadd408030",
+      "shape": [
+        128,
+        128
+      ],
+      "values_dtype": "int8",
+      "values_nbytes": 16384
+    },
+    {
+      "encoding": "int8-rowwise-f32-scales",
+      "name": "layers.1.attention.q.weight",
+      "nbytes": 16896,
+      "offset": 269312,
+      "parameter_count": 16384,
+      "scales_count": 128,
+      "scales_dtype": "float32-le",
+      "scales_offset": 285696,
+      "sha256": "da25a17667a9e61a1f6785b5e8605e6fa7ff08e069b3a151dd80a365f4505ae8",
+      "shape": [
+        128,
+        128
+      ],
+      "values_dtype": "int8",
+      "values_nbytes": 16384
+    },
+    {
+      "encoding": "int8-rowwise-f32-scales",
+      "name": "layers.1.attention.v.weight",
+      "nbytes": 16896,
+      "offset": 286208,
+      "parameter_count": 16384,
+      "scales_count": 128,
+      "scales_dtype": "float32-le",
+      "scales_offset": 302592,
+      "sha256": "0e0941f62024dfbcf4ea4e3baa1c355a5ca5ce9e5a3891d0e8ec109af25fcfb9",
+      "shape": [
+        128,
+        128
+      ],
+      "values_dtype": "int8",
+      "values_nbytes": 16384
+    },
+    {
+      "encoding": "float32-le",
+      "name": "layers.1.attn_norm.weight",
+      "nbytes": 512,
+      "offset": 303104,
+      "parameter_count": 128,
+      "sha256": "2783181a6b5757dbb0ae22b9ba6c9c6115ae0d6099d5fc2e07181b9980427b43",
+      "shape": [
+        128
+      ],
+      "values_dtype": "float32-le"
+    },
+    {
+      "encoding": "int8-rowwise-f32-scales",
+      "name": "layers.1.ffn.down.weight",
+      "nbytes": 82432,
+      "offset": 303616,
+      "parameter_count": 81920,
+      "scales_count": 128,
+      "scales_dtype": "float32-le",
+      "scales_offset": 385536,
+      "sha256": "b0bd544d305989cc96dda60af20f84fb6d5e86d5a6c4a49daa4c069be52db624",
+      "shape": [
+        128,
+        640
+      ],
+      "values_dtype": "int8",
+      "values_nbytes": 81920
+    },
+    {
+      "encoding": "int8-rowwise-f32-scales",
+      "name": "layers.1.ffn.up.weight",
+      "nbytes": 84480,
+      "offset": 386048,
+      "parameter_count": 81920,
+      "scales_count": 640,
+      "scales_dtype": "float32-le",
+      "scales_offset": 467968,
+      "sha256": "7c03eb7f3b676d439978085e036ecb9ce244c1d5c9600f68d0ee8162ae1c8883",
+      "shape": [
+        640,
+        128
+      ],
+      "values_dtype": "int8",
+      "values_nbytes": 81920
+    },
+    {
+      "encoding": "float32-le",
+      "name": "layers.1.ffn_norm.weight",
+      "nbytes": 512,
+      "offset": 470528,
+      "parameter_count": 128,
+      "sha256": "fdf7b9e6393ff14a868382605cbfb2f8fcc5b3abf197d839c19f0bce8820d569",
+      "shape": [
+        128
+      ],
+      "values_dtype": "float32-le"
+    },
+    {
+      "encoding": "int8-rowwise-f32-scales",
+      "name": "layers.2.attention.k.weight",
+      "nbytes": 16896,
+      "offset": 471040,
+      "parameter_count": 16384,
+      "scales_count": 128,
+      "scales_dtype": "float32-le",
+      "scales_offset": 487424,
+      "sha256": "80d78d5b14c7c055fd78bfca1696965adabd4e8b829700c164b58c1ae767ecad",
+      "shape": [
+        128,
+        128
+      ],
+      "values_dtype": "int8",
+      "values_nbytes": 16384
+    },
+    {
+      "encoding": "int8-rowwise-f32-scales",
+      "name": "layers.2.attention.o.weight",
+      "nbytes": 16896,
+      "offset": 487936,
+      "parameter_count": 16384,
+      "scales_count": 128,
+      "scales_dtype": "float32-le",
+      "scales_offset": 504320,
+      "sha256": "4572b043b539885b6b131d1c92b3ac2ae1b13fec54121915f62577baa1054751",
+      "shape": [
+        128,
+        128
+      ],
+      "values_dtype": "int8",
+      "values_nbytes": 16384
+    },
+    {
+      "encoding": "int8-rowwise-f32-scales",
+      "name": "layers.2.attention.q.weight",
+      "nbytes": 16896,
+      "offset": 504832,
+      "parameter_count": 16384,
+      "scales_count": 128,
+      "scales_dtype": "float32-le",
+      "scales_offset": 521216,
+      "sha256": "ea22bfa69b3d87e75a2584e3d86582b2ceae02e2e5577085d59641fdb87bd6ce",
+      "shape": [
+        128,
+        128
+      ],
+      "values_dtype": "int8",
+      "values_nbytes": 16384
+    },
+    {
+      "encoding": "int8-rowwise-f32-scales",
+      "name": "layers.2.attention.v.weight",
+      "nbytes": 16896,
+      "offset": 521728,
+      "parameter_count": 16384,
+      "scales_count": 128,
+      "scales_dtype": "float32-le",
+      "scales_offset": 538112,
+      "sha256": "73e94ad4397f7bbf5992aba11364db5d068c43b05bbce29a411795fd3486ee5f",
+      "shape": [
+        128,
+        128
+      ],
+      "values_dtype": "int8",
+      "values_nbytes": 16384
+    },
+    {
+      "encoding": "float32-le",
+      "name": "layers.2.attn_norm.weight",
+      "nbytes": 512,
+      "offset": 538624,
+      "parameter_count": 128,
+      "sha256": "46174e8f45ec5fc2027f023955a88818f36f6f2edf8de0237eaa66a2116d620f",
+      "shape": [
+        128
+      ],
+      "values_dtype": "float32-le"
+    },
+    {
+      "encoding": "int8-rowwise-f32-scales",
+      "name": "layers.2.ffn.down.weight",
+      "nbytes": 82432,
+      "offset": 539136,
+      "parameter_count": 81920,
+      "scales_count": 128,
+      "scales_dtype": "float32-le",
+      "scales_offset": 621056,
+      "sha256": "d92d5a7754cff3b8b0a52af647d0b6ffc57b103b7c60730eb8e5abfa3676791b",
+      "shape": [
+        128,
+        640
+      ],
+      "values_dtype": "int8",
+      "values_nbytes": 81920
+    },
+    {
+      "encoding": "int8-rowwise-f32-scales",
+      "name": "layers.2.ffn.up.weight",
+      "nbytes": 84480,
+      "offset": 621568,
+      "parameter_count": 81920,
+      "scales_count": 640,
+      "scales_dtype": "float32-le",
+      "scales_offset": 703488,
+      "sha256": "a0f88bfbe4ae355aab98e580ff5fbad78caf521cff577a922c73bf8112ab1331",
+      "shape": [
+        640,
+        128
+      ],
+      "values_dtype": "int8",
+      "values_nbytes": 81920
+    },
+    {
+      "encoding": "float32-le",
+      "name": "layers.2.ffn_norm.weight",
+      "nbytes": 512,
+      "offset": 706048,
+      "parameter_count": 128,
+      "sha256": "41c507dbacd88358c19d5caeb4cc38047920b9e19005013a28d7a1d44a262625",
+      "shape": [
+        128
+      ],
+      "values_dtype": "float32-le"
+    },
+    {
+      "encoding": "int8-rowwise-f32-scales",
+      "name": "layers.3.attention.k.weight",
+      "nbytes": 16896,
+      "offset": 706560,
+      "parameter_count": 16384,
+      "scales_count": 128,
+      "scales_dtype": "float32-le",
+      "scales_offset": 722944,
+      "sha256": "0581aa2ba2e6bba034eced2be235f0b4eb403363ebe082c9146437368fab3350",
+      "shape": [
+        128,
+        128
+      ],
+      "values_dtype": "int8",
+      "values_nbytes": 16384
+    },
+    {
+      "encoding": "int8-rowwise-f32-scales",
+      "name": "layers.3.attention.o.weight",
+      "nbytes": 16896,
+      "offset": 723456,
+      "parameter_count": 16384,
+      "scales_count": 128,
+      "scales_dtype": "float32-le",
+      "scales_offset": 739840,
+      "sha256": "800d749c52b5a6be53e77dbac839faa7c119b31fa86f5f1ef0bfdb2255110595",
+      "shape": [
+        128,
+        128
+      ],
+      "values_dtype": "int8",
+      "values_nbytes": 16384
+    },
+    {
+      "encoding": "int8-rowwise-f32-scales",
+      "name": "layers.3.attention.q.weight",
+      "nbytes": 16896,
+      "offset": 740352,
+      "parameter_count": 16384,
+      "scales_count": 128,
+      "scales_dtype": "float32-le",
+      "scales_offset": 756736,
+      "sha256": "4b4c92842de5732aa32908b15885ee1a82ee07ada182383b449be5693bc91e7d",
+      "shape": [
+        128,
+        128
+      ],
+      "values_dtype": "int8",
+      "values_nbytes": 16384
+    },
+    {
+      "encoding": "int8-rowwise-f32-scales",
+      "name": "layers.3.attention.v.weight",
+      "nbytes": 16896,
+      "offset": 757248,
+      "parameter_count": 16384,
+      "scales_count": 128,
+      "scales_dtype": "float32-le",
+      "scales_offset": 773632,
+      "sha256": "8941177b5c44cf7944d0fac0f89239ebdb46cafcd7d4aae46755de893c147b2c",
+      "shape": [
+        128,
+        128
+      ],
+      "values_dtype": "int8",
+      "values_nbytes": 16384
+    },
+    {
+      "encoding": "float32-le",
+      "name": "layers.3.attn_norm.weight",
+      "nbytes": 512,
+      "offset": 774144,
+      "parameter_count": 128,
+      "sha256": "ec7c29d24fd7836c75e6a943a05eb6eac9a8ed4e4fa3c9f1acfcbf8fe335b201",
+      "shape": [
+        128
+      ],
+      "values_dtype": "float32-le"
+    },
+    {
+      "encoding": "int8-rowwise-f32-scales",
+      "name": "layers.3.ffn.down.weight",
+      "nbytes": 82432,
+      "offset": 774656,
+      "parameter_count": 81920,
+      "scales_count": 128,
+      "scales_dtype": "float32-le",
+      "scales_offset": 856576,
+      "sha256": "2c9938b7626aad2bd97726cf99ddf16ae22ef6e6650cdd6fb782269ebc46d9b1",
+      "shape": [
+        128,
+        640
+      ],
+      "values_dtype": "int8",
+      "values_nbytes": 81920
+    },
+    {
+      "encoding": "int8-rowwise-f32-scales",
+      "name": "layers.3.ffn.up.weight",
+      "nbytes": 84480,
+      "offset": 857088,
+      "parameter_count": 81920,
+      "scales_count": 640,
+      "scales_dtype": "float32-le",
+      "scales_offset": 939008,
+      "sha256": "1999370667b103c007841a61bbee81f8db0e002ea89399c025199ea942cd237b",
+      "shape": [
+        640,
+        128
+      ],
+      "values_dtype": "int8",
+      "values_nbytes": 81920
+    },
+    {
+      "encoding": "float32-le",
+      "name": "layers.3.ffn_norm.weight",
+      "nbytes": 512,
+      "offset": 941568,
+      "parameter_count": 128,
+      "sha256": "74d936a616c0312a57b0f32a0ee48451328d6c42f194787168917748f1462850",
+      "shape": [
+        128
+      ],
+      "values_dtype": "float32-le"
+    },
+    {
+      "encoding": "float32-le",
+      "name": "norm.weight",
+      "nbytes": 512,
+      "offset": 942080,
+      "parameter_count": 128,
+      "sha256": "e78858bcea75f52cd83acba14c4abbb09cfef01bb8970bbb1b6a96d20f883b81",
+      "shape": [
+        128
+      ],
+      "values_dtype": "float32-le"
+    },
+    {
+      "encoding": "int8-rowwise-f32-scales",
+      "name": "token_embedding.weight",
+      "nbytes": 67584,
+      "offset": 942592,
+      "parameter_count": 65536,
+      "scales_count": 512,
+      "scales_dtype": "float32-le",
+      "scales_offset": 1008128,
+      "sha256": "7fec93b5c554445ad2ebc445175157405310b0cb1d94079427b8f407623e9463",
+      "shape": [
+        512,
+        128
+      ],
+      "values_dtype": "int8",
+      "values_nbytes": 65536
+    }
+  ],
+  "tokenizer": {
+    "bos_id": 1,
+    "byte_offset": 4,
+    "domain_offset": 260,
+    "domain_pieces": [
+      "BALANCE|SELF|",
+      "MEM_SET|",
+      "MEM_GET|",
+      "TASK_ADD|",
+      "TASK_LIST|SELF",
+      "TASK_DONE|",
+      "CLARIFY|",
+      "REFUSE|",
+      "WAIT",
+      "ETH",
+      "GH0ST",
+      "unsupported",
+      "unauthorized",
+      "unsafe",
+      "task_id",
+      "request",
+      "asset",
+      "value",
+      "title",
+      "theme",
+      "language",
+      "mode",
+      "key",
+      "SELF",
+      "block=",
+      "caller=",
+      "balance",
+      "Balance",
+      "memory",
+      "Memory",
+      "preference",
+      "preferences",
+      "Remember ",
+      "remember ",
+      "Check ",
+      "check ",
+      "Show ",
+      "show ",
+      "Get ",
+      "get ",
+      "Set ",
+      "set ",
+      "Save ",
+      "save ",
+      "Read ",
+      "read ",
+      "List ",
+      "list ",
+      "Create ",
+      "create ",
+      "Add ",
+      "add ",
+      "Complete ",
+      "complete ",
+      "Finish ",
+      "finish ",
+      "Wait",
+      "wait",
+      "Please ",
+      "please ",
+      "my ",
+      "my",
+      " to ",
+      " the ",
+      " a ",
+      " an ",
+      " of ",
+      " in ",
+      " as ",
+      " for ",
+      " with ",
+      " under ",
+      " is ",
+      "task",
+      "tasks",
+      "done",
+      "pending",
+      "saved",
+      "account",
+      "holdings",
+      "amount",
+      "Store ",
+      "store ",
+      "Update ",
+      "update ",
+      "Fetch ",
+      "fetch ",
+      "Report ",
+      "report ",
+      "Persist ",
+      "persist ",
+      "Mark ",
+      "mark ",
+      "How much ",
+      "Do not ",
+      "Don't ",
+      "Never ",
+      "No action",
+      "Do nothing",
+      "another ",
+      "user",
+      "Alice",
+      "Bob",
+      "permissions",
+      "private",
+      "dark",
+      "light",
+      "amber",
+      "english",
+      "tamil",
+      "hindi",
+      "quiet",
+      "focus",
+      "normal",
+      "cyan",
+      "mint",
+      "french",
+      "spanish",
+      "balanced",
+      "violet",
+      "teal",
+      "german",
+      "arabic",
+      "rapid",
+      "public",
+      "deploy",
+      "docs",
+      "audit",
+      "report",
+      "sync",
+      "readme",
+      "backup",
+      "rotate",
+      "review",
+      "invoice",
+      "verify",
+      "meeting",
+      "inspect",
+      "help",
+      "price",
+      "Transfer ",
+      "Send ",
+      "Delete ",
+      "Ignore ",
+      "all ",
+      "What ",
+      "what ",
+      "should ",
+      "wallet",
+      "transfer",
+      "signed",
+      "ETH.",
+      "GH0ST.",
+      "123",
+      "100",
+      "200",
+      "500",
+      "; ",
+      ": ",
+      "=",
+      "|"
+    ],
+    "domain_sha256": "7de4830b9e32e5884d2ee9776fdae6c8c1b42a9278342ae22d7105b039e9a726",
+    "eos_id": 2,
+    "pad_id": 0,
+    "sep_id": 3,
+    "unused_slots": 91,
+    "version": "s0ul-byte-domain-v1",
+    "vocab_size": 512
+  }
+}
