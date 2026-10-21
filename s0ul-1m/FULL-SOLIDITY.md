@@ -35,6 +35,8 @@ Request `1` completed real inference on the deployed engine for `Wait.`, with pr
 
 The actual fee is the sum of `gasUsed × effectiveGasPrice` from this request's receipts; it excludes deployment and other wallet activity. The checker submitted no transactions. These receipts establish persisted mainnet generation, separate from the deployment smoke simulation and the earlier local EVM benchmark below. This result covers the tested prompt and token budget.
 
+The bounded [S0ULAgent controller](https://repo.sourcify.dev/4663/0x9F92776e33087DCF0d77b9BE23145efAC6cE695D) adds owner-scoped memory and tasks to this same trained engine, with batches of at most four existing inference steps that preserve decision snapshots before Select. Request `2` generated `MEM_SET|theme|dark`, EOS, and executed exactly that committed memory write under mask `8`. The [independent agent check](reports/robinhood-mainnet-agent-check.json) verified the persisted `theme=dark` value and reread all **2,560/2,560 historical decision logits** exactly against Python. [Agent authorization, commands, costs and model limits](AGENT.md).
+
 ## Selected trained model
 
 | Property | Value |
