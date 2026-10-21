@@ -1,0 +1,39 @@
+name: Documentation gap
+description: Report a missing guide, unclear explanation, stale claim or broken link.
+title: "[Docs]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Include the branch and page so we can inspect the same record. For sensitive security findings, follow SECURITY.md instead of posting details here.
+  - type: input
+    id: location
+    attributes:
+      label: Page, file or branch
+      description: Paste the URL or repository path; include a commit when the report is time-sensitive.
+      placeholder: docs/ARCHITECTURE.md on main
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What needs attention?
+      options:
+        - Missing guide or explanation
+        - Broken link or navigation
+        - Unclear or outdated claim
+        - Formatting or accessibility
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Gap or problem
+      description: Explain what you expected to find and what is missing or unclear.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Suggested correction and evidence
+      description: Link the relevant report, source or receipt. If the evidence is unavailable, say so.
