@@ -1,0 +1,29 @@
+{
+  "status": "passed",
+  "checks": [
+    "Funded prefix shrinks safely without skipping jobs",
+    "An unfunded first job stays unsigned",
+    "Funded groups never exceed four transactions",
+    "A run starting at 173 stops exactly at 175",
+    "Baseline 25 counts exactly 150 logical deployments",
+    "Signed transaction hashes are journaled before mock broadcast",
+    "The active journal clears only after the complete group is verified",
+    "Historical receipts are verified once at controller startup",
+    "The logical target cannot change on resume",
+    "A new 175-to-375 stage cannot reuse the old run identity",
+    "The explicit 175-to-375 stage deploys exactly 200 new contracts and pauses",
+    "The next 200 are exactly weight shards 0174 through 0373 in groups of four",
+    "Resuming a completed 375-contract stage never deploys beyond its target",
+    "The new stage also refuses changing its target on the same run file"
+  ],
+  "checks_passed": 14,
+  "network_calls": 0,
+  "public_transactions_sent": 0,
+  "synthetic_start_contracts": 173,
+  "immutable_baseline_contracts": 25,
+  "immutable_target_contracts": 175,
+  "explicit_stage_baseline_contracts": 175,
+  "explicit_stage_target_contracts": 375,
+  "explicit_stage_new_contracts": 200,
+  "signing_key": "newly generated throwaway key; temporary directory removed"
+}
