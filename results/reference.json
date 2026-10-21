@@ -1,0 +1,1746 @@
+{
+  "status": "local_cpu_reference_only",
+  "onchain_inference_executed": false,
+  "gas_per_token": null,
+  "reply_cost_eth": null,
+  "model": {
+    "model_id": "LiquidAI/LFM2.5-230M",
+    "revision": "40cb2ad3b3044d5a41eee083a6103c8b523afa45"
+  },
+  "generated_at": "2026-10-19T21:02:55.107803+00:00",
+  "machine": {
+    "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+    "python": "3.12.14",
+    "cpu_threads": 4,
+    "device": "cpu"
+  },
+  "versions": {
+    "torch": "2.14.1+cpu",
+    "transformers": "5.2.0",
+    "numpy": "2.5.4",
+    "safetensors": "0.8.0"
+  },
+  "numeric_format": "float32",
+  "attention_implementation": "eager",
+  "generation": {
+    "sampling": false,
+    "max_new_tokens": 32,
+    "total_context_budget": 256
+  },
+  "load_seconds_including_download_if_needed": 53.054045126002165,
+  "unique_parameters": 229693184,
+  "ideal_packed_parameter_bytes_before_overhead": {
+    "4": 114846592,
+    "8": 229693184,
+    "16": 459386368,
+    "32": 918772736
+  },
+  "kv_cache_elements_per_context_token": 6144,
+  "kv_cache_bytes_at_context_budget_float32": 6291456,
+  "inventory": [
+    {
+      "name": "model.embed_tokens.weight",
+      "shape": [
+        65536,
+        1024
+      ],
+      "parameters": 67108864,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.0.conv.conv.weight",
+      "shape": [
+        1024,
+        1,
+        3
+      ],
+      "parameters": 3072,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.0.conv.in_proj.weight",
+      "shape": [
+        3072,
+        1024
+      ],
+      "parameters": 3145728,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.0.conv.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "parameters": 1048576,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.0.feed_forward.w1.weight",
+      "shape": [
+        2560,
+        1024
+      ],
+      "parameters": 2621440,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.0.feed_forward.w3.weight",
+      "shape": [
+        2560,
+        1024
+      ],
+      "parameters": 2621440,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.0.feed_forward.w2.weight",
+      "shape": [
+        1024,
+        2560
+      ],
+      "parameters": 2621440,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.0.operator_norm.weight",
+      "shape": [
+        1024
+      ],
+      "parameters": 1024,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.0.ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "parameters": 1024,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.1.conv.conv.weight",
+      "shape": [
+        1024,
+        1,
+        3
+      ],
+      "parameters": 3072,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.1.conv.in_proj.weight",
+      "shape": [
+        3072,
+        1024
+      ],
+      "parameters": 3145728,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.1.conv.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "parameters": 1048576,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.1.feed_forward.w1.weight",
+      "shape": [
+        2560,
+        1024
+      ],
+      "parameters": 2621440,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.1.feed_forward.w3.weight",
+      "shape": [
+        2560,
+        1024
+      ],
+      "parameters": 2621440,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.1.feed_forward.w2.weight",
+      "shape": [
+        1024,
+        2560
+      ],
+      "parameters": 2621440,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.1.operator_norm.weight",
+      "shape": [
+        1024
+      ],
+      "parameters": 1024,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.1.ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "parameters": 1024,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.2.self_attn.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "parameters": 1048576,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.2.self_attn.k_proj.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "parameters": 524288,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.2.self_attn.v_proj.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "parameters": 524288,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.2.self_attn.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "parameters": 1048576,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.2.self_attn.q_layernorm.weight",
+      "shape": [
+        64
+      ],
+      "parameters": 64,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.2.self_attn.k_layernorm.weight",
+      "shape": [
+        64
+      ],
+      "parameters": 64,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.2.feed_forward.w1.weight",
+      "shape": [
+        2560,
+        1024
+      ],
+      "parameters": 2621440,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.2.feed_forward.w3.weight",
+      "shape": [
+        2560,
+        1024
+      ],
+      "parameters": 2621440,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.2.feed_forward.w2.weight",
+      "shape": [
+        1024,
+        2560
+      ],
+      "parameters": 2621440,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.2.operator_norm.weight",
+      "shape": [
+        1024
+      ],
+      "parameters": 1024,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.2.ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "parameters": 1024,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.3.conv.conv.weight",
+      "shape": [
+        1024,
+        1,
+        3
+      ],
+      "parameters": 3072,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.3.conv.in_proj.weight",
+      "shape": [
+        3072,
+        1024
+      ],
+      "parameters": 3145728,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.3.conv.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "parameters": 1048576,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.3.feed_forward.w1.weight",
+      "shape": [
+        2560,
+        1024
+      ],
+      "parameters": 2621440,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.3.feed_forward.w3.weight",
+      "shape": [
+        2560,
+        1024
+      ],
+      "parameters": 2621440,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.3.feed_forward.w2.weight",
+      "shape": [
+        1024,
+        2560
+      ],
+      "parameters": 2621440,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.3.operator_norm.weight",
+      "shape": [
+        1024
+      ],
+      "parameters": 1024,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.3.ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "parameters": 1024,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.4.self_attn.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "parameters": 1048576,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.4.self_attn.k_proj.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "parameters": 524288,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.4.self_attn.v_proj.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "parameters": 524288,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.4.self_attn.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "parameters": 1048576,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.4.self_attn.q_layernorm.weight",
+      "shape": [
+        64
+      ],
+      "parameters": 64,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.4.self_attn.k_layernorm.weight",
+      "shape": [
+        64
+      ],
+      "parameters": 64,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.4.feed_forward.w1.weight",
+      "shape": [
+        2560,
+        1024
+      ],
+      "parameters": 2621440,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.4.feed_forward.w3.weight",
+      "shape": [
+        2560,
+        1024
+      ],
+      "parameters": 2621440,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.4.feed_forward.w2.weight",
+      "shape": [
+        1024,
+        2560
+      ],
+      "parameters": 2621440,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.4.operator_norm.weight",
+      "shape": [
+        1024
+      ],
+      "parameters": 1024,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.4.ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "parameters": 1024,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.5.conv.conv.weight",
+      "shape": [
+        1024,
+        1,
+        3
+      ],
+      "parameters": 3072,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.5.conv.in_proj.weight",
+      "shape": [
+        3072,
+        1024
+      ],
+      "parameters": 3145728,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.5.conv.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "parameters": 1048576,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.5.feed_forward.w1.weight",
+      "shape": [
+        2560,
+        1024
+      ],
+      "parameters": 2621440,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.5.feed_forward.w3.weight",
+      "shape": [
+        2560,
+        1024
+      ],
+      "parameters": 2621440,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.5.feed_forward.w2.weight",
+      "shape": [
+        1024,
+        2560
+      ],
+      "parameters": 2621440,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.5.operator_norm.weight",
+      "shape": [
+        1024
+      ],
+      "parameters": 1024,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.5.ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "parameters": 1024,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.6.self_attn.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "parameters": 1048576,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.6.self_attn.k_proj.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "parameters": 524288,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.6.self_attn.v_proj.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "parameters": 524288,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.6.self_attn.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "parameters": 1048576,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.6.self_attn.q_layernorm.weight",
+      "shape": [
+        64
+      ],
+      "parameters": 64,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.6.self_attn.k_layernorm.weight",
+      "shape": [
+        64
+      ],
+      "parameters": 64,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.6.feed_forward.w1.weight",
+      "shape": [
+        2560,
+        1024
+      ],
+      "parameters": 2621440,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.6.feed_forward.w3.weight",
+      "shape": [
+        2560,
+        1024
+      ],
+      "parameters": 2621440,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.6.feed_forward.w2.weight",
+      "shape": [
+        1024,
+        2560
+      ],
+      "parameters": 2621440,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.6.operator_norm.weight",
+      "shape": [
+        1024
+      ],
+      "parameters": 1024,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.6.ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "parameters": 1024,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.7.conv.conv.weight",
+      "shape": [
+        1024,
+        1,
+        3
+      ],
+      "parameters": 3072,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.7.conv.in_proj.weight",
+      "shape": [
+        3072,
+        1024
+      ],
+      "parameters": 3145728,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.7.conv.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "parameters": 1048576,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.7.feed_forward.w1.weight",
+      "shape": [
+        2560,
+        1024
+      ],
+      "parameters": 2621440,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.7.feed_forward.w3.weight",
+      "shape": [
+        2560,
+        1024
+      ],
+      "parameters": 2621440,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.7.feed_forward.w2.weight",
+      "shape": [
+        1024,
+        2560
+      ],
+      "parameters": 2621440,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.7.operator_norm.weight",
+      "shape": [
+        1024
+      ],
+      "parameters": 1024,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.7.ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "parameters": 1024,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.8.self_attn.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "parameters": 1048576,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.8.self_attn.k_proj.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "parameters": 524288,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.8.self_attn.v_proj.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "parameters": 524288,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.8.self_attn.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "parameters": 1048576,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.8.self_attn.q_layernorm.weight",
+      "shape": [
+        64
+      ],
+      "parameters": 64,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.8.self_attn.k_layernorm.weight",
+      "shape": [
+        64
+      ],
+      "parameters": 64,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.8.feed_forward.w1.weight",
+      "shape": [
+        2560,
+        1024
+      ],
+      "parameters": 2621440,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.8.feed_forward.w3.weight",
+      "shape": [
+        2560,
+        1024
+      ],
+      "parameters": 2621440,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.8.feed_forward.w2.weight",
+      "shape": [
+        1024,
+        2560
+      ],
+      "parameters": 2621440,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.8.operator_norm.weight",
+      "shape": [
+        1024
+      ],
+      "parameters": 1024,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.8.ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "parameters": 1024,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.9.conv.conv.weight",
+      "shape": [
+        1024,
+        1,
+        3
+      ],
+      "parameters": 3072,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.9.conv.in_proj.weight",
+      "shape": [
+        3072,
+        1024
+      ],
+      "parameters": 3145728,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.9.conv.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "parameters": 1048576,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.9.feed_forward.w1.weight",
+      "shape": [
+        2560,
+        1024
+      ],
+      "parameters": 2621440,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.9.feed_forward.w3.weight",
+      "shape": [
+        2560,
+        1024
+      ],
+      "parameters": 2621440,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.9.feed_forward.w2.weight",
+      "shape": [
+        1024,
+        2560
+      ],
+      "parameters": 2621440,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.9.operator_norm.weight",
+      "shape": [
+        1024
+      ],
+      "parameters": 1024,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.9.ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "parameters": 1024,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.10.self_attn.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "parameters": 1048576,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.10.self_attn.k_proj.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "parameters": 524288,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.10.self_attn.v_proj.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "parameters": 524288,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.10.self_attn.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "parameters": 1048576,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.10.self_attn.q_layernorm.weight",
+      "shape": [
+        64
+      ],
+      "parameters": 64,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.10.self_attn.k_layernorm.weight",
+      "shape": [
+        64
+      ],
+      "parameters": 64,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.10.feed_forward.w1.weight",
+      "shape": [
+        2560,
+        1024
+      ],
+      "parameters": 2621440,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.10.feed_forward.w3.weight",
+      "shape": [
+        2560,
+        1024
+      ],
+      "parameters": 2621440,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.10.feed_forward.w2.weight",
+      "shape": [
+        1024,
+        2560
+      ],
+      "parameters": 2621440,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.10.operator_norm.weight",
+      "shape": [
+        1024
+      ],
+      "parameters": 1024,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.10.ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "parameters": 1024,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.11.conv.conv.weight",
+      "shape": [
+        1024,
+        1,
+        3
+      ],
+      "parameters": 3072,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.11.conv.in_proj.weight",
+      "shape": [
+        3072,
+        1024
+      ],
+      "parameters": 3145728,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.11.conv.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "parameters": 1048576,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.11.feed_forward.w1.weight",
+      "shape": [
+        2560,
+        1024
+      ],
+      "parameters": 2621440,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.11.feed_forward.w3.weight",
+      "shape": [
+        2560,
+        1024
+      ],
+      "parameters": 2621440,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.11.feed_forward.w2.weight",
+      "shape": [
+        1024,
+        2560
+      ],
+      "parameters": 2621440,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.11.operator_norm.weight",
+      "shape": [
+        1024
+      ],
+      "parameters": 1024,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.11.ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "parameters": 1024,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.12.self_attn.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "parameters": 1048576,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.12.self_attn.k_proj.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "parameters": 524288,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.12.self_attn.v_proj.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "parameters": 524288,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.12.self_attn.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "parameters": 1048576,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.12.self_attn.q_layernorm.weight",
+      "shape": [
+        64
+      ],
+      "parameters": 64,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.12.self_attn.k_layernorm.weight",
+      "shape": [
+        64
+      ],
+      "parameters": 64,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.12.feed_forward.w1.weight",
+      "shape": [
+        2560,
+        1024
+      ],
+      "parameters": 2621440,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.12.feed_forward.w3.weight",
+      "shape": [
+        2560,
+        1024
+      ],
+      "parameters": 2621440,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.12.feed_forward.w2.weight",
+      "shape": [
+        1024,
+        2560
+      ],
+      "parameters": 2621440,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.12.operator_norm.weight",
+      "shape": [
+        1024
+      ],
+      "parameters": 1024,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.12.ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "parameters": 1024,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.13.conv.conv.weight",
+      "shape": [
+        1024,
+        1,
+        3
+      ],
+      "parameters": 3072,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.13.conv.in_proj.weight",
+      "shape": [
+        3072,
+        1024
+      ],
+      "parameters": 3145728,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.13.conv.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "parameters": 1048576,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.13.feed_forward.w1.weight",
+      "shape": [
+        2560,
+        1024
+      ],
+      "parameters": 2621440,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.13.feed_forward.w3.weight",
+      "shape": [
+        2560,
+        1024
+      ],
+      "parameters": 2621440,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.13.feed_forward.w2.weight",
+      "shape": [
+        1024,
+        2560
+      ],
+      "parameters": 2621440,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.13.operator_norm.weight",
+      "shape": [
+        1024
+      ],
+      "parameters": 1024,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.layers.13.ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "parameters": 1024,
+      "dtype": "torch.float32"
+    },
+    {
+      "name": "model.embedding_norm.weight",
+      "shape": [
+        1024
+      ],
+      "parameters": 1024,
+      "dtype": "torch.float32"
+    }
+  ],
+  "cases": [
+    {
+      "id": "greeting",
+      "messages": [
+        {
+          "role": "system",
+          "content": "You are a concise assistant. Reply in one short sentence."
+        },
+        {
+          "role": "user",
+          "content": "Hello. What can you help me with?"
+        }
+      ],
+      "prompt_tokens": 36,
+      "generated_tokens_including_eos": 32,
+      "generated_token_ids": [
+        36309,
+        510,
+        859,
+        1011,
+        1801,
+        916,
+        768,
+        6266,
+        3795,
+        803,
+        4639,
+        810,
+        10003,
+        521,
+        988,
+        41794,
+        4639,
+        811,
+        7376,
+        2203,
+        884,
+        3727,
+        11552,
+        523,
+        3747,
+        1499,
+        1010,
+        1672,
+        12224,
+        916,
+        540,
+        7
+      ],
+      "input_token_ids": [
+        1,
+        6,
+        24131,
+        708,
+        4083,
+        938,
+        768,
+        56412,
+        16701,
+        523,
+        4274,
+        876,
+        797,
+        1235,
+        3290,
+        13184,
+        523,
+        7,
+        708,
+        6,
+        6423,
+        708,
+        36309,
+        523,
+        3747,
+        1011,
+        1010,
+        1801,
+        1123,
+        916,
+        540,
+        7,
+        708,
+        6,
+        64015,
+        708
+      ],
+      "output": "Hello! I can help with a wide range of questions and tasks, from answering questions to providing information on various topics. What would you like assistance with?",
+      "generation_seconds": 2.0966666460008128,
+      "tokens_per_second_including_prefill": 15.262321295107585,
+      "hit_output_cap": false,
+      "token_ids_sha256": "b51143362d2e26ab1017fbe87aed8dc1200a27c51c8a52c94a00f83e96103436",
+      "smoke_check": {
+        "check": "manual_review_required",
+        "passed": null
+      },
+      "stopped_at_eos": true
+    },
+    {
+      "id": "short_explanation",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Answer in one sentence, under 20 words."
+        },
+        {
+          "role": "user",
+          "content": "What is a smart contract?"
+        }
+      ],
+      "prompt_tokens": 30,
+      "generated_tokens_including_eos": 27,
+      "generated_token_ids": [
+        542,
+        10338,
+        6827,
+        856,
+        768,
+        2515,
+        10364,
+        5445,
+        800,
+        10449,
+        916,
+        1181,
+        20381,
+        4450,
+        810,
+        3652,
+        896,
+        14754,
+        35123,
+        1377,
+        1403,
+        3297,
+        3652,
+        938,
+        1827,
+        523,
+        7
+      ],
+      "input_token_ids": [
+        1,
+        6,
+        24131,
+        708,
+        40131,
+        797,
+        1235,
+        13184,
+        521,
+        1490,
+        730,
+        898,
+        3953,
+        523,
+        7,
+        708,
+        6,
+        6423,
+        708,
+        3493,
+        856,
+        768,
+        10338,
+        6827,
+        540,
+        7,
+        708,
+        6,
+        64015,
+        708
+      ],
+      "output": "A smart contract is a self-executing agreement with predefined terms and conditions that automatically enforce them when certain conditions are met.",
+      "generation_seconds": 1.8298115789948497,
+      "tokens_per_second_including_prefill": 14.755617632954106,
+      "hit_output_cap": false,
+      "token_ids_sha256": "958f15ed5e324248eb8dce5537072286d7cee0d88758704f711de9fb60b820d2",
+      "smoke_check": {
+        "check": "manual_review_required",
+        "passed": null
+      },
+      "stopped_at_eos": true
+    },
+    {
+      "id": "provided_fact",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Use only the facts the user gives. Answer briefly."
+        },
+        {
+          "role": "user",
+          "content": "My name is Mira. My project is Cedar. What is my project's name?"
+        }
+      ],
+      "prompt_tokens": 43,
+      "generated_tokens_including_eos": 13,
+      "generated_token_ids": [
+        554,
+        3596,
+        1090,
+        2826,
+        856,
+        5668,
+        8076,
+        544,
+        791,
+        788,
+        1463,
+        523,
+        7
+      ],
+      "input_token_ids": [
+        1,
+        6,
+        24131,
+        708,
+        14875,
+        1550,
+        779,
+        11445,
+        779,
+        5196,
+        6602,
+        523,
+        42275,
+        21923,
+        523,
+        7,
+        708,
+        6,
+        6423,
+        708,
+        8570,
+        2154,
+        856,
+        38290,
+        523,
+        4411,
+        2826,
+        856,
+        42074,
+        788,
+        523,
+        3747,
+        856,
+        1727,
+        2826,
+        1090,
+        2154,
+        540,
+        7,
+        708,
+        6,
+        64015,
+        708
+      ],
+      "output": "Mira's project is named **Cedar**.",
+      "generation_seconds": 0.9480659069959074,
+      "tokens_per_second_including_prefill": 13.712126872268298,
+      "hit_output_cap": false,
+      "token_ids_sha256": "ebdb60e6133676c6e8048be84bdd7293baf851623220cefd72b6189f1d642acb",
+      "smoke_check": {
+        "check": "contains_provided_project_name",
+        "passed": true
+      },
+      "stopped_at_eos": true
+    },
+    {
+      "id": "unknown_fact",
+      "messages": [
+        {
+          "role": "system",
+          "content": "You have no tools or blockchain connection. If you cannot know the answer, say so in one sentence."
+        },
+        {
+          "role": "user",
+          "content": "What is my wallet balance right now?"
+        }
+      ],
+      "prompt_tokens": 43,
+      "generated_tokens_including_eos": 32,
+      "generated_token_ids": [
+        550,
+        2008,
+        1901,
+        1052,
+        3197,
+        811,
+        1180,
+        4297,
+        6277,
+        2203,
+        933,
+        51021,
+        58706,
+        523,
+        13831,
+        3999,
+        1180,
+        7493,
+        8294,
+        521,
+        9573,
+        1495,
+        521,
+        933,
+        4567,
+        1180,
+        6277,
+        11607,
+        875,
+        779,
+        1529,
+        10866
+      ],
+      "input_token_ids": [
+        1,
+        6,
+        24131,
+        708,
+        4083,
+        1052,
+        1295,
+        6486,
+        933,
+        31250,
+        7845,
+        523,
+        2182,
+        1010,
+        4584,
+        1842,
+        779,
+        5642,
+        521,
+        2992,
+        1101,
+        797,
+        1235,
+        13184,
+        523,
+        7,
+        708,
+        6,
+        6423,
+        708,
+        3493,
+        856,
+        1727,
+        51021,
+        8386,
+        2084,
+        2166,
+        540,
+        7,
+        708,
+        6,
+        64015,
+        708
+      ],
+      "output": "I don't have access to your personal financial information or wallet balances. Please check your bank statement, mobile app, or contact your financial institution for the most accurate",
+      "generation_seconds": 2.2078611899924,
+      "tokens_per_second_including_prefill": 14.493664794257358,
+      "hit_output_cap": true,
+      "token_ids_sha256": "f8c4f5850e565691664daa8353fa56b2423250bdb36f0e521b283aea8bc57c9b",
+      "smoke_check": {
+        "check": "manual_review_required",
+        "passed": null
+      },
+      "stopped_at_eos": false
+    },
+    {
+      "id": "action_json",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Convert the request to JSON only, with exactly two keys: action and goal. The only allowed action is set_goal. Do not execute it."
+        },
+        {
+          "role": "user",
+          "content": "Set my goal to learn Solidity."
+        }
+      ],
+      "prompt_tokens": 53,
+      "generated_tokens_including_eos": 14,
+      "generated_token_ids": [
+        3409,
+        535,
+        2021,
+        572,
+        2086,
+        786,
+        708,
+        2086,
+        786,
+        535,
+        2111,
+        5683,
+        13568,
+        7
+      ],
+      "input_token_ids": [
+        1,
+        6,
+        24131,
+        708,
+        45727,
+        779,
+        5940,
+        811,
+        26444,
+        1550,
+        521,
+        916,
+        8544,
+        1547,
+        17096,
+        535,
+        4272,
+        810,
+        6341,
+        523,
+        941,
+        1550,
+        6767,
+        4272,
+        856,
+        2021,
+        572,
+        2086,
+        786,
+        523,
+        4112,
+        1014,
+        24238,
+        936,
+        523,
+        7,
+        708,
+        6,
+        6423,
+        708,
+        6478,
+        1727,
+        6341,
+        811,
+        2111,
+        5683,
+        13568,
+        523,
+        7,
+        708,
+        6,
+        64015,
+        708
+      ],
+      "output": "action: set_goal\ngoal: learn Solidity",
+      "generation_seconds": 1.0340092109981924,
+      "tokens_per_second_including_prefill": 13.539531225727615,
+      "hit_output_cap": false,
+      "token_ids_sha256": "33681fa25659dd89124ba2092f338ffbb8a0deb511cec9d17bcb0d8f5e0daac9",
+      "smoke_check": {
+        "check": "strict_json_schema",
+        "passed": false
+      },
+      "stopped_at_eos": true
+    },
+    {
+      "id": "arithmetic",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Answer with the number only."
+        },
+        {
+          "role": "user",
+          "content": "What is 17 plus 26?"
+        }
+      ],
+      "prompt_tokens": 28,
+      "generated_tokens_including_eos": 15,
+      "generated_token_ids": [
+        1417,
+        2011,
+        730,
+        2117,
+        1051,
+        730,
+        4613,
+        509,
+        569,
+        5428,
+        791,
+        600,
+        4613,
+        602,
+        7
+      ],
+      "input_token_ids": [
+        1,
+        6,
+        24131,
+        708,
+        40131,
+        916,
+        779,
+        2080,
+        1550,
+        523,
+        7,
+        708,
+        6,
+        6423,
+        708,
+        3493,
+        856,
+        730,
+        1417,
+        2729,
+        730,
+        2117,
+        540,
+        7,
+        708,
+        6,
+        64015,
+        708
+      ],
+      "output": "17 + 26 = 43\n\n\\boxed{43}",
+      "generation_seconds": 1.0513401899952441,
+      "tokens_per_second_including_prefill": 14.267503651760762,
+      "hit_output_cap": false,
+      "token_ids_sha256": "d27b5e3249a9e086e037a4d2e4d80f90621f82f1e81cf2c26af9a5972960f2f1",
+      "smoke_check": {
+        "check": "exact_answer",
+        "passed": false
+      },
+      "stopped_at_eos": true
+    }
+  ],
+  "limitations": [
+    "CPU timings do not predict Stylus gas or blockchain reply latency.",
+    "Floating-point outputs are a quality baseline, not an integer contract parity test.",
+    "Ideal packed sizes exclude quantization metadata, tokenizer, transient state and code.",
+    "Six prompts are smoke checks, not a representative model-quality evaluation.",
+    "On-chain activation, resource limits and the full inference runtime remain untested."
+  ]
+}
