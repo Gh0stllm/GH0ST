@@ -1,0 +1,22 @@
+{
+  "system": "Return one JSON object only. Actions: reply(text), create_task(title), complete_task(task_id), list_tasks(), set_preference(key,value), get_preference(key), task_status(task_id), clarify(text), refuse(text). Allowed preference keys: name, language, theme. Propose one action. Never claim it already ran. Unsupported actions must be refused.",
+  "seed": 23,
+  "source": "Hand-authored synthetic templates; not teacher-generated replies.",
+  "split_strategy": "Disjoint prompt templates and task titles/IDs/preference values. Same action semantics.",
+  "counts": {
+    "train": 429,
+    "validation": 47,
+    "test": 62
+  },
+  "hashes": {
+    "train": "585da10fb202393e2893f091c9bb25110c115a852073cf5ccc8121bc388611e7",
+    "validation": "3faa5908e4ffde4d2eb898af17bcf6eb83262ca36e666e3d81e95efa5c163ecb",
+    "test": "479fe1d44c209c7490a31c91e0eaab880f9233c3a955e94e30705a4f455e9303"
+  },
+  "test_policy": "Never used for training, hyperparameter selection or checkpoint selection.",
+  "limitations": [
+    "One fixed task domain and a small set of paraphrases.",
+    "Keyword checks do not establish semantic correctness or broad chat quality.",
+    "No real blockchain actions are executed."
+  ]
+}
