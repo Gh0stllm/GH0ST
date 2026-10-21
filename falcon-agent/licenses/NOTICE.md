@@ -1,0 +1,11 @@
+# Upstream Falcon model notice
+
+GH0ST is built using artificial intelligence technology from the Technology Innovation Institute.
+
+The selected model is `tiiuae/Falcon-H1-Tiny-90M-Instruct`, revision `e6389502a0b12cd8da894b395ba5bf7436873b16`. Its model card declares `falcon-llm-license` and links to https://falconllm.tii.ae/falcon-terms-and-conditions.html. `FALCON-LICENSE.html` preserves the general Relevant Model license section dated December 2024 from that linked page. `FALCON-ACCEPTABLE-USE.txt` preserves the linked acceptable-use policy as retrieved on 20 October 2026. Check the upstream policy for later changes as required by the license.
+
+The original model and its derived weights remain subject to the upstream model license and its incorporated acceptable-use restrictions. Any use or redistribution of these model-derived weight files and on-chain shards must comply with those terms. This notice does not replace the upstream license or grant broader rights. It does not license unrelated GH0ST source files.
+
+Modification notice: GH0ST quantized matrix weights to six-bit codes, encoded scale/offset metadata, retained non-matrix tensors, compacted the resulting file into the F6B1 layout, and split it into STOP-prefixed immutable contract runtimes. This is a modified representation of the upstream checkpoint, not an unchanged upstream release. The selected-file SHA-256 is `1aca236cbf553bab84bd5aa934a9d5e73d82748113e7c8b8272f4382f41e23fc`. No new training is claimed for this selected variant. These data contracts do not implement complete Falcon inference.
+
+Four-bit modification notice (20 October 2026): the new research candidate quantizes all matrix weights into four-bit codes with group-64 affine integer scale/zero records, using activation-weighted calibration, and retains original BF16 non-matrix tensors. Its file format is `GH0ST4Q1`/`G4Q1`, with SHA-256 `9cc5e90880d96ff15bf4110f7970a7ea473c9b86576298691ade1e745672e7a9`. No training was performed. Behavioral drift is documented in `fourbit-study`; the complete on-chain inference engine remains unimplemented and no four-bit public deployment occurred in this study. Other four-bit variants, including a rejected second-order rounding experiment, are separate modified representations governed by the same upstream terms.
