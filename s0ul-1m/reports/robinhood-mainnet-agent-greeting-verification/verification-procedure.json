@@ -1,0 +1,36 @@
+{
+  "format": "gh0st-s0ul-agent-greeting-source-verification-procedure-v1",
+  "preparedAt": "2026-10-21T21:40:12.789306+00:00",
+  "status": "COMPILER_REPRODUCED_WAITING_FOR_ALREADY_PUBLIC_SOURCE_AND_CONFIRMED_EXTENSION",
+  "chainId": 4663,
+  "sourcePath": "extensions/S0ULAgentGreeting.sol",
+  "compiler": {
+    "version": "0.8.30+commit.73712a01",
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "viaIR": true,
+    "evmVersion": "shanghai"
+  },
+  "buildDirectory": "exports/solidity-agent-greeting-build",
+  "scope": "Greeting extension only. Existing controller and inference contracts are unchanged.",
+  "behavior": "A deterministic fixed greeting tool gated by a completed authorized controller request. The greeting is a tool response and is not described as model-generated text.",
+  "procedure": [
+    "Read final isolated compiler input and build; verify exact source hashes and compiler settings.",
+    "Recompile that exact input and require ABI, creation bytecode and runtime bytecode to match every extension build artifact.",
+    "Wait for the root agent to confirm extension deployment address, successful creation transaction, and prior publication of source and compiler input in the public GitHub repository.",
+    "Read the public GitHub sources/compiler input and prove that the source contents and settings exactly match the reproduced build.",
+    "Encode the constructor arguments from the confirmed extension deployment journal and require its creation-code hash to match the journal.",
+    "Submit only already-public compiler input and public creation metadata to the independent Sourcify v2 verification API.",
+    "Poll the returned verification ID in bounded requests; record exact matches or the actual pending/failure status."
+  ],
+  "verificationEndpoint": "https://sourcify.dev/server/v2/verify/4663/{confirmedExtensionAddress}",
+  "jobEndpoint": "https://sourcify.dev/server/v2/verify/{verificationId}",
+  "documentation": [
+    "https://docs.sourcify.dev/docs/api/",
+    "https://sourcify.dev/server/api-docs/swagger.json"
+  ],
+  "networkScope": "Sourcify public source verification and read-only public GitHub provenance only. No wallet access, signing, transaction broadcasts, chain RPC, or GitHub modifications.",
+  "compilerReproductionFile": "compiler-reproduction.json"
+}
