@@ -1,0 +1,152 @@
+{
+  "status": "completed",
+  "model_parameters": 91131072,
+  "training_performed": false,
+  "inference_quality_tested": false,
+  "public_transactions_broadcast": 0,
+  "scope": "Compression measurements and code-storage arithmetic; no EVM decompressor implemented or benchmarked.",
+  "code_storage_budget_bytes": {
+    "1000000": 5000,
+    "10000000": 50000,
+    "100000000": 500000,
+    "999000000": 4995000
+  },
+  "files": [
+    {
+      "format": "IQ2_M",
+      "repo": "tiiuae/Falcon-H1-Tiny-90M-Instruct-GGUF",
+      "revision": "578d134817c19bc48991ccff9a14709d664261cc",
+      "filename": "Falcon-H1-Tiny-90M-Instruct-IQ2_M.gguf",
+      "sha256": "241bca6aae585d6cd6ad1e0f66807a42114e30d39487840c4eb08f31930043d8",
+      "bytes": 12668800,
+      "valid_gguf": false,
+      "rejection_reason": "Not GGUF",
+      "first_16_bytes_hex": "00000000000000000000000000000000",
+      "excluded_from_cost_comparison": true
+    },
+    {
+      "format": "Q4_K_M",
+      "repo": "tiiuae/Falcon-H1-Tiny-90M-Instruct-GGUF",
+      "revision": "578d134817c19bc48991ccff9a14709d664261cc",
+      "filename": "Falcon-H1-Tiny-90M-Instruct-Q4_K_M.gguf",
+      "sha256": "e7d655345a876ecb073ea86f5ce68e412b99090c34a6bde8a2982bc48afb2612",
+      "bytes": 58600064,
+      "valid_gguf": true,
+      "inventory": {
+        "version": 3,
+        "tensor_count": 386,
+        "tensor_elements": 91131072,
+        "tensor_data_offset": 1132416,
+        "tensor_data_bytes": 57467648,
+        "architecture": "falcon-h1",
+        "declared_file_type": 15,
+        "vocabulary_entries": 32768
+      },
+      "expected_parameter_count_matches": true,
+      "compression": [
+        {
+          "scope": "full_file",
+          "codec": "zlib-9",
+          "input_bytes": 58600064,
+          "compressed_bytes": 56514099,
+          "ratio": 0.9644033665219205,
+          "code_deposit_gas_only": 11302819800,
+          "roundtrip_exact": true,
+          "wall_seconds": 2.4029464179911884
+        },
+        {
+          "scope": "full_file",
+          "codec": "bzip2-9",
+          "input_bytes": 58600064,
+          "compressed_bytes": 57382237,
+          "ratio": 0.9792179919803501,
+          "code_deposit_gas_only": 11476447400,
+          "roundtrip_exact": true,
+          "wall_seconds": 9.822272176010301
+        },
+        {
+          "scope": "tensor_payload",
+          "codec": "zlib-9",
+          "input_bytes": 57467648,
+          "compressed_bytes": 56190216,
+          "ratio": 0.9777712844625206,
+          "code_deposit_gas_only": 11238043200,
+          "roundtrip_exact": true,
+          "wall_seconds": 2.030800342996372
+        },
+        {
+          "scope": "tensor_payload",
+          "codec": "bzip2-9",
+          "input_bytes": 57467648,
+          "compressed_bytes": 57143808,
+          "ratio": 0.9943648294080175,
+          "code_deposit_gas_only": 11428761600,
+          "roundtrip_exact": true,
+          "wall_seconds": 9.178379966993816
+        }
+      ]
+    },
+    {
+      "format": "Q8_0",
+      "repo": "tiiuae/Falcon-H1-Tiny-90M-Instruct-GGUF",
+      "revision": "578d134817c19bc48991ccff9a14709d664261cc",
+      "filename": "Falcon-H1-Tiny-90M-Instruct-Q8_0.gguf",
+      "sha256": "e60034381f4a0e448a5e6fdab29d7b40768a587c9a56e4cf85285455ba65d476",
+      "bytes": 98353792,
+      "valid_gguf": true,
+      "inventory": {
+        "version": 3,
+        "tensor_count": 386,
+        "tensor_elements": 91131072,
+        "tensor_data_offset": 1132416,
+        "tensor_data_bytes": 97221376,
+        "architecture": "falcon-h1",
+        "declared_file_type": 7,
+        "vocabulary_entries": 32768
+      },
+      "expected_parameter_count_matches": true,
+      "compression": [
+        {
+          "scope": "full_file",
+          "codec": "zlib-9",
+          "input_bytes": 98353792,
+          "compressed_bytes": 93010598,
+          "ratio": 0.9456737367075791,
+          "code_deposit_gas_only": 18602119600,
+          "roundtrip_exact": true,
+          "wall_seconds": 3.6387064150039805
+        },
+        {
+          "scope": "full_file",
+          "codec": "bzip2-9",
+          "input_bytes": 98353792,
+          "compressed_bytes": 95790767,
+          "ratio": 0.9739407607182039,
+          "code_deposit_gas_only": 19158153400,
+          "roundtrip_exact": true,
+          "wall_seconds": 15.567147882000427
+        },
+        {
+          "scope": "tensor_payload",
+          "codec": "zlib-9",
+          "input_bytes": 97221376,
+          "compressed_bytes": 92686431,
+          "ratio": 0.9533544454256644,
+          "code_deposit_gas_only": 18537286200,
+          "roundtrip_exact": true,
+          "wall_seconds": 3.2541998750093626
+        },
+        {
+          "scope": "tensor_payload",
+          "codec": "bzip2-9",
+          "input_bytes": 97221376,
+          "compressed_bytes": 95545818,
+          "ratio": 0.9827655391341098,
+          "code_deposit_gas_only": 19109163600,
+          "roundtrip_exact": true,
+          "wall_seconds": 14.58179520300473
+        }
+      ]
+    }
+  ]
+}
