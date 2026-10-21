@@ -1,0 +1,243 @@
+name: Import verified GH0ST recovery bundle
+
+on:
+  push:
+    branches: [main]
+    paths: [recovery-manifest.json]
+  workflow_dispatch:
+
+concurrency:
+  group: gh0st-recovery-import
+  cancel-in-progress: false
+
+jobs:
+  import:
+    if: >-
+      github.repository == 'Gh0stllm/GH0ST' &&
+      github.ref == 'refs/heads/main' &&
+      (github.event_name == 'push' ||
+       (github.event_name == 'workflow_dispatch' &&
+        github.actor == github.repository_owner &&
+        github.triggering_actor == github.repository_owner))
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+    steps:
+      - name: Check out the bootstrap commit
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.sha }}
+          persist-credentials: true
+      - name: Verify and import the fixed recovery history
+        env:
+          RECOVERY_REPOSITORY: ${{ github.repository }}
+          RECOVERY_EVENT: ${{ github.event_name }}
+          RECOVERY_ACTOR: ${{ github.actor }}
+          RECOVERY_TRIGGERING_ACTOR: ${{ github.triggering_actor }}
+          RECOVERY_OWNER: ${{ github.repository_owner }}
+          RECOVERY_REF: ${{ github.ref }}
+          RECOVERY_BOOTSTRAP_SHA: ${{ github.sha }}
+          RECOVERY_RUN_ID: ${{ github.run_id }}
+          RECOVERY_RUN_ATTEMPT: ${{ github.run_attempt }}
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib
+          import json
+          import os
+          import re
+          import subprocess
+          import sys
+          import tempfile
+
+          REPOSITORY = 'Gh0stllm/GH0ST'
+          MAX_PART_BYTES = 20 * 1024 * 1024
+          SHA1 = re.compile(r'[0-9a-f]{40}')
+          SHA256 = re.compile(r'[0-9a-f]{64}')
+
+          def require(condition, message):
+              if not condition:
+                  raise RuntimeError(message)
+
+          def keys(value, expected, label):
+              require(type(value) is dict and set(value) == set(expected),
+                      'Invalid manifest fields: ' + label)
+
+          def positive_integer(value, maximum, label):
+              require(type(value) is int and 0 < value <= maximum,
+                      'Invalid positive integer: ' + label)
+
+          def digest(value, expression, label):
+              require(type(value) is str and expression.fullmatch(value) is not None,
+                      'Invalid digest: ' + label)
+
+          def validate_manifest(manifest):
+              keys(manifest, ['format', 'repository', 'bundle', 'restored_main'], 'root')
+              require(manifest['format'] == 'gh0st-recovery-bundle-v1', 'Unknown recovery format')
+              require(manifest['repository'] == REPOSITORY, 'Manifest targets another repository')
+              bundle = manifest['bundle']
+              keys(bundle, ['sha256', 'bytes', 'parts'], 'bundle')
+              digest(bundle['sha256'], SHA256, 'bundle.sha256')
+              positive_integer(bundle['bytes'], 99 * MAX_PART_BYTES, 'bundle.bytes')
+              parts = bundle['parts']
+              require(type(parts) is list and 0 < len(parts) < 100, 'Require 1–99 bundle parts')
+              for index, part in enumerate(parts):
+                  keys(part, ['path', 'bytes', 'sha256'], 'part')
+                  require(part['path'] == f'gh0st-recovery.bundle.part-{index:03d}',
+                          'Bundle parts must be contiguous fixed root filenames')
+                  positive_integer(part['bytes'], MAX_PART_BYTES, 'part.bytes')
+                  digest(part['sha256'], SHA256, 'part.sha256')
+              require(sum(part['bytes'] for part in parts) == bundle['bytes'],
+                      'Bundle size does not equal the sum of its parts')
+              restored = manifest['restored_main']
+              keys(restored, ['sha', 'tree', 'tracked_files', 'commits'], 'restored_main')
+              digest(restored['sha'], SHA1, 'restored_main.sha')
+              digest(restored['tree'], SHA1, 'restored_main.tree')
+              positive_integer(restored['tracked_files'], 100000, 'restored_main.tracked_files')
+              positive_integer(restored['commits'], 100000, 'restored_main.commits')
+              return manifest
+
+          def assemble_bundle(root, destination, bundle):
+              total_hash = hashlib.sha256()
+              total_bytes = 0
+              with destination.open('xb') as output:
+                  for part in bundle['parts']:
+                      path = root / part['path']
+                      require(path.is_file() and not path.is_symlink(),
+                              'Missing or symbolic bundle part: ' + part['path'])
+                      require(path.stat().st_size == part['bytes'],
+                              'Part size mismatch: ' + part['path'])
+                      part_hash = hashlib.sha256()
+                      part_bytes = 0
+                      with path.open('rb') as source:
+                          while chunk := source.read(1024 * 1024):
+                              part_hash.update(chunk)
+                              total_hash.update(chunk)
+                              output.write(chunk)
+                              part_bytes += len(chunk)
+                      require(part_bytes == part['bytes'] and part_hash.hexdigest() == part['sha256'],
+                              'Part SHA-256 mismatch: ' + part['path'])
+                      total_bytes += part_bytes
+              require(total_bytes == bundle['bytes'] and total_hash.hexdigest() == bundle['sha256'],
+                      'Combined bundle SHA-256 mismatch')
+
+          def git(*arguments, input_bytes=None):
+              # Manifest fields are validated data passed as argv, never shell text.
+              result = subprocess.run(
+                  ['git', '-c', 'core.hooksPath=/dev/null', *arguments],
+                  input=input_bytes, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                  check=False, env={**os.environ, 'GIT_TERMINAL_PROMPT': '0'}
+              )
+              if result.returncode:
+                  # Git credentials stay in checkout's configuration, never argv.
+                  sys.stderr.write(result.stderr.decode('utf-8', errors='replace'))
+                  raise RuntimeError('Git operation failed: ' + arguments[0])
+              return result.stdout
+
+          def remote_head(reference):
+              output = git('ls-remote', '--heads', 'origin', reference).decode().strip()
+              if not output:
+                  return None
+              rows = output.splitlines()
+              require(len(rows) == 1, 'Unexpected number of remote references')
+              sha, name = rows[0].split('\t')
+              digest(sha, SHA1, 'remote reference')
+              require(name == reference, 'Remote reference name mismatch')
+              return sha
+
+          def main():
+              root = Path.cwd()
+              manifest_path = root / 'recovery-manifest.json'
+              if not manifest_path.exists():
+                  print('No recovery manifest is present; the restored repository needs no import.')
+                  return
+              require(manifest_path.is_file() and not manifest_path.is_symlink(),
+                      'The recovery manifest must be a regular root file')
+              require(manifest_path.stat().st_size <= 1024 * 1024, 'Recovery manifest exceeds 1 MiB')
+              require(os.environ['RECOVERY_REPOSITORY'].casefold() == REPOSITORY.casefold(),
+                      'Unexpected workflow repository')
+              require(os.environ['RECOVERY_REF'] == 'refs/heads/main', 'Only bootstrap main may import')
+              event = os.environ['RECOVERY_EVENT']
+              require(event in ['push', 'workflow_dispatch'], 'Unexpected workflow event')
+              if event == 'workflow_dispatch':
+                  owner = os.environ['RECOVERY_OWNER'].casefold()
+                  require(os.environ['RECOVERY_ACTOR'].casefold() == owner and
+                          os.environ['RECOVERY_TRIGGERING_ACTOR'].casefold() == owner,
+                          'Only the repository owner may dispatch or rerun this import')
+              manifest = validate_manifest(json.loads(manifest_path.read_text(encoding='utf-8')))
+              restored = manifest['restored_main']
+              target = restored['sha']
+              bootstrap = os.environ['RECOVERY_BOOTSTRAP_SHA']
+              digest(bootstrap, SHA1, 'bootstrap SHA')
+              require(git('rev-parse', 'HEAD').decode().strip() == bootstrap,
+                      'Checked-out commit differs from the triggering bootstrap commit')
+              current_main = remote_head('refs/heads/main')
+              if current_main == target:
+                  print('Remote main already points to the exact restored commit; no update required.')
+                  return
+              require(current_main == bootstrap,
+                      'Remote main changed after this run was queued; refuse to replace unrelated work')
+
+              with tempfile.TemporaryDirectory(prefix='gh0st-recovery-', dir=os.environ['RUNNER_TEMP']) as temp:
+                  bundle_path = Path(temp) / 'verified-recovery.bundle'
+                  assemble_bundle(root, bundle_path, manifest['bundle'])
+                  git('bundle', 'verify', str(bundle_path))
+                  heads = git('bundle', 'list-heads', str(bundle_path), 'refs/heads/main').decode().splitlines()
+                  require(heads == [target + ' refs/heads/main'], 'Bundle main differs from the pinned restored SHA')
+                  git('fetch', '--no-tags', str(bundle_path),
+                      'refs/heads/main:refs/recovery/imported-main')
+                  require(git('rev-parse', 'refs/recovery/imported-main').decode().strip() == target,
+                          'Imported local reference differs from the restored SHA')
+                  require(git('cat-file', '-t', target).decode().strip() == 'commit',
+                          'Restored SHA must identify a commit')
+                  require(git('rev-parse', target + '^{tree}').decode().strip() == restored['tree'],
+                          'Restored tree SHA mismatch')
+                  paths = git('ls-tree', '-r', '-z', '--name-only', target).split(b'\0')
+                  require(len([path for path in paths if path]) == restored['tracked_files'],
+                          'Restored tracked-file count mismatch')
+                  require(int(git('rev-list', '--count', target)) == restored['commits'],
+                          'Restored reachable-commit count mismatch')
+                  require(git('ls-tree', target, '--', 'recovery-manifest.json') == b'',
+                          'The transport manifest must not be part of the restored tree')
+                  require(git('diff', '--name-only', bootstrap, target, '--', '.github/workflows') == b'',
+                          'Workflow paths or bytes differ; pre-create the exact final workflows before importing')
+                  git('fsck', '--full', '--strict', '--no-dangling')
+                  object_ids = git('rev-list', '--objects', '--no-object-names', target)
+                  objects = git('cat-file', '--batch-check=%(objecttype) %(objectsize)',
+                                input_bytes=object_ids).decode().splitlines()
+                  require(all(not line.startswith('blob ') or int(line.split()[1]) <= 100 * 1024 * 1024
+                              for line in objects), 'History contains a blob above the GitHub 100 MiB limit')
+
+                  archive_ref = 'refs/heads/recovery/bootstrap-' + bootstrap[:12]
+                  archive_head = remote_head(archive_ref)
+                  require(archive_head in [None, bootstrap], 'Bootstrap archive reference already differs')
+                  if archive_head is None:
+                      git('push', '--porcelain', 'origin', bootstrap + ':' + archive_ref)
+                  require(remote_head(archive_ref) == bootstrap, 'Bootstrap archive was not preserved')
+                  run_id = os.environ['RECOVERY_RUN_ID']
+                  attempt = os.environ['RECOVERY_RUN_ATTEMPT']
+                  require(re.fullmatch(r'[0-9]+', run_id) is not None and
+                          re.fullmatch(r'[0-9]+', attempt) is not None, 'Invalid workflow run identity')
+                  validation_ref = 'refs/heads/recovery/validated-' + run_id + '-' + attempt
+                  validation_head = remote_head(validation_ref)
+                  require(validation_head in [None, target], 'Validation reference already differs')
+                  if validation_head is None:
+                      # A real push tests server-side history/workflow guards; dry-run is insufficient.
+                      git('push', '--porcelain', 'origin', target + ':' + validation_ref)
+                  require(remote_head(validation_ref) == target, 'Restored-history validation push failed')
+                  require(remote_head('refs/heads/main') == bootstrap,
+                          'Remote main changed during validation; refuse to replace unrelated work')
+                  git('push', '--porcelain',
+                      '--force-with-lease=refs/heads/main:' + bootstrap,
+                      'origin', target + ':refs/heads/main')
+                  require(remote_head('refs/heads/main') == target, 'Remote main did not reach the restored SHA')
+                  print('Restored exact commit:', target)
+                  print('Verified files:', restored['tracked_files'], 'reachable commits:', restored['commits'])
+                  print('Bootstrap transport retained at:', archive_ref)
+                  print('Only the restored main history was published; old research heads were not pushed.')
+
+          if __name__ == '__main__':
+              main()
+          PY
