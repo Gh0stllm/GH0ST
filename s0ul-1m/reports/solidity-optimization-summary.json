@@ -1,0 +1,131 @@
+{
+  "format": "s0ul-solidity-optimization-evidence-v1",
+  "recorded_utc": "2026-10-21T18:40:42.603368+00:00",
+  "native_ci": {
+    "row_budget": 128,
+    "integration_tests_passed": 8,
+    "python_checks_passed": 67,
+    "report": "solidity-inference-ci-128.json",
+    "report_sha256": "071f36102ce0adffeffeed11992b2929975446f77447d3e9815206336af50ef5"
+  },
+  "trained_128_row_measurement": {
+    "fixture": "full-model",
+    "source_kind": "trained selected integer bundle",
+    "parameter_count": 984192,
+    "source_checkpoint_sha256": "44bed666c464273e6fff84b10a4977744d9b0e923f5b6a519d7725920b500692",
+    "model_id": "0x7886d7f36f0ac46ba007d237de15b469fc444509b40cf8060a0ec70633391171",
+    "model_manifest_sha256": "b02b9e87bb34c93b0ffde0a53a24a10e7a3c5db0f4717a93505e340c68ef5481",
+    "payload_sha256": "4857535018d946093b61777ec3e1b5801f9a6fc9f8f9bea13e74bf6700c476e4",
+    "shards": 48,
+    "prompt_ids": [
+      1,
+      316,
+      50,
+      3
+    ],
+    "prompt_text": "Wait.",
+    "output_ids": [
+      268,
+      2
+    ],
+    "checked_logit_vectors": 2,
+    "checked_logit_values": 1024,
+    "all_integer_logits_exact": true,
+    "greedy_outputs_exact": true,
+    "saturation_count_incremental": 0,
+    "transactions": 398,
+    "advances": 397,
+    "row_limit_per_step": 128,
+    "rowsPerStep": 128,
+    "inference_transaction_gas_limit": 25000000,
+    "inference_gas": "892989640",
+    "maximum_transaction_gas": "11927948",
+    "deployment_gas": "250110495",
+    "reused_deployment": null,
+    "elapsed_seconds": 4.505108895000001,
+    "phase_call_counts": {
+      "1": 5,
+      "2": 20,
+      "3": 20,
+      "4": 20,
+      "5": 20,
+      "6": 20,
+      "7": 20,
+      "8": 80,
+      "9": 20,
+      "10": 20,
+      "11": 100,
+      "12": 20,
+      "13": 20,
+      "14": 2,
+      "15": 8,
+      "16": 2
+    },
+    "deployment_gas_scope": "Data shards, model registry and engine; excludes shared tokenizer",
+    "shared_tokenizer_deployment_gas": 1146174,
+    "total_51_contract_deployment_gas_including_tokenizer": 251256669
+  },
+  "identical_text_transaction_count_comparison": {
+    "baseline_rows": 32,
+    "baseline_kind": "calculated from deterministic phase/chunk counts; not a completed matched native measurement",
+    "baseline_transactions_including_begin": 1022,
+    "baseline_formula": "5*197 + 2*18 + 1",
+    "optimized_rows": 128,
+    "optimized_transactions_including_begin_measured": 398,
+    "reduction_percent": 61.05675146771037,
+    "matched_full_model_gas_or_time_comparison_available": false
+  },
+  "matched_tiny_cli_measurement": {
+    "scope": "Local CLI deploy/infer on tiny512-vocabulary numerical fixture; not full trained-model or public-chain evidence",
+    "baseline": {
+      "complete": true,
+      "inference_gas": "14026342",
+      "local_cli_elapsed_seconds": 20.303963783,
+      "max_transaction_gas": "588895",
+      "output_ids": [
+        373
+      ],
+      "request_id": "2",
+      "response": "normal",
+      "rows": 32,
+      "step_gas_limit": "12000000",
+      "transactions": 75
+    },
+    "optimized": {
+      "complete": true,
+      "inference_gas": "13011698",
+      "local_cli_elapsed_seconds": 18.790006521000002,
+      "max_transaction_gas": "873417",
+      "output_ids": [
+        373
+      ],
+      "request_id": "1",
+      "response": "normal",
+      "rows": 128,
+      "step_gas_limit": "25000000",
+      "transactions": 63
+    },
+    "transaction_reduction_percent": 16.000000000000004,
+    "gas_reduction_percent": 7.233846144632716,
+    "outputs_identical": true,
+    "old_engine_cap_rejected_before_transaction": true,
+    "report": "solidity-cli-fast-local.json"
+  },
+  "independent_32_row_control": {
+    "report": "solidity-inference-ganache-control.json",
+    "partial_suite": true,
+    "full_trained_raw_logits_exact": 512,
+    "output_ids": [
+      266
+    ],
+    "same_prompt_as_native_text": false
+  },
+  "public_chain_deployed": false,
+  "limits": [
+    "The calculated full-model transaction reduction is not a measured full-model gas/time comparison.",
+    "The local CLI gas improvement uses a tiny numerical model; it is not a full trained-model gas saving.",
+    "Native elapsed time excludes compilation/deployment and is not public-chain latency.",
+    "Exact integer arithmetic parity does not establish task quality or autonomous action readiness."
+  ],
+  "public_recovery_note": "Administrative metadata omitted from this public recovery copy; numerical evidence is unchanged. The original is preserved separately."
+}
