@@ -1,0 +1,15 @@
+{"teacher_parameters": 134515008, "student_parameters": 56632896, "trainable_parameters": 28321344, "student_layers_from_teacher": [0, 4, 8, 12, 17, 21, 25, 29]}
+Traceback (most recent call last):
+  File "/workspace/scratch/be1e363a306a/lfm-robinhood-benchmark/distillation-pilot/pilot.py", line 170, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/workspace/scratch/be1e363a306a/lfm-robinhood-benchmark/distillation-pilot/pilot.py", line 120, in main
+    report['teacher_validation']=evaluate(teacher,tok,selected,'teacher-validation')
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/be1e363a306a/lfm-venv/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/be1e363a306a/lfm-robinhood-benchmark/distillation-pilot/pilot.py", line 69, in evaluate
+    ids=torch.tensor([prompt_ids(tok,row)])
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Could not infer dtype of tokenizers.Encoding
