@@ -1,0 +1,55 @@
+{
+  "network": "robinhood",
+  "rpc_endpoint": "https://rpc.mainnet.chain.robinhood.com",
+  "started_at": "2026-10-19T23:16:17.169457+00:00",
+  "status": "failed",
+  "transactions_broadcast": 0,
+  "eth_spent": "0",
+  "public_contracts_deployed": 0,
+  "temporary_state_overrides": true,
+  "input_sha256": "5b1710f452f4c3b8fcb86553f3af05ac311da16ba97c301367538b7313f8a7af",
+  "workload": {
+    "rows": 4,
+    "columns": 1024,
+    "multiply_accumulates": 4096,
+    "weight_bytes": 2048,
+    "expected_outputs": [
+      207214,
+      -150983,
+      410232,
+      -109613
+    ]
+  },
+  "correctness": {},
+  "estimates": {},
+  "rpc_observations": [
+    {
+      "method": "eth_chainId",
+      "requested_at": "2026-10-19T23:16:17.170496+00:00",
+      "ok": true,
+      "elapsed_seconds": 8.305
+    },
+    {
+      "method": "eth_getBlockByNumber",
+      "requested_at": "2026-10-19T23:16:25.475772+00:00",
+      "ok": true,
+      "elapsed_seconds": 8.021
+    },
+    {
+      "method": "eth_gasPrice",
+      "requested_at": "2026-10-19T23:16:33.497009+00:00",
+      "ok": true,
+      "elapsed_seconds": 6.248
+    }
+  ],
+  "limitations": [
+    "Node simulations are not consensus-recorded transactions or receipts.",
+    "Four integer dot products are not a full model block, token or reply.",
+    "Input activations are supplied as a fixture, not produced on chain.",
+    "Quoted fees can change; dummy addresses and nonce values affect data compression.",
+    "No throughput, inclusion latency, full-model cost or Stylus speedup is established.",
+    "Different chains use different gas estimators; compare fee estimates, not raw gas counts."
+  ],
+  "error": "Gas quote fell below pinned block base fee; rerun for a new snapshot",
+  "finished_at": "2026-10-19T23:16:39.745007+00:00"
+}
