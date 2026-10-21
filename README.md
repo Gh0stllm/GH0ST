@@ -43,4 +43,6 @@ Recovered workflows are manual-only during migration. Their original definitions
 
 Earlier README versions are preserved in [the recovery documents](docs/recovery/). Research failures, incomplete work and unsupported claims remain identifiable. File provenance and content hashes distinguish recovered bytes from reconstructed documentation.
 
+$GH0ST research-support token: `0x2eb2849cde7957b86d0dfd4b59e450a9f9d15559`.
+
 Falcon research uses artificial intelligence technology from the Technology Innovation Institute. [Model-specific licenses](docs/LICENSES.md) remain applicable.
