@@ -137,6 +137,7 @@ test('deployment journals resume pending hashes and reject identity drift withou
   let completedSubtests = 0;
   const broadcastChecks = {};
   const readRetryChecks = {};
+  const chunkChecks = [];
   const readRetryEvents = result => {
     const events = result.stdout.trim().split('\n').filter(Boolean).map(line => JSON.parse(line)).filter(event => ['rpc_read_retry', 'rpc_read_failed'].includes(event.event));
     for (const event of events) {
@@ -176,7 +177,7 @@ for seed,name in [(41,'model-a'),(42,'model-b')]:
     const manifest = readJSON(modelPath);
     assert.equal(manifest.shards.length, 48);
 
-    await t.test('a broadcast pending transaction is journalled before receipt and reused after interruption', async () => {
+    await t.test('pending broadcasts and bounded deployment chunks resume exactly once after interruption', async () => {
       const first = deploy([]);
       await waitFor(() => existsSync(deploymentPath) && sent.length === 4 && readFileSync(deploymentPath, 'utf8').includes(sent[3]), first, 'Pending transaction hash was not saved');
       const interrupted = readJSON(deploymentPath);
@@ -194,13 +195,35 @@ for seed,name in [(41,'model-a'),(42,'model-b')]:
       writeJSON(missingPendingPath, missingPending);
       await rejectedWithoutSend(['--resume', missingPendingPath, '--output', missingPendingPath], /pending|missing|unknown|hash|transaction/i);
       const beforeReceiptQueries = queriedReceiptHashes.filter(hash => hash === pendingHash).length;
-      const resumed = deploy(['--resume', deploymentPath]);
+      const resumed = deploy(['--resume', deploymentPath, '--max-new-deployments', '4']);
       await waitFor(() => queriedReceiptHashes.filter(hash => hash === pendingHash).length > beforeReceiptQueries, resumed, 'Resume did not inspect the saved pending receipt');
       await delay(100);
       assert.equal(sent.length, 4, 'Resume duplicated a confirmed or still-pending shard');
       await rpc.request({ method: 'evm_mine', params: [] });
       await rpc.request({ method: 'miner_start', params: [1] });
-      await success(resumed);
+      const firstChunk = await resumed.finished;
+      assert.equal(firstChunk.code, 2, firstChunk.stderr);
+      let paused = readJSON(deploymentPath);
+      assert.equal(paused.complete, false);
+      assert.equal(paused.pending, null);
+      assert.equal(paused.transactions.length, 7, 'Recovered pending confirmation must count toward the four-confirmation chunk');
+      assert.equal(sent.length, 7);
+      assert.equal(existsSync(deploymentPath + '.lock'), false);
+      assert.equal(firstChunk.stdout.trim().split('\n').map(JSON.parse).filter(event => event.event === 'deployment_paused').length, 1);
+      chunkChecks.push({ maximum_new_deployments: 4, includes_recovered_pending: true, confirmed_total: 7, exit_code: 2 });
+      const secondChunk = await deploy(['--resume', deploymentPath, '--max-new-deployments', '6']).finished;
+      assert.equal(secondChunk.code, 2, secondChunk.stderr);
+      paused = readJSON(deploymentPath);
+      assert.equal(paused.complete, false);
+      assert.equal(paused.pending, null);
+      assert.equal(paused.transactions.length, 13);
+      assert.equal(sent.length, 13);
+      assert.equal(existsSync(deploymentPath + '.lock'), false);
+      assert.equal(secondChunk.stdout.trim().split('\n').map(JSON.parse).filter(event => event.event === 'deployment_paused').length, 1);
+      chunkChecks.push({ maximum_new_deployments: 6, confirmed_total: 13, exit_code: 2 });
+      const finalChunk = await success(deploy(['--resume', deploymentPath, '--max-new-deployments', '38']));
+      assert.equal(finalChunk.stdout.includes('deployment_paused'), false, 'A final deployment at the exact budget must complete normally');
+      chunkChecks.push({ maximum_new_deployments: 38, confirmed_total: 51, exit_code: 0, final_confirmation_hits_budget: true });
       const complete = readJSON(deploymentPath);
       assert.equal(complete.complete, true);
       assert.equal(complete.shards.length, 48);
@@ -368,6 +391,7 @@ for seed,name in [(41,'model-a'),(42,'model-b')]:
       total_deployment_gas: complete.totalDeploymentGas,
       wallet_broadcast_reconciliation: broadcastChecks,
       read_only_rpc_retries: readRetryChecks,
+      deployment_chunking: chunkChecks,
       public_chain_transactions_sent: 0,
     });
   } finally {
