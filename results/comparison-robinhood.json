@@ -1,0 +1,176 @@
+{
+  "network": "robinhood",
+  "rpc_endpoint": "https://rpc.mainnet.chain.robinhood.com",
+  "started_at": "2026-10-19T23:17:36.619680+00:00",
+  "status": "complete_read_only_simulation",
+  "transactions_broadcast": 0,
+  "eth_spent": "0",
+  "public_contracts_deployed": 0,
+  "temporary_state_overrides": true,
+  "input_sha256": "5b1710f452f4c3b8fcb86553f3af05ac311da16ba97c301367538b7313f8a7af",
+  "workload": {
+    "rows": 4,
+    "columns": 1024,
+    "multiply_accumulates": 4096,
+    "weight_bytes": 2048,
+    "expected_outputs": [
+      207214,
+      -150983,
+      410232,
+      -109613
+    ]
+  },
+  "correctness": {
+    "kernel_deployment": {
+      "matches_reference": true,
+      "result": {
+        "runtime_bytes": 1325,
+        "runtime_sha256": "5e38268cc5d69a09c7c62fd228cd6fc3aa3acfaeadf563ae63be3729b606c0ab"
+      }
+    },
+    "weight_shard_deployment": {
+      "matches_reference": true,
+      "result": {
+        "runtime_bytes": 2049,
+        "runtime_sha256": "987a660e17b4cbf41347635d863536097e67f5c16bd0ffef22c18b810ba93533"
+      }
+    },
+    "four_row_dot": {
+      "matches_reference": true,
+      "result": [
+        207214,
+        -150983,
+        410232,
+        -109613
+      ]
+    },
+    "four_row_dot_and_first_commit": {
+      "matches_reference": true,
+      "result": "0x942bf1e07782c6cbd557e7e8c4ed5657b9628a2bd46370b42f20215f01348ecc"
+    }
+  },
+  "estimates": {
+    "kernel_deployment": {
+      "rpc_gas_estimate": 344753,
+      "bundled_execution_and_data_fee_wei": 6948151962000,
+      "total_fee_estimate_wei": 6948151962000,
+      "total_fee_estimate_eth": "0.000006948151962"
+    },
+    "weight_shard_deployment": {
+      "rpc_gas_estimate": 517485,
+      "bundled_execution_and_data_fee_wei": 10429392690000,
+      "total_fee_estimate_wei": 10429392690000,
+      "total_fee_estimate_eth": "0.00001042939269"
+    },
+    "four_row_dot": {
+      "rpc_gas_estimate": 919533,
+      "bundled_execution_and_data_fee_wei": 18532268082000,
+      "total_fee_estimate_wei": 18532268082000,
+      "total_fee_estimate_eth": "0.000018532268082"
+    },
+    "four_row_dot_and_first_commit": {
+      "rpc_gas_estimate": 964301,
+      "bundled_execution_and_data_fee_wei": 19434522354000,
+      "total_fee_estimate_wei": 19434522354000,
+      "total_fee_estimate_eth": "0.000019434522354"
+    }
+  },
+  "rpc_observations": [
+    {
+      "method": "eth_chainId",
+      "requested_at": "2026-10-19T23:17:36.619750+00:00",
+      "ok": true,
+      "elapsed_seconds": 3.867
+    },
+    {
+      "method": "eth_getBlockByNumber",
+      "requested_at": "2026-10-19T23:17:40.487460+00:00",
+      "ok": true,
+      "elapsed_seconds": 3.505
+    },
+    {
+      "method": "eth_gasPrice",
+      "requested_at": "2026-10-19T23:17:43.992514+00:00",
+      "ok": true,
+      "elapsed_seconds": 4.519
+    },
+    {
+      "method": "eth_call",
+      "requested_at": "2026-10-19T23:17:48.512037+00:00",
+      "ok": true,
+      "elapsed_seconds": 3.499
+    },
+    {
+      "method": "eth_estimateGas",
+      "requested_at": "2026-10-19T23:17:52.011847+00:00",
+      "ok": true,
+      "elapsed_seconds": 3.518
+    },
+    {
+      "method": "eth_call",
+      "requested_at": "2026-10-19T23:17:55.531026+00:00",
+      "ok": true,
+      "elapsed_seconds": 5.052
+    },
+    {
+      "method": "eth_estimateGas",
+      "requested_at": "2026-10-19T23:18:00.583494+00:00",
+      "ok": true,
+      "elapsed_seconds": 3.444
+    },
+    {
+      "method": "eth_call",
+      "requested_at": "2026-10-19T23:18:04.028257+00:00",
+      "ok": true,
+      "elapsed_seconds": 3.709
+    },
+    {
+      "method": "eth_estimateGas",
+      "requested_at": "2026-10-19T23:18:07.738096+00:00",
+      "ok": true,
+      "elapsed_seconds": 3.677
+    },
+    {
+      "method": "eth_call",
+      "requested_at": "2026-10-19T23:18:11.416111+00:00",
+      "ok": true,
+      "elapsed_seconds": 4.443
+    },
+    {
+      "method": "eth_estimateGas",
+      "requested_at": "2026-10-19T23:18:15.859118+00:00",
+      "ok": true,
+      "elapsed_seconds": 5.476
+    }
+  ],
+  "limitations": [
+    "Node simulations are not consensus-recorded transactions or receipts.",
+    "Four integer dot products are not a full model block, token or reply.",
+    "Input activations are supplied as a fixture, not produced on chain.",
+    "Quoted fees can change; dummy addresses and nonce values affect data compression.",
+    "No throughput, inclusion latency, full-model cost or Stylus speedup is established.",
+    "Different chains use different gas estimators; compare fee estimates, not raw gas counts."
+  ],
+  "chain_id": 4663,
+  "block_number": 92996015,
+  "block_hash": "0x06f91d91431afc8d58bda1558ccb78ddec16c3592f87fc28e61306bbb8cdefaf",
+  "block_timestamp_utc": "2026-10-19T23:17:43+00:00",
+  "quoted_gas_price_wei": 20000000,
+  "modeled_gas_price_wei": 20154000,
+  "block_base_fee_wei": 20154000,
+  "quote_raised_to_pinned_block_base_fee": true,
+  "modeled_priority_fee_wei": 0,
+  "modeled_max_fee_per_gas_wei": 20154000,
+  "header_gas_limit": 1125899906842624,
+  "fee_method": "estimateGas * modeledGasPrice; Robinhood includes L1 data fees in gas estimate",
+  "tiny_setup_plus_first_commit": {
+    "operations": [
+      "kernel_deployment",
+      "weight_shard_deployment",
+      "four_row_dot_and_first_commit"
+    ],
+    "total_fee_estimate_wei": 36812067006000,
+    "total_fee_estimate_eth": "0.000036812067006"
+  },
+  "finished_at": "2026-10-19T23:18:21.336424+00:00"
+}
