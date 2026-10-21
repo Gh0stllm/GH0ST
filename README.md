@@ -27,12 +27,15 @@ The **984,192-parameter S0UL model is deployed on chain 4663**: 48 weight-data c
 | Inference engine | `0x07bB8455Db0928bEBEb3E7F27A22A0599AF1b650` |
 | Model registry | `0xa62C2d6fbba575732AAB38c56fCd73B2361B1D98` |
 | Tokenizer | `0x3Cf3739D8e587C3AB5706fd459e75A6fCE26d333` |
+| Agent controller | `0x9F92776e33087DCF0d77b9BE23145efAC6cE695D` |
 
 Deployment used **257,254,365 gas** and paid **0.005238250757104 ETH** across the 51 creation receipts. A separate read-only check confirmed those receipts, tokenizer output and a simulated `beginText` call. [Receipt, fee and smoke-check report](s0ul-1m/reports/robinhood-mainnet-deployment-check.json).
 
 **Real mainnet generation completed:** request `1` turned `Wait.` into `WAIT`, EOS (`[268, 2]`) using **398 successful transactions**, **892,989,640 gas** and **0.018193921167636 ETH**, with no failed transactions or saturation. An independent read-only checker confirmed all receipts and reread **1,024/1,024 logits** from the two on-chain decision states; every value matched the Python integer reference exactly. [Mainnet generation journal](s0ul-1m/deployments/robinhood-mainnet-generation.json) · [Independent verification and fees](s0ul-1m/reports/robinhood-mainnet-inference-check.json).
 
 The registry, tokenizer and inference engine are source verified on Sourcify with exact creation and runtime matches. [Inference engine source](https://repo.sourcify.dev/4663/0x07bB8455Db0928bEBEb3E7F27A22A0599AF1b650) · [Verification evidence](s0ul-1m/reports/robinhood-mainnet-verification/sourcify-verification-status.json).
+
+**Bounded agent live:** request `2` turned `theme=dark` into `MEM_SET|theme|dark`, EOS and saved the preference in its owner's on-chain memory. Independent verification confirmed **2,560/2,560 historical logits**, all receipts and the resulting memory. Four-step batches completed the remaining 423 engine steps in 108 transactions; the mixed direct/batched run used 409 inference transactions. The controller provides memory, tasks and balance reads, with explicit write intent enforced by the CLI. [Agent guide and costs](s0ul-1m/AGENT.md) · [Complete execution proof](s0ul-1m/reports/robinhood-mainnet-agent-check.json) · [Verified controller source](https://repo.sourcify.dev/4663/0x9F92776e33087DCF0d77b9BE23145efAC6cE695D).
 
 ## Verification and measured limits
 
