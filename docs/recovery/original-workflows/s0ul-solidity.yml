@@ -1,0 +1,110 @@
+name: S0UL complete Solidity inference
+
+on:
+  push:
+    branches: [research/GH0ST-S0UL-Solidity]
+    paths: ["s0ul-1m/contracts/**", "s0ul-1m/s0ul/**", "s0ul-1m/scripts/**", "s0ul-1m/tests/**", "s0ul-1m/package*.json", ".github/workflows/s0ul-solidity.yml"]
+  pull_request:
+    paths: ["s0ul-1m/contracts/**", "s0ul-1m/s0ul/solidity_export.py", "s0ul-1m/scripts/**", "s0ul-1m/tests/test_inference.mjs", ".github/workflows/s0ul-solidity.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  complete-inference:
+    name: Complete inference (${{ matrix.rows }} rows)
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        rows: [32, 128]
+    defaults:
+      run:
+        working-directory: s0ul-1m
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install the pinned native EVM runner
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: v1.3.1
+      - name: Install pinned research tools
+        run: |
+          python -m pip install torch==2.5.1 --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install -e .
+          npm ci --ignore-scripts --no-audit --no-fund
+      - name: Verify Python model, integer reference and Solidity exporter
+        run: python -m unittest discover -s tests -p 'test_*.py' -v
+      - name: Verify existing Solidity primitives
+        run: npm test
+      - name: Verify integer arithmetic and tokenizer on the EVM
+        run: |
+          node --test tests/test_solidity_math.mjs
+          node --test tests/test_tokenizer_contract.mjs
+      - name: Restore the selected trained 20-lane checkpoint
+        uses: actions/download-artifact@v4
+        with:
+          name: s0ul-hard-max-selected-39630021281
+          run-id: 39630021281
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: s0ul-1m/bootstrap20
+      - name: Pin the selected checkpoint and integer payload
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib, json
+          checkpoint = Path('bootstrap20/selected/checkpoint.pt')
+          expected = '44bed666c464273e6fff84b10a4977744d9b0e923f5b6a519d7725920b500692'
+          assert hashlib.sha256(checkpoint.read_bytes()).hexdigest() == expected
+          path = Path('bootstrap20/exports/integer')
+          manifest = json.loads((path / 'integer-manifest.json').read_text())
+          assert manifest['source_checkpoint_sha256'] == expected
+          assert hashlib.sha256((path / 'integer-weights.bin').read_bytes()).hexdigest() == '1f392feffdf57059ca3969c3fb8087b831ee4a9261764f9bbb1680192da60501'
+          print('Selected trained checkpoint and integer payload verified.')
+          PY
+      - name: Generate independent complete-model golden vectors
+        run: python scripts/make_solidity_vectors.py --output exports/solidity-ci --full-bundle bootstrap20/exports/integer --full-text 'Wait.' --full-new-tokens 2
+      - name: Verify complete trained Solidity inference and measure gas
+        env:
+          S0UL_FIXTURE_ROOT: exports/solidity-ci
+          S0UL_INFERENCE_REPORT: reports/solidity-inference-ci-${{ matrix.rows }}.json
+          S0UL_RPC_URL: http://127.0.0.1:8545
+          S0UL_ROWS_PER_STEP: ${{ matrix.rows }}
+        run: |
+          anvil --version
+          anvil --host 127.0.0.1 --port 8545 --chain-id 31337 --hardfork shanghai --gas-limit 30000000 --balance 1000000 --silent > /tmp/s0ul-anvil.log 2>&1 &
+          rpc_pid=$!
+          trap 'kill "$rpc_pid" 2>/dev/null || true' EXIT
+          python - <<'PY'
+          import socket, time
+          for attempt in range(60):
+              try:
+                  with socket.create_connection(('127.0.0.1', 8545), timeout=1):
+                      break
+              except OSError:
+                  time.sleep(.25)
+          else:
+              raise RuntimeError('Local native EVM did not start')
+          PY
+          node --test tests/test_inference.mjs
+      - name: Compile deployment artifacts
+        run: node scripts/s0ul-solidity.mjs compile --output exports/solidity-build/contracts.json
+      - name: Preserve reproducible deployment bundle and measured evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s0ul-complete-solidity-${{ github.sha }}-rows-${{ matrix.rows }}
+          path: |
+            s0ul-1m/reports/solidity-*.json
+            s0ul-1m/exports/solidity-ci/full-model/
+            s0ul-1m/exports/solidity-build/contracts.json
+          if-no-files-found: warn
+          retention-days: 90
