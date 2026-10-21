@@ -1,0 +1,2855 @@
+{
+  "status": "completed",
+  "scope": "Independent synthetic signed-int16 inputs; matrix arithmetic only, NOT token inference",
+  "environment": "Local Anvil Cancun; code-size limit 98304; standard gas schedule, not a live-chain fee quote",
+  "compiler": "0.8.30+commit.73712a01.Emscripten.clang",
+  "source_sha256": "a0e3121e433f8fc000219ec629c0ab361749d9190f903118e7a96a7c4c29cead",
+  "public_transactions_broadcast": 0,
+  "kernel_deployments": {
+    "SixBitFast": {
+      "gas": 830442,
+      "runtime_bytes": 3647
+    },
+    "SixBitShifted": {
+      "gas": 551686,
+      "runtime_bytes": 2323
+    },
+    "SixBitPredecoded2": {
+      "gas": 584452,
+      "runtime_bytes": 2495
+    }
+  },
+  "checks": [],
+  "benchmarks": [],
+  "matrices": [
+    {
+      "name": "model.embed_tokens.weight",
+      "shape": [
+        32768,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 548172290,
+        "SixBitShifted": 235399568,
+        "SixBitPredecoded2": 220066908
+      },
+      "tiles": 512
+    },
+    {
+      "name": "model.layers.0.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 12845666,
+        "SixBitShifted": 5517192,
+        "SixBitPredecoded2": 5157804
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.0.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 12844890,
+        "SixBitShifted": 5516616,
+        "SixBitPredecoded2": 5157216
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.0.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFast": 12666632,
+        "SixBitShifted": 5339532,
+        "SixBitPredecoded2": 5010932
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.0.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 28269883,
+        "SixBitShifted": 12162135,
+        "SixBitPredecoded2": 11371848
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.0.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFast": 12666116,
+        "SixBitShifted": 5338980,
+        "SixBitPredecoded2": 5010848
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.0.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 8563892,
+        "SixBitShifted": 3678032,
+        "SixBitPredecoded2": 3438456
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.0.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 2141592,
+        "SixBitShifted": 920078,
+        "SixBitPredecoded2": 859638
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.0.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 2140880,
+        "SixBitShifted": 919520,
+        "SixBitPredecoded2": 859626
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.0.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 8563986,
+        "SixBitShifted": 3678320,
+        "SixBitPredecoded2": 3438744
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.1.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 12846335,
+        "SixBitShifted": 5517324,
+        "SixBitPredecoded2": 5157960
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.1.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 12845570,
+        "SixBitShifted": 5517312,
+        "SixBitPredecoded2": 5157960
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.1.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFast": 12666452,
+        "SixBitShifted": 5339196,
+        "SixBitPredecoded2": 5011028
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.1.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 28270653,
+        "SixBitShifted": 12163353,
+        "SixBitPredecoded2": 11372520
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.1.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFast": 12666972,
+        "SixBitShifted": 5340228,
+        "SixBitPredecoded2": 5011220
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.1.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 8564036,
+        "SixBitShifted": 3678032,
+        "SixBitPredecoded2": 3438444
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.1.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 2141975,
+        "SixBitShifted": 920006,
+        "SixBitPredecoded2": 859566
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.1.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 2140816,
+        "SixBitShifted": 919520,
+        "SixBitPredecoded2": 859638
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.1.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 8563500,
+        "SixBitShifted": 3677720,
+        "SixBitPredecoded2": 3438144
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.2.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 12845746,
+        "SixBitShifted": 5517453,
+        "SixBitPredecoded2": 5157816
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.2.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 12845424,
+        "SixBitShifted": 5517024,
+        "SixBitPredecoded2": 5157684
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.2.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFast": 12666800,
+        "SixBitShifted": 5339916,
+        "SixBitPredecoded2": 5011328
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.2.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 28270011,
+        "SixBitShifted": 12162147,
+        "SixBitPredecoded2": 11371860
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.2.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFast": 12666248,
+        "SixBitShifted": 5338728,
+        "SixBitPredecoded2": 5010560
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.2.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 8563984,
+        "SixBitShifted": 3678128,
+        "SixBitPredecoded2": 3438552
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.2.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 2141394,
+        "SixBitShifted": 920090,
+        "SixBitPredecoded2": 859662
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.2.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 2140858,
+        "SixBitShifted": 919484,
+        "SixBitPredecoded2": 859590
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.2.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 8563586,
+        "SixBitShifted": 3677636,
+        "SixBitPredecoded2": 3438060
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.3.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 12846182,
+        "SixBitShifted": 5517858,
+        "SixBitPredecoded2": 5157948
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.3.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 12845266,
+        "SixBitShifted": 5516904,
+        "SixBitPredecoded2": 5157540
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.3.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFast": 12666264,
+        "SixBitShifted": 5339532,
+        "SixBitPredecoded2": 5010944
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.3.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 28271087,
+        "SixBitShifted": 12163665,
+        "SixBitPredecoded2": 11372856
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.3.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFast": 12666524,
+        "SixBitShifted": 5339424,
+        "SixBitPredecoded2": 5010848
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.3.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 8564150,
+        "SixBitShifted": 3678461,
+        "SixBitPredecoded2": 3438636
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.3.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 2141345,
+        "SixBitShifted": 920102,
+        "SixBitPredecoded2": 859662
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.3.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 2140930,
+        "SixBitShifted": 919556,
+        "SixBitPredecoded2": 859662
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.3.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 8563718,
+        "SixBitShifted": 3677912,
+        "SixBitPredecoded2": 3438348
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.4.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 12845484,
+        "SixBitShifted": 5517150,
+        "SixBitPredecoded2": 5157240
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.4.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 12845020,
+        "SixBitShifted": 5516592,
+        "SixBitPredecoded2": 5157216
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.4.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFast": 12665976,
+        "SixBitShifted": 5339244,
+        "SixBitPredecoded2": 5010656
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.4.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 28270423,
+        "SixBitShifted": 12163302,
+        "SixBitPredecoded2": 11372184
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.4.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFast": 12666364,
+        "SixBitShifted": 5339244,
+        "SixBitPredecoded2": 5010644
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.4.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 8563986,
+        "SixBitShifted": 3678281,
+        "SixBitPredecoded2": 3438456
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.4.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 2141231,
+        "SixBitShifted": 920102,
+        "SixBitPredecoded2": 859662
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.4.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 2140840,
+        "SixBitShifted": 919556,
+        "SixBitPredecoded2": 859662
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.4.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 8563976,
+        "SixBitShifted": 3678128,
+        "SixBitPredecoded2": 3438528
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.5.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 12846275,
+        "SixBitShifted": 5518545,
+        "SixBitPredecoded2": 5157804
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.5.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 12846022,
+        "SixBitShifted": 5517324,
+        "SixBitPredecoded2": 5157960
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.5.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFast": 12666660,
+        "SixBitShifted": 5339856,
+        "SixBitPredecoded2": 5010848
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.5.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 28270477,
+        "SixBitShifted": 12164628,
+        "SixBitPredecoded2": 11371872
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.5.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFast": 12665840,
+        "SixBitShifted": 5338752,
+        "SixBitPredecoded2": 5010176
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.5.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 8563926,
+        "SixBitShifted": 3678470,
+        "SixBitPredecoded2": 3438360
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.5.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 2141579,
+        "SixBitShifted": 920030,
+        "SixBitPredecoded2": 859578
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.5.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 2140932,
+        "SixBitShifted": 919532,
+        "SixBitPredecoded2": 859638
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.5.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 8564036,
+        "SixBitShifted": 3678032,
+        "SixBitPredecoded2": 3438432
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.6.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 12846112,
+        "SixBitShifted": 5519220,
+        "SixBitPredecoded2": 5157672
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.6.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 12845618,
+        "SixBitShifted": 5517192,
+        "SixBitPredecoded2": 5157828
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.6.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFast": 12666796,
+        "SixBitShifted": 5340264,
+        "SixBitPredecoded2": 5010824
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.6.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 28270219,
+        "SixBitShifted": 12163215,
+        "SixBitPredecoded2": 11371884
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.6.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFast": 12666536,
+        "SixBitShifted": 5339436,
+        "SixBitPredecoded2": 5010836
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.6.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 8563848,
+        "SixBitShifted": 3678209,
+        "SixBitPredecoded2": 3438324
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.6.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 2141148,
+        "SixBitShifted": 920030,
+        "SixBitPredecoded2": 859590
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.6.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 2140930,
+        "SixBitShifted": 919556,
+        "SixBitPredecoded2": 859662
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.6.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 8564228,
+        "SixBitShifted": 3678212,
+        "SixBitPredecoded2": 3438648
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.7.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 12846172,
+        "SixBitShifted": 5519766,
+        "SixBitPredecoded2": 5157672
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.7.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 12845238,
+        "SixBitShifted": 5516736,
+        "SixBitPredecoded2": 5157372
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.7.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFast": 12666891,
+        "SixBitShifted": 5340924,
+        "SixBitPredecoded2": 5010632
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.7.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 28271061,
+        "SixBitShifted": 12164184,
+        "SixBitPredecoded2": 11372508
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.7.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFast": 12667110,
+        "SixBitShifted": 5342652,
+        "SixBitPredecoded2": 5011136
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.7.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 8563856,
+        "SixBitShifted": 3677840,
+        "SixBitPredecoded2": 3438252
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.7.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 2141263,
+        "SixBitShifted": 920054,
+        "SixBitPredecoded2": 859614
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.7.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 2140878,
+        "SixBitShifted": 919556,
+        "SixBitPredecoded2": 859662
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.7.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 8564228,
+        "SixBitShifted": 3678224,
+        "SixBitPredecoded2": 3438636
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.8.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 12846297,
+        "SixBitShifted": 5519766,
+        "SixBitPredecoded2": 5157684
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.8.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 12845866,
+        "SixBitShifted": 5517156,
+        "SixBitPredecoded2": 5157816
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.8.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFast": 12667264,
+        "SixBitShifted": 5341632,
+        "SixBitPredecoded2": 5010932
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.8.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 28272215,
+        "SixBitShifted": 12165642,
+        "SixBitPredecoded2": 11373492
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.8.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFast": 12667126,
+        "SixBitShifted": 5342568,
+        "SixBitPredecoded2": 5011040
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.8.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 8564284,
+        "SixBitShifted": 3678320,
+        "SixBitPredecoded2": 3438744
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.8.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 2141387,
+        "SixBitShifted": 920078,
+        "SixBitPredecoded2": 859638
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.8.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 2140878,
+        "SixBitShifted": 919556,
+        "SixBitPredecoded2": 859662
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.8.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 8563952,
+        "SixBitShifted": 3678209,
+        "SixBitPredecoded2": 3438348
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.9.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 12846913,
+        "SixBitShifted": 5518962,
+        "SixBitPredecoded2": 5157948
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.9.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 12845664,
+        "SixBitShifted": 5517180,
+        "SixBitPredecoded2": 5157828
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.9.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFast": 12666323,
+        "SixBitShifted": 5341884,
+        "SixBitPredecoded2": 5010368
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.9.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 28269943,
+        "SixBitShifted": 12162057,
+        "SixBitPredecoded2": 11371224
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.9.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFast": 12666531,
+        "SixBitShifted": 5341680,
+        "SixBitPredecoded2": 5010176
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.9.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 8563944,
+        "SixBitShifted": 3678020,
+        "SixBitPredecoded2": 3438432
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.9.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 2141004,
+        "SixBitShifted": 919733,
+        "SixBitPredecoded2": 859554
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.9.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 2141472,
+        "SixBitShifted": 919532,
+        "SixBitPredecoded2": 859638
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.9.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 8564036,
+        "SixBitShifted": 3679112,
+        "SixBitPredecoded2": 3438456
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.10.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 12846717,
+        "SixBitShifted": 5518143,
+        "SixBitPredecoded2": 5157972
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.10.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 12845422,
+        "SixBitShifted": 5516892,
+        "SixBitPredecoded2": 5157516
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.10.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFast": 12666162,
+        "SixBitShifted": 5339244,
+        "SixBitPredecoded2": 5010656
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.10.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 28271491,
+        "SixBitShifted": 12164235,
+        "SixBitPredecoded2": 11372832
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.10.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFast": 12666624,
+        "SixBitShifted": 5340684,
+        "SixBitPredecoded2": 5010848
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.10.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 8564058,
+        "SixBitShifted": 3678212,
+        "SixBitPredecoded2": 3438636
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.10.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 2141192,
+        "SixBitShifted": 919781,
+        "SixBitPredecoded2": 859590
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.10.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 2150183,
+        "SixBitShifted": 919376,
+        "SixBitPredecoded2": 859494
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.10.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 8563748,
+        "SixBitShifted": 3678563,
+        "SixBitPredecoded2": 3438156
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.11.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 12846316,
+        "SixBitShifted": 5517597,
+        "SixBitPredecoded2": 5157972
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.11.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 12845638,
+        "SixBitShifted": 5517192,
+        "SixBitPredecoded2": 5157816
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.11.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFast": 12666252,
+        "SixBitShifted": 5339856,
+        "SixBitPredecoded2": 5010848
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.11.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 28270477,
+        "SixBitShifted": 12162345,
+        "SixBitPredecoded2": 11371548
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.11.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFast": 12666632,
+        "SixBitShifted": 5339532,
+        "SixBitPredecoded2": 5010932
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.11.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 8564068,
+        "SixBitShifted": 3678128,
+        "SixBitPredecoded2": 3438552
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.11.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 2141152,
+        "SixBitShifted": 920054,
+        "SixBitPredecoded2": 859602
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.11.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 2140904,
+        "SixBitShifted": 919556,
+        "SixBitPredecoded2": 859662
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.11.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 8563740,
+        "SixBitShifted": 3677828,
+        "SixBitPredecoded2": 3438252
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.12.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 12846316,
+        "SixBitShifted": 5518014,
+        "SixBitPredecoded2": 5158104
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.12.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 12845292,
+        "SixBitShifted": 5516892,
+        "SixBitPredecoded2": 5157504
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.12.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFast": 12666435,
+        "SixBitShifted": 5339520,
+        "SixBitPredecoded2": 5010944
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.12.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 28270997,
+        "SixBitShifted": 12163416,
+        "SixBitPredecoded2": 11372832
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.12.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFast": 12666500,
+        "SixBitShifted": 5338992,
+        "SixBitPredecoded2": 5010836
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.12.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 8564118,
+        "SixBitShifted": 3678116,
+        "SixBitPredecoded2": 3438540
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.12.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 2141204,
+        "SixBitShifted": 920126,
+        "SixBitPredecoded2": 859686
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.12.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 2140906,
+        "SixBitShifted": 919532,
+        "SixBitPredecoded2": 859638
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.12.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 8564118,
+        "SixBitShifted": 3678116,
+        "SixBitPredecoded2": 3438552
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.13.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 12845956,
+        "SixBitShifted": 5517180,
+        "SixBitPredecoded2": 5157816
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.13.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 12845556,
+        "SixBitShifted": 5517192,
+        "SixBitPredecoded2": 5157816
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.13.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFast": 12666440,
+        "SixBitShifted": 5339940,
+        "SixBitPredecoded2": 5010920
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.13.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 28270569,
+        "SixBitShifted": 12162795,
+        "SixBitPredecoded2": 11372532
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.13.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFast": 12666716,
+        "SixBitShifted": 5339604,
+        "SixBitPredecoded2": 5011040
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.13.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 8563958,
+        "SixBitShifted": 3678032,
+        "SixBitPredecoded2": 3438444
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.13.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 2141140,
+        "SixBitShifted": 920102,
+        "SixBitPredecoded2": 859662
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.13.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 2140856,
+        "SixBitShifted": 919496,
+        "SixBitPredecoded2": 859614
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.13.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 8563964,
+        "SixBitShifted": 3678116,
+        "SixBitPredecoded2": 3438540
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.14.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 12845998,
+        "SixBitShifted": 5517570,
+        "SixBitPredecoded2": 5157660
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.14.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 12845592,
+        "SixBitShifted": 5517192,
+        "SixBitPredecoded2": 5157804
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.14.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFast": 12666303,
+        "SixBitShifted": 5339856,
+        "SixBitPredecoded2": 5010812
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.14.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 28269729,
+        "SixBitShifted": 12162096,
+        "SixBitPredecoded2": 11371548
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.14.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFast": 12666920,
+        "SixBitShifted": 5339376,
+        "SixBitPredecoded2": 5011220
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.14.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 8563996,
+        "SixBitShifted": 3678032,
+        "SixBitPredecoded2": 3438456
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.14.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 2141216,
+        "SixBitShifted": 920150,
+        "SixBitPredecoded2": 859698
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.14.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 2140976,
+        "SixBitShifted": 919508,
+        "SixBitPredecoded2": 859614
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.14.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 8563744,
+        "SixBitShifted": 3678209,
+        "SixBitPredecoded2": 3438348
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.15.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 12845642,
+        "SixBitShifted": 5517567,
+        "SixBitPredecoded2": 5157396
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.15.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 12845580,
+        "SixBitShifted": 5517168,
+        "SixBitPredecoded2": 5157804
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.15.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFast": 12665724,
+        "SixBitShifted": 5339280,
+        "SixBitPredecoded2": 5010260
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.15.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 28270385,
+        "SixBitShifted": 12162447,
+        "SixBitPredecoded2": 11372172
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.15.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFast": 12666492,
+        "SixBitShifted": 5339004,
+        "SixBitPredecoded2": 5010836
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.15.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 8564324,
+        "SixBitShifted": 3678581,
+        "SixBitPredecoded2": 3438732
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.15.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 2141392,
+        "SixBitShifted": 920054,
+        "SixBitPredecoded2": 859602
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.15.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 2144073,
+        "SixBitShifted": 919556,
+        "SixBitPredecoded2": 859662
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.15.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 8563688,
+        "SixBitShifted": 3677828,
+        "SixBitPredecoded2": 3438264
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.16.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 12846164,
+        "SixBitShifted": 5517999,
+        "SixBitPredecoded2": 5157828
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.16.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 12845078,
+        "SixBitShifted": 5516604,
+        "SixBitPredecoded2": 5157240
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.16.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFast": 12666648,
+        "SixBitShifted": 5339952,
+        "SixBitPredecoded2": 5010944
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.16.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 28271453,
+        "SixBitShifted": 12163692,
+        "SixBitPredecoded2": 11373168
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.16.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFast": 12666056,
+        "SixBitShifted": 5338524,
+        "SixBitPredecoded2": 5010356
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.16.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 8563900,
+        "SixBitShifted": 3678209,
+        "SixBitPredecoded2": 3438360
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.16.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 2141140,
+        "SixBitShifted": 920102,
+        "SixBitPredecoded2": 859662
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.16.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 2141363,
+        "SixBitShifted": 919532,
+        "SixBitPredecoded2": 859638
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.16.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 8563232,
+        "SixBitShifted": 3677552,
+        "SixBitPredecoded2": 3437964
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.17.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 12846401,
+        "SixBitShifted": 5517987,
+        "SixBitPredecoded2": 5157828
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.17.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 12845776,
+        "SixBitShifted": 5517312,
+        "SixBitPredecoded2": 5157960
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.17.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFast": 12666684,
+        "SixBitShifted": 5340276,
+        "SixBitPredecoded2": 5010848
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.17.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 28270297,
+        "SixBitShifted": 12163017,
+        "SixBitPredecoded2": 11372208
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.17.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFast": 12666632,
+        "SixBitShifted": 5339520,
+        "SixBitPredecoded2": 5010944
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.17.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 8564228,
+        "SixBitShifted": 3678485,
+        "SixBitPredecoded2": 3438624
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.17.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 2141220,
+        "SixBitShifted": 920102,
+        "SixBitPredecoded2": 859662
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.17.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 2143380,
+        "SixBitShifted": 919544,
+        "SixBitPredecoded2": 859662
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.17.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 8563714,
+        "SixBitShifted": 3677828,
+        "SixBitPredecoded2": 3438264
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.18.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 12845944,
+        "SixBitShifted": 5517192,
+        "SixBitPredecoded2": 5157816
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.18.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 12845235,
+        "SixBitShifted": 5516748,
+        "SixBitPredecoded2": 5157372
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.18.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFast": 12666915,
+        "SixBitShifted": 5340036,
+        "SixBitPredecoded2": 5011028
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.18.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 28270839,
+        "SixBitShifted": 12163119,
+        "SixBitPredecoded2": 11372820
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.18.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFast": 12666692,
+        "SixBitShifted": 5339628,
+        "SixBitPredecoded2": 5011040
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.18.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 8564048,
+        "SixBitShifted": 3678293,
+        "SixBitPredecoded2": 3438444
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.18.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 2141216,
+        "SixBitShifted": 920030,
+        "SixBitPredecoded2": 859578
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.18.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 2150835,
+        "SixBitShifted": 919412,
+        "SixBitPredecoded2": 859506
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.18.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 8563796,
+        "SixBitShifted": 3678080,
+        "SixBitPredecoded2": 3438516
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.19.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 12846036,
+        "SixBitShifted": 5517324,
+        "SixBitPredecoded2": 5157972
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.19.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 12845344,
+        "SixBitShifted": 5516892,
+        "SixBitPredecoded2": 5157540
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.19.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFast": 12666323,
+        "SixBitShifted": 5339376,
+        "SixBitPredecoded2": 5010356
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.19.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 28270801,
+        "SixBitShifted": 12163107,
+        "SixBitPredecoded2": 11372820
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.19.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFast": 12666212,
+        "SixBitShifted": 5339532,
+        "SixBitPredecoded2": 5010944
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.19.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 8564202,
+        "SixBitShifted": 3679838,
+        "SixBitPredecoded2": 3438648
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.19.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 2141084,
+        "SixBitShifted": 920006,
+        "SixBitPredecoded2": 859566
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.19.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 2143150,
+        "SixBitShifted": 919508,
+        "SixBitPredecoded2": 859602
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.19.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 8563928,
+        "SixBitShifted": 3678212,
+        "SixBitPredecoded2": 3438648
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.20.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 12845698,
+        "SixBitShifted": 5517168,
+        "SixBitPredecoded2": 5157816
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.20.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 12844238,
+        "SixBitShifted": 5515740,
+        "SixBitPredecoded2": 5156388
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.20.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFast": 12667071,
+        "SixBitShifted": 5339532,
+        "SixBitPredecoded2": 5010932
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.20.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 28268857,
+        "SixBitShifted": 12161163,
+        "SixBitPredecoded2": 11370900
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.20.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFast": 12665996,
+        "SixBitShifted": 5339424,
+        "SixBitPredecoded2": 5010836
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.20.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 8564268,
+        "SixBitShifted": 3679316,
+        "SixBitPredecoded2": 3438648
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.20.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 2141212,
+        "SixBitShifted": 920054,
+        "SixBitPredecoded2": 859614
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.20.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 2153233,
+        "SixBitShifted": 919508,
+        "SixBitPredecoded2": 859614
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.20.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 8563846,
+        "SixBitShifted": 3678128,
+        "SixBitPredecoded2": 3438528
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.21.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 12845448,
+        "SixBitShifted": 5516904,
+        "SixBitPredecoded2": 5157492
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.21.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 12845824,
+        "SixBitShifted": 5517048,
+        "SixBitPredecoded2": 5157684
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.21.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFast": 12666556,
+        "SixBitShifted": 5339100,
+        "SixBitPredecoded2": 5010944
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.21.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 28269789,
+        "SixBitShifted": 12162681,
+        "SixBitPredecoded2": 11371872
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.21.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFast": 12665868,
+        "SixBitShifted": 5338920,
+        "SixBitPredecoded2": 5010752
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.21.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 8564288,
+        "SixBitShifted": 3679589,
+        "SixBitPredecoded2": 3438648
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.21.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 2141104,
+        "SixBitShifted": 919733,
+        "SixBitPredecoded2": 859566
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.21.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 2160710,
+        "SixBitShifted": 919496,
+        "SixBitPredecoded2": 859614
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.21.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 8563396,
+        "SixBitShifted": 3677732,
+        "SixBitPredecoded2": 3438168
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.22.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 12845590,
+        "SixBitShifted": 5516892,
+        "SixBitPredecoded2": 5157528
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.22.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 12846660,
+        "SixBitShifted": 5517036,
+        "SixBitPredecoded2": 5157660
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.22.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFast": 12666590,
+        "SixBitShifted": 5339148,
+        "SixBitPredecoded2": 5010560
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.22.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 28271745,
+        "SixBitShifted": 12163716,
+        "SixBitPredecoded2": 11373156
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.22.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFast": 12665832,
+        "SixBitShifted": 5339004,
+        "SixBitPredecoded2": 5010848
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.22.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 8563916,
+        "SixBitShifted": 3678200,
+        "SixBitPredecoded2": 3438636
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.22.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 2140976,
+        "SixBitShifted": 919556,
+        "SixBitPredecoded2": 859662
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.22.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 2145717,
+        "SixBitShifted": 919412,
+        "SixBitPredecoded2": 859518
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.22.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 8563728,
+        "SixBitShifted": 3678128,
+        "SixBitPredecoded2": 3438540
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.23.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 12845276,
+        "SixBitShifted": 5516448,
+        "SixBitPredecoded2": 5157108
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.23.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 12845796,
+        "SixBitShifted": 5517024,
+        "SixBitPredecoded2": 5157660
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.23.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFast": 12667778,
+        "SixBitShifted": 5340792,
+        "SixBitPredecoded2": 5010944
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.23.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 28270815,
+        "SixBitShifted": 12163131,
+        "SixBitPredecoded2": 11372856
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.23.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "SixBitFast": 12665492,
+        "SixBitShifted": 5338608,
+        "SixBitPredecoded2": 5010440
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.23.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 8563748,
+        "SixBitShifted": 3678563,
+        "SixBitPredecoded2": 3438168
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.23.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 2140884,
+        "SixBitShifted": 919484,
+        "SixBitPredecoded2": 859590
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.23.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 2161327,
+        "SixBitShifted": 919556,
+        "SixBitPredecoded2": 859650
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.23.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "SixBitFast": 8563344,
+        "SixBitShifted": 3677744,
+        "SixBitPredecoded2": 3438156
+      },
+      "tiles": 8
+    }
+  ],
+  "usage_gas": {
+    "SixBitFast": 2965180104,
+    "SixBitShifted": 1269161930,
+    "SixBitPredecoded2": 1187396568
+  },
+  "rows_verified": 165440,
+  "tiles": 2600,
+  "weight_elements": 90996736
+}
