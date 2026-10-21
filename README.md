@@ -2,6 +2,8 @@
 
 # GH0ST
 
+> **Migration in progress.** Files are being restored individually. Some weight/checkpoint files and other assets are not yet uploaded; the recovery inventory describes the available backup, not a completed remote migration. Original Git history remains preserved in the backup and has not been imported here.
+
 Research into language models and agents with weights, inference and execution records on-chain. This recovery combines the surviving research Git history, model artifacts, verified S0UL runtime, website and Genesis collection from the project's separate workspaces and saved files.
 
 [Research index](docs/RESEARCH.md) · [Repository map](docs/REPOSITORY-MAP.md) · [Recovery record](docs/recovery/RECOVERY.md) · [Website](website/) · [Contributing](CONTRIBUTING.md)
