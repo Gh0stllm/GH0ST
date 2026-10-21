@@ -1,0 +1,162 @@
+name: S0UL one-hour parallel training
+
+on:
+  push:
+    branches: [research/GH0ST-S0UL-1M]
+    paths: ["s0ul-1m/**", ".github/workflows/s0ul-hour.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  train:
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[train-hour]')
+    name: ${{ matrix.lane }} (60 min)
+    runs-on: ubuntu-latest
+    timeout-minutes: 80
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        include:
+          - lane: scratch-42
+            seed: 42
+            learning_rate: '0.001'
+            initialization: scratch
+          - lane: scratch-43-low-lr
+            seed: 43
+            learning_rate: '0.0005'
+            initialization: scratch
+          - lane: warm-42
+            seed: 42
+            learning_rate: '0.0008'
+            initialization: warm
+    defaults:
+      run:
+        working-directory: s0ul-1m
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pinned CPU training dependencies
+        run: |
+          python -m pip install torch==2.5.1 --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install -e .
+      - name: Verify research implementation
+        run: python -m unittest discover -s tests -p 'test_*.py' -v
+      - name: Generate the frozen v2 training and validation data
+        run: python -m s0ul.data_v2 --output data-v2 --seed 2026 --train-per-action 3200 --validation-per-action 100
+      - name: Fetch the previous research checkpoint
+        uses: actions/download-artifact@v4
+        with:
+          name: s0ul-1m-research-pilot-9d692b1d94931b7edad0fddf9904bace210e3769
+          run-id: 39615161322
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: s0ul-1m/bootstrap
+      - name: Train continuously for one hour
+        env:
+          LANE: ${{ matrix.lane }}
+          SEED: ${{ matrix.seed }}
+          LEARNING_RATE: ${{ matrix.learning_rate }}
+          INITIALIZATION: ${{ matrix.initialization }}
+        run: |
+          args=(--data data-v2 --output "runs/$LANE" --steps 1000000 --duration-seconds 3600 --warmup-seconds 60 --batch-size 32 --threads 2 --seed "$SEED" --eval-every 1000 --learning-rate "$LEARNING_RATE" --min-lr-ratio 0.1 --weight-decay 0.01 --selection-examples 180 --patience 0)
+          if [ "$INITIALIZATION" = warm ]; then
+            args+=(--init-checkpoint bootstrap/runs/ci-pilot/checkpoint.pt)
+          fi
+          python -m s0ul.train_advanced "${args[@]}"
+      - name: Evaluate the lane on full validation data
+        env:
+          LANE: ${{ matrix.lane }}
+        run: python -m s0ul.evaluate --checkpoint "runs/$LANE/checkpoint.pt" --data data-v2 --split validation --output "runs/$LANE/full-validation.json" --threads 2
+      - name: Export the lane checkpoint
+        env:
+          LANE: ${{ matrix.lane }}
+        run: |
+          python -m s0ul.export --checkpoint "runs/$LANE/checkpoint.pt" --output "exports/$LANE"
+          python -m s0ul.export --verify "exports/$LANE/manifest.json"
+      - name: Preserve lane checkpoints, optimizer, logs and exports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s0ul-hour-lane-${{ matrix.lane }}-${{ github.run_id }}
+          path: |
+            s0ul-1m/runs/${{ matrix.lane }}/
+            s0ul-1m/exports/${{ matrix.lane }}/
+            s0ul-1m/data-v2/manifest.json
+          if-no-files-found: warn
+          retention-days: 30
+
+  select-and-evaluate:
+    if: always() && !cancelled() && (github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[train-hour]'))
+    needs: train
+    name: Select by validation, then evaluate the frozen final challenge
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    permissions:
+      contents: write
+      actions: read
+    defaults:
+      run:
+        working-directory: s0ul-1m
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pinned CPU dependencies
+        run: |
+          python -m pip install torch==2.5.1 --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install -e .
+      - name: Restore all lane artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: s0ul-hour-lane-*-${{ github.run_id }}
+          path: s0ul-1m/lane-artifacts
+          merge-multiple: false
+      - name: Restore the frozen original baseline
+        uses: actions/download-artifact@v4
+        with:
+          name: s0ul-1m-research-pilot-9d692b1d94931b7edad0fddf9904bace210e3769
+          run-id: 39615161322
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: s0ul-1m/bootstrap
+      - name: Regenerate validation data
+        run: python -m s0ul.data_v2 --output data-v2 --seed 2026 --train-per-action 3200 --validation-per-action 100
+      - name: Select, freeze and evaluate the winner
+        run: python -m s0ul.campaign --artifacts lane-artifacts --validation data-v2/validation.jsonl --challenge tests/final_challenge_v2.jsonl --challenge-sha256 67624db57500eda43102c7b1d298157ce5287bc9a59a73d09219d9a9859535e8 --baseline bootstrap/runs/ci-pilot/checkpoint.pt --output runs/hour-campaign --threads 2 --minimum-duration-seconds 3600
+      - name: Publish measured results to the research branch
+        env:
+          CAMPAIGN_RUN_ID: ${{ github.run_id }}
+          CAMPAIGN_RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          git fetch origin research/GH0ST-S0UL-1M
+          git checkout -B s0ul-hour-publication origin/research/GH0ST-S0UL-1M
+          python -m s0ul.publish_campaign --result runs/hour-campaign --run-id "$CAMPAIGN_RUN_ID" --run-url "$CAMPAIGN_RUN_URL"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add "reports/hour-$CAMPAIGN_RUN_ID" BUILD-STATUS.md
+          git commit -m "Publish S0UL one-hour campaign $CAMPAIGN_RUN_ID results"
+          published=false
+          for attempt in 1 2 3; do
+            if git push origin HEAD:refs/heads/research/GH0ST-S0UL-1M; then
+              published=true
+              break
+            fi
+            git fetch origin research/GH0ST-S0UL-1M
+            git rebase origin/research/GH0ST-S0UL-1M
+          done
+          test "$published" = true
+      - name: Preserve the selected checkpoint and complete evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s0ul-hour-selected-${{ github.run_id }}
+          path: s0ul-1m/runs/hour-campaign/
+          if-no-files-found: warn
+          retention-days: 30
