@@ -1,0 +1,559 @@
+{
+  "summary": {
+    "passed": 3,
+    "scored": 18,
+    "manual_cases": 6,
+    "seconds": 3.077146880008513,
+    "by_group": {
+      "command": {
+        "passed": 0,
+        "total": 6
+      },
+      "grounded": {
+        "passed": 2,
+        "total": 6
+      },
+      "intent": {
+        "passed": 1,
+        "total": 6
+      }
+    }
+  },
+  "cases": [
+    {
+      "id": "greeting",
+      "group": "chat",
+      "prompt": "Hello! What can you help me with?",
+      "expected": null,
+      "scoring": "manual",
+      "output": "a syringe",
+      "passed": null,
+      "seconds": 0.1712007129972335,
+      "input_tokens": 10,
+      "output_tokens": 8,
+      "output_token_ids": [
+        0,
+        3,
+        9,
+        3,
+        7,
+        63,
+        1007,
+        15,
+        1
+      ]
+    },
+    {
+      "id": "gas_explanation",
+      "group": "chat",
+      "prompt": "Explain blockchain gas fees in one short sentence.",
+      "expected": null,
+      "scoring": "manual",
+      "output": "Bitcoin is a cryptocurrency",
+      "passed": null,
+      "seconds": 0.11437538299651351,
+      "input_tokens": 10,
+      "output_tokens": 6,
+      "output_token_ids": [
+        0,
+        9310,
+        19,
+        3,
+        9,
+        19432,
+        1
+      ]
+    },
+    {
+      "id": "contract_explanation",
+      "group": "chat",
+      "prompt": "What is a smart contract? Answer in one short sentence.",
+      "expected": null,
+      "scoring": "manual",
+      "output": "A smart contract is a contract that is used to contract a certain amount of time.",
+      "passed": null,
+      "seconds": 0.3504744079982629,
+      "input_tokens": 14,
+      "output_tokens": 20,
+      "output_token_ids": [
+        0,
+        71,
+        2592,
+        1696,
+        19,
+        3,
+        9,
+        1696,
+        24,
+        19,
+        261,
+        12,
+        1696,
+        3,
+        9,
+        824,
+        866,
+        13,
+        97,
+        5,
+        1
+      ]
+    },
+    {
+      "id": "summary",
+      "group": "chat",
+      "prompt": "Summarize in one sentence: Riya has three tasks. She finished the code review. The documentation and deployment are still pending.",
+      "expected": null,
+      "scoring": "manual",
+      "output": "Riya has completed the code review.",
+      "passed": null,
+      "seconds": 0.19308753000223078,
+      "input_tokens": 30,
+      "output_tokens": 10,
+      "output_token_ids": [
+        0,
+        2403,
+        63,
+        9,
+        65,
+        2012,
+        8,
+        1081,
+        1132,
+        5,
+        1
+      ]
+    },
+    {
+      "id": "polite_rewrite",
+      "group": "chat",
+      "prompt": "Rewrite politely: Finish the report now.",
+      "expected": null,
+      "scoring": "manual",
+      "output": "The report is ready.",
+      "passed": null,
+      "seconds": 0.11359626799821854,
+      "input_tokens": 12,
+      "output_tokens": 6,
+      "output_token_ids": [
+        0,
+        37,
+        934,
+        19,
+        1065,
+        5,
+        1
+      ]
+    },
+    {
+      "id": "missing_context",
+      "group": "chat",
+      "prompt": "What did I ask you to do yesterday?",
+      "expected": null,
+      "scoring": "manual",
+      "output": "I'm going to go to the doctor.",
+      "passed": null,
+      "seconds": 0.20869986100296956,
+      "input_tokens": 10,
+      "output_tokens": 11,
+      "output_token_ids": [
+        0,
+        27,
+        31,
+        51,
+        352,
+        12,
+        281,
+        12,
+        8,
+        2472,
+        5,
+        1
+      ]
+    },
+    {
+      "id": "addition",
+      "group": "grounded",
+      "prompt": "What is 12 plus 7? Answer with only the number.",
+      "expected": [
+        "19"
+      ],
+      "scoring": "normalized_exact",
+      "output": "0",
+      "passed": false,
+      "seconds": 0.07302614299987908,
+      "input_tokens": 13,
+      "output_tokens": 3,
+      "output_token_ids": [
+        0,
+        3,
+        632,
+        1
+      ]
+    },
+    {
+      "id": "subtraction",
+      "group": "grounded",
+      "prompt": "There are 9 pending tasks. Three are completed. How many remain pending? Answer with only the number.",
+      "expected": [
+        "6"
+      ],
+      "scoring": "normalized_exact",
+      "output": "9",
+      "passed": false,
+      "seconds": 0.04920426399621647,
+      "input_tokens": 24,
+      "output_tokens": 2,
+      "output_token_ids": [
+        0,
+        668,
+        1
+      ]
+    },
+    {
+      "id": "state_read",
+      "group": "grounded",
+      "prompt": "Context: Task 701 is pending. Task 811 is complete. Question: What is the status of task 701? Answer pending or complete.",
+      "expected": [
+        "pending"
+      ],
+      "scoring": "normalized_exact",
+      "output": "pending",
+      "passed": true,
+      "seconds": 0.06848806000198238,
+      "input_tokens": 34,
+      "output_tokens": 3,
+      "output_token_ids": [
+        0,
+        3,
+        11577,
+        1
+      ]
+    },
+    {
+      "id": "state_count",
+      "group": "grounded",
+      "prompt": "Context: Task 1 is pending. Task 2 is complete. Task 3 is pending. How many tasks are pending? Answer with only the number.",
+      "expected": [
+        "2"
+      ],
+      "scoring": "normalized_exact",
+      "output": "3",
+      "passed": false,
+      "seconds": 0.05260841699782759,
+      "input_tokens": 34,
+      "output_tokens": 2,
+      "output_token_ids": [
+        0,
+        220,
+        1
+      ]
+    },
+    {
+      "id": "name_copy",
+      "group": "grounded",
+      "prompt": "Context: The user name is Rowan. Question: What is the user name? Answer with the name only.",
+      "expected": [
+        "Rowan"
+      ],
+      "scoring": "normalized_exact",
+      "output": "Rowan",
+      "passed": true,
+      "seconds": 0.06554368199431337,
+      "input_tokens": 25,
+      "output_tokens": 3,
+      "output_token_ids": [
+        0,
+        11768,
+        152,
+        1
+      ]
+    },
+    {
+      "id": "id_copy",
+      "group": "grounded",
+      "prompt": "Extract only the task ID from this request: Mark task 1531 complete.",
+      "expected": [
+        "1531"
+      ],
+      "scoring": "normalized_exact",
+      "output": "0",
+      "passed": false,
+      "seconds": 0.06697219499619678,
+      "input_tokens": 16,
+      "output_tokens": 3,
+      "output_token_ids": [
+        0,
+        3,
+        632,
+        1
+      ]
+    },
+    {
+      "id": "class_complete",
+      "group": "intent",
+      "prompt": "Classify the request using exactly one label: create_task, complete_task, task_status, list_tasks, set_preference, unsupported. Request: Mark task 701 completed.",
+      "expected": [
+        "complete_task"
+      ],
+      "scoring": "normalized_exact",
+      "output": "unsupported",
+      "passed": false,
+      "seconds": 0.0754992619913537,
+      "input_tokens": 44,
+      "output_tokens": 3,
+      "output_token_ids": [
+        0,
+        73,
+        29249,
+        1
+      ]
+    },
+    {
+      "id": "class_status",
+      "group": "intent",
+      "prompt": "Classify the request using exactly one label: create_task, complete_task, task_status, list_tasks, set_preference, unsupported. Request: Is task 811 finished?",
+      "expected": [
+        "task_status"
+      ],
+      "scoring": "normalized_exact",
+      "output": "unsupported",
+      "passed": false,
+      "seconds": 0.07248117199924309,
+      "input_tokens": 45,
+      "output_tokens": 3,
+      "output_token_ids": [
+        0,
+        73,
+        29249,
+        1
+      ]
+    },
+    {
+      "id": "class_create",
+      "group": "intent",
+      "prompt": "Classify the request using exactly one label: create_task, complete_task, task_status, list_tasks, set_preference, unsupported. Request: Add a task named inspect access controls.",
+      "expected": [
+        "create_task"
+      ],
+      "scoring": "normalized_exact",
+      "output": "unsupported",
+      "passed": false,
+      "seconds": 0.08117070500156842,
+      "input_tokens": 47,
+      "output_tokens": 3,
+      "output_token_ids": [
+        0,
+        73,
+        29249,
+        1
+      ]
+    },
+    {
+      "id": "class_list",
+      "group": "intent",
+      "prompt": "Classify the request using exactly one label: create_task, complete_task, task_status, list_tasks, set_preference, unsupported. Request: Show all of my tasks.",
+      "expected": [
+        "list_tasks"
+      ],
+      "scoring": "normalized_exact",
+      "output": "unsupported",
+      "passed": false,
+      "seconds": 0.07997494100709446,
+      "input_tokens": 44,
+      "output_tokens": 3,
+      "output_token_ids": [
+        0,
+        73,
+        29249,
+        1
+      ]
+    },
+    {
+      "id": "class_preference",
+      "group": "intent",
+      "prompt": "Classify the request using exactly one label: create_task, complete_task, task_status, list_tasks, set_preference, unsupported. Request: Save blue as my preferred theme.",
+      "expected": [
+        "set_preference"
+      ],
+      "scoring": "normalized_exact",
+      "output": "unsupported",
+      "passed": false,
+      "seconds": 0.07988310299697332,
+      "input_tokens": 45,
+      "output_tokens": 3,
+      "output_token_ids": [
+        0,
+        73,
+        29249,
+        1
+      ]
+    },
+    {
+      "id": "class_unsupported",
+      "group": "intent",
+      "prompt": "Classify the request using exactly one label: create_task, complete_task, task_status, list_tasks, set_preference, unsupported. Request: Transfer my ETH to another wallet.",
+      "expected": [
+        "unsupported"
+      ],
+      "scoring": "normalized_exact",
+      "output": "unsupported",
+      "passed": true,
+      "seconds": 0.07214296198799275,
+      "input_tokens": 46,
+      "output_tokens": 3,
+      "output_token_ids": [
+        0,
+        73,
+        29249,
+        1
+      ]
+    },
+    {
+      "id": "cmd_complete",
+      "group": "command",
+      "prompt": "Convert the request to one command. Commands: complete_task ID; task_status ID; create_task TITLE; set_preference KEY VALUE; clarify. Use clarify when a required argument is missing. Output only the command. Example: \"Finish task 12\" -> complete_task 12. Request: Mark task 701 complete.",
+      "expected": [
+        "complete_task 701"
+      ],
+      "scoring": "normalized_exact",
+      "output": "Mark task 701 complete.",
+      "passed": false,
+      "seconds": 0.18744885800697375,
+      "input_tokens": 82,
+      "output_tokens": 7,
+      "output_token_ids": [
+        0,
+        2185,
+        2491,
+        2861,
+        536,
+        743,
+        5,
+        1
+      ]
+    },
+    {
+      "id": "cmd_status",
+      "group": "command",
+      "prompt": "Convert the request to one command. Commands: complete_task ID; task_status ID; create_task TITLE; set_preference KEY VALUE; clarify. Use clarify when a required argument is missing. Output only the command. Example: \"Finish task 12\" -> complete_task 12. Request: Check the status of task 811.",
+      "expected": [
+        "task_status 811"
+      ],
+      "scoring": "normalized_exact",
+      "output": "check_status of task 811.",
+      "passed": false,
+      "seconds": 0.21203628199873492,
+      "input_tokens": 83,
+      "output_tokens": 9,
+      "output_token_ids": [
+        0,
+        691,
+        834,
+        8547,
+        302,
+        13,
+        2491,
+        505,
+        10032,
+        1
+      ]
+    },
+    {
+      "id": "cmd_create",
+      "group": "command",
+      "prompt": "Convert the request to one command. Commands: complete_task ID; task_status ID; create_task TITLE; set_preference KEY VALUE; clarify. Use clarify when a required argument is missing. Output only the command. Example: \"Finish task 12\" -> complete_task 12. Request: Create a task called inspect access controls.",
+      "expected": [
+        "create_task inspect access controls"
+      ],
+      "scoring": "normalized_exact",
+      "output": "Create a task called inspect access controls.",
+      "passed": false,
+      "seconds": 0.2328828089957824,
+      "input_tokens": 85,
+      "output_tokens": 10,
+      "output_token_ids": [
+        0,
+        6357,
+        3,
+        9,
+        2491,
+        718,
+        15614,
+        592,
+        7415,
+        5,
+        1
+      ]
+    },
+    {
+      "id": "cmd_preference",
+      "group": "command",
+      "prompt": "Convert the request to one command. Commands: complete_task ID; task_status ID; create_task TITLE; set_preference KEY VALUE; clarify. Use clarify when a required argument is missing. Output only the command. Example: \"Finish task 12\" -> complete_task 12. Request: Set my theme preference to blue.",
+      "expected": [
+        "set_preference theme blue"
+      ],
+      "scoring": "normalized_exact",
+      "output": "set_ theme preference to blue",
+      "passed": false,
+      "seconds": 0.16745090000040364,
+      "input_tokens": 83,
+      "output_tokens": 7,
+      "output_token_ids": [
+        0,
+        356,
+        834,
+        3800,
+        11633,
+        12,
+        1692,
+        1
+      ]
+    },
+    {
+      "id": "cmd_missing_id",
+      "group": "command",
+      "prompt": "Convert the request to one command. Commands: complete_task ID; task_status ID; create_task TITLE; set_preference KEY VALUE; clarify. Use clarify when a required argument is missing. Output only the command. Example: \"Finish task 12\" -> complete_task 12. Request: Mark that task complete.",
+      "expected": [
+        "clarify"
+      ],
+      "scoring": "normalized_exact",
+      "output": "Mark that task complete.",
+      "passed": false,
+      "seconds": 0.1450738179992186,
+      "input_tokens": 81,
+      "output_tokens": 6,
+      "output_token_ids": [
+        0,
+        2185,
+        24,
+        2491,
+        743,
+        5,
+        1
+      ]
+    },
+    {
+      "id": "cmd_negation",
+      "group": "command",
+      "prompt": "Convert the request to one command. Commands: complete_task ID; task_status ID; create_task TITLE; set_preference KEY VALUE; clarify. Use clarify when a required argument is missing. Output only the command. Example: \"Finish task 12\" -> complete_task 12. Request: Do not complete task 929. Only check its status.",
+      "expected": [
+        "task_status 929"
+      ],
+      "scoring": "normalized_exact",
+      "output": "check_status",
+      "passed": false,
+      "seconds": 0.13054815199575387,
+      "input_tokens": 88,
+      "output_tokens": 5,
+      "output_token_ids": [
+        0,
+        691,
+        834,
+        8547,
+        302,
+        1
+      ]
+    }
+  ]
+}
