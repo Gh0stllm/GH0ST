@@ -1,0 +1,186 @@
+name: S0UL two-hour hard training
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  train:
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[train-hard-2h]')
+    name: ${{ matrix.lane }} (120 min)
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        include:
+          - lane: warm-uniform-42
+            seed: 42
+            learning_rate: '0.0004'
+            weight_decay: '0.05'
+            label_smoothing: '0'
+            hard_replay_fraction: '0'
+          - lane: warm-hard-43
+            seed: 43
+            learning_rate: '0.0004'
+            weight_decay: '0.05'
+            label_smoothing: '0.02'
+            hard_replay_fraction: '0.25'
+          - lane: warm-hard-low-lr-44
+            seed: 44
+            learning_rate: '0.0002'
+            weight_decay: '0.1'
+            label_smoothing: '0.02'
+            hard_replay_fraction: '0.35'
+    defaults:
+      run:
+        working-directory: s0ul-1m
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pinned CPU training dependencies
+        run: |
+          python -m pip install torch==2.5.1 --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install -e .
+      - name: Verify research implementation
+        run: python -m unittest discover -s tests -p 'test_*.py' -v
+      - name: Generate and freeze the v3 dataset
+        run: |
+          python -m s0ul.data_v3 --output data-v3 --seed 20261021
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          expected = json.loads(Path('reports/data-v3-manifest.json').read_text())
+          actual = json.loads(Path('data-v3/manifest.json').read_text())
+          assert actual == expected, 'Generated dataset differs from preregistered manifest'
+          print('All dataset hashes match the preregistered manifest.')
+          PY
+      - name: Restore the previous winning checkpoint
+        uses: actions/download-artifact@v4
+        with:
+          name: s0ul-hour-selected-39618506314
+          run-id: 39618506314
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: s0ul-1m/bootstrap-hour
+      - name: Verify the frozen initialization
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from s0ul.train import sha256_file
+          path = Path('bootstrap-hour/selected/checkpoint.pt')
+          assert sha256_file(path) == '3647f818b2c6a187d5127ecaf3101308fcc84320491b655c0da98098a08d4665'
+          print('Previous winning checkpoint hash verified.')
+          PY
+      - name: Train continuously for two hours
+        env:
+          LANE: ${{ matrix.lane }}
+          SEED: ${{ matrix.seed }}
+          LEARNING_RATE: ${{ matrix.learning_rate }}
+          WEIGHT_DECAY: ${{ matrix.weight_decay }}
+          LABEL_SMOOTHING: ${{ matrix.label_smoothing }}
+          HARD_REPLAY_FRACTION: ${{ matrix.hard_replay_fraction }}
+        run: |
+          python -m s0ul.train_advanced --data data-v3 --output "runs/$LANE" --init-checkpoint bootstrap-hour/selected/checkpoint.pt --steps 1000000 --duration-seconds 7200 --warmup-seconds 120 --batch-size 32 --threads 2 --seed "$SEED" --eval-every 1000 --learning-rate "$LEARNING_RATE" --min-lr-ratio 0.05 --weight-decay "$WEIGHT_DECAY" --label-smoothing "$LABEL_SMOOTHING" --hard-replay-fraction "$HARD_REPLAY_FRACTION" --hard-replay-size 2048 --selection-examples 270 --patience 0
+      - name: Export and verify the lane checkpoint
+        env:
+          LANE: ${{ matrix.lane }}
+        run: |
+          python -m s0ul.export --checkpoint "runs/$LANE/checkpoint.pt" --output "exports/$LANE"
+          python -m s0ul.export --verify "exports/$LANE/manifest.json"
+      - name: Preserve checkpoints, optimizer, logs and dataset identity
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s0ul-hard-lane-${{ matrix.lane }}-${{ github.run_id }}
+          path: |
+            s0ul-1m/runs/${{ matrix.lane }}/
+            s0ul-1m/exports/${{ matrix.lane }}/
+            s0ul-1m/data-v3/manifest.json
+          if-no-files-found: warn
+          retention-days: 90
+
+  select-and-evaluate:
+    if: always() && !cancelled() && (github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[train-hard-2h]'))
+    needs: train
+    name: Select by validation and evaluate fresh and historical challenges
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    permissions:
+      contents: write
+      actions: read
+    defaults:
+      run:
+        working-directory: s0ul-1m
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pinned CPU training dependencies
+        run: |
+          python -m pip install torch==2.5.1 --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install -e .
+      - name: Restore all lane artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: s0ul-hard-lane-*-${{ github.run_id }}
+          path: s0ul-1m/lane-artifacts
+          merge-multiple: false
+      - name: Restore the previous winning baseline
+        uses: actions/download-artifact@v4
+        with:
+          name: s0ul-hour-selected-39618506314
+          run-id: 39618506314
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: s0ul-1m/bootstrap-hour
+      - name: Regenerate the pinned dataset
+        run: |
+          python -m s0ul.data_v3 --output data-v3 --seed 20261021
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          expected = json.loads(Path('reports/data-v3-manifest.json').read_text())
+          actual = json.loads(Path('data-v3/manifest.json').read_text())
+          assert actual == expected, 'Evaluation dataset differs from preregistered manifest'
+          PY
+      - name: Select, freeze and evaluate
+        run: |
+          python -m s0ul.campaign --artifacts lane-artifacts --validation data-v3/validation.jsonl --challenge data-v3/challenge.jsonl --challenge-sha256 2832112d7aa0f357bf3eb09d137abfbe46b89d58103d3755362132dd8c10d4d7 --expected-challenge-examples 540 --baseline bootstrap-hour/selected/checkpoint.pt --output runs/hard-campaign --threads 2 --minimum-duration-seconds 7200 --campaign-label two-hour --regression-challenge tests/final_challenge_v2.jsonl --regression-challenge-sha256 67624db57500eda43102c7b1d298157ce5287bc9a59a73d09219d9a9859535e8
+      - name: Publish measured results to the research branch
+        env:
+          CAMPAIGN_RUN_ID: ${{ github.run_id }}
+          CAMPAIGN_RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          git fetch origin research/GH0ST-S0UL-1M
+          git checkout -B s0ul-hard-publication origin/research/GH0ST-S0UL-1M
+          python -m s0ul.publish_campaign --result runs/hard-campaign --run-id "$CAMPAIGN_RUN_ID" --run-url "$CAMPAIGN_RUN_URL" --publication-prefix hard
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add "reports/hard-$CAMPAIGN_RUN_ID" BUILD-STATUS.md
+          git commit -m "Publish S0UL two-hour hard campaign $CAMPAIGN_RUN_ID results"
+          published=false
+          for attempt in 1 2 3; do
+            if git push origin HEAD:refs/heads/research/GH0ST-S0UL-1M; then
+              published=true
+              break
+            fi
+            git fetch origin research/GH0ST-S0UL-1M
+            git rebase origin/research/GH0ST-S0UL-1M
+          done
+          test "$published" = true
+      - name: Preserve selected weights, exports and complete evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s0ul-hard-selected-${{ github.run_id }}
+          path: s0ul-1m/runs/hard-campaign/
+          if-no-files-found: warn
+          retention-days: 90
