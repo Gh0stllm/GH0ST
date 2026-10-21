@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "checkedAtUTC": "2026-10-21T08:24:53.126Z",
+  "rpcPublicEndpoint": "https://rpc.mainnet.chain.robinhood.com",
+  "rpcOfficialDocumentation": "https://docs.robinhood.com/chain/connecting/",
+  "readOnly": true,
+  "publicTransactionsSent": 0,
+  "merkleRoot": "0x3b327e697b57bae646264f3fe99fb4921c40f44d92ef0173c272f7e3edcb61d2",
+  "all495MerkleProofsVerified": true,
+  "royaltyStandard": "ERC-2981",
+  "royaltyBps": 350,
+  "royaltyRecipient": "0x8D6B11CFdF079e27C17e05Cb7Ea81235887691c6",
+  "royaltyRecipientSource": "Explicit command-line argument",
+  "deploymentReadiness": "NOT_DEPLOYED",
+  "scope": "Read-only chain preflight; not a validation of deployed NFT code or royalty payment enforcement.",
+  "sourceRepository": "8tk8m2kv9f-lang/GH0ST",
+  "sourceCommit": "0c82d527564dc6c081f16f7d05898c5b33b655cf",
+  "sourceManifest": "falcon-agent/fourbit-study/mainnet/deployment-manifest.json",
+  "sourceManifestUTC": "2026-10-20T16:34:48.121248+00:00",
+  "limitations": [
+    "A zero-amount call is a capability check, not a complete burn-accounting audit.",
+    "All 495 shard addresses are checked against the live pinned index; only first and last shard bytecodes are downloaded live.",
+    "Remaining shard hashes come from the pinned deployment journal and are checked against actual shard code on each future NFT mint.",
+    "No wallet credentials are needed or used by this preflight."
+  ],
+  "status": "PASS",
+  "chainId": 4663,
+  "blockNumber": 94141363,
+  "blockHash": "0x53d013582bbfe427cf0b68ffe4fcfd72299a84e73d28b72bffb5038dc9422cac",
+  "token": "0x2eb2849cDE7957b86d0dFD4B59e450a9F9D15559",
+  "tokenRuntimeBytes": 3248,
+  "tokenCodeHash": "0x7c38fa1b069b5e677034bab6219dd2f519f219f7637910131d9a0f58a05ae164",
+  "tokenDecimals": 18,
+  "totalSupplyRaw": "1000000000000000000000000000",
+  "burnZeroSimulation": {
+    "result": "0x"
+  },
+  "burnFromZeroSimulation": {
+    "result": "0x"
+  },
+  "unknownSelectorControl": {
+    "error": {
+      "code": 3,
+      "message": "execution reverted",
+      "data": "0x"
+    }
+  },
+  "tokenBurnSelectorObserved": true,
+  "tokenBurnFromSelectorObserved": true,
+  "indexAddress": "0x4a5aaA46E02b8Cbd3Fa2C39802A3E8339C98ADA0",
+  "indexCodeHash": "0x837bbe58f9d52bb20e8198019a10b97e706aab9cb9e400ca229b6d1cb390c307",
+  "indexRuntimeBytes": 9949,
+  "all495IndexAddressesMatch": true,
+  "indexHeaderMatches": true,
+  "liveShardBytecodeSamples": [
+    {
+      "tokenId": 1,
+      "address": "0x8765fCb1b69bBB848d13f8C0Dc842A96e794dDF1",
+      "runtimeCodeHash": "0x6fe8cd5cbbd33ff8d270bd3814cb63e238cfe2034ff4965add7b42338fe506c3",
+      "runtimeBytes": 98304
+    },
+    {
+      "tokenId": 495,
+      "address": "0x7d377b80657e52A3A9e7828fcc50d7948D4eA060",
+      "runtimeCodeHash": "0x07fe09c25481affb05aec10e62c9341b173ae8862c33bae1f41554f6b7aaf5db",
+      "runtimeBytes": 64847
+    }
+  ],
+  "localForkCandidate": {
+    "address": "0x8D6B11CFdF079e27C17e05Cb7Ea81235887691c6",
+    "tokenBalanceRaw": "961995378029147534237665",
+    "canFundOneMintBeforeGas": true,
+    "canFundThreeMintsBeforeGas": true,
+    "scope": "Public balance read only. Impersonation, if used by tests, must occur only inside a local fork."
+  },
+  "positiveDirectBurnSimulation": {
+    "result": "0x"
+  }
+}
