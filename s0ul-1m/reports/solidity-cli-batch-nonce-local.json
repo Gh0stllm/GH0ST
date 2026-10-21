@@ -1,0 +1,34 @@
+{
+  "format": "s0ul-cli-focused-batch-nonce-v1",
+  "recorded_utc": "2026-10-21T20:52:16.603Z",
+  "cli_sha256": "933d5a3a3f9c8c75d93dc1bcf5f3a4b1841358a147647192b971cbe8c7db87b1",
+  "scope": "Focused tests for opt-in read batching and first-sign nonce guard; earlier nine-test recovery suite not rerun.",
+  "chain": {
+    "kind": "loopback Ganache",
+    "chain_id": 31337,
+    "public_transactions": 0
+  },
+  "fixture": {
+    "vocab_size": 512,
+    "dim": 8,
+    "layers": 1,
+    "shards": 2,
+    "contracts": 5,
+    "full_trained_model": false
+  },
+  "checks": {
+    "opt_in_batch_max": 12,
+    "read_batches_observed": 40,
+    "maximum_observed_batch": 8,
+    "reversed_read_response_ids_preserved": true,
+    "send_in_http_batch": false,
+    "signed_broadcast_attempts": 5,
+    "unique_accepted_transactions": 5,
+    "accepted_error_send_attempts": 1,
+    "expected_nonce_mismatch_broadcasts": 0,
+    "pre_sign_nonce_race_broadcasts": 0,
+    "expected_nonce_checked_once": true,
+    "later_stage_nonces_advanced": true,
+    "runtime_hashes_exact": true
+  }
+}
