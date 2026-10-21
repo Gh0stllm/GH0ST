@@ -1,0 +1,19 @@
+{
+  "analytic_not_gas": true,
+  "layers": 8,
+  "hidden": 576,
+  "ffn": 1536,
+  "vocabulary": 49152,
+  "unique_embedding_output_parameters": 28311552,
+  "decoder_matrix_parameters": 28311552,
+  "norm_parameters": 9792,
+  "decoder_dense_macs_per_processed_position": 28311552,
+  "final_vocab_macs_per_generated_position": 28311552,
+  "attention_macs_per_generated_position_per_cached_position": 9216,
+  "int32_kv_cache_bytes_per_context_position": 12288,
+  "notes": [
+    "Prompt prefill needs final vocabulary projection only where a next-token decision is requested.",
+    "Attention, normalization, activation, tokenizer, transaction overhead and storage gas are not priced.",
+    "Packed physical bytes require scales, code, tokenizer and metadata in addition to weights."
+  ]
+}
