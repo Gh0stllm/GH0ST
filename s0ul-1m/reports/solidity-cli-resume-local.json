@@ -1,0 +1,41 @@
+{
+  "format": "s0ul-cli-resume-local-v1",
+  "recorded_utc": "2026-10-21T20:13:40.771Z",
+  "chain": {
+    "kind": "loopback Ganache",
+    "chain_id": 31337,
+    "hardfork": "shanghai",
+    "block_gas_limit": 30000000,
+    "unlimited_contract_size": false
+  },
+  "fixture": {
+    "vocab_size": 512,
+    "dim": 8,
+    "layers": 1,
+    "shard_count": 48,
+    "full_trained_model": false
+  },
+  "checks": [
+    "pending hash persisted before receipt",
+    "missing pending transaction rejected without replacement",
+    "three confirmed stages reused after interruption",
+    "interrupted pending transaction resumed once",
+    "all 51 deployment stages completed",
+    "runtime hashes exact",
+    "completed resume idempotent",
+    "existing output rejected without resume",
+    "model manifest mismatch rejected",
+    "build identity mismatch rejected",
+    "substituted confirmed transaction hash rejected",
+    "chain mismatch rejected",
+    "wallet mismatch rejected"
+  ],
+  "broadcast_transactions": 51,
+  "unique_transactions": 51,
+  "confirmed_prefix_at_interruption": 3,
+  "pending_transaction_index_at_interruption": 3,
+  "deployment_complete": true,
+  "deployment_transaction_count": 51,
+  "total_deployment_gas": "20761198",
+  "public_chain_transactions_sent": 0
+}
