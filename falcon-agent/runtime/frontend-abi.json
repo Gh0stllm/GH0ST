@@ -1,0 +1,820 @@
+[
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "kernel_",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "index_",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "inputs": [],
+    "name": "BudgetInput",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "FeeCapExceeded",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidIndex",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidInput",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NoWork",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NumericRange",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NumericRange",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "OutOfBounds",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "PaymentFailed",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "PostingFeeUnavailable",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Reentrancy",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Unauthorized",
+    "type": "error"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "executor",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "units",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "billedGas",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "postingFeeWei",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "paymentWei",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "remainingWei",
+        "type": "uint256"
+      }
+    ],
+    "name": "Charged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "executor",
+        "type": "address"
+      }
+    ],
+    "name": "ExecutorChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint8",
+        "name": "reason",
+        "type": "uint8"
+      }
+    ],
+    "name": "Finished",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "position",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "layer",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "stateHash",
+        "type": "bytes32"
+      }
+    ],
+    "name": "LayerComputed",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "executor",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "budgetWei",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "maximumUnits",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "gasPriceCap",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "postingFeeCap",
+        "type": "uint256"
+      }
+    ],
+    "name": "Prepaid",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "position",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "layer",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "phase",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "cursor",
+        "type": "uint256"
+      }
+    ],
+    "name": "Progress",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amountWei",
+        "type": "uint256"
+      }
+    ],
+    "name": "Refunded",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "requester",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "promptTokens",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "maxNewTokens",
+        "type": "uint256"
+      }
+    ],
+    "name": "SessionStarted",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "sequenceIndex",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint32",
+        "name": "tokenId",
+        "type": "uint32"
+      }
+    ],
+    "name": "Token",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "recipient",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amountWei",
+        "type": "uint256"
+      }
+    ],
+    "name": "Withdrawn",
+    "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "BILLING_OVERHEAD",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "CALL_GAS_CAP",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "INDEX_HASH",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "KERNEL_HASH",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "MAX_CONTEXT",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "WEIGHTS_SHA256",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "maxUnits",
+        "type": "uint256"
+      }
+    ],
+    "name": "advancePrepaid",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "units",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "budgets",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "executor",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "gasPriceCap",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "postingFeeCap",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "remainingUnits",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "remainingWei",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "spentWei",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
+      }
+    ],
+    "name": "cancel",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "credits",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "index",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "kernel",
+    "outputs": [
+      {
+        "internalType": "contract IFourBitKernel",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "nextSession",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "promptTokens",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint16",
+        "name": "maxNewTokens",
+        "type": "uint16"
+      },
+      {
+        "internalType": "uint256",
+        "name": "gasPriceCap",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "postingFeeCap",
+        "type": "uint256"
+      }
+    ],
+    "name": "quote",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "maximumUnits",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "executionGasCap",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "budgetWei",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "pure",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "executor",
+        "type": "address"
+      }
+    ],
+    "name": "setExecutor",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint32[]",
+        "name": "prompt",
+        "type": "uint32[]"
+      },
+      {
+        "internalType": "uint16",
+        "name": "maxNewTokens",
+        "type": "uint16"
+      },
+      {
+        "internalType": "address",
+        "name": "executor",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "gasPriceCap",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "postingFeeCap",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "expectedBudgetWei",
+        "type": "uint256"
+      }
+    ],
+    "name": "startPrepaid",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
+      }
+    ],
+    "name": "status",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "requester",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "position",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "layer",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "phase",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "cursor",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "promptLength",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint32[]",
+        "name": "generated",
+        "type": "uint32[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "totalLiability",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "base",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "count",
+        "type": "uint256"
+      }
+    ],
+    "name": "values",
+    "outputs": [
+      {
+        "internalType": "int256[]",
+        "name": "",
+        "type": "int256[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address payable",
+        "name": "recipient",
+        "type": "address"
+      }
+    ],
+    "name": "withdraw",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+]
