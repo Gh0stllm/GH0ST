@@ -1,0 +1,3375 @@
+{
+  "status": "completed",
+  "environment": "Local Anvil Cancun, raised code limit 98304, solc 0.8.30 viaIR runs 1000000",
+  "scope": "Exact int5 matrix arithmetic on synthetic int16 inputs; NOT complete inference or int6 equivalence",
+  "source_sha256": "1545797b0fdeebac528ed0f3e2746f672b5220663b1a2a799ea92db52b509c2a",
+  "public_transactions_broadcast": 0,
+  "kernel_deployments": {
+    "FiveBitCompact": {
+      "gas": 617959,
+      "runtime_bytes": 2630
+    },
+    "FiveBitShifted": {
+      "gas": 551890,
+      "runtime_bytes": 2324
+    }
+  },
+  "edge_checks": [
+    {
+      "matrix": "model.embed_tokens.weight",
+      "kernel": "FiveBitCompact",
+      "case": "minimum",
+      "passed": true
+    },
+    {
+      "matrix": "model.embed_tokens.weight",
+      "kernel": "FiveBitCompact",
+      "case": "maximum",
+      "passed": true
+    },
+    {
+      "matrix": "model.embed_tokens.weight",
+      "kernel": "FiveBitCompact",
+      "case": "alternating",
+      "passed": true
+    },
+    {
+      "matrix": "model.embed_tokens.weight",
+      "kernel": "FiveBitCompact",
+      "case": "zero",
+      "passed": true
+    },
+    {
+      "matrix": "model.embed_tokens.weight",
+      "kernel": "FiveBitCompact",
+      "case": "negative_lane_0",
+      "passed": true
+    },
+    {
+      "matrix": "model.embed_tokens.weight",
+      "kernel": "FiveBitCompact",
+      "case": "negative_lane_1",
+      "passed": true
+    },
+    {
+      "matrix": "model.embed_tokens.weight",
+      "kernel": "FiveBitCompact",
+      "case": "negative_lane_2",
+      "passed": true
+    },
+    {
+      "matrix": "model.embed_tokens.weight",
+      "kernel": "FiveBitCompact",
+      "case": "negative_lane_3",
+      "passed": true
+    },
+    {
+      "matrix": "model.embed_tokens.weight",
+      "kernel": "FiveBitCompact",
+      "case": "negative_lane_4",
+      "passed": true
+    },
+    {
+      "matrix": "model.embed_tokens.weight",
+      "kernel": "FiveBitCompact",
+      "case": "negative_lane_5",
+      "passed": true
+    },
+    {
+      "matrix": "model.embed_tokens.weight",
+      "kernel": "FiveBitCompact",
+      "case": "negative_lane_6",
+      "passed": true
+    },
+    {
+      "matrix": "model.embed_tokens.weight",
+      "kernel": "FiveBitCompact",
+      "case": "negative_lane_7",
+      "passed": true
+    },
+    {
+      "matrix": "model.embed_tokens.weight",
+      "kernel": "FiveBitShifted",
+      "case": "minimum",
+      "passed": true
+    },
+    {
+      "matrix": "model.embed_tokens.weight",
+      "kernel": "FiveBitShifted",
+      "case": "maximum",
+      "passed": true
+    },
+    {
+      "matrix": "model.embed_tokens.weight",
+      "kernel": "FiveBitShifted",
+      "case": "alternating",
+      "passed": true
+    },
+    {
+      "matrix": "model.embed_tokens.weight",
+      "kernel": "FiveBitShifted",
+      "case": "zero",
+      "passed": true
+    },
+    {
+      "matrix": "model.embed_tokens.weight",
+      "kernel": "FiveBitShifted",
+      "case": "negative_lane_0",
+      "passed": true
+    },
+    {
+      "matrix": "model.embed_tokens.weight",
+      "kernel": "FiveBitShifted",
+      "case": "negative_lane_1",
+      "passed": true
+    },
+    {
+      "matrix": "model.embed_tokens.weight",
+      "kernel": "FiveBitShifted",
+      "case": "negative_lane_2",
+      "passed": true
+    },
+    {
+      "matrix": "model.embed_tokens.weight",
+      "kernel": "FiveBitShifted",
+      "case": "negative_lane_3",
+      "passed": true
+    },
+    {
+      "matrix": "model.embed_tokens.weight",
+      "kernel": "FiveBitShifted",
+      "case": "negative_lane_4",
+      "passed": true
+    },
+    {
+      "matrix": "model.embed_tokens.weight",
+      "kernel": "FiveBitShifted",
+      "case": "negative_lane_5",
+      "passed": true
+    },
+    {
+      "matrix": "model.embed_tokens.weight",
+      "kernel": "FiveBitShifted",
+      "case": "negative_lane_6",
+      "passed": true
+    },
+    {
+      "matrix": "model.embed_tokens.weight",
+      "kernel": "FiveBitShifted",
+      "case": "negative_lane_7",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.0.feed_forward.down_proj.weight",
+      "kernel": "FiveBitCompact",
+      "case": "minimum",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.0.feed_forward.down_proj.weight",
+      "kernel": "FiveBitCompact",
+      "case": "maximum",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.0.feed_forward.down_proj.weight",
+      "kernel": "FiveBitCompact",
+      "case": "alternating",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.0.feed_forward.down_proj.weight",
+      "kernel": "FiveBitCompact",
+      "case": "zero",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.0.feed_forward.down_proj.weight",
+      "kernel": "FiveBitCompact",
+      "case": "negative_lane_0",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.0.feed_forward.down_proj.weight",
+      "kernel": "FiveBitCompact",
+      "case": "negative_lane_1",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.0.feed_forward.down_proj.weight",
+      "kernel": "FiveBitCompact",
+      "case": "negative_lane_2",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.0.feed_forward.down_proj.weight",
+      "kernel": "FiveBitCompact",
+      "case": "negative_lane_3",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.0.feed_forward.down_proj.weight",
+      "kernel": "FiveBitCompact",
+      "case": "negative_lane_4",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.0.feed_forward.down_proj.weight",
+      "kernel": "FiveBitCompact",
+      "case": "negative_lane_5",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.0.feed_forward.down_proj.weight",
+      "kernel": "FiveBitCompact",
+      "case": "negative_lane_6",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.0.feed_forward.down_proj.weight",
+      "kernel": "FiveBitCompact",
+      "case": "negative_lane_7",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.0.feed_forward.down_proj.weight",
+      "kernel": "FiveBitShifted",
+      "case": "minimum",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.0.feed_forward.down_proj.weight",
+      "kernel": "FiveBitShifted",
+      "case": "maximum",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.0.feed_forward.down_proj.weight",
+      "kernel": "FiveBitShifted",
+      "case": "alternating",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.0.feed_forward.down_proj.weight",
+      "kernel": "FiveBitShifted",
+      "case": "zero",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.0.feed_forward.down_proj.weight",
+      "kernel": "FiveBitShifted",
+      "case": "negative_lane_0",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.0.feed_forward.down_proj.weight",
+      "kernel": "FiveBitShifted",
+      "case": "negative_lane_1",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.0.feed_forward.down_proj.weight",
+      "kernel": "FiveBitShifted",
+      "case": "negative_lane_2",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.0.feed_forward.down_proj.weight",
+      "kernel": "FiveBitShifted",
+      "case": "negative_lane_3",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.0.feed_forward.down_proj.weight",
+      "kernel": "FiveBitShifted",
+      "case": "negative_lane_4",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.0.feed_forward.down_proj.weight",
+      "kernel": "FiveBitShifted",
+      "case": "negative_lane_5",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.0.feed_forward.down_proj.weight",
+      "kernel": "FiveBitShifted",
+      "case": "negative_lane_6",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.0.feed_forward.down_proj.weight",
+      "kernel": "FiveBitShifted",
+      "case": "negative_lane_7",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.11.mamba.in_proj.weight",
+      "kernel": "FiveBitCompact",
+      "case": "minimum",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.11.mamba.in_proj.weight",
+      "kernel": "FiveBitCompact",
+      "case": "maximum",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.11.mamba.in_proj.weight",
+      "kernel": "FiveBitCompact",
+      "case": "alternating",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.11.mamba.in_proj.weight",
+      "kernel": "FiveBitCompact",
+      "case": "zero",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.11.mamba.in_proj.weight",
+      "kernel": "FiveBitCompact",
+      "case": "negative_lane_0",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.11.mamba.in_proj.weight",
+      "kernel": "FiveBitCompact",
+      "case": "negative_lane_1",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.11.mamba.in_proj.weight",
+      "kernel": "FiveBitCompact",
+      "case": "negative_lane_2",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.11.mamba.in_proj.weight",
+      "kernel": "FiveBitCompact",
+      "case": "negative_lane_3",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.11.mamba.in_proj.weight",
+      "kernel": "FiveBitCompact",
+      "case": "negative_lane_4",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.11.mamba.in_proj.weight",
+      "kernel": "FiveBitCompact",
+      "case": "negative_lane_5",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.11.mamba.in_proj.weight",
+      "kernel": "FiveBitCompact",
+      "case": "negative_lane_6",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.11.mamba.in_proj.weight",
+      "kernel": "FiveBitCompact",
+      "case": "negative_lane_7",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.11.mamba.in_proj.weight",
+      "kernel": "FiveBitShifted",
+      "case": "minimum",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.11.mamba.in_proj.weight",
+      "kernel": "FiveBitShifted",
+      "case": "maximum",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.11.mamba.in_proj.weight",
+      "kernel": "FiveBitShifted",
+      "case": "alternating",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.11.mamba.in_proj.weight",
+      "kernel": "FiveBitShifted",
+      "case": "zero",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.11.mamba.in_proj.weight",
+      "kernel": "FiveBitShifted",
+      "case": "negative_lane_0",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.11.mamba.in_proj.weight",
+      "kernel": "FiveBitShifted",
+      "case": "negative_lane_1",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.11.mamba.in_proj.weight",
+      "kernel": "FiveBitShifted",
+      "case": "negative_lane_2",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.11.mamba.in_proj.weight",
+      "kernel": "FiveBitShifted",
+      "case": "negative_lane_3",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.11.mamba.in_proj.weight",
+      "kernel": "FiveBitShifted",
+      "case": "negative_lane_4",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.11.mamba.in_proj.weight",
+      "kernel": "FiveBitShifted",
+      "case": "negative_lane_5",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.11.mamba.in_proj.weight",
+      "kernel": "FiveBitShifted",
+      "case": "negative_lane_6",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.11.mamba.in_proj.weight",
+      "kernel": "FiveBitShifted",
+      "case": "negative_lane_7",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.23.self_attn.v_proj.weight",
+      "kernel": "FiveBitCompact",
+      "case": "minimum",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.23.self_attn.v_proj.weight",
+      "kernel": "FiveBitCompact",
+      "case": "maximum",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.23.self_attn.v_proj.weight",
+      "kernel": "FiveBitCompact",
+      "case": "alternating",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.23.self_attn.v_proj.weight",
+      "kernel": "FiveBitCompact",
+      "case": "zero",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.23.self_attn.v_proj.weight",
+      "kernel": "FiveBitCompact",
+      "case": "negative_lane_0",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.23.self_attn.v_proj.weight",
+      "kernel": "FiveBitCompact",
+      "case": "negative_lane_1",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.23.self_attn.v_proj.weight",
+      "kernel": "FiveBitCompact",
+      "case": "negative_lane_2",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.23.self_attn.v_proj.weight",
+      "kernel": "FiveBitCompact",
+      "case": "negative_lane_3",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.23.self_attn.v_proj.weight",
+      "kernel": "FiveBitCompact",
+      "case": "negative_lane_4",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.23.self_attn.v_proj.weight",
+      "kernel": "FiveBitCompact",
+      "case": "negative_lane_5",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.23.self_attn.v_proj.weight",
+      "kernel": "FiveBitCompact",
+      "case": "negative_lane_6",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.23.self_attn.v_proj.weight",
+      "kernel": "FiveBitCompact",
+      "case": "negative_lane_7",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.23.self_attn.v_proj.weight",
+      "kernel": "FiveBitShifted",
+      "case": "minimum",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.23.self_attn.v_proj.weight",
+      "kernel": "FiveBitShifted",
+      "case": "maximum",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.23.self_attn.v_proj.weight",
+      "kernel": "FiveBitShifted",
+      "case": "alternating",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.23.self_attn.v_proj.weight",
+      "kernel": "FiveBitShifted",
+      "case": "zero",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.23.self_attn.v_proj.weight",
+      "kernel": "FiveBitShifted",
+      "case": "negative_lane_0",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.23.self_attn.v_proj.weight",
+      "kernel": "FiveBitShifted",
+      "case": "negative_lane_1",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.23.self_attn.v_proj.weight",
+      "kernel": "FiveBitShifted",
+      "case": "negative_lane_2",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.23.self_attn.v_proj.weight",
+      "kernel": "FiveBitShifted",
+      "case": "negative_lane_3",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.23.self_attn.v_proj.weight",
+      "kernel": "FiveBitShifted",
+      "case": "negative_lane_4",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.23.self_attn.v_proj.weight",
+      "kernel": "FiveBitShifted",
+      "case": "negative_lane_5",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.23.self_attn.v_proj.weight",
+      "kernel": "FiveBitShifted",
+      "case": "negative_lane_6",
+      "passed": true
+    },
+    {
+      "matrix": "model.layers.23.self_attn.v_proj.weight",
+      "kernel": "FiveBitShifted",
+      "case": "negative_lane_7",
+      "passed": true
+    }
+  ],
+  "matrices": [
+    {
+      "name": "model.embed_tokens.weight",
+      "shape": [
+        32768,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 378908511,
+        "FiveBitShifted": 234590252
+      },
+      "tiles": 512
+    },
+    {
+      "name": "model.layers.0.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 8877843,
+        "FiveBitShifted": 5498196
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.0.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 8877117,
+        "FiveBitShifted": 5497644
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.0.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "FiveBitCompact": 8696352,
+        "FiveBitShifted": 5317692
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.0.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 19549166,
+        "FiveBitShifted": 12121019
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.0.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "FiveBitCompact": 8695878,
+        "FiveBitShifted": 5317268
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.0.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 5918674,
+        "FiveBitShifted": 3665586
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.0.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 1480337,
+        "FiveBitShifted": 916774
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.0.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 1479580,
+        "FiveBitShifted": 916370
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.0.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 5918739,
+        "FiveBitShifted": 3665660
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.1.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 8878665,
+        "FiveBitShifted": 5498554
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.1.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 8877799,
+        "FiveBitShifted": 5498328
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.1.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "FiveBitCompact": 8696196,
+        "FiveBitShifted": 5318140
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.1.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 19550034,
+        "FiveBitShifted": 12122843
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.1.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "FiveBitCompact": 8696702,
+        "FiveBitShifted": 5318660
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.1.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 5918832,
+        "FiveBitShifted": 3667000
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.1.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 1480782,
+        "FiveBitShifted": 916702
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.1.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 1479518,
+        "FiveBitShifted": 916370
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.1.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 5918274,
+        "FiveBitShifted": 3665084
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.2.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 8877943,
+        "FiveBitShifted": 5498612
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.2.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 8877612,
+        "FiveBitShifted": 5498076
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.2.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "FiveBitCompact": 8696595,
+        "FiveBitShifted": 5318428
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.2.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 19549290,
+        "FiveBitShifted": 12121981
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.2.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "FiveBitCompact": 8695968,
+        "FiveBitShifted": 5316980
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.2.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 5918790,
+        "FiveBitShifted": 3666490
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.2.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 1480089,
+        "FiveBitShifted": 916798
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.2.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 1479557,
+        "FiveBitShifted": 916322
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.2.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 5918365,
+        "FiveBitShifted": 3665000
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.3.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 8878365,
+        "FiveBitShifted": 5499374
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.3.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 8877443,
+        "FiveBitShifted": 5497908
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.3.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "FiveBitCompact": 8696045,
+        "FiveBitShifted": 5318372
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.3.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 19550362,
+        "FiveBitShifted": 12123155
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.3.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "FiveBitCompact": 8696244,
+        "FiveBitShifted": 5317948
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.3.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 5918941,
+        "FiveBitShifted": 3665968
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.3.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 1480078,
+        "FiveBitShifted": 916798
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.3.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 1479629,
+        "FiveBitShifted": 916394
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.3.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 5918479,
+        "FiveBitShifted": 3665276
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.4.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 8877642,
+        "FiveBitShifted": 5499046
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.4.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 8877254,
+        "FiveBitShifted": 5497632
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.4.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "FiveBitCompact": 8695726,
+        "FiveBitShifted": 5317416
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.4.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 19549734,
+        "FiveBitShifted": 12122329
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.4.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "FiveBitCompact": 8696084,
+        "FiveBitShifted": 5318096
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.4.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 5918787,
+        "FiveBitShifted": 3665990
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.4.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 1479914,
+        "FiveBitShifted": 916798
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.4.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 1479554,
+        "FiveBitShifted": 916382
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.4.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 5918770,
+        "FiveBitShifted": 3665480
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.5.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 8878384,
+        "FiveBitShifted": 5500430
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.5.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 8878175,
+        "FiveBitShifted": 5498768
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.5.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "FiveBitCompact": 8696409,
+        "FiveBitShifted": 5317948
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.5.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 19549753,
+        "FiveBitShifted": 12123027
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.5.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "FiveBitCompact": 8695572,
+        "FiveBitShifted": 5317616
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.5.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 5918703,
+        "FiveBitShifted": 3666084
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.5.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 1480304,
+        "FiveBitShifted": 916726
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.5.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 1479630,
+        "FiveBitShifted": 916370
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.5.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 5918824,
+        "FiveBitShifted": 3665384
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.6.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 8878264,
+        "FiveBitShifted": 5500488
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.6.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 8877805,
+        "FiveBitShifted": 5498184
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.6.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "FiveBitCompact": 8696516,
+        "FiveBitShifted": 5318628
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.6.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 19549466,
+        "FiveBitShifted": 12122207
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.6.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "FiveBitCompact": 8696256,
+        "FiveBitShifted": 5319660
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.6.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 5918616,
+        "FiveBitShifted": 3665692
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.6.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 1479842,
+        "FiveBitShifted": 916726
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.6.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 1479629,
+        "FiveBitShifted": 916394
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.6.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 5919004,
+        "FiveBitShifted": 3665778
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.7.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 8878374,
+        "FiveBitShifted": 5500488
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.7.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 8877423,
+        "FiveBitShifted": 5498180
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.7.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "FiveBitCompact": 8696588,
+        "FiveBitShifted": 5319784
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.7.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 19550325,
+        "FiveBitShifted": 12122867
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.7.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "FiveBitCompact": 8696838,
+        "FiveBitShifted": 5320288
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.7.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 5918608,
+        "FiveBitShifted": 3665394
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.7.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 1479926,
+        "FiveBitShifted": 916750
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.7.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 1479579,
+        "FiveBitShifted": 916394
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.7.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 5918992,
+        "FiveBitShifted": 3665778
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.8.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 8878448,
+        "FiveBitShifted": 5500096
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.8.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 8878045,
+        "FiveBitShifted": 5498802
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.8.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "FiveBitCompact": 8697189,
+        "FiveBitShifted": 5320096
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.8.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 19551436,
+        "FiveBitShifted": 12124861
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.8.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "FiveBitCompact": 8696802,
+        "FiveBitShifted": 5320192
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.8.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 5919050,
+        "FiveBitShifted": 3665660
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.8.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 1480070,
+        "FiveBitShifted": 916774
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.8.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 1479579,
+        "FiveBitShifted": 916394
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.8.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 5918716,
+        "FiveBitShifted": 3666084
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.9.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 8879171,
+        "FiveBitShifted": 5500550
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.9.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 8877850,
+        "FiveBitShifted": 5498208
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.9.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "FiveBitCompact": 8696055,
+        "FiveBitShifted": 5319520
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.9.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 19549236,
+        "FiveBitShifted": 12120965
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.9.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "FiveBitCompact": 8696202,
+        "FiveBitShifted": 5319328
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.9.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 5918724,
+        "FiveBitShifted": 3665384
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.9.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 1479698,
+        "FiveBitShifted": 916702
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.9.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 1480310,
+        "FiveBitShifted": 916572
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.9.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 5918824,
+        "FiveBitShifted": 3666798
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.10.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 8878918,
+        "FiveBitShifted": 5499160
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.10.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 8877617,
+        "FiveBitShifted": 5498122
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.10.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "FiveBitCompact": 8695920,
+        "FiveBitShifted": 5317416
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.10.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 19550762,
+        "FiveBitShifted": 12122953
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.10.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "FiveBitCompact": 8696316,
+        "FiveBitShifted": 5318980
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.10.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 5918841,
+        "FiveBitShifted": 3665576
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.10.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 1479917,
+        "FiveBitShifted": 916548
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.10.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 1489348,
+        "FiveBitShifted": 916630
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.10.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 5918488,
+        "FiveBitShifted": 3665904
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.11.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 8878494,
+        "FiveBitShifted": 5499362
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.11.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 8877825,
+        "FiveBitShifted": 5498410
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.11.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "FiveBitCompact": 8695982,
+        "FiveBitShifted": 5317948
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.11.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 19549733,
+        "FiveBitShifted": 12121479
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.11.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "FiveBitCompact": 8696340,
+        "FiveBitShifted": 5318396
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.11.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 5918870,
+        "FiveBitShifted": 3665480
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.11.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 1479866,
+        "FiveBitShifted": 916750
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.11.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 1479592,
+        "FiveBitShifted": 916382
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.11.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 5918532,
+        "FiveBitShifted": 3665192
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.12.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 8878488,
+        "FiveBitShifted": 5499506
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.12.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 8877468,
+        "FiveBitShifted": 5497920
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.12.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "FiveBitCompact": 8696263,
+        "FiveBitShifted": 5318032
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.12.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 19550263,
+        "FiveBitShifted": 12121943
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.12.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "FiveBitCompact": 8696244,
+        "FiveBitShifted": 5317608
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.12.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 5918895,
+        "FiveBitShifted": 3665682
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.12.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 1479898,
+        "FiveBitShifted": 916822
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.12.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 1479593,
+        "FiveBitShifted": 916370
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.12.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 5918871,
+        "FiveBitShifted": 3665682
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.13.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 8878118,
+        "FiveBitShifted": 5498826
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.13.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 8877780,
+        "FiveBitShifted": 5498208
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.13.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "FiveBitCompact": 8696274,
+        "FiveBitShifted": 5318396
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.13.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 19549851,
+        "FiveBitShifted": 12121619
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.13.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "FiveBitCompact": 8696448,
+        "FiveBitShifted": 5317812
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.13.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 5918737,
+        "FiveBitShifted": 3665384
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.13.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 1479885,
+        "FiveBitShifted": 916798
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.13.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 1479556,
+        "FiveBitShifted": 916346
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.13.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 5918770,
+        "FiveBitShifted": 3665468
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.14.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 8878191,
+        "FiveBitShifted": 5499490
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.14.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 8877780,
+        "FiveBitShifted": 5498220
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.14.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "FiveBitCompact": 8696087,
+        "FiveBitShifted": 5317948
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.14.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 19549065,
+        "FiveBitShifted": 12121277
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.14.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "FiveBitCompact": 8696628,
+        "FiveBitShifted": 5318004
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.14.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 5918750,
+        "FiveBitShifted": 3665990
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.14.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 1479942,
+        "FiveBitShifted": 916846
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.14.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 1479786,
+        "FiveBitShifted": 916346
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.14.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 5918528,
+        "FiveBitShifted": 3665466
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.15.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 8877797,
+        "FiveBitShifted": 5498370
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.15.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 8877768,
+        "FiveBitShifted": 5498208
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.15.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "FiveBitCompact": 8695548,
+        "FiveBitShifted": 5317384
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.15.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 19549615,
+        "FiveBitShifted": 12121723
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.15.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "FiveBitCompact": 8696214,
+        "FiveBitShifted": 5317608
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.15.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 5919112,
+        "FiveBitShifted": 3666278
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.15.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 1480137,
+        "FiveBitShifted": 916750
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.15.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 1482970,
+        "FiveBitShifted": 916394
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.15.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 5918482,
+        "FiveBitShifted": 3665394
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.16.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 8878348,
+        "FiveBitShifted": 5499016
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.16.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 8877284,
+        "FiveBitShifted": 5497846
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.16.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "FiveBitCompact": 8696472,
+        "FiveBitShifted": 5318384
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.16.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 19550739,
+        "FiveBitShifted": 12122683
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.16.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "FiveBitCompact": 8695764,
+        "FiveBitShifted": 5317140
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.16.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 5918666,
+        "FiveBitShifted": 3665882
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.16.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 1479834,
+        "FiveBitShifted": 916798
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.16.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 1480221,
+        "FiveBitShifted": 916370
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.16.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 5918032,
+        "FiveBitShifted": 3664892
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.17.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 8878566,
+        "FiveBitShifted": 5499028
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.17.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 8877964,
+        "FiveBitShifted": 5498340
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.17.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "FiveBitCompact": 8696475,
+        "FiveBitShifted": 5318300
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.17.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 19549577,
+        "FiveBitShifted": 12122139
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.17.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "FiveBitCompact": 8696340,
+        "FiveBitShifted": 5319076
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.17.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 5918992,
+        "FiveBitShifted": 3666788
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.17.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 1479945,
+        "FiveBitShifted": 916798
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.17.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 1482531,
+        "FiveBitShifted": 916394
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.17.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 5918507,
+        "FiveBitShifted": 3665180
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.18.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 8878118,
+        "FiveBitShifted": 5498208
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.18.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 8877448,
+        "FiveBitShifted": 5497788
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.18.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "FiveBitCompact": 8696668,
+        "FiveBitShifted": 5318492
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.18.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 19550112,
+        "FiveBitShifted": 12121539
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.18.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "FiveBitCompact": 8696426,
+        "FiveBitShifted": 5317812
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.18.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 5918800,
+        "FiveBitShifted": 3665788
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.18.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 1479993,
+        "FiveBitShifted": 916726
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.18.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 1490535,
+        "FiveBitShifted": 916440
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.18.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 5918608,
+        "FiveBitShifted": 3665468
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.19.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 8878200,
+        "FiveBitShifted": 5498768
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.19.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 8877552,
+        "FiveBitShifted": 5497932
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.19.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "FiveBitCompact": 8696209,
+        "FiveBitShifted": 5317808
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.19.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 19550111,
+        "FiveBitShifted": 12122359
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.19.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "FiveBitCompact": 8695952,
+        "FiveBitShifted": 5317704
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.19.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 5918967,
+        "FiveBitShifted": 3666764
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.19.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 1479778,
+        "FiveBitShifted": 916702
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.19.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 1481968,
+        "FiveBitShifted": 916346
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.19.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 5918716,
+        "FiveBitShifted": 3665944
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.20.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 8877869,
+        "FiveBitShifted": 5498208
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.20.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 8876516,
+        "FiveBitShifted": 5496768
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.20.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "FiveBitCompact": 8696939,
+        "FiveBitShifted": 5317716
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.20.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 19548131,
+        "FiveBitShifted": 12119821
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.20.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "FiveBitCompact": 8695740,
+        "FiveBitShifted": 5317960
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.20.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 5919056,
+        "FiveBitShifted": 3666776
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.20.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 1479906,
+        "FiveBitShifted": 916750
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.20.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 1493419,
+        "FiveBitShifted": 916346
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.20.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 5918645,
+        "FiveBitShifted": 3665480
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.21.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 8877630,
+        "FiveBitShifted": 5498122
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.21.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 8878134,
+        "FiveBitShifted": 5498266
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.21.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "FiveBitCompact": 8696355,
+        "FiveBitShifted": 5317716
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.21.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 19549077,
+        "FiveBitShifted": 12121221
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.21.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "FiveBitCompact": 8695614,
+        "FiveBitShifted": 5317184
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.21.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 5919095,
+        "FiveBitShifted": 3666562
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.21.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 1479818,
+        "FiveBitShifted": 916690
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.21.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 1500019,
+        "FiveBitShifted": 916346
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.21.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 5918174,
+        "FiveBitShifted": 3665084
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.22.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 8877743,
+        "FiveBitShifted": 5497920
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.22.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 8879088,
+        "FiveBitShifted": 5498254
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.22.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "FiveBitCompact": 8696510,
+        "FiveBitShifted": 5317332
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.22.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 19551016,
+        "FiveBitShifted": 12122517
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.22.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "FiveBitCompact": 8695584,
+        "FiveBitShifted": 5317256
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.22.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 5918716,
+        "FiveBitShifted": 3665766
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.22.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 1479694,
+        "FiveBitShifted": 916798
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.22.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 1485325,
+        "FiveBitShifted": 916250
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.22.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 5918520,
+        "FiveBitShifted": 3665468
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.23.feed_forward.gate_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 8877448,
+        "FiveBitShifted": 5497702
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.23.feed_forward.up_proj.weight",
+      "shape": [
+        768,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 8877996,
+        "FiveBitShifted": 5498064
+      },
+      "tiles": 12
+    },
+    {
+      "name": "model.layers.23.feed_forward.down_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "FiveBitCompact": 8697693,
+        "FiveBitShifted": 5318724
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.23.mamba.in_proj.weight",
+      "shape": [
+        1688,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 19550112,
+        "FiveBitShifted": 12121551
+      },
+      "tiles": 27
+    },
+    {
+      "name": "model.layers.23.mamba.out_proj.weight",
+      "shape": [
+        512,
+        768
+      ],
+      "gas": {
+        "FiveBitCompact": 8695242,
+        "FiveBitShifted": 5317212
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.23.self_attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 5918534,
+        "FiveBitShifted": 3666106
+      },
+      "tiles": 8
+    },
+    {
+      "name": "model.layers.23.self_attn.k_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 1479582,
+        "FiveBitShifted": 916322
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.23.self_attn.v_proj.weight",
+      "shape": [
+        128,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 1500855,
+        "FiveBitShifted": 916394
+      },
+      "tiles": 2
+    },
+    {
+      "name": "model.layers.23.self_attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "gas": {
+        "FiveBitCompact": 5918136,
+        "FiveBitShifted": 3665096
+      },
+      "tiles": 8
+    }
+  ],
+  "rows_verified": 165440,
+  "tiles": 2600,
+  "weight_elements": 90996736,
+  "usage_gas": {
+    "FiveBitCompact": 2046886981,
+    "FiveBitShifted": 1264676406
+  },
+  "deployment_samples": [
+    {
+      "mode": "compact",
+      "limit": 24575,
+      "offset": 0,
+      "bytes": 24575,
+      "measured_gas": 5263180,
+      "modeled_gas": 5263180
+    },
+    {
+      "mode": "compact",
+      "limit": 24575,
+      "offset": 30325550,
+      "bytes": 24575,
+      "measured_gas": 5368456,
+      "modeled_gas": 5368456
+    },
+    {
+      "mode": "compact",
+      "limit": 24575,
+      "offset": 60651100,
+      "bytes": 19836,
+      "measured_gas": 4343138,
+      "modeled_gas": 4343138
+    },
+    {
+      "mode": "compact",
+      "limit": 61439,
+      "offset": 0,
+      "bytes": 61439,
+      "measured_gas": 13240672,
+      "modeled_gas": 13240672
+    },
+    {
+      "mode": "compact",
+      "limit": 61439,
+      "offset": 30289427,
+      "bytes": 61439,
+      "measured_gas": 13345780,
+      "modeled_gas": 13345780
+    },
+    {
+      "mode": "compact",
+      "limit": 61439,
+      "offset": 60640293,
+      "bytes": 30643,
+      "measured_gas": 6681002,
+      "modeled_gas": 6681002
+    },
+    {
+      "mode": "shifted",
+      "limit": 24575,
+      "offset": 0,
+      "bytes": 24575,
+      "measured_gas": 5262004,
+      "modeled_gas": 5262004
+    },
+    {
+      "mode": "shifted",
+      "limit": 24575,
+      "offset": 31898350,
+      "bytes": 24575,
+      "measured_gas": 5368360,
+      "modeled_gas": 5368360
+    },
+    {
+      "mode": "shifted",
+      "limit": 24575,
+      "offset": 63821275,
+      "bytes": 2949,
+      "measured_gas": 690966,
+      "modeled_gas": 690966
+    },
+    {
+      "mode": "shifted",
+      "limit": 61439,
+      "offset": 0,
+      "bytes": 61439,
+      "measured_gas": 13234828,
+      "modeled_gas": 13234828
+    },
+    {
+      "mode": "shifted",
+      "limit": 61439,
+      "offset": 31886841,
+      "bytes": 61439,
+      "measured_gas": 13345648,
+      "modeled_gas": 13345648
+    },
+    {
+      "mode": "shifted",
+      "limit": 61439,
+      "offset": 63773682,
+      "bytes": 50542,
+      "measured_gas": 10986813,
+      "modeled_gas": 10986813
+    }
+  ],
+  "malformed_rejections": [
+    {
+      "kernel": "FiveBitCompact",
+      "case": "truncated",
+      "passed": true
+    },
+    {
+      "kernel": "FiveBitCompact",
+      "case": "trailing_byte",
+      "passed": true
+    },
+    {
+      "kernel": "FiveBitCompact",
+      "case": "wrong_magic",
+      "passed": true
+    },
+    {
+      "kernel": "FiveBitCompact",
+      "case": "wrong_group_count",
+      "passed": true
+    },
+    {
+      "kernel": "FiveBitCompact",
+      "case": "zero_width",
+      "passed": true
+    },
+    {
+      "kernel": "FiveBitCompact",
+      "case": "excess_width",
+      "passed": true
+    },
+    {
+      "kernel": "FiveBitShifted",
+      "case": "truncated",
+      "passed": true
+    },
+    {
+      "kernel": "FiveBitShifted",
+      "case": "trailing_byte",
+      "passed": true
+    },
+    {
+      "kernel": "FiveBitShifted",
+      "case": "wrong_magic",
+      "passed": true
+    },
+    {
+      "kernel": "FiveBitShifted",
+      "case": "wrong_group_count",
+      "passed": true
+    },
+    {
+      "kernel": "FiveBitShifted",
+      "case": "bad_stride",
+      "passed": true
+    },
+    {
+      "kernel": "FiveBitShifted",
+      "case": "bad_shift",
+      "passed": true
+    },
+    {
+      "kernel": "FiveBitShifted",
+      "case": "bad_scale_bits",
+      "passed": true
+    }
+  ],
+  "dilation_checks": 10000,
+  "scale_boundary_checks": 19499
+}
