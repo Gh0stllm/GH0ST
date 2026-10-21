@@ -295,7 +295,22 @@ async function deploy(build) {
         const raw = await signer.signTransaction(populated);
         pending.hash = keccak256(raw);
         write(destination, result); // hash/address are durable before broadcast
-        transaction = await provider.broadcastTransaction(raw);
+        try { transaction = await provider.broadcastTransaction(raw); }
+        catch (broadcastError) {
+          // A provider may accept a transaction before reporting a send error.
+          // Reconcile only this exact signed hash; never retry or change nonce.
+          let known;
+          try { known = await provider.getTransaction(pending.hash); }
+          catch { throw broadcastError; }
+          if (!known) throw broadcastError;
+          if (!sameHex(known.hash, pending.hash) || known.to !== null || known.nonce !== nonce ||
+              !sameAddress(known.from, sender) || !sameHex(known.data, data) ||
+              known.chainId !== chainId || known.value !== 0n) {
+            throw Error('Broadcast reconciliation transaction differs from signed journal; no replacement was submitted');
+          }
+          transaction = known;
+          log({ event: 'deployment_broadcast_reconciled', stage: stage.key, hash: pending.hash });
+        }
       } else {
         transaction = await signer.sendTransaction({ data, nonce, gasLimit: limit, value: 0n });
         pending.hash = transaction.hash;
@@ -374,6 +389,7 @@ async function infer(build) {
   } finally { await provider.destroy(); }
 }
 
+try {
 if (!['compile', 'deploy', 'infer'].includes(command)) {
   process.stdout.write('Usage: node scripts/s0ul-solidity.mjs compile|deploy|infer --name value ...\n');
   process.stdout.write('deploy: --rpc URL --chain-id ID --model model.json (--output NEW.json | --resume EXISTING.json) [--account 0 | --private-key-env NAME] [--max-deploy-gas 12000000] [--gas-margin-bps 2000] [--rpc-rps 3]\n');
@@ -386,4 +402,11 @@ if (!['compile', 'deploy', 'infer'].includes(command)) {
     write(path, build); log({ event: 'compiled', output: path, compiler: build.compiler });
   } else if (command === 'deploy') await deploy(build);
   else await infer(build);
+}
+} catch (error) {
+  // Ethers' full error can contain the entire signed transaction. Keep output
+  // to its concise explanation (or a bounded ordinary application error).
+  const message = String(error?.shortMessage ?? error?.message ?? 'Command failed').split('\n', 1)[0].slice(0, 500);
+  process.stderr.write('Error: ' + message + '\n');
+  process.exitCode = 1;
 }
