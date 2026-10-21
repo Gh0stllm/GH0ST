@@ -1,0 +1,28 @@
+{
+  "compiler": "0.8.30+commit.73712a01.Emscripten.clang",
+  "input": {
+    "language": "Yul",
+    "sources": {
+      "decoder.yul": {
+        "content": "// SPDX-License-Identifier: MIT\n// Creation-only lossless Huffman decoder. Returns STOP + the original shard.\n// Input is pinned, locally executed creation bytecode; returned runtime hash is checked.\n// No deployed decoder, external call, storage access, or additional contract.\nobject \"GH0STCreate\" {\n  code {\n    codecopy(0, sub(codesize(), 4), 4)\n    let packedSize := shr(224, mload(0))\n    codecopy(0, sub(sub(codesize(), 4), packedSize), packedSize)\n    let expected := mload(0)\n    let size := shr(232, mload(32))\n    let blocks := shr(240, mload(35))\n    let ip := 37\n    let table := 0x18000\n    let output := 0x1c000\n    let dst := add(output, 1)\n    for { let block := 0 } lt(block, blocks) { block := add(block, 1) } {\n      let kind := byte(0, mload(ip))\n      let length := and(shr(224, mload(ip)), 0xffffff)\n      ip := add(ip, 4)\n      switch kind\n      case 0 {\n        mcopy(dst, ip, length)\n        ip := add(ip, length)\n        dst := add(dst, length)\n      }\n      default {\n        let width := byte(0, mload(ip))\n        ip := add(ip, 1)\n        let counts := ip\n        ip := add(ip, width)\n        let cursor := table\n        for { let n := 1 } iszero(gt(n, width)) { n := add(n, 1) } {\n          let count := byte(0, mload(add(counts, sub(n, 1))))\n          for { let k := 0 } lt(k, count) { k := add(k, 1) } {\n            let symbol := byte(0, mload(ip))\n            ip := add(ip, 1)\n            let finish := add(cursor, shl(add(sub(width, n), 1), 1))\n            let word := mul(or(shl(4, symbol), n), 0x0001000100010001000100010001000100010001000100010001000100010001)\n            for { } lt(cursor, finish) { cursor := add(cursor, 32) } { mstore(cursor, word) }\n            cursor := finish\n          }\n        }\n        let end := add(dst, length)\n        let pos := 0\n        let shift := sub(256, width)\n        // Four outputs per loop amortize control-flow gas. The final loop handles tails.\n        for { } iszero(gt(add(dst, 4), end)) { } {\n          let buffer := shl(and(pos, 7), mload(add(ip, shr(3, pos))))\n          let a := shr(240, mload(add(table, shl(1, shr(shift, buffer)))))\n          mstore8(dst, shr(4, a))\n          pos := add(pos, and(a, 15))\n          buffer := shl(and(a, 15), buffer)\n          let b := shr(240, mload(add(table, shl(1, shr(shift, buffer)))))\n          mstore8(add(dst, 1), shr(4, b))\n          pos := add(pos, and(b, 15))\n          buffer := shl(and(b, 15), buffer)\n          let c := shr(240, mload(add(table, shl(1, shr(shift, buffer)))))\n          mstore8(add(dst, 2), shr(4, c))\n          pos := add(pos, and(c, 15))\n          buffer := shl(and(c, 15), buffer)\n          let d := shr(240, mload(add(table, shl(1, shr(shift, buffer)))))\n          mstore8(add(dst, 3), shr(4, d))\n          pos := add(pos, and(d, 15))\n          dst := add(dst, 4)\n        }\n        for { } lt(dst, end) { dst := add(dst, 1) } {\n          let e := shr(240, mload(add(table, shl(1, shr(shift, shl(and(pos, 7), mload(add(ip, shr(3, pos)))))))))\n          mstore8(dst, shr(4, e))\n          pos := add(pos, and(e, 15))\n        }\n        ip := add(ip, shr(3, add(pos, 7)))\n      }\n    }\n    if iszero(eq(keccak256(output, size), expected)) { revert(0, 0) }\n    return(output, size)\n  }\n}\n"
+      }
+    },
+    "settings": {
+      "optimizer": {
+        "enabled": true,
+        "details": {
+          "yul": true
+        }
+      },
+      "evmVersion": "cancun",
+      "outputSelection": {
+        "*": {
+          "*": [
+            "evm.bytecode.object"
+          ]
+        }
+      }
+    }
+  },
+  "bytecode": "600438600319015f395f5160e01c600319813803015f395f5160205160e81c60235160f01c9160256201c001905f915b81908684101561020957825191600462ffffff8460e01c169401925f1a5f146101f1575090938492600186515f1a8097010193620180009060015b88811115610171575050508201965f9561010003955b6004840193898511610114578160031c860151600783161b600f818a1c60011b6201800001518060f41c845360f01c1690811b90600f80838c1c60011b6201800001518060f41c600187015360f01c1692831b9381858d1c60011b6201800001518060f41c600284015360f01c1694851b8c1c60011b6201800001519060038260f41c91015360f01c169301010101610080565b959890929691979493505b80861061013f57505060070160031c01946001905b01919490939461002f565b90949180600f60019260031c860151600783161b881c831b6201800001518060f41c865360f01c16019201949061011f565b80829996959901515f1a5f905b8082106101935750506001019793949761006a565b909397600181515f1a9101987e0100010001000100010001000100010001000100010001000100010001000184600180828d03011b83019360041b1702905b8281106101e657505060019094019061017e565b8181526020016101d2565b8360049181600195859b9a97955e0101960192610134565b8585816201c000200361021c576201c000f35b5f80fd"
+}
