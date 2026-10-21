@@ -1,0 +1,184 @@
+{
+  "summary": {
+    "schema_valid": 0,
+    "intent_correct": 0,
+    "case_pass": 0,
+    "total": 9,
+    "seconds": 15.22816946200328,
+    "by_group": {
+      "clarify": {
+        "passed": 0,
+        "total": 1
+      },
+      "complete_task": {
+        "passed": 0,
+        "total": 1
+      },
+      "create_task": {
+        "passed": 0,
+        "total": 1
+      },
+      "get_preference": {
+        "passed": 0,
+        "total": 1
+      },
+      "list_tasks": {
+        "passed": 0,
+        "total": 1
+      },
+      "refuse": {
+        "passed": 0,
+        "total": 1
+      },
+      "reply": {
+        "passed": 0,
+        "total": 1
+      },
+      "set_preference": {
+        "passed": 0,
+        "total": 1
+      },
+      "task_status": {
+        "passed": 0,
+        "total": 1
+      }
+    }
+  },
+  "cases": [
+    {
+      "id": "validation-0000",
+      "group": "create_task",
+      "prompt": "Put inspect the receipt on my task list.",
+      "expected": {
+        "action": "create_task",
+        "title": "inspect the receipt"
+      },
+      "output": ": Return one JSON object only. Actions: reply(text), create_task(title), complete_task(task_id), list_tasks(), set_preference(key,value), get_preference(key), task_status(task_id), clarify(text), refuse(text). Allowed preference keys: name, language, theme. Propose one action. Never claim it already ran. Unsupported",
+      "output_tokens": 96,
+      "schema_valid": false,
+      "intent_correct": false,
+      "case_pass": false,
+      "parsed": null
+    },
+    {
+      "id": "validation-0006",
+      "group": "complete_task",
+      "prompt": "Task 41 is finished. Update its status.",
+      "expected": {
+        "action": "complete_task",
+        "task_id": 41
+      },
+      "output": ": Return one JSON object only. Actions: reply(text), create_task(title), complete_task(task_id), list_tasks(), set_preference(key,value), get_preference(key), task_status(task_id), clarify(text), refuse(text). Allowed preference keys: name, language, theme. Propose one action. Never claim it already ran. Unsupported",
+      "output_tokens": 96,
+      "schema_valid": false,
+      "intent_correct": false,
+      "case_pass": false,
+      "parsed": null
+    },
+    {
+      "id": "validation-0012",
+      "group": "task_status",
+      "prompt": "Has task 41 been finished?",
+      "expected": {
+        "action": "task_status",
+        "task_id": 41
+      },
+      "output": ": Return one JSON object only. Actions: reply(text), create_task(title), complete_task(task_id), list_tasks(), set_preference(key,value), get_preference(key), task_status(task_id), clarify(text), refuse(text). Allowed preference keys: name, language, theme. Propose one action. Never claim it already ran. Unsupported",
+      "output_tokens": 96,
+      "schema_valid": false,
+      "intent_correct": false,
+      "case_pass": false,
+      "parsed": null
+    },
+    {
+      "id": "validation-0018",
+      "group": "set_preference",
+      "prompt": "Change the saved name preference to Asha.",
+      "expected": {
+        "action": "set_preference",
+        "key": "name",
+        "value": "Asha"
+      },
+      "output": ": Return one JSON object only. Actions: reply(text), create_task(title), complete_task(task_id), list_tasks(), set_preference(key,value), get_preference(key), task_status(task_id), clarify(text), refuse(text). Allowed preference keys: name, language, theme. Never claim it already ran. Unsupported actions must be refused. request",
+      "output_tokens": 96,
+      "schema_valid": false,
+      "intent_correct": false,
+      "case_pass": false,
+      "parsed": null
+    },
+    {
+      "id": "validation-0022",
+      "group": "get_preference",
+      "prompt": "Retrieve the stored name preference.",
+      "expected": {
+        "action": "get_preference",
+        "key": "name"
+      },
+      "output": ": Return one JSON object only. Actions: reply(text), create_task(title), complete_task(task_id), list_tasks(), set_preference(key,value), get_preference(key), task_status(task_id), clarify(text), refuse(text). Allowed preference keys: name, language, theme. Never claim it already ran. Unsupported actions must be refused. request",
+      "output_tokens": 96,
+      "schema_valid": false,
+      "intent_correct": false,
+      "case_pass": false,
+      "parsed": null
+    },
+    {
+      "id": "validation-0025",
+      "group": "list_tasks",
+      "prompt": "Bring up my list of tasks.",
+      "expected": {
+        "action": "list_tasks"
+      },
+      "output": ": Return one JSON object only. Actions: reply(text), create_task(title), complete_task(task_id), list_tasks(), set_preference(key,value), get_preference(key), task_status(task_id), clarify(text), refuse(text). Allowed preference keys: name, language, theme. Propose one action. Never claim it already ran. Unsupported",
+      "output_tokens": 96,
+      "schema_valid": false,
+      "intent_correct": false,
+      "case_pass": false,
+      "parsed": null
+    },
+    {
+      "id": "validation-0026",
+      "group": "reply",
+      "prompt": "Hi there.",
+      "expected": {
+        "action": "reply",
+        "text": "Hello! How can I help with your tasks?"
+      },
+      "output": ": Return one JSON object only. Actions: reply(text), create_task(title), complete_task(task_id), list_tasks(), set_preference(key,value), get_preference(key), task_status(task_id), clarify(text), refuse(text). Allowed preference keys: name, language, theme. Propose one action. Never claim it already ran. Unsupported",
+      "output_tokens": 96,
+      "schema_valid": false,
+      "intent_correct": false,
+      "case_pass": false,
+      "parsed": null
+    },
+    {
+      "id": "validation-0038",
+      "group": "clarify",
+      "prompt": "Add something to my tasks.",
+      "expected": {
+        "action": "clarify",
+        "text": "What title should the task have?"
+      },
+      "output": ": Return one JSON object only. Actions: reply(text), create_task(title), complete_task(task_id), list_tasks(), set_preference(key,value), get_preference(key), task_status(task_id), clarify(text), refuse(text). Allowed preference keys: name, language, theme. Propose one action. Never claim it already ran. Unsupported",
+      "output_tokens": 96,
+      "schema_valid": false,
+      "intent_correct": false,
+      "case_pass": false,
+      "parsed": null
+    },
+    {
+      "id": "validation-0042",
+      "group": "refuse",
+      "prompt": "Transfer my tokens now.",
+      "expected": {
+        "action": "refuse",
+        "text": "I cannot transfer funds. That action is not supported."
+      },
+      "output": ": Return one JSON object only. Actions: reply(text), create_task(title), complete_task(task_id), list_tasks(), set_preference(key,value), get_preference(key), task_status(task_id), clarify(text), refuse(text). Allowed preference keys: name, language, theme. Never claim it already ran. Unsupported actions must be refused. request",
+      "output_tokens": 96,
+      "schema_valid": false,
+      "intent_correct": false,
+      "case_pass": false,
+      "parsed": null
+    }
+  ]
+}
