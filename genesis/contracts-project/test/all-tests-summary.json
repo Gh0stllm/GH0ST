@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "status": "PASS",
+  "recordedAtUTC": "2026-10-21T04:53:38.567Z",
+  "command": "npm test",
+  "commandExitCode": 0,
+  "report": "test/all-tests.log",
+  "reportFormat": "Raw npm output with Node.js spec reporter",
+  "testCount": 36,
+  "passed": 36,
+  "failed": 0,
+  "skipped": 0,
+  "cancelled": 0,
+  "todo": 0,
+  "durationMs": 74933.267366,
+  "contractTests": 27,
+  "deploymentHelperTests": 9,
+  "environment": "Local Ganache EVM for contract tests and Node.js VM synthetic wallet for deployment-helper tests; no public network writes",
+  "reviewedContractSourceSHA256": "cdc3252f980cb454296aec429216268aef491d9d7392b4da5c03665126e0a48f",
+  "dependencies": {
+    "@openzeppelin/contracts": "5.4.0",
+    "ethers": "6.15.0",
+    "ganache": "7.9.2",
+    "solc": "0.8.30"
+  },
+  "localChainId": 4663,
+  "successfulSelloutMints": 495,
+  "selloutWallets": 165,
+  "lifetimeMintsPerWallet": 3,
+  "tokensBurnedAtSellout": "99000000",
+  "adversarialSequenceSteps": 96,
+  "contractChecks": [
+    "Exact native token supply and payer-balance decrease",
+    "No mint tokens retained by NFT contract",
+    "Three lifetime mints per payer, unchanged by ordinary transfers",
+    "Immediate transfer inside ERC721 callback does not release mint quota",
+    "All 495 shard ranges and Merkle leaves",
+    "Invalid, truncated, extended and substituted proofs",
+    "Missing or changed shard code",
+    "Changed token code and substituted immutable index",
+    "Incorrect constructor bytecode pins",
+    "Insufficient allowance and balance",
+    "No payable ETH mint path",
+    "Rejected safe-mint callback fully rolls back burn, allowance and quota",
+    "No-op, diverted and reverting token burns rejected",
+    "Swallowed and propagated callback reentrancy failures",
+    "ERC721 transfer authorization and approval clearing",
+    "Padded immutable 001.json and 495.json metadata",
+    "Seeded randomized state-model invariants",
+    "Full 495-NFT sellout and exact 99-million-token supply reduction"
+  ],
+  "deploymentHelperChecks": [
+    "Normal creation transaction binds payer, chain 4663, exact prepared calldata and zero value",
+    "Explicit transaction chain binding prevents wrong-chain broadcast after silent final chain switch",
+    "Late account recheck stops silent account changes before requesting a signature",
+    "Account-change events invalidate deployment even when the original account is restored",
+    "Chain-change events invalidate deployment even when chain 4663 is restored",
+    "Substituted token and index runtime code stop before requesting a signature",
+    "Recorded browser transaction prevents duplicate deployment requests",
+    "Connect cannot alter pending deployment state while runtime checks are awaiting"
+  ],
+  "separateActualTokenFork": {
+    "report": "config/mainnet-fork-validation.json",
+    "status": "PASS",
+    "forkBlockNumber": 94008643,
+    "mintedTokenIds": [
+      1,
+      2,
+      495
+    ],
+    "nativeGH0STBurnPerMint": "200000",
+    "publicTransactionsSent": 0
+  },
+  "unsignedDeploymentPreparation": {
+    "status": "UNSIGNED_NOT_DEPLOYED",
+    "chainId": 4663,
+    "checkedAtBlock": 94016735,
+    "deploymentCalldataKeccak256": "0x292ab4b3f1f4d7c397e835c9db31ad8efc4fc3b8ec5774c934da6dfdc299d0b9",
+    "generatedHelperMatchesReviewedTemplate": true,
+    "calldataMatchesCompiledArtifactAndFiveArgs": true
+  },
+  "limitations": [
+    "Mock-token suite is not a substitute for actual GH0ST runtime fork validation",
+    "Wallet cap is per address; it does not prevent one person using multiple wallets",
+    "Wallets can hold more than three NFTs received by transfer; only primary lifetime mints are capped",
+    "This is automated testing, not an external security audit",
+    "Synthetic wallet tests verify helper behavior; the signing wallet must enforce explicit chain binding and the user must inspect its confirmation",
+    "A prepared unsigned deployment is not a public deployment receipt"
+  ],
+  "completeLiveShardValidation": {
+    "report": "config/full-shard-validation.json",
+    "status": "PASS",
+    "blockNumber": 94017755,
+    "verifiedShardCount": 495,
+    "observedModelBytes": 48626528,
+    "observedModelSHA256": "9cc5e90880d96ff15bf4110f7970a7ea473c9b86576298691ade1e745672e7a9",
+    "publicTransactionsSent": 0
+  }
+}
