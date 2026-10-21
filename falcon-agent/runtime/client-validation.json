@@ -1,0 +1,19 @@
+{
+  "status": "passed",
+  "scope": "Loopback mocked read-only RPC; client wallet spending controls",
+  "checks": [
+    "Client reads and displays the contract quote without signing or sending",
+    "Explicit wallet budget rejects a larger contract-computed deposit",
+    "Unsigned start uses official chat tokens, exact quoted value and bound fee caps",
+    "Wrong chain is rejected before preparing a deposit",
+    "Missing deployed runtime is rejected before preparing a deposit",
+    "Continuation, cancel, executor replacement and withdrawal are unsigned only; no sending RPC exists"
+  ],
+  "public_rpc_calls": 0,
+  "public_transactions_sent": 0,
+  "rpc_methods": [
+    "eth_call",
+    "eth_chainId",
+    "eth_getCode"
+  ]
+}
