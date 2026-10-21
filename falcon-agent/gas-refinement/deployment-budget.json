@@ -1,0 +1,84 @@
+{
+  "scope": "Arithmetic analysis of existing measurements; no new gas reduction implemented",
+  "gas_schedule": "200 gas per deployed runtime-code byte; standard EVM code deposit",
+  "fixed_format": {
+    "file_bytes": 75641184,
+    "modeled_weight_deployment_60kib": 16421055512,
+    "payload_code_deposit_only": 15128236800,
+    "payload_deposit_share_percent": 92.12706691689064,
+    "all_other_modeled_weight_deployment_gas": 1292818712,
+    "maximum_reduction_if_all_other_costs_disappeared_percent": 7.872933083109353
+  },
+  "matrix_only_idealized_precision_sizes": [
+    {
+      "bits_per_weight": 6,
+      "matrix_parameters": 90996736,
+      "bytes_before_metadata_and_nonmatrix_tensors": 68247552,
+      "code_deposit_only": 13649510400,
+      "quality": "Unmeasured hypothetical representation; changing precision changes weights"
+    },
+    {
+      "bits_per_weight": 4,
+      "matrix_parameters": 90996736,
+      "bytes_before_metadata_and_nonmatrix_tensors": 45498368,
+      "code_deposit_only": 9099673600,
+      "quality": "Unmeasured hypothetical representation; changing precision changes weights"
+    },
+    {
+      "bits_per_weight": 3,
+      "matrix_parameters": 90996736,
+      "bytes_before_metadata_and_nonmatrix_tensors": 34123776,
+      "code_deposit_only": 6824755200,
+      "quality": "Unmeasured hypothetical representation; changing precision changes weights"
+    },
+    {
+      "bits_per_weight": 2,
+      "matrix_parameters": 90996736,
+      "bytes_before_metadata_and_nonmatrix_tensors": 22749184,
+      "code_deposit_only": 4549836800,
+      "quality": "Unmeasured hypothetical representation; changing precision changes weights"
+    },
+    {
+      "bits_per_weight": 1,
+      "matrix_parameters": 90996736,
+      "bytes_before_metadata_and_nonmatrix_tensors": 11374592,
+      "code_deposit_only": 2274918400,
+      "quality": "Unmeasured hypothetical representation; changing precision changes weights"
+    }
+  ],
+  "deployment_targets": [
+    {
+      "target_gas": 10000000000,
+      "maximum_code_bytes_before_all_other_costs": 50000000,
+      "minimum_size_reduction_vs_fixed_percent": 33.89844347227563
+    },
+    {
+      "target_gas": 5000000000,
+      "maximum_code_bytes_before_all_other_costs": 25000000,
+      "minimum_size_reduction_vs_fixed_percent": 66.94922173613782
+    },
+    {
+      "target_gas": 1000000000,
+      "maximum_code_bytes_before_all_other_costs": 5000000,
+      "minimum_size_reduction_vs_fixed_percent": 93.38984434722757
+    },
+    {
+      "target_gas": 100000000,
+      "maximum_code_bytes_before_all_other_costs": 500000,
+      "minimum_size_reduction_vs_fixed_percent": 99.33898443472276
+    }
+  ],
+  "existing_lossless_evidence": {
+    "best_measured_transformed_zstd_bytes": 70263862,
+    "empirical_symbol_entropy_bits": 5.7318406893907525,
+    "huffman_estimated_bytes_excluding_tables": 69278579,
+    "caveat": "CPU compression or coding analysis only; no matching on-chain decoder. Empirical entropy is not a universal compression lower bound."
+  },
+  "excluded_as_solutions_under_existing_requirements": [
+    "Merkle commitment plus resupplied weights changes direct contract-state availability",
+    "New-chain genesis allocation changes chain requirement",
+    "Deploying only some weights postpones the remaining full-model bill",
+    "Cheaper gas prices change currency cost, not gas units"
+  ],
+  "public_transactions_broadcast": 0
+}
