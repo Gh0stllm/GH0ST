@@ -1,0 +1,28 @@
+{
+  "experiments": [
+    {
+      "name": "multiplication_based_activation_spreading",
+      "status": "rejected_correctness",
+      "reason": "Replacing OR/shift activation widening with multiplication allows overlapping fields to carry into retained fields.",
+      "first_failure": {
+        "matrix": "model.embed_tokens.weight",
+        "case": "random",
+        "first_three_actual": [1210382441956, 661552960675, 640191505643],
+        "first_three_expected": [1210355714965, 661487379431, 640126029981]
+      },
+      "resolution": "Retained OR/shift for activations. Multiplication is used only for weight dilation where copied fields provably do not overlap."
+    },
+    {
+      "name": "low_optimizer_runs",
+      "status": "rejected_for_execution_cost",
+      "evidence": "compiler-results.json",
+      "reason": "Runs 1 and 200 reduced bytecode size but increased representative execution gas compared with runs 10000 and 1000000."
+    },
+    {
+      "name": "aligned_bf16_endpoints",
+      "status": "superseded",
+      "evidence": "candidate-results.json",
+      "reason": "Avoided bit extraction but still reconstructed scales during execution. Precomputed exact scales performed better."
+    }
+  ]
+}
