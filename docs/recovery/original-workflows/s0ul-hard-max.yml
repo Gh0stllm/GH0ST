@@ -1,0 +1,315 @@
+name: S0UL two-hour 20-lane expansion
+
+on:
+  push:
+    branches: [research/GH0ST-S0UL-1M]
+    paths: ["s0ul-1m/**", ".github/workflows/s0ul-hard-max.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  train:
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[train-hard-max]')
+    name: ${{ matrix.lane }} (120 min)
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    strategy:
+      fail-fast: false
+      max-parallel: 17
+      matrix:
+        include:
+          - lane: expand-uniform-lr-00015-45
+            seed: 45
+            learning_rate: '0.00015'
+            weight_decay: '0.05'
+            label_smoothing: '0'
+            hard_replay_fraction: '0'
+          - lane: expand-uniform-lr-00025-46
+            seed: 46
+            learning_rate: '0.00025'
+            weight_decay: '0.05'
+            label_smoothing: '0'
+            hard_replay_fraction: '0'
+          - lane: expand-uniform-lr-0006-47
+            seed: 47
+            learning_rate: '0.0006'
+            weight_decay: '0.05'
+            label_smoothing: '0'
+            hard_replay_fraction: '0'
+          - lane: expand-uniform-lr-0008-48
+            seed: 48
+            learning_rate: '0.0008'
+            weight_decay: '0.05'
+            label_smoothing: '0'
+            hard_replay_fraction: '0'
+          - lane: expand-replay-15-49
+            seed: 49
+            learning_rate: '0.0004'
+            weight_decay: '0.05'
+            label_smoothing: '0'
+            hard_replay_fraction: '0.15'
+          - lane: expand-replay-25-50
+            seed: 50
+            learning_rate: '0.0004'
+            weight_decay: '0.05'
+            label_smoothing: '0'
+            hard_replay_fraction: '0.25'
+          - lane: expand-replay-35-51
+            seed: 51
+            learning_rate: '0.0004'
+            weight_decay: '0.05'
+            label_smoothing: '0'
+            hard_replay_fraction: '0.35'
+          - lane: expand-replay-5-52
+            seed: 52
+            learning_rate: '0.0004'
+            weight_decay: '0.05'
+            label_smoothing: '0'
+            hard_replay_fraction: '0.5'
+          - lane: expand-smooth-01-53
+            seed: 53
+            learning_rate: '0.0004'
+            weight_decay: '0.05'
+            label_smoothing: '0.01'
+            hard_replay_fraction: '0.25'
+          - lane: expand-smooth-02-54
+            seed: 54
+            learning_rate: '0.0004'
+            weight_decay: '0.05'
+            label_smoothing: '0.02'
+            hard_replay_fraction: '0.25'
+          - lane: expand-smooth-05-55
+            seed: 55
+            learning_rate: '0.0004'
+            weight_decay: '0.05'
+            label_smoothing: '0.05'
+            hard_replay_fraction: '0.25'
+          - lane: expand-decay-01-56
+            seed: 56
+            learning_rate: '0.0004'
+            weight_decay: '0.01'
+            label_smoothing: '0.02'
+            hard_replay_fraction: '0.25'
+          - lane: expand-decay-1-57
+            seed: 57
+            learning_rate: '0.0004'
+            weight_decay: '0.1'
+            label_smoothing: '0.02'
+            hard_replay_fraction: '0.25'
+          - lane: expand-decay-2-58
+            seed: 58
+            learning_rate: '0.0004'
+            weight_decay: '0.2'
+            label_smoothing: '0.02'
+            hard_replay_fraction: '0.25'
+          - lane: expand-repeat-uniform-59
+            seed: 59
+            learning_rate: '0.0004'
+            weight_decay: '0.05'
+            label_smoothing: '0'
+            hard_replay_fraction: '0'
+          - lane: expand-repeat-hard-60
+            seed: 60
+            learning_rate: '0.0004'
+            weight_decay: '0.05'
+            label_smoothing: '0.02'
+            hard_replay_fraction: '0.25'
+          - lane: expand-repeat-low-lr-61
+            seed: 61
+            learning_rate: '0.0002'
+            weight_decay: '0.1'
+            label_smoothing: '0.02'
+            hard_replay_fraction: '0.35'
+    defaults:
+      run:
+        working-directory: s0ul-1m
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pinned CPU training dependencies
+        run: |
+          python -m pip install torch==2.5.1 --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install -e .
+      - name: Verify research implementation
+        run: python -m unittest discover -s tests -p 'test_*.py' -v
+      - name: Generate and freeze the v3 dataset
+        run: |
+          python -m s0ul.data_v3 --output data-v3 --seed 20261021
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          expected = json.loads(Path('reports/data-v3-manifest.json').read_text())
+          actual = json.loads(Path('data-v3/manifest.json').read_text())
+          assert actual == expected, 'Generated dataset differs from preregistered manifest'
+          print('All dataset hashes match the preregistered manifest.')
+          PY
+      - name: Restore the previous winning checkpoint
+        uses: actions/download-artifact@v4
+        with:
+          name: s0ul-hour-selected-39618506314
+          run-id: 39618506314
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: s0ul-1m/bootstrap-hour
+      - name: Verify the frozen initialization
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from s0ul.train import sha256_file
+          path = Path('bootstrap-hour/selected/checkpoint.pt')
+          assert sha256_file(path) == '3647f818b2c6a187d5127ecaf3101308fcc84320491b655c0da98098a08d4665'
+          print('Previous winning checkpoint hash verified.')
+          PY
+      - name: Train continuously for two hours
+        env:
+          LANE: ${{ matrix.lane }}
+          SEED: ${{ matrix.seed }}
+          LEARNING_RATE: ${{ matrix.learning_rate }}
+          WEIGHT_DECAY: ${{ matrix.weight_decay }}
+          LABEL_SMOOTHING: ${{ matrix.label_smoothing }}
+          HARD_REPLAY_FRACTION: ${{ matrix.hard_replay_fraction }}
+        run: |
+          python -m s0ul.train_advanced --data data-v3 --output "runs/$LANE" --init-checkpoint bootstrap-hour/selected/checkpoint.pt --steps 1000000 --duration-seconds 7200 --warmup-seconds 120 --batch-size 32 --threads 2 --seed "$SEED" --eval-every 1000 --learning-rate "$LEARNING_RATE" --min-lr-ratio 0.05 --weight-decay "$WEIGHT_DECAY" --label-smoothing "$LABEL_SMOOTHING" --hard-replay-fraction "$HARD_REPLAY_FRACTION" --hard-replay-size 2048 --selection-examples 270 --patience 0
+      - name: Export and verify the lane checkpoint
+        env:
+          LANE: ${{ matrix.lane }}
+        run: |
+          python -m s0ul.export --checkpoint "runs/$LANE/checkpoint.pt" --output "exports/$LANE"
+          python -m s0ul.export --verify "exports/$LANE/manifest.json"
+      - name: Preserve checkpoints, optimizer, logs and dataset identity
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s0ul-hard-max-lane-${{ matrix.lane }}-${{ github.run_id }}
+          path: |
+            s0ul-1m/runs/${{ matrix.lane }}/
+            s0ul-1m/exports/${{ matrix.lane }}/
+            s0ul-1m/data-v3/manifest.json
+          if-no-files-found: warn
+          retention-days: 90
+
+  select-and-evaluate:
+    if: always() && !cancelled() && (github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[train-hard-max]'))
+    needs: train
+    name: Select by validation and evaluate fresh and historical challenges
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: write
+      actions: read
+    defaults:
+      run:
+        working-directory: s0ul-1m
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pinned CPU training dependencies
+        run: |
+          python -m pip install torch==2.5.1 --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install -e .
+      - name: Restore all lane artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: s0ul-hard-max-lane-*-${{ github.run_id }}
+          path: s0ul-1m/lane-artifacts
+          merge-multiple: false
+      - name: Wait for the original three lane artifacts
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python - <<'PYWAIT'
+          import json, os, time, urllib.request
+          url = 'https://api.github.com/repos/8tk8m2kv9f-lang/GH0ST/actions/runs/39629553411/artifacts?per_page=100'
+          expected = {'s0ul-hard-lane-warm-uniform-42-39629553411', 's0ul-hard-lane-warm-hard-43-39629553411', 's0ul-hard-lane-warm-hard-low-lr-44-39629553411'}
+          deadline = time.monotonic() + 900
+          while True:
+              request = urllib.request.Request(url, headers={'Authorization': 'Bearer ' + os.environ['GH_TOKEN'], 'Accept': 'application/vnd.github+json'})
+              with urllib.request.urlopen(request, timeout=30) as response:
+                  names = {a['name'] for a in json.load(response)['artifacts'] if not a['expired']}
+              if expected <= names:
+                  print('All three original lane artifacts are ready.')
+                  break
+              if time.monotonic() >= deadline:
+                  raise RuntimeError('Original three lane artifacts did not become available in time')
+              print('Waiting for original training artifacts...', flush=True)
+              time.sleep(30)
+          PYWAIT
+      - name: Restore the original three completed lanes
+        uses: actions/download-artifact@v4
+        with:
+          pattern: s0ul-hard-lane-*-39629553411
+          run-id: 39629553411
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: s0ul-1m/lane-artifacts/original-three
+          merge-multiple: false
+      - name: Restore the previous winning baseline
+        uses: actions/download-artifact@v4
+        with:
+          name: s0ul-hour-selected-39618506314
+          run-id: 39618506314
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: s0ul-1m/bootstrap-hour
+      - name: Regenerate the pinned dataset
+        run: |
+          python -m s0ul.data_v3 --output data-v3 --seed 20261021
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          expected = json.loads(Path('reports/data-v3-manifest.json').read_text())
+          actual = json.loads(Path('data-v3/manifest.json').read_text())
+          assert actual == expected, 'Evaluation dataset differs from preregistered manifest'
+          PY
+      - name: Select, freeze and evaluate
+        run: |
+          python -m s0ul.campaign --artifacts lane-artifacts --validation data-v3/validation.jsonl --challenge data-v3/challenge.jsonl --challenge-sha256 2832112d7aa0f357bf3eb09d137abfbe46b89d58103d3755362132dd8c10d4d7 --expected-challenge-examples 540 --baseline bootstrap-hour/selected/checkpoint.pt --output runs/hard-max-campaign --threads 2 --minimum-duration-seconds 7200 --expected-lanes 20 --campaign-label two-hour-20-lane --regression-challenge tests/final_challenge_v2.jsonl --regression-challenge-sha256 67624db57500eda43102c7b1d298157ce5287bc9a59a73d09219d9a9859535e8
+      - name: Record the combined campaign provenance
+        env:
+          EXPANSION_RUN_ID: ${{ github.run_id }}
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          directory = Path('runs/hard-max-campaign')
+          path = directory / 'campaign-report.json'
+          report = json.loads(path.read_text())
+          report['evaluation_context'] = {'original_three_run_id': '39629553411', 'supplementary_run_id': os.environ['EXPANSION_RUN_ID'], 'total_lanes': 20, 'supplementary_grid_frozen_before_preliminary_challenge_results': True, 'preliminary_challenge_results_used_for_training_or_selection': False}
+          path.write_text(json.dumps(report, indent=2, sort_keys=True) + '\n')
+          with (directory / 'SUMMARY.md').open('a') as stream:
+              stream.write('\n## Combined campaign provenance\n\nOriginal three lanes: https://github.com/8tk8m2kv9f-lang/GH0ST/actions/runs/39629553411\n\nSupplementary 17 lanes: https://github.com/8tk8m2kv9f-lang/GH0ST/actions/runs/' + os.environ['EXPANSION_RUN_ID'] + '\n\nThe original three-lane workflow may have published a preliminary measurement on this same preregistered challenge. All 17 supplementary configurations were frozen before those results. No preliminary challenge score changed training or the combined validation-only selection. This is the combined 20-lane measurement, not a claim that the challenge was first reported here.\n')
+          PY
+      - name: Publish measured results to the research branch
+        env:
+          CAMPAIGN_RUN_ID: ${{ github.run_id }}
+          CAMPAIGN_RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          published=false
+          for attempt in 1 2 3; do
+            git fetch origin research/GH0ST-S0UL-1M
+            git checkout -B s0ul-hard-max-publication origin/research/GH0ST-S0UL-1M
+            python -m s0ul.publish_campaign --result runs/hard-max-campaign --run-id "$CAMPAIGN_RUN_ID" --run-url "$CAMPAIGN_RUN_URL" --publication-prefix hard-max
+            git add "reports/hard-max-$CAMPAIGN_RUN_ID" BUILD-STATUS.md
+            git commit -m "Publish S0UL two-hour 20-lane campaign $CAMPAIGN_RUN_ID results"
+            if git push origin HEAD:refs/heads/research/GH0ST-S0UL-1M; then
+              published=true
+              break
+            fi
+          done
+          test "$published" = true
+      - name: Preserve selected weights, exports and complete evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s0ul-hard-max-selected-${{ github.run_id }}
+          path: s0ul-1m/runs/hard-max-campaign/
+          if-no-files-found: warn
+          retention-days: 90
