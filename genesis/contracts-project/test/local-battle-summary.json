@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "status": "PASS",
+  "command": "npm run compile && node --test --test-reporter=tap test/genesis.test.mjs",
+  "testCount": 27,
+  "passed": 27,
+  "failed": 0,
+  "skipped": 0,
+  "durationMs": 79014.330762,
+  "environment": "Local Ganache EVM with mocked GH0ST and state-injected synthetic weight data; no public network writes",
+  "dependencies": {
+    "@openzeppelin/contracts": "5.4.0",
+    "ethers": "6.15.0",
+    "ganache": "7.9.2",
+    "solc": "0.8.30"
+  },
+  "localChainId": 4663,
+  "successfulSelloutMints": 495,
+  "selloutWallets": 165,
+  "lifetimeMintsPerWallet": 3,
+  "tokensBurnedAtSellout": "99000000",
+  "adversarialSequenceSteps": 96,
+  "checks": [
+    "Exact native token supply and payer-balance decrease",
+    "No mint tokens retained by NFT contract",
+    "Three lifetime mints per payer, unchanged by ordinary transfers",
+    "Immediate transfer inside ERC721 callback does not release mint quota",
+    "All 495 shard ranges and Merkle leaves",
+    "Invalid, truncated, extended and substituted proofs",
+    "Missing or changed shard code",
+    "Changed token code and substituted immutable index",
+    "Incorrect constructor bytecode pins",
+    "Insufficient allowance and balance",
+    "No payable ETH mint path",
+    "Rejected safe-mint callback fully rolls back burn, allowance and quota",
+    "No-op, diverted and reverting token burns rejected",
+    "Swallowed and propagated callback reentrancy failures",
+    "ERC721 transfer authorization and approval clearing",
+    "Padded immutable 001.json and 495.json metadata",
+    "Seeded randomized state-model invariants",
+    "Full 495-NFT sellout and exact 99-million-token supply reduction"
+  ],
+  "limitations": [
+    "Mock-token suite is not a substitute for actual GH0ST runtime fork validation",
+    "Wallet cap is per address; it does not prevent one person using multiple wallets",
+    "Wallets can hold more than three NFTs received by transfer; only primary lifetime mints are capped",
+    "This is automated testing, not an external security audit"
+  ]
+}
