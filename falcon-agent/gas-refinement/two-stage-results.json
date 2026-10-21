@@ -1,0 +1,277 @@
+{
+  "status": "completed",
+  "scope": "Independent synthetic signed-int16 inputs; matrix arithmetic only, NOT token inference",
+  "environment": "Local Anvil Cancun; code-size limit 98304; standard gas schedule, not a live-chain fee quote",
+  "compiler": "0.8.30+commit.73712a01.Emscripten.clang",
+  "source_sha256": "a0e3121e433f8fc000219ec629c0ab361749d9190f903118e7a96a7c4c29cead",
+  "public_transactions_broadcast": 0,
+  "kernel_deployments": {
+    "SixBitFast": {
+      "gas": 830442,
+      "runtime_bytes": 3647
+    },
+    "SixBitInline2": {
+      "gas": 610871,
+      "runtime_bytes": 2597
+    },
+    "SixBitDirect2": {
+      "gas": 542390,
+      "runtime_bytes": 2280
+    },
+    "SixBitPredecoded2": {
+      "gas": 584452,
+      "runtime_bytes": 2495
+    }
+  },
+  "checks": [],
+  "benchmarks": [
+    {
+      "label": "model.embed_tokens.weight",
+      "rows": 32,
+      "cols": 512,
+      "compact_bytes": 12848,
+      "compact_deploy_gas": 2831609,
+      "variant_bytes": {
+        "SixBitDirect2": 13328,
+        "SixBitPredecoded2": 14096
+      },
+      "variant_deploy_gas": {
+        "SixBitDirect2": 2935361,
+        "SixBitPredecoded2": 3096345
+      },
+      "cases": [
+        {
+          "case": "random",
+          "gas": {
+            "SixBitFast": 566190,
+            "SixBitInline2": 370252,
+            "SixBitDirect2": 290562,
+            "SixBitPredecoded2": 243865
+          }
+        },
+        {
+          "case": "maximum",
+          "gas": {
+            "SixBitFast": 566250,
+            "SixBitInline2": 370312,
+            "SixBitDirect2": 290622,
+            "SixBitPredecoded2": 243925
+          }
+        },
+        {
+          "case": "minimum",
+          "gas": {
+            "SixBitFast": 560106,
+            "SixBitInline2": 364168,
+            "SixBitDirect2": 284478,
+            "SixBitPredecoded2": 237781
+          }
+        },
+        {
+          "case": "alternating",
+          "gas": {
+            "SixBitFast": 563178,
+            "SixBitInline2": 367240,
+            "SixBitDirect2": 287550,
+            "SixBitPredecoded2": 240853
+          }
+        },
+        {
+          "case": "zero",
+          "gas": {
+            "SixBitFast": 553962,
+            "SixBitInline2": 358024,
+            "SixBitDirect2": 278334,
+            "SixBitPredecoded2": 231637
+          }
+        }
+      ]
+    },
+    {
+      "label": "model.layers.0.feed_forward.down_proj.weight",
+      "rows": 32,
+      "cols": 768,
+      "compact_bytes": 19408,
+      "compact_deploy_gas": 4250457,
+      "variant_bytes": {
+        "SixBitDirect2": 19984,
+        "SixBitPredecoded2": 21136
+      },
+      "variant_deploy_gas": {
+        "SixBitDirect2": 4374592,
+        "SixBitPredecoded2": 4614827
+      },
+      "cases": [
+        {
+          "case": "random",
+          "gas": {
+            "SixBitFast": 828608,
+            "SixBitInline2": 521312,
+            "SixBitDirect2": 418546,
+            "SixBitPredecoded2": 349651
+          }
+        },
+        {
+          "case": "maximum",
+          "gas": {
+            "SixBitFast": 828680,
+            "SixBitInline2": 521384,
+            "SixBitDirect2": 418618,
+            "SixBitPredecoded2": 349723
+          }
+        },
+        {
+          "case": "minimum",
+          "gas": {
+            "SixBitFast": 819464,
+            "SixBitInline2": 512168,
+            "SixBitDirect2": 409402,
+            "SixBitPredecoded2": 340507
+          }
+        },
+        {
+          "case": "alternating",
+          "gas": {
+            "SixBitFast": 824072,
+            "SixBitInline2": 516776,
+            "SixBitDirect2": 414010,
+            "SixBitPredecoded2": 345115
+          }
+        },
+        {
+          "case": "zero",
+          "gas": {
+            "SixBitFast": 810248,
+            "SixBitInline2": 502952,
+            "SixBitDirect2": 400186,
+            "SixBitPredecoded2": 331291
+          }
+        }
+      ]
+    },
+    {
+      "label": "model.layers.11.mamba.in_proj.weight",
+      "rows": 32,
+      "cols": 512,
+      "compact_bytes": 12880,
+      "compact_deploy_gas": 2838579,
+      "variant_bytes": {
+        "SixBitDirect2": 13328,
+        "SixBitPredecoded2": 14096
+      },
+      "variant_deploy_gas": {
+        "SixBitDirect2": 2935145,
+        "SixBitPredecoded2": 3095229
+      },
+      "cases": [
+        {
+          "case": "random",
+          "gas": {
+            "SixBitFast": 564602,
+            "SixBitInline2": 359738,
+            "SixBitDirect2": 290574,
+            "SixBitPredecoded2": 243877
+          }
+        },
+        {
+          "case": "maximum",
+          "gas": {
+            "SixBitFast": 564650,
+            "SixBitInline2": 359786,
+            "SixBitDirect2": 290622,
+            "SixBitPredecoded2": 243925
+          }
+        },
+        {
+          "case": "minimum",
+          "gas": {
+            "SixBitFast": 558506,
+            "SixBitInline2": 353642,
+            "SixBitDirect2": 284478,
+            "SixBitPredecoded2": 237781
+          }
+        },
+        {
+          "case": "alternating",
+          "gas": {
+            "SixBitFast": 561578,
+            "SixBitInline2": 356714,
+            "SixBitDirect2": 287550,
+            "SixBitPredecoded2": 240853
+          }
+        },
+        {
+          "case": "zero",
+          "gas": {
+            "SixBitFast": 552362,
+            "SixBitInline2": 347498,
+            "SixBitDirect2": 278334,
+            "SixBitPredecoded2": 231637
+          }
+        }
+      ]
+    },
+    {
+      "label": "model.layers.23.self_attn.v_proj.weight",
+      "rows": 32,
+      "cols": 512,
+      "compact_bytes": 12816,
+      "compact_deploy_gas": 2824736,
+      "variant_bytes": {
+        "SixBitDirect2": 13328,
+        "SixBitPredecoded2": 14096
+      },
+      "variant_deploy_gas": {
+        "SixBitDirect2": 2935397,
+        "SixBitPredecoded2": 3095697
+      },
+      "cases": [
+        {
+          "case": "random",
+          "gas": {
+            "SixBitFast": 569258,
+            "SixBitInline2": 389018,
+            "SixBitDirect2": 290562,
+            "SixBitPredecoded2": 243865
+          }
+        },
+        {
+          "case": "maximum",
+          "gas": {
+            "SixBitFast": 569318,
+            "SixBitInline2": 389078,
+            "SixBitDirect2": 290622,
+            "SixBitPredecoded2": 243925
+          }
+        },
+        {
+          "case": "minimum",
+          "gas": {
+            "SixBitFast": 563174,
+            "SixBitInline2": 382934,
+            "SixBitDirect2": 284478,
+            "SixBitPredecoded2": 237781
+          }
+        },
+        {
+          "case": "alternating",
+          "gas": {
+            "SixBitFast": 566246,
+            "SixBitInline2": 386006,
+            "SixBitDirect2": 287550,
+            "SixBitPredecoded2": 240853
+          }
+        },
+        {
+          "case": "zero",
+          "gas": {
+            "SixBitFast": 557030,
+            "SixBitInline2": 376790,
+            "SixBitDirect2": 278334,
+            "SixBitPredecoded2": 231637
+          }
+        }
+      ]
+    }
+  ]
+}
