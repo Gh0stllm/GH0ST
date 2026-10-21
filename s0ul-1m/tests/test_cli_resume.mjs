@@ -37,11 +37,19 @@ test('deployment journals resume pending hashes and reject identity drift withou
   const queriedReceiptHashes = [];
   let pausedForInterruption = false;
   let rawFailure = null;
+  let readFailure = null;
   const server = createServer(async (request, response) => {
     let body = '';
+    let httpStatus = 200;
     for await (const part of request) body += part;
     const serve = async value => {
       try {
+        if (readFailure && value.method === readFailure.method && readFailure.remaining !== 0) {
+          readFailure.injections++;
+          if (readFailure.remaining > 0) readFailure.remaining--;
+          httpStatus = readFailure.httpStatus ?? 200;
+          return { jsonrpc: '2.0', id: value.id, error: { code: -32000, message: 'upstream request timeout' } };
+        }
         if (value.method === 'eth_getTransactionReceipt') queriedReceiptHashes.push(value.params[0]);
         if (value.method === 'eth_sendRawTransaction') {
           const hash = keccak256(value.params[0]);
@@ -50,11 +58,12 @@ test('deployment journals resume pending hashes and reject identity drift withou
             rawFailure.consumed = true;
             rawFailure.hash = hash;
             rawFailure.raw = value.params[0];
-            if (rawFailure.kind !== 'missing') {
+            if (['accepted', 'mismatch'].includes(rawFailure.kind)) {
               const accepted = await rpc.request({ method: value.method, params: value.params });
               sent.push(accepted);
             }
-            return { jsonrpc: '2.0', id: value.id, error: { code: -32000, message: 'Synthetic ambiguous broadcast response' } };
+            if (rawFailure.kind === 'http429') httpStatus = 429;
+            return { jsonrpc: '2.0', id: value.id, error: { code: -32000, message: 'upstream request timeout' } };
           }
         }
         if (['eth_sendTransaction', 'eth_sendRawTransaction'].includes(value.method) && sent.length === 3 && !pausedForInterruption) {
@@ -75,7 +84,7 @@ test('deployment journals resume pending hashes and reject identity drift withou
     try {
       const value = JSON.parse(body);
       const result = Array.isArray(value) ? await Promise.all(value.map(serve)) : await serve(value);
-      response.writeHead(200, { 'content-type': 'application/json' });
+      response.writeHead(httpStatus, { 'content-type': 'application/json' });
       response.end(JSON.stringify(result));
     } catch (error) {
       response.writeHead(400); response.end(String(error));
@@ -127,6 +136,17 @@ test('deployment journals resume pending hashes and reject identity drift withou
   };
   let completedSubtests = 0;
   const broadcastChecks = {};
+  const readRetryChecks = {};
+  const readRetryEvents = result => {
+    const events = result.stdout.trim().split('\n').filter(Boolean).map(line => JSON.parse(line)).filter(event => ['rpc_read_retry', 'rpc_read_failed'].includes(event.event));
+    for (const event of events) {
+      assert.deepEqual(Object.keys(event).sort(), ['attempt', 'event', 'maximumAttempts', 'methods']);
+      assert.deepEqual(event.methods, ['eth_getTransactionCount']);
+      assert.equal(event.maximumAttempts, 3);
+      assert.ok(Number.isSafeInteger(event.attempt) && event.attempt >= 1 && event.attempt <= 3);
+    }
+    return events;
+  };
   const rejectedWithoutSend = async (extra, pattern) => {
     const before = sent.length;
     const result = await deploy(extra).finished;
@@ -259,7 +279,7 @@ for seed,name in [(41,'model-a'),(42,'model-b')]:
     assert.equal(completedSubtests, 5);
 
     await t.test('Wallet broadcast failures with missing or mismatched exact hashes preserve pending state without retries', async () => {
-      for (const kind of ['missing', 'mismatch']) {
+      for (const kind of ['missing', 'mismatch', 'http429']) {
         const before = sent.length, attemptsBefore = rawAttempts.length;
         const output = join(directory, `wallet-${kind}.json`);
         rawFailure = { kind, consumed: false };
@@ -274,16 +294,66 @@ for seed,name in [(41,'model-a'),(42,'model-b')]:
         assert.equal(journal.transactions.length, 0);
         assert.equal(journal.pending.hash, rawFailure.hash);
         assert.equal(rawAttempts.length - attemptsBefore, 1, 'Failed broadcast was retried');
-        assert.equal(sent.length - before, kind === 'missing' ? 0 : 1);
+        const accepted = kind === 'mismatch' ? 1 : 0;
+        assert.equal(sent.length - before, accepted);
         assert.equal(rawAttempts.slice(attemptsBefore).filter(hash => hash === rawFailure.hash).length, 1);
-        if (kind === 'mismatch') assert.ok(rawFailure.lookupMutations > 0, 'Proxy did not apply the intended transaction-identity mutation');
-        broadcastChecks[kind + '_exact_hash'] = { complete: false, pending_preserved: true, broadcast_attempts: 1, accepted_transactions: kind === 'missing' ? 0 : 1, replacement_attempts: 0, lookup_mutations: rawFailure.lookupMutations ?? 0, stderr_redacted: true, journal_redacted: true };
+        if (kind === 'mismatch') assert.equal(rawFailure.lookupMutations, 1, 'Permanent transaction-identity mismatch must not be retried');
+        broadcastChecks[kind + '_exact_hash'] = { complete: false, pending_preserved: true, broadcast_attempts: 1, accepted_transactions: accepted, replacement_attempts: 0, lookup_mutations: rawFailure.lookupMutations ?? 0, stderr_redacted: true, journal_redacted: true };
         rawFailure = null;
       }
       completedSubtests++;
     });
+    assert.equal(completedSubtests, 6);
 
-    assert.equal(completedSubtests, 6, 'A failed subtest prevents a success report');
+    await t.test('a one-off read timeout retries without replaying any deployment transaction', async () => {
+      const before = sent.length, attemptsBefore = rawAttempts.length;
+      const output = join(directory, 'read-recovered.json');
+      readFailure = { method: 'eth_getTransactionCount', remaining: 1, injections: 0 };
+      const result = await success(deploy(['--output', output]));
+      assert.equal(readFailure.injections, 1);
+      const events = readRetryEvents(result);
+      assert.equal(events.filter(event => event.event === 'rpc_read_retry').length, 1);
+      assert.equal(events.filter(event => event.event === 'rpc_read_failed').length, 0);
+      const journal = readJSON(output);
+      assert.equal(journal.complete, true);
+      assert.equal(journal.transactions.length, 51);
+      assert.equal(sent.length - before, 51);
+      assert.equal(new Set(sent.slice(before)).size, 51);
+      assert.equal(rawAttempts.length, attemptsBefore);
+      assert.equal(existsSync(output + '.lock'), false);
+      readRetryChecks.one_off_timeout = { injected_failures: 1, retry_events: 1, deployment_complete: true, deployment_broadcasts: 51, duplicate_broadcasts: 0, method_only_events: true };
+      readFailure = null;
+      completedSubtests++;
+    });
+    assert.equal(completedSubtests, 7);
+
+    await t.test('persistent read timeouts stop at three attempts and release the deployment lock', async () => {
+      for (const httpStatus of [200, 429, 503]) {
+        const before = sent.length, attemptsBefore = rawAttempts.length;
+        const output = join(directory, `read-failed-${httpStatus}.json`);
+        readFailure = { method: 'eth_getTransactionCount', remaining: -1, injections: 0, httpStatus };
+        const result = await deploy(['--output', output]).finished;
+        assert.notEqual(result.code, 0);
+        assert.equal(readFailure.injections, 3, 'Read retries exceeded the finite bound');
+        const events = readRetryEvents(result);
+        assert.equal(events.filter(event => event.event === 'rpc_read_retry').length, 2);
+        assert.equal(events.filter(event => event.event === 'rpc_read_failed').length, 1);
+        assert.deepEqual(events.map(event => event.attempt), [1, 2, 3]);
+        assert.equal(sent.length, before);
+        assert.equal(rawAttempts.length, attemptsBefore);
+        assert.equal(existsSync(output + '.lock'), false);
+        const journal = readJSON(output);
+        assert.equal(journal.complete, false);
+        assert.equal(journal.transactions.length, 0);
+        assert.equal(journal.pending, null);
+        assert.match(result.stderr, /^Error: [^\n]{1,500}\n$/);
+        readRetryChecks[httpStatus === 200 ? 'persistent_timeout' : `persistent_http_${httpStatus}`] = { injected_failures: 3, retry_events: 2, failed_events: 1, deployment_complete: false, deployment_broadcasts: 0, lock_removed: true, method_only_events: true };
+        readFailure = null;
+      }
+      completedSubtests++;
+    });
+
+    assert.equal(completedSubtests, 8, 'A failed subtest prevents a success report');
     const complete = readJSON(deploymentPath);
     mkdirSync(join(root, 'reports'), { recursive: true });
     writeJSON(reportPath, {
@@ -297,6 +367,7 @@ for seed,name in [(41,'model-a'),(42,'model-b')]:
       deployment_complete: complete.complete, deployment_transaction_count: complete.transactions.length,
       total_deployment_gas: complete.totalDeploymentGas,
       wallet_broadcast_reconciliation: broadcastChecks,
+      read_only_rpc_retries: readRetryChecks,
       public_chain_transactions_sent: 0,
     });
   } finally {
