@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "scope": "local EVM signed INT8 row-dot primitive; NOT complete inference, agent execution or Robinhood Chain gas",
+  "network": "in-process Ganache, no external chain transactions",
+  "solc_version": "0.8.30+commit.73712a01.Emscripten.clang",
+  "optimizer": {
+    "enabled": true,
+    "runs": 200
+  },
+  "evm_version": "shanghai",
+  "arithmetic": {
+    "weights": "signed INT8 [-128,127]",
+    "activations": "signed INT32",
+    "accumulator": "signed INT256",
+    "max_width": 640,
+    "scaling": "none",
+    "rounding": "none"
+  },
+  "source_sha256": "7241ce0f95987de3f1e55a72259ea8205be8bbb71f177ebe924030df2e8c8109",
+  "init_code_sha256": "d8e7accd5a665f22752a060e91582ec312243cae12cfccbe2c4c68eb99df482f",
+  "runtime_code_sha256": "7dfb4345275e4797b2ba54172a85c76f90857165f9f491a2045f027e5f2568a4",
+  "runtime_code_bytes": 1177,
+  "measurements": [
+    {
+      "method": "dot",
+      "width": 128,
+      "expected_sum": "-76466138",
+      "measured_transaction_gas": "135650",
+      "calldata_bytes": 4356,
+      "transaction_includes_intrinsic_gas": true,
+      "weights_sha256": "d84e5d15b022537497268877ba453817810d1ff9d2b65b8f2fcbbfb62b0ee81c"
+    },
+    {
+      "method": "dotFromCode",
+      "width": 128,
+      "expected_sum": "-76466138",
+      "measured_transaction_gas": "136913",
+      "calldata_bytes": 4228,
+      "transaction_includes_intrinsic_gas": true,
+      "weights_sha256": "d84e5d15b022537497268877ba453817810d1ff9d2b65b8f2fcbbfb62b0ee81c"
+    },
+    {
+      "method": "dot",
+      "width": 640,
+      "expected_sum": "-121936713",
+      "measured_transaction_gas": "586702",
+      "calldata_bytes": 21252,
+      "transaction_includes_intrinsic_gas": true,
+      "weights_sha256": "f11b289029609e90499d532c4045b5d7aa09f3991c395a8c8ec788fbf9c454cd"
+    },
+    {
+      "method": "dotFromCode",
+      "width": 640,
+      "expected_sum": "-121936713",
+      "measured_transaction_gas": "580430",
+      "calldata_bytes": 20612,
+      "transaction_includes_intrinsic_gas": true,
+      "weights_sha256": "f11b289029609e90499d532c4045b5d7aa09f3991c395a8c8ec788fbf9c454cd"
+    }
+  ]
+}
