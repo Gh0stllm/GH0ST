@@ -1,0 +1,113 @@
+{
+  "status": "completed",
+  "selected_sixbit_manifests_changed": false,
+  "public_transactions_broadcast": 0,
+  "quality": [
+    {
+      "variant": "baseline",
+      "first_token_agreements": 32,
+      "full_generation_agreements": 32,
+      "reference_positions": 765,
+      "reference_argmax_agreement_percent": 100.0,
+      "mean_reference_token_kl": 0.0,
+      "existing_exact_format_passes": 3
+    },
+    {
+      "variant": "int6",
+      "first_token_agreements": 29,
+      "full_generation_agreements": 8,
+      "reference_positions": 765,
+      "reference_argmax_agreement_percent": 92.81045751633987,
+      "mean_reference_token_kl": 0.029601637115762903,
+      "existing_exact_format_passes": 3
+    },
+    {
+      "variant": "int5",
+      "first_token_agreements": 26,
+      "full_generation_agreements": 5,
+      "reference_positions": 765,
+      "reference_argmax_agreement_percent": 85.22875816993464,
+      "mean_reference_token_kl": 0.1295669688216222,
+      "existing_exact_format_passes": 2
+    }
+  ],
+  "historical_generation_matches_out_of_32": {
+    "baseline": 32,
+    "int6": 32
+  },
+  "storage": [
+    {
+      "mode": "compact",
+      "bytes": 60670936,
+      "sha256": "2ed4f93b7485ce8c2a9e9b24af48aaa4b736bc349fc2b0bd451f3637ced7c7fa",
+      "exact_int5_source_roundtrip": true,
+      "tensor_count": 386,
+      "layouts": [
+        {
+          "payload_limit": 24575,
+          "shards": 2469,
+          "modeled_weight_shard_deployment_gas": 13253501326,
+          "maximum_shard_gas": 5368864
+        },
+        {
+          "payload_limit": 61439,
+          "shards": 988,
+          "modeled_weight_shard_deployment_gas": 13178709482,
+          "maximum_shard_gas": 13346716
+        }
+      ]
+    },
+    {
+      "mode": "shifted",
+      "bytes": 63824224,
+      "sha256": "53b705b7e44013880a9038f190a77d82610fae11a57bef77b5fc865ac126483f",
+      "exact_int5_source_roundtrip": true,
+      "tensor_count": 386,
+      "layouts": [
+        {
+          "payload_limit": 24575,
+          "shards": 2598,
+          "modeled_weight_shard_deployment_gas": 13939251470,
+          "maximum_shard_gas": 5368876
+        },
+        {
+          "payload_limit": 61439,
+          "shards": 1039,
+          "modeled_weight_shard_deployment_gas": 13860518373,
+          "maximum_shard_gas": 13346728
+        }
+      ]
+    }
+  ],
+  "matrix_receipt_gas": {
+    "FiveBitCompact": 2046886981,
+    "FiveBitShifted": 1264676406
+  },
+  "matrix_count": 217,
+  "verified_rows_per_kernel": 165440,
+  "edge_checks": 96,
+  "malformed_rejections": 13,
+  "deployment_samples_matching_model": 12,
+  "dilation_checks": 10000,
+  "scale_boundary_checks": 19499,
+  "kernel_deployments": {
+    "FiveBitCompact": {
+      "gas": 617959,
+      "runtime_bytes": 2630
+    },
+    "FiveBitShifted": {
+      "gas": 551890,
+      "runtime_bytes": 2324
+    }
+  },
+  "source_sha256": {
+    "FiveBitCompact.sol": "d494a84d53cba27d90fd3d930c4e7f9ca55af6ff1f8f699d9cafe23c94f074ed",
+    "FiveBitShifted.sol": "7f711f3aabbe06a32db6e51930a9948668b998e37e935f432baf670e05d9bc8a"
+  },
+  "limitations": [
+    "Small reused development prompt set; agreement is not accuracy",
+    "Weight-dequantized CPU float32 quality evaluation, not EVM inference",
+    "Complete weight-deployment gas modeled, not publicly executed",
+    "Full on-chain model and cross-shard scheduler remain unimplemented"
+  ]
+}
