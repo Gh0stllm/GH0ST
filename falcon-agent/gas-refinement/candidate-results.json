@@ -1,0 +1,1696 @@
+{
+  "status": "completed",
+  "scope": "Independent synthetic signed-int16 inputs; matrix arithmetic only, NOT token inference",
+  "environment": "Local Anvil Cancun; code-size limit 98304; standard gas schedule, not a live-chain fee quote",
+  "compiler": "0.8.30+commit.73712a01.Emscripten.clang",
+  "source_sha256": "a0e3121e433f8fc000219ec629c0ab361749d9190f903118e7a96a7c4c29cead",
+  "public_transactions_broadcast": 0,
+  "kernel_deployments": {
+    "SixBitFast": {
+      "gas": 830442,
+      "runtime_bytes": 3647
+    },
+    "SixBitSigned": {
+      "gas": 829074,
+      "runtime_bytes": 3641
+    },
+    "SixBitBranch": {
+      "gas": 826902,
+      "runtime_bytes": 3631
+    },
+    "SixBitAligned": {
+      "gas": 743136,
+      "runtime_bytes": 3242
+    }
+  },
+  "checks": [
+    {
+      "name": "boundaries/model.embed_tokens.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.0.feed_forward.gate_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.0.feed_forward.up_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.0.feed_forward.down_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.0.mamba.in_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.0.mamba.out_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.0.self_attn.q_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.0.self_attn.k_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.0.self_attn.v_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.0.self_attn.o_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.1.feed_forward.gate_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.1.feed_forward.up_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.1.feed_forward.down_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.1.mamba.in_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.1.mamba.out_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.1.self_attn.q_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.1.self_attn.k_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.1.self_attn.v_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.1.self_attn.o_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.2.feed_forward.gate_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.2.feed_forward.up_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.2.feed_forward.down_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.2.mamba.in_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.2.mamba.out_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.2.self_attn.q_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.2.self_attn.k_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.2.self_attn.v_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.2.self_attn.o_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.3.feed_forward.gate_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.3.feed_forward.up_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.3.feed_forward.down_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.3.mamba.in_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.3.mamba.out_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.3.self_attn.q_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.3.self_attn.k_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.3.self_attn.v_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.3.self_attn.o_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.4.feed_forward.gate_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.4.feed_forward.up_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.4.feed_forward.down_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.4.mamba.in_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.4.mamba.out_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.4.self_attn.q_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.4.self_attn.k_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.4.self_attn.v_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.4.self_attn.o_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.5.feed_forward.gate_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.5.feed_forward.up_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.5.feed_forward.down_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.5.mamba.in_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.5.mamba.out_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.5.self_attn.q_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.5.self_attn.k_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.5.self_attn.v_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.5.self_attn.o_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.6.feed_forward.gate_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.6.feed_forward.up_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.6.feed_forward.down_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.6.mamba.in_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.6.mamba.out_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.6.self_attn.q_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.6.self_attn.k_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.6.self_attn.v_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.6.self_attn.o_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.7.feed_forward.gate_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.7.feed_forward.up_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.7.feed_forward.down_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.7.mamba.in_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.7.mamba.out_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.7.self_attn.q_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.7.self_attn.k_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.7.self_attn.v_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.7.self_attn.o_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.8.feed_forward.gate_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.8.feed_forward.up_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.8.feed_forward.down_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.8.mamba.in_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.8.mamba.out_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.8.self_attn.q_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.8.self_attn.k_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.8.self_attn.v_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.8.self_attn.o_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.9.feed_forward.gate_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.9.feed_forward.up_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.9.feed_forward.down_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.9.mamba.in_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.9.mamba.out_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.9.self_attn.q_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.9.self_attn.k_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.9.self_attn.v_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.9.self_attn.o_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.10.feed_forward.gate_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.10.feed_forward.up_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.10.feed_forward.down_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.10.mamba.in_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.10.mamba.out_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.10.self_attn.q_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.10.self_attn.k_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.10.self_attn.v_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.10.self_attn.o_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.11.feed_forward.gate_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.11.feed_forward.up_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.11.feed_forward.down_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.11.mamba.in_proj.weight",
+      "rows": 32,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.11.mamba.out_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.11.self_attn.q_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.11.self_attn.k_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.11.self_attn.v_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.11.self_attn.o_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.12.feed_forward.gate_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.12.feed_forward.up_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.12.feed_forward.down_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.12.mamba.in_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.12.mamba.out_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.12.self_attn.q_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.12.self_attn.k_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.12.self_attn.v_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.12.self_attn.o_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.13.feed_forward.gate_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.13.feed_forward.up_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.13.feed_forward.down_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.13.mamba.in_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.13.mamba.out_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.13.self_attn.q_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.13.self_attn.k_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.13.self_attn.v_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.13.self_attn.o_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.14.feed_forward.gate_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.14.feed_forward.up_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.14.feed_forward.down_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.14.mamba.in_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.14.mamba.out_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.14.self_attn.q_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.14.self_attn.k_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.14.self_attn.v_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.14.self_attn.o_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.15.feed_forward.gate_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.15.feed_forward.up_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.15.feed_forward.down_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.15.mamba.in_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.15.mamba.out_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.15.self_attn.q_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.15.self_attn.k_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.15.self_attn.v_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.15.self_attn.o_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.16.feed_forward.gate_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.16.feed_forward.up_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.16.feed_forward.down_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.16.mamba.in_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.16.mamba.out_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.16.self_attn.q_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.16.self_attn.k_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.16.self_attn.v_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.16.self_attn.o_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.17.feed_forward.gate_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.17.feed_forward.up_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.17.feed_forward.down_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.17.mamba.in_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.17.mamba.out_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.17.self_attn.q_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.17.self_attn.k_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.17.self_attn.v_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.17.self_attn.o_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.18.feed_forward.gate_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.18.feed_forward.up_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.18.feed_forward.down_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.18.mamba.in_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.18.mamba.out_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.18.self_attn.q_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.18.self_attn.k_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.18.self_attn.v_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.18.self_attn.o_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.19.feed_forward.gate_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.19.feed_forward.up_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.19.feed_forward.down_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.19.mamba.in_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.19.mamba.out_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.19.self_attn.q_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.19.self_attn.k_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.19.self_attn.v_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.19.self_attn.o_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.20.feed_forward.gate_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.20.feed_forward.up_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.20.feed_forward.down_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.20.mamba.in_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.20.mamba.out_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.20.self_attn.q_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.20.self_attn.k_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.20.self_attn.v_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.20.self_attn.o_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.21.feed_forward.gate_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.21.feed_forward.up_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.21.feed_forward.down_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.21.mamba.in_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.21.mamba.out_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.21.self_attn.q_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.21.self_attn.k_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.21.self_attn.v_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.21.self_attn.o_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.22.feed_forward.gate_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.22.feed_forward.up_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.22.feed_forward.down_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.22.mamba.in_proj.weight",
+      "rows": 32,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.22.mamba.out_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.22.self_attn.q_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.22.self_attn.k_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.22.self_attn.v_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.22.self_attn.o_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.23.feed_forward.gate_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.23.feed_forward.up_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.23.feed_forward.down_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.23.mamba.in_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.23.mamba.out_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.23.self_attn.q_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.23.self_attn.k_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.23.self_attn.v_proj.weight",
+      "rows": 16,
+      "passed": true
+    },
+    {
+      "name": "boundaries/model.layers.23.self_attn.o_proj.weight",
+      "rows": 16,
+      "passed": true
+    }
+  ],
+  "benchmarks": [
+    {
+      "label": "model.embed_tokens.weight",
+      "rows": 32,
+      "cols": 512,
+      "compact_bytes": 12848,
+      "compact_deploy_gas": 2831609,
+      "aligned_bytes": 13328,
+      "aligned_deploy_gas": 2935349,
+      "cases": [
+        {
+          "case": "random",
+          "gas": {
+            "SixBitFast": 566190,
+            "SixBitSigned": 541294,
+            "SixBitBranch": 516428,
+            "SixBitAligned": 508116
+          }
+        },
+        {
+          "case": "maximum",
+          "gas": {
+            "SixBitFast": 566250,
+            "SixBitSigned": 541354,
+            "SixBitBranch": 516488,
+            "SixBitAligned": 508176
+          }
+        },
+        {
+          "case": "minimum",
+          "gas": {
+            "SixBitFast": 560106,
+            "SixBitSigned": 535210,
+            "SixBitBranch": 510344,
+            "SixBitAligned": 502032
+          }
+        },
+        {
+          "case": "alternating",
+          "gas": {
+            "SixBitFast": 563178,
+            "SixBitSigned": 538282,
+            "SixBitBranch": 513416,
+            "SixBitAligned": 505104
+          }
+        },
+        {
+          "case": "zero",
+          "gas": {
+            "SixBitFast": 553962,
+            "SixBitSigned": 529066,
+            "SixBitBranch": 504200,
+            "SixBitAligned": 495888
+          }
+        }
+      ]
+    },
+    {
+      "label": "model.layers.0.feed_forward.down_proj.weight",
+      "rows": 32,
+      "cols": 768,
+      "compact_bytes": 19408,
+      "compact_deploy_gas": 4250457,
+      "aligned_bytes": 19984,
+      "aligned_deploy_gas": 4375024,
+      "cases": [
+        {
+          "case": "random",
+          "gas": {
+            "SixBitFast": 828620,
+            "SixBitSigned": 791276,
+            "SixBitBranch": 740588,
+            "SixBitAligned": 743565
+          }
+        },
+        {
+          "case": "maximum",
+          "gas": {
+            "SixBitFast": 828692,
+            "SixBitSigned": 791348,
+            "SixBitBranch": 740660,
+            "SixBitAligned": 743637
+          }
+        },
+        {
+          "case": "minimum",
+          "gas": {
+            "SixBitFast": 819476,
+            "SixBitSigned": 782132,
+            "SixBitBranch": 731444,
+            "SixBitAligned": 734421
+          }
+        },
+        {
+          "case": "alternating",
+          "gas": {
+            "SixBitFast": 824084,
+            "SixBitSigned": 786740,
+            "SixBitBranch": 736052,
+            "SixBitAligned": 739029
+          }
+        },
+        {
+          "case": "zero",
+          "gas": {
+            "SixBitFast": 810260,
+            "SixBitSigned": 772916,
+            "SixBitBranch": 722228,
+            "SixBitAligned": 725205
+          }
+        }
+      ]
+    },
+    {
+      "label": "model.layers.11.mamba.in_proj.weight",
+      "rows": 32,
+      "cols": 512,
+      "compact_bytes": 12880,
+      "compact_deploy_gas": 2838579,
+      "aligned_bytes": 13328,
+      "aligned_deploy_gas": 2935397,
+      "cases": [
+        {
+          "case": "random",
+          "gas": {
+            "SixBitFast": 564614,
+            "SixBitSigned": 539718,
+            "SixBitBranch": 505926,
+            "SixBitAligned": 506517
+          }
+        },
+        {
+          "case": "maximum",
+          "gas": {
+            "SixBitFast": 564662,
+            "SixBitSigned": 539766,
+            "SixBitBranch": 505974,
+            "SixBitAligned": 506565
+          }
+        },
+        {
+          "case": "minimum",
+          "gas": {
+            "SixBitFast": 558518,
+            "SixBitSigned": 533622,
+            "SixBitBranch": 499830,
+            "SixBitAligned": 500421
+          }
+        },
+        {
+          "case": "alternating",
+          "gas": {
+            "SixBitFast": 561590,
+            "SixBitSigned": 536694,
+            "SixBitBranch": 502902,
+            "SixBitAligned": 503493
+          }
+        },
+        {
+          "case": "zero",
+          "gas": {
+            "SixBitFast": 552374,
+            "SixBitSigned": 527478,
+            "SixBitBranch": 493686,
+            "SixBitAligned": 494277
+          }
+        }
+      ]
+    },
+    {
+      "label": "model.layers.23.self_attn.v_proj.weight",
+      "rows": 32,
+      "cols": 512,
+      "compact_bytes": 12816,
+      "compact_deploy_gas": 2824736,
+      "aligned_bytes": 13328,
+      "aligned_deploy_gas": 2935349,
+      "cases": [
+        {
+          "case": "random",
+          "gas": {
+            "SixBitFast": 569270,
+            "SixBitSigned": 544374,
+            "SixBitBranch": 535206,
+            "SixBitAligned": 511195
+          }
+        },
+        {
+          "case": "maximum",
+          "gas": {
+            "SixBitFast": 569330,
+            "SixBitSigned": 544434,
+            "SixBitBranch": 535266,
+            "SixBitAligned": 511255
+          }
+        },
+        {
+          "case": "minimum",
+          "gas": {
+            "SixBitFast": 563186,
+            "SixBitSigned": 538290,
+            "SixBitBranch": 529122,
+            "SixBitAligned": 505111
+          }
+        },
+        {
+          "case": "alternating",
+          "gas": {
+            "SixBitFast": 566258,
+            "SixBitSigned": 541362,
+            "SixBitBranch": 532194,
+            "SixBitAligned": 508183
+          }
+        },
+        {
+          "case": "zero",
+          "gas": {
+            "SixBitFast": 557042,
+            "SixBitSigned": 532146,
+            "SixBitBranch": 522978,
+            "SixBitAligned": 498967
+          }
+        }
+      ]
+    },
+    {
+      "label": "edges",
+      "rows": 8,
+      "cols": 64,
+      "compact_bytes": 402,
+      "compact_deploy_gas": 139654,
+      "aligned_bytes": 432,
+      "aligned_deploy_gas": 146094,
+      "cases": [
+        {
+          "case": "max",
+          "gas": {
+            "SixBitFast": 49858,
+            "SixBitSigned": 49098,
+            "SixBitBranch": 48938,
+            "SixBitAligned": 46606
+          }
+        },
+        {
+          "case": "min",
+          "gas": {
+            "SixBitFast": 49090,
+            "SixBitSigned": 48330,
+            "SixBitBranch": 48170,
+            "SixBitAligned": 45838
+          }
+        },
+        {
+          "case": "alt",
+          "gas": {
+            "SixBitFast": 49474,
+            "SixBitSigned": 48714,
+            "SixBitBranch": 48554,
+            "SixBitAligned": 46222
+          }
+        },
+        {
+          "case": "random",
+          "gas": {
+            "SixBitFast": 49858,
+            "SixBitSigned": 49098,
+            "SixBitBranch": 48938,
+            "SixBitAligned": 46606
+          }
+        },
+        {
+          "case": "negative_lane_0",
+          "gas": {
+            "SixBitFast": 48418,
+            "SixBitSigned": 47658,
+            "SixBitBranch": 47498,
+            "SixBitAligned": 45166
+          }
+        },
+        {
+          "case": "negative_lane_1",
+          "gas": {
+            "SixBitFast": 48418,
+            "SixBitSigned": 47658,
+            "SixBitBranch": 47498,
+            "SixBitAligned": 45166
+          }
+        },
+        {
+          "case": "negative_lane_2",
+          "gas": {
+            "SixBitFast": 48418,
+            "SixBitSigned": 47658,
+            "SixBitBranch": 47498,
+            "SixBitAligned": 45166
+          }
+        },
+        {
+          "case": "negative_lane_3",
+          "gas": {
+            "SixBitFast": 48418,
+            "SixBitSigned": 47658,
+            "SixBitBranch": 47498,
+            "SixBitAligned": 45166
+          }
+        },
+        {
+          "case": "negative_lane_4",
+          "gas": {
+            "SixBitFast": 48418,
+            "SixBitSigned": 47658,
+            "SixBitBranch": 47498,
+            "SixBitAligned": 45166
+          }
+        },
+        {
+          "case": "negative_lane_5",
+          "gas": {
+            "SixBitFast": 48418,
+            "SixBitSigned": 47658,
+            "SixBitBranch": 47498,
+            "SixBitAligned": 45166
+          }
+        },
+        {
+          "case": "negative_lane_6",
+          "gas": {
+            "SixBitFast": 48418,
+            "SixBitSigned": 47658,
+            "SixBitBranch": 47498,
+            "SixBitAligned": 45166
+          }
+        },
+        {
+          "case": "negative_lane_7",
+          "gas": {
+            "SixBitFast": 48418,
+            "SixBitSigned": 47658,
+            "SixBitBranch": 47498,
+            "SixBitAligned": 45166
+          }
+        }
+      ]
+    },
+    {
+      "label": "tie_up",
+      "rows": 8,
+      "cols": 64,
+      "compact_bytes": 402,
+      "compact_deploy_gas": 139654,
+      "aligned_bytes": 432,
+      "aligned_deploy_gas": 146094,
+      "cases": [
+        {
+          "case": "max",
+          "gas": {
+            "SixBitFast": 49858,
+            "SixBitSigned": 49098,
+            "SixBitBranch": 48938,
+            "SixBitAligned": 46594
+          }
+        },
+        {
+          "case": "min",
+          "gas": {
+            "SixBitFast": 49090,
+            "SixBitSigned": 48330,
+            "SixBitBranch": 48170,
+            "SixBitAligned": 45826
+          }
+        },
+        {
+          "case": "alt",
+          "gas": {
+            "SixBitFast": 49474,
+            "SixBitSigned": 48714,
+            "SixBitBranch": 48554,
+            "SixBitAligned": 46210
+          }
+        },
+        {
+          "case": "random",
+          "gas": {
+            "SixBitFast": 49858,
+            "SixBitSigned": 49098,
+            "SixBitBranch": 48938,
+            "SixBitAligned": 46594
+          }
+        },
+        {
+          "case": "negative_lane_0",
+          "gas": {
+            "SixBitFast": 48418,
+            "SixBitSigned": 47658,
+            "SixBitBranch": 47498,
+            "SixBitAligned": 45154
+          }
+        },
+        {
+          "case": "negative_lane_1",
+          "gas": {
+            "SixBitFast": 48418,
+            "SixBitSigned": 47658,
+            "SixBitBranch": 47498,
+            "SixBitAligned": 45154
+          }
+        },
+        {
+          "case": "negative_lane_2",
+          "gas": {
+            "SixBitFast": 48418,
+            "SixBitSigned": 47658,
+            "SixBitBranch": 47498,
+            "SixBitAligned": 45154
+          }
+        },
+        {
+          "case": "negative_lane_3",
+          "gas": {
+            "SixBitFast": 48418,
+            "SixBitSigned": 47658,
+            "SixBitBranch": 47498,
+            "SixBitAligned": 45154
+          }
+        },
+        {
+          "case": "negative_lane_4",
+          "gas": {
+            "SixBitFast": 48418,
+            "SixBitSigned": 47658,
+            "SixBitBranch": 47498,
+            "SixBitAligned": 45154
+          }
+        },
+        {
+          "case": "negative_lane_5",
+          "gas": {
+            "SixBitFast": 48418,
+            "SixBitSigned": 47658,
+            "SixBitBranch": 47498,
+            "SixBitAligned": 45154
+          }
+        },
+        {
+          "case": "negative_lane_6",
+          "gas": {
+            "SixBitFast": 48418,
+            "SixBitSigned": 47658,
+            "SixBitBranch": 47498,
+            "SixBitAligned": 45154
+          }
+        },
+        {
+          "case": "negative_lane_7",
+          "gas": {
+            "SixBitFast": 48418,
+            "SixBitSigned": 47658,
+            "SixBitBranch": 47498,
+            "SixBitAligned": 45154
+          }
+        }
+      ]
+    },
+    {
+      "label": "zero_offset",
+      "rows": 8,
+      "cols": 64,
+      "compact_bytes": 402,
+      "compact_deploy_gas": 139630,
+      "aligned_bytes": 432,
+      "aligned_deploy_gas": 145902,
+      "cases": [
+        {
+          "case": "max",
+          "gas": {
+            "SixBitFast": 49546,
+            "SixBitSigned": 48786,
+            "SixBitBranch": 47730,
+            "SixBitAligned": 46294
+          }
+        },
+        {
+          "case": "min",
+          "gas": {
+            "SixBitFast": 48778,
+            "SixBitSigned": 48018,
+            "SixBitBranch": 46962,
+            "SixBitAligned": 45526
+          }
+        },
+        {
+          "case": "alt",
+          "gas": {
+            "SixBitFast": 49162,
+            "SixBitSigned": 48402,
+            "SixBitBranch": 47346,
+            "SixBitAligned": 45910
+          }
+        },
+        {
+          "case": "random",
+          "gas": {
+            "SixBitFast": 49534,
+            "SixBitSigned": 48774,
+            "SixBitBranch": 47718,
+            "SixBitAligned": 46282
+          }
+        },
+        {
+          "case": "negative_lane_0",
+          "gas": {
+            "SixBitFast": 48106,
+            "SixBitSigned": 47346,
+            "SixBitBranch": 46290,
+            "SixBitAligned": 44854
+          }
+        },
+        {
+          "case": "negative_lane_1",
+          "gas": {
+            "SixBitFast": 48106,
+            "SixBitSigned": 47346,
+            "SixBitBranch": 46290,
+            "SixBitAligned": 44854
+          }
+        },
+        {
+          "case": "negative_lane_2",
+          "gas": {
+            "SixBitFast": 48106,
+            "SixBitSigned": 47346,
+            "SixBitBranch": 46290,
+            "SixBitAligned": 44854
+          }
+        },
+        {
+          "case": "negative_lane_3",
+          "gas": {
+            "SixBitFast": 48106,
+            "SixBitSigned": 47346,
+            "SixBitBranch": 46290,
+            "SixBitAligned": 44854
+          }
+        },
+        {
+          "case": "negative_lane_4",
+          "gas": {
+            "SixBitFast": 48106,
+            "SixBitSigned": 47346,
+            "SixBitBranch": 46290,
+            "SixBitAligned": 44854
+          }
+        },
+        {
+          "case": "negative_lane_5",
+          "gas": {
+            "SixBitFast": 48106,
+            "SixBitSigned": 47346,
+            "SixBitBranch": 46290,
+            "SixBitAligned": 44854
+          }
+        },
+        {
+          "case": "negative_lane_6",
+          "gas": {
+            "SixBitFast": 48106,
+            "SixBitSigned": 47346,
+            "SixBitBranch": 46290,
+            "SixBitAligned": 44854
+          }
+        },
+        {
+          "case": "negative_lane_7",
+          "gas": {
+            "SixBitFast": 48106,
+            "SixBitSigned": 47346,
+            "SixBitBranch": 46290,
+            "SixBitAligned": 44854
+          }
+        }
+      ]
+    }
+  ]
+}
