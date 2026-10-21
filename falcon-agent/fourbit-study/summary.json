@@ -1,0 +1,100 @@
+{
+  "status": "completed",
+  "selected": "affine64_s12z4",
+  "public_transactions_broadcast": 0,
+  "selection": "Development-set decision: affine64 is ~12% cheaper per representative tile than sym32 at the same file size, with mean KL within 5% of the lowest-drift four-bit candidate. Selection preceded held-out evaluation.",
+  "feedback_rejected": "Regularized calibration loss fell, but development KL increased from 0.348750 to 0.370525; no feedback weights were selected.",
+  "not_a_global_optimum": "Best measured compromise among these candidates; not a proof of maximal compression, speed, or preserved quality.",
+  "variants": [
+    {
+      "variant": "sym32_s8",
+      "bytes": 48626528,
+      "sha256": "cc3611dc01b95ce5ff781e45d01d421e34ed522b205ca206c462f4f3bfe2a601",
+      "weight_shards": 495,
+      "stage_contracts_including_old_pilot": 499,
+      "modeled_weight_deployment_gas": 10550689974,
+      "development_next_token_agreement_percent": 75.55555555555556,
+      "development_mean_token_kl": 0.3487504489281598
+    },
+    {
+      "variant": "sym64_s12",
+      "bytes": 47915616,
+      "sha256": "4a124a51586b46e26c1b396c29050840bc231954bef881ae9796acdb9b3fef33",
+      "weight_shards": 488,
+      "stage_contracts_including_old_pilot": 492,
+      "modeled_weight_deployment_gas": 10396348883,
+      "development_next_token_agreement_percent": 75.68627450980392,
+      "development_mean_token_kl": 0.4050451409972571
+    },
+    {
+      "variant": "affine64_s12z4",
+      "bytes": 48626528,
+      "sha256": "9cc5e90880d96ff15bf4110f7970a7ea473c9b86576298691ade1e745672e7a9",
+      "weight_shards": 495,
+      "stage_contracts_including_old_pilot": 499,
+      "modeled_weight_deployment_gas": 10550551050,
+      "development_next_token_agreement_percent": 75.0326797385621,
+      "development_mean_token_kl": 0.3639157755312577
+    },
+    {
+      "variant": "affine128_s12z4",
+      "bytes": 47204704,
+      "sha256": "e14e095c198b25dcfb65bb874b5fcd1aff66e8cccc968106ac9efa369b8fd888",
+      "weight_shards": 481,
+      "stage_contracts_including_old_pilot": 485,
+      "modeled_weight_deployment_gas": 10242234832,
+      "development_next_token_agreement_percent": 70.32679738562092,
+      "development_mean_token_kl": 0.488921223512662
+    },
+    {
+      "variant": "sym32_s8_feedback",
+      "bytes": 48626528,
+      "sha256": "15613a337d308381ae709566b6b441976ddc1660e5e5fc7e6a9bad7522e84f9f",
+      "weight_shards": 495,
+      "stage_contracts_including_old_pilot": 499,
+      "modeled_weight_deployment_gas": 10550680050,
+      "development_next_token_agreement_percent": 75.29411764705883,
+      "development_mean_token_kl": 0.3705246784328635
+    }
+  ],
+  "selected_full_matrix_gas": 1131959017,
+  "selected_new_stage_gas_local": 10553905726,
+  "deployment_saving_vs_selected_sixbit_percent": 32.56044780183424,
+  "matrix_gas_saving_vs_selected_sixbit_percent": 61.82494899810646,
+  "matrix_gas_saving_vs_prior_fastest_sixbit_percent": 4.668832005584845,
+  "heldout": [
+    {
+      "variant": "baseline",
+      "reference_positions": 300,
+      "reference_argmax_agreement_percent": 100.0,
+      "mean_reference_token_kl": 0.0,
+      "first_token_agreements": 16,
+      "full_generation_agreements": 16,
+      "exact_format_passes": 2
+    },
+    {
+      "variant": "int6",
+      "reference_positions": 300,
+      "reference_argmax_agreement_percent": 94.33333333333333,
+      "mean_reference_token_kl": 0.02050512920754651,
+      "first_token_agreements": 15,
+      "full_generation_agreements": 8,
+      "exact_format_passes": 3
+    },
+    {
+      "variant": "affine64_s12z4",
+      "reference_positions": 300,
+      "reference_argmax_agreement_percent": 79.66666666666667,
+      "mean_reference_token_kl": 0.2559328142305215,
+      "first_token_agreements": 11,
+      "full_generation_agreements": 3,
+      "exact_format_passes": 3
+    }
+  ],
+  "limits": [
+    "No complete token-inference gas measurement",
+    "No live RH fee quote",
+    "Material weight-quantization drift",
+    "499 covers this stage including the old pilot, not the complete future system"
+  ]
+}
