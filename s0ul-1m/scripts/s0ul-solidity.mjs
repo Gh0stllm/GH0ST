@@ -448,9 +448,16 @@ async function infer(build) {
   let requestId = options.session ? BigInt(options.session) : null;
   const result = { format: 'gh0st-s0ul-inference-receipts-v1', chainId: deployment.chainId,
     engine: deployment.engine, modelId: deployment.modelId, requestId, rowsPerStep: rows,
-    stepGasLimit: gasLimit.toString(), transactions: [], complete: false };
-  const record = receipt => result.transactions.push({ hash: receipt.hash, gasUsed: receipt.gasUsed.toString() });
+    stepGasLimit: gasLimit.toString(), transactions: [], decisions: [], pending: null, complete: false };
+  const record = receipt => {
+    result.transactions.push({ hash: receipt.hash, gasUsed: receipt.gasUsed.toString(), status: receipt.status,
+      blockNumber: receipt.blockNumber, blockHash: receipt.blockHash });
+    result.pending = null;
+    result.totalGasThisInvocation = result.transactions.reduce((sum, x) => sum + BigInt(x.gasUsed), 0n);
+    write(output, result);
+  };
   try {
+    if (existsSync(output)) throw Error('Inference output already exists; choose a new --output to preserve its receipts and pending hash');
     if (BigInt(rows) > await engine.MAX_ROWS()) throw Error('--rows exceeds this deployed engine\'s row limit');
     if ((await engine.modelId()) !== deployment.modelId) throw Error('Engine model identity differs from deployment record');
     if ((await engine.model()).toLowerCase() !== deployment.model.toLowerCase() ||
@@ -467,21 +474,70 @@ async function infer(build) {
       const expected = deployment[name + 'CodeHash'];
       if (expected && keccak256(await provider.getCode(deployment[name])) !== expected) throw Error('Deployed ' + name + ' code hash differs from saved record');
     }
+    const sender = await signer.getAddress();
+    const sendInference = async (method, args) => {
+      const data = engine.interface.encodeFunctionData(method, args);
+      const nonce = Number(BigInt(await provider.send('eth_getTransactionCount', [sender, 'pending'])));
+      if (!Number.isSafeInteger(nonce)) throw Error('Sender nonce exceeds the supported integer range');
+      const pending = { method, hash: null, nonce, from: sender, to: deployment.engine,
+        chainId: deployment.chainId, requestId, calldataKeccak256: keccak256(data),
+        gasLimit: gasLimit.toString(), value: '0', submittedAt: new Date().toISOString() };
+      result.pending = pending;
+      write(output, result);
+      let transaction;
+      if (signer instanceof Wallet) {
+        const populated = await signer.populateTransaction({ to: deployment.engine, data, nonce, gasLimit, value: 0n });
+        const raw = await signer.signTransaction(populated);
+        pending.hash = keccak256(raw);
+        write(output, result);
+        try { transaction = await provider.broadcastTransaction(raw); }
+        catch (broadcastError) {
+          let known;
+          try { known = await provider.getTransaction(pending.hash); } catch { throw broadcastError; }
+          if (!known) throw broadcastError;
+          if (!sameHex(known.hash, pending.hash) || !sameAddress(known.from, sender) ||
+              !sameAddress(known.to, deployment.engine) || known.nonce !== nonce ||
+              !sameHex(known.data, data) || known.chainId !== BigInt(deployment.chainId) ||
+              known.value !== 0n || known.gasLimit !== gasLimit) {
+            throw Error('Inference broadcast reconciliation differs from signed journal; no replacement was submitted');
+          }
+          transaction = known;
+          log({ event: 'inference_broadcast_reconciled', method, hash: pending.hash });
+        }
+      } else {
+        transaction = await signer.sendTransaction({ to: deployment.engine, data, nonce, gasLimit, value: 0n });
+        pending.hash = transaction.hash;
+        write(output, result);
+      }
+      if (!sameHex(transaction.hash, pending.hash)) throw Error('Inference broadcast hash differs from signed journal');
+      log({ event: 'inference_pending', method, hash: pending.hash, nonce, requestId });
+      const receipt = await provider.waitForTransaction(pending.hash, number('confirmations', 1, 64), number('receipt-timeout-ms', 180_000));
+      if (!receipt || !sameHex(receipt.hash, pending.hash)) throw Error('Inference receipt unavailable; pending hash retained');
+      record(receipt);
+      if (receipt.status !== 1) throw Error('Inference transaction unsuccessful; confirmed receipt retained');
+      return receipt;
+    };
     if (requestId === null) {
       if (options.prompt === undefined) throw Error('Use --prompt text or --session existing-id');
       const budget = number('max-new-tokens', 16, 32);
       await engine.beginText.staticCall(options.prompt, budget);
-      const receipt = await (await engine.beginText(options.prompt, budget, { gasLimit })).wait();
+      const receipt = await sendInference('beginText', [options.prompt, budget]);
       const event = receipt.logs.map(x => { try { return engine.interface.parseLog(x); } catch { return null; } }).find(x => x?.name === 'Begun');
       if (!event) throw Error('Missing request event');
-      requestId = event.args.requestId; result.requestId = requestId; record(receipt); write(output, result);
+      requestId = event.args.requestId; result.requestId = requestId; write(output, result);
       log({ event: 'request_started', requestId });
     }
     for (let i = 0; i < number('max-transactions', 20_000); i++) {
       const state = await engine.status(requestId);
       if (state.cancelled) throw Error('Request was cancelled');
       if (state.done) { result.complete = true; break; }
-      const receipt = await (await engine.advance(requestId, rows, { gasLimit })).wait(); record(receipt);
+      if (Number(state.phase) === 16 && !result.decisions.some(x => x.generated === Number(state.generated))) {
+        const [prefix, logits] = await Promise.all([engine.tokens(requestId), engine.logits(requestId)]);
+        result.decisions.push({ position: Number(state.position), generated: Number(state.generated),
+          prefix_ids: prefix.map(Number), logits: logits.map(Number) });
+        write(output, result);
+      }
+      await sendInference('advance', [requestId, rows]);
       if (i % 25 === 0) { write(output, result); log({ event: 'continuation', requestId, transactions: result.transactions.length, phase: Number(state.phase), position: Number(state.position) }); }
     }
     const state = await engine.status(requestId);
