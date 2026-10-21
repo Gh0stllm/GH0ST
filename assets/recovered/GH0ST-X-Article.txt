@@ -1,0 +1,115 @@
+GH0ST: Bringing the Language Model Itself On-Chain
+
+500 deployed contracts. Reproducible EVM inference. A concrete step toward autonomous on-chain intelligence.
+
+An AI agent can hold a wallet, trade tokens and interact with smart contracts while depending on a language model running on somebody else’s server. Its transactions can be public while the computation behind its decisions remains outside the blockchain.
+
+GH0ST explores what happens when the model’s weights and inference machinery become smart-contract infrastructure too.
+
+Built using Falcon technology from the Technology Innovation Institute, GH0ST is a research project working toward a language model and agent whose inference executes through contracts. Its ambition is to make the computational process inspectable and reproducible alongside the transactions it may eventually inform.
+
+As of 20 October 2026, the project’s published records document 500 contracts deployed on Robinhood Chain. They include the model data, matrix-computation kernel, immutable address index and prepaid inference runtime.
+
+A local EVM mirror using the deployed code has already generated “Hello!” from a chat-template “Hi”. All 288 recorded layer checkpoints matched an independent fixed-point reference.
+
+That is a substantial engineering milestone: a trained language model adapted to contract execution, with deployed infrastructure and reproducible bounded token generation.
+
+The difficulty becomes clear when you consider what inference requires.
+
+A language model generates text through repeated numerical operations across its learned weights. Those operations include matrix calculations, normalization, nonlinear functions and internal state updates. Blockchain execution adds strict transaction limits, expensive persistent storage and a financial cost for computation.
+
+GH0ST uses Falcon-H1-Tiny-90M-Instruct, a roughly 91-million-parameter model. It builds on the existing trained model; the research concerns adapting its representation and execution to the EVM.
+
+The selected four-bit export occupies approximately 48.63 MB, distributed across 495 weight contracts. One matrix kernel performs the core arithmetic, and an immutable address index locates the model data. Those components account for 497 contracts. Two historical pilots and the inference runtime bring the published total to 500.
+
+The architecture makes a large computation resumable.
+
+Each continuation transaction performs a bounded amount of work, saves progress and leaves the session ready for the next transaction. The runtime implements all 24 hybrid model blocks, including attention and Mamba components, together with normalization, residual connections, gated MLP operations and final token selection.
+
+It uses fixed-point arithmetic and deterministic numerical approximations designed for contract execution.
+
+An executor submits the transactions that advance the session. The contracts calculate the intermediate values and resulting token IDs. The executor cannot substitute an answer from an external AI service for the computation required by that state machine.
+
+This gives the executor an operational role without making it the authority over the model’s numerical output.
+
+The surrounding interface still performs useful work. A pinned client-side tokenizer converts messages into token IDs and decodes generated IDs into text. A wallet, RPC connection and active transaction sender remain necessary. The current runtime supports a maximum of 64 tokens across the prompt and generated output.
+
+The inference core is therefore on-chain, while text conversion and transaction submission remain client responsibilities.
+
+The evidence goes beyond a plausible-looking response.
+
+GH0ST’s published matrix validation covered 217 matrices containing 90,996,736 weight elements. Every one of the 165,440 checked output rows matched the independent integer calculation.
+
+The subsequent local chat test exercised the larger inference pipeline. Its 288 matching layer checkpoints checked the numerical path through the model. The deployed runtime’s complete 35,852-byte code also matched the locally validated artifact byte for byte, according to the published verification.
+
+Together, these results support a specific achievement: deployed model infrastructure and reproducible bounded inference in a local EVM environment using the deployed code. A completed paid public-chain inference run remains a separate milestone.
+
+The significance is architectural.
+
+GH0ST moves model execution into the same programmable environment that can hold assets, enforce permissions and settle transactions. That creates a path toward applications whose model, execution procedure and action limits can be inspected together.
+
+Future integrations could reference a pinned model when interpreting an output, then apply explicit contract permissions before allowing an action. Developers could reproduce the arithmetic and inspect the execution state.
+
+Those possibilities require further engineering. The deployed infrastructure makes them concrete enough to investigate.
+
+GH0ST also belongs to a wider exploration of verifiable on-chain computation. TapeOut (tapeout.net), created by @Blonskr, approaches that frontier through NAND gates, memory cells and composable circuits. GH0ST investigates a related question at the language-model level: how much of a trained model’s inference can become inspectable contract execution? These different approaches show why the computational capabilities of blockchains deserve serious research.
+
+GH0ST also addresses the practical question of who funds the work.
+
+The requester chooses prompt and output bounds, approves fee ceilings and reads a maximum escrow quote calculated by the contract. They fund the session and select an executor.
+
+The executor initially pays the network fees for continuation transactions. Successful computation earns bounded withdrawal credit from the requester’s escrow. Completion or cancellation releases unused escrow into credit that the requester can withdraw.
+
+This creates an enforceable spending ceiling under the contract’s accounting rules. It does not predict the exact final network fee. The deposit and actual consumption are separate amounts.
+
+Cost is the next major research challenge.
+
+Across all 500 deployments, including the historical pilots, the published receipt totals are 15,359,893,400 gas and 0.324805606209776 ETH.
+
+That is the infrastructure deployment cost already paid. Generating responses has a separate cost profile.
+
+The current local prepaid “Hi” test consumed approximately 33.891 billion continuation gas across 1,546 transactions. At the simulated test price, continuation receipt gas converted to approximately 0.715 ETH before real parent-chain posting fees. This is a local measurement, not a live chat bill.
+
+The Observatory also discloses illustrative maximum deposits around 17–21 ETH under its example fee caps. These deliberately conservative refundable escrow requirements are much higher than measured consumption.
+
+The project has demonstrated room for improvement. An earlier, identical smoke-test workload fell from approximately 15.957 billion to 8.241 billion continuation gas, a 48.36% reduction. That result applies to that specific comparison; the longer prepaid chat is a different workload.
+
+Further progress must reduce computation and tighten the validated budget bounds.
+
+We also investigated a Rust/Stylus execution route. An earlier integer-kernel benchmark, using an LFM model slice, passed seven Rust tests and 30 checks against compiled WebAssembly with a mocked local host. Those checks validated the narrow kernel; they did not establish full-model Stylus inference or its on-chain gas cost.
+
+During Robinhood mainnet and testnet probes recorded on 20 October 2026 in India, ArbWasm returned an activation gas charge of 18,446,744,073,709,551,615 — the maximum uint64 value. Official stylus-tools identifies activation charges above 30 million gas as a paused-activation signal.
+
+The finding came from direct Robinhood parameter reads. The network operator’s reason and reopening date had not been confirmed. No public Stylus deployment or activation was attempted, and no ETH was spent on those read-only probes. GH0ST continued through the Solidity/Yul execution route.
+
+Stylus remains an optimization avenue worth testing when a supported activation path is available. Any claim of lower inference costs will require measured execution on the target runtime.
+
+@vladtenev @RobinhoodApp — we would welcome technical guidance on Robinhood Chain’s Stylus activation status and a supported route for testing new programs. The local kernel, parameter reads and reproduction instructions are public. Access to that execution path would let us investigate whether it can reduce the cost of on-chain model computation.
+
+Model quality is another part of that work. Four-bit weights reduce the data footprint but introduce material behavioural changes. Across 300 held-out positions, the selected export agreed with the original model’s next-token predictions 79.67% of the time. That is prediction agreement on the recorded evaluation, rather than a general accuracy score.
+
+Executing the chosen arithmetic correctly and demonstrating useful performance across tasks are distinct research goals.
+
+The Observatory now presents a wallet interface for quotes, funding, continuation transactions and confirmed outputs. The project states that the team has not completed a paid public-chain chat as part of this release. Its separate execution theatre is a labelled simulation.
+
+Autonomous agent actions remain an integration milestone too. The repository contains a bounded controller with ownership isolation, recipient permissions, spending limits, observations and cancellation. Its controller tests use a scripted engine; they do not establish an autonomous agent driven by the deployed language-model runtime.
+
+The next steps are clear: demonstrate public inference end to end, reduce execution and capital requirements, broaden validation, obtain independent security review and connect inference to bounded actions.
+
+The project commits 100% of the $GH0ST trading fees it receives to further research toward financially feasible on-chain inference and agents. This is its stated allocation policy; an audited automatic fee-routing mechanism has not been established by the published records.
+
+GH0ST’s achievement is a concrete foundation for that work: deployed weights, contract-based inference machinery, reproducible token generation and an explicit account of the computational cost.
+
+Making that foundation affordable could open a valuable class of applications: agents whose model execution, permissions and economic limits can be examined together.
+
+Observatory: https://gh0st-observatory.netlify.app/
+Source and research: https://github.com/8tk8m2kv9f-lang/GH0ST
+
+Primary records:
+Deployment and spending: https://github.com/8tk8m2kv9f-lang/GH0ST/blob/main/falcon-agent/runtime/ACCOUNTING-AND-MILESTONE.md
+Runtime and local inference: https://github.com/8tk8m2kv9f-lang/GH0ST/blob/main/falcon-agent/runtime/README.md
+Weight layout and quality: https://github.com/8tk8m2kv9f-lang/GH0ST/blob/main/falcon-agent/fourbit-study/README.md
+Prepaid accounting: https://github.com/8tk8m2kv9f-lang/GH0ST/blob/main/falcon-agent/runtime/PREPAID-BUDGET.md
+Stylus benchmark and activation probes: https://github.com/8tk8m2kv9f-lang/GH0ST/blob/main/stylus-benchmark/README.md
+Official Stylus pause-detection code: https://github.com/OffchainLabs/stylus-sdk-rs/blob/v0.10.10/stylus-tools/src/core/activation.rs
+TapeOut whitepaper and author attribution: https://tapeout.net/whitepaper
