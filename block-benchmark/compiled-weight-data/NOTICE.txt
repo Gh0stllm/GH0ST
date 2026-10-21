@@ -1,0 +1,13 @@
+Derived model weights: LiquidAI/LFM2.5-230M
+Pinned revision: 40cb2ad3b3044d5a41eee083a6103c8b523afa45
+
+The executable EVM program constants are derived from the existing modified
+int4 per-row model weights. Compilation changes representation only; it does
+not train or infer outputs. These model-derived constants remain subject to
+the LFM Open License v1.0 included in ../../LFM-LICENSE.txt. The MIT SPDX
+labels on the newly written engine and compiler code do not relicense the
+underlying weights.
+
+compiled_weights.py regenerates these programs from the original first-block
+weight shards. compiled-weight-manifest.json records each program's hash,
+source shard, row coverage and byte length.
