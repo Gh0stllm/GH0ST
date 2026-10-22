@@ -1,0 +1,51 @@
+{
+  "format": "gh0st-s0ul-intel-gas-accessibility-validation-v1",
+  "verifiedUtc": "2026-10-22T07:47:54.474138+00:00",
+  "result": "PASS",
+  "command": "node --test frontend-tests/*.test.mjs",
+  "tests": {
+    "total": 73,
+    "passed": 73,
+    "failed": 0,
+    "skipped": 0,
+    "retainedPreviousFrontend": 70,
+    "intelTotal": 25,
+    "retainedIntelSecurity": 16,
+    "newGasFlow": 3
+  },
+  "durationMs": 601.188587,
+  "reportedProblem": "Gas calculation appeared unresponsive before wallet connection; small typography and complex layout were also reported.",
+  "diagnosis": [
+    "The cost button previously required writable state, which required a connected wallet, despite the public read-only address flow.",
+    "The prior quoted() test fixture always connected a wallet before estimating and did not cover that public cost-check path.",
+    "Default captureAndAnalyze previously lacked a readiness preflight and readable InvalidObservation or DuplicateReport decoding."
+  ],
+  "coverage": [
+    "A selected registered address enables the cost button with no browser wallet; a public cost preview shows an exact positive estimate and reserve using a fixed nonowner simulation sender.",
+    "Public previews have no owner and cannot satisfy the wallet quote matcher, enable consent/send, write a transaction journal or request wallet access.",
+    "Connecting after a preview recomputes gas and fees from the actual wallet account and clears consent; failure to obtain the wallet quote leaves no preview or approval behind.",
+    "Actual minSpacing and snapshot preflight reject a sample that is too recent or whose source code changed, before gas estimation.",
+    "Sampling, reader and RPC failures clear an earlier cost preview and present actionable visible feedback without requesting a wallet or funds.",
+    "Nested ABI custom InvalidObservation(7) and DuplicateReport error data produce readable sampling or fresh-report guidance.",
+    "Wallet account or chain events during an in-flight public estimate prevent the stale response from installing a quote.",
+    "All prior70 frontend tests remain passing, including16 Intel identity/pin/quote/budget/recovery/security cases and6 address lookup cases."
+  ],
+  "environment": "Node built-in test runner; minimal DOM and injected RPC/wallet mocks; real bundled ethers ABI encoding, tuple decoding and hashing",
+  "signedTransactions": 0,
+  "submittedPublicTransactions": 0,
+  "networkRequestsInTests": 0,
+  "limits": [
+    "This report covers interaction and security semantics. It is not a comprehensive accessibility, contrast, font-size or visual layout audit; root-owned browser QA verifies those changes separately.",
+    "These mocks do not constitute browser-extension or funded-wallet QA.",
+    "No public RPC request, mainnet deployment or signed transaction was performed by this suite.",
+    "Historical validation reports were left unchanged."
+  ],
+  "sha256": {
+    "website/s0ul-intel.mjs": "10c0e62e61252296141a0f7bd4ccf5ec635c3b3dd3d6de8cce5f6a69021b326f",
+    "website/s0ul-intel.css": "5ae38c68576b207bce7b8039579dfee6647769da09b5a27c81373209d28b2e25",
+    "website/s0ul/index.html": "2933b5c262a89ccbc189e29367b0cd4d30707360c6071ff5c957d7dc813fc3eb",
+    "website/s0ul-page.css": "315d35ed839162447c93f871cc37330b8d06575b3c6b73533194d0da6cd2df5f",
+    "frontend-tests/intel.test.mjs": "ef7eff2aaf44556246f35d9cf74d52b8ed45c2c4ae40c9366a51efe6efacf5a4"
+  },
+  "finalMarkupRefinement": "Removed repeated tutorial steps, moved other actions into Technical details, and placed wallet connection after the fee result; all73 tests rerun and passing."
+}
