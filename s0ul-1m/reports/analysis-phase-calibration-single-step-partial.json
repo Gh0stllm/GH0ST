@@ -1,0 +1,68 @@
+{
+  "format": "s0ul-analysis-calibration-probe-attempts-v1",
+  "result": "PARTIAL",
+  "complete": false,
+  "localOnly": true,
+  "publicRpcCalls": 0,
+  "publicTransactions": 0,
+  "realFundsSpent": "0",
+  "fullInferenceEstablished": false,
+  "decisionsVerified": 0,
+  "logitsVerified": 0,
+  "attempts": [
+    {
+      "attempt": 1,
+      "localStatePath": "/tmp/s0ul-analysis-phase-calibration-1792668971315.json",
+      "stateSha256": "bcda9e551b61eb34a2765d05b8fe550eaf0e678c2269fc97e17e5d71b43854a0",
+      "transactions": [
+        {
+          "hash": "0x125e4f7fb26ffedbaac96bf1bf895a6a852433bec8e9613289be1f5e17ecbe2b",
+          "blockNumber": 707,
+          "status": 0,
+          "gasUsed": 68726,
+          "calldata": "0xae13c95e000000000000000000000000000000000000000000000000000000000000beef0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000012a05f2000000000000000000000000000000000000000000000000000226abadc42f8000000000000000000000000000000000000000000000000000000000006adb3d04c5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470"
+        }
+      ],
+      "result": "SETUP_REVERT",
+      "complete": false
+    },
+    {
+      "attempt": 2,
+      "localStatePath": "/tmp/s0ul-analysis-phase-calibration-1792668997546.json",
+      "stateSha256": "caf0d573b588a24db2f64cb3f0bcd878db29d04ba7d766fca2247e87de530ec2",
+      "transactions": [
+        {
+          "hash": "0x4ebcd459f424ec86d895801309e4be7593a254a365159d5c297548f05bb2667f",
+          "blockNumber": 707,
+          "status": 1,
+          "gasUsed": 1895645,
+          "calldata": "0xae13c95e000000000000000000000000000000000000000000000000000000000000beef0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000012a05f2000000000000000000000000000000000000000000000000000226abadc42f8000000000000000000000000000000000000000000000000000000000006adb3d040000000000000000000000000000000000000000000000000000000000000000"
+        },
+        {
+          "hash": "0x7dbae5049567b502d643ead0c859ba3da0dbd82fbfd01336040f823639abf358",
+          "blockNumber": 708,
+          "status": 1,
+          "gasUsed": 696963,
+          "calldata": "0x497c4c61000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000001",
+          "measuredRewardGas": 697311
+        },
+        {
+          "hash": "0xdff44e58d803b49b6588e2a0907f089cd81137a47d1240e87009b12ff42d5f87",
+          "blockNumber": 709,
+          "status": 1,
+          "gasUsed": 918253,
+          "calldata": "0x497c4c61000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000001",
+          "measuredRewardGas": 952801
+        }
+      ],
+      "result": "PARTIAL",
+      "complete": false
+    }
+  ],
+  "reason": "First setup passed keccak(empty code) for a nonexistent address, but Solidity EXTCODEHASH is zero; isolated local open reverted and was corrected. Second probe opened a funded job and completed two single engine steps, then was stopped because ethers transaction metadata polling on the reloaded chain was unexpectedly slow. The completed earlier proof retained full call traces, enabling a separate read-only complete gas extraction.",
+  "completedLogicalSteps": 2,
+  "lastKnownPhase": 3,
+  "lastKnownPosition": 0,
+  "lastKnownLayer": 0,
+  "supersededBy": "reports/analysis-phase-gas-calibration.json"
+}
