@@ -1,0 +1,197 @@
+{
+  "status": "PASS_SYNTHETIC_EIGHT_LANE_TILE",
+  "started_at": "2026-10-22T17:19:40.284Z",
+  "synthetic_only": true,
+  "source_sha256": "ef002ef518ee1cd56de21fe33324e0b874df9d8a14729c4debd4c09e7a25ac29",
+  "candidates": [
+    {
+      "runs": 1,
+      "gas": 1959754,
+      "runtime_bytes": 1836,
+      "status": "PASS"
+    },
+    {
+      "runs": 200,
+      "gas": 1959694,
+      "runtime_bytes": 1844,
+      "status": "PASS"
+    },
+    {
+      "runs": 1000,
+      "gas": 1838734,
+      "runtime_bytes": 1979,
+      "status": "PASS"
+    },
+    {
+      "runs": 10000,
+      "gas": 1836565,
+      "runtime_bytes": 2294,
+      "status": "PASS"
+    },
+    {
+      "runs": 100000,
+      "gas": 1836565,
+      "runtime_bytes": 2294,
+      "status": "PASS"
+    },
+    {
+      "runs": 1000000,
+      "gas": 1836565,
+      "runtime_bytes": 2294,
+      "status": "PASS"
+    }
+  ],
+  "validation": {
+    "cases": 20515,
+    "invalid_rejections": 6,
+    "packing_roundtrip": true,
+    "exhaustive_byte_scale_cases": 16640,
+    "fuzz_cases": 3851
+  },
+  "limits": [
+    "Exactly 8 output rows and <=180 groups; not a complete model or router.",
+    "All weights and activations synthetic. Lossless layout transform only; no GPT-OSS quality evaluation.",
+    "Predeployed-code cost excludes one-time shard creation, which is recorded separately."
+  ],
+  "winner": {
+    "runs": 10000,
+    "gas": 1836565,
+    "runtime_bytes": 2294,
+    "status": "PASS"
+  },
+  "benchmarks": [
+    {
+      "kind": "dense",
+      "rows": 8,
+      "groups": 90,
+      "previous_eight_transactions_gas": 3895428,
+      "tile_calldata": {
+        "gas": 1836469,
+        "calldata_bytes": 18148
+      },
+      "tile_code": {
+        "gas": 1665062,
+        "calldata_bytes": 5924
+      },
+      "store": {
+        "address": "0xFAeb7e2AB34e7C2C4e727512f2A975A83C009a7e",
+        "hash": "0x5aadf506e53616f7ba93a09cf23fdcd843e4c250192469a88bde7c28580be866",
+        "deployment_gas": 2699836,
+        "runtime_bytes": 12241
+      },
+      "reduction_vs_previous_eight_transactions_percent": 57.25599343640801,
+      "amortization_calls_vs_tile_calldata": 16
+    },
+    {
+      "kind": "sparse",
+      "rows": 8,
+      "groups": 90,
+      "previous_eight_transactions_gas": 3826788,
+      "tile_calldata": {
+        "gas": 1767937,
+        "calldata_bytes": 18148
+      },
+      "tile_code": {
+        "gas": 1665074,
+        "calldata_bytes": 5924
+      },
+      "store": {
+        "address": "0x95A66268C8d4d67c599A7a95Bab380be99B42776",
+        "hash": "0x29a8925f745080e0c4e15a275296b604b0e494a4718ecab41cbb658ca8d7add6",
+        "deployment_gas": 2631304,
+        "runtime_bytes": 12241
+      },
+      "reduction_vs_previous_eight_transactions_percent": 56.488992857717754,
+      "amortization_calls_vs_tile_calldata": 26
+    },
+    {
+      "kind": "zeroInputs",
+      "rows": 8,
+      "groups": 90,
+      "previous_eight_transactions_gas": 3344484,
+      "tile_calldata": {
+        "gas": 1767601,
+        "calldata_bytes": 18148
+      },
+      "tile_code": {
+        "gas": 1596206,
+        "calldata_bytes": 5924
+      },
+      "store": {
+        "address": "0xC2FC9f6567CA89d1Bb5bA5e64E3559B4C7352837",
+        "hash": "0x5aadf506e53616f7ba93a09cf23fdcd843e4c250192469a88bde7c28580be866",
+        "deployment_gas": 2699836,
+        "runtime_bytes": 12241
+      },
+      "reduction_vs_previous_eight_transactions_percent": 52.27347477219206,
+      "amortization_calls_vs_tile_calldata": 16
+    },
+    {
+      "kind": "zeroWeights",
+      "rows": 8,
+      "groups": 90,
+      "previous_eight_transactions_gas": 3896088,
+      "tile_calldata": {
+        "gas": 1837249,
+        "calldata_bytes": 18148
+      },
+      "tile_code": {
+        "gas": 1665074,
+        "calldata_bytes": 5924
+      },
+      "store": {
+        "address": "0x398657ea4c35398a91Bfd3767979Eb2ffc88C186",
+        "hash": "0xe5ee6587cd9f5b44b81e56d2515429c2b6299384e061755cd27c075a3a750da2",
+        "deployment_gas": 2700616,
+        "runtime_bytes": 12241
+      },
+      "reduction_vs_previous_eight_transactions_percent": 57.26292629940597,
+      "amortization_calls_vs_tile_calldata": 16
+    },
+    {
+      "kind": "positiveBound",
+      "rows": 8,
+      "groups": 90,
+      "previous_eight_transactions_gas": 3898104,
+      "tile_calldata": {
+        "gas": 1837501,
+        "calldata_bytes": 18148
+      },
+      "tile_code": {
+        "gas": 1665314,
+        "calldata_bytes": 5924
+      },
+      "store": {
+        "address": "0xe42658108558e0Cd555411B7cA291C3f873417f0",
+        "hash": "0x1dc87c9c46aded444f00f6bf6a261b239ac6f5c4df78f294bafd258bcf334590",
+        "deployment_gas": 2700616,
+        "runtime_bytes": 12241
+      },
+      "reduction_vs_previous_eight_transactions_percent": 57.27887198494447,
+      "amortization_calls_vs_tile_calldata": 16
+    },
+    {
+      "kind": "negativeBound",
+      "rows": 8,
+      "groups": 90,
+      "previous_eight_transactions_gas": 3621624,
+      "tile_calldata": {
+        "gas": 1802941,
+        "calldata_bytes": 18148
+      },
+      "tile_code": {
+        "gas": 1630754,
+        "calldata_bytes": 5924
+      },
+      "store": {
+        "address": "0xDAFf74aC5564A50A12b0EB749236fea041A41EaA",
+        "hash": "0x1dc87c9c46aded444f00f6bf6a261b239ac6f5c4df78f294bafd258bcf334590",
+        "deployment_gas": 2700616,
+        "runtime_bytes": 12241
+      },
+      "reduction_vs_previous_eight_transactions_percent": 54.97174748124046,
+      "amortization_calls_vs_tile_calldata": 16
+    }
+  ],
+  "finished_at": "2026-10-22T18:02:48.934Z"
+}
