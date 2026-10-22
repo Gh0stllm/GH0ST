@@ -40,6 +40,12 @@ export function formatIntelETH(value) {
   const fraction = (absolute % 10n ** 18n).toString().padStart(18, '0').replace(/0+$/, '');
   return `${sign}${absolute / 10n ** 18n}${fraction ? `.${fraction}` : ''}`;
 }
+export function intelSubmissionGasPrice(gasPriceWei, feeCeilingWei) {
+  const spot=big(gasPriceWei), ceiling=big(feeCeilingWei);
+  if(spot<=0n || ceiling<spot)throw Error('The current gas price exceeds the accepted fee ceiling.');
+  const padded=(spot*11000n+9999n)/10000n;
+  return padded>ceiling?ceiling:padded;
+}
 export function intelQuoteMatches(quote, { address, chainId, action, contextHash, now = Date.now() }) {
   return Boolean(quote && same(quote.owner, address) && integer(chainId) === INTEL_CHAIN_ID && integer(quote.chainId) === INTEL_CHAIN_ID && quote.action === action && quote.contextHash === contextHash && Number.isFinite(quote.expiresAt) && quote.expiresAt > now);
 }
@@ -69,11 +75,11 @@ export function mountS0ULIntel(root, options = {}) {
         <aside class="intel-transact" aria-labelledby="intel-fee-title"><div class="intel-panel-head"><h3 id="intel-fee-title">Review one action.</h3><span id="intel-quote-expiry" class="intel-tag">No estimate</span></div>
           <label class="intel-field">Action<select id="intel-action" disabled><option value="snapshot">Take a snapshot</option><option value="analyze">Analyze saved snapshots</option><option value="captureAndAnalyze">Sample + publish report</option><option id="intel-register-option" value="register" hidden>Register a subject</option></select></label>
           <button id="intel-estimate" class="intel-button" type="button" disabled>Estimate this transaction ↗</button>
-          <div class="intel-fee"><span class="intel-micro">Estimated network fee</span><strong id="intel-fee">—</strong><dl class="intel-dl"><div><dt>Gas estimate</dt><dd id="intel-gas">—</dd></div><div><dt>Gas reserve (+20%)</dt><dd id="intel-gas-limit">—</dd></div><div><dt>Gas price / ceiling</dt><dd id="intel-gas-price">—</dd></div><div><dt>Maximum fee reserve</dt><dd id="intel-reserve">—</dd></div></dl></div>
+          <div class="intel-fee"><span class="intel-micro">Estimated network fee</span><strong id="intel-fee">—</strong><dl class="intel-dl"><div><dt>Gas estimate</dt><dd id="intel-gas">—</dd></div><div><dt>Gas reserve (+20%)</dt><dd id="intel-gas-limit">—</dd></div><div><dt>Current gas / ceiling</dt><dd id="intel-gas-price">—</dd></div><div><dt>Submission (+10%, capped)</dt><dd id="intel-submission-price">—</dd></div><div><dt>Maximum fee reserve</dt><dd id="intel-reserve">—</dd></div></dl></div>
           <label class="intel-field">Single-action fee limit (ETH)<input id="intel-limit" inputmode="decimal" autocomplete="off" placeholder="Estimate the action first" disabled></label>
           <label class="intel-consent"><input id="intel-consent" type="checkbox" disabled><span>I reviewed this concrete transaction and its fee limit.</span></label>
           <button id="intel-send" class="intel-button intel-button-primary" type="button" disabled>Confirm in wallet <span aria-hidden="true">→</span></button>
-          <p class="intel-small">Estimates are read-only. Every write needs a wallet confirmation. The app rechecks state, gas and the accepted fee limit before sending; this is a forecast, not a guaranteed price.</p>
+          <p class="intel-small">Estimates include up to 10% gas-price headroom, capped at your accepted ceiling. Every write needs a wallet confirmation. The app rechecks state, gas and the fee limit before sending; this is a forecast, not a guaranteed price.</p>
         </aside>
       </div>
       <div class="intel-evidence"><div class="intel-evidence-grid"><div><h3>Snapshot comparison.</h3><span class="intel-micro">Confirmed source features</span><pre id="intel-features">No confirmed snapshots loaded.</pre></div><div><h3>On-chain report.</h3><span class="intel-micro">Specialized numeric Intel head · separate from the 1M language model</span><pre id="intel-report">No on-chain report loaded.</pre><dl id="intel-report-details" class="intel-dl"></dl><p class="intel-small">An independent 25-parameter numeric head learned a 250-bps observation-routing policy from synthetic examples. Raw scores are integer discriminants, not confidence or market predictions.</p></div></div></div>
@@ -136,9 +142,10 @@ export function mountS0ULIntel(root, options = {}) {
       el('fee').textContent = `${formatIntelETH(quote.estimatedWei)} ETH`;
       el('gas').textContent = quote.gasEstimate.toLocaleString('en-US'); el('gas-limit').textContent = quote.gasLimit.toLocaleString('en-US');
       el('gas-price').textContent = `${Number(quote.gasPriceWei) / 1e9} / ${Number(quote.feeCeilingWei) / 1e9} gwei`;
+      el('submission-price').textContent = `${Number(quote.submissionGasPriceWei) / 1e9} gwei`;
       el('reserve').textContent = `${formatIntelETH(quote.reserveWei)} ETH`;
       el('quote-expiry').textContent = freshQuote() ? `Expires in ${Math.max(0, Math.ceil((quote.expiresAt - now()) / 1000))}s` : 'Estimate expired';
-    } else { for (const id of ['fee','gas','gas-limit','gas-price','reserve']) el(id).textContent = '—'; el('quote-expiry').textContent = 'No estimate'; }
+    } else { for (const id of ['fee','gas','gas-limit','gas-price','submission-price','reserve']) el(id).textContent = '—'; el('quote-expiry').textContent = 'No estimate'; }
     renderNotice();
   }
   async function operation(fn) {
@@ -265,9 +272,10 @@ export function mountS0ULIntel(root, options = {}) {
     const gasLimit = (big(gasEstimate)*12000n+9999n)/10000n;
     if (gasLimit > big(fees.block.gasLimit) || gasLimit > 31_000_000n) throw Error('This action exceeds the supported single-transaction gas limit.');
     const feeCeilingWei = (fees.gasPriceWei*3n+1n)/2n;
+    const submissionGasPriceWei = intelSubmissionGasPrice(fees.gasPriceWei,feeCeilingWei);
     const data = contract.interface.encodeFunctionData(concrete.method,concrete.args), to = contractAddress(concrete.contract);
     contextHash = concrete.contextHash;
-    quote = {action,method:concrete.method,args:concrete.args,contract:concrete.contract,to,data,contextHash,owner:address,chainId,gasEstimate:big(gasEstimate),gasLimit,gasPriceWei:fees.gasPriceWei,feeCeilingWei,estimatedWei:big(gasEstimate)*fees.gasPriceWei,reserveWei:gasLimit*feeCeilingWei,expiresAt:now()+45_000,blockNumber:fees.block.number};
+    quote = {action,method:concrete.method,args:concrete.args,contract:concrete.contract,to,data,contextHash,owner:address,chainId,gasEstimate:big(gasEstimate),gasLimit,gasPriceWei:fees.gasPriceWei,submissionGasPriceWei,feeCeilingWei,estimatedWei:big(gasEstimate)*submissionGasPriceWei,reserveWei:gasLimit*feeCeilingWei,expiresAt:now()+45_000,blockNumber:fees.block.number};
     controls.limit.value = formatIntelETH(quote.reserveWei);
     notice(`Estimate ready for ${ACTIONS[action].label.toLowerCase()}. Review the exact action and single-transaction fee reserve.`);
   }
@@ -312,6 +320,8 @@ export function mountS0ULIntel(root, options = {}) {
     if (concrete.contextHash !== accepted.contextHash) { invalidate(); throw Error('Subject state changed after the estimate. Read and estimate the action again.'); }
     const [newGas, fees, balance] = await Promise.all([contracts[accepted.contract].getFunction(accepted.method).estimateGas(...accepted.args,{from:address}),liveFees(),walletProvider.getBalance(address)]);
     if (now() >= accepted.expiresAt || fees.gasPriceWei > accepted.feeCeilingWei || (big(newGas)*12000n+9999n)/10000n > accepted.gasLimit) { invalidate(); throw Error('Gas or fees changed. Estimate this action again before sending.'); }
+    const submissionGasPriceWei = intelSubmissionGasPrice(fees.gasPriceWei,accepted.feeCeilingWei);
+    if(submissionGasPriceWei>accepted.feeCeilingWei || accepted.gasLimit*submissionGasPriceWei>budgetWei)throw Error('The submission gas-price headroom exceeds the accepted fee reserve.');
     if (accepted.gasLimit > big(fees.block.gasLimit) || accepted.gasLimit*accepted.feeCeilingWei > budgetWei || big(balance) < accepted.reserveWei) throw Error('The wallet balance, block limit or accepted fee limit does not cover this action’s reserve.');
     const signer = await walletProvider.getSigner(address);
     notice('Confirm this single action in your wallet. No other transaction is queued.');
@@ -319,11 +329,11 @@ export function mountS0ULIntel(root, options = {}) {
     if (!Number.isSafeInteger(nonce) || nonce < 0) throw Error('The wallet returned an invalid pending nonce.');
     await identity();
     if(now()>=accepted.expiresAt){invalidate();throw Error('The action estimate expired while preparing the wallet request. Estimate it again.');}
-    pending = {hash:null,owner:address,chainId:INTEL_CHAIN_ID,to:accepted.to,dataHash:eth.keccak256(accepted.data),nonce,action:accepted.action,gasLimit:accepted.gasLimit.toString(),feeCeilingWei:accepted.feeCeilingWei.toString(),budgetWei:budgetWei.toString()};
+    pending = {hash:null,owner:address,chainId:INTEL_CHAIN_ID,to:accepted.to,dataHash:eth.keccak256(accepted.data),nonce,action:accepted.action,gasLimit:accepted.gasLimit.toString(),gasPriceWei:submissionGasPriceWei.toString(),feeCeilingWei:accepted.feeCeilingWei.toString(),budgetWei:budgetWei.toString()};
     try {savePending(true);} catch(error) {pending=null;throw Error(`No wallet transaction was requested. ${errorText(error)}`);}
     render();
     let transaction;
-    try { transaction = await signer.sendTransaction({to:accepted.to,data:accepted.data,value:0n,gasLimit:accepted.gasLimit,gasPrice:fees.gasPriceWei,chainId:INTEL_CHAIN_ID,nonce}); }
+    try { transaction = await signer.sendTransaction({to:accepted.to,data:accepted.data,value:0n,gasLimit:accepted.gasLimit,gasPrice:submissionGasPriceWei,chainId:INTEL_CHAIN_ID,nonce}); }
     catch (error) { quote=null;controls.consent.checked=false;if (error?.code===4001 || error?.info?.error?.code===4001 || error?.error?.code===4001) {const rejectedOwner=pending.owner;pending=null;savePending(false,rejectedOwner);throw error;} throw Error(`Wallet submission is unresolved. Check your wallet for its exact transaction hash before another action. ${errorText(error)}`); }
     pending.hash=transaction.hash;quote=null;controls.consent.checked=false;savePending(true);render();
     notice(`Transaction submitted: ${transaction.hash}. Waiting for a confirmed receipt.`);
