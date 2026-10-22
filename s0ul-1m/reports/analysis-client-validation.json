@@ -1,0 +1,77 @@
+{
+  "format": "s0ul-analysis-browser-validation-v1",
+  "result": "PASS",
+  "complete": true,
+  "validatedUtc": "2026-10-22T12:06:40.057310+00:00",
+  "operation": "Local deterministic RPC/wallet doubles and DOM tests for the paid on-chain inference browser flow",
+  "localOnly": true,
+  "publicRpcCalls": 0,
+  "publicTransactions": 0,
+  "realFundsSpent": "0",
+  "browserTestsUseDoubles": true,
+  "realModelInferenceProof": false,
+  "trainedModelQualityEvaluated": false,
+  "command": "node --test frontend-tests/analysis-client.test.mjs frontend-tests/analysis-ui.test.mjs",
+  "exitCode": 0,
+  "tests": 40,
+  "passed": 40,
+  "failed": 0,
+  "skipped": 0,
+  "clientTests": 27,
+  "uiTests": 13,
+  "durationMs": 367.377061,
+  "sourceSha256": {
+    "website/s0ul-analysis-client.mjs": "65d441aec5b2bce1e57cb17875c1b568f45b4f367309c572f9877f10ed86d7f4",
+    "frontend-tests/analysis-client.test.mjs": "7f9084e4ada4bf1527951620113136d70dc648f7dfd14660af64cf418ca82807",
+    "website/s0ul-analysis.mjs": "b26533ab08a8aec6f5d1db7a629b2dbadfbec0cb86b346c775806b8593318e6a",
+    "frontend-tests/analysis-ui.test.mjs": "79986bfd36f81cc306665a5b42a08157cf1d6155716be559b0aced2808aaecd2",
+    "s0ul-1m/reports/analysis-phase-gas-calibration.json": "e00dea7507fe4d30d683f241603a0dee5607c210b231858ad86b8a0cb014d7aa"
+  },
+  "coverage": [
+    "Exact 3811 logical-step upper count for prompt16/output32; per-logical calibrated reserve and separate hard reimbursement ceiling",
+    "All six runtime pins, immutable dependency/model/schema/domain/config/chain pins, and executor-only owner recovery",
+    "Captured Solidity EXTCODEHASH for nonexistent target, escrow separate from opening and recovery fee reserves",
+    "Immutable serialized quote binding; altered/stale quotes, active toJSON, wallet account/chain and late nonce/expiry races",
+    "Verified service identity/availability required before funding; accepted worker request never substituted for chain completion",
+    "Fresh bounded pre-send gas estimate and live Nitro transaction cap; job fee-ceiling clamp for paid manual actions",
+    "Durable pre-send wallet intent, unsent persistence-failure rollback, exact-hash ambiguity/restart recovery and duplicate-send prevention",
+    "Canonical receipt, exact transaction identity/calldata/value/nonce/gas/fees and pinned executor JobOpened event binding",
+    "Confirmed-storage rollback, actual funded job retained after service-trigger failure, no hidden wallet continuation loop",
+    "Strict terminal EOS and model word IDs, output token hash and exact codec bytes; report only for Completed jobs with text-safe rendering",
+    "Owner cancel/refund/withdraw after inference dependency pins break; expired top-up refusal and progress-tolerant owner cancellation"
+  ],
+  "postRealIntegrationDelta": {
+    "integrationClientSha256": "1cf42db3c532ac896170186264785668e9d7be26ff865e82f964486bd796708b",
+    "finalClientSha256": "65d441aec5b2bce1e57cb17875c1b568f45b4f367309c572f9877f10ed86d7f4",
+    "modelContractsEngineCodecFactsAndWorkerChanged": false,
+    "guards": [
+      "Decode and return the internal retained quote after one caller serialization; read expiry/owner/chain from retained bytes",
+      "Bind production worker health to modelId as well as chainId and executor",
+      "Recheck final wallet balance after pending nonce lookup, preserving the separately quoted recovery reserve for opening",
+      "Roll back and best-effort persist an unsent pending intent if mandatory pre-send browser storage fails"
+    ],
+    "fullRealInferenceRepeatedForWalletOnlyDelta": false,
+    "deltaVerifiedByFinalClientRegressionSuite": true
+  },
+  "independentRealModelIntegration": {
+    "path": "s0ul-1m/reports/analysis-release-real-model-validation.json",
+    "sha256": "8373a11948085c68ea6c241270d4ca5411182c00def720b90eac78e97b36004a",
+    "result": "PASS",
+    "complete": true,
+    "sourceClientSha256": "1cf42db3c532ac896170186264785668e9d7be26ff865e82f964486bd796708b",
+    "finalBrowserClientExactBytesExercisedByRealModelIntegration": false,
+    "receiptCoverage": {
+      "allWorkerReceiptsCanonical": true,
+      "ownerInitialOpeningCanonical": true,
+      "ownerFinalWithdrawalCanonical": true,
+      "originalRefundReceiptNotRetainedAfterPrematureHarnessStop": true
+    },
+    "scope": "Separate local real-model proof; retain its explicit owner-refund receipt retention limitation"
+  },
+  "operationalLimitations": [
+    "Calibrated funding is an operational estimate. Longer attention positions are explicitly extrapolated; a job may pause for price, deadline or budget and require reviewed top-up/cancellation.",
+    "Production funding remains disabled until the actual continuation service returns verified ready health; these local doubles do not establish hosting or signer availability.",
+    "An underfunded wallet may receive the RPC insufficient-funds estimate error before total affordability can be displayed; no funding transaction is requested.",
+    "Production calibration must bind the deployed modelId while retaining the local source modelId as provenance, because model identity includes deployed shard addresses."
+  ]
+}
