@@ -1,0 +1,105 @@
+{
+  "format": "gh0st-s0ul-simple-ui-release-v1",
+  "releasedUtc": "2026-10-22T07:30:08.675402+00:00",
+  "result": "PASS",
+  "productionUrl": "https://gh0st.wiki/s0ul/#intel",
+  "repository": "Gh0stllm/GH0ST",
+  "branch": "main",
+  "publicationPolicy": "One file per sequential commit",
+  "netlify": {
+    "siteId": "1460fb0c-b81d-4624-aac5-b78658310ce0",
+    "siteName": "gh0st-observatory",
+    "deployId": "6ad9bafc2bee756e22c490b1",
+    "previousDeployId": "6ad9ac2d54a57145fa31b5fc",
+    "state": "ready",
+    "publishedAt": "2026-10-22T07:27:58.135Z",
+    "confirmedCurrentProduction": true,
+    "files": 557,
+    "unchangedFiles": 553,
+    "changedFiles": [
+      "s0ul-intel.css",
+      "s0ul-intel.mjs",
+      "s0ul-page.css",
+      "s0ul/index.html"
+    ],
+    "redirectRules": 8,
+    "headerRules": 1,
+    "verification": "Signed-in Netlify deploy details and connected project/deploy API"
+  },
+  "bundle": {
+    "filename": "GH0ST-S0UL-Simple.zip",
+    "bytes": 5912724,
+    "sha256": "3b07eeb592ae5c2c9e683af14d17ebf2e79cf3a2956a6091ca6d6cf125cac41c"
+  },
+  "changedSha256": {
+    "s0ul-intel.css": "9d061b2e926b5cb286f1f2d5e9558e6ae05622737f47f9b34a5c09e2f7332161",
+    "s0ul-intel.mjs": "261724b47d30615739a5a193b2ebe778faed7838a576ecdf399a657d402f92f6",
+    "s0ul-page.css": "88868712e00d9a95a60a73c30fd8eab7eb8788fe9cce2aa11de92a6fcec1fff4",
+    "s0ul/index.html": "b07b3026ccad653e2d42820e09fcdc482665ca074c803b7092111a0c2fbc5809"
+  },
+  "interface": {
+    "primaryFlow": "Paste token, pool or watched wallet address; Analyze; choose a monitor when multiple match; read stored report",
+    "readRequiresWallet": false,
+    "readRequiresGas": false,
+    "advancedPanelsClosedByDefault": [
+      "Full on-chain report",
+      "Update the report on-chain",
+      "Technical details",
+      "Original 1M agent",
+      "Proof"
+    ],
+    "paidUpdate": "Explicit wallet transaction after current gas quote, maximum fee budget and consent",
+    "unknownAddress": "Clear previous report and selection; explain compatible monitor must be registered by registry owner"
+  },
+  "capabilities": {
+    "chainId": 4663,
+    "dataSource": "Registered on-chain observations and saved on-chain reports",
+    "registeredMonitors": 3,
+    "supported": [
+      "Token total supply",
+      "Token balance of a registered watched wallet",
+      "Compatible V2 pool reserves, LP supply and ratio observations"
+    ],
+    "unsupported": [
+      "Arbitrary Solidity contract security audits",
+      "Honeypot determination",
+      "Arbitrary wallet asset or transaction-history enumeration",
+      "Unregistered address analysis"
+    ],
+    "backendContractsUnchanged": true,
+    "transactionsSignedInThisTask": 0,
+    "transactionsSubmittedInThisTask": 0,
+    "original1MAgentPreserved": true
+  },
+  "validation": {
+    "unitSuite": "frontend-tests/intel-simple-validation.json",
+    "unitTestsPassed": 70,
+    "unitTestsFailed": 0,
+    "productionHttp": "frontend-tests/intel-simple-production-validation.json",
+    "productionHttpPassed": 25,
+    "productionHttpFailed": 0,
+    "productionBrowser": {
+      "url": "https://gh0st.wiki/s0ul/#intel",
+      "initialSavedReport": 4,
+      "addressLookupMultipleMonitors": true,
+      "monitorSelectionLoadsReport": true,
+      "unknownClearsPreviousResult": true,
+      "freshnessWarningVisible": true,
+      "observedReportTimestamp": "2026-10-22T06:21:00Z",
+      "screenshot": "frontend-tests/evidence/s0ul-simple-live.jpg",
+      "screenshotSha256": "2caa7e3aa928772aac0de2fb16c493e88ece41a5be0385206e86a5e6e6f8ed18",
+      "fundedWalletOrSignatureTest": false
+    },
+    "previewBrowserAlsoVerified": [
+      "Watched wallet selection loads report5",
+      "Pool example loads report6",
+      "Unknown address clears prior result and disables estimate",
+      "Paid update default captureAndAnalyze"
+    ]
+  },
+  "limitations": [
+    "Read-only browser and deterministic wallet mocks; no new funded wallet transaction was executed",
+    "Stored observations are not current market data; stale badge shown when refresh is needed",
+    "This release changes the frontend, not deployed contract capabilities"
+  ]
+}
