@@ -1,0 +1,117 @@
+{
+  "format": "s0ul-analysis-release-real-model-integration-v1",
+  "result": "FAIL",
+  "complete": false,
+  "localOnly": true,
+  "publicRpcCalls": 0,
+  "publicTransactions": 0,
+  "realFundsSpent": "0",
+  "startedUtc": "2026-10-22T11:48:09.462Z",
+  "model": {
+    "checkpoint": "0x9cf0b5ce17109bda877f21ac08731cd1897bf6d160b4b690de809c750e960716",
+    "payloadSha256": "b83416a49a7600136a9eb26c8d13b260ed4d4933ec0b1bff7fb5b6419579d901",
+    "modelId": "0x21fc7af9e166caf31098a0f447029fbc44beee332408925f77f90c39742a0dd0",
+    "shards": 48,
+    "sourceProofSha256": "deabce334ae2051e40c9c410b38082e4844fc1c7b0b7ad9368a43f7ca581db72"
+  },
+  "calibration": {
+    "path": "/workspace/scratch/e15151b948b6/gh0st-frontend/s0ul-1m/reports/analysis-phase-gas-calibration.json",
+    "sha256": "e00dea7507fe4d30d683f241603a0dee5607c210b231858ad86b8a0cb014d7aa"
+  },
+  "localStatePath": "/tmp/s0ul-analysis-release-1792669689437.json",
+  "guards": [
+    {
+      "name": "Exact logical-step bound and operational quote are distinct",
+      "result": "PASS"
+    },
+    {
+      "name": "Wrong runtime pin rejects before any wallet transaction",
+      "result": "PASS"
+    }
+  ],
+  "ownerReceipts": [],
+  "workerReceipts": [],
+  "decisions": [],
+  "limits": [
+    "One known no-code regression input with the frozen v2 checkpoint; no arbitrary real-address analyst accuracy or AIXBT parity is established.",
+    "The complete integration uses the production browser client and worker core against local EVM contracts and real weights. HTTP service availability is a local test adapter.",
+    "The32-token quote is an operational estimate with margin and pause/top-up; the actual model stops at17 tokens including EOS. The mathematical3811-step cap is checked independently.",
+    "Local EVM fees do not measure Nitro posting fees or public-chain latency. All accounts and funds are simulated."
+  ],
+  "nativeBackend": {
+    "binarySha256": "10c1c727d6c1de973aeb160e59875b9a9a23464d6e74149ee8abb30b3500311b",
+    "host": "127.0.0.1",
+    "port": 42455,
+    "noPublicFork": true
+  },
+  "deployment": {
+    "format": "s0ul-analysis-local-release-test",
+    "chainId": 4663,
+    "confirmedComplete": true,
+    "localOnly": true,
+    "publicRpc": "http://127.0.0.1:42455",
+    "contracts": {
+      "model": {
+        "address": "0x809d550fca64d94Bd9F66E60752A544199cfAC3D",
+        "codeHash": "0xe333bd58d90341b9b7bc5aa4fc44c102733d34ea86b286e021aefb3be775b792"
+      },
+      "engine": {
+        "address": "0x4c5859f0F772848b2D91F1D83E2Fe57935348029",
+        "codeHash": "0x23c41bd01a32436a74510d5a3a64c6dbd451a6958411c91bdc346b7258b49527"
+      },
+      "reader": {
+        "address": "0x1291Be112d480055DaFd8a610b7d1e203891C274",
+        "codeHash": "0x445af7784413f9a92237e8ee41db8bcf8f63b1cf708231ac2b974a1cfd5c04a6"
+      },
+      "adapter": {
+        "address": "0x5f3f1dBD7B74C6B46e8c44f98792A1dAf8d69154",
+        "codeHash": "0x00b7784269be0ef271e568125e8912a714237719e7de46a2aee1976f21552d36"
+      },
+      "codec": {
+        "address": "0xb7278A61aa25c888815aFC32Ad3cC52fF24fE575",
+        "codeHash": "0x047c5ea173f1687a34c0623cb11fca6335262ecea0be1cd5aae5b1cb5f32dd03"
+      },
+      "executor": {
+        "address": "0xCD8a1C3ba11CF5ECfa6267617243239504a98d90",
+        "codeHash": "0xf53e7d9880d52da6def198aed35961a682d7a0bea1e381709ba49c8dbbf0072d"
+      }
+    },
+    "modelId": "0x21fc7af9e166caf31098a0f447029fbc44beee332408925f77f90c39742a0dd0",
+    "schemaHash": "0x0886fc963c5e7a5b5560cccdb860678986ce8a75514b01e2c54b3258fc1f7fbf",
+    "configurationHash": "0x4c5bcfabe0ff868ee9f907ee65fe830bd5a7eb09a27768c267f1700404e48419",
+    "domainSha256": "0xc0a58f640b73adb0cfd80b9eea45c4a72542becb30edccdfecb01cbbc37d778e",
+    "workerAddress": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+    "calibration": {
+      "source": "s0ul-1m/reports/analysis-phase-gas-calibration.json",
+      "modelId": "0x21fc7af9e166caf31098a0f447029fbc44beee332408925f77f90c39742a0dd0",
+      "includesRewardOverhead": true,
+      "maxPosition": 31,
+      "maxMeasuredGasByPhase": {
+        "1": 749914,
+        "2": 960604,
+        "3": 3088743,
+        "4": 3094226,
+        "5": 3150359,
+        "6": 634266,
+        "7": 1647380,
+        "8": 4060860,
+        "9": 3112938,
+        "10": 1017879,
+        "11": 3134543,
+        "12": 12084812,
+        "13": 512630,
+        "14": 736066,
+        "15": 3176813,
+        "16": 586371
+      },
+      "attentionBaseMeasuredGas": 705763,
+      "attentionGasPerExtraPosition": 112298
+    },
+    "quotePolicy": {
+      "gasReserveBps": 12000,
+      "feeCeilingBps": 12500
+    },
+    "worker": {}
+  },
+  "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 34247361516301055388n\n- 34246111516301555388n\n      ^\n\n    at file:///workspace/scratch/e15151b948b6/gh0st-frontend/s0ul-1m/test/analysis-release-real-model-test.mjs:78:9\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)"
+}
