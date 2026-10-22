@@ -301,7 +301,7 @@ export function mountS0ULIntel(root, options = {}) {
     if(!inspection){controls.watch.hidden=true;el('live-report').textContent='';appendRows(el('live-summary'),[]);el('inspection-evidence').textContent='';return;}
     const kind=integer(inspection.preferredKind),code=big(inspection.codeSize)>0n;
     const profile=inspection.universalProfile,mask=integer(profile?.interfaceMask);
-    el('live-type').textContent=kind===3?'V2-compatible pool':kind===2?'ERC-20 account balance':kind===1?'ERC-20-compatible token':mask&2?'ERC-721 interface reported':mask&4?'ERC-1155 interface reported':code?'Contract':'Address without deployed code';
+    el('live-type').textContent=kind===3?'V2-compatible pool':mask&2?'ERC-721 interface reported':mask&4?'ERC-1155 interface reported':kind===2?'Token balance getters':kind===1?'Token supply getter':mask&8?'Royalty interface reported':code?'Contract':'Address without deployed code';
     el('live-time').textContent=timestamp(inspection.observedAt);
     el('live-report').textContent=inspection.universalText||(kind?'Current readings from compatible on-chain getters. Compatibility does not establish authenticity or contract safety.':'Current balance and runtime facts are available.');
     const rows=[['Native balance',formatIntelETH(inspection.nativeBalance)+' ETH']];
@@ -381,7 +381,7 @@ export function mountS0ULIntel(root, options = {}) {
     renderSources();
     el('dot').dataset.state = 'verified'; el('network').textContent = 'Robinhood Chain · Live';
     el('subject-count').textContent = subjectCount + ' tracked monitors';
-    notice('Paste an address to read its registered analysis. No wallet or gas needed.');
+    notice(watchDeployment?'Paste any Robinhood Chain address to inspect its on-chain facts. No wallet or gas needed.':'Paste an address to read its registered analysis. No wallet or gas needed.');
     if (big(subjectCount)>0n && options.autoLoad!==false && !watchDeployment) {controls['subject-id'].value='1';await load();}
     renderExamples();
   }
