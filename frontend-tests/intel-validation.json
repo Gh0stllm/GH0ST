@@ -1,0 +1,51 @@
+{
+  "format": "gh0st-s0ul-intel-frontend-validation-v1",
+  "verifiedUtc": "2026-10-22T06:00:37.961Z",
+  "result": "PASS",
+  "command": "node --test frontend-tests/*.test.mjs",
+  "tests": {
+    "total": 64,
+    "passed": 64,
+    "failed": 0,
+    "skipped": 0,
+    "existing": 48,
+    "intel": 16
+  },
+  "signedTransactions": 0,
+  "submittedPublicTransactions": 0,
+  "networkRequestsInTests": 0,
+  "environment": "Node built-in test runner; minimal DOM, injected JSON-RPC and wallet transport in process; real bundled ethers ABI/hash encoding and decoding",
+  "coverage": [
+    "Null deployment stays visibly awaiting deployment with disabled writes and no wallet/RPC requests",
+    "Read-only auto-load and explicit load decode actual ethers ABI tuples including the Snapshot.values Array-method collision",
+    "Raw eth_chainId verifies the actual read RPC even when getNetwork/staticNetwork advertises4663",
+    "All three runtime code hashes, immutable Reports dependencies, chain, numeric model and training manifest pins must match",
+    "All four action calldata encodings bind reviewed identifiers or source code hash; wallet values remain zero",
+    "Fresh45-second quote binds wallet, both chain IDs, action and context; exact BigInt reserve, explicit consent and full accepted budget required",
+    "A hash-null recovery intent containing owner/chain/target/calldata hash/nonce/gas/fee/budget is durably stored and read back before the wallet prompt",
+    "Returned transaction hash is durably stored before receipt waiting; unavailable or silently dropping storage blocks submission",
+    "Ambiguous wallet errors and interrupted receipt reads block every subsequent send, including after a simulated reload",
+    "Reconciliation checks sender, target, nonce, chain, zero value, exact calldata/selector and requested/returned transaction/receipt hashes",
+    "Absent/noncanonical receipts and unavailable or zero effective fees/gas usage preserve pending recovery",
+    "Account/chain changes or expiry during nonce lookup stop submission; fee/gas growth, context changes, block limit and balance are rechecked",
+    "Corrupt or unreadable saved journals fail closed rather than becoming approval for a new wallet transaction"
+  ],
+  "reviewFindingsResolved": [
+    "A durable hash-null intent and explicit nonce now precede wallet submission, preserving unknown-outcome recovery",
+    "Actual RPC chain is checked independently of a static provider network declaration",
+    "Unsafe storage failure or corrupt recovery records block writes",
+    "Final wallet identity and quote expiry are checked after nonce lookup",
+    "Quote matching checks the quote chain as well as the current wallet chain",
+    "Returned hashes and nonzero actual receipt fee information must verify before clearing recovery"
+  ],
+  "limits": [
+    "These are deterministic semantic mocks, not browser-extension or funded-wallet QA; real browser and deployment verification are separate",
+    "The single-action fee limit is a browser guard; a wallet can alter transaction parameters and confirmed overruns must be reported",
+    "No mainnet deployment, funded inference or public transaction was performed by this suite"
+  ],
+  "sha256": {
+    "website/s0ul-intel.mjs": "49f1fc86417a6ecb90ec23821d12326b1e660caf19eb841f62dd5b4eb9d2e3d4",
+    "website/s0ul-intel.css": "9f672b766ab243fccd170eac3cba1afb8976b5f4cc8d09c6d58b4f5898374315",
+    "frontend-tests/intel.test.mjs": "07c32be57a4daf6ef61da5929c28cf2b33f3f48e2ad50ce931bc3abbf228194a"
+  }
+}
