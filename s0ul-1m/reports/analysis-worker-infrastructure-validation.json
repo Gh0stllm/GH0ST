@@ -1,0 +1,112 @@
+{
+  "format": "s0ul-analysis-worker-infrastructure-validation-v1",
+  "result": "PASS",
+  "checkedAt": "2026-10-22T11:45:34.755559+00:00",
+  "scope": "Local transaction recovery and escrow infrastructure unit tests; not deployed service validation or model accuracy.",
+  "command": "node --test s0ul-1m/test/analysis-worker-test.mjs",
+  "tests": 13,
+  "passed": 13,
+  "failed": 0,
+  "syntaxChecksPassed": true,
+  "cases": [
+    "Durable prepare crash recovery broadcasts only original signed bytes/hash",
+    "Known pending transaction is not redundantly broadcast",
+    "Missing hash with consumed nonce blocks replacement",
+    "Persisted two-total-broadcast bound",
+    "Tampered signed bytes rejected before broadcast",
+    "Lease loss prevents broadcast",
+    "Reverted receipt spends accounted and exact pending hash cleared",
+    "Noncanonical receipt cannot settle pending nonce",
+    "Receipt gas and fee cannot exceed signed limits",
+    "Receipt hash must equal signed hash",
+    "3811 logical advances plus one finalization escrow reserve",
+    "Strict default reimbursement policy rejects any positive shortfall; explicit reviewed5bps accepts the actual196gas mainnet regression.",
+    "Floor arithmetic, exact threshold and one-wei-over threshold, positive credit, reverted state and hard maximum0..5basispoints are table tested."
+  ],
+  "files": {
+    "s0ul-1m/scripts/analysis-worker.mjs": "d75ae1241d802e0957a77bdf8dd5d8b05f64e59ca4d1337960ce8f05aebc6a7e",
+    "s0ul-1m/test/analysis-worker-test.mjs": "b03a1130021905a4db7d7a465b9213e824bb6751932537dc73d7679035116db7",
+    "netlify/functions/lib/analysis-runtime.mjs": "6d0fb05e1d4e405fe5b05a647bffe9638ac9ebaa671b49a0267cd6835300c462",
+    "netlify/functions/s0ul-analysis.mjs": "fbf1e64f936106b4c4dcc6dfc2f0566297c306554bf6b3dfaed06ffb6e722080",
+    "netlify/functions/s0ul-analysis-background.mjs": "5066f2c81cf92077490cc081d8c8187c8683bc01edc36705a8d9d285afce224d",
+    "netlify/functions/s0ul-analysis-resume.mjs": "6399ba54b19903737e0f76883e1f828e655106a5632e8f00d8eb17279b45c852",
+    "netlify/database/migrations/20261022120000_s0ul_analysis_worker.sql": "b83b4809ee5691ecef40b695bb5764b65e6ce6cb0bf35f50cfe5599004631be1"
+  },
+  "publicRpcCalls": 0,
+  "submittedPublicTransactions": 0,
+  "realFundsSpent": "0",
+  "serviceVerified": false,
+  "remainingValidation": [
+    "Previous release integration proved the same model/contract flow. This change only adds the explicit bounded receipt-reimbursement policy; its new source requires publication and root-only resume verification.",
+    "Netlify package bundling, DB migration/transaction lease and private Blobs journal smoke need deployed or local platform validation.",
+    "Dedicated persistent worker key provisioning was rejected by automatic approval review and remains pending explicit user authorization; no workaround attempted.",
+    "Local test transaction gas and profit checks do not establish Nitro posting costs or arbitrary real-address analyst accuracy."
+  ],
+  "updatedAt": "2026-10-22T12:25:15.037286+00:00",
+  "postTestWrapperChanges": [
+    "Added disabled read-only setup diagnostics without loading signing keys or writing state.",
+    "Required a reviewed nonzero deployer distinct from the server worker.",
+    "Closed DB pools on every function completion and initialization failure.",
+    "Runtime forwards only the explicitly configured reimbursement allowance and rejects invalid0..5bps readiness policy."
+  ],
+  "netlifyDatabaseMigrationAudit": {
+    "inspectedPrimaryPackages": {
+      "netlify-cli": "27.14.1",
+      "@netlify/build": "37.5.1"
+    },
+    "legacyCliUnsupported": "23.11.0 exposes legacy Neon database init/status only.",
+    "modernDirectDeployStagesMigrations": true,
+    "sourceDirectory": "netlify/database/migrations",
+    "stagedInternalDirectory": ".netlify/internal/db/migrations",
+    "productionMigrationMethod": "Modern CLI deploy --prod with build enabled stages and uploads migrations; hosting applies them before publish. No direct hosted SQL or migrations apply command.",
+    "readOnlySetupPath": "/api/s0ul/worker?setup=1",
+    "setupDiagnosticsExecuted": false,
+    "verifiedInstalledPackages": {
+      "netlify-cli": "26.0.0",
+      "@netlify/build": "35.13.4"
+    },
+    "installedCliEquivalentModernStagingAndUpload": true,
+    "rootOnlyProductionCommand": "netlify deploy --prod --site 1460fb0c-b81d-4624-aac5-b78658310ce0 --dir dist"
+  },
+  "workerLifetimePolicy": {
+    "configuredMaximumCumulativeReceiptFeesWei": "500000000000000000",
+    "scope": "chainId/executor/worker signer",
+    "finiteServiceBudget": true,
+    "behaviorWhenExhausted": "Worker stops; health is unavailable with worker_spend_cap; operator must review and release a larger config budget.",
+    "notDeploymentCap": true
+  },
+  "reimbursementPolicyFix": {
+    "reason": "The fixed75k gasleft reimbursement is not an exact Nitro receipt fee. A confirmed first advance revealed a196gas policy measurement gap; inference itself advanced correctly.",
+    "observedTransaction": "0x363a5d412ec85df9278609545bc7ab2f546c29129fc485843896851534c9ff16",
+    "observedFeeWei": "147784478736000",
+    "observedCreditWei": "147780517968000",
+    "observedShortfallWei": "3960768000",
+    "observedEffectiveGasPriceWei": "20208000",
+    "observedShortfallGas": "196",
+    "defaultMaximumShortfallBps": 0,
+    "hardMaximumShortfallBps": 5,
+    "reviewedProductionMaximumShortfallBps": 5,
+    "toleranceArithmetic": "floor(actualReceiptFeeWei*bps/10000)",
+    "requiresPositiveCredit": true,
+    "revertedReceiptsRemainRejected": true,
+    "appliesToNewAndRecoveredPaidReceipts": true,
+    "paidMethods": [
+      "advance",
+      "finalize"
+    ],
+    "resultReportsActualToleratedShortfall": true,
+    "unchangedLimits": [
+      "0.5ETH cumulative receipt-fee policy",
+      "Per-transaction fee cap",
+      "Natural worker balance",
+      "Funded job escrow and per-batch reward cap",
+      "Job fee ceiling",
+      "31M/live Nitro gas caps"
+    ],
+    "aggregateToleratedPaidWorkLossMaximumWei": "250000000000000",
+    "withdrawalFees": "Separate ordinary worker operating costs still included in the cumulative receipt-fee and balance limits.",
+    "contractsModelAndDatabaseSchemaChanged": false,
+    "sourceReviewOnlyForMainnetEvidence": true,
+    "publicTransactionsSentByThisAgent": 0
+  }
+}
