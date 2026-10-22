@@ -1,0 +1,102 @@
+{
+  "status": "PASS_SYNTHETIC_MICROKERNEL_ONLY",
+  "synthetic_fixture": true,
+  "model": "MXFP4 synthetic fixture; NOT GPT-OSS weights",
+  "revision": null,
+  "environment": {
+    "chain_id": 31337,
+    "hardfork": "shanghai",
+    "solc": "0.8.30+commit.73712a01.Emscripten.clang",
+    "viaIR": true,
+    "optimizer_runs": 200,
+    "ganache": "7.9.2",
+    "ethers": "6.13.5",
+    "gas_basis": "local successful transaction receipts including intrinsic/calldata gas"
+  },
+  "kernel_sha256": "b87a19ba5eb33dea37d8081562d8b8f24e67560873852c1ea1050c601d975423",
+  "runtime_bytecode_bytes": 1831,
+  "parity_cases": 33,
+  "three_way_parity": true,
+  "rejected_invalid_calls": 18,
+  "benchmark": [
+    {
+      "row": 0,
+      "weights": 2880,
+      "groups": 90,
+      "result_q32": "99272075247616",
+      "gas": {
+        "baseline": 3787722,
+        "packedControl": 3527492,
+        "packed": 486939
+      },
+      "calldata_bytes": {
+        "baseline": 93892,
+        "packedControl": 7492,
+        "packed": 7492
+      },
+      "same_packed_abi_gas_saving_percent": 86.19588648252072,
+      "expanded_int16_abi_gas_saving_percent": 87.1442782759664
+    },
+    {
+      "row": 1,
+      "weights": 2880,
+      "groups": 90,
+      "result_q32": "-173757439148032",
+      "gas": {
+        "baseline": 3801726,
+        "packedControl": 3527816,
+        "packed": 486903
+      },
+      "calldata_bytes": {
+        "baseline": 93892,
+        "packedControl": 7492,
+        "packed": 7492
+      },
+      "same_packed_abi_gas_saving_percent": 86.19817473473674,
+      "expanded_int16_abi_gas_saving_percent": 87.1925804226817
+    },
+    {
+      "row": 2,
+      "weights": 2880,
+      "groups": 90,
+      "result_q32": "-89667075047424",
+      "gas": {
+        "baseline": 3811039,
+        "packedControl": 3527769,
+        "packed": 486855
+      },
+      "calldata_bytes": {
+        "baseline": 93892,
+        "packedControl": 7492,
+        "packed": 7492
+      },
+      "same_packed_abi_gas_saving_percent": 86.19935148815016,
+      "expanded_int16_abi_gas_saving_percent": 87.22513729195634
+    },
+    {
+      "row": 3,
+      "weights": 2880,
+      "groups": 90,
+      "result_q32": "90289113923584",
+      "gas": {
+        "baseline": 3808776,
+        "packedControl": 3527306,
+        "packed": 486891
+      },
+      "calldata_bytes": {
+        "baseline": 93892,
+        "packedControl": 7492,
+        "packed": 7492
+      },
+      "same_packed_abi_gas_saving_percent": 86.19651938334809,
+      "expanded_int16_abi_gas_saving_percent": 87.21660186894687
+    }
+  ],
+  "limits": [
+    "Synthetic weights and activations ONLY; real-weight download incomplete. No GPT-OSS parity claim.",
+    "Signed-int16 activations are synthetic, not actual model activations.",
+    "Exact Q32 dyadic dot arithmetic only for encoded scales [96,160]; not full BF16 model equivalence.",
+    "No router, attention, nonlinearities, tokenizer, generation, quality evaluation, deployment or mainnet gas measurement.",
+    "No full-model gas extrapolation; weights supplied in calldata for this microbenchmark."
+  ]
+}
