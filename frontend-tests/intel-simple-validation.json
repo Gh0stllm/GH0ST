@@ -1,0 +1,44 @@
+{
+  "format": "gh0st-s0ul-intel-address-flow-validation-v1",
+  "verifiedUtc": "2026-10-22T07:22:40.029161Z",
+  "result": "PASS",
+  "command": "node --test frontend-tests/*.test.mjs",
+  "tests": {
+    "total": 70,
+    "passed": 70,
+    "failed": 0,
+    "skipped": 0,
+    "unchangedOtherFrontend": 48,
+    "retainedIntelSecurity": 16,
+    "newAddressFlow": 6
+  },
+  "durationMs": 780.800003,
+  "signedTransactions": 0,
+  "submittedPublicTransactions": 0,
+  "networkRequestsInTests": 0,
+  "environment": "Node built-in test runner; minimal DOM and injected RPC/wallet mocks; real bundled ethers ABI tuple encoding/decoding and hashing",
+  "coverage": [
+    "A token address can match multiple registered supply or watched-balance monitors; choosing a result loads its exact registered ID and watched account",
+    "A watched wallet matches its balance monitor while preserving the token source address; a pool address loads its pool monitor and raw reserve facts",
+    "Invalid, zero and unregistered addresses clear prior report/evidence, selected identity, consent and quote; paid estimate and send stay blocked without a current selection",
+    "Any partial registry read error or a registry count above 256 fails closed without selecting a partial match or retaining stale prior results",
+    "Freshness badges use the stored report observation timestamp and RPC head time, including a stale report, rather than the browser clock or lookup time",
+    "The address form and tracked example buttons use public reads only, with no wallet access, fee estimation, registration, funds request or pending transaction journal",
+    "The browser action default is captureAndAnalyze; security fixtures explicitly select snapshot where needed so all 16 prior approval/recovery cases remain meaningful",
+    "All existing wallet identity, actual RPC chain, runtime/model/dependency pin, fresh quote, explicit consent, exact budget, durable recovery, ambiguous error, reconciliation, nonce race and submission fee headroom tests still pass",
+    "The 48 existing gas, generation-client, original agent UI and standalone portrait/page tests remain passing"
+  ],
+  "limits": [
+    "These deterministic semantic mocks are not browser-extension or funded-wallet QA; browser and live deployment verification are separate",
+    "Lookup only discovers subjects already registered in the pinned observations contract; no arbitrary address registration or analysis was performed by these tests",
+    "No new mainnet deployment, public RPC request, funded inference or signed transaction was performed by this suite",
+    "Historical validation reports were left unchanged"
+  ],
+  "sha256": {
+    "website/s0ul-intel.mjs": "261724b47d30615739a5a193b2ebe778faed7838a576ecdf399a657d402f92f6",
+    "website/s0ul-intel.css": "9d061b2e926b5cb286f1f2d5e9558e6ae05622737f47f9b34a5c09e2f7332161",
+    "website/s0ul/index.html": "b07b3026ccad653e2d42820e09fcdc482665ca074c803b7092111a0c2fbc5809",
+    "website/s0ul-page.css": "88868712e00d9a95a60a73c30fd8eab7eb8788fe9cce2aa11de92a6fcec1fff4",
+    "frontend-tests/intel.test.mjs": "d3bdcb429d3f14909da341fbbf8cb00646e52d1c67c5854f968a4f6a2eee6838"
+  }
+}
