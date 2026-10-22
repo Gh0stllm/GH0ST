@@ -35,7 +35,10 @@ precompiles and undeployed addresses can also lack runtime bytecode.
 
 For deployed code, the universal reader scans at most 24,576 bytes. It skips
 `PUSH1` through `PUSH32` payloads when counting opcode positions, and retains at
-most 32 distinct `PUSH4` candidates. A candidate is a bytecode literal, not proof
+most 32 distinct `PUSH4` candidates from the first 4,096 code bytes. Candidate
+discovery has this separate bound to keep repetitive bytecode within the gas
+budget; opcode counting continues across the full bounded code scan.
+A candidate is a bytecode literal, not proof
 that the contract exposes that function. Metadata and unreachable code can still
 contribute to structural counts. A larger runtime is explicitly marked as a
 partial scan; the full code size and code hash remain available.
