@@ -1,0 +1,117 @@
+{
+  "status": "PASS_SYNTHETIC_BATCH_AND_CODE_ACCESS",
+  "synthetic_only": true,
+  "source_sha256": "f22f5e719aa78f5548c87b84eeb570d2c8b3ede526b7e2f7d2ecab849d0d86f2",
+  "environment": {
+    "chain_id": 31337,
+    "hardfork": "shanghai",
+    "compiler_runs": 100000,
+    "viaIR": true,
+    "weight_layout": "STOP prefix; 16 MXFP4 bytes plus scale per block"
+  },
+  "benchmarks": [
+    {
+      "rows": 1,
+      "groups": 90,
+      "scalar_products": 2880,
+      "previous_single_row_transactions_gas": 486987,
+      "optimized_single_row_transactions_gas": 327109,
+      "batch_calldata": {
+        "gas": 327819,
+        "calldata_bytes": 7524
+      },
+      "batch_code": {
+        "gas": 307660,
+        "calldata_bytes": 5956
+      },
+      "code_store": {
+        "address": "0xD1b298114C069678f491D882d61137eBeA8d574f",
+        "hash": "0x4167a8ecdb23bcd1f21a4192742a40612769947df1ed971d3fd6ab211721b274",
+        "deployment_gas": 384260,
+        "runtime_bytes": 1531
+      },
+      "break_even_repeated_calls_vs_batch_calldata": 20,
+      "batch_code_reduction_vs_previous_single_row_transactions_percent": 36.823775583331795
+    },
+    {
+      "rows": 4,
+      "groups": 90,
+      "scalar_products": 11520,
+      "previous_single_row_transactions_gas": 1947612,
+      "optimized_single_row_transactions_gas": 1308100,
+      "batch_calldata": {
+        "gas": 964623,
+        "calldata_bytes": 12132
+      },
+      "batch_code": {
+        "gas": 874198,
+        "calldata_bytes": 5956
+      },
+      "code_store": {
+        "address": "0xBd52aC4a93b35FF5f9Fa1e87D1aA8cF247327663",
+        "hash": "0xa6b6340e020a822fb053c9a48458534a2c513b6c2ff3a28d26f4727da9a43b0f",
+        "deployment_gas": 1376762,
+        "runtime_bytes": 6121
+      },
+      "break_even_repeated_calls_vs_batch_calldata": 16,
+      "batch_code_reduction_vs_previous_single_row_transactions_percent": 55.11436569501523
+    },
+    {
+      "rows": 8,
+      "groups": 90,
+      "scalar_products": 23040,
+      "previous_single_row_transactions_gas": 3895488,
+      "optimized_single_row_transactions_gas": 2616464,
+      "batch_calldata": {
+        "gas": 1813580,
+        "calldata_bytes": 18244
+      },
+      "batch_code": {
+        "gas": 1629855,
+        "calldata_bytes": 5956
+      },
+      "code_store": {
+        "address": "0x0eC693ef66B4b77Ec4DebC6361c67096F72c8c65",
+        "hash": "0x58a51aaa86e15ee44eec8364996f6e25be9d327b22ec5aaaf91fb265a97babbb",
+        "deployment_gas": 2700112,
+        "runtime_bytes": 12241
+      },
+      "break_even_repeated_calls_vs_batch_calldata": 15,
+      "batch_code_reduction_vs_previous_single_row_transactions_percent": 58.16044100251368
+    },
+    {
+      "rows": 16,
+      "groups": 90,
+      "scalar_products": 46080,
+      "previous_single_row_transactions_gas": 7789992,
+      "optimized_single_row_transactions_gas": 5231944,
+      "batch_calldata": {
+        "gas": 3511457,
+        "calldata_bytes": 30468
+      },
+      "batch_code": {
+        "gas": 3141486,
+        "calldata_bytes": 5956
+      },
+      "code_store": {
+        "address": "0x189E77BE9DAD7714f67e3DB365B372deB27d8C94",
+        "hash": "0x07544851b1b73b1b2a1d026795cb243aec1c9ba930b3d2b5318bc83fd4b7a899",
+        "deployment_gas": 5347348,
+        "runtime_bytes": 24481
+      },
+      "break_even_repeated_calls_vs_batch_calldata": 15,
+      "batch_code_reduction_vs_previous_single_row_transactions_percent": 59.672795556144344
+    }
+  ],
+  "validation": {
+    "cases": 200,
+    "invalid_rejections": 13
+  },
+  "limitations": [
+    "Synthetic matrices and int16 vectors only; no GPT-OSS inference/quality claim.",
+    "Row reuse changes workload/API; report separate single-row, batch-calldata and predeployed-code costs.",
+    "Predeployed code path excludes its one-time deployment from execution gas; deployment recorded separately.",
+    "Single local data shard; no production multi-shard executor, persistence policy or routing."
+  ],
+  "finished_at": "2026-10-22T17:18:20.688Z"
+}
