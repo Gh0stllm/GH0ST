@@ -28,8 +28,10 @@ GH0ST balance; it does not request an inventory of every asset in the account.
 The Raphael pool address matches its reserve and LP-supply monitor.
 
 The result shows a stored report, its observation time and comparison window.
-To record fresh data, open **Update**, connect a Robinhood Chain wallet, and
-review the current gas estimate and fee limit before confirming. The default
+To record fresh data, open **Update** and select **Calculate gas**. This public
+cost preview requires no wallet and sends no transaction. Connect a Robinhood
+Chain wallet to continue; the app then recalculates for the actual account.
+Review that fresh estimate and maximum fee before confirming. The default
 update is one `captureAndAnalyze(subjectId, 1)` transaction: it captures a new
 sample and compares it with the preceding retained sample. Existing sampling
 spacing, freshness, reader and duplicate-report checks still apply.
@@ -354,7 +356,9 @@ clipping now have distinct semantics, with a regression test for a two-day
 comparison. Reports also preserve their actual comparison timestamps/duration.
 
 The frontend module verifies deployment code/model pins, reads public records
-without a wallet and requires a connected Robinhood Chain wallet for writes.
+and previews update gas without a wallet, and requires a connected Robinhood
+Chain wallet for writes. A public preview never authorizes a transaction;
+connection discards it and calculates a new account-bound quote.
 Each concrete action receives a fresh gas estimate, 20% gas headroom, a fee
 ceiling 50% above the quoted gas price, explicit single-action fee-limit review
 and wallet confirmation. Quotes expire after 45 seconds. The frontend adds up
