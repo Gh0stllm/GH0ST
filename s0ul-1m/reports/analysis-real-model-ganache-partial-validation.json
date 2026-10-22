@@ -1,0 +1,814 @@
+{
+  "format": "s0ul-analysis-real-model-local-evm-v1",
+  "result": "PARTIAL",
+  "localOnly": true,
+  "network": "in-processGanache; chainId4663 is local configuration, not Robinhood mainnet",
+  "publicRpcCalls": 0,
+  "submittedPublicTransactions": 0,
+  "realFundsSpent": "0",
+  "fingerprint": "b55b7c9df6d97081da17948ff05967e8719b318bb42a6671e6ba021545033420",
+  "localDatabasePath": "/tmp/s0ul-analysis-real-evm-b55b7c9df6d97081da17",
+  "startedUtc": "2026-10-22T10:46:33.570Z",
+  "build": {
+    "compiler": "0.8.30+commit.73712a01.Emscripten.clang",
+    "optimizerRuns": 200,
+    "viaIR": true,
+    "evmVersion": "shanghai",
+    "sourceSha256": {
+      "S0ULModel.sol": "8c1e5197b142fe5943e6d00963bbfe85e4221c0d16c911628ce2682cbad2a8e1",
+      "S0ULTypes.sol": "5ca972223b3b2a8f587118b18bdf58530f39756586befa2ec8d200b41598aeed",
+      "S0ULInference.sol": "68ca180ba4c15407b54a2f3aa01aa03c36484b72615bf11d226c2b5a8ae8d342",
+      "S0ULMath.sol": "c827f7e898d3df31ffa0f92ed9fac110bb591906e9ffece062abf6909747664b",
+      "S0ULTokenizer.sol": "9b5779d016022c49a6dd40d28a734d1707323576ba28a5b7e7e8bc6d75555115",
+      "analysis/S0ULAnalysisFacts.sol": "179cf0d807450e33c7feafc27ff999b7f02a3cd68c6538112686304d6f4f85c3",
+      "intel/v2/S0ULUniversalReader.sol": "3703b1564b1153150720560de03bf8883748d470a4f4f7a75f23abb54d48038a",
+      "analysis/S0ULAnalysisCodec.sol": "3ca0597d89ea9f586125b26369934f7f37dda3f05c048ce078530c63d0e57d6b",
+      "analysis/S0ULAnalysisExecutor.sol": "ac3868be85281431c4d9daf1579697f871ff1f7976d0b950579bf460ee2dd2fb"
+    }
+  },
+  "model": {
+    "manifestPath": "/workspace/scratch/e15151b948b6/gh0st-frontend/s0ul-1m/analysis-model/evaluation-v2/solidity/model.json",
+    "manifestSha256": "9b6090a7639245180a6dbcc1ae69f379d3b9c5bd4c1c5981c78aa7035b50b97d",
+    "payloadSha256": "b83416a49a7600136a9eb26c8d13b260ed4d4933ec0b1bff7fb5b6419579d901",
+    "integerManifestPath": "/workspace/scratch/e15151b948b6/gh0st-frontend/s0ul-1m/analysis-model/evaluation-v2/integer/integer-manifest.json",
+    "integerManifestSha256": "36d92896883adc27a753b6e4d93fdf04f259dac460992167d5baf572f173b2ca",
+    "integerPayloadSha256": "12dae909761bd6b990989fd63d5130be9db84e5ede0b86770754316aa853110d",
+    "allNamedIntegerTensorsExact": true,
+    "canonicalManifestVerifiedByOriginalExporter": {
+      "format": "gh0st-s0ul-solidity-v1",
+      "sourceCheckpoint": "0x9cf0b5ce17109bda877f21ac08731cd1897bf6d160b4b690de809c750e960716",
+      "payload": {
+        "nbytes": 1102856,
+        "path": "payload.bin",
+        "sha256": "b83416a49a7600136a9eb26c8d13b260ed4d4933ec0b1bff7fb5b6419579d901"
+      },
+      "shards": 48,
+      "manifestHash": "0xa89f665f053d9ea9172112ec839ce16d399f9687c75f00a18ddf0e0ee128a87f"
+    },
+    "sourceCheckpoint": "0x9cf0b5ce17109bda877f21ac08731cd1897bf6d160b4b690de809c750e960716",
+    "manifestHash": "0xa89f665f053d9ea9172112ec839ce16d399f9687c75f00a18ddf0e0ee128a87f",
+    "shards": 48,
+    "parameterCount": 984192,
+    "codecDomain": "0xc0a58f640b73adb0cfd80b9eea45c4a72542becb30edccdfecb01cbbc37d778e",
+    "schemaSha256": "0xeadc97e902dcdadbc655ee8b920562997737c5aa5690f181f7860bf1543c41f0"
+  },
+  "golden": {
+    "path": "/workspace/scratch/e15151b948b6/gh0st-frontend/s0ul-1m/analysis-model/evaluation-v2/canonical-integer-golden.json",
+    "sha256": "8b13a35f8f26539d2fea04ca5c1db2bd36eb57c3b844bb2423a726086e5cf554",
+    "decisions": 17,
+    "source": "Pythonintegerforward; all512decisionlogits, notfloatargmaxonly"
+  },
+  "target": "0x0000000000000000000000000000000000000000",
+  "features": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1
+  ],
+  "promptIds": [
+    1,
+    4,
+    6,
+    8,
+    24,
+    27,
+    30,
+    33,
+    36,
+    39,
+    42,
+    44,
+    46,
+    48,
+    51,
+    3
+  ],
+  "transactions": [
+    {
+      "kind": "deploy:shard:0",
+      "hash": "0x13b8c019d82d805f42e25fa7b6a67a68ac72bd9791532b1be2991d523dcebf10",
+      "gasUsed": "5025761",
+      "gasPrice": "2000000000",
+      "blockNumber": 1,
+      "status": 1
+    },
+    {
+      "kind": "deploy:shard:1",
+      "hash": "0xdd6910f925ce4b0ee65daa8c13f64e2ab5eeb3c49ef54652be051adbaf4371dc",
+      "gasUsed": "5025941",
+      "gasPrice": "2000000000",
+      "blockNumber": 2,
+      "status": 1
+    },
+    {
+      "kind": "deploy:shard:2",
+      "hash": "0xa695c8062ac60d95966345d811988c89a0e7764b919619e0ccdc5065481b9dc8",
+      "gasUsed": "4996745",
+      "gasPrice": "2000000000",
+      "blockNumber": 3,
+      "status": 1
+    },
+    {
+      "kind": "deploy:shard:3",
+      "hash": "0x383585ca01fc03bdfe365cbd413d0e09d18b9bd7b262f0d3abaed3532a3d4c03",
+      "gasUsed": "5003117",
+      "gasPrice": "2000000000",
+      "blockNumber": 4,
+      "status": 1
+    },
+    {
+      "kind": "deploy:shard:4",
+      "hash": "0xb2cd052ef1bf00b3a82955dd85645913a0bfd894f2cfc66da4469b33e2c19137",
+      "gasUsed": "5016521",
+      "gasPrice": "2000000000",
+      "blockNumber": 5,
+      "status": 1
+    },
+    {
+      "kind": "deploy:shard:5",
+      "hash": "0x4336dd0159778556941822d35e839cab6ec1e8658ab862be38f576702d34b699",
+      "gasUsed": "5016305",
+      "gasPrice": "2000000000",
+      "blockNumber": 6,
+      "status": 1
+    },
+    {
+      "kind": "deploy:shard:6",
+      "hash": "0xb8c3580f2ae2a908e7ec1a0a0cf9bd20cb7e56d35d8fc281cd4fbd79a2d0b1c7",
+      "gasUsed": "5007545",
+      "gasPrice": "2000000000",
+      "blockNumber": 7,
+      "status": 1
+    },
+    {
+      "kind": "deploy:shard:7",
+      "hash": "0x2d047e1ebca3ef923a09066e8b3d18723cf45e17bb8f2c86ced363d5260d2ef4",
+      "gasUsed": "5025377",
+      "gasPrice": "2000000000",
+      "blockNumber": 8,
+      "status": 1
+    },
+    {
+      "kind": "deploy:shard:8",
+      "hash": "0x6f337292827d9ae39a576b9051df8032fb2fb219220b037d0f7657297661ef39",
+      "gasUsed": "5026001",
+      "gasPrice": "2000000000",
+      "blockNumber": 9,
+      "status": 1
+    },
+    {
+      "kind": "deploy:shard:9",
+      "hash": "0x0db5d062d44b4ee89af8070a0d6c87c1b85294f40bd0d9d849d4af2dee5a4769",
+      "gasUsed": "4980401",
+      "gasPrice": "2000000000",
+      "blockNumber": 10,
+      "status": 1
+    },
+    {
+      "kind": "deploy:shard:10",
+      "hash": "0x137368230c26879aec1ac081bc7c76b6c14481f0c307b42ee4a53df886a668db",
+      "gasUsed": "5025293",
+      "gasPrice": "2000000000",
+      "blockNumber": 11,
+      "status": 1
+    },
+    {
+      "kind": "deploy:shard:11",
+      "hash": "0x76ea4da0a6d6770563484a2f838ee075bc21f5f3d472e3c25b9722e537df350a",
+      "gasUsed": "5025281",
+      "gasPrice": "2000000000",
+      "blockNumber": 12,
+      "status": 1
+    },
+    {
+      "kind": "deploy:shard:12",
+      "hash": "0x6b7e9fcda82870e3b6c413aa2c92a2a07dbe208ef3502773bc9cd99003744b17",
+      "gasUsed": "5025281",
+      "gasPrice": "2000000000",
+      "blockNumber": 13,
+      "status": 1
+    },
+    {
+      "kind": "deploy:shard:13",
+      "hash": "0xe00b6156da210ba42051f4390a44a6497a3c9abad6489e3973862c2ea8fb27bd",
+      "gasUsed": "5007605",
+      "gasPrice": "2000000000",
+      "blockNumber": 14,
+      "status": 1
+    },
+    {
+      "kind": "deploy:shard:14",
+      "hash": "0x90c1964d09e755b6e7982e698f4aa65b82fb414ec2cbfcc4ecf3be9113faf217",
+      "gasUsed": "5016821",
+      "gasPrice": "2000000000",
+      "blockNumber": 15,
+      "status": 1
+    },
+    {
+      "kind": "deploy:shard:15",
+      "hash": "0xb86fdf0ef0d44894be8fbf86b5d17c61363cd7a55dc1c31eee7d9ff8f9e447e7",
+      "gasUsed": "5007797",
+      "gasPrice": "2000000000",
+      "blockNumber": 16,
+      "status": 1
+    },
+    {
+      "kind": "deploy:shard:16",
+      "hash": "0x85cf89462ba5fbb771758a523c6b5258ea62d12be989d5ced7f7b1daf0bc1cd4",
+      "gasUsed": "5007269",
+      "gasPrice": "2000000000",
+      "blockNumber": 17,
+      "status": 1
+    },
+    {
+      "kind": "deploy:shard:17",
+      "hash": "0x2b6bab25fa4244f169c13aa50c58fdb97c056b4376076323ec6ff0598a57f299",
+      "gasUsed": "5025185",
+      "gasPrice": "2000000000",
+      "blockNumber": 18,
+      "status": 1
+    },
+    {
+      "kind": "deploy:shard:18",
+      "hash": "0x17cee017834fb4fec5511f6ebc37446ea45fb5393eb1de9af987693162655910",
+      "gasUsed": "5025245",
+      "gasPrice": "2000000000",
+      "blockNumber": 19,
+      "status": 1
+    },
+    {
+      "kind": "deploy:shard:19",
+      "hash": "0x7553ef6f29016a5045530f1a209f3e3c8cf2cf42f6802bd8341282226af3ec55",
+      "gasUsed": "5025377",
+      "gasPrice": "2000000000",
+      "blockNumber": 20,
+      "status": 1
+    },
+    {
+      "kind": "deploy:shard:20",
+      "hash": "0x649880aebd0ad06b972a726f24fe4c303bfc04e5794babfea89b3f192e8f41b8",
+      "gasUsed": "4979201",
+      "gasPrice": "2000000000",
+      "blockNumber": 21,
+      "status": 1
+    },
+    {
+      "kind": "deploy:shard:21",
+      "hash": "0xfae2f2d62a59638437ddcf8ad72ee21e228cde0a493ec5f02ff114fa0e3b434b",
+      "gasUsed": "5024405",
+      "gasPrice": "2000000000",
+      "blockNumber": 22,
+      "status": 1
+    },
+    {
+      "kind": "deploy:shard:22",
+      "hash": "0x4eab5c040aefccc3bb03d7d983f85cad74555dc5ab1e49fb634ae4806576e983",
+      "gasUsed": "5024333",
+      "gasPrice": "2000000000",
+      "blockNumber": 23,
+      "status": 1
+    },
+    {
+      "kind": "deploy:shard:23",
+      "hash": "0xab542b8306527fa0aed1725a01abe0c0ca7aec5a534a4c066b4d6d7ad7e71ac2",
+      "gasUsed": "5024261",
+      "gasPrice": "2000000000",
+      "blockNumber": 24,
+      "status": 1
+    },
+    {
+      "kind": "deploy:shard:24",
+      "hash": "0x287c190e11093b756847ee9d6f0cf04dab70c4b4d68e4fbae4e7ded4cc0ca87d",
+      "gasUsed": "4999061",
+      "gasPrice": "2000000000",
+      "blockNumber": 25,
+      "status": 1
+    },
+    {
+      "kind": "deploy:shard:25",
+      "hash": "0x6f1cc473c5f714f054dc55e290c46e64d3eab91c94333c3df66ac8cd711e2dc2",
+      "gasUsed": "5016869",
+      "gasPrice": "2000000000",
+      "blockNumber": 26,
+      "status": 1
+    },
+    {
+      "kind": "deploy:shard:26",
+      "hash": "0x476031e922adafa24991a84917388a37ccab09bc720f51ccb5a726f2ee37ee1c",
+      "gasUsed": "5016749",
+      "gasPrice": "2000000000",
+      "blockNumber": 27,
+      "status": 1
+    },
+    {
+      "kind": "deploy:shard:27",
+      "hash": "0xea980cfd457aeae3cc1a9cb737d2b656aa347fedc0d127faf0a3dc909929dc18",
+      "gasUsed": "5007509",
+      "gasPrice": "2000000000",
+      "blockNumber": 28,
+      "status": 1
+    },
+    {
+      "kind": "deploy:shard:28",
+      "hash": "0xa3f42d2dddb72b588592b1330bd9e4a5edf318d5c906d1e8b85b0309add93692",
+      "gasUsed": "5025797",
+      "gasPrice": "2000000000",
+      "blockNumber": 29,
+      "status": 1
+    },
+    {
+      "kind": "deploy:shard:29",
+      "hash": "0xf68da1714a1fdafe18f9f3c8dbaed87c083aa4a3db813a23123f3797f1cecebc",
+      "gasUsed": "5025869",
+      "gasPrice": "2000000000",
+      "blockNumber": 30,
+      "status": 1
+    },
+    {
+      "kind": "deploy:shard:30",
+      "hash": "0xd8beb5adc6b356896cc46c68429f69d0c2f1b42ebb9bbb4a53384f4e483a400a",
+      "gasUsed": "4979849",
+      "gasPrice": "2000000000",
+      "blockNumber": 31,
+      "status": 1
+    },
+    {
+      "kind": "deploy:shard:31",
+      "hash": "0x61e50ea36dfe5ccb669a30b8b55a4e45a3c065fb8f8d33ad8e4080344b6fc6c6",
+      "gasUsed": "5024033",
+      "gasPrice": "2000000000",
+      "blockNumber": 32,
+      "status": 1
+    },
+    {
+      "kind": "deploy:shard:32",
+      "hash": "0x6d44678a9181a3ceefa6cee5ad0e86105d4f01863619256a7cd4cdf2c4b27256",
+      "gasUsed": "5023853",
+      "gasPrice": "2000000000",
+      "blockNumber": 33,
+      "status": 1
+    },
+    {
+      "kind": "deploy:shard:33",
+      "hash": "0xa4fb36b41582cb09ff61185f953474999be5a7132a1b653e52699e811d8a163a",
+      "gasUsed": "5023721",
+      "gasPrice": "2000000000",
+      "blockNumber": 34,
+      "status": 1
+    },
+    {
+      "kind": "deploy:shard:34",
+      "hash": "0x82317a9b0eb7a93fa28aa240208ffa596e82bf0978f4c195e1022afad7674d3d",
+      "gasUsed": "5006621",
+      "gasPrice": "2000000000",
+      "blockNumber": 35,
+      "status": 1
+    },
+    {
+      "kind": "deploy:shard:35",
+      "hash": "0x16695d37d1096e46adc7847b14991df9ff5ba6f0f7286d0af1e32e59ade789c2",
+      "gasUsed": "5016521",
+      "gasPrice": "2000000000",
+      "blockNumber": 36,
+      "status": 1
+    },
+    {
+      "kind": "deploy:shard:36",
+      "hash": "0xd30bd0473efa55d820ced1f0d1e39cdbafaab4530c82fb14cd462c28169441f7",
+      "gasUsed": "5007101",
+      "gasPrice": "2000000000",
+      "blockNumber": 37,
+      "status": 1
+    },
+    {
+      "kind": "deploy:shard:37",
+      "hash": "0xc6f89b7a9ce767f6461cb731bc405b6f071d002376617335a748a609d8341bb1",
+      "gasUsed": "5007401",
+      "gasPrice": "2000000000",
+      "blockNumber": 38,
+      "status": 1
+    },
+    {
+      "kind": "deploy:shard:38",
+      "hash": "0xd0ab4e44ef8fdd04be96ed07fea8905be0b0367dcd8ede346922bd6b2f7d41f0",
+      "gasUsed": "5025857",
+      "gasPrice": "2000000000",
+      "blockNumber": 39,
+      "status": 1
+    },
+    {
+      "kind": "deploy:shard:39",
+      "hash": "0x4546c180c4251fde5d5c31b98f946c738c3cbf4eb72f6a00084c017b36be39df",
+      "gasUsed": "5025941",
+      "gasPrice": "2000000000",
+      "blockNumber": 40,
+      "status": 1
+    },
+    {
+      "kind": "deploy:shard:40",
+      "hash": "0x84713ba66d6c2f17d935e885f524ecbb1effec0cff28d77f44ebbe98c20280e2",
+      "gasUsed": "5025773",
+      "gasPrice": "2000000000",
+      "blockNumber": 41,
+      "status": 1
+    },
+    {
+      "kind": "deploy:shard:41",
+      "hash": "0x75475075b5e5d7e1c75b177f3a004582ed3b1788fdf36ea0cfe5d77fc25433c3",
+      "gasUsed": "4979657",
+      "gasPrice": "2000000000",
+      "blockNumber": 42,
+      "status": 1
+    },
+    {
+      "kind": "deploy:shard:42",
+      "hash": "0x63e342a58906835b1c3afd6b660b1c531865767bd9d4f7407d2b022e38d3f920",
+      "gasUsed": "5025377",
+      "gasPrice": "2000000000",
+      "blockNumber": 43,
+      "status": 1
+    },
+    {
+      "kind": "deploy:shard:43",
+      "hash": "0x9144f581b22e85c0938654f047f3efe642f689372081c5a2d71a2ee11b1c2e19",
+      "gasUsed": "5025065",
+      "gasPrice": "2000000000",
+      "blockNumber": 44,
+      "status": 1
+    },
+    {
+      "kind": "deploy:shard:44",
+      "hash": "0x397133beff7a94af9011521c6b18f679afdfdd358105c992ff67da01885f488f",
+      "gasUsed": "5025041",
+      "gasPrice": "2000000000",
+      "blockNumber": 45,
+      "status": 1
+    },
+    {
+      "kind": "deploy:shard:45",
+      "hash": "0x1c1d340b55e24643abadc81dbb1f2114bf52beb8bce3de63db8c20b6171cc688",
+      "gasUsed": "4860281",
+      "gasPrice": "2000000000",
+      "blockNumber": 46,
+      "status": 1
+    },
+    {
+      "kind": "deploy:shard:46",
+      "hash": "0x71cbd53617016215cd5e927392fcdaef1d4ad079966a991b786e982c1d75cafa",
+      "gasUsed": "4859561",
+      "gasPrice": "2000000000",
+      "blockNumber": 47,
+      "status": 1
+    },
+    {
+      "kind": "deploy:shard:47",
+      "hash": "0xee51f2247db2ceb32b92d6d20bbd6d04d4d56f75554b2547ed966529060f0430",
+      "gasUsed": "4569491",
+      "gasPrice": "2000000000",
+      "blockNumber": 48,
+      "status": 1
+    },
+    {
+      "kind": "deploy:S0ULModel",
+      "hash": "0x7e09429fe8754b4028cceaa8b62ab6d0618e2957577946ccfc09157df99e9f62",
+      "gasUsed": "5835850",
+      "gasPrice": "2000000000",
+      "blockNumber": 49,
+      "status": 1
+    },
+    {
+      "kind": "deploy:S0ULInference",
+      "hash": "0x624c9e973ddccc8d4b2f13b260a58774f1f3f9abeeb16c88db11ce5381b6e9ee",
+      "gasUsed": "4299852",
+      "gasPrice": "2000000000",
+      "blockNumber": 50,
+      "status": 1
+    },
+    {
+      "kind": "deploy:S0ULUniversalReader",
+      "hash": "0xb0041ab157adb02cca60450ddb400766b6bb94d70fa76637b64b8df6ce90023c",
+      "gasUsed": "1385378",
+      "gasPrice": "2000000000",
+      "blockNumber": 51,
+      "status": 1
+    },
+    {
+      "kind": "deploy:S0ULAnalysisFacts",
+      "hash": "0xe1fcf4125db498a6b4ed8a4350b017f5b14140d5f1ac465b8fd904b2f318ea38",
+      "gasUsed": "988530",
+      "gasPrice": "2000000000",
+      "blockNumber": 52,
+      "status": 1
+    },
+    {
+      "kind": "deploy:S0ULAnalysisCodec",
+      "hash": "0xddd606eb6cdd2723070b3e2e4b1c8d5c91873f3f6a9520a15f157f06ded254cb",
+      "gasUsed": "1120796",
+      "gasPrice": "2000000000",
+      "blockNumber": 53,
+      "status": 1
+    },
+    {
+      "kind": "deploy:S0ULAnalysisExecutor",
+      "hash": "0x34175b5089187b1e28c38810866f760776410c0564cc58d6a5642cda6a916e6a",
+      "gasUsed": "3337594",
+      "gasPrice": "2000000000",
+      "blockNumber": 54,
+      "status": 1
+    },
+    {
+      "kind": "open",
+      "hash": "0x3b0b25704b560ed801be7dbe97a989f6e048e12f9b8db4867536951846f1240a",
+      "gasUsed": "1855821",
+      "gasPrice": "2000000000",
+      "blockNumber": 55,
+      "status": 1
+    },
+    {
+      "kind": "advance",
+      "hash": "0xf662dd7c4fe91c8f2f8a156d651f56f32f3a45f32dfe2829eccfb6d9d7e4ad3f",
+      "gasUsed": "7312623",
+      "gasPrice": "2000000000",
+      "blockNumber": 56,
+      "status": 1
+    },
+    {
+      "kind": "advance",
+      "hash": "0x01c1c0372ca0a96257b22115ae1bb28c20d1a5c8b25d680e7c21968492bcfb53",
+      "gasUsed": "5341088",
+      "gasPrice": "2000000000",
+      "blockNumber": 57,
+      "status": 1
+    },
+    {
+      "kind": "advance",
+      "hash": "0xa899b8fd5f4c5341fa85af5b2487e2efa8e3e388971b711f1047e62d4a352118",
+      "gasUsed": "4542969",
+      "gasPrice": "2000000000",
+      "blockNumber": 58,
+      "status": 1
+    },
+    {
+      "kind": "advance",
+      "hash": "0xc7779335c8ccf510839e79a5bc5de0901edebf5f2c1f29aa6342da51b5e7cad9",
+      "gasUsed": "9691031",
+      "gasPrice": "2000000000",
+      "blockNumber": 59,
+      "status": 1
+    },
+    {
+      "kind": "advance",
+      "hash": "0xaf08bb2be45b66acecb1437ec3d4ccbc6744a69dcaa5f6135001af40aae753e8",
+      "gasUsed": "18081148",
+      "gasPrice": "2000000000",
+      "blockNumber": 60,
+      "status": 1
+    },
+    {
+      "kind": "advance",
+      "hash": "0x2976825d949ba6a1f1df93fe3b21f9486630bef9753a4736dde33b0e799142ec",
+      "gasUsed": "8582451",
+      "gasPrice": "2000000000",
+      "blockNumber": 61,
+      "status": 1
+    },
+    {
+      "kind": "advance",
+      "hash": "0x950671e8e762f8a0e63a9fd8190be3051565b1542f26a57bb56ab4561c90cdbd",
+      "gasUsed": "2745524",
+      "gasPrice": "2000000000",
+      "blockNumber": 62,
+      "status": 1
+    },
+    {
+      "kind": "advance",
+      "hash": "0x47578e29cbeaee127ad65be20610c40d5fe9ee7a175ddac24342e4724ea8ba37",
+      "gasUsed": "4434549",
+      "gasPrice": "2000000000",
+      "blockNumber": 63,
+      "status": 1
+    },
+    {
+      "kind": "advance",
+      "hash": "0x6cf71965de6d89fb2c02de20063f2e180cdf2121c90bc4fff4ec85febd6dec03",
+      "gasUsed": "10655260",
+      "gasPrice": "2000000000",
+      "blockNumber": 64,
+      "status": 1
+    },
+    {
+      "kind": "advance",
+      "hash": "0x739cc76c328138eb644afa14efcb7aa429b9c91139e22d986d3a8acc38384603",
+      "gasUsed": "15397736",
+      "gasPrice": "2000000000",
+      "blockNumber": 65,
+      "status": 1
+    },
+    {
+      "kind": "advance",
+      "hash": "0xdbe903799affc64cd5530646e209529e3d90fbc64f66d455e69a0401efe50dac",
+      "gasUsed": "8432898",
+      "gasPrice": "2000000000",
+      "blockNumber": 66,
+      "status": 1
+    },
+    {
+      "kind": "advance",
+      "hash": "0xc877ebc68a26bfd754c8ecba8a22aa8649a5ebf46385e2aa6f11a560c5572bb7",
+      "gasUsed": "2790696",
+      "gasPrice": "2000000000",
+      "blockNumber": 67,
+      "status": 1
+    },
+    {
+      "kind": "advance",
+      "hash": "0x25d29720ba05137e843cfaf60570e25b838076f83edc8320b868177d7025d8d6",
+      "gasUsed": "6700428",
+      "gasPrice": "2000000000",
+      "blockNumber": 68,
+      "status": 1
+    },
+    {
+      "kind": "advance",
+      "hash": "0x3480bb0897f5e5edef93ab55466ed6e19e2f60c088fd21f370935697a03c47cd",
+      "gasUsed": "11070687",
+      "gasPrice": "2000000000",
+      "blockNumber": 69,
+      "status": 1
+    },
+    {
+      "kind": "advance",
+      "hash": "0x82f509f60235c7be0503056823286ee914c69fe7832c65cfbc9042cfdc2fe88d",
+      "gasUsed": "15451294",
+      "gasPrice": "2000000000",
+      "blockNumber": 70,
+      "status": 1
+    },
+    {
+      "kind": "advance",
+      "hash": "0x951d4ea8b6c7014a32a0ef4f1d6b5f71c6cfd30d86282cef5c280ebd78ba3eab",
+      "gasUsed": "7182009",
+      "gasPrice": "2000000000",
+      "blockNumber": 71,
+      "status": 1
+    },
+    {
+      "kind": "advance",
+      "hash": "0xae79219ee4cde02a0af2e18b07d22068bafbf474b3d1dfc766661fe21c923a78",
+      "gasUsed": "1824925",
+      "gasPrice": "2000000000",
+      "blockNumber": 72,
+      "status": 1
+    },
+    {
+      "kind": "advance",
+      "hash": "0x31c040d7892e8e4851526727f5685b3f3cc6be158be1d52a31c2909abc6389b7",
+      "gasUsed": "8909109",
+      "gasPrice": "2000000000",
+      "blockNumber": 73,
+      "status": 1
+    }
+  ],
+  "decisions": [],
+  "gasPreflights": [
+    {
+      "shape": "1",
+      "phase": 1,
+      "position": 0,
+      "steps": 4,
+      "gasEstimate": "7334709",
+      "paddedGas": "8801651"
+    },
+    {
+      "shape": "11",
+      "phase": 11,
+      "position": 0,
+      "steps": 4,
+      "gasEstimate": "18103234",
+      "paddedGas": "21723881"
+    },
+    {
+      "shape": "12",
+      "phase": 12,
+      "position": 0,
+      "steps": 4,
+      "gasEstimate": "15482768",
+      "paddedGas": "18579322"
+    }
+  ],
+  "continuationBatches": 17,
+  "limits": [
+    "Incomplete JavaScript-backend execution retained as an honest progress journal; no full inference or output parity was established in this run.",
+    "One known no-code regression input only; no accuracy on arbitrary real addresses or analyst reasoning is established.",
+    "All transactions are on a local simulated chain; no public RPC, public transactions, real funds, or mainnet deployment."
+  ],
+  "deployment": {
+    "model": "0xc0b3B62DD0400E4baa721DdEc9B8A384147b23fF",
+    "modelId": "0xc0399399f7fd208092a063d492ae794cef305388dfaa7b2542a90532a088a945",
+    "engine": "0xCeeFD27e0542aFA926B87d23936c79c276A48277",
+    "reader": "0x47a2Db5D68751EeAdFBC44851E84AcDB4F7299Cc",
+    "adapter": "0x988B6CFBf3332FF98FFBdED665b1F53a61f92612",
+    "codec": "0xeea2Fc1D255Fd28aA15c6c2324Ad40B03267f9c5",
+    "executor": "0xc34175A79ACca40392bECD22ff10fAeBFE780Ae7",
+    "shards": [
+      "0xe78A0F7E598Cc8b0Bb87894B0F60dD2a88d6a8Ab",
+      "0x5b1869D9A4C187F2EAa108f3062412ecf0526b24",
+      "0xCfEB869F69431e42cdB54A4F4f105C19C080A601",
+      "0x254dffcd3277C0b1660F6d42EFbB754edaBAbC2B",
+      "0xC89Ce4735882C9F0f0FE26686c53074E09B0D550",
+      "0xD833215cBcc3f914bD1C9ece3EE7BF8B14f841bb",
+      "0x9561C133DD8580860B6b7E504bC5Aa500f0f06a7",
+      "0xe982E462b094850F12AF94d21D470e21bE9D0E9C",
+      "0x59d3631c86BbE35EF041872d502F218A39FBa150",
+      "0x0290FB167208Af455bB137780163b7B7a9a10C16",
+      "0x9b1f7F645351AF3631a656421eD2e40f2802E6c0",
+      "0x67B5656d60a809915323Bf2C40A8bEF15A152e3e",
+      "0x2612Af3A521c2df9EAF28422Ca335b04AdF3ac66",
+      "0xA57B8a5584442B467b4689F1144D269d096A3daF",
+      "0x26b4AFb60d6C903165150C6F0AA14F8016bE4aec",
+      "0x630589690929E9cdEFDeF0734717a9eF3Ec7Fcfe",
+      "0x0E696947A06550DEf604e82C26fd9E493e576337",
+      "0xDb56f2e9369E0D7bD191099125a3f6C370F8ed15",
+      "0xA94B7f0465E98609391C623d0560C5720a3f2D33",
+      "0x6eD79Aa1c71FD7BdBC515EfdA3Bd4e26394435cC",
+      "0xb09bCc172050fBd4562da8b229Cf3E45Dc3045A6",
+      "0xFC628dd79137395F3C9744e33b1c5DE554D94882",
+      "0x5f8e26fAcC23FA4cbd87b8d9Dbbd33D5047abDE1",
+      "0x21a59654176f2689d12E828B77a783072CD26680",
+      "0xD86C8F0327494034F60e25074420BcCF560D5610",
+      "0x4bf749ec68270027C5910220CEAB30Cc284c7BA2",
+      "0xaD888d0Ade988EbEe74B8D4F39BF29a8d0fe8A8D",
+      "0x7C728214be9A0049e6a86f2137ec61030D0AA964",
+      "0x5017A545b09ab9a30499DE7F431DF0855bCb7275",
+      "0x86072CbFF48dA3C1F01824a6761A03F105BCC697",
+      "0xFF6049B87215476aBf744eaA3a476cBAd46fB1cA",
+      "0xA586074FA4Fe3E546A132a16238abe37951D41fE",
+      "0x2D8BE6BF0baA74e0A907016679CaE9190e80dD0A",
+      "0x970e8f18ebfEa0B08810f33a5A40438b9530FBCF",
+      "0x5b9b42d6e4B2e4Bf8d42Eba32D46918e10899B66",
+      "0xaf5C4C6C7920B4883bC6252e9d9B8fE27187Cf68",
+      "0xEC5d4F247aF81A843612eb1371CBCfa88b762119",
+      "0xDDb64fE46a91D46ee29420539FC25FD07c5FEa3E",
+      "0x1b88Bdb8269A1aB1372459F5a4eC3663D6f5cCc4",
+      "0x22d5C8BdD4346b390014a07109a8F830094d4abf",
+      "0x7414e38377D6DAf6045626EC8a8ABB8a1BC4B97a",
+      "0xB9bdBAEc07751F6d54d19A6B9995708873F3DE18",
+      "0x4bf3A7dFB3b76b5B3E169ACE65f888A4b4FCa5Ee",
+      "0xFcCeD5E997E7fb1D0594518D3eD57245bB8ed17E",
+      "0x4339316e04CFfB5961D1c41fEF8E44bfA2A7fBd1",
+      "0xdAA71FBBA28C946258DD3d5FcC9001401f72270F",
+      "0xf19A2A01B70519f67ADb309a994Ec8c69A967E8b",
+      "0x4cFB3F70BF6a80397C2e634e5bDd85BC0bb189EE"
+    ],
+    "codeHashes": {
+      "model": "0x3df1ed069ac238b21dc1e3411ef334d627274d2b5ed0133617bfdf1528de8fee",
+      "engine": "0x129e49a61e900e73fdfb22e85b968923d2b1ddef479e03b29f868d1326af8ec8",
+      "reader": "0x445af7784413f9a92237e8ee41db8bcf8f63b1cf708231ac2b974a1cfd5c04a6",
+      "adapter": "0x3c2eabd1430a5711890a97d02d39a2a1db17cc742283f63ee99f6fc3449ec674",
+      "codec": "0x047c5ea173f1687a34c0623cb11fca6335262ecea0be1cd5aae5b1cb5f32dd03",
+      "executor": "0x6ea4b644d7a1f9c60910925ee510e71b6d2d1d6ad0151a7a9a815a762d2c6f49"
+    }
+  },
+  "jobId": "1",
+  "requestId": "1",
+  "factsHash": "0x00534479b12b10faef1df439cd541a69d010357bd302122b65b4f7c47a258cff",
+  "promptHash": "0x36045804bf1102e5c7ae50711f0116c6b64478c1c75c7fa041c6954784829925",
+  "openCaptureBytes": 2688,
+  "lastStatus": {
+    "owner": "0xc34175A79ACca40392bECD22ff10fAeBFE780Ae7",
+    "phase": "11",
+    "position": "0",
+    "layer": "3",
+    "row": "256",
+    "head": "0",
+    "promptLength": "16",
+    "maxNewTokens": "32",
+    "generated": "0",
+    "saturationCount": "0",
+    "done": false,
+    "cancelled": false,
+    "logitsReady": false
+  },
+  "lastCanonicalLocalBlock": 73,
+  "completed": false,
+  "stopReason": "JavaScript Ganache backend was too slow; operator stopped before full inference. A separate native-backend run may follow.",
+  "comparison": {
+    "decisions": 0,
+    "totalLogitsMatched": 0,
+    "outputTokensExact": false,
+    "strictCodecExact": false
+  },
+  "stoppedUtc": "2026-10-22T10:52:43.661Z",
+  "complete": false,
+  "fullOutputParityEstablished": false
+}
