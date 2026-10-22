@@ -1,0 +1,52 @@
+{
+  "status": "PASS_SYNTHETIC_TOP4_SELECTION",
+  "source_sha256": "a9b639864d580d2c05e46f4090add572d702a2893dab6a924760d9d44623a06e",
+  "benchmarks": [
+    {
+      "kind": "random",
+      "full_sort_control_gas": 199505,
+      "streaming_top4_gas": 46391,
+      "reduction_percent": 76.74694869802762
+    },
+    {
+      "kind": "ascending",
+      "full_sort_control_gas": 287167,
+      "streaming_top4_gas": 31613,
+      "reduction_percent": 88.99142310920126
+    },
+    {
+      "kind": "descending",
+      "full_sort_control_gas": 47165,
+      "streaming_top4_gas": 34786,
+      "reduction_percent": 26.24615710802502
+    },
+    {
+      "kind": "ties",
+      "full_sort_control_gas": 156205,
+      "streaming_top4_gas": 40016,
+      "reduction_percent": 74.3823821260523
+    },
+    {
+      "kind": "allMin",
+      "full_sort_control_gas": 47177,
+      "streaming_top4_gas": 34798,
+      "reduction_percent": 26.23948110307989
+    },
+    {
+      "kind": "allMax",
+      "full_sort_control_gas": 59081,
+      "streaming_top4_gas": 46702,
+      "reduction_percent": 20.952590511331902
+    }
+  ],
+  "validation": {
+    "cases": 72623,
+    "fuzz_cases": 72585
+  },
+  "limits": [
+    "32 integer scores, top-4 only; ties choose lower index.",
+    "No real router weights, model score calculation, gate softmax or trained-model parity.",
+    "Gas comparison is against our full insertion-sort control, not an existing optimized GPT-OSS implementation."
+  ],
+  "finished_at": "2026-10-22T17:58:48.004Z"
+}
