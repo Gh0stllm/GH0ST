@@ -1,0 +1,1329 @@
+{
+  "format": "s0ul-intel-browser-deployment-v1",
+  "chainId": 4663,
+  "owner": "0x8D6B11CFdF079e27C17e05Cb7Ea81235887691c6",
+  "buildFingerprint": "2c1515d43c2fd0ac252172b7a69e7850c23bafe3b7da380166fde40c03b2e132",
+  "modelId": "0x033f3bbf93ed8c7465a86389cd01aecb8fa64a582dfd9ff403da7b47fe04cbbd",
+  "trainingManifestHash": "0x06c8d5497bba57f04b6418dd1510711cfe9383450a1464b6d73d9169f9a6c070",
+  "minSpacing": 60,
+  "maxAge": 3600,
+  "contracts": {
+    "model": {
+      "address": "0x9329833849A0938647217D1e42A1199d174Cf8c0",
+      "codeHash": "0xe5b3abd4a9b85451b0ff708d34f4c1eabfa2bdfa5e970a4c3f9dcc202e0e5626",
+      "normalizedRuntimeHash": "0xe5b3abd4a9b85451b0ff708d34f4c1eabfa2bdfa5e970a4c3f9dcc202e0e5626",
+      "runtimeBytes": 2053,
+      "name": "S0ULIntelModel",
+      "constructorArguments": [],
+      "transactionHash": "0x97268004da8c6368e37b54d7dd426e6c6923f56f6f013685a9c67bca24fa896d",
+      "blockNumber": 94890101,
+      "abi": [
+        {
+          "inputs": [],
+          "name": "InvalidFeatureVector",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "MASKED_SCORE",
+          "outputs": [
+            {
+              "internalType": "int256",
+              "name": "",
+              "type": "int256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "baselineObservationBps",
+          "outputs": [
+            {
+              "internalType": "uint16",
+              "name": "",
+              "type": "uint16"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "int32[8]",
+              "name": "v",
+              "type": "int32[8]"
+            }
+          ],
+          "name": "classify",
+          "outputs": [
+            {
+              "internalType": "uint8",
+              "name": "label",
+              "type": "uint8"
+            },
+            {
+              "internalType": "int256[6]",
+              "name": "scores",
+              "type": "int256[6]"
+            }
+          ],
+          "stateMutability": "pure",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "learnedParameterCount",
+          "outputs": [
+            {
+              "internalType": "uint16",
+              "name": "",
+              "type": "uint16"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "modelId",
+          "outputs": [
+            {
+              "internalType": "bytes32",
+              "name": "",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "trainingDataHash",
+          "outputs": [
+            {
+              "internalType": "bytes32",
+              "name": "",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "trainingManifestHash",
+          "outputs": [
+            {
+              "internalType": "bytes32",
+              "name": "",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "weightsHash",
+          "outputs": [
+            {
+              "internalType": "bytes32",
+              "name": "",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        }
+      ]
+    },
+    "observations": {
+      "address": "0x291b579580304337358114a855085A35354a0D3F",
+      "codeHash": "0xbb1a48046adb86abd4ddac051e0af04b84019a1a0b42638e8b8771089f0edefd",
+      "normalizedRuntimeHash": "0xfab4c74b7c938b5b7ccb54459850e2fc53e5c97ff4c66b5e59791e93ad2950b8",
+      "runtimeBytes": 7615,
+      "name": "S0ULObservations",
+      "constructorArguments": [
+        "0x8D6B11CFdF079e27C17e05Cb7Ea81235887691c6",
+        60,
+        3600
+      ],
+      "transactionHash": "0xbe0aaf81d69bede6b63979f979ceb6a6f46149c1894d884391ab696330067167",
+      "blockNumber": 94892536,
+      "abi": [
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "owner_",
+              "type": "address"
+            },
+            {
+              "internalType": "uint32",
+              "name": "minSpacing_",
+              "type": "uint32"
+            },
+            {
+              "internalType": "uint32",
+              "name": "maxAge_",
+              "type": "uint32"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "constructor"
+        },
+        {
+          "inputs": [],
+          "name": "InsufficientGas",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "InvalidConfiguration",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "InvalidLookback",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "InvalidSubject",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "NotOwner",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "Reentrant",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "SampleUnavailable",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "UnknownSubject",
+          "type": "error"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "subjectId",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint8",
+              "name": "status",
+              "type": "uint8"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint64",
+              "name": "currentSequence",
+              "type": "uint64"
+            }
+          ],
+          "name": "SnapshotRejected",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "subjectId",
+              "type": "uint256"
+            },
+            {
+              "indexed": true,
+              "internalType": "uint64",
+              "name": "sequence",
+              "type": "uint64"
+            },
+            {
+              "indexed": true,
+              "internalType": "bytes32",
+              "name": "snapshotHash",
+              "type": "bytes32"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint64",
+              "name": "timestamp",
+              "type": "uint64"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint64",
+              "name": "blockNumber",
+              "type": "uint64"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint128[4]",
+              "name": "values",
+              "type": "uint128[4]"
+            }
+          ],
+          "name": "SnapshotStored",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "subjectId",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "bool",
+              "name": "enabled",
+              "type": "bool"
+            }
+          ],
+          "name": "SubjectEnabled",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "subjectId",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint8",
+              "name": "kind",
+              "type": "uint8"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "target",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "bytes32",
+              "name": "codeHash",
+              "type": "bytes32"
+            },
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "asset0",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "asset1",
+              "type": "address"
+            }
+          ],
+          "name": "SubjectRegistered",
+          "type": "event"
+        },
+        {
+          "inputs": [],
+          "name": "MAX_SUBJECTS",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "READ_GAS",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "RING_SIZE",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "id",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint8",
+              "name": "lookback",
+              "type": "uint8"
+            }
+          ],
+          "name": "features",
+          "outputs": [
+            {
+              "components": [
+                {
+                  "internalType": "uint256",
+                  "name": "subjectId",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "enum S0ULIntelTypes.ReaderKind",
+                  "name": "kind",
+                  "type": "uint8"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "uint64",
+                      "name": "sequence",
+                      "type": "uint64"
+                    },
+                    {
+                      "internalType": "uint64",
+                      "name": "timestamp",
+                      "type": "uint64"
+                    },
+                    {
+                      "internalType": "uint64",
+                      "name": "blockNumber",
+                      "type": "uint64"
+                    },
+                    {
+                      "internalType": "bytes32",
+                      "name": "parentBlockHash",
+                      "type": "bytes32"
+                    },
+                    {
+                      "internalType": "uint128[4]",
+                      "name": "values",
+                      "type": "uint128[4]"
+                    }
+                  ],
+                  "internalType": "struct S0ULIntelTypes.Snapshot",
+                  "name": "current",
+                  "type": "tuple"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "uint64",
+                      "name": "sequence",
+                      "type": "uint64"
+                    },
+                    {
+                      "internalType": "uint64",
+                      "name": "timestamp",
+                      "type": "uint64"
+                    },
+                    {
+                      "internalType": "uint64",
+                      "name": "blockNumber",
+                      "type": "uint64"
+                    },
+                    {
+                      "internalType": "bytes32",
+                      "name": "parentBlockHash",
+                      "type": "bytes32"
+                    },
+                    {
+                      "internalType": "uint128[4]",
+                      "name": "values",
+                      "type": "uint128[4]"
+                    }
+                  ],
+                  "internalType": "struct S0ULIntelTypes.Snapshot",
+                  "name": "previous",
+                  "type": "tuple"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "currentHash",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "previousHash",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "int32[8]",
+                  "name": "vector",
+                  "type": "int32[8]"
+                },
+                {
+                  "internalType": "uint32",
+                  "name": "elapsedSeconds",
+                  "type": "uint32"
+                },
+                {
+                  "internalType": "uint8",
+                  "name": "flags",
+                  "type": "uint8"
+                },
+                {
+                  "internalType": "bool",
+                  "name": "hasHistory",
+                  "type": "bool"
+                },
+                {
+                  "internalType": "bool",
+                  "name": "fresh",
+                  "type": "bool"
+                },
+                {
+                  "internalType": "enum S0ULIntelTypes.ReadStatus",
+                  "name": "status",
+                  "type": "uint8"
+                }
+              ],
+              "internalType": "struct S0ULIntelTypes.FeatureFrame",
+              "name": "f",
+              "type": "tuple"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "id",
+              "type": "uint256"
+            }
+          ],
+          "name": "latest",
+          "outputs": [
+            {
+              "components": [
+                {
+                  "internalType": "uint64",
+                  "name": "sequence",
+                  "type": "uint64"
+                },
+                {
+                  "internalType": "uint64",
+                  "name": "timestamp",
+                  "type": "uint64"
+                },
+                {
+                  "internalType": "uint64",
+                  "name": "blockNumber",
+                  "type": "uint64"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "parentBlockHash",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "uint128[4]",
+                  "name": "values",
+                  "type": "uint128[4]"
+                }
+              ],
+              "internalType": "struct S0ULIntelTypes.Snapshot",
+              "name": "",
+              "type": "tuple"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "maxAge",
+          "outputs": [
+            {
+              "internalType": "uint32",
+              "name": "",
+              "type": "uint32"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "minSpacing",
+          "outputs": [
+            {
+              "internalType": "uint32",
+              "name": "",
+              "type": "uint32"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "owner",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint8",
+              "name": "kind",
+              "type": "uint8"
+            },
+            {
+              "internalType": "address",
+              "name": "target",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "expectedCodeHash",
+              "type": "bytes32"
+            }
+          ],
+          "name": "registerSubject",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "id",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "id",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint64",
+              "name": "sequence",
+              "type": "uint64"
+            }
+          ],
+          "name": "sampleAt",
+          "outputs": [
+            {
+              "components": [
+                {
+                  "internalType": "uint64",
+                  "name": "sequence",
+                  "type": "uint64"
+                },
+                {
+                  "internalType": "uint64",
+                  "name": "timestamp",
+                  "type": "uint64"
+                },
+                {
+                  "internalType": "uint64",
+                  "name": "blockNumber",
+                  "type": "uint64"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "parentBlockHash",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "uint128[4]",
+                  "name": "values",
+                  "type": "uint128[4]"
+                }
+              ],
+              "internalType": "struct S0ULIntelTypes.Snapshot",
+              "name": "",
+              "type": "tuple"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "id",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bool",
+              "name": "enabled",
+              "type": "bool"
+            }
+          ],
+          "name": "setEnabled",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "id",
+              "type": "uint256"
+            }
+          ],
+          "name": "snapshot",
+          "outputs": [
+            {
+              "internalType": "uint8",
+              "name": "status",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint64",
+              "name": "sequence",
+              "type": "uint64"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "id",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint64",
+              "name": "sequence",
+              "type": "uint64"
+            }
+          ],
+          "name": "snapshotHash",
+          "outputs": [
+            {
+              "internalType": "bytes32",
+              "name": "",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "id",
+              "type": "uint256"
+            }
+          ],
+          "name": "subject",
+          "outputs": [
+            {
+              "components": [
+                {
+                  "internalType": "enum S0ULIntelTypes.ReaderKind",
+                  "name": "kind",
+                  "type": "uint8"
+                },
+                {
+                  "internalType": "bool",
+                  "name": "enabled",
+                  "type": "bool"
+                },
+                {
+                  "internalType": "address",
+                  "name": "target",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "account",
+                  "type": "address"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "codeHash",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "address",
+                  "name": "asset0",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "asset1",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint64",
+                  "name": "sequence",
+                  "type": "uint64"
+                },
+                {
+                  "internalType": "enum S0ULIntelTypes.ReadStatus",
+                  "name": "lastStatus",
+                  "type": "uint8"
+                }
+              ],
+              "internalType": "struct S0ULIntelTypes.Subject",
+              "name": "",
+              "type": "tuple"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "subjectCount",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        }
+      ]
+    },
+    "reports": {
+      "address": "0x02B2B80d7c3753d5E4aF3B8C94180FB0b3Fb3760",
+      "codeHash": "0x0f4f91770f98731da8076919c872ec7c67c147c65e00d13b005a99e05a7617a0",
+      "normalizedRuntimeHash": "0x7d020b470cca55ddc341afcc51965d582d2eddf2cefd81d75f12c0d47f52e8e8",
+      "runtimeBytes": 9101,
+      "name": "S0ULIntelReports",
+      "constructorArguments": [
+        "0x291b579580304337358114a855085A35354a0D3F",
+        "0x9329833849A0938647217D1e42A1199d174Cf8c0"
+      ],
+      "transactionHash": "0x7c53cb1739bbbbe2a2c0b83dee96e3d06e206990663e3b63677b4ab5044264f5",
+      "blockNumber": 94894084,
+      "abi": [
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "observations_",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "classifier_",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "constructor"
+        },
+        {
+          "inputs": [],
+          "name": "DependencyChanged",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "DuplicateReport",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "InvalidClassification",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "InvalidConfiguration",
+          "type": "error"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint8",
+              "name": "status",
+              "type": "uint8"
+            }
+          ],
+          "name": "InvalidObservation",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "UnknownReport",
+          "type": "error"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "reportId",
+              "type": "uint256"
+            },
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "subjectId",
+              "type": "uint256"
+            },
+            {
+              "indexed": true,
+              "internalType": "uint64",
+              "name": "sequence",
+              "type": "uint64"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint8",
+              "name": "label",
+              "type": "uint8"
+            },
+            {
+              "indexed": false,
+              "internalType": "bytes32",
+              "name": "featureHash",
+              "type": "bytes32"
+            },
+            {
+              "indexed": false,
+              "internalType": "bytes32",
+              "name": "modelId",
+              "type": "bytes32"
+            }
+          ],
+          "name": "ReportPublished",
+          "type": "event"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "subjectId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint8",
+              "name": "lookback",
+              "type": "uint8"
+            }
+          ],
+          "name": "analyze",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "subjectId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint8",
+              "name": "lookback",
+              "type": "uint8"
+            }
+          ],
+          "name": "captureAndAnalyze",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "chainId",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "classifier",
+          "outputs": [
+            {
+              "internalType": "contract IS0ULIntelClassifier",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "classifierCodeHash",
+          "outputs": [
+            {
+              "internalType": "bytes32",
+              "name": "",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "name": "latestReport",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "modelId",
+          "outputs": [
+            {
+              "internalType": "bytes32",
+              "name": "",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "observations",
+          "outputs": [
+            {
+              "internalType": "contract IS0ULObservations",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "observationsCodeHash",
+          "outputs": [
+            {
+              "internalType": "bytes32",
+              "name": "",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "id",
+              "type": "uint256"
+            }
+          ],
+          "name": "render",
+          "outputs": [
+            {
+              "internalType": "string",
+              "name": "",
+              "type": "string"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "id",
+              "type": "uint256"
+            }
+          ],
+          "name": "report",
+          "outputs": [
+            {
+              "components": [
+                {
+                  "internalType": "uint256",
+                  "name": "subjectId",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint64",
+                  "name": "currentSequence",
+                  "type": "uint64"
+                },
+                {
+                  "internalType": "uint64",
+                  "name": "previousSequence",
+                  "type": "uint64"
+                },
+                {
+                  "internalType": "uint64",
+                  "name": "observedBlock",
+                  "type": "uint64"
+                },
+                {
+                  "internalType": "uint64",
+                  "name": "createdBlock",
+                  "type": "uint64"
+                },
+                {
+                  "internalType": "uint64",
+                  "name": "createdAt",
+                  "type": "uint64"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "currentHash",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "previousHash",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "featureHash",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "modelId",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "uint8",
+                  "name": "label",
+                  "type": "uint8"
+                },
+                {
+                  "internalType": "int32[8]",
+                  "name": "features",
+                  "type": "int32[8]"
+                },
+                {
+                  "internalType": "int256[6]",
+                  "name": "scores",
+                  "type": "int256[6]"
+                },
+                {
+                  "internalType": "uint128[4]",
+                  "name": "currentValues",
+                  "type": "uint128[4]"
+                },
+                {
+                  "internalType": "uint128[4]",
+                  "name": "previousValues",
+                  "type": "uint128[4]"
+                },
+                {
+                  "internalType": "uint8",
+                  "name": "flags",
+                  "type": "uint8"
+                },
+                {
+                  "internalType": "uint64",
+                  "name": "observedAt",
+                  "type": "uint64"
+                },
+                {
+                  "internalType": "uint64",
+                  "name": "previousObservedAt",
+                  "type": "uint64"
+                },
+                {
+                  "internalType": "uint32",
+                  "name": "elapsedSeconds",
+                  "type": "uint32"
+                }
+              ],
+              "internalType": "struct S0ULIntelReports.Report",
+              "name": "",
+              "type": "tuple"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "reportCount",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "",
+              "type": "bytes32"
+            }
+          ],
+          "name": "reported",
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "trainingManifestHash",
+          "outputs": [
+            {
+              "internalType": "bytes32",
+              "name": "",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        }
+      ]
+    }
+  },
+  "subjects": [
+    {
+      "key": "gh0st-supply",
+      "label": "GH0ST total supply",
+      "kind": 1,
+      "target": "0x2eb2849cDE7957b86d0dFD4B59e450a9F9D15559",
+      "account": "0x0000000000000000000000000000000000000000",
+      "codeHash": "0x7c38fa1b069b5e677034bab6219dd2f519f219f7637910131d9a0f58a05ae164",
+      "asset0": "0x2eb2849cDE7957b86d0dFD4B59e450a9F9D15559",
+      "asset1": "0x0000000000000000000000000000000000000000",
+      "id": "1",
+      "transactionHash": "0xf0e016882822c25d878eff634f4b257ca38695198f6d3bf42782bf9a4b9496c6"
+    },
+    {
+      "key": "gh0st-deployer-balance",
+      "label": "GH0ST public deployer balance",
+      "kind": 2,
+      "target": "0x2eb2849cDE7957b86d0dFD4B59e450a9F9D15559",
+      "account": "0x8D6B11CFdF079e27C17e05Cb7Ea81235887691c6",
+      "codeHash": "0x7c38fa1b069b5e677034bab6219dd2f519f219f7637910131d9a0f58a05ae164",
+      "asset0": "0x2eb2849cDE7957b86d0dFD4B59e450a9F9D15559",
+      "asset1": "0x0000000000000000000000000000000000000000",
+      "id": "2",
+      "transactionHash": "0xcc37183de0dd48dddc198a2ae2420ffd1dbbfec4211ccfb327cc4b98d7559c04"
+    },
+    {
+      "key": "raph-weth-reserves",
+      "label": "Raphael RAPH/WETH pool",
+      "kind": 3,
+      "target": "0xCC6e395c870E36AEC40ace400c32FD253966415e",
+      "account": "0x0000000000000000000000000000000000000000",
+      "codeHash": "0x4930bdc6b0616a7a66fb9676ccee20c88584cfd582e6a8b3661953ecb3a04356",
+      "asset0": "0x0Bd7D308f8E1639FAb988df18A8011f41EAcAD73",
+      "asset1": "0x325Ed5a3617B1EaAB6ebeEfCc2Af084beEf49ecE",
+      "factory": "0x1A6745F84099Fa7E84D1f3B34c23482865194bd1",
+      "id": "3",
+      "transactionHash": "0xbd8347b62225026085106fc0b8bac029f57c5e552431d2339c94f56293f8898e"
+    }
+  ],
+  "readRpcUrl": "https://rpc.mainnet.chain.robinhood.com",
+  "readOnlyPublicRpc": "https://rpc.mainnet.chain.robinhood.com",
+  "deploymentJournal": "s0ul-1m/deployments/robinhood-mainnet-intel.json",
+  "confirmedComplete": true
+}
