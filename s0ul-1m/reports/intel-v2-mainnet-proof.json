@@ -1,0 +1,141 @@
+{
+  "format": "s0ul-intel-v2-mainnet-proof-v1",
+  "verifiedUtc": "2026-10-22T08:57:36.891Z",
+  "result": "PASS",
+  "verificationScope": "Minimal independent RPC corroboration of shared block and four current runtimes; primary deployment evidence retained separately",
+  "chainId": 4663,
+  "buildFingerprint": "f2c45d3003bcdb3e0d82d7d1ead463da346108d37d5e69985d35d9631ce661dc",
+  "readOnly": true,
+  "signedTransactionsInVerification": 0,
+  "submittedTransactionsInVerification": 0,
+  "rpcs": [
+    "https://rpc.mainnet.chain.robinhood.com",
+    "https://api.blockvectra.com/v1/robinhood_mainnet/public"
+  ],
+  "transport": {
+    "readOnlyMethodAllowlist": true,
+    "batchMaxCount": 1,
+    "minRequestIntervalMsPerRpc": 1000,
+    "requestTimeoutMs": 20000,
+    "timeoutRetries": 1,
+    "rateLimitRetries": 0
+  },
+  "anchor": {
+    "blockNumber": 94990725,
+    "blockHash": "0xb34f04f7674bfe154abbbf87e6c454261ee053dba682f4f5ecb60a2bc48f1d69",
+    "timestamp": 1792659448,
+    "bothRpcExact": true
+  },
+  "sourceHashes": {
+    "contracts/intel/S0ULIntelTypes.sol": "f724dd070782d2d6d3cbe39c6cce20942a38f05d55aba471f18fa74771c9b70f",
+    "contracts/intel/S0ULIntelReports.sol": "6c5d0eef01d40ebc32055b5797ec68378108dcc65a6ce9f561bd16ec0949b322",
+    "contracts/intel/v2/S0ULPermissionlessObservations.sol": "ac81a869f001b8a66839dec30d9e84af6e748c8b0cd96a03db6ba46fe8e6a552",
+    "contracts/intel/v2/S0ULUniversalReader.sol": "3703b1564b1153150720560de03bf8883748d470a4f4f7a75f23abb54d48038a"
+  },
+  "runtime": [
+    {
+      "role": "observations",
+      "name": "S0ULPermissionlessObservations",
+      "address": "0x06911434d2E3162EE2432B14f3F04cd13ecDEcA9",
+      "codeHash": "0x6b2ee16483378bff0ceccea292bafb5c6f502a810898eca1b16f8e75f7eb810d",
+      "normalizedRuntimeHash": "0xebc413010ec6f82cb7fba894a3e4045f9ce4374899ea9c6ed002cb3166ef92d7",
+      "runtimeBytes": 12582,
+      "bothRpcExact": true
+    },
+    {
+      "role": "universalReader",
+      "name": "S0ULUniversalReader",
+      "address": "0x5BE840518fb1Be0851f06d68ac0724fdC4e97768",
+      "codeHash": "0xba82f9bdc1f259eec2310d536ebbfbf37a6e0a4ccfc9a782c7d7782b1b0adf81",
+      "normalizedRuntimeHash": "0xba82f9bdc1f259eec2310d536ebbfbf37a6e0a4ccfc9a782c7d7782b1b0adf81",
+      "runtimeBytes": 6163,
+      "bothRpcExact": true
+    },
+    {
+      "role": "reports",
+      "name": "S0ULIntelReports",
+      "address": "0x4E80F0E9220984B7926E791bd29f1E499Cc8ac47",
+      "codeHash": "0xba11d0af757ec8b9c68c3ae1c1c70ea8f532a64c56c85517d62cd49c102311e3",
+      "normalizedRuntimeHash": "0x7d020b470cca55ddc341afcc51965d582d2eddf2cefd81d75f12c0d47f52e8e8",
+      "runtimeBytes": 9101,
+      "bothRpcExact": true
+    }
+  ],
+  "model": {
+    "address": "0x9329833849A0938647217D1e42A1199d174Cf8c0",
+    "codeHash": "0xe5b3abd4a9b85451b0ff708d34f4c1eabfa2bdfa5e970a4c3f9dcc202e0e5626",
+    "bothRpcExact": true
+  },
+  "primaryEvidence": {
+    "journal": "s0ul-1m/deployments/robinhood-mainnet-intel-v2.json",
+    "journalSha256": "e75c88c5196f5e25fa130406be6fe3ca5df7e6774d32ce7a3c31aa2ef4c0ec39",
+    "script": "s0ul-1m/scripts/intel-v2-deploy.mjs",
+    "scriptSha256": "d7046fce14d6a890e2dc28f9653346f4f4db608a73dec60f5ea1281527656cfd",
+    "recordedReceipts": [
+      {
+        "role": "deploy:observations",
+        "hash": "0xf3386c622135b699db8bb3c41748cc8cc63c7c16db3a4c000a569ddc17384953",
+        "nonce": 5185,
+        "recordedReceipt": {
+          "hash": "0xf3386c622135b699db8bb3c41748cc8cc63c7c16db3a4c000a569ddc17384953",
+          "blockNumber": 94987133,
+          "blockHash": "0xff6cb2f40377dbd307436e0babc7f9d11c94442162dc215144710b5df098e417",
+          "status": 1,
+          "gasUsed": "2778740",
+          "gasPriceWei": "20024000",
+          "spentWei": "55641489760000",
+          "contractAddress": "0x06911434d2E3162EE2432B14f3F04cd13ecDEcA9"
+        }
+      },
+      {
+        "role": "deploy:universalReader",
+        "hash": "0x69a624e02ae277ac49923c80fb64903b2f91d1090df323d33d58605a9a68b407",
+        "nonce": 5186,
+        "recordedReceipt": {
+          "hash": "0x69a624e02ae277ac49923c80fb64903b2f91d1090df323d33d58605a9a68b407",
+          "blockNumber": 94987293,
+          "blockHash": "0xc9f4e77580c603e07209e9c6cba5b067563b251c2d3b18c1b3d0a8db17202a2f",
+          "status": 1,
+          "gasUsed": "1386250",
+          "gasPriceWei": "20040000",
+          "spentWei": "27780450000000",
+          "contractAddress": "0x5BE840518fb1Be0851f06d68ac0724fdC4e97768"
+        }
+      },
+      {
+        "role": "deploy:reports",
+        "hash": "0x2d6de3f07a31d628a900c7643b7947a8d5094abf15d220d5896f11136bb6b495",
+        "nonce": 5187,
+        "recordedReceipt": {
+          "hash": "0x2d6de3f07a31d628a900c7643b7947a8d5094abf15d220d5896f11136bb6b495",
+          "blockNumber": 94987440,
+          "blockHash": "0x0af5716251da6b6302bafb2070208c71efec94f0f03d6b7143f1b8fb0d074bee",
+          "status": 1,
+          "gasUsed": "2031397",
+          "gasPriceWei": "20060000",
+          "spentWei": "40749823820000",
+          "contractAddress": "0x4E80F0E9220984B7926E791bd29f1E499Cc8ac47"
+        }
+      }
+    ],
+    "recordedDeploymentGas": "6196387",
+    "recordedDeploymentFeeWei": "124171763580000",
+    "approvedCumulativeCapWei": "500000000000000",
+    "complete": true,
+    "pending": null,
+    "noSeedingTransactionsInJournal": true
+  },
+  "notIndependentlyRequeried": [
+    "Constructor getter calls",
+    "Receipts and creation calldata",
+    "Subject/report counts",
+    "Address inspections and generated commentary",
+    "Bounded raw getter calls"
+  ],
+  "limits": [
+    "The deployment script verified constructor arguments, canonical receipts, runtime identities and immutable getters as primary evidence; this minimal verifier does not repeat those calls.",
+    "Independent checks here compare shared block hash and byte-for-byte runtime code on both public RPCs. They do not establish arbitrary contract safety or source-code verification.",
+    "Full secondary inspection/getter runs stopped on public RPC HTTP429 and are not reported as passing.",
+    "No watch, snapshot, report or background operator was created by this verification."
+  ]
+}
