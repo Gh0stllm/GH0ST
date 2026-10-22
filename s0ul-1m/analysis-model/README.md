@@ -1,5 +1,22 @@
 # S0UL learned observation-report capability pilot
 
+## Partial research publication
+
+This draft is incomplete for exact replay: the GitHub connector stalled while
+uploading a large binary, and no authenticated Git transport was available.
+The following exact artifacts are preserved in a user backup but are **not
+published in this repository**. Source, manifests and evaluation evidence are
+published; reproducing the frozen weights requires these binary artifacts.
+
+| Missing path (relative to this directory) | SHA-256 |
+| --- | --- |
+| `baseline-integer/integer-weights.bin` | `1f392feffdf57059ca3969c3fb8087b831ee4a9261764f9bbb1680192da60501` |
+| `run-v2/frozen-checkpoint.pt` | `9cf0b5ce17109bda877f21ac08731cd1897bf6d160b4b690de809c750e960716` |
+| `evaluation-v2/integer/integer-weights.bin` | `12dae909761bd6b990989fd63d5130be9db84e5ede0b86770754316aa853110d` |
+
+This publication-status note was added after the frozen experiment inventory;
+it does not change the recorded training, dataset, checkpoint or result hashes.
+
 This is a **new finite task**, adapted from the deployed S0UL baseline. It tests
 whether the existing 984,192-parameter transformer can generate short English
 observations from fourteen defined contract-state features. It does not establish
