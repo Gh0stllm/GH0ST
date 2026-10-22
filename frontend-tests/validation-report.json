@@ -1,0 +1,58 @@
+{
+  "format": "gh0st-s0ul-frontend-validation-v1",
+  "verifiedUtc": "2026-10-22T04:57:45.521634+00:00",
+  "command": "node --test frontend-tests/*.test.mjs",
+  "result": "PASS",
+  "tests": {
+    "total": 42,
+    "passed": 42,
+    "failed": 0,
+    "skipped": 0,
+    "gas": 11,
+    "client": 24,
+    "ui": 7
+  },
+  "networkRequestsInTests": 0,
+  "signedTransactions": 0,
+  "submittedMainnetTransactions": 0,
+  "executionEnvironment": "Node.js built-in test runner; EIP-1193 wallet, provider, contracts and receipt polling mocked in process; bundled ethers used for actual ABI/hash encoding",
+  "coverage": [
+    "Full worst-case logical work 77*(promptTokens+maxNewTokens-1)+6*maxNewTokens; verified WAIT397/memory723 reference lengths",
+    "Select phase boundaries retained by four-step batching; memory ideal183 inference batches plus begin/finalize185 total transactions",
+    "Conservative whole-job historical gas envelope, no fourfold fee division, measured position8 boundary, extra padding beyond measured contexts",
+    "All1120 independently simulated Solidity phase snapshots quote exactly their remaining work",
+    "Exact BigInt gas/wei/budget arithmetic, unsafe number rejection, padding/cap feasibility and pending spend reserve",
+    "No wallet transaction before explicit Start; exact pinned controller, chain4663, zero value, action hash and one-action mask encoded with real ABI",
+    "Private quote integrity, expiry, wrong account/chain, nonce lookup race, invalid model/context/action/output budget and insufficient funds stop signing",
+    "Adaptive batch selection4 to1; re-estimate every next transaction; live fee ceiling and accepted total spend cap guards",
+    "Returned hash persists before receipt waiting; wallet/RPC ambiguity never automatically resends; unrelated hash cannot poison recovery",
+    "Transaction sender/target/nonce/chain/value/calldata and canonical receipt verified during recovery; resume checks owners and rereads saved receipt fees",
+    "Externally created owned request requires fresh exact-action quote and explicit spending approval before continuation",
+    "Generated output is sourced from confirmed token IDs; mismatch pauses run, manual finalize reports controller rejection; stored output cannot substitute expected action",
+    "Pause prevents subsequent wallet requests; durable journal failures prevent submission",
+    "Production pins checked against deployment records; default runtime verifier rejects empty or incorrect code",
+    "UI helper and minimal DOM event tests enforce exact canonical intent, read-only estimate then consent/start, invalidation on edits, literal output rendering and fresh session authorization",
+    "Begin receipt Bound event must exactly match permitted mask, original prompt commitment and nonadopted creation; continuation rereads exact action commitment"
+  ],
+  "reviewFindingsResolved": [
+    "Account/network race during pending nonce read: recheck after nonce and before send; explicit chainId included",
+    "Quote expiry instant and nonfinite expiry UI checks reject stale quotes",
+    "Unsafe numeric budget/request ID inputs reject precision loss",
+    "UI action dictionary rejects inherited property names",
+    "Recovered spending limit is not mistaken for authorization in a new browser session"
+  ],
+  "limits": [
+    "This suite does not run a real browser, wallet extension, live RPC or funded mainnet inference; browser/deployment checks are separate",
+    "Two historical requests calibrate a forecast, not a guaranteed price; longer contexts are explicitly extrapolated",
+    "The accepted spending cap is a browser guard; the immutable deployed controller does not enforce it"
+  ],
+  "sha256": {
+    "website/s0ul-gas.mjs": "442ae2bb3fe3c2c675bfc9565b1c3e5762c63609033670b339d06bd24a8a8b34",
+    "website/s0ul-client.mjs": "751ba561859eeadb74605bda5c88319ff968a79d8c8bbcbdbd6ebd0eb718db7d",
+    "website/s0ul-ui.mjs": "52a2c0c1b9272e2295d2fe5b07f07ded244fa627f5c050f37f4fd3aa750418ae",
+    "website/s0ul-agent.css": "c9d787dde727771b9d1f89e509770ca284d400ab50863e3fa5938c9de39623fd",
+    "frontend-tests/gas.test.mjs": "d4e5bd89c50a48a8dcf5bf086ace0aeb94cad10b137531e8fff2e7d5f4afdafe",
+    "frontend-tests/client.test.mjs": "d45ceddc66021f9704f3204addefe90f90d7acd72898444ad8ca037f39054e9f",
+    "frontend-tests/ui.test.mjs": "8415f7d03d680efc47998fc3fda31bb241faa4a176db2909c1aed9a88b88ca3a"
+  }
+}
