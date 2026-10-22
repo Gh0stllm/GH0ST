@@ -17,6 +17,7 @@ const items=[
  ['nine-lane-helper-experiments','HelperNineLaneMxfp4.sol','source_sha256'],
  ['state-experiments','VectorState.sol','source_sha256'],
  ['router-experiments','RouterTop4.sol','source_sha256'],
+ ['code-path-validation','HelperLaneMxfp4.sol','source_sha256'],
 ];
 const reports=items.map(([name,source,field])=>{
  const report=JSON.parse(fs.readFileSync(ROOT+'evidence/'+name+'.json','utf8'));
@@ -48,7 +49,8 @@ for(const [path,pin] of Object.entries(baselinePins)){
  assert.equal(blob,pin,'Published baseline changed: '+path);
 }
 const dense=name=>reports.find(r=>r.name===name).raw.benchmarks.find(b=>b.kind==='dense');
-const prior=dense('lane-v2-experiments').previous_eight_transactions_gas;
+const priorRow=dense('lane-v2-experiments');
+const prior=priorRow.previous_scalar_transactions_gas??priorRow.previous_eight_transactions_gas;
 const eight=dense('lane-helper-experiments'),nine=dense('nine-lane-experiments');
 const storage=reports.find(r=>r.name==='state-experiments').raw.benchmarks.find(b=>b.values===2880);
 const router=reports.find(r=>r.name==='router-experiments').raw.benchmarks.find(b=>b.kind==='random');
