@@ -54,6 +54,8 @@ const prior=priorRow.previous_scalar_transactions_gas??priorRow.previous_eight_t
 const eight=dense('lane-helper-experiments'),nine=dense('nine-lane-experiments');
 const storage=reports.find(r=>r.name==='state-experiments').raw.benchmarks.find(b=>b.values===2880);
 const router=reports.find(r=>r.name==='router-experiments').raw.benchmarks.find(b=>b.kind==='random');
+const persistent=reports.find(r=>r.name==='code-path-validation').raw;
+assert.equal(Object.keys(persistent.coverage).length,96,'Incomplete persistent-code coverage matrix');
 const validation={status:'PASS_SYNTHETIC_COMPONENT_RESEARCH',validated_at:new Date().toISOString(),
 session_started_at:'2026-10-22T17:08:48.000Z',
 source_hashes_match:true,published_initial_baseline_unchanged:true,
@@ -69,7 +71,8 @@ results:{eight_row_dense:{rows:8,columns:2880,previous_eight_transactions_gas:pr
  lane_comparison:{eight_gas_per_output:eight.tile_code.gas/8,nine_gas_per_output:nine.tile_code.gas/9,
  selection:'eight-row helper/cached polynomial implementation'},
  storage_2880_values:storage,
- integer_top4:router},
+ integer_top4:router,
+ persistent_code:{fresh_shard_cases:persistent.validation.cases,rejected_invalid_calls:persistent.validation.invalid_rejections,coverage_classes:Object.keys(persistent.coverage).length}},
 reports:reports.map(({raw,...r})=>r),
 limitations:['Synthetic weights, integer activations and router scores only.',
  'Full GPT-OSS inference, actual model output fidelity and quality remain untested.',
