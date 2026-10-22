@@ -1,0 +1,146 @@
+{
+  "format": "gh0st-s0ul-intel-v2-local-evm-validation-v1",
+  "verifiedUtc": "2026-10-22T08:45:56.745973Z",
+  "result": "PASS",
+  "tests": {
+    "total": 17,
+    "passed": 17,
+    "failed": 0,
+    "permissionless": 11,
+    "universalReader": 6
+  },
+  "environment": {
+    "compiler": "0.8.30+commit.73712a01.Emscripten.clang",
+    "optimizerRuns": 200,
+    "viaIR": true,
+    "evmVersion": "shanghai",
+    "execution": "in-process Ganache",
+    "localChainIds": [
+      31337,
+      31338
+    ],
+    "publicChainCalls": 0,
+    "submittedPublicTransactions": 0
+  },
+  "permissionless": {
+    "command": "node --test s0ul-1m/test/intel-v2-test.mjs",
+    "passed": 11,
+    "failed": 0,
+    "durationMs": 40054.673245,
+    "observationsSourceSha256": "ac81a869f001b8a66839dec30d9e84af6e748c8b0cd96a03db6ba46fe8e6a552",
+    "runtimeBytes": 12582,
+    "gas": {
+      "inspectPool": 50051,
+      "inspectReturn65536": 102682,
+      "inspectRevert65536": 106649,
+      "inspectGasBurn": 207526,
+      "watchSupplyBaseline": 317403,
+      "joinSharedWatch": 114541,
+      "analyzeWatchBaseline": 489373,
+      "captureTrendReport": 617716
+    },
+    "coverage": [
+      "No-registration inspection returns full uint256 native balances, exact code facts and honest no-code commentary without claiming an EOA or account identity.",
+      "Pool compatibility takes precedence over overlapping token getters; supply, account balance and pool values come only from bounded fixed selectors.",
+      "Revert, short/long/65536-byte returndata, return bombs, gas burn, dirty addresses, reserve/timestamp overflow, uint128 overflow and inconsistent balances produce explicit failures, cleared values and no watch insertion.",
+      "Any caller can watch a validated code-pinned key; new watches atomically record a baseline, shared joins and idempotent joins do not resample or overwrite history.",
+      "Each wallet is capped at64 watches; filling one wallet does not prevent another from creating a65th global subject; unwatch frees only the caller slot and preserves shared history.",
+      "Existing-key joins revalidate getter reads, original pool metadata and runtime code; failures reject joins without overwriting shared history.",
+      "Minimum spacing, ring16 retained identities, signed BPS and freshness remain correct after automatic watch baselines.",
+      "An actual underfunded local snapshot transaction reverts without poisoning status/history; static ancestry blocks callbacks and writes to an unguarded target.",
+      "Reports preserve exact raw facts, classifier labels/scores, ABI feature commitments, snapshot/model identity and local EVM provenance; duplicates/stale inputs reject and failed inference atomically rolls back capture.",
+      "A proxy upgrade can change getter behavior while runtime hash remains unchanged; the test demonstrates this caveat rather than claiming implementation pinning."
+    ]
+  },
+  "universalReader": {
+    "finalCommand": "node --test --test-reporter=tap --test-name-pattern='^(?!bytecode scanner)' s0ul-1m/test/universal-reader-test.mjs",
+    "finalCommandNote": "Node matched file-prefixed names, so this exclusion expression ran all6 cases; the full final run passed. No additional runs followed it.",
+    "passed": 6,
+    "failed": 0,
+    "durationMs": 287761.919667,
+    "sourceSha256": "3703b1564b1153150720560de03bf8883748d470a4f4f7a75f23abb54d48038a",
+    "runtimeBytes": 6163,
+    "bounds": {
+      "opcodeScanBytes": 24576,
+      "selectorCandidatePrefixBytes": 4096,
+      "uniqueSelectorCandidates": 32,
+      "erc165ProbeGas": 30000,
+      "optionalGetterProbeGas": 50000,
+      "genericReadGas": 200000,
+      "genericReadCalldataBytes": 4096,
+      "genericReadCopiedReturnBytes": 2048
+    },
+    "gas": {
+      "originalSelectorRegressionFixture": 9278798,
+      "readReturn65536": 49875,
+      "readRevert65536": 49871,
+      "readGasBurn": 225688
+    },
+    "coverage": [
+      "Any zero/no-code address returns exact full uint256 native facts and local observation provenance without asserting wallet identity or safety.",
+      "PUSH payloads are skipped; PUSH4 candidates deduplicate, truncated instructions do not invent candidates, only32 candidates are stored, candidates beyond4096 are excluded while all-prefix PUSH4/opcode counts continue.",
+      "A bounded-prefix scan explicitly reports incomplete runtime coverage; the original31-unique/repeated31st-selector adversary succeeds under an explicit31M transaction gas cap.",
+      "ERC165 requires canonical true for the standard and canonical false for0xffffffff; always-true, malformed, failed and noncanonical probes are rejected, including a35k-gas responder that exceeds the30k standard probe.",
+      "ERC721, ERC1155 and ERC2981 flags remain separately derived from reported interface support; getters are not treated as asset authenticity or safety certification.",
+      "Owner, paused, implementation and asset facts require canonical exact-size values; dirty address words, paused2, short/long/huge data, reverts and gas burns remain unavailable.",
+      "Generic reads preserve success/failure and full returndata size while copying at most2048 bytes, reject calldata beyond4096, bound target gas and prohibit value transfers.",
+      "Direct and nested writes remain impossible under STATICCALL, including when a reader call is submitted as an actual local transaction."
+    ]
+  },
+  "stressHistory": [
+    {
+      "stage": "confirmedInitialFailure",
+      "sourceSha256": "4295f371696ecd4ec71ab3fd6e213a82d9ba0cd60c098ff3ba801616721d2e7c",
+      "selectorCandidatePrefixBytes": 24576,
+      "opcodeScanBytes": 24576,
+      "fixture": "31 unique PUSH4 candidates, followed by repeated31st candidate through24576-byte runtime",
+      "gasLimit": 31000000,
+      "receiptStatus": 0,
+      "gasUsed": null,
+      "transactionHash": null,
+      "recordingLimit": "The original mined helper retained only failed receipt status in the error; exact gasUsed and local hash were not recorded.",
+      "universalRunPassed": 5,
+      "universalRunFailed": 1
+    },
+    {
+      "stage": "rootFix",
+      "sourceSha256": "3703b1564b1153150720560de03bf8883748d470a4f4f7a75f23abb54d48038a",
+      "selectorCandidatePrefixBytes": 4096,
+      "opcodeScanBytes": 24576,
+      "description": "Candidate extraction was restricted to a4096-byte prefix; full bounded opcode counts continue through24576 bytes, with explicit text disclosing the candidate prefix."
+    },
+    {
+      "stage": "focusedRegressionPass",
+      "command": "node --test --test-reporter=tap --test-name-pattern='bytecode scanner' s0ul-1m/test/universal-reader-test.mjs",
+      "passed": 1,
+      "gasLimit": 31000000,
+      "receiptStatus": 1,
+      "gasUsed": 9278798,
+      "durationMs": 34917.722296
+    },
+    {
+      "stage": "fullFinalPass",
+      "sourceSha256": "3703b1564b1153150720560de03bf8883748d470a4f4f7a75f23abb54d48038a",
+      "passed": 6,
+      "failed": 0,
+      "gasUsedForOriginalRegressionFixture": 9278798
+    }
+  ],
+  "limits": [
+    "All deployments and transactions in these tests are local Ganache fixtures; this report does not claim public deployment, signed-wallet browser QA or mainnet gas measurements.",
+    "Gas figures include local transaction intrinsic gas and apply to the named fixtures. The9.28M selector regression measurement is not a maximum over every possible runtime; other bytecode patterns can cost more.",
+    "Runtime code hashes do not pin a proxy implementation. Getter compatibility and structural signals can be spoofed and do not establish identity, source semantics, asset authenticity, security or future outcomes.",
+    "Ganache local EVM block counters agree with its RPC blocks; this does not generalize to Nitro ancestor estimates or BLOCKHASH outputs.",
+    "Historical V1 source/tests and historical validation reports were not edited by this task."
+  ],
+  "sha256": {
+    "s0ul-1m/contracts/intel/v2/S0ULPermissionlessObservations.sol": "ac81a869f001b8a66839dec30d9e84af6e748c8b0cd96a03db6ba46fe8e6a552",
+    "s0ul-1m/contracts/intel/v2/S0ULUniversalReader.sol": "3703b1564b1153150720560de03bf8883748d470a4f4f7a75f23abb54d48038a",
+    "s0ul-1m/contracts/intel/test/S0ULIntelV2Mocks.sol": "36f304eeeba398cea818b48e5b09d7ae8e1a68083f7c1846118e86defeac3c4f",
+    "s0ul-1m/test/intel-v2-test.mjs": "28605b524acfbb13937b841dca147ac6e0896e06b32ff5a9fdb0698d053bbf52",
+    "s0ul-1m/test/universal-reader-test.mjs": "1aa2a04718a814f632b18860ad665b0fb78099e846936e609b5b3a392d584c3e",
+    "s0ul-1m/contracts/intel/S0ULIntelTypes.sol": "f724dd070782d2d6d3cbe39c6cce20942a38f05d55aba471f18fa74771c9b70f",
+    "s0ul-1m/contracts/intel/S0ULIntelModel.sol": "f9f998d15ec62bce8f5c1657ce9752370426ea20b40595215b720c5e63fa74ba",
+    "s0ul-1m/contracts/intel/S0ULIntelReports.sol": "6c5d0eef01d40ebc32055b5797ec68378108dcc65a6ce9f561bd16ec0949b322"
+  }
+}
