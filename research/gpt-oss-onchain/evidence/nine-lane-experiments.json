@@ -1,0 +1,200 @@
+{
+  "status": "PASS_SYNTHETIC_9_LANE_TILE",
+  "lanes": 9,
+  "spacing": 26,
+  "decoder": "polynomial",
+  "started_at": "2026-10-22T17:28:39.794Z",
+  "synthetic_only": true,
+  "source_sha256": "e1941ac4b283864ee5c3dbfc0ca61d42332dd09362bc8cfa1d00e45501bf8ea7",
+  "candidates": [
+    {
+      "runs": 1,
+      "gas": 1826307,
+      "runtime_bytes": 1616,
+      "status": "PASS"
+    },
+    {
+      "runs": 200,
+      "gas": 1826247,
+      "runtime_bytes": 1624,
+      "status": "PASS"
+    },
+    {
+      "runs": 1000,
+      "gas": 1705287,
+      "runtime_bytes": 1711,
+      "status": "PASS"
+    },
+    {
+      "runs": 10000,
+      "gas": 1685568,
+      "runtime_bytes": 2072,
+      "status": "PASS"
+    },
+    {
+      "runs": 100000,
+      "gas": 1685568,
+      "runtime_bytes": 2072,
+      "status": "PASS"
+    },
+    {
+      "runs": 1000000,
+      "gas": 1685568,
+      "runtime_bytes": 2072,
+      "status": "PASS"
+    }
+  ],
+  "validation": {
+    "cases": 19424,
+    "invalid_rejections": 6,
+    "packing_roundtrip": true,
+    "exhaustive_byte_scale_cases": 16640,
+    "fuzz_cases": 2760
+  },
+  "limits": [
+    "Exactly 9 output rows and <=160 groups; not a complete model or router.",
+    "All weights and activations synthetic. Lossless layout transform only; no GPT-OSS quality evaluation.",
+    "Predeployed-code cost excludes one-time shard creation, which is recorded separately."
+  ],
+  "winner": {
+    "runs": 10000,
+    "gas": 1685568,
+    "runtime_bytes": 2072,
+    "status": "PASS"
+  },
+  "benchmarks": [
+    {
+      "kind": "dense",
+      "rows": 9,
+      "groups": 90,
+      "previous_scalar_transactions_gas": 4382331,
+      "tile_calldata": {
+        "gas": 1685568,
+        "calldata_bytes": 19684
+      },
+      "tile_code": {
+        "gas": 1489945,
+        "calldata_bytes": 5924
+      },
+      "store": {
+        "address": "0xf6246a3249f2D3bb417A231b7B110510e05A088c",
+        "hash": "0xf885c7ad191125f50a2df7269da914ad5ef9d542f3ca259ca9ef8dcc28ecbf85",
+        "deployment_gas": 3030872,
+        "runtime_bytes": 13771
+      },
+      "reduction_vs_previous_scalar_transactions_percent": 66.00108481080046,
+      "amortization_calls_vs_tile_calldata": 16
+    },
+    {
+      "kind": "sparse",
+      "rows": 9,
+      "groups": 90,
+      "previous_scalar_transactions_gas": 4305099,
+      "tile_calldata": {
+        "gas": 1608324,
+        "calldata_bytes": 19684
+      },
+      "tile_code": {
+        "gas": 1489933,
+        "calldata_bytes": 5924
+      },
+      "store": {
+        "address": "0xe44702761dafA65E79d5046062EA0E5CcA76B5b9",
+        "hash": "0xe448cd17e057002fdc65549c395d4be5ba1a58849b35c622936ad09e790978e7",
+        "deployment_gas": 2953628,
+        "runtime_bytes": 13771
+      },
+      "reduction_vs_previous_scalar_transactions_percent": 65.39143466851749,
+      "amortization_calls_vs_tile_calldata": 25
+    },
+    {
+      "kind": "zeroInputs",
+      "rows": 9,
+      "groups": 90,
+      "previous_scalar_transactions_gas": 3762519,
+      "tile_calldata": {
+        "gas": 1616700,
+        "calldata_bytes": 19684
+      },
+      "tile_code": {
+        "gas": 1421077,
+        "calldata_bytes": 5924
+      },
+      "store": {
+        "address": "0x1e4fba78473d965649FCFF86A981A329766ff837",
+        "hash": "0xf885c7ad191125f50a2df7269da914ad5ef9d542f3ca259ca9ef8dcc28ecbf85",
+        "deployment_gas": 3030872,
+        "runtime_bytes": 13771
+      },
+      "reduction_vs_previous_scalar_transactions_percent": 62.23070235658611,
+      "amortization_calls_vs_tile_calldata": 16
+    },
+    {
+      "kind": "zeroWeights",
+      "rows": 9,
+      "groups": 90,
+      "previous_scalar_transactions_gas": 4383099,
+      "tile_calldata": {
+        "gas": 1686252,
+        "calldata_bytes": 19684
+      },
+      "tile_code": {
+        "gas": 1489933,
+        "calldata_bytes": 5924
+      },
+      "store": {
+        "address": "0x261958c5F6a2c2496986E350C0066E85ceAC1816",
+        "hash": "0xe1333fb522726ad327bf2ece852e009bbeaf166bccd45e90ddfb48a93c621137",
+        "deployment_gas": 3031556,
+        "runtime_bytes": 13771
+      },
+      "reduction_vs_previous_scalar_transactions_percent": 66.0073158283671,
+      "amortization_calls_vs_tile_calldata": 16
+    },
+    {
+      "kind": "positiveBound",
+      "rows": 9,
+      "groups": 90,
+      "previous_scalar_transactions_gas": 4385367,
+      "tile_calldata": {
+        "gas": 1686504,
+        "calldata_bytes": 19684
+      },
+      "tile_code": {
+        "gas": 1490197,
+        "calldata_bytes": 5924
+      },
+      "store": {
+        "address": "0x1914588Ef9a52D7506E54f2A82585cbA277e8cC9",
+        "hash": "0x1d71c5acc315705d0d88a68db5c01ea0dbf14a33b1e3b7b60961e1adf2502c53",
+        "deployment_gas": 3031556,
+        "runtime_bytes": 13771
+      },
+      "reduction_vs_previous_scalar_transactions_percent": 66.018875957246,
+      "amortization_calls_vs_tile_calldata": 16
+    },
+    {
+      "kind": "negativeBound",
+      "rows": 9,
+      "groups": 90,
+      "previous_scalar_transactions_gas": 4074327,
+      "tile_calldata": {
+        "gas": 1651944,
+        "calldata_bytes": 19684
+      },
+      "tile_code": {
+        "gas": 1455637,
+        "calldata_bytes": 5924
+      },
+      "store": {
+        "address": "0xB72B99ED1aCaCB29214C15123eB27B27d8f76252",
+        "hash": "0x1d71c5acc315705d0d88a68db5c01ea0dbf14a33b1e3b7b60961e1adf2502c53",
+        "deployment_gas": 3031556,
+        "runtime_bytes": 13771
+      },
+      "reduction_vs_previous_scalar_transactions_percent": 64.27294618227747,
+      "amortization_calls_vs_tile_calldata": 16
+    }
+  ],
+  "finished_at": "2026-10-22T17:59:48.629Z"
+}
