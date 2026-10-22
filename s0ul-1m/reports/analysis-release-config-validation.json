@@ -1,0 +1,58 @@
+{
+  "format": "s0ul-analysis-release-config-validation-v1",
+  "result": "PASS",
+  "complete": true,
+  "validatedUtc": "2026-10-22T12:24:18.581778+00:00",
+  "command": "node --test frontend-tests/analysis-release-config.test.mjs",
+  "exitCode": 0,
+  "tests": 3,
+  "passed": 3,
+  "failed": 0,
+  "skipped": 0,
+  "durationMs": 759.378102,
+  "localOnly": true,
+  "publicRpcCalls": 0,
+  "publicTransactions": 0,
+  "realFundsSpent": "0",
+  "syntheticJournalFixtureOnly": true,
+  "confirmsActualDeployment": false,
+  "actualProductionConfigWrittenByTests": false,
+  "sourceSha256": {
+    "scripts/create-analysis-release-config.mjs": "d0b4b9479f4bd974abfe11cb4eb08e44df95321971f4666597d50791d613ec29",
+    "frontend-tests/analysis-release-config.test.mjs": "b8a78236873a5521fab4fd60d27c7d8941dc093a1c603c6f2e3b5ed7813f30f0",
+    "website/s0ul-analysis-deployment.json": "daf1c22d4bbcb3f0ddb4c97dd0434e072cc6fec894b385420655da5cee341587",
+    "netlify/s0ul-analysis-config.mjs": "46aab4f30ebe94820aa961a26cbd500f6fccada0072701eb102de6ccad2377ec",
+    "s0ul-1m/ANALYSIS-AGENT.md": "99b1abb3d25088d67093e3b37c5b466bd5eee63f546fc0908d46cc88f6a5c754"
+  },
+  "coverage": [
+    "Address-bound deployed modelId and configuration independently derived from fixed model manifest and48 journal shard addresses",
+    "Original local calibration sourceProof retained exactly; deployed modelId bound separately and full32-token phase budget validates",
+    "All51 successful deployment operations, ordered nonces, predicted addresses, step identity and actual journal fee sums required",
+    "Incomplete, pending, failed or inconsistent journals rejected before either output file is written",
+    "Public JSON and default-export server module are identical, keyless official RPC is fixed, and worker serviceVerified stays false",
+    "Only whitelisted public metadata is emitted; arbitrary signing fields in the input journal are not copied",
+    "Public and server configs explicitly opt in to five basis points of reimbursement shortfall; the aggregate paid-work shortfall bound is computed independently from the 0.5 ETH worker fee cap"
+  ],
+  "operation": "Offline config normalization from an already verified complete deployment journal; this generator performs no live chain verification.",
+  "actualReleaseConfigUpdate": {
+    "result": "PASS",
+    "confirmedCompleteJournalRequired": true,
+    "journalSha256": "5a464c9842e51d1e56a8c10069579c4a69b1c894879c7cb3b4766eaa63915810",
+    "actualProductionConfigFilesWritten": true,
+    "liveRpcCallsByGenerator": 0,
+    "onlyChangedConfigPaths": [
+      "worker.maxReimbursementShortfallBps"
+    ],
+    "preWriteAndPostWriteDeepComparisonPassed": true,
+    "allOtherFieldsPreserved": true,
+    "nativeCalibrationSourceProofPreserved": true,
+    "modelId": "0xbbebbe2e6ff555505e97c8b674a03f9c1033438e9e73c16661c122b25b47e998",
+    "serviceVerified": false,
+    "previousPublicSha256": "33ee6d8e37c692541d5359a793d73f633b27efe9c2c91d4b8ba63d3604fa6781",
+    "previousServerSha256": "fc1ebfa78e10975b89f3e082646be6019cc51ff9c415757a410f09ddff335f48",
+    "maxReimbursementShortfallBps": 5,
+    "maxAggregateWorkerFeeWei": "500000000000000000",
+    "maxAggregateToleratedPaidWorkShortfallWei": "250000000000000",
+    "workerEnforcementValidation": "Separate worker-core regression suite; these tests cover config generation, not transaction profitability enforcement"
+  }
+}
