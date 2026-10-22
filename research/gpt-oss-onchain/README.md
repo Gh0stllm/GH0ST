@@ -4,7 +4,13 @@
 
 Goal: investigate efficient on-chain storage and execution of GPT-OSS, starting with a small, independently checkable arithmetic component. This branch is independent of the deployed S0UL pilot. No mainnet contracts or production frontend were changed.
 
-## What exists now
+## Follow-up component optimization
+
+The [22 October session report](SESSION-2026-10-22.md) documents the newer component experiments and their limits. The selected synthetic eight-row kernel uses **1,240,994 gas** with predeployed weight code versus **3,895,428 gas** across eight previous-kernel transactions, a **68.142% reduction** for that workload. Separate tests measure packed 16-bit state storage and integer top-4 selection.
+
+See [final validation](evidence/hour-session-validation.json) for source identities, completion status and test counts. These are local component benchmarks. Actual GPT-OSS weights, full-model inference and model-quality validation remain pending.
+
+## Initial prototype
 
 - Three Solidity implementations of the same bounded MXFP4 dot product: a readable baseline, a control using packed operands, and an assembly kernel using a byte lookup and signed-int16 packed operands.
 - A local EVM harness comparing all three implementations with an independent sign/exponent/mantissa CPU reference.
