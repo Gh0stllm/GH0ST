@@ -1,0 +1,1576 @@
+{
+  "schema_version": 1,
+  "purpose": "Preserve existing production assets and routes while adding S0UL UI; this is a baseline audit, not deployment configuration.",
+  "audited_at_utc": "2026-10-22T04:31:52.471777+00:00",
+  "production_urls": [
+    "https://gh0st.wiki",
+    "https://gh0st-observatory.netlify.app"
+  ],
+  "netlify": {
+    "site_id": "1460fb0c-b81d-4624-aac5-b78658310ce0",
+    "deploy_id": "6ad8a94e59958555cc4cfd4d",
+    "deploy_origin": "manual",
+    "published_at": "2026-10-21T12:00:17Z",
+    "redirect_rule_count": 8,
+    "header_rule_count": 1,
+    "functions": [],
+    "edge_functions": [],
+    "current_rule_source_recovered": true,
+    "note": "Eight redirect rules and one header rule recovered exactly from current production deployment ZIP.",
+    "current_rule_source": "Exact downloaded production ZIP, SHA256 aa88905e264e7c74eb70b0f39d9999091c0a5f2cf9e207283c193885a42b8497",
+    "redirect_rules": [
+      "https://mint.gh0st.fyi/ /mint/index.html 200!",
+      "https://mint.gh0st.fyi/app.js /mint/app.js 200!",
+      "https://mint.gh0st.fyi/hero.js /mint/hero.js 200!",
+      "https://mint.gh0st.fyi/wallet.js /mint/wallet.js 200!",
+      "https://mint.gh0st.fyi/styles.css /mint/styles.css 200!",
+      "https://mint.gh0st.fyi/assets/* /mint/assets/:splat 200!",
+      "https://mint.gh0st.fyi/data/* /mint/data/:splat 200!",
+      "https://mint.gh0st.fyi/vendor/* /mint/vendor/:splat 200!"
+    ],
+    "headers_text": "/*\n  X-Content-Type-Options: nosniff\n  X-Frame-Options: DENY\n  Referrer-Policy: strict-origin-when-cross-origin\n  Permissions-Policy: camera=(), microphone=(), geolocation=()\n"
+  },
+  "original_main_html": {
+    "path": "index.html",
+    "bytes": 206495,
+    "sha256": "3cfe0b04000c3d5e86580a43a5d8435fee26061d9a65d9c43815f5da5239e8ac",
+    "matched_checked_out_html": true
+  },
+  "routes": [
+    {
+      "requested_path": "/",
+      "status": 200,
+      "final_url": "https://gh0st.wiki/",
+      "content_type": "text/html; charset=UTF-8",
+      "bytes": 206495,
+      "sha256": "3cfe0b04000c3d5e86580a43a5d8435fee26061d9a65d9c43815f5da5239e8ac",
+      "response_headers": {
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      }
+    },
+    {
+      "requested_path": "/mint",
+      "status": 200,
+      "final_url": "https://gh0st.wiki/mint/",
+      "content_type": "text/html; charset=UTF-8",
+      "bytes": 19363,
+      "sha256": "ba31d1159b0dde19de9f618a839ac2c48768c3a27ea5122617bea9537990562a",
+      "response_headers": {
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      }
+    },
+    {
+      "requested_path": "/mint/",
+      "status": 200,
+      "final_url": "https://gh0st.wiki/mint/",
+      "content_type": "text/html; charset=UTF-8",
+      "bytes": 19363,
+      "sha256": "ba31d1159b0dde19de9f618a839ac2c48768c3a27ea5122617bea9537990562a",
+      "response_headers": {
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      }
+    },
+    {
+      "requested_path": "/qwen",
+      "status": 200,
+      "final_url": "https://gh0st.wiki/qwen/",
+      "content_type": "text/html; charset=UTF-8",
+      "bytes": 8504,
+      "sha256": "0c3195ba8ae803b290a29477bf198e6b6468bfb89e5935f123716c64e844e5a1",
+      "response_headers": {
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      }
+    },
+    {
+      "requested_path": "/qwen/",
+      "status": 200,
+      "final_url": "https://gh0st.wiki/qwen/",
+      "content_type": "text/html; charset=UTF-8",
+      "bytes": 8504,
+      "sha256": "0c3195ba8ae803b290a29477bf198e6b6468bfb89e5935f123716c64e844e5a1",
+      "response_headers": {
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      }
+    },
+    {
+      "requested_path": "/_redirects",
+      "status": 404,
+      "final_url": "https://gh0st.wiki/_redirects",
+      "content_type": "text/html; charset=utf-8"
+    },
+    {
+      "requested_path": "/_headers",
+      "status": 404,
+      "final_url": "https://gh0st.wiki/_headers",
+      "content_type": "text/html; charset=utf-8"
+    }
+  ],
+  "dependency_references": [
+    {
+      "source": "index.html",
+      "paths": [
+        "fonts/grotesk.woff2",
+        "fonts/editorial.woff2",
+        "fonts/mono.woff2",
+        "/qwen/",
+        "assets/deployments.json",
+        "assets/runtime-abi.json",
+        "chat.bundle.js"
+      ]
+    },
+    {
+      "source": "chat.bundle.js",
+      "paths": [
+        "assets/deployments.json",
+        "assets/runtime-abi.json",
+        "models/tokenizer.json",
+        "models/tokenizer_config.json"
+      ]
+    },
+    {
+      "source": "mint/index.html + mint/styles.css + mint/app.js + mint/wallet.js",
+      "paths": [
+        "mint/assets/favicon.svg",
+        "mint/assets/fonts/grotesk.woff2",
+        "mint/assets/fonts/editorial.woff2",
+        "mint/assets/fonts/mono.woff2",
+        "mint/styles.css",
+        "mint/app.js",
+        "mint/hero.js",
+        "mint/wallet.js",
+        "mint/vendor/ethers.js",
+        "mint/data/collection.json",
+        "mint/data/config.json",
+        "mint/data/shard-proofs.json",
+        "mint/assets/art/001.svg..180.svg"
+      ]
+    },
+    {
+      "source": "qwen/index.html + qwen/app.bundle.js",
+      "paths": [
+        "qwen/style.css",
+        "qwen/app.bundle.js",
+        "qwen/config.json",
+        "qwen/profile.json",
+        "qwen/manifest.json",
+        "qwen/archive-index.json",
+        "qwen/tokenizer.json",
+        "qwen/tokenizer_config.json"
+      ]
+    }
+  ],
+  "original_local_files": [
+    {
+      "path": "chat.bundle.js",
+      "bytes": 312019,
+      "sha256": "1f0f4f83e37f2dfd5ceb17fbaf848b894cead53298fe8f6601e87454f6b88d42",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "fonts/editorial.woff2",
+      "bytes": 22768,
+      "sha256": "4c0014d7cfd670d2d469ea83d062a74f2793d9117ee55f222cd988c911113682",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "index.html",
+      "bytes": 206495,
+      "sha256": "3cfe0b04000c3d5e86580a43a5d8435fee26061d9a65d9c43815f5da5239e8ac",
+      "source": "public production HTML snapshot"
+    },
+    {
+      "path": "mint/app.js",
+      "bytes": 19706,
+      "sha256": "19da23a622c8efe16eef974d326feb92c7e0e6aa5eec7b0011d21a17785184be",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/001.svg",
+      "bytes": 24126,
+      "sha256": "ffcc6ad6ae5bf910dc9c4fd25569a8c1c65e9d5f2b01559d8d2e4d8c120a6076",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/002.svg",
+      "bytes": 25133,
+      "sha256": "3f5dda388bf9b826ada7121c896adefcabd6f4cdc50905696844306934d8ee47",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/003.svg",
+      "bytes": 24405,
+      "sha256": "1543f629690a15fb8da83744a8a2bb2b4237e27efbfd2c5bdbfe9c048b77e304",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/004.svg",
+      "bytes": 25628,
+      "sha256": "f0e920d704c2f43ab236d5837e06269f502ea9a53f45762132af5bd60a94a7da",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/005.svg",
+      "bytes": 25798,
+      "sha256": "e6922ae86e727c05ab436af2e7fa41b079e2d0615857ce30c70bc67e23453f82",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/006.svg",
+      "bytes": 25447,
+      "sha256": "5c7561da1240206c715035171c66c20379f543c461da8f897f7d282b5c7acaf6",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/007.svg",
+      "bytes": 25354,
+      "sha256": "9e259fa8e5ab5d1fcd58a364e874631dcc4eee6590685e42c1c12be2b60a0162",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/008.svg",
+      "bytes": 26289,
+      "sha256": "dd0d04591f8973c4ba439f0359217c72e2bf47c94f125a0383d590503af6b359",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/009.svg",
+      "bytes": 25249,
+      "sha256": "2d53e188d066fad0c3eb670ed9d032bd90a03321509f8934f51e2f2c967374f8",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/010.svg",
+      "bytes": 25886,
+      "sha256": "d96cd813b051276c1ed08aa8b525b969536f76b29c07ef07ea121688c26b7c54",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/011.svg",
+      "bytes": 24892,
+      "sha256": "4c7228eb3b894b57796bd6ba83194521d0aabd1e3215fca66d39ed6b7956ebe8",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/012.svg",
+      "bytes": 25603,
+      "sha256": "f26f972b4f9153e5bbedd0ef81beeca58c2f37b9a98ba7b62618eb9589d8362c",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/013.svg",
+      "bytes": 27220,
+      "sha256": "555ac135d253a5fd6148dc061fe6647cdd1c372e1bc8f20ffebd8fa45d6f2c12",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/014.svg",
+      "bytes": 25604,
+      "sha256": "f87a744df533d225b2e72c0930940cea1d0a1a355176e716fd7d8c3a75721848",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/015.svg",
+      "bytes": 25279,
+      "sha256": "c95ea21d2c822592b8998909b7a7eab023c461a76de112051a33dafc960584c0",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/016.svg",
+      "bytes": 25718,
+      "sha256": "b0f52a065fb2acb5a18737c08315fe7608589f8c93b1a159b809e02fa2f1bfea",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/017.svg",
+      "bytes": 26989,
+      "sha256": "6fae89e61ee5dab4068c273d12c20e468cf26003ae1775a1c3e84c2b9a2d27bc",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/018.svg",
+      "bytes": 26562,
+      "sha256": "c4336ff8e94a7bc3d75f68fcb1775c4b306923937906950f113a5e87c828ebcc",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/019.svg",
+      "bytes": 23954,
+      "sha256": "dffa715e71878b921b94d9ccd24b291865a43966568fa636f5f623e65a56371c",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/020.svg",
+      "bytes": 27685,
+      "sha256": "45a65597a77a66380f31708c5df7b07028ce8856845d5d9fd8f6bb2d50dbeeb6",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/021.svg",
+      "bytes": 23833,
+      "sha256": "38cbdab4a85dd781bce5f87c63e24128e8d3d7f230c452b9ac706958794e5af6",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/022.svg",
+      "bytes": 24850,
+      "sha256": "792768b4378989ab273184cced3a612d7bd6b85b9b08a67449ab23b40329d886",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/023.svg",
+      "bytes": 25098,
+      "sha256": "089896c4ddd9e9c11455121bee57cc70f97c3f1872c4101ecccb5e6d81dd7ace",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/024.svg",
+      "bytes": 24069,
+      "sha256": "5756202e01597cc86170922dea123eed21cf6e8b01296eb24ca2e25987d60903",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/025.svg",
+      "bytes": 25514,
+      "sha256": "97d568dc9b7ef3327aea2678f3773b6f9de74f6f129f952d46262485aa0d6827",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/026.svg",
+      "bytes": 24966,
+      "sha256": "bc0693e0d5292d7dc751d142de57dd967168cc270773e3b71b35f8177ff85534",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/027.svg",
+      "bytes": 24669,
+      "sha256": "5b032127e3e67c4f6fe24de3c1a2605ed832add43ad60af0ef282a267aaa4964",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/028.svg",
+      "bytes": 25019,
+      "sha256": "ab29b6d0dd246c7288f94d9bd7aa6b3a175a49fc7a978b8f6df3a8ab0c99c2e4",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/029.svg",
+      "bytes": 25450,
+      "sha256": "3e29a0dd34ce91638eb943ab4fe9313fe246d67cd6c6c2eb7cb9905228a5869d",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/030.svg",
+      "bytes": 26179,
+      "sha256": "50488bf40b900c5d0ddb9c89c56dfdbcdecd326455fa24c8ca6310825016f9de",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/031.svg",
+      "bytes": 25073,
+      "sha256": "8d3665916f06946e17be8e826799f3b665481b660e9086106a97a7fa04d3ba31",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/032.svg",
+      "bytes": 24907,
+      "sha256": "f46885005f05512ba7dedb29c91d6618ef5dd8a217a1769a6a571d6250784262",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/033.svg",
+      "bytes": 25351,
+      "sha256": "20ca210d3130bd082b769c3fa9c9dc15fbd9e59f32df387b4e73b485702b35a0",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/034.svg",
+      "bytes": 27456,
+      "sha256": "6a0e132415ee43931f3f2b7dff0037146d54d044582084a13ba2921f74e9a0e4",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/035.svg",
+      "bytes": 25274,
+      "sha256": "bbb185975201d056f7f69ec276d115275bb45297276bb55db793afdaf4fb3113",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/036.svg",
+      "bytes": 24236,
+      "sha256": "b4dc6a6791816a847c8c68518c6763512586afa9214c2f2a7fd9a745c350dde1",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/037.svg",
+      "bytes": 25708,
+      "sha256": "4fac7fe70fc7bb2f3897f69d6a441629520d01ff3c37b99d5b3fbb3e2c9e5c78",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/038.svg",
+      "bytes": 25568,
+      "sha256": "4cbbcf7a6a751fda2c00485f47396ddf4257582b4394c1960b5f84aeb53891ad",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/039.svg",
+      "bytes": 25506,
+      "sha256": "07b4ec33be9fee3854143d4720af8bd51cb7bb9c37198d24cd189fddcbef6fe5",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/040.svg",
+      "bytes": 25532,
+      "sha256": "ab431277a5e2ea641752def614dd09b91803d032b681326ed41cd53bb33b3867",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/041.svg",
+      "bytes": 24626,
+      "sha256": "58b2be0e1cb9c17d4393ed3eab644595bfd360c4c40a1dff5a14777b036059dc",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/042.svg",
+      "bytes": 25833,
+      "sha256": "14e955f4ae0d7d1b55c0b0e59ce40c2bbb9c7666b0c8c81ca754a0a20bb2aa34",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/043.svg",
+      "bytes": 25891,
+      "sha256": "e8f10ead766bf4770289091249a8c1cabaa9a9849209e459456f29933db8bef3",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/044.svg",
+      "bytes": 24071,
+      "sha256": "91aa68e23ee5c3bcd29dc577b64e6643a3388947548682dc98cd4fbfd6f0237a",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/045.svg",
+      "bytes": 26784,
+      "sha256": "1c1194db124a294f7f9a6202b907ae420ca4d5596d8327cf8748c02d1fa4ec0b",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/046.svg",
+      "bytes": 25460,
+      "sha256": "9be7f5a1fc8e375ed8b307a43f4460dc24d2e384c5a9cedbe265118e9274874f",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/047.svg",
+      "bytes": 25175,
+      "sha256": "95c544c428f6d48de6bc03ad581de20c3158c2ae812ebec5366553dd7501c621",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/048.svg",
+      "bytes": 24239,
+      "sha256": "97c7a1c6b6ca0ccf44e7123b8734be649455147b7fc1dc34d782553bfd431854",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/049.svg",
+      "bytes": 25462,
+      "sha256": "3a27e78c324f7826f126d127374344769cdb5431ac164b60544b0b6f4b07190b",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/050.svg",
+      "bytes": 27075,
+      "sha256": "bebdc8cd9b1edcc13f5ee67d6b01411963e4e5350f38b843bf7e3ba0992264cc",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/051.svg",
+      "bytes": 26550,
+      "sha256": "fabea9efe220f50c37ce3b72ca31ca80d0bd49a9ace3b3ba126ad224e2e9bfdd",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/052.svg",
+      "bytes": 25022,
+      "sha256": "f270123f3bf9b10510209f652bcda9137a48f22403ca06a887aedb46577c3718",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/053.svg",
+      "bytes": 25561,
+      "sha256": "521b7ac62e6905c06061370c3a0b193a2105edf0a50a9fff1d2675a5618d3f31",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/054.svg",
+      "bytes": 25512,
+      "sha256": "0ee4378474b75ddc52baa3efaa51c4761b0944a891f5793b789e9f07019a17dd",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/055.svg",
+      "bytes": 24407,
+      "sha256": "9a5857b574d89ca8e6eb66b4952f219de3d14f5236c087e64be8176bd1d9e5c2",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/056.svg",
+      "bytes": 26111,
+      "sha256": "d83727f7c1e32a0a93e0f926c54edfc5d97806dc363a09fa36aff72df644be03",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/057.svg",
+      "bytes": 25822,
+      "sha256": "93914e26f082614a4a33a60aeba11da305a5b9d5d4a6daea730dcf607f11ac85",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/058.svg",
+      "bytes": 25588,
+      "sha256": "9e5dad21d6f188d7919dbe919c78062f6405e84f766d8c6d668727bf435c3c58",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/059.svg",
+      "bytes": 26899,
+      "sha256": "07a746a18ab87d02c39d28031c4275724a7ffae8d6d757b55cfe36532398c685",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/060.svg",
+      "bytes": 25251,
+      "sha256": "69f11dbf08d9b0c205c75d047dbb7b8347ced412cafe6216cd1a4b4bf867601d",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/061.svg",
+      "bytes": 25129,
+      "sha256": "66ba356bb985319ecb898855a79cd46f02560dc89b1f42e556399739de9af646",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/062.svg",
+      "bytes": 26728,
+      "sha256": "a5187788a8342f363b33f3ddcc3232e0d4662e132f6dc80a6deefb9832610017",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/063.svg",
+      "bytes": 25411,
+      "sha256": "45a5e68b28982eb8a0189fd617e7cba9c725d579b82f28cc7e93221d90f1f6c9",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/064.svg",
+      "bytes": 25456,
+      "sha256": "2a84c49c02abe5cd0e57570a601d7b1760ddcd1d6b38164beac1a054cb7d511d",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/065.svg",
+      "bytes": 24350,
+      "sha256": "af36b1fe9072def53f5c36362c2ebc4cdcfece5e8925d9fd2de3da8a0f09d86c",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/066.svg",
+      "bytes": 24300,
+      "sha256": "ba5b5452231ebcd0f5259d4d2b6d14051ba0323d33f2b38b24770a7e82b85cc8",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/067.svg",
+      "bytes": 24001,
+      "sha256": "e0bd8d43b882be7a4962056f68ad289cbb2d5e349cc7d26009bf8c22e612e0d1",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/068.svg",
+      "bytes": 25533,
+      "sha256": "7c68f24257b71fccc3caa551d45b11a3a0ffad727df7ffd90bb10abbcfa613cc",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/069.svg",
+      "bytes": 25276,
+      "sha256": "bee14d48813ee9464faf84713401ead72b5a269dc0c2f5ea3f5cb991830af187",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/070.svg",
+      "bytes": 27506,
+      "sha256": "af2c93e91abe8a6e852c2162a0cc0d50618212fc2885240ce4f79461b3595684",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/071.svg",
+      "bytes": 26201,
+      "sha256": "5af5b3000fdfc1a12613208a5fd0306b76ffb886b20cdac04cde4ad8108db8ef",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/072.svg",
+      "bytes": 25651,
+      "sha256": "6c802a6e74163a9fd65faa98112b19511a0d91b59e1e6833c9718d2b7f995bf2",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/073.svg",
+      "bytes": 25707,
+      "sha256": "7eef95fa890a974c6b2eca03317bda7de2a66119621e706cd1eaa19f1ea48318",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/074.svg",
+      "bytes": 23888,
+      "sha256": "3de61e0d271d178d65a37d3467a3fb6773778bd4fcb49b7ec7d8c0e04fe77d3e",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/075.svg",
+      "bytes": 25824,
+      "sha256": "137d3c393f97073918aba57737284a486f351be0ddbcc01e61999a44ec2609bd",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/076.svg",
+      "bytes": 25765,
+      "sha256": "6779245e28964d89abb06b05bef0bd2929a7062524a4dfa8bb3aaf0648eb23e9",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/077.svg",
+      "bytes": 24882,
+      "sha256": "0c06af6ab099a37b1c84cc810d48783d5dfdadf225e12a9d11a4f42c4eedca48",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/078.svg",
+      "bytes": 24846,
+      "sha256": "0fe5983904a1e9135b4e588f202a6dc82b515e70d12fa336c0673d957ea3df56",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/079.svg",
+      "bytes": 25765,
+      "sha256": "09814e04ecde3e016a287ba723cd18cae6936aa1fcc80c80acd8823eedc8b187",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/080.svg",
+      "bytes": 27862,
+      "sha256": "b8db78f336726f1f7c4404b34f9af34597a6bae8defd6254075dc54ec7811c0d",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/081.svg",
+      "bytes": 25190,
+      "sha256": "e1e0cee414e40492c25c803f8a471062c28c926eb8eabb87b69e02c52f5469e5",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/082.svg",
+      "bytes": 24234,
+      "sha256": "a053392d66871d3566a5ce9254ea37b9f5f5dad6a6f24bfc32c312b7d08880ac",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/083.svg",
+      "bytes": 24288,
+      "sha256": "65353bdbcc28db94748d63aea97b1725e167c4d6ee8a471899657b0ac80a386d",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/084.svg",
+      "bytes": 26789,
+      "sha256": "00507c6e0f1293d08a07d5af064da0a95764ae40e3acb50d027585450d342b73",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/085.svg",
+      "bytes": 26171,
+      "sha256": "21d4100c353d48bf6a69bf632239e3242979c3da8a272b6227efd51230546db8",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/086.svg",
+      "bytes": 25630,
+      "sha256": "141e3b7947f25bd7a62e6177ae7de442590464441cdc9c61997eddd5fbbfe79d",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/087.svg",
+      "bytes": 25334,
+      "sha256": "68eb12c1073003598b4481e968f9cd27cf7f1c5a2f7e41df25e666ddc183d5c1",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/088.svg",
+      "bytes": 25196,
+      "sha256": "7cc3e6656dc8c0cce2543927196de4f0b9a748da8761bc1af80e9816be33130a",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/089.svg",
+      "bytes": 25139,
+      "sha256": "e905239cd816ce22526be4aa002d728add44d7e78ad3ff913ddd8a521e47983f",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/090.svg",
+      "bytes": 26232,
+      "sha256": "7d1f39a82c8359bd3a143fd79be13eec1367979c821ec9fa9d8eeb20ecbe9f22",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/091.svg",
+      "bytes": 27288,
+      "sha256": "3d03a46716abc6efcccbc21c5e0058da5c09d2787044dbe1d14f7cdba839cdf3",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/092.svg",
+      "bytes": 24175,
+      "sha256": "bec22d7de55fef80fff9d953bae42edc30f4dcb090f95ee9b3933ae7bb343f88",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/093.svg",
+      "bytes": 25213,
+      "sha256": "d3504ed71310a99facb32a445a7041ca38883dc91a6a4133639a0ac24f3cbf64",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/094.svg",
+      "bytes": 25467,
+      "sha256": "3324b1c195a224b2210dd52db86038421e78bb1cbac181442a23de2e72490c6c",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/095.svg",
+      "bytes": 25133,
+      "sha256": "471d2da33af6d9ec6caf2e8fc92ea3a88adf49f7314e1791cf3c22ff12e65d5c",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/096.svg",
+      "bytes": 24293,
+      "sha256": "cb1c9e41dff915b3c2cb2a8f0d5b7b61cdacf05a7437e788bdf7d2093218535e",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/097.svg",
+      "bytes": 27336,
+      "sha256": "ded2e220d3bae729d10962d20ebb40e306e9d7ba894055018d4bafd698c75604",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/098.svg",
+      "bytes": 25626,
+      "sha256": "1a60d6b03a5fcbf30716149293dffaa29a674342886dbbfe2c4d479d70aee902",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/099.svg",
+      "bytes": 25474,
+      "sha256": "a562a290f9f6bc046b2c4399313f09a013166bb5fcefb546b72e7b601f0a259e",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/100.svg",
+      "bytes": 25403,
+      "sha256": "7610ea03215124c634fca4ec628fe661e2c899f5e1675b85656097243b293403",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/101.svg",
+      "bytes": 23606,
+      "sha256": "69b33dd221fbee0b03944dc462b9b87f31e0563d5f1abaf8ba6c62164fc7b67e",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/102.svg",
+      "bytes": 26387,
+      "sha256": "f185ee05d1dcdb785ab7ff7c1f058bc257404bdfcd3bf1a7627d80721c322d74",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/103.svg",
+      "bytes": 24678,
+      "sha256": "4871aee8c73ded5bbd42d62fbd22897db1155e37df2d64cdf8f9280ebb099415",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/104.svg",
+      "bytes": 24627,
+      "sha256": "23ee828cc8bfcc548d9d3a2899f61786003548443b05d634bc1f246d59e57209",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/105.svg",
+      "bytes": 25276,
+      "sha256": "861329e65b67adcbd06a145d58bf1778cd86af1e0fcc2efd4f5e867229c17b11",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/106.svg",
+      "bytes": 26501,
+      "sha256": "4ffb5ad99c17b844e7caf3a8c90a011ffd94f53f4a8a2d10db99aca9e6a4333b",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/107.svg",
+      "bytes": 25419,
+      "sha256": "52919f84b3e9903c0c1e5857652c13fee1065aa30222392e95905db508a0c303",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/108.svg",
+      "bytes": 25284,
+      "sha256": "7631a24e7a8d8694419628ff53c6fbd47007ab3dba5affe8213cfd1481160c83",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/109.svg",
+      "bytes": 24931,
+      "sha256": "2bd178d6668c45da9bc128cc807215b04c4dd6d3d5afc52e039e8d4e558b359a",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/110.svg",
+      "bytes": 23607,
+      "sha256": "fc296478fb788d56ba0efea4722e6977b04b5544c4c1f9c48928841ab4f29a83",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/111.svg",
+      "bytes": 24372,
+      "sha256": "79d04f97d274aca207e9c39235cdeec7bf455e203f5d057a82b14354ad41d618",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/112.svg",
+      "bytes": 23321,
+      "sha256": "9acea0fc66ad68913a19042c494c403aa04a815cb68500047154409cc2637334",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/113.svg",
+      "bytes": 25138,
+      "sha256": "73cf32844d2b42e57b9cf30cc50a33b6531765d919424a8e53090cb663d654f4",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/114.svg",
+      "bytes": 24304,
+      "sha256": "c5f4d77a39ed32aa618f4a6b0ecf763fb980b6b32c5c7ec06f7f550b890cfd7b",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/115.svg",
+      "bytes": 23490,
+      "sha256": "44b85f856561a2ac8b478fb9bc7292f10ed2381ee78671d79108c9abd5cb8dcb",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/116.svg",
+      "bytes": 23437,
+      "sha256": "be6b385bb8a249a61cc4d321d9ec7b1095ea3cfb4f27b540c8477e026f935fd2",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/117.svg",
+      "bytes": 24416,
+      "sha256": "9464ef9586eeee55d7fc59f5639e04b26b8463e0962d8bfb66105047b8e636df",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/118.svg",
+      "bytes": 26821,
+      "sha256": "2feb639c7e4bd7772f27bd4c270daea997d9fb743dfa6945c10660c617f26ca8",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/119.svg",
+      "bytes": 23435,
+      "sha256": "faf1f5d7a3124227015ab2f89acad13ee039c171623197578e1e3fe2bbe6d0eb",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/120.svg",
+      "bytes": 25105,
+      "sha256": "4695e38e8d2f8ba061a3052943fdd44381ddb1c3976476ac5f50fd7aca1541f6",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/121.svg",
+      "bytes": 24100,
+      "sha256": "3140969056466ab04b019002cd78a9cf9507ff8e24d071f58046059bbc4a636a",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/122.svg",
+      "bytes": 23545,
+      "sha256": "fa47974e42a90bdcad1ffa92f6d8d1fa9803e1be76dd23f7abaa96b65562aea0",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/123.svg",
+      "bytes": 25364,
+      "sha256": "6d62264452d72e229ca7aa1d6543ed6c5c574c0ecfda1bcda33ff9d89a941d2e",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/124.svg",
+      "bytes": 24731,
+      "sha256": "e5c359b56634b907f91d62ee2cce9ee3a993b75ed4cf40a48d8343b91b3ff304",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/125.svg",
+      "bytes": 25483,
+      "sha256": "8f7e7fb32bb91806b75ff0711c65a84c39071e7277a28b1f7fd1445b86405243",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/126.svg",
+      "bytes": 25429,
+      "sha256": "afa4f4bc15dc67e542fdf632b6260da288d25c3c734b770c3a68b29a5084c4a7",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/127.svg",
+      "bytes": 25134,
+      "sha256": "2049f5153b07b5932ad942ab2cea8b48a6039fdbd47eb2f77b930925094afcec",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/128.svg",
+      "bytes": 23727,
+      "sha256": "3592d137005b20c3ecce832d32eb0731327ef7bc13ebf74a8fbe81655c616960",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/129.svg",
+      "bytes": 25423,
+      "sha256": "f214bc34c8a42b41191b4a64d4edfa887f8c92b8e118a2b66ac4e8c77ad3268d",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/130.svg",
+      "bytes": 26443,
+      "sha256": "955cc8401664a04ac6672518c9b0073fc884c2c2016dbe6bcbbfa3024f7c0607",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/131.svg",
+      "bytes": 23374,
+      "sha256": "57efea111803481b06b3475fd7de0bc7e7cbc85b38d2427d5040c1d2a0138565",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/132.svg",
+      "bytes": 24586,
+      "sha256": "679e22d042f1079be710ef16501997a4eb2485afda0d12fb7c03025f70c24ad8",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/133.svg",
+      "bytes": 26204,
+      "sha256": "f43e551bf6360584b7c018cb8e04efc8efa7b1b9686be41ee8ea77eb692c61de",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/134.svg",
+      "bytes": 23601,
+      "sha256": "4c4bde2fe11b474eef0026db27824a6b1ebe14f0d012077c4d141e9343d9176d",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/135.svg",
+      "bytes": 25054,
+      "sha256": "ea8ba34b2eb088130797ae5ee53321fc6c7bf0d3ca66bdc8db063832e74792ef",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/136.svg",
+      "bytes": 24502,
+      "sha256": "a28685d34c6e0c29b5edc5fe79de638892539c131a30f8e012af126fb5e4571e",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/137.svg",
+      "bytes": 24705,
+      "sha256": "035deb71c7e864411c9e22da80ff7e5c41a899aa61c76e2d501a1a2190af746b",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/138.svg",
+      "bytes": 25059,
+      "sha256": "6f7d769fb80749ec5847e7e4155c7fdd67d3bfa25d825397fef1371bc9438964",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/139.svg",
+      "bytes": 26265,
+      "sha256": "794749f3216dd061169eb580849f3bac772949b996f1af222eac2519e2cc21bf",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/140.svg",
+      "bytes": 25022,
+      "sha256": "c73086786f040dd8fd89806ecf5237b51150aa08a2ed054c1aecc8673edf2ed0",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/141.svg",
+      "bytes": 26653,
+      "sha256": "5827a3c07fd59fffa1f3739b3c86d3e7db7e08e02ae611c3b8c15b249e94f60f",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/142.svg",
+      "bytes": 26886,
+      "sha256": "440e6e9b18e58253b9a76a22e1917b03706179cdb37511cb2a4347ff83edfa79",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/143.svg",
+      "bytes": 24890,
+      "sha256": "3eb885e49eea78dc89010fa23d9d313c713c428a44900badd65038cd35bcb1ad",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/144.svg",
+      "bytes": 25320,
+      "sha256": "1a26cf5bc91df9c6e640eacb980510582fbcf59838717ee3920d24328f74501a",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/145.svg",
+      "bytes": 23718,
+      "sha256": "fe0b721dd1e5a50350482b5698cf66e76c284b6f53e45750dc3c417559e68f1a",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/146.svg",
+      "bytes": 25427,
+      "sha256": "c9437eef0ce4b99723593903005f53dd5ee49d54de0af3a4c336b95ca680b26c",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/147.svg",
+      "bytes": 24654,
+      "sha256": "e5c3b63835958c4032e611f87c8f4cbfb433d31a9952a7f0690350e9958f3cb3",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/148.svg",
+      "bytes": 23726,
+      "sha256": "80e741b5c5cfacce9e9bf0eb4781b9361b10ebae1ba0decf8a8862e15db27522",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/149.svg",
+      "bytes": 24849,
+      "sha256": "35a8eccabb61f642e1362b24f8b49397e7025005bbf703c6fa7135202f7a5497",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/150.svg",
+      "bytes": 24005,
+      "sha256": "99f1126bc2c8024f3a6c37d92c51360e359d2b39dd8841917241e2d2147ea838",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/151.svg",
+      "bytes": 25256,
+      "sha256": "fb612318f89752a04e57505d7931e49f980a67380bda69a689dcb12e62861cda",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/152.svg",
+      "bytes": 24988,
+      "sha256": "13303ab5386d61f4fbc9357c48e22f9a00829083d05b985898d092ada16b71ea",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/153.svg",
+      "bytes": 23780,
+      "sha256": "f118fa262a1ccfa693c31127d169d6fd8178b83c6871720af1ca32dede72e888",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/154.svg",
+      "bytes": 25005,
+      "sha256": "829a24c29fa326342713ac9dda074f483ff068073dd50ff9585434ba00867bed",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/155.svg",
+      "bytes": 25157,
+      "sha256": "4e0738c2f5e3d6708ce0067ec83eb648431177ecc0be7539463ba47bfed03460",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/156.svg",
+      "bytes": 25009,
+      "sha256": "d75b097b9c19209ba8816b11da6e833b5d339691d153e17d16e8963219b248f9",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/157.svg",
+      "bytes": 26089,
+      "sha256": "a1b6309cafd1db7c8ef9512cb6d9f23006a9b4e8eda415a10f3ac7ff12b132d6",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/158.svg",
+      "bytes": 25169,
+      "sha256": "4446074c9614cd6079869c33e93f607e16387f3628102202573169cc8fb5bc8a",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/159.svg",
+      "bytes": 25113,
+      "sha256": "0af2578514dd0f37c34bdeb9922793a8a082d5626ee3bd6495257be4a7d078f2",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/160.svg",
+      "bytes": 25723,
+      "sha256": "1150470f20e44557ff9ff5b61950eb8db0c14b90daaee62fbda865f3d85ba517",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/161.svg",
+      "bytes": 26770,
+      "sha256": "c6a0c3824e99bba8584bfa0f50908b4d929488bd9aa9f2ca2be576a4e7f38507",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/162.svg",
+      "bytes": 26210,
+      "sha256": "0b4d13689d93686d2ac82c8790870e5a23a341727ce4b217c0658e8c5e88b679",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/163.svg",
+      "bytes": 23721,
+      "sha256": "a8b46b5076e8b7b9b8cbbdd5294a8fb733b6db9e1fabc6f60ff5a2612c0b174d",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/164.svg",
+      "bytes": 25429,
+      "sha256": "4efadab4af9d5f9321dcac2ab14624fab91d573d5a816b429e54fd8a11c3e49f",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/165.svg",
+      "bytes": 25111,
+      "sha256": "12ea46fba70427414c6d76c6683e41f24060df174407ecab793e2bf682aa7e1c",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/166.svg",
+      "bytes": 25542,
+      "sha256": "605789b011f73c78cd72f30239555c95344a106304c81c65dd83057b3f14555b",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/167.svg",
+      "bytes": 23485,
+      "sha256": "7d357090c25db65d321e491e2aa6914d998445c0aa4fb5ec813206fd7a4882fb",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/168.svg",
+      "bytes": 26386,
+      "sha256": "11fde215d65a911ef1bca9bbab10dcaed3a704847d8ba58828b1d5482987632b",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/169.svg",
+      "bytes": 25545,
+      "sha256": "3536bb02fca9383b1110e29495d79949d79a68f8019ea55c6fad9000777e461c",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/170.svg",
+      "bytes": 26993,
+      "sha256": "1ceadf5d05f7232f0d38b3a080b22af37bfe6c66e4b398e4f26a20fa4116b7f7",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/171.svg",
+      "bytes": 23927,
+      "sha256": "a2a2c9f5854f0274ea542070df0947c6155a93833f4461c9e147cc00f8d30a37",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/172.svg",
+      "bytes": 25135,
+      "sha256": "ac8a4e0dfc428cfbf0212594c36901af6002540453ff97f018f9f9e1709644d9",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/173.svg",
+      "bytes": 23422,
+      "sha256": "4cff61657366dfdbba766a5e163e6db158dc05b4922f10d8bc40b771d6a91cc5",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/174.svg",
+      "bytes": 24550,
+      "sha256": "f7914c930fe6717c4a88338758d2fbdd1f9f809d30999d519d24316c0fcd6cba",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/175.svg",
+      "bytes": 24518,
+      "sha256": "091a94e8c537dba9d25934037adea62d6915df6f4cfd9a2bf0bd6c65d90a3553",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/176.svg",
+      "bytes": 25248,
+      "sha256": "d5f4f2c1094e55f5eee45c6ef6609b4b599bcce23388b25bf70222f46ab8b095",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/177.svg",
+      "bytes": 24464,
+      "sha256": "b9fc1ea1fa5150e6b483bafe49fdf1a72b858f8c9741a8ec3d911a30e6babe21",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/178.svg",
+      "bytes": 23544,
+      "sha256": "a4dd011014fd5d984d6bcd2442230eb0954a4463a752a06df4015016344f86ee",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/179.svg",
+      "bytes": 24461,
+      "sha256": "2dcb0155e3f286146c120d11164b9348e5e0f7d5cf86c17b469e8d9907173ab4",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/assets/art/180.svg",
+      "bytes": 25294,
+      "sha256": "f7eb05f240be8037be2aff6ba9fd3d75368cde986532e2bce8b766ff8a05503d",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/hero.js",
+      "bytes": 12295,
+      "sha256": "43d0fbf6b0ad1a78062b3bec604e021132e9de7758e7cbe4aacd3d94a60568ea",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/index.html",
+      "bytes": 19363,
+      "sha256": "ba31d1159b0dde19de9f618a839ac2c48768c3a27ea5122617bea9537990562a",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/styles.css",
+      "bytes": 30319,
+      "sha256": "0b7a72bf96414dd605d519e05f754a7f6d6fffdf46bb65dee9ca820a3b4e7340",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/vendor/ethers.js",
+      "bytes": 512985,
+      "sha256": "66580dbb32353addbbfd2c1880a29693436c2d41ebdd4bf4a4516b9ad6f5f5ea",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "mint/wallet.js",
+      "bytes": 37815,
+      "sha256": "bb4283847bd46b397f4ee56d12ec8cb850bb67ee42094fc2b178f1793d3024ae",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "qwen/app.bundle.js",
+      "bytes": 318043,
+      "sha256": "13735abb9b9118b1699091553b55d258d7cfd8131bcbf527eba62fd0a116cd4f",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "qwen/index.html",
+      "bytes": 8504,
+      "sha256": "0c3195ba8ae803b290a29477bf198e6b6468bfb89e5935f123716c64e844e5a1",
+      "source": "original checked-out website file"
+    },
+    {
+      "path": "qwen/style.css",
+      "bytes": 7588,
+      "sha256": "fc7494a672560ac7252b06dfe8ee6491cfe321ed114f92121a2d2701815ae0ad",
+      "source": "original checked-out website file"
+    }
+  ],
+  "restored_fonts": [
+    {
+      "path": "fonts/grotesk.woff2",
+      "source_url": "https://gh0st.wiki/fonts/grotesk.woff2",
+      "status": 200,
+      "bytes": 26620,
+      "sha256": "1a23479936a62d6fc72c97ef2a80e3ca19322f946f7a8b4ed1b706f6beb86df5",
+      "missing_at_initial_checkout": true,
+      "restored": true,
+      "validation": "WOFF2 signature"
+    },
+    {
+      "path": "fonts/mono.woff2",
+      "source_url": "https://gh0st.wiki/fonts/mono.woff2",
+      "status": 200,
+      "bytes": 37200,
+      "sha256": "b8c46b8e7b43aebe28cfe04ff385f006687d34aa64ffa6af2d0353c780a03fa7",
+      "missing_at_initial_checkout": true,
+      "restored": true,
+      "validation": "WOFF2 signature"
+    },
+    {
+      "path": "mint/assets/fonts/grotesk.woff2",
+      "source_url": "https://gh0st.wiki/mint/assets/fonts/grotesk.woff2",
+      "status": 200,
+      "bytes": 26620,
+      "sha256": "1a23479936a62d6fc72c97ef2a80e3ca19322f946f7a8b4ed1b706f6beb86df5",
+      "missing_at_initial_checkout": true,
+      "restored": true,
+      "validation": "WOFF2 signature"
+    },
+    {
+      "path": "mint/assets/fonts/editorial.woff2",
+      "source_url": "https://gh0st.wiki/mint/assets/fonts/editorial.woff2",
+      "status": 200,
+      "bytes": 22768,
+      "sha256": "4c0014d7cfd670d2d469ea83d062a74f2793d9117ee55f222cd988c911113682",
+      "missing_at_initial_checkout": true,
+      "restored": true,
+      "validation": "WOFF2 signature"
+    },
+    {
+      "path": "mint/assets/fonts/mono.woff2",
+      "source_url": "https://gh0st.wiki/mint/assets/fonts/mono.woff2",
+      "status": 200,
+      "bytes": 37200,
+      "sha256": "b8c46b8e7b43aebe28cfe04ff385f006687d34aa64ffa6af2d0353c780a03fa7",
+      "missing_at_initial_checkout": true,
+      "restored": true,
+      "validation": "WOFF2 signature"
+    }
+  ],
+  "public_assets_missing_at_initial_checkout": [
+    {
+      "path": "assets/deployments.json",
+      "source_url": "https://gh0st.wiki/assets/deployments.json",
+      "status": 200,
+      "bytes": 173600,
+      "sha256": "da72e86b69da6bc0c203f688e675f31f6e13e234c81d303b75fd45c576cfee75",
+      "content_type": "application/json",
+      "validation": "parsed JSON and exact expected MIME, byte length, SHA256",
+      "restored": true,
+      "local_sha256_verified": true,
+      "restored_at_utc": "2026-10-22T04:50:09.761853+00:00"
+    },
+    {
+      "path": "assets/runtime-abi.json",
+      "source_url": "https://gh0st.wiki/assets/runtime-abi.json",
+      "status": 200,
+      "bytes": 15628,
+      "sha256": "a767df2b4aa9ae8c9f4b5a853c216ba7ddff4b658578013c5ec5b68694ec28be",
+      "content_type": "application/json",
+      "validation": "parsed JSON and exact expected MIME, byte length, SHA256",
+      "restored": true,
+      "local_sha256_verified": true,
+      "restored_at_utc": "2026-10-22T04:50:09.761927+00:00"
+    },
+    {
+      "path": "models/tokenizer.json",
+      "source_url": "https://gh0st.wiki/models/tokenizer.json",
+      "status": 200,
+      "bytes": 2350954,
+      "sha256": "7f4447f316d59461f0e642b4d01c2413bdfad5def8fe20178a937f35b2eb804a",
+      "content_type": "application/json",
+      "validation": "parsed JSON and exact expected MIME, byte length, SHA256",
+      "restored": true,
+      "local_sha256_verified": true,
+      "restored_at_utc": "2026-10-22T04:50:09.764378+00:00"
+    },
+    {
+      "path": "models/tokenizer_config.json",
+      "source_url": "https://gh0st.wiki/models/tokenizer_config.json",
+      "status": 200,
+      "bytes": 99740,
+      "sha256": "c06815decc110e609e2672785640dce8e73d84f364681afb1abde0284fe042b9",
+      "content_type": "application/json",
+      "validation": "parsed JSON and exact expected MIME, byte length, SHA256",
+      "restored": true,
+      "local_sha256_verified": true,
+      "restored_at_utc": "2026-10-22T04:50:09.764507+00:00"
+    },
+    {
+      "path": "mint/assets/favicon.svg",
+      "source_url": "https://gh0st.wiki/mint/assets/favicon.svg",
+      "status": 200,
+      "bytes": 223,
+      "sha256": "dfefffa72db1d5e6142e412caaa48b0b0aaa9398dbd6c88ed53c46df7fa50942",
+      "content_type": "image/svg+xml",
+      "validation": "parsed SVG XML and exact expected MIME, byte length, SHA256",
+      "restored": true,
+      "local_sha256_verified": true,
+      "restored_at_utc": "2026-10-22T04:50:09.764535+00:00"
+    },
+    {
+      "path": "mint/data/collection.json",
+      "source_url": "https://gh0st.wiki/mint/data/collection.json",
+      "status": 200,
+      "bytes": 498695,
+      "sha256": "f52c63d45a9063d4110c6cf45c3775eab2178846d3d6c9028294b44c4a8798a7",
+      "content_type": "application/json",
+      "validation": "parsed JSON and exact expected MIME, byte length, SHA256",
+      "restored": true,
+      "local_sha256_verified": true,
+      "restored_at_utc": "2026-10-22T04:50:09.764878+00:00"
+    },
+    {
+      "path": "mint/data/config.json",
+      "source_url": "https://gh0st.wiki/mint/data/config.json",
+      "status": 200,
+      "bytes": 2952,
+      "sha256": "11829bf9b734dbcd02939921ceba029214fdcaeb2f58676be4468186741ddb1e",
+      "content_type": "application/json",
+      "validation": "parsed JSON and exact expected MIME, byte length, SHA256",
+      "restored": true,
+      "local_sha256_verified": true,
+      "restored_at_utc": "2026-10-22T04:50:09.764907+00:00"
+    },
+    {
+      "path": "mint/data/shard-proofs.json",
+      "source_url": "https://gh0st.wiki/mint/data/shard-proofs.json",
+      "status": 200,
+      "bytes": 535798,
+      "sha256": "a5393e16e18201d16cd805253d9184cccfc1ffe51238c72edc407836b7c3cf81",
+      "content_type": "application/json",
+      "validation": "parsed JSON and exact expected MIME, byte length, SHA256",
+      "restored": true,
+      "local_sha256_verified": true,
+      "restored_at_utc": "2026-10-22T04:50:09.765247+00:00"
+    },
+    {
+      "path": "qwen/config.json",
+      "source_url": "https://gh0st.wiki/qwen/config.json",
+      "status": 200,
+      "bytes": 1163,
+      "sha256": "8f9470aa571290d08e9be7196eedf5c5dd2fa66495071103ae3059f9a9f46b9c",
+      "content_type": "application/json",
+      "validation": "parsed JSON and exact expected MIME, byte length, SHA256",
+      "restored": true,
+      "local_sha256_verified": true,
+      "restored_at_utc": "2026-10-22T04:50:09.765272+00:00"
+    },
+    {
+      "path": "qwen/profile.json",
+      "source_url": "https://gh0st.wiki/qwen/profile.json",
+      "status": 200,
+      "bytes": 628,
+      "sha256": "9fddde86ec3c62faa22e85e040ddb6ea48fcc06bc16450efe6a67a3a09a03de0",
+      "content_type": "application/json",
+      "validation": "parsed JSON and exact expected MIME, byte length, SHA256",
+      "restored": true,
+      "local_sha256_verified": true,
+      "restored_at_utc": "2026-10-22T04:50:09.765290+00:00"
+    },
+    {
+      "path": "qwen/manifest.json",
+      "source_url": "https://gh0st.wiki/qwen/manifest.json",
+      "status": 200,
+      "bytes": 114894,
+      "sha256": "8a67a4eb35028be8a52ad74d48744e4996bfb7d80f88288185c8548ce6e67ece",
+      "content_type": "application/json",
+      "validation": "parsed JSON and exact expected MIME, byte length, SHA256",
+      "restored": true,
+      "local_sha256_verified": true,
+      "restored_at_utc": "2026-10-22T04:50:09.765380+00:00"
+    },
+    {
+      "path": "qwen/archive-index.json",
+      "source_url": "https://gh0st.wiki/qwen/archive-index.json",
+      "status": 200,
+      "bytes": 2591218,
+      "sha256": "e6849105a8b3a9bf219ba36b43cc4f85c75bcb01b470ffdd739c8e1a01b9afec",
+      "content_type": "application/json",
+      "validation": "parsed JSON and exact expected MIME, byte length, SHA256",
+      "restored": true,
+      "local_sha256_verified": true,
+      "restored_at_utc": "2026-10-22T04:50:09.767120+00:00"
+    },
+    {
+      "path": "qwen/tokenizer.json",
+      "source_url": "https://gh0st.wiki/qwen/tokenizer.json",
+      "status": 200,
+      "bytes": 11422654,
+      "sha256": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+      "content_type": "application/json",
+      "validation": "parsed JSON and exact expected MIME, byte length, SHA256",
+      "restored": true,
+      "local_sha256_verified": true,
+      "restored_at_utc": "2026-10-22T04:50:09.793383+00:00"
+    },
+    {
+      "path": "qwen/tokenizer_config.json",
+      "source_url": "https://gh0st.wiki/qwen/tokenizer_config.json",
+      "status": 200,
+      "bytes": 9732,
+      "sha256": "d5d09f07b48c3086c508b30d1c9114bd1189145b74e982a265350c923acd8101",
+      "content_type": "application/json",
+      "validation": "parsed JSON and exact expected MIME, byte length, SHA256",
+      "restored": true,
+      "local_sha256_verified": true,
+      "restored_at_utc": "2026-10-22T04:50:09.793615+00:00"
+    }
+  ],
+  "historical_header_evidence": {
+    "authoritative_for_current_deploy": false,
+    "source": "GitHub HEAD assets/recovered/Publish-GH0ST.py embedded ARCHIVE_BASE64 ZIP; parsed without executing script",
+    "archive_sha256": "92b5347aa58d007532610aefa022429d60c71b252626072aa709b0c260fbb29e",
+    "archive_entries": [
+      "_headers",
+      "index.html"
+    ],
+    "headers_text": "/*\n  X-Content-Type-Options: nosniff\n  X-Frame-Options: DENY\n  Referrer-Policy: strict-origin-when-cross-origin\n  Permissions-Policy: camera=(), microphone=(), geolocation=()\n",
+    "redirect_source_found": false
+  },
+  "deployment_readiness": {
+    "full_folder_deploy_ready": true,
+    "reasons": [],
+    "release_staging_path": "/workspace/scratch/e15151b948b6/netlify-release",
+    "note": "Deploy the release staging directory or ZIP based on all 547 production files; do not deploy the sparse repository website folder directly."
+  },
+  "public_static_asset_recovery": {
+    "restored_asset_count": 14,
+    "restored_font_count": 5,
+    "complete": true,
+    "note": "All recovered bytes matched earlier public production audit hashes. No existing files overwritten."
+  }
+}
