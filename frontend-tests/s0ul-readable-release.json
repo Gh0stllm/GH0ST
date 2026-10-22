@@ -1,0 +1,104 @@
+{
+  "format": "gh0st-s0ul-readable-gas-release-v1",
+  "releasedUtc": "2026-10-22T07:50:46.545591+00:00",
+  "result": "PASS",
+  "productionUrl": "https://gh0st.wiki/s0ul/#intel",
+  "netlify": {
+    "siteId": "1460fb0c-b81d-4624-aac5-b78658310ce0",
+    "deployId": "6ad9bfea7d3dd493235279b0",
+    "previousDeployId": "6ad9bafc2bee756e22c490b1",
+    "state": "ready",
+    "currentProductionConfirmed": true,
+    "publishedAt": "2026-10-22T07:48:59.629Z",
+    "files": 557,
+    "unchangedFiles": 553,
+    "redirectRules": 8,
+    "headerRules": 1
+  },
+  "stage": {
+    "files": 557,
+    "unchanged": 553,
+    "changed": [
+      "s0ul-intel.css",
+      "s0ul-intel.mjs",
+      "s0ul-page.css",
+      "s0ul/index.html"
+    ],
+    "sha256": {
+      "s0ul-intel.css": "5ae38c68576b207bce7b8039579dfee6647769da09b5a27c81373209d28b2e25",
+      "s0ul-intel.mjs": "10c0e62e61252296141a0f7bd4ccf5ec635c3b3dd3d6de8cce5f6a69021b326f",
+      "s0ul-page.css": "315d35ed839162447c93f871cc37330b8d06575b3c6b73533194d0da6cd2df5f",
+      "s0ul/index.html": "2933b5c262a89ccbc189e29367b0cd4d30707360c6071ff5c957d7dc813fc3eb"
+    },
+    "zip": {
+      "path": "/workspace/scratch/e15151b948b6/GH0ST-S0UL-Readable.zip",
+      "bytes": 5777634,
+      "sha256": "98e9bcc5742a7b6e2fdd5552b97e4aaee8365c2851c2f0db687ad273abdd016e"
+    }
+  },
+  "changes": [
+    "Readable 16px body, inputs and buttons; 14px minimum secondary labels, including mobile CSS",
+    "Compact active portrait; address, Analyze and result as the main flow",
+    "Full report and other actions inside closed Technical details",
+    "Calculate gas enabled without a wallet; visible cost and errors beside the button",
+    "Show wallet connection after the preview; require a fresh quote for the actual wallet before fee approval"
+  ],
+  "gasFix": {
+    "rootCause": "Calculate required connected wallet and had no nearby prerequisite explanation",
+    "publicPreview": true,
+    "publicPreviewCaller": "0x000000000000000000000000000000000000dEaD",
+    "publicPreviewGrantsSendApproval": false,
+    "connectInvalidatesPreviewAndRequotesActualAccount": true,
+    "failedQuoteClearsPriorApproval": true,
+    "midEstimateIdentityChangesFailClosed": true,
+    "existingContractModelContextFeeBudgetNonceJournalAndRecoveryGuardsPreserved": true
+  },
+  "verification": {
+    "unitTests": {
+      "passed": 73,
+      "failed": 0,
+      "report": "frontend-tests/intel-accessibility-validation.json"
+    },
+    "productionHttp": {
+      "passed": 25,
+      "failed": 0,
+      "report": "frontend-tests/intel-readable-production-validation.json"
+    },
+    "browser": {
+      "previewNoWalletCostPassed": true,
+      "productionNoWalletCostPassed": true,
+      "productionDisplayedEstimateETH": "0.0000133048659106",
+      "estimateIsTimeDependent": true,
+      "sendRemainedDisabledForPreview": true,
+      "feeApprovalHiddenForPreview": true,
+      "inputAndButtonFontPx": 16,
+      "secondaryLabelFontPx": 14,
+      "metricValueFontPx": 20,
+      "feeFontPx": 34,
+      "visibleInspectedControlsBelow14px": 0,
+      "mobileActualBrowserViewportTest": false,
+      "screenshot": "frontend-tests/evidence/s0ul-readable-live.jpg",
+      "screenshotSha256": "1113a2fbe850bae406a4fdcc403021d93e992762b3e3737e88b0dcd046f4b000"
+    }
+  },
+  "scope": {
+    "chainId": 4663,
+    "contractsDeploymentConfigAndOriginal1MAgentUnchanged": true,
+    "transactionsSigned": 0,
+    "transactionsSubmitted": 0,
+    "capabilitiesExpanded": false,
+    "supported": "Registered token supply, token balances for watched accounts, and compatible V2 pool observations",
+    "arbitraryContractSecurityAudit": false
+  },
+  "publication": {
+    "repository": "Gh0stllm/GH0ST",
+    "branch": "main",
+    "sourceHead": "3219dd78b7eba467aa849854f314bccb8f64cfaf",
+    "policy": "One file per sequential commit"
+  },
+  "limits": [
+    "Browser and public RPC read-only QA; no funded wallet or signed transaction was performed",
+    "Public estimates are previews; account state and network fees may change the actual cost",
+    "Mobile CSS inspected; browser viewport QA performed on desktop"
+  ]
+}
