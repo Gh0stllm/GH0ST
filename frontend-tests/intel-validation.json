@@ -1,6 +1,6 @@
 {
   "format": "gh0st-s0ul-intel-frontend-validation-v1",
-  "verifiedUtc": "2026-10-22T06:00:37.961Z",
+  "verifiedUtc": "2026-10-22T06:13:28.459Z",
   "result": "PASS",
   "command": "node --test frontend-tests/*.test.mjs",
   "tests": {
@@ -28,7 +28,9 @@
     "Reconciliation checks sender, target, nonce, chain, zero value, exact calldata/selector and requested/returned transaction/receipt hashes",
     "Absent/noncanonical receipts and unavailable or zero effective fees/gas usage preserve pending recovery",
     "Account/chain changes or expiry during nonce lookup stop submission; fee/gas growth, context changes, block limit and balance are rechecked",
-    "Corrupt or unreadable saved journals fail closed rather than becoming approval for a new wallet transaction"
+    "Corrupt or unreadable saved journals fail closed rather than becoming approval for a new wallet transaction",
+    "Quoted estimated fee includes a 10 percent submission gas price margin rounded up; fresh submission uses live spot plus that margin capped by the accepted fee ceiling and reserve",
+    "A 0.05 percent spot increase and near-ceiling spot cases submit with headroom without exceeding the reviewed reserve; chosen submission price is durable before the wallet prompt"
   ],
   "reviewFindingsResolved": [
     "A durable hash-null intent and explicit nonce now precede wallet submission, preserving unknown-outcome recovery",
@@ -36,7 +38,8 @@
     "Unsafe storage failure or corrupt recovery records block writes",
     "Final wallet identity and quote expiry are checked after nonce lookup",
     "Quote matching checks the quote chain as well as the current wallet chain",
-    "Returned hashes and nonzero actual receipt fee information must verify before clearing recovery"
+    "Returned hashes and nonzero actual receipt fee information must verify before clearing recovery",
+    "Submission gas price includes 10 percent headroom to tolerate minimum/basefee drift, capped by the existing accepted fee ceiling; visible estimated fee includes the same margin"
   ],
   "limits": [
     "These are deterministic semantic mocks, not browser-extension or funded-wallet QA; real browser and deployment verification are separate",
@@ -44,8 +47,8 @@
     "No mainnet deployment, funded inference or public transaction was performed by this suite"
   ],
   "sha256": {
-    "website/s0ul-intel.mjs": "49f1fc86417a6ecb90ec23821d12326b1e660caf19eb841f62dd5b4eb9d2e3d4",
+    "website/s0ul-intel.mjs": "a5ea8db3a819f5f6c3b6a3aa1b063fd5f7e147b0beaed6ac6010ae5c05d4b91f",
     "website/s0ul-intel.css": "9f672b766ab243fccd170eac3cba1afb8976b5f4cc8d09c6d58b4f5898374315",
-    "frontend-tests/intel.test.mjs": "07c32be57a4daf6ef61da5929c28cf2b33f3f48e2ad50ce931bc3abbf228194a"
+    "frontend-tests/intel.test.mjs": "dfedb1af7f919cdd3d0547b4a06348e28dbb6c37909b0707cb27ad509a9a4d8c"
   }
 }
