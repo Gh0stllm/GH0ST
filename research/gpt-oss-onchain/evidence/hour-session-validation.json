@@ -1,0 +1,223 @@
+{
+  "status": "PASS_SYNTHETIC_COMPONENT_RESEARCH",
+  "validated_at": "2026-10-22T18:07:52.728Z",
+  "session_started_at": "2026-10-22T17:08:48.000Z",
+  "source_hashes_match": true,
+  "published_initial_baseline_unchanged": true,
+  "recorded_validation_cases_across_prototypes": 275131,
+  "distinct_storage_bit_patterns": 65536,
+  "compiler_layout_configurations": 109,
+  "passed_compiler_layout_configurations": 109,
+  "results": {
+    "eight_row_dense": {
+      "rows": 8,
+      "columns": 2880,
+      "previous_eight_transactions_gas": 3895428,
+      "calldata_gas": 1427509,
+      "predeployed_code_gas": 1240994,
+      "reduction_vs_previous_percent": 68.14229399182837,
+      "weight_code_deployment_gas": 2699836,
+      "amortization_calls_vs_new_calldata": 15
+    },
+    "lane_comparison": {
+      "eight_gas_per_output": 155124.25,
+      "nine_gas_per_output": 165549.44444444444,
+      "selection": "eight-row helper/cached polynomial implementation"
+    },
+    "storage_2880_values": {
+      "values": 2880,
+      "control_data_slots": 2880,
+      "packed_data_slots": 180,
+      "stages": [
+        {
+          "stage": "cold_random",
+          "control_write_gas": 65707799,
+          "packed_write_gas": 4184083,
+          "write_reduction_percent": 93.63228861158476,
+          "control_read_digest_gas": 7608969,
+          "packed_read_digest_gas": 456852
+        },
+        {
+          "stage": "overwrite_random",
+          "control_write_gas": 16459787,
+          "packed_write_gas": 1106071,
+          "write_reduction_percent": 93.28016213089514,
+          "control_read_digest_gas": 7608969,
+          "packed_read_digest_gas": 456852
+        },
+        {
+          "stage": "reset_zero",
+          "control_write_gas": 13112764,
+          "packed_write_gas": 829792,
+          "write_reduction_percent": 93.67187573878398,
+          "control_read_digest_gas": 7608969,
+          "packed_read_digest_gas": 456852
+        }
+      ]
+    },
+    "integer_top4": {
+      "kind": "random",
+      "full_sort_control_gas": 199505,
+      "streaming_top4_gas": 46391,
+      "reduction_percent": 76.74694869802762
+    },
+    "persistent_code": {
+      "fresh_shard_cases": 1858,
+      "rejected_invalid_calls": 63,
+      "coverage_classes": 96
+    }
+  },
+  "reports": [
+    {
+      "name": "optimization-session",
+      "source": "OptimizedMxfp4.sol",
+      "source_sha256": "d4510c6283e5512ce643f6cae662e456145784830977eeccd404f7cf6a57e82b",
+      "status": "PASS_SYNTHETIC_OPTIMIZATION_SESSION",
+      "cases": 46970,
+      "fuzz_cases": 30048,
+      "configurations": 40,
+      "passed_configurations": 40,
+      "invalid_rejections": 8
+    },
+    {
+      "name": "helper-experiments",
+      "source": "HelperMxfp4.sol",
+      "source_sha256": "3e8cabd28c2affdde5e06243fbf091219e5d1c8b0241c6691d524ddb5058442d",
+      "status": "PASS_SYNTHETIC_HELPER_EXPERIMENTS",
+      "cases": 16769,
+      "fuzz_cases": 0,
+      "configurations": 18,
+      "passed_configurations": 18,
+      "invalid_rejections": 5
+    },
+    {
+      "name": "batching-experiments",
+      "source": "BatchMxfp4.sol",
+      "source_sha256": "f22f5e719aa78f5548c87b84eeb570d2c8b3ede526b7e2f7d2ecab849d0d86f2",
+      "status": "PASS_SYNTHETIC_BATCH_AND_CODE_ACCESS",
+      "cases": 200,
+      "fuzz_cases": 0,
+      "configurations": 0,
+      "passed_configurations": 0,
+      "invalid_rejections": 13
+    },
+    {
+      "name": "lane-experiments",
+      "source": "LaneMxfp4.sol",
+      "source_sha256": "ef002ef518ee1cd56de21fe33324e0b874df9d8a14729c4debd4c09e7a25ac29",
+      "status": "PASS_SYNTHETIC_EIGHT_LANE_TILE",
+      "cases": 20515,
+      "fuzz_cases": 3851,
+      "configurations": 6,
+      "passed_configurations": 6,
+      "invalid_rejections": 6
+    },
+    {
+      "name": "lane-v2-experiments",
+      "source": "LaneMxfp4V2.sol",
+      "source_sha256": "4cd7d3ab6be7dc10754c7f3e095c16cb96c2ef374166a57f490e9d0c63530bd0",
+      "status": "PASS_SYNTHETIC_EIGHT_LANE_TILE",
+      "cases": 21035,
+      "fuzz_cases": 4371,
+      "configurations": 6,
+      "passed_configurations": 6,
+      "invalid_rejections": 6
+    },
+    {
+      "name": "lane-cache-experiments",
+      "source": "CachedLaneMxfp4.sol",
+      "source_sha256": "161eb83c7e779ab266db5315de1bcd01cab1d0b95ee65f80fb3b24ae6d0357ae",
+      "status": "PASS_SYNTHETIC_CACHED_LANES",
+      "cases": 20421,
+      "fuzz_cases": 3707,
+      "configurations": 12,
+      "passed_configurations": 12,
+      "invalid_rejections": 6
+    },
+    {
+      "name": "nine-lane-experiments",
+      "source": "NineLaneMxfp4.sol",
+      "source_sha256": "e1941ac4b283864ee5c3dbfc0ca61d42332dd09362bc8cfa1d00e45501bf8ea7",
+      "status": "PASS_SYNTHETIC_9_LANE_TILE",
+      "cases": 19424,
+      "fuzz_cases": 2760,
+      "configurations": 6,
+      "passed_configurations": 6,
+      "invalid_rejections": 6
+    },
+    {
+      "name": "nine-lane-cache-experiments",
+      "source": "CachedNineLaneMxfp4.sol",
+      "source_sha256": "4f3d7183bb494cfa89dfda542239b423b6e3eaa2ecfab946a7ba680844d7b87f",
+      "status": "PASS_SYNTHETIC_CACHED_LANES",
+      "cases": 18287,
+      "fuzz_cases": 1579,
+      "configurations": 9,
+      "passed_configurations": 9,
+      "invalid_rejections": 6
+    },
+    {
+      "name": "lane-helper-experiments",
+      "source": "HelperLaneMxfp4.sol",
+      "source_sha256": "78fcb94ea0292dc826c2aa14c93f640e388b41e5f10359d82708aab487f8629f",
+      "status": "PASS_SYNTHETIC_DECODER_HELPER",
+      "cases": 18422,
+      "fuzz_cases": 1752,
+      "configurations": 6,
+      "passed_configurations": 6,
+      "invalid_rejections": 6
+    },
+    {
+      "name": "nine-lane-helper-experiments",
+      "source": "HelperNineLaneMxfp4.sol",
+      "source_sha256": "1a413d9935e5aa8304271b78de0098322301709fc1f861f92cb4a72a0464ee29",
+      "status": "PASS_SYNTHETIC_DECODER_HELPER",
+      "cases": 18047,
+      "fuzz_cases": 1377,
+      "configurations": 6,
+      "passed_configurations": 6,
+      "invalid_rejections": 6
+    },
+    {
+      "name": "state-experiments",
+      "source": "VectorState.sol",
+      "source_sha256": "9089820182c29c1ef138184a87f524d0c4457436fe2e3bc5a97b9f6ff6399c3e",
+      "status": "PASS_16BIT_STORAGE_FORMAT",
+      "cases": 560,
+      "fuzz_cases": 0,
+      "configurations": 0,
+      "passed_configurations": 0,
+      "invalid_rejections": 16
+    },
+    {
+      "name": "router-experiments",
+      "source": "RouterTop4.sol",
+      "source_sha256": "a9b639864d580d2c05e46f4090add572d702a2893dab6a924760d9d44623a06e",
+      "status": "PASS_SYNTHETIC_TOP4_SELECTION",
+      "cases": 72623,
+      "fuzz_cases": 72585,
+      "configurations": 0,
+      "passed_configurations": 0,
+      "invalid_rejections": 0
+    },
+    {
+      "name": "code-path-validation",
+      "source": "HelperLaneMxfp4.sol",
+      "source_sha256": "78fcb94ea0292dc826c2aa14c93f640e388b41e5f10359d82708aab487f8629f",
+      "status": "PASS_SYNTHETIC_PERSISTENT_CODE_PATH",
+      "cases": 1858,
+      "fuzz_cases": 1858,
+      "configurations": 0,
+      "passed_configurations": 0,
+      "invalid_rejections": 63
+    }
+  ],
+  "limitations": [
+    "Synthetic weights, integer activations and router scores only.",
+    "Full GPT-OSS inference, actual model output fidelity and quality remain untested.",
+    "All gas receipts are local Shanghai EVM, not Robinhood mainnet fees.",
+    "Per-call predeployed-code gas excludes one-time data and engine deployment.",
+    "Storage format preserves existing 16-bit values only; it is not a quantizer for arbitrary wider state.",
+    "Validation case counts aggregate repeated cases across separate implementations; they are not unique model prompts."
+  ]
+}
