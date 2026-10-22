@@ -1,10 +1,16 @@
 # GH0ST Observatory: achievements and status
 
-The S0UL wallet integration is published at https://gh0st.wiki/#s0ul as of 22 October 2026. Netlify deploy `6ad997f47d3f02d1b3399de8` updated one page and added four assets while retaining all 547 prior production files, eight redirect rules and the security-header rule. The historical Falcon figures later in this document retain their 20 October 2026 scope. The Execution Theatre remains a labelled simulation, separate from either inference client.
+The dedicated S0UL experience is published at [gh0st.wiki/s0ul/](https://gh0st.wiki/s0ul/) as of 22 October 2026. Netlify deploy `6ad99c7e9ea6ac9251eafcfd` moved the terminal to its own page and added an interactive white-and-amber portrait, preserving the four wallet/gas modules byte-for-byte, all existing assets, eight redirect rules and the security-header rule. Old `/#s0ul` links forward to `/s0ul/`. The historical Falcon figures later in this document retain their 20 October 2026 scope. The Execution Theatre remains a labelled simulation, separate from either inference client.
 
-## Published S0UL wallet panel
+## Dedicated S0UL page
 
-The new `#s0ul` panel connects a browser wallet to the existing S0UL controller on **Robinhood Chain mainnet, chain ID 4663**, at `0x9F92776e33087DCF0d77b9BE23145efAC6cE695D`. The client checks the pinned controller, engine, model, tokenizer and GH0ST token identities. Its source is [the client](website/s0ul-client.mjs), [gas forecast](website/s0ul-gas.mjs), [UI](website/s0ul-ui.mjs) and [styles](website/s0ul-agent.css); [deployed-model and agent evidence](s0ul-1m/AGENT.md) is separate from frontend validation. Live browser checks verified module loading, task selection and disabled execution before wallet/quote approval; no funded browser/wallet QA was performed.
+The [dedicated `/s0ul/` page](website/s0ul/index.html) hosts the wallet task interface and interactive character; homepage navigation and **Enter S0UL** lead to that route. **Open terminal** scrolls to the page's `#agent` section, where `s0ul-ui.mjs` mounts the wallet interface at `#s0ul-agent-root`. The wallet interface connects to the existing S0UL controller on **Robinhood Chain mainnet, chain ID 4663**, at `0x9F92776e33087DCF0d77b9BE23145efAC6cE695D`. The client checks the pinned controller, engine, model, tokenizer and GH0ST token identities. Its source is [the client](website/s0ul-client.mjs), [gas forecast](website/s0ul-gas.mjs), [UI](website/s0ul-ui.mjs) and [styles](website/s0ul-agent.css); [deployed-model and agent evidence](s0ul-1m/AGENT.md) is separate from frontend validation. Browser checks verified page/module loading, portrait click and keyboard greetings, animation pause, old-link forwarding, task selection, and disabled execution before wallet/quote approval. No funded browser/wallet QA was performed.
+
+### Interactive portrait
+
+The [character module](website/s0ul-character.mjs) mounts at `#s0ul-character`, drawing white dot-matrix brackets and mouth with an amber oval eye and wink. It follows pointer movement with a slight turn and gaze shift, blinks during idle motion and reacts with a wink/open-eye gesture, smile and dot ripple when clicked. Focus the portrait and press **Enter** or **Space**, or select **Wave hello**, for the same local visual reaction.
+
+**Pause animation** stops the continuous animation loop; **Resume animation** restores it. Reduced-motion preferences disable continuous movement and use static interaction poses. Animation also stops while the document is hidden or the portrait is outside the viewport. The portrait's status text reflects estimate reading, wallet waiting, confirmed progress, ready/paused, executed, rejected and cancelled states from the terminal. These are visual interface reactions; the separate **Confirmed model output** and **Executed tool result** fields retain their on-chain source. Portrait interactions make no wallet request and produce no model-generated greeting.
 
 1. Select a browser wallet and **Connect wallet**. Switch to Robinhood Chain when prompted.
 2. Choose a task: save/read a preference, add/list/complete a task, read a balance, or wait. Review **Only permitted action**, the prompt and the maximum output-token budget, which includes EOS. The expected action is your authorization commitment; it is not model output.
@@ -26,7 +32,9 @@ Before each wallet request, the client estimates the next concrete transaction a
 
 Browser storage retains request intent, receipts and pending wallet operations. An unresolved or ambiguous send blocks further submissions. Use **Check transaction** with the exact wallet hash; recovery checks sender, target, nonce, chain, calldata and canonical receipt before proceeding. It does not blindly resend. Missing browser storage prevents further wallet requests.
 
-All **42 frontend tests passed**: 11 gas, 24 client and 7 UI tests. [Validation report](frontend-tests/validation-report.json). They use mocked wallets/providers/contracts and a minimal DOM with real ABI/hash encoding; they make no network requests, sign no transactions and establish no funded browser or production-deployment result.
+The existing wallet integration passed **42 frontend tests**: 11 gas, 24 client and 7 UI tests. [Validation report](frontend-tests/validation-report.json). They use mocked wallets/providers/contracts and a minimal DOM with real ABI/hash encoding; they make no network requests, sign no transactions and establish no funded browser result. This report predates the dedicated page and character; their final checks are separate.
+
+The dedicated page and portrait add six checks: actual route/asset imports, home-to-page navigation, preserved core-module hashes, reference portrait geometry, keyboard/status behavior and animation lifecycle. All **48 tests passed** after the final rendering changes. [Standalone validation report](frontend-tests/standalone-validation.json). Separate live browser checks cover the page and controls; no funded transaction was used for this frontend release.
 
 ## Historical Falcon achievements and evidence
 
@@ -51,7 +59,7 @@ The front-page world-first language describes the project’s mission. Priority 
 
 The centred hero retains the approved banner silhouette, cyan/teal body, lavender eyes and pink mouth. Larger round phosphor dots wrap a three-dimensional shell. Pointer movement turns the sculpture and creates local light and surface responses; idle flow, scan sweeps, blinking and detached neon spots keep it moving. Clicks or Enter/Space send glow waves through the intact figure and hero. ASCII, palettes and pause remain; reduced-motion preferences start paused.
 
-The architecture inspectors, contract dialogs, plain/technical explanations and three execution scenarios remain. The Execution Theatre stays a simulation. The S0UL panel initiates chain reads and wallet-confirmed controller transactions only through the explicit flow above; it is separate from the legacy Falcon prepaid chat. Frontend validation is separate from contract validation and independent security review.
+The architecture inspectors, contract dialogs, plain/technical explanations and three execution scenarios remain. The Execution Theatre stays a simulation. The prepared `/s0ul/` page initiates chain reads and wallet-confirmed controller transactions only through the explicit flow above; it is separate from the legacy Falcon prepaid chat. Frontend validation is separate from contract validation and independent security review.
 
 ## Publication maintenance
 
