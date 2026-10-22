@@ -1,0 +1,886 @@
+{
+  "format": "gh0st-read-only-intel-candidates-v1",
+  "recordedAt": "2026-10-22T05:48:55.496Z",
+  "readOnly": true,
+  "transactionsSent": 0,
+  "chainId": 4663,
+  "sources": {
+    "robinhood": "https://docs.robinhood.com/chain/connecting/",
+    "raphael": "https://docs.raphael.exchange/developers/contract-deployments",
+    "hood": "https://hood.dev/docs/addresses",
+    "arbitrum": "https://docs.arbitrum.io/arbitrum-essentials/precompiles/reference",
+    "journal": "s0ul-1m/deployments/robinhood-mainnet-agent.json",
+    "sushi": "https://docs.sushi.com/contracts/clamm"
+  },
+  "publicRpc": [
+    {
+      "endpoint": "https://rpc.mainnet.chain.robinhood.com",
+      "chainId": 4663,
+      "head": {
+        "number": 94882019,
+        "hash": "0x8f8a6ab87b9854cb2873e098989ab8d64e3d31250abec3b91f8e3d975ef62784",
+        "timestamp": 1792648098,
+        "reportedGasLimit": "1125899906842624",
+        "baseFeePerGas": "20054000"
+      },
+      "gasPriceWei": "20080000",
+      "available": true
+    },
+    {
+      "endpoint": "https://api.blockvectra.com/v1/robinhood_mainnet/public",
+      "chainId": 4663,
+      "head": {
+        "number": 94882063,
+        "hash": "0xb1258974d6a8dbf858fbd70468b350a5fda90e6f1620fe6aced327657b49ef82",
+        "timestamp": 1792648103,
+        "reportedGasLimit": "1125899906842624",
+        "baseFeePerGas": "20076000"
+      },
+      "gasPriceWei": "20076000",
+      "available": true
+    }
+  ],
+  "anchor": {
+    "number": 94881969,
+    "hash": "0xb378e53d989a73dd50fc90b7fc86f204e6cf77506781fda0acc4679cdc363bcb",
+    "timestamp": 1792648093,
+    "depthAtSelection": 50,
+    "reorgGuarantee": false,
+    "crossCheck": {
+      "endpoint": "https://api.blockvectra.com/v1/robinhood_mainnet/public",
+      "blockHash": "0xb378e53d989a73dd50fc90b7fc86f204e6cf77506781fda0acc4679cdc363bcb",
+      "matchesPrimaryHash": true,
+      "gh0stCodeHash": "0x7c38fa1b069b5e677034bab6219dd2f519f219f7637910131d9a0f58a05ae164",
+      "matchesPrimaryCodeHash": true,
+      "checkedAt": "2026-10-22T05:49:37.648Z"
+    }
+  },
+  "gasInfo": [
+    {
+      "address": "0x000000000000000000000000000000000000006C",
+      "signature": "getGasAccountingParams()",
+      "ok": true,
+      "result": [
+        "7000000",
+        "32000000",
+        "32000000"
+      ]
+    },
+    {
+      "address": "0x000000000000000000000000000000000000006C",
+      "signature": "getMaxTxGasLimit()",
+      "ok": true,
+      "result": [
+        "32000000"
+      ]
+    },
+    {
+      "address": "0x000000000000000000000000000000000000006C",
+      "signature": "getMaxBlockGasLimit()",
+      "ok": true,
+      "result": [
+        "32000000"
+      ]
+    },
+    {
+      "address": "0x000000000000000000000000000000000000006C",
+      "signature": "getMinimumGasPrice()",
+      "ok": true,
+      "result": [
+        "20000000"
+      ]
+    }
+  ],
+  "gasLimitNote": "RPC block gasLimit is a Nitro virtual limit and is not a transaction execution limit; use ArbGasInfo maxTxGasLimit/maxBlockGasLimit getters when supported, plus a conservative operational cap.",
+  "deployer": {
+    "address": "0x8D6B11CFdF079e27C17e05Cb7Ea81235887691c6",
+    "sourceEvidence": [
+      "s0ul-1m/deployments/robinhood-mainnet-agent.json",
+      "s0ul-1m/deployments/robinhood-mainnet.json"
+    ],
+    "nativeBalanceWei": "194100743222203511",
+    "confirmedNonce": 5171
+  },
+  "candidates": [
+    {
+      "name": "GH0ST",
+      "address": "0x2eb2849cDE7957b86d0dFD4B59e450a9F9D15559",
+      "type": "erc20",
+      "sourceEvidence": [
+        "s0ul-1m/deployments/robinhood-mainnet-agent.json"
+      ],
+      "blockNumber": 94881969,
+      "hasRuntime": true,
+      "codeBytes": 3248,
+      "codeHash": "0x7c38fa1b069b5e677034bab6219dd2f519f219f7637910131d9a0f58a05ae164",
+      "getters": [
+        {
+          "signature": "name()",
+          "args": [],
+          "ok": true,
+          "result": [
+            "GH0ST"
+          ]
+        },
+        {
+          "signature": "symbol()",
+          "args": [],
+          "ok": true,
+          "result": [
+            "GH0ST"
+          ]
+        },
+        {
+          "signature": "decimals()",
+          "args": [],
+          "ok": true,
+          "result": [
+            "18"
+          ]
+        },
+        {
+          "signature": "totalSupply()",
+          "args": [],
+          "ok": true,
+          "result": [
+            "997000000000000000000000000"
+          ]
+        },
+        {
+          "signature": "owner()",
+          "args": [],
+          "ok": false,
+          "error": {
+            "code": 3,
+            "message": "execution reverted",
+            "data": "0x"
+          }
+        },
+        {
+          "signature": "balanceOf(address)",
+          "args": [
+            "0x8D6B11CFdF079e27C17e05Cb7Ea81235887691c6"
+          ],
+          "ok": true,
+          "result": [
+            "1451998453147294291546497"
+          ]
+        }
+      ],
+      "expectedCodeHash": "0x7c38fa1b069b5e677034bab6219dd2f519f219f7637910131d9a0f58a05ae164",
+      "matchesRecordedCodeHash": true
+    },
+    {
+      "name": "deployer",
+      "address": "0x8D6B11CFdF079e27C17e05Cb7Ea81235887691c6",
+      "type": "account",
+      "sourceEvidence": [
+        "s0ul-1m/deployments/robinhood-mainnet-agent.json"
+      ],
+      "blockNumber": 94881969,
+      "hasRuntime": false,
+      "codeBytes": 0,
+      "codeHash": "0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470",
+      "getters": []
+    },
+    {
+      "name": "controller",
+      "address": "0x9F92776e33087DCF0d77b9BE23145efAC6cE695D",
+      "type": "s0ul",
+      "sourceEvidence": [
+        "s0ul-1m/deployments/robinhood-mainnet-agent.json"
+      ],
+      "blockNumber": 94881969,
+      "hasRuntime": true,
+      "codeBytes": 17040,
+      "codeHash": "0x0d89f81a955230d7ebb01d2549770041f796429abba6d229a2089a3e310636ed",
+      "getters": [
+        {
+          "signature": "engine()",
+          "args": [],
+          "ok": true,
+          "result": [
+            "0x07bB8455Db0928bEBEb3E7F27A22A0599AF1b650"
+          ]
+        },
+        {
+          "signature": "model()",
+          "args": [],
+          "ok": true,
+          "result": [
+            "0xa62C2d6fbba575732AAB38c56fCd73B2361B1D98"
+          ]
+        },
+        {
+          "signature": "tokenizer()",
+          "args": [],
+          "ok": true,
+          "result": [
+            "0x3Cf3739D8e587C3AB5706fd459e75A6fCE26d333"
+          ]
+        },
+        {
+          "signature": "modelId()",
+          "args": [],
+          "ok": true,
+          "result": [
+            "0x6b0817a3bc4d0ba1f03ec6e14387285e1bcda0e40fdd40d7daee2cbc3c2ff89a"
+          ]
+        },
+        {
+          "signature": "sourceCheckpoint()",
+          "args": [],
+          "ok": true,
+          "result": [
+            "0x44bed666c464273e6fff84b10a4977744d9b0e923f5b6a519d7725920b500692"
+          ]
+        },
+        {
+          "signature": "gh0stToken()",
+          "args": [],
+          "ok": true,
+          "result": [
+            "0x2eb2849cDE7957b86d0dFD4B59e450a9F9D15559"
+          ]
+        }
+      ],
+      "expectedCodeHash": "0x0d89f81a955230d7ebb01d2549770041f796429abba6d229a2089a3e310636ed",
+      "matchesRecordedCodeHash": true
+    },
+    {
+      "name": "engine",
+      "address": "0x07bB8455Db0928bEBEb3E7F27A22A0599AF1b650",
+      "type": "s0ul",
+      "sourceEvidence": [
+        "s0ul-1m/deployments/robinhood-mainnet-agent.json"
+      ],
+      "blockNumber": 94881969,
+      "hasRuntime": true,
+      "codeBytes": 18938,
+      "codeHash": "0xb7a6bc7ae646bde8afce18291fe14fff72cde8efa7e718d9f4c933c346184ae2",
+      "getters": [
+        {
+          "signature": "configuration()",
+          "args": [],
+          "ok": true,
+          "result": [
+            [
+              "512",
+              "128",
+              "4",
+              "4",
+              "640",
+              "128",
+              "2684",
+              "2896"
+            ]
+          ]
+        }
+      ],
+      "expectedCodeHash": "0xb7a6bc7ae646bde8afce18291fe14fff72cde8efa7e718d9f4c933c346184ae2",
+      "matchesRecordedCodeHash": true
+    },
+    {
+      "name": "model",
+      "address": "0xa62C2d6fbba575732AAB38c56fCd73B2361B1D98",
+      "type": "s0ul",
+      "sourceEvidence": [
+        "s0ul-1m/deployments/robinhood-mainnet-agent.json"
+      ],
+      "blockNumber": 94881969,
+      "hasRuntime": true,
+      "codeBytes": 1763,
+      "codeHash": "0x30a7cd1a35da7887f21896c5769ec13dfad35b53e4bf7645612918a3e8319abc",
+      "getters": [
+        {
+          "signature": "sourceCheckpoint()",
+          "args": [],
+          "ok": true,
+          "result": [
+            "0x44bed666c464273e6fff84b10a4977744d9b0e923f5b6a519d7725920b500692"
+          ]
+        }
+      ],
+      "expectedCodeHash": "0x30a7cd1a35da7887f21896c5769ec13dfad35b53e4bf7645612918a3e8319abc",
+      "matchesRecordedCodeHash": true
+    },
+    {
+      "name": "tokenizer",
+      "address": "0x3Cf3739D8e587C3AB5706fd459e75A6fCE26d333",
+      "type": "s0ul",
+      "sourceEvidence": [
+        "s0ul-1m/deployments/robinhood-mainnet-agent.json"
+      ],
+      "blockNumber": 94881969,
+      "hasRuntime": true,
+      "codeBytes": 5071,
+      "codeHash": "0x209c23483d5d255d013e30b7f8c7ae1f7f613121efecbb5d5f546454a8cb6987",
+      "getters": [
+        {
+          "signature": "domainSha256()",
+          "args": [],
+          "ok": true,
+          "result": [
+            "0x7de4830b9e32e5884d2ee9776fdae6c8c1b42a9278342ae22d7105b039e9a726"
+          ]
+        }
+      ],
+      "expectedCodeHash": "0x209c23483d5d255d013e30b7f8c7ae1f7f613121efecbb5d5f546454a8cb6987",
+      "matchesRecordedCodeHash": true
+    },
+    {
+      "name": "WETH",
+      "address": "0x0Bd7D308f8E1639FAb988df18A8011f41EAcAD73",
+      "type": "erc20",
+      "sourceEvidence": [
+        "https://docs.raphael.exchange/developers/contract-deployments"
+      ],
+      "blockNumber": 94881969,
+      "hasRuntime": true,
+      "codeBytes": 2202,
+      "codeHash": "0x5706be52f64875fee65a2cec0d80e47a23d8793cbe85d214b48445e2d05f5353",
+      "getters": [
+        {
+          "signature": "name()",
+          "args": [],
+          "ok": true,
+          "result": [
+            "WETH"
+          ]
+        },
+        {
+          "signature": "symbol()",
+          "args": [],
+          "ok": true,
+          "result": [
+            "WETH"
+          ]
+        },
+        {
+          "signature": "decimals()",
+          "args": [],
+          "ok": true,
+          "result": [
+            "18"
+          ]
+        },
+        {
+          "signature": "totalSupply()",
+          "args": [],
+          "ok": true,
+          "result": [
+            "37796188903033750188837"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "RaphaelPoolFactory",
+      "address": "0x1A6745F84099Fa7E84D1f3B34c23482865194bd1",
+      "type": "factory",
+      "sourceEvidence": [
+        "https://docs.raphael.exchange/developers/contract-deployments"
+      ],
+      "blockNumber": 94881969,
+      "hasRuntime": true,
+      "codeBytes": 3516,
+      "codeHash": "0xbaf7318d384c372adc9b13eb1e38fa97a72a2088e563c3e2b8bb8a8662e7e1a8",
+      "getters": [
+        {
+          "signature": "allPoolsLength()",
+          "args": [],
+          "ok": true,
+          "result": [
+            "38"
+          ]
+        },
+        {
+          "signature": "owner()",
+          "args": [],
+          "ok": false,
+          "error": {
+            "code": 3,
+            "message": "execution reverted",
+            "data": "0x"
+          }
+        },
+        {
+          "signature": "getPool(address,address,bool)",
+          "args": [
+            "0x2eb2849cDE7957b86d0dFD4B59e450a9F9D15559",
+            "0x0Bd7D308f8E1639FAb988df18A8011f41EAcAD73",
+            false
+          ],
+          "ok": true,
+          "result": [
+            "0x0000000000000000000000000000000000000000"
+          ]
+        },
+        {
+          "signature": "getPool(address,address,bool)",
+          "args": [
+            "0x325Ed5a3617B1EaAB6ebeEfCc2Af084beEf49ecE",
+            "0x0Bd7D308f8E1639FAb988df18A8011f41EAcAD73",
+            false
+          ],
+          "ok": true,
+          "result": [
+            "0xCC6e395c870E36AEC40ace400c32FD253966415e"
+          ]
+        },
+        {
+          "signature": "getPool(address,address,bool)",
+          "args": [
+            "0x2eb2849cDE7957b86d0dFD4B59e450a9F9D15559",
+            "0x0Bd7D308f8E1639FAb988df18A8011f41EAcAD73",
+            true
+          ],
+          "ok": true,
+          "result": [
+            "0x0000000000000000000000000000000000000000"
+          ]
+        },
+        {
+          "signature": "getPool(address,address,bool)",
+          "args": [
+            "0x325Ed5a3617B1EaAB6ebeEfCc2Af084beEf49ecE",
+            "0x0Bd7D308f8E1639FAb988df18A8011f41EAcAD73",
+            true
+          ],
+          "ok": true,
+          "result": [
+            "0x0000000000000000000000000000000000000000"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "RaphaelSlipstreamFactory",
+      "address": "0x5481864ddd46a2D798Df0925C23B7846e776E5E3",
+      "type": "factory",
+      "sourceEvidence": [
+        "https://docs.raphael.exchange/developers/contract-deployments"
+      ],
+      "blockNumber": 94881969,
+      "hasRuntime": true,
+      "codeBytes": 5289,
+      "codeHash": "0x5982f38d7d086e16e284b6cf59adeba74175cc2090584fab25b32b2ae7cbca79",
+      "getters": [],
+      "provenance": "Address from official Raphael deployments; runtime observed only in this bounded lookup. No ABI/source verification or pool getter discovery performed. Do not register as a supported pool adapter yet."
+    },
+    {
+      "name": "RaphaelGenesisPool",
+      "address": "0xCC6e395c870E36AEC40ace400c32FD253966415e",
+      "type": "pool",
+      "sourceEvidence": [
+        "https://docs.raphael.exchange/developers/contract-deployments"
+      ],
+      "blockNumber": 94881969,
+      "hasRuntime": true,
+      "codeBytes": 45,
+      "codeHash": "0x4930bdc6b0616a7a66fb9676ccee20c88584cfd582e6a8b3661953ecb3a04356",
+      "getters": [
+        {
+          "signature": "factory()",
+          "args": [],
+          "ok": true,
+          "result": [
+            "0x1A6745F84099Fa7E84D1f3B34c23482865194bd1"
+          ]
+        },
+        {
+          "signature": "token0()",
+          "args": [],
+          "ok": true,
+          "result": [
+            "0x0Bd7D308f8E1639FAb988df18A8011f41EAcAD73"
+          ]
+        },
+        {
+          "signature": "token1()",
+          "args": [],
+          "ok": true,
+          "result": [
+            "0x325Ed5a3617B1EaAB6ebeEfCc2Af084beEf49ecE"
+          ]
+        },
+        {
+          "signature": "stable()",
+          "args": [],
+          "ok": true,
+          "result": [
+            false
+          ]
+        },
+        {
+          "signature": "getReserves()",
+          "args": [],
+          "ok": true,
+          "result": [
+            "15846861254378248509",
+            "73903978245118432056039111",
+            "1792643724"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "UniswapV3PositionManager",
+      "address": "0x73991a25C818Bf1f1128dEAaB1492D45638DE0D3",
+      "type": "positionManager",
+      "sourceEvidence": [
+        "https://hood.dev/docs/addresses"
+      ],
+      "blockNumber": 94881969,
+      "hasRuntime": true,
+      "codeBytes": 24384,
+      "codeHash": "0x0a493d1af3d0f25fed8efa205244ebee14114267a08647fc38c515c7cd6ead4f",
+      "getters": [
+        {
+          "signature": "factory()",
+          "args": [],
+          "ok": true,
+          "result": [
+            "0x1f7d7550B1b028f7571E69A784071F0205FD2EfA"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "UniswapV3Factory",
+      "address": "0x1f7d7550B1b028f7571E69A784071F0205FD2EfA",
+      "type": "factory",
+      "sourceEvidence": [
+        "https://hood.dev/docs/addresses"
+      ],
+      "blockNumber": 94881969,
+      "hasRuntime": true,
+      "codeBytes": 24535,
+      "codeHash": "0xec72b1abd1f2faee020cfea9c646bd8994f9fb389054f6e574f103a895091739",
+      "getters": [
+        {
+          "signature": "owner()",
+          "args": [],
+          "ok": true,
+          "result": [
+            "0x05C420bC4823e039AA4dA645eDde743486dAAA25"
+          ]
+        },
+        {
+          "signature": "getPool(address,address,uint24)",
+          "args": [
+            "0x2eb2849cDE7957b86d0dFD4B59e450a9F9D15559",
+            "0x0Bd7D308f8E1639FAb988df18A8011f41EAcAD73",
+            100
+          ],
+          "ok": true,
+          "result": [
+            "0x0000000000000000000000000000000000000000"
+          ]
+        },
+        {
+          "signature": "getPool(address,address,uint24)",
+          "args": [
+            "0x2eb2849cDE7957b86d0dFD4B59e450a9F9D15559",
+            "0x0Bd7D308f8E1639FAb988df18A8011f41EAcAD73",
+            500
+          ],
+          "ok": true,
+          "result": [
+            "0x0000000000000000000000000000000000000000"
+          ]
+        },
+        {
+          "signature": "getPool(address,address,uint24)",
+          "args": [
+            "0x2eb2849cDE7957b86d0dFD4B59e450a9F9D15559",
+            "0x0Bd7D308f8E1639FAb988df18A8011f41EAcAD73",
+            3000
+          ],
+          "ok": true,
+          "result": [
+            "0x0000000000000000000000000000000000000000"
+          ]
+        },
+        {
+          "signature": "getPool(address,address,uint24)",
+          "args": [
+            "0x2eb2849cDE7957b86d0dFD4B59e450a9F9D15559",
+            "0x0Bd7D308f8E1639FAb988df18A8011f41EAcAD73",
+            10000
+          ],
+          "ok": true,
+          "result": [
+            "0x0000000000000000000000000000000000000000"
+          ]
+        }
+      ],
+      "provenance": "Address published by hood.dev and independently returned by its published V3 position manager factory() getter. No Uniswap-owned deployment listing located in this bounded lookup; retain as provisional ecosystem candidate."
+    },
+    {
+      "name": "SushiV3Factory",
+      "address": "0xE51960f1B45f1C9FB6D166E6a884F866fC70433B",
+      "type": "factory",
+      "sourceEvidence": [
+        "https://hood.dev/docs/addresses",
+        "https://docs.sushi.com/contracts/clamm"
+      ],
+      "blockNumber": 94881969,
+      "hasRuntime": true,
+      "codeBytes": 24535,
+      "codeHash": "0x1d515a200d61f60a4075b5895f5f282b05e0772ca0749f9fa1589e981165d5f0",
+      "getters": [
+        {
+          "signature": "owner()",
+          "args": [],
+          "ok": true,
+          "result": [
+            "0xefbcE7A940274e58Cbce5EBCD0D11014048f5239"
+          ]
+        },
+        {
+          "signature": "getPool(address,address,uint24)",
+          "args": [
+            "0x2eb2849cDE7957b86d0dFD4B59e450a9F9D15559",
+            "0x0Bd7D308f8E1639FAb988df18A8011f41EAcAD73",
+            100
+          ],
+          "ok": true,
+          "result": [
+            "0x0000000000000000000000000000000000000000"
+          ]
+        },
+        {
+          "signature": "getPool(address,address,uint24)",
+          "args": [
+            "0x2eb2849cDE7957b86d0dFD4B59e450a9F9D15559",
+            "0x0Bd7D308f8E1639FAb988df18A8011f41EAcAD73",
+            500
+          ],
+          "ok": true,
+          "result": [
+            "0x0000000000000000000000000000000000000000"
+          ]
+        },
+        {
+          "signature": "getPool(address,address,uint24)",
+          "args": [
+            "0x2eb2849cDE7957b86d0dFD4B59e450a9F9D15559",
+            "0x0Bd7D308f8E1639FAb988df18A8011f41EAcAD73",
+            3000
+          ],
+          "ok": true,
+          "result": [
+            "0x0000000000000000000000000000000000000000"
+          ]
+        },
+        {
+          "signature": "getPool(address,address,uint24)",
+          "args": [
+            "0x2eb2849cDE7957b86d0dFD4B59e450a9F9D15559",
+            "0x0Bd7D308f8E1639FAb988df18A8011f41EAcAD73",
+            10000
+          ],
+          "ok": true,
+          "result": [
+            "0x0000000000000000000000000000000000000000"
+          ]
+        }
+      ],
+      "provenance": "Factory address additionally published by official Sushi clAMM deployment docs; runtime and selected getters independently read on chain."
+    }
+  ],
+  "discoveredPools": [
+    {
+      "address": "0xCC6e395c870E36AEC40ace400c32FD253966415e",
+      "discoveredBy": {
+        "factory": "0x1A6745F84099Fa7E84D1f3B34c23482865194bd1",
+        "signature": "getPool(address,address,bool)",
+        "args": [
+          "0x325Ed5a3617B1EaAB6ebeEfCc2Af084beEf49ecE",
+          "0x0Bd7D308f8E1639FAb988df18A8011f41EAcAD73",
+          false
+        ]
+      },
+      "sourceEvidence": [
+        "https://docs.raphael.exchange/developers/contract-deployments"
+      ],
+      "hasRuntime": true,
+      "codeHash": "0x4930bdc6b0616a7a66fb9676ccee20c88584cfd582e6a8b3661953ecb3a04356",
+      "getters": [
+        {
+          "signature": "factory()",
+          "ok": true,
+          "result": [
+            "0x1A6745F84099Fa7E84D1f3B34c23482865194bd1"
+          ]
+        },
+        {
+          "signature": "token0()",
+          "ok": true,
+          "result": [
+            "0x0Bd7D308f8E1639FAb988df18A8011f41EAcAD73"
+          ]
+        },
+        {
+          "signature": "token1()",
+          "ok": true,
+          "result": [
+            "0x325Ed5a3617B1EaAB6ebeEfCc2Af084beEf49ecE"
+          ]
+        },
+        {
+          "signature": "liquidity()",
+          "ok": false,
+          "error": {
+            "code": 3,
+            "message": "execution reverted",
+            "data": "0x"
+          }
+        },
+        {
+          "signature": "slot0()",
+          "ok": false,
+          "error": {
+            "code": 3,
+            "message": "execution reverted",
+            "data": "0x"
+          }
+        },
+        {
+          "signature": "getReserves()",
+          "ok": true,
+          "result": [
+            "15846861254378248509",
+            "73903978245118432056039111",
+            "1792643724"
+          ]
+        }
+      ]
+    }
+  ],
+  "modelTraining": {
+    "checkpointSha256": "44bed666c464273e6fff84b10a4977744d9b0e923f5b6a519d7725920b500692",
+    "onchainCheckpoint": "0x44bed666c464273e6fff84b10a4977744d9b0e923f5b6a519d7725920b500692",
+    "metadataSource": "s0ul-1m/reports/hard-max-39630021281/selected/training-report.json",
+    "completedSteps": 35802,
+    "checkpointBinaryTracked": false,
+    "trainingPaths": [
+      "s0ul-1m/s0ul/campaign.py",
+      "s0ul-1m/s0ul/data.py",
+      "s0ul-1m/s0ul/export.py",
+      "s0ul-1m/s0ul/integer.py",
+      "s0ul-1m/s0ul/model.py",
+      "s0ul-1m/s0ul/tokenizer.py",
+      "s0ul-1m/s0ul/train.py",
+      "s0ul-1m/s0ul/train_advanced.py"
+    ],
+    "testPaths": [
+      "s0ul-1m/tests/test_agent.mjs",
+      "s0ul-1m/tests/test_inference.mjs",
+      "s0ul-1m/tests/test_integer.py",
+      "s0ul-1m/tests/test_model.py",
+      "s0ul-1m/tests/test_solidity_export.py",
+      "s0ul-1m/tests/test_solidity_math.mjs",
+      "s0ul-1m/tests/test_tokenizer_contract.mjs",
+      "s0ul-1m/tests/test_training_advanced.py"
+    ],
+    "dependencyFiles": [
+      "s0ul-1m/pyproject.toml",
+      "s0ul-1m/requirements.txt",
+      "s0ul-1m/package.json"
+    ],
+    "localSparseCheckoutNote": "Training sources and tests exist in git HEAD but are omitted by the frontend sparse checkout. Checkpoint binaries and model export binaries are not tracked; original base deployment journal references a prior recovery path that is not present locally.",
+    "restorationNote": "Tracked source modules can be restored from git HEAD without a network dependency. Original selected PyTorch checkpoint is not available in this checkout, so warm-start training cannot be claimed from these paths alone; deployed immutable model weights remain readable on chain."
+  },
+  "limits": [
+    "This is bounded discovery, not an exhaustive chain index.",
+    "Metadata and code presence establish observed identity, not audit/safety or token economics.",
+    "The Uniswap V3 address is still an ecosystem-source candidate pending protocol-level provenance review; Sushi factory additionally has official Sushi documentation.",
+    "A zero pool getter only excludes that exact queried token pair/fee or stable flag.",
+    "No USD price, marketcap, historical volume or trading recommendation is inferred from raw balances/reserves."
+  ],
+  "initialRegistrySubjects": [
+    {
+      "id": "GH0ST",
+      "kind": "erc20",
+      "address": "0x2eb2849cDE7957b86d0dFD4B59e450a9F9D15559",
+      "codeHash": "0x7c38fa1b069b5e677034bab6219dd2f519f219f7637910131d9a0f58a05ae164",
+      "readSelectors": [
+        "totalSupply()",
+        "balanceOf(address)",
+        "decimals()"
+      ],
+      "basis": "Known project token; runtime hash matches prior deployed controller pin; live token getters validated.",
+      "enabledForReadOnlyRegistry": true
+    },
+    {
+      "id": "GH0ST_DEPLOYER",
+      "kind": "account",
+      "address": "0x8D6B11CFdF079e27C17e05Cb7Ea81235887691c6",
+      "expectedEmptyRuntime": true,
+      "readSelectors": [
+        "native balance",
+        "GH0ST balanceOf(address)"
+      ],
+      "basis": "Public deployer from two independent project journals; empty runtime at anchor; does not imply this account owns the GH0ST token.",
+      "enabledForReadOnlyRegistry": true
+    },
+    {
+      "id": "S0UL_CONTROLLER",
+      "kind": "contract",
+      "address": "0x9F92776e33087DCF0d77b9BE23145efAC6cE695D",
+      "codeHash": "0x0d89f81a955230d7ebb01d2549770041f796429abba6d229a2089a3e310636ed",
+      "readSelectors": [
+        "engine()",
+        "modelId()",
+        "sourceCheckpoint()"
+      ],
+      "basis": "Frozen project deployment pins match live code/getters.",
+      "enabledForReadOnlyRegistry": true
+    },
+    {
+      "id": "RAPH_WETH",
+      "kind": "reserve_pool",
+      "address": "0xCC6e395c870E36AEC40ace400c32FD253966415e",
+      "codeHash": "0x4930bdc6b0616a7a66fb9676ccee20c88584cfd582e6a8b3661953ecb3a04356",
+      "factory": "0x1A6745F84099Fa7E84D1f3B34c23482865194bd1",
+      "token0": "0x0Bd7D308f8E1639FAb988df18A8011f41EAcAD73",
+      "token1": "0x325Ed5a3617B1EaAB6ebeEfCc2Af084beEf49ecE",
+      "stable": false,
+      "readSelectors": [
+        "factory()",
+        "token0()",
+        "token1()",
+        "getReserves()"
+      ],
+      "basis": "Official Raphael address and factory getPool returned same address; reverse factory/token identities/reserves verified. This is a RAPH/WETH pool, not a GH0ST market.",
+      "enabledForReadOnlyRegistry": true
+    }
+  ],
+  "failedOptionalGetters": [
+    {
+      "subject": "GH0ST",
+      "signature": "owner()",
+      "error": {
+        "code": 3,
+        "message": "execution reverted",
+        "data": "0x"
+      }
+    },
+    {
+      "subject": "RaphaelPoolFactory",
+      "signature": "owner()",
+      "error": {
+        "code": 3,
+        "message": "execution reverted",
+        "data": "0x"
+      }
+    }
+  ],
+  "gh0stPoolDiscovery": {
+    "verifiedGh0stPools": [],
+    "exhaustive": false,
+    "note": "Only GH0ST/WETH was queried at Raphael stable/volatile and Uniswap/Sushi V3 fee tiers 100,500,3000,10000. All ten exact lookups returned zero. Other quote assets, V4 singleton pool IDs, launchpad curves and other venues were not searched. This does not establish absence of a GH0ST market."
+  }
+}
