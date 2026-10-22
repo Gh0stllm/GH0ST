@@ -1,0 +1,219 @@
+{
+  "status": "PASS_SYNTHETIC_DECODER_HELPER",
+  "lanes": 8,
+  "synthetic_only": true,
+  "candidates": [
+    {
+      "input_source": "LaneMxfp4V2.sol",
+      "runs": 200,
+      "source_sha256": "26a27bb556b15b987f2b123dd305b48d535aff48292b25a4b6485df20517555b",
+      "gas": [
+        1544974,
+        1545130
+      ],
+      "mean": 1545052,
+      "runtime_bytes": 1428,
+      "status": "PASS"
+    },
+    {
+      "input_source": "LaneMxfp4V2.sol",
+      "runs": 10000,
+      "source_sha256": "26a27bb556b15b987f2b123dd305b48d535aff48292b25a4b6485df20517555b",
+      "gas": [
+        1508245,
+        1508401
+      ],
+      "mean": 1508323,
+      "runtime_bytes": 1978,
+      "status": "PASS"
+    },
+    {
+      "input_source": "LaneMxfp4V2.sol",
+      "runs": 100000,
+      "source_sha256": "26a27bb556b15b987f2b123dd305b48d535aff48292b25a4b6485df20517555b",
+      "gas": [
+        1508245,
+        1508401
+      ],
+      "mean": 1508323,
+      "runtime_bytes": 1978,
+      "status": "PASS"
+    },
+    {
+      "input_source": "CachedLaneMxfp4.sol",
+      "runs": 200,
+      "source_sha256": "78fcb94ea0292dc826c2aa14c93f640e388b41e5f10359d82708aab487f8629f",
+      "gas": [
+        1464334,
+        1464490
+      ],
+      "mean": 1464412,
+      "runtime_bytes": 1572,
+      "status": "PASS"
+    },
+    {
+      "input_source": "CachedLaneMxfp4.sol",
+      "runs": 10000,
+      "source_sha256": "78fcb94ea0292dc826c2aa14c93f640e388b41e5f10359d82708aab487f8629f",
+      "gas": [
+        1427605,
+        1427761
+      ],
+      "mean": 1427683,
+      "runtime_bytes": 2532,
+      "status": "PASS"
+    },
+    {
+      "input_source": "CachedLaneMxfp4.sol",
+      "runs": 100000,
+      "source_sha256": "78fcb94ea0292dc826c2aa14c93f640e388b41e5f10359d82708aab487f8629f",
+      "gas": [
+        1427605,
+        1427761
+      ],
+      "mean": 1427683,
+      "runtime_bytes": 2532,
+      "status": "PASS"
+    }
+  ],
+  "validation": {
+    "cases": 18422,
+    "invalid_rejections": 6,
+    "exhaustive_byte_scale_cases": 16640,
+    "fuzz_cases": 1752
+  },
+  "limits": [
+    "Exactly 8 rows, <=180 groups; synthetic fixed-point arithmetic only.",
+    "No real GPT-OSS weights, full-model inference, quality or mainnet result."
+  ],
+  "winner": {
+    "input_source": "CachedLaneMxfp4.sol",
+    "runs": 10000,
+    "source_sha256": "78fcb94ea0292dc826c2aa14c93f640e388b41e5f10359d82708aab487f8629f",
+    "gas": [
+      1427605,
+      1427761
+    ],
+    "mean": 1427683,
+    "runtime_bytes": 2532,
+    "status": "PASS"
+  },
+  "source_sha256": "78fcb94ea0292dc826c2aa14c93f640e388b41e5f10359d82708aab487f8629f",
+  "benchmarks": [
+    {
+      "kind": "dense",
+      "rows": 8,
+      "groups": 90,
+      "tile_calldata": {
+        "gas": 1427509,
+        "calldata_bytes": 18148
+      },
+      "tile_code": {
+        "gas": 1240994,
+        "calldata_bytes": 5924
+      },
+      "store": {
+        "address": "0x57A2D29E885aC7e580f50B03F384e7F6A573e001",
+        "hash": "0x5aadf506e53616f7ba93a09cf23fdcd843e4c250192469a88bde7c28580be866",
+        "deployment_gas": 2699836,
+        "runtime_bytes": 12241
+      }
+    },
+    {
+      "kind": "sparse",
+      "rows": 8,
+      "groups": 90,
+      "tile_calldata": {
+        "gas": 1358977,
+        "calldata_bytes": 18148
+      },
+      "tile_code": {
+        "gas": 1240994,
+        "calldata_bytes": 5924
+      },
+      "store": {
+        "address": "0xB9a535B7AF15768027676Eb719b361a44450d3f3",
+        "hash": "0x29a8925f745080e0c4e15a275296b604b0e494a4718ecab41cbb658ca8d7add6",
+        "deployment_gas": 2631304,
+        "runtime_bytes": 12241
+      }
+    },
+    {
+      "kind": "zeroInputs",
+      "rows": 8,
+      "groups": 90,
+      "tile_calldata": {
+        "gas": 1358641,
+        "calldata_bytes": 18148
+      },
+      "tile_code": {
+        "gas": 1172126,
+        "calldata_bytes": 5924
+      },
+      "store": {
+        "address": "0x307025517175a2ab4B7Ac6212A16013cD9b12B7C",
+        "hash": "0x5aadf506e53616f7ba93a09cf23fdcd843e4c250192469a88bde7c28580be866",
+        "deployment_gas": 2699836,
+        "runtime_bytes": 12241
+      }
+    },
+    {
+      "kind": "zeroWeights",
+      "rows": 8,
+      "groups": 90,
+      "tile_calldata": {
+        "gas": 1428289,
+        "calldata_bytes": 18148
+      },
+      "tile_code": {
+        "gas": 1240982,
+        "calldata_bytes": 5924
+      },
+      "store": {
+        "address": "0x75Fe74cfa3549F108F3711ADe008CEb53f0AEf00",
+        "hash": "0xe5ee6587cd9f5b44b81e56d2515429c2b6299384e061755cd27c075a3a750da2",
+        "deployment_gas": 2700616,
+        "runtime_bytes": 12241
+      }
+    },
+    {
+      "kind": "positiveBound",
+      "rows": 8,
+      "groups": 90,
+      "tile_calldata": {
+        "gas": 1428541,
+        "calldata_bytes": 18148
+      },
+      "tile_code": {
+        "gas": 1241234,
+        "calldata_bytes": 5924
+      },
+      "store": {
+        "address": "0xE605d0b39196DFE5f9910e50b6a7398218B31f6c",
+        "hash": "0x1dc87c9c46aded444f00f6bf6a261b239ac6f5c4df78f294bafd258bcf334590",
+        "deployment_gas": 2700616,
+        "runtime_bytes": 12241
+      }
+    },
+    {
+      "kind": "negativeBound",
+      "rows": 8,
+      "groups": 90,
+      "tile_calldata": {
+        "gas": 1393981,
+        "calldata_bytes": 18148
+      },
+      "tile_code": {
+        "gas": 1206674,
+        "calldata_bytes": 5924
+      },
+      "store": {
+        "address": "0xBa991811fcaF44dFBAE58939c28A8F2d312A3146",
+        "hash": "0x1dc87c9c46aded444f00f6bf6a261b239ac6f5c4df78f294bafd258bcf334590",
+        "deployment_gas": 2700616,
+        "runtime_bytes": 12241
+      }
+    }
+  ],
+  "finished_at": "2026-10-22T17:56:49.489Z"
+}
