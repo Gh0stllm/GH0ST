@@ -126,12 +126,12 @@ async function sender(provider,journal,journalPath,signing,{local=false,localCon
   const reserve=gasLimit*ceiling;if(BigInt(journal.spentWei)+reserve>BigInt(journal.approvedCapWei))throw Error('Cumulative fee cap cannot cover the next reserved transaction');
   if(BigInt(await provider.getBalance(journal.owner))<reserve)throw Error('Owner balance is below next reserved transaction');
   const nonce=await provider.getTransactionCount(journal.owner,'pending');if(BigInt(await provider.send('eth_chainId',[]))!==CHAIN)throw Error('Chain changed before signing');
-  const tx={chainId:CHAIN,nonce,to:request.to??null,data:request.data,value:0n,gasLimit,gasPrice:live.gasPriceWei,type:0};
+  const tx={chainId:CHAIN,nonce,to:request.to??null,data:request.data,value:0n,gasLimit,gasPrice:ceiling,type:0};
   let raw,transactionHash;
   if(!local){raw=await signing.signTransaction(tx);transactionHash=keccak256(raw);}
-  journal.pending={key,hash:transactionHash??null,nonce,to:tx.to,data:tx.data,calldataHash:keccak256(tx.data),gasEstimate:estimate.toString(),gasLimit:gasLimit.toString(),gasPriceWei:live.gasPriceWei.toString(),feeCeilingWeiPerGas:ceiling.toString(),reserveWei:reserve.toString(),predictedAddress:tx.to?null:getCreateAddress({from:journal.owner,nonce}),preparedAt:new Date().toISOString(),status:'prepared'};atomic(journalPath,journal);
+  journal.pending={key,hash:transactionHash??null,nonce,to:tx.to,data:tx.data,calldataHash:keccak256(tx.data),gasEstimate:estimate.toString(),gasLimit:gasLimit.toString(),gasPriceWei:tx.gasPrice.toString(),feeCeilingWeiPerGas:ceiling.toString(),reserveWei:reserve.toString(),predictedAddress:tx.to?null:getCreateAddress({from:journal.owner,nonce}),preparedAt:new Date().toISOString(),status:'prepared'};atomic(journalPath,journal);
   try{
-   if(local){transactionHash=await signing.request({method:'eth_sendTransaction',params:[{from:journal.owner,to:tx.to??undefined,data:tx.data,value:'0x0',gas:ethers.toQuantity(gasLimit),gasPrice:ethers.toQuantity(live.gasPriceWei),nonce:ethers.toQuantity(nonce)}]});journal.pending.hash=transactionHash;}
+   if(local){transactionHash=await signing.request({method:'eth_sendTransaction',params:[{from:journal.owner,to:tx.to??undefined,data:tx.data,value:'0x0',gas:ethers.toQuantity(gasLimit),gasPrice:ethers.toQuantity(tx.gasPrice),nonce:ethers.toQuantity(nonce)}]});journal.pending.hash=transactionHash;}
    else {const response=await provider.broadcastTransaction(raw);if(!same(response.hash,transactionHash))throw Error('RPC returned an unexpected signed transaction hash');}
    journal.pending.status='broadcast';journal.pending.broadcastAt=new Date().toISOString();atomic(journalPath,journal);
   }catch(error){journal.pending.status='ambiguous';journal.pending.broadcastError=rpcError(error);atomic(journalPath,journal);throw Error('Broadcast outcome is ambiguous; stop and reconcile the exact journal hash. No retry was sent. RPC reason: '+journal.pending.broadcastError.message);}
