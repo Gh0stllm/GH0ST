@@ -93,12 +93,13 @@ function fixture(options = {}) {
     assert.equal(journal.nonce, env.nonce); assert.equal(journal.to, request.to);
     assert.equal(journal.dataHash, Ethers.keccak256(request.data));
     assert.ok(BigInt(journal.budgetWei) > 0n); assert.ok(BigInt(journal.gasLimit) > 0n);
+    assert.equal(BigInt(journal.gasPriceWei), BigInt(request.gasPrice), 'submission price is durable before the wallet prompt');
     assert.ok(BigInt(journal.feeCeilingWei) >= BigInt(request.gasPrice));
     const hash = txHash(env.sends.length + 1); env.sends.push(request);
     env.transactions.set(hash, { ...request, hash, from: OWNER, nonce: Number(request.nonce), chainId: Number(request.chainId),
       value: BigInt(request.value), gasPrice: BigInt(request.gasPrice), gasLimit: BigInt(request.gasLimit ?? request.gas) });
     const log = obsInterface.encodeEventLog(obsInterface.getEvent('SnapshotStored'), [1, ++env.sequence, txHash(500), 1800000000, 101, [1_000_000,0,0,0]]);
-    env.receipts.set(hash, { hash, status: 1, blockNumber: 101, blockHash: BLOCK, gasPrice: env.gasPrice, gasUsed: 100_000n, logs: [{ address: OBS, ...log }] });
+    env.receipts.set(hash, { hash, status: 1, blockNumber: 101, blockHash: BLOCK, gasPrice: BigInt(request.gasPrice), gasUsed: 100_000n, logs: [{ address: OBS, ...log }] });
     if (env.sendError) throw Object.assign(Error('Wallet transport result is ambiguous'), { code: env.sendError });
     return { hash, async wait() {
       const saved = JSON.parse(env.saved.get(journalKey));
@@ -184,8 +185,14 @@ test('all runtime, immutable dependency, model and manifest pins fail closed', a
 });
 
 test('no action sends without a fresh45-second quote, explicit consent and full fee reserve', async t => {
-  const f = fixture(); t.after(() => f.mounted.destroy()); const q = await f.quoted();
-  assert.equal(q.expiresAt - f.env.now, 45000); assert.equal(q.gasLimit, 600_000n); assert.equal(q.feeCeilingWei, 1_500_000_000n);
+  const f = fixture({ gasPrice: 1_000_000_003n }); t.after(() => f.mounted.destroy()); const q = await f.quoted();
+  assert.equal(q.expiresAt - f.env.now, 45000); assert.equal(q.gasLimit, 600_000n); assert.equal(q.feeCeilingWei, 1_500_000_005n);
+  const submissionPrice = (f.env.gasPrice * 11n + 9n) / 10n;
+  assert.equal(q.submissionGasPriceWei, submissionPrice);
+  assert.equal(q.estimatedWei, q.gasEstimate * submissionPrice, 'visible estimate includes 10 percent submission headroom rounded up');
+  assert.equal(f.get('fee').textContent, `${formatIntelETH(q.estimatedWei)} ETH`);
+  assert.equal(f.get('submission-price').textContent, `${Number(submissionPrice) / 1e9} gwei`);
+  assert.equal(q.reserveWei, q.gasLimit * q.feeCeilingWei);
   await f.mounted.send(); assert.equal(f.env.sends.length, 0);
   f.get('limit').value = formatIntelETH(q.reserveWei - 1n); await f.consent(); await f.mounted.send();
   assert.equal(f.env.sends.length, 0);
@@ -197,6 +204,7 @@ test('explicit send saves hash-null intent and nonce before the prompt, then sav
   const f = fixture(); t.after(() => f.mounted.destroy()); await f.quoted(); await f.consent(); await f.mounted.send();
   assert.equal(f.env.sends.length, 1); assert.equal(f.mounted.state.pending, null);
   const sent = f.env.sends[0]; assert.equal(sent.to, OBS); assert.equal(sent.chainId, 4663); assert.equal(sent.nonce, 7); assert.equal(sent.value, 0n);
+  assert.equal(sent.gasPrice, 1_100_000_000n, 'wallet submission uses 10 percent headroom over the live minimum');
   assert.deepEqual([...obsInterface.parseTransaction({ data: sent.data }).args], [1n]);
   assert.equal(f.env.saved.has(journalKey), false); assert.match(f.get('receipt-count').textContent, /1 confirmed/);
 });
@@ -290,6 +298,14 @@ test('quote edits, changed on-chain context, fee ceiling, gas growth, block cap 
   ]) {
     const f = fixture(); await f.quoted(); await f.consent(); await mutate(f); await f.mounted.send();
     assert.equal(f.env.sends.length, 0); f.mounted.destroy();
+  }
+  for (const livePrice of [1_000_500_000n, 1_490_000_000n]) {
+    const f = fixture({ waitError: true }), q = await f.quoted(); await f.consent(); f.env.gasPrice = livePrice;
+    await f.mounted.send(); assert.equal(f.env.sends.length, 1, f.get('notice').textContent);
+    const proposed = (livePrice * 11n + 9n) / 10n, expected = proposed < q.feeCeilingWei ? proposed : q.feeCeilingWei;
+    assert.equal(f.env.sends[0].gasPrice, expected); assert.ok(expected > livePrice);
+    assert.ok(f.env.sends[0].gasLimit * expected <= q.reserveWei, 'submission headroom never exceeds the reviewed reserve');
+    f.mounted.destroy();
   }
 });
 
