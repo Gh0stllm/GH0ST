@@ -36,6 +36,12 @@ EVIDENCE = (
         "cbe08a3268ae8bf29ada69bdd625178c9046fbc28c094201426cc20ac4b895e9",
         "d4f4d1e1d886bd91aa663b9463cc68b1b1e749ee3151ec1cbc3cba7819a7d5cb",
     ),
+    (
+        "analysis-mainnet-generation-proof.json",
+        915819,
+        "ea789b24ec2d4724d22dc5559338bc03cce538c410358fa46ea4ad5082552473",
+        "c51c7f55b0116703e61d5687781d811abb935363aa75250c7ca8bd47553c0f32",
+    ),
 )
 
 
