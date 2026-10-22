@@ -23,6 +23,7 @@ const ROLE={S0ULIntelModel:'model',S0ULObservations:'observations',S0ULIntelRepo
 const json=v=>JSON.stringify(v,(_,x)=>typeof x==='bigint'?x.toString():x,2)+'\n';
 const hash=bytes=>crypto.createHash('sha256').update(bytes).digest('hex');
 const same=(a,b)=>typeof a==='string'&&typeof b==='string'&&a.toLowerCase()===b.toLowerCase();
+const rpcError=error=>({code:error?.info?.error?.code??error?.error?.code??error?.code??null,message:String(error?.info?.error?.message??error?.error?.message??error?.shortMessage??error?.message??'Unknown RPC failure').replace(/0x[0-9a-fA-F]{64,}/g,'[hex redacted]').replace(/\b[0-9a-fA-F]{128,}\b/g,'[hex redacted]').slice(0,700)});
 const exact=(value,name)=>{if(typeof value!=='string'||!/^\d+$/.test(value))throw Error(name+' must be an exact decimal integer');return BigInt(value);};
 function atomic(file,value){fs.mkdirSync(path.dirname(file),{recursive:true});const temp=file+'.tmp';fs.writeFileSync(temp,json(value),{mode:0o600});fs.renameSync(temp,file);}
 function argsOf(argv){const result={mode:argv[0]??'help'};for(let i=1;i<argv.length;i++){const flag=argv[i];if(!flag.startsWith('--'))throw Error('Unexpected positional argument');if(flag==='--help'){result.mode='help';continue;}const key=flag.slice(2);if(!['rpc','chain','cap-wei','build-hash','subjects','subject-id','hash'].includes(key))throw Error('Unsupported flag '+flag);const value=argv[++i];if(!value||value.startsWith('--'))throw Error('Missing value for '+flag);if(key in result)throw Error('Duplicate flag '+flag);result[key]=value;}return result;}
@@ -133,7 +134,7 @@ async function sender(provider,journal,journalPath,signing,{local=false,localCon
    if(local){transactionHash=await signing.request({method:'eth_sendTransaction',params:[{from:journal.owner,to:tx.to??undefined,data:tx.data,value:'0x0',gas:ethers.toQuantity(gasLimit),gasPrice:ethers.toQuantity(live.gasPriceWei),nonce:ethers.toQuantity(nonce)}]});journal.pending.hash=transactionHash;}
    else {const response=await provider.broadcastTransaction(raw);if(!same(response.hash,transactionHash))throw Error('RPC returned an unexpected signed transaction hash');}
    journal.pending.status='broadcast';journal.pending.broadcastAt=new Date().toISOString();atomic(journalPath,journal);
-  }catch{journal.pending.status='ambiguous';atomic(journalPath,journal);throw Error('Broadcast outcome is ambiguous; stop and reconcile the exact journal hash. No retry was sent.');}
+  }catch(error){journal.pending.status='ambiguous';journal.pending.broadcastError=rpcError(error);atomic(journalPath,journal);throw Error('Broadcast outcome is ambiguous; stop and reconcile the exact journal hash. No retry was sent. RPC reason: '+journal.pending.broadcastError.message);}
   return settle(provider,journal,journalPath,transactionHash);
  };
 }
@@ -165,7 +166,7 @@ async function main(){
  const args=argsOf(process.argv.slice(2));if(args.mode==='help'){console.log('Modes: compile | plan [--subjects gh0st,pool] | deploy --chain 4663 --cap-wei N --build-hash H | sample --chain 4663 --cap-wei N --build-hash H --subject-id ID | reconcile [--hash H]. Write modes accept only non-TTY stdin JSON {privateKey}; never environment/files. Public RPC options are fixed.');return;}
  if(!['compile','plan','deploy','sample','reconcile'].includes(args.mode))throw Error('Unknown mode');
  const build=compile();if(args.mode==='compile'){console.log(json({mode:'compile',buildFingerprint:build.manifest.buildFingerprint,compiler:build.manifest.compiler,contracts:Object.fromEntries(NAMES.map(n=>[n,{runtimeBytes:build.artifacts[n].runtimeBytes,normalizedRuntimeHash:build.artifacts[n].normalizedRuntimeHash}])),manifest:path.relative(REPO,path.join(BUILD,'manifest.json'))}));return;}
- const rpc=publicRpc(args.rpc),definition=candidateSubjects(args.subjects),publicProvider=new JsonRpcProvider(rpc,Number(CHAIN),{staticNetwork:true,batchMaxCount:10,cacheTimeout:-1});let provider=publicProvider,local;
+ const rpc=publicRpc(args.rpc),definition=candidateSubjects(args.subjects),publicProvider=new JsonRpcProvider(rpc,Number(CHAIN),{staticNetwork:true,batchMaxCount:args.mode==='plan'?10:1,cacheTimeout:-1});let provider=publicProvider,local;
  try{
   const live=await rpcContext(publicProvider);
   if(args.mode==='plan'){
