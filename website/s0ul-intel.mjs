@@ -51,6 +51,12 @@ export function intelQuoteMatches(quote, { address, chainId, action, contextHash
 }
 function timestamp(value) { const ms = Number(value) * 1000; return Number.isFinite(ms) && ms > 0 ? `${new Date(ms).toISOString().replace('T', ' ').slice(0, 19)} UTC` : '—'; }
 function delta(value, previous) { const difference = big(value) - big(previous); return `${difference > 0n ? '+' : ''}${difference.toLocaleString('en-US')}`; }
+function percentBps(value, clipped = false) {
+  const raw = big(value), absolute = raw < 0n ? -raw : raw;
+  const sign = raw < 0n ? '-' : raw > 0n ? '+' : '';
+  return (clipped && absolute === 10000n ? (raw < 0n ? '≤ ' : '≥ ') : '') + sign + (absolute / 100n) + '.' + (absolute % 100n).toString().padStart(2, '0') + '%';
+}
+function observationAge(seconds) { const age = Math.max(0, integer(seconds)); return age < 60 ? age + 's ago' : age < 3600 ? Math.floor(age / 60) + ' min ago' : Math.floor(age / 3600) + 'h ago'; }
 
 export function mountS0ULIntel(root, options = {}) {
   if (!root || root.dataset.s0ulIntelMounted) return null;
@@ -61,41 +67,41 @@ export function mountS0ULIntel(root, options = {}) {
   const deployment = supplied?.contracts ? { ...supplied,observations:supplied.contracts.observations,reports:supplied.contracts.reports,classifier:{...supplied.contracts.model,modelId:supplied.modelId,trainingManifestHash:supplied.trainingManifestHash} } : supplied;
   root.innerHTML = `
     <section class="intel-shell" aria-labelledby="intel-title">
-      <div class="intel-heading"><div><div class="intel-kicker">S0UL / On-chain intelligence</div><h2>A signal.<br><em>With receipts.</em></h2></div><p>Observe registered contracts, compare pinned snapshots, and publish a model classification with its on-chain evidence.</p></div>
-      <div class="intel-topbar"><div class="intel-network"><span id="intel-dot" class="intel-dot" data-state="waiting" aria-hidden="true"></span><span id="intel-network">Intelligence contracts awaiting deployment</span></div><button id="intel-connect" class="intel-button" type="button" disabled>Connect wallet ↗</button></div>
-      <div id="intel-notice" class="intel-notice" role="status" aria-live="polite">Intelligence contracts awaiting deployment. No observations or reports are available yet.</div>
-      <div id="intel-sources" class="intel-sources" hidden></div>
-      <div class="intel-grid">
-        <div class="intel-observe"><div class="intel-panel-head"><h3>Observe a subject.</h3><span id="intel-subject-count" class="intel-tag">No registry connected</span></div>
-          <div class="intel-form-row intel-subject-row"><label class="intel-field">Subject ID<input id="intel-subject-id" inputmode="numeric" value="1" autocomplete="off" disabled></label><label class="intel-field">Lookback<select id="intel-lookback" disabled>${Array.from({ length: 15 }, (_, index) => `<option value="${index + 1}">${index + 1} sample${index ? 's' : ''}</option>`).join('')}</select></label><button id="intel-load" class="intel-button" type="button" disabled>Read chain ↗</button></div>
-          <p id="intel-empty" class="intel-empty">Choose a registered subject to read its source, snapshots and latest report. Metrics are read directly from contracts.</p>
-          <div id="intel-subject" hidden><h4 id="intel-subject-name" class="intel-subject-name"></h4><dl id="intel-subject-details" class="intel-dl"></dl><div id="intel-metrics" class="intel-metrics"></div><dl id="intel-snapshot-details" class="intel-dl"></dl></div>
-          <p class="intel-small">Raw integer units. A V2 reserve ratio is a pool observation; token prices and off-chain feeds are not supplied.</p>
-        </div>
-        <aside class="intel-transact" aria-labelledby="intel-fee-title"><div class="intel-panel-head"><h3 id="intel-fee-title">Review one action.</h3><span id="intel-quote-expiry" class="intel-tag">No estimate</span></div>
-          <label class="intel-field">Action<select id="intel-action" disabled><option value="snapshot">Take a snapshot</option><option value="analyze">Analyze saved snapshots</option><option value="captureAndAnalyze">Sample + publish report</option><option id="intel-register-option" value="register" hidden>Register a subject</option></select></label>
-          <button id="intel-estimate" class="intel-button" type="button" disabled>Estimate this transaction ↗</button>
-          <div class="intel-fee"><span class="intel-micro">Estimated network fee</span><strong id="intel-fee">—</strong><dl class="intel-dl"><div><dt>Gas estimate</dt><dd id="intel-gas">—</dd></div><div><dt>Gas reserve (+20%)</dt><dd id="intel-gas-limit">—</dd></div><div><dt>Current gas / ceiling</dt><dd id="intel-gas-price">—</dd></div><div><dt>Submission (+10%, capped)</dt><dd id="intel-submission-price">—</dd></div><div><dt>Maximum fee reserve</dt><dd id="intel-reserve">—</dd></div></dl></div>
-          <label class="intel-field">Single-action fee limit (ETH)<input id="intel-limit" inputmode="decimal" autocomplete="off" placeholder="Estimate the action first" disabled></label>
-          <label class="intel-consent"><input id="intel-consent" type="checkbox" disabled><span>I reviewed this concrete transaction and its fee limit.</span></label>
-          <button id="intel-send" class="intel-button intel-button-primary" type="button" disabled>Confirm in wallet <span aria-hidden="true">→</span></button>
-          <p class="intel-small">Estimates include up to 10% gas-price headroom, capped at your accepted ceiling. Every write needs a wallet confirmation. The app rechecks state, gas and the fee limit before sending; this is a forecast, not a guaranteed price.</p>
-        </aside>
-      </div>
-      <div class="intel-evidence"><div class="intel-evidence-grid"><div><h3>Snapshot comparison.</h3><span class="intel-micro">Confirmed source features</span><pre id="intel-features">No confirmed snapshots loaded.</pre></div><div><h3>On-chain report.</h3><span class="intel-micro">Specialized numeric Intel head · separate from the 1M language model</span><pre id="intel-report">No on-chain report loaded.</pre><p class="intel-small">Counters in the stored report text estimate ancestor-chain height; they are distinct from RPC L2 transaction blocks.</p><dl id="intel-report-details" class="intel-dl"></dl><p class="intel-small">An independent 25-parameter numeric head learned a 250-bps observation-routing policy from synthetic examples. Raw scores are integer discriminants, not confidence or market predictions.</p></div></div></div>
-      <details id="intel-registration" class="intel-registration" hidden><summary>Registry owner · Register a source contract</summary><div class="intel-register-fields"><label class="intel-field">Reader<select id="intel-kind"><option value="3">V2 pool</option><option value="1">ERC-20 total supply</option><option value="2">ERC-20 account balance</option></select></label><label class="intel-field">Source contract<input id="intel-target" spellcheck="false" autocomplete="off" placeholder="0x…"></label><label class="intel-field" id="intel-account-field" hidden>Observed account<input id="intel-account" spellcheck="false" autocomplete="off" placeholder="0x…"></label></div><p class="intel-small">The source’s current bytecode hash is read from the chain and pinned during registration. Observation values cannot be entered here.</p><button id="intel-register-prepare" class="intel-button" type="button">Review registration ↗</button></details>
-      <div id="intel-recovery" class="intel-recovery" hidden><p>A submitted transaction needs confirmation. Resolve its exact hash before sending another action.</p><div class="intel-form-row"><label class="intel-field">Transaction hash<input id="intel-recovery-hash" spellcheck="false" autocomplete="off" placeholder="0x…"></label><button id="intel-reconcile" class="intel-button" type="button">Check transaction ↗</button></div></div>
-      <details class="intel-history"><summary>Transaction record <span id="intel-receipt-count">· 0 confirmed</span></summary><ol id="intel-receipts"></ol></details>
-      <p class="intel-footnote">Snapshots retain timestamps and observation digests. EVM block counters estimate ancestor-chain height and differ from RPC L2 transaction blocks. EVM BLOCKHASH(counter − 1) is pseudorandom output, not a canonical parent hash or finality proof. Reports preserve their features, model identity and raw scores.</p>
+      <div class="intel-heading"><div><div class="intel-kicker">S0UL / On-chain intelligence</div><h2 id="intel-title">What does the<br><em>chain say?</em></h2></div><p>Paste an address to read its saved on-chain observations. No wallet needed.</p></div>
+      <div class="intel-topbar"><div class="intel-network"><span id="intel-dot" class="intel-dot" data-state="waiting" aria-hidden="true"></span><span id="intel-network">Connecting to Robinhood Chain…</span></div><span id="intel-subject-count" class="intel-tag">Loading monitors</span></div>
+      <div class="intel-search"><label class="intel-field" for="intel-address">Token, pool or watched wallet address</label><div class="intel-address-row"><input id="intel-address" spellcheck="false" autocomplete="off" placeholder="Paste a Robinhood Chain address · 0x…" aria-describedby="intel-scope" disabled><button id="intel-search" class="intel-button intel-button-primary" type="button" disabled>Analyze address <span aria-hidden="true">↗</span></button></div><div id="intel-examples" class="intel-examples" aria-label="Try a tracked address"></div><p id="intel-scope" class="intel-small">Available for registered token and pool monitors. This reads on-chain observations; it is not a contract security audit.</p></div>
+      <div id="intel-notice" class="intel-notice" role="status" aria-live="polite">Connecting to the on-chain registry…</div>
+      <div id="intel-matches" class="intel-examples intel-matches" aria-label="Available analysis" hidden></div>
+      <section id="intel-result" class="intel-results" aria-labelledby="intel-result-title" hidden>
+        <div class="intel-panel-head"><div><span id="intel-result-type" class="intel-kicker"></span><h3 id="intel-result-title">Saved observation</h3></div><span id="intel-freshness" class="intel-tag"></span></div>
+        <p id="intel-result-summary" class="intel-result-summary"></p><dl id="intel-summary" class="intel-summary"></dl>
+        <details class="intel-disclosure intel-stored-report"><summary>Read the full on-chain report</summary><pre id="intel-report">No on-chain report loaded.</pre><p class="intel-small">This text is read directly from the report contract. Its block counter differs from the Robinhood transaction block number.</p></details>
+      </section>
+      <details id="intel-update" class="intel-disclosure intel-update"><summary>Update the report on-chain <span>Wallet + gas</span></summary><div class="intel-transact" aria-labelledby="intel-fee-title"><div class="intel-panel-head"><h3 id="intel-fee-title">Review the cost.</h3><button id="intel-connect" class="intel-button" type="button" disabled>Connect wallet ↗</button></div><p class="intel-small">Save a new observation and publish its comparison in one transaction. Reading an existing report is free.</p>
+        <details class="intel-disclosure intel-action-options"><summary>Other actions</summary><label class="intel-field">Action<select id="intel-action" disabled><option value="captureAndAnalyze">Update on-chain report</option><option value="snapshot">Save observation only</option><option value="analyze">Analyze stored observations</option><option id="intel-register-option" value="register" hidden>Register a monitor</option></select></label></details>
+        <button id="intel-estimate" class="intel-button" type="button" disabled>Calculate gas cost ↗</button>
+        <div class="intel-fee"><span class="intel-micro">Estimated network fee</span><strong id="intel-fee">—</strong><div class="intel-panel-head"><span id="intel-quote-expiry" class="intel-tag">Calculate the cost first</span><span class="intel-small">No transaction sent</span></div><details class="intel-disclosure"><summary>Fee breakdown</summary><dl class="intel-dl"><div><dt>Gas estimate</dt><dd id="intel-gas">—</dd></div><div><dt>Gas reserve (+20%)</dt><dd id="intel-gas-limit">—</dd></div><div><dt>Current gas / ceiling</dt><dd id="intel-gas-price">—</dd></div><div><dt>Submission (+10%, capped)</dt><dd id="intel-submission-price">—</dd></div><div><dt>Maximum fee reserve</dt><dd id="intel-reserve">—</dd></div></dl></details></div>
+        <label class="intel-field">Maximum fee you approve (ETH)<input id="intel-limit" inputmode="decimal" autocomplete="off" placeholder="Calculate the cost first" disabled></label><label class="intel-consent"><input id="intel-consent" type="checkbox" disabled><span>I reviewed this transaction and its maximum fee.</span></label><button id="intel-send" class="intel-button intel-button-primary" type="button" disabled>Confirm in wallet <span aria-hidden="true">→</span></button><p class="intel-small">Your wallet confirms every write. The estimate includes bounded fee headroom; the app checks your limit again before sending. Network gas is paid even if a transaction reverts.</p>
+      </div></details>
+      <div id="intel-recovery" class="intel-recovery" hidden><p>A wallet transaction is unresolved. Check its exact hash before another action.</p><div class="intel-form-row"><label class="intel-field">Transaction hash<input id="intel-recovery-hash" spellcheck="false" autocomplete="off" placeholder="0x…"></label><button id="intel-reconcile" class="intel-button" type="button">Check transaction ↗</button></div></div>
+      <details id="intel-technical" class="intel-disclosure intel-technical"><summary>Technical details <span>Sources, observations &amp; model</span></summary>
+        <div id="intel-sources" class="intel-sources" hidden></div>
+        <div class="intel-form-row intel-subject-row"><label class="intel-field">Monitor ID<input id="intel-subject-id" inputmode="numeric" value="1" autocomplete="off" disabled></label><label class="intel-field">Compare with<select id="intel-lookback" disabled><option value="1">Previous observation</option><option value="2">2 observations back</option><option value="3">3 observations back</option><option value="4">4 observations back</option><option value="5">5 observations back</option><option value="6">6 observations back</option><option value="7">7 observations back</option><option value="8">8 observations back</option><option value="9">9 observations back</option><option value="10">10 observations back</option><option value="11">11 observations back</option><option value="12">12 observations back</option><option value="13">13 observations back</option><option value="14">14 observations back</option><option value="15">15 observations back</option></select></label><button id="intel-load" class="intel-button" type="button" disabled>Read monitor ↗</button></div>
+        <p id="intel-empty" class="intel-empty">No monitor selected.</p><div id="intel-subject" hidden><h4 id="intel-subject-name" class="intel-subject-name"></h4><dl id="intel-subject-details" class="intel-dl"></dl><div id="intel-metrics" class="intel-metrics"></div><dl id="intel-snapshot-details" class="intel-dl"></dl></div>
+        <div class="intel-evidence"><h3>Stored model evidence</h3><pre id="intel-features">No observations loaded.</pre><dl id="intel-report-details" class="intel-dl"></dl></div><p class="intel-small">A separate 25-parameter numeric classifier routes observations using a synthetic 2.5% policy. These are observations, not forecasts or safety verdicts. The original S0UL-1M agent is available below.</p><p class="intel-footnote">Raw token units and reserve ratios are not USD prices or volume. EVM counters estimate ancestor-chain height. EVM BLOCKHASH output is not a canonical parent hash or finality proof.</p>
+        <details id="intel-registration" class="intel-registration" hidden><summary>Registry owner · Add a compatible monitor</summary><div class="intel-register-fields"><label class="intel-field">Reader<select id="intel-kind"><option value="3">V2 pool</option><option value="1">ERC-20 total supply</option><option value="2">ERC-20 account balance</option></select></label><label class="intel-field">Source contract<input id="intel-target" spellcheck="false" autocomplete="off" placeholder="0x…"></label><label class="intel-field" id="intel-account-field" hidden>Watched account<input id="intel-account" spellcheck="false" autocomplete="off" placeholder="0x…"></label></div><p class="intel-small">Only the registry owner can add a reader. Registration pins source bytecode; it does not establish contract safety.</p><button id="intel-register-prepare" class="intel-button" type="button">Review registration ↗</button></details>
+        <details class="intel-history"><summary>Transaction record <span id="intel-receipt-count">· 0 confirmed</span></summary><ol id="intel-receipts"></ol></details>
+      </details>
     </section>`;
   const el = id => root.querySelector(`#intel-${id}`);
-  const controls = Object.fromEntries(['connect','subject-id','lookback','load','action','estimate','limit','consent','send','kind','target','account','register-prepare','recovery-hash','reconcile'].map(id => [id, el(id)]));
+  const controls = Object.fromEntries(['address','search','connect','subject-id','lookback','load','action','estimate','limit','consent','send','kind','target','account','register-prepare','recovery-hash','reconcile'].map(id => [id, el(id)]));
   let provider = null, walletProvider = null, contracts = null, current = null, quote = null, pending = null;
   let destroyed = false, busy = false, verified = false, address = null, chainId = null, owner = null, subjectCount = 0n, chainBlock = null;
   let contextHash = '', message = '', hasError = false, receipts = [], timer = null, modelIdentity = null, recoveryFault = '';
   const ethereum = options.ethereum ?? win?.ethereum;
   const storage = options.storage ?? (() => { try { return win?.localStorage; } catch { return null; } })();
   const listeners = [];
+  let matchedSubjects = [], exampleButtons = [], matchButtons = [];
 
   function notice(text, error = false) { message = text; hasError = error; renderNotice(); }
   function renderNotice() { const node = el('notice'); if (node.textContent !== message) node.textContent = message; node.dataset.error = String(hasError); }
@@ -130,9 +136,12 @@ export function mountS0ULIntel(root, options = {}) {
     if (destroyed) return;
     const active = Boolean(deployment), connected = Boolean(address && chainId === INTEL_CHAIN_ID), writable = verified && connected && !busy && !pending && !recoveryFault;
     controls.connect.disabled = !active || busy; controls.connect.textContent = address ? `${short(address)} ↗` : 'Connect wallet ↗';
+    controls.address.disabled = !verified || busy; controls.search.disabled = !verified || busy;
+    controls.search.textContent = busy ? 'Reading the chain…' : 'Analyze address ↗';
+    for (const button of [...exampleButtons, ...matchButtons]) button.disabled = !verified || busy;
     for (const control of [controls['subject-id'],controls.lookback,controls.load]) control.disabled = !verified || busy;
     for (const control of [controls.action,controls.kind,controls.target,controls.account,controls['register-prepare']]) control.disabled = !verified || busy || Boolean(pending);
-    controls.estimate.disabled = !writable || controls.action.value === 'register' && !isOwner();
+    controls.estimate.disabled = !writable || (controls.action.value === 'register' ? !isOwner() : !current);
     controls.limit.disabled = !freshQuote() || busy; controls.consent.disabled = !freshQuote() || busy;
     controls.send.disabled = !writable || !reviewed(); controls.reconcile.disabled = busy || !address || Boolean(recoveryFault);
     el('registration').hidden = !isOwner(); el('register-option').hidden = !isOwner(); el('account-field').hidden = controls.kind.value !== '2';
@@ -178,6 +187,61 @@ export function mountS0ULIntel(root, options = {}) {
       cell.append(label, addressNode, hash); node.append(cell);
     }
   }
+  function clearSelection() {
+    current = null; contextHash = ''; matchedSubjects = []; controls['subject-id'].value = '';
+    el('matches').replaceChildren(); el('matches').hidden = true; matchButtons = [];
+    invalidate(); renderCurrent();
+  }
+  function renderMatches() {
+    const node = el('matches'); node.replaceChildren(); matchButtons = []; node.hidden = matchedSubjects.length < 2;
+    for (const item of matchedSubjects) {
+      const button = doc.createElement('button'); button.type = 'button'; button.className = 'intel-example';
+      const kind = integer(item.subject.kind);
+      button.textContent = kind === 1 ? 'Token supply' : kind === 2 ? 'Watched balance · ' + short(item.subject.account) : 'Pool reserves';
+      button.dataset.selected = String(big(item.id) === big(current?.id));
+      listen(button, 'click', () => operation(async () => { controls['subject-id'].value = item.id.toString(); await load(); }));
+      matchButtons.push(button); node.append(button);
+    }
+  }
+  function renderExamples() {
+    const node = el('examples'); node.replaceChildren(); exampleButtons = [];
+    const sources = deployment?.subjects?.length ? deployment.subjects : current ? [current.subject] : [];
+    const seen = new Set();
+    for (const source of sources) {
+      const kind = integer(source.kind), value = kind === 2 ? source.account : source.target;
+      if (!eth.isAddress(value) || !nonzero(value) || seen.has(value.toLowerCase())) continue;
+      seen.add(value.toLowerCase());
+      const button = doc.createElement('button'); button.type = 'button'; button.className = 'intel-example';
+      button.textContent = kind === 2 ? 'Watched wallet' : kind === 3 ? (source.label ?? 'Tracked pool') : (source.label ?? 'Tracked token');
+      listen(button, 'click', () => operation(() => analyzeAddress(value)));
+      exampleButtons.push(button); node.append(button);
+    }
+  }
+  async function analyzeAddress(value = controls.address.value) {
+    clearSelection();
+    if (!verified) throw Error('Wait for the on-chain registry to connect.');
+    const input = String(value).trim(); controls.address.value = input;
+    if (!eth.isAddress(input) || !nonzero(input)) throw Error('Enter a valid, nonzero 0x address on Robinhood Chain.');
+    const query = eth.getAddress(input); controls.address.value = query;
+    const count = big(await contracts.observations.subjectCount());
+    if (count < 0n || count > 256n) throw Error('The registry count is outside the supported range. No analysis was selected.');
+    const records = [];
+    for (let first = 1n; first <= count; first += 8n) {
+      const ids = Array.from({length:Number(count-first+1n < 8n ? count-first+1n : 8n)}, (_, index) => first + BigInt(index));
+      const group = await Promise.all(ids.map(async id => {
+        const subject = tuple(await contracts.observations.subject(id), SUBJECT_FIELDS);
+        if (integer(subject.kind) < 1 || integer(subject.kind) > 3 || !eth.isAddress(subject.target) || !nonzero(subject.target)) throw Error('A registered monitor could not be verified. Try reading the address again.');
+        return {id,subject};
+      }));
+      records.push(...group);
+    }
+    subjectCount = count; el('subject-count').textContent = count + ' tracked monitors';
+    matchedSubjects = records.filter(item => same(item.subject.target, query) || integer(item.subject.kind) === 2 && same(item.subject.account, query));
+    renderMatches();
+    if (!matchedSubjects.length) { notice('No S0UL monitor is registered for this address. The registry owner must add a compatible token or pool before it can be analysed.'); return; }
+    controls['subject-id'].value = matchedSubjects[0].id.toString();
+    await load();
+  }
   async function initialize() {
     if (!deployment) { notice('Intelligence contracts awaiting deployment. No observations or reports are available yet.'); render(); return; }
     if (integer(deployment.chainId ?? INTEL_CHAIN_ID) !== INTEL_CHAIN_ID) throw Error('Intel deployment must target Robinhood Chain (4663).');
@@ -186,10 +250,11 @@ export function mountS0ULIntel(root, options = {}) {
     contracts = options.contracts ?? Object.fromEntries(['observations','reports','classifier'].map(name => [name,new eth.Contract(contractAddress(name),deployment[name]?.abi ?? INTEL_ABIS[name],provider)]));
     await verifyDeployment(); [owner, subjectCount, chainBlock] = await Promise.all([contracts.observations.owner(), contracts.observations.subjectCount(), provider.getBlock('latest')]);
     renderSources();
-    el('dot').dataset.state = 'verified'; el('network').textContent = 'Robinhood Chain · 4663 · bytecode verified';
-    el('subject-count').textContent = `${subjectCount} registered subject${subjectCount === 1n ? '' : 's'}`;
-    notice('Registry connected. Read a subject without a wallet; connect only when you want to submit a transaction.');
+    el('dot').dataset.state = 'verified'; el('network').textContent = 'Robinhood Chain · Live';
+    el('subject-count').textContent = subjectCount + ' tracked monitors';
+    notice('Paste an address to read its registered analysis. No wallet or gas needed.');
     if (big(subjectCount)>0n && options.autoLoad!==false) {controls['subject-id'].value='1';await load();}
+    renderExamples();
   }
   async function identity() {
     if (!ethereum?.request || !address || !walletProvider) throw Error('Connect a browser wallet before submitting a transaction.');
@@ -220,9 +285,29 @@ export function mountS0ULIntel(root, options = {}) {
     return { next, hash };
   }
   function renderCurrent() {
-    if (!current) { el('subject').hidden = true; el('empty').hidden = false; return; }
+    if (!current) { el('subject').hidden = true; el('empty').hidden = false; el('result').hidden = true; el('features').textContent = 'No observations loaded.'; el('report').textContent = 'No on-chain report loaded.'; appendRows(el('report-details'), []); appendRows(el('summary'), []); return; }
     const { subject, snapshot, frame, report, reportId, reportText, block } = current;
     el('subject').hidden = false; el('empty').hidden = true;
+    el('result').hidden = false;
+    const kind = integer(subject.kind), matchesSnapshot = report && big(report.currentSequence) === big(snapshot.sequence);
+    const observedAt = report ? report.observedAt : snapshot.timestamp;
+    const storedAge = big(observedAt) > 0n ? Math.max(0, integer(block.timestamp) - integer(observedAt)) : null;
+    const upToDate = Boolean(report && matchesSnapshot && frame.fresh && subject.enabled && [0,9].includes(integer(frame.status)));
+    el('result-type').textContent = kind === 1 ? 'Token supply' : kind === 2 ? 'Watched token balance' : 'Pool reserves';
+    el('result-title').textContent = report ? (integer(report.label) === 0 ? 'Routine observation' : LABELS[integer(report.label)] ?? 'Saved observation') : 'No report yet';
+    el('freshness').textContent = !subject.enabled ? 'Monitor disabled' : !report ? 'Ready for a first report' : !upToDate ? 'Saved report · refresh needed' : 'Observed ' + observationAge(storedAge);
+    el('freshness').dataset.stale = String(Boolean(report) && !upToDate);
+    el('result-summary').textContent = !report ? 'This address is registered. Publish its first observation using Update the report on-chain below.' : big(report.previousSequence) === 0n ? 'One observation is saved. A later on-chain update enables a comparison.' : integer(report.label) === 5 ? 'These stored observations are not comparable. No trend is asserted.' : 'Compared two stored observations over ' + report.elapsedSeconds + ' seconds.';
+    const summary = [];
+    if (report && big(report.previousSequence) > 0n && !(integer(report.flags) & 8)) {
+      const formatted = index => percentBps(report.features[index], Boolean(integer(report.flags) & 16));
+      if (kind === 1) summary.push(['Supply change', formatted(0)]);
+      if (kind === 2) summary.push(['Watched balance change', formatted(0)]);
+      if (kind === 3) summary.push(['Reserve-ratio change', formatted(3)], ['LP-token supply change', formatted(2)]);
+    }
+    if (storedAge !== null) summary.push(['Last observed', timestamp(observedAt)]);
+    if (report) summary.push(['On-chain report', '#' + reportId]);
+    appendRows(el('summary'), summary);
     el('subject-name').textContent = `Subject ${current.id} · ${KINDS[integer(subject.kind)]}`;
     const rows = [['Source contract',subject.target],['Pinned source bytecode',subject.codeHash],['Reader status',READ_STATUSES[integer(subject.lastStatus)] ?? 'Unknown'],['Enabled',subject.enabled ? 'Yes' : 'No']];
     if (integer(subject.kind) === 2) rows.push(['Observed account',subject.account]);
@@ -242,7 +327,7 @@ export function mountS0ULIntel(root, options = {}) {
     el('report').textContent = report ? reportText : 'No on-chain report exists for this subject.';
     appendRows(el('report-details'), report ? [['Report ID',reportId],['Actual classification',LABELS[integer(report.label)] ?? `Unknown label ${report.label}`],['Report samples',`${report.currentSequence} / ${report.previousSequence}`],['Matches current snapshot',big(report.currentSequence) === big(snapshot.sequence) ? 'Yes' : `No · current sample ${snapshot.sequence}`,big(report.currentSequence) !== big(snapshot.sequence)],['Model ID',report.modelId],['Observed at',timestamp(report.observedAt)],['Previous observation',timestamp(report.previousObservedAt)],['Comparison window',`${report.elapsedSeconds}s`],['Created at',timestamp(report.createdAt)],['EVM counters (sample / report)',`${report.observedBlock} / ${report.createdBlock}`],['Current observation digest',report.currentHash],['Previous observation digest',report.previousHash],['Feature hash',report.featureHash],['Raw model scores',Array.from(report.scores).join(', ')]] : []);
   }
-  async function load() { quote = null; controls.consent.checked = false; const { next, hash } = await readSubject(); current = next; contextHash = hash; chainBlock = next.block; renderCurrent(); notice('Confirmed contract state loaded. The report and scores above come from stored on-chain records.'); }
+  async function load() { quote = null; controls.consent.checked = false; const { next, hash } = await readSubject(); current = next; contextHash = hash; chainBlock = next.block; const input=controls.address.value.trim(); if (!same(input,next.subject.target) && !(integer(next.subject.kind)===2 && same(input,next.subject.account))) controls.address.value=next.subject.target; if (matchedSubjects.length && !matchedSubjects.some(item=>big(item.id)===big(next.id))) matchedSubjects=[]; renderCurrent(); renderMatches(); notice('Saved on-chain analysis loaded. Reading is free; updating requires a wallet transaction.'); }
   function registerIntent() {
     if (!isOwner()) throw Error('Only the registry owner can register a source.');
     const kind = Number(controls.kind.value), target = controls.target.value.trim(), account = controls.account.value.trim();
@@ -341,17 +426,20 @@ export function mountS0ULIntel(root, options = {}) {
     await settle(transaction.hash);
   }
   function listen(node,type,fn) { if (!node?.addEventListener) return; node.addEventListener(type,fn);listeners.push(()=>node.removeEventListener(type,fn)); }
+  listen(controls.search,'click',()=>operation(()=>analyzeAddress()));
+  listen(controls.address,'keydown',event=>{if(event.key==='Enter'){event.preventDefault();return operation(()=>analyzeAddress());}});
+  listen(controls.address,'input',()=>{clearSelection();notice('Choose Analyze address to read its registered observations.');});
   listen(controls.connect,'click',()=>operation(connect)); listen(controls.load,'click',()=>operation(load)); listen(controls.estimate,'click',()=>operation(estimate)); listen(controls.send,'click',()=>operation(send));
   for (const control of [controls['subject-id'],controls.lookback]) listen(control,'input',()=>{current=null;contextHash='';invalidate();renderCurrent();el('features').textContent='No confirmed snapshots loaded.';el('report').textContent='No on-chain report loaded.';appendRows(el('report-details'),[]);});
   listen(controls.action,'change',invalidate); listen(controls.limit,'input',()=>{controls.consent.checked=false;render();});listen(controls.consent,'change',render);
   for (const control of [controls.kind,controls.target,controls.account]) listen(control,'input',()=>{contextHash='';invalidate();});
-  listen(controls['register-prepare'],'click',()=>{controls.action.value='register';invalidate();notice('Registration selected. Estimate its exact source address and bytecode pin before approval.');});
+  listen(controls['register-prepare'],'click',()=>{controls.action.value='register';el('update').open=true;invalidate();notice('Registration selected. Estimate its exact source address and bytecode pin before approval.');});
   listen(controls.reconcile,'click',()=>operation(()=>settle(controls['recovery-hash'].value.trim())));
   const changed = () => { address=null;chainId=null;quote=null;controls.consent.checked=false;notice('Wallet account or chain changed. Reconnect and estimate again.');render(); };
   if (ethereum?.on) { ethereum.on('accountsChanged',changed);ethereum.on('chainChanged',changed);listeners.push(()=>ethereum.removeListener?.('accountsChanged',changed),()=>ethereum.removeListener?.('chainChanged',changed)); }
   const ready = operation(initialize);
   timer = (options.setInterval ?? globalThis.setInterval)(()=>{if(quote)render();},1000);
-  return {ready,load:()=>operation(load),estimate:()=>operation(estimate),connect:()=>operation(connect),send:()=>operation(send),reconcile:hash=>operation(()=>settle(hash)),get state(){return{verified,address,chainId,subjectCount,current,quote:quote?{...quote}:null,pending:pending?{...pending}:null,recoveryFault,busy};},destroy(){destroyed=true;(options.clearInterval??globalThis.clearInterval)(timer);listeners.forEach(remove=>remove());if(!options.provider)provider?.destroy?.();walletProvider?.destroy?.();root.removeAttribute('data-s0ul-intel-mounted');}};
+  return {ready,analyze:value=>operation(()=>analyzeAddress(value)),load:()=>operation(load),estimate:()=>operation(estimate),connect:()=>operation(connect),send:()=>operation(send),reconcile:hash=>operation(()=>settle(hash)),get state(){return{verified,address,chainId,subjectCount,current,matches:matchedSubjects.map(item=>({id:item.id,...item.subject})),quote:quote?{...quote}:null,pending:pending?{...pending}:null,recoveryFault,busy};},destroy(){destroyed=true;(options.clearInterval??globalThis.clearInterval)(timer);listeners.forEach(remove=>remove());if(!options.provider)provider?.destroy?.();walletProvider?.destroy?.();root.removeAttribute('data-s0ul-intel-mounted');}};
 }
 
 export async function loadS0ULIntelDeployment(root, {fetch:fetcher=globalThis.fetch} = {}) {
