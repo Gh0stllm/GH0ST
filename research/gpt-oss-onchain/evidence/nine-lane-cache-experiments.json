@@ -1,0 +1,263 @@
+{
+  "status": "PASS_SYNTHETIC_CACHED_LANES",
+  "lanes": 9,
+  "synthetic_only": true,
+  "started_at": "2026-10-22T17:33:54.410Z",
+  "candidates": [
+    {
+      "runs": 200,
+      "unroll": 1,
+      "source_sha256": "f38daca3ddfaaf14c33b48f8548cf0181f1a190ad2df367dbae269210e7cd44e",
+      "gas": [
+        1908327,
+        1908435
+      ],
+      "mean": 1908381,
+      "runtime_bytes": 1944,
+      "status": "PASS"
+    },
+    {
+      "runs": 200,
+      "unroll": 2,
+      "source_sha256": "4f3d7183bb494cfa89dfda542239b423b6e3eaa2ecfab946a7ba680844d7b87f",
+      "gas": [
+        2386407,
+        2386515
+      ],
+      "mean": 2386461,
+      "runtime_bytes": 2894,
+      "status": "PASS"
+    },
+    {
+      "runs": 200,
+      "unroll": 4,
+      "source_sha256": "fe8ac9bfaa9b4076482c4c10b9dc5c5cd2f65eb10cdd5516fae9fef74b1ea5c6",
+      "gas": [
+        2765487,
+        2765595
+      ],
+      "mean": 2765541,
+      "runtime_bytes": 4034,
+      "status": "PASS"
+    },
+    {
+      "runs": 10000,
+      "unroll": 1,
+      "source_sha256": "f38daca3ddfaaf14c33b48f8548cf0181f1a190ad2df367dbae269210e7cd44e",
+      "gas": [
+        1819488,
+        1819596
+      ],
+      "mean": 1819542,
+      "runtime_bytes": 2438,
+      "status": "PASS"
+    },
+    {
+      "runs": 10000,
+      "unroll": 2,
+      "source_sha256": "4f3d7183bb494cfa89dfda542239b423b6e3eaa2ecfab946a7ba680844d7b87f",
+      "gas": [
+        1730208,
+        1730316
+      ],
+      "mean": 1730262,
+      "runtime_bytes": 3820,
+      "status": "PASS"
+    },
+    {
+      "runs": 10000,
+      "unroll": 4,
+      "source_sha256": "fe8ac9bfaa9b4076482c4c10b9dc5c5cd2f65eb10cdd5516fae9fef74b1ea5c6",
+      "gas": [
+        1732728,
+        1732836
+      ],
+      "mean": 1732782,
+      "runtime_bytes": 6330,
+      "status": "PASS"
+    },
+    {
+      "runs": 100000,
+      "unroll": 1,
+      "source_sha256": "f38daca3ddfaaf14c33b48f8548cf0181f1a190ad2df367dbae269210e7cd44e",
+      "gas": [
+        1819488,
+        1819596
+      ],
+      "mean": 1819542,
+      "runtime_bytes": 2438,
+      "status": "PASS"
+    },
+    {
+      "runs": 100000,
+      "unroll": 2,
+      "source_sha256": "4f3d7183bb494cfa89dfda542239b423b6e3eaa2ecfab946a7ba680844d7b87f",
+      "gas": [
+        1730208,
+        1730316
+      ],
+      "mean": 1730262,
+      "runtime_bytes": 3820,
+      "status": "PASS"
+    },
+    {
+      "runs": 100000,
+      "unroll": 4,
+      "source_sha256": "fe8ac9bfaa9b4076482c4c10b9dc5c5cd2f65eb10cdd5516fae9fef74b1ea5c6",
+      "gas": [
+        1732728,
+        1732836
+      ],
+      "mean": 1732782,
+      "runtime_bytes": 6330,
+      "status": "PASS"
+    }
+  ],
+  "validation": {
+    "cases": 18287,
+    "invalid_rejections": 6,
+    "exhaustive_byte_scale_cases": 16640,
+    "fuzz_cases": 1579
+  },
+  "limits": [
+    "Only synthetic exact-Q32 9-row tiles; no GPT-OSS full-model or mainnet claim.",
+    "Supported domain: 9 rows, <=160 groups, int16 inputs, encoded scale [96,160].",
+    "Predeployed weight code is immutable local data; one-time deployment excluded from per-call gas and recorded separately."
+  ],
+  "winner": {
+    "runs": 10000,
+    "unroll": 2,
+    "source_sha256": "4f3d7183bb494cfa89dfda542239b423b6e3eaa2ecfab946a7ba680844d7b87f",
+    "gas": [
+      1730208,
+      1730316
+    ],
+    "mean": 1730262,
+    "runtime_bytes": 3820,
+    "status": "PASS"
+  },
+  "source_sha256": "4f3d7183bb494cfa89dfda542239b423b6e3eaa2ecfab946a7ba680844d7b87f",
+  "benchmarks": [
+    {
+      "kind": "dense",
+      "rows": 9,
+      "groups": 90,
+      "tile_calldata": {
+        "gas": 1730208,
+        "calldata_bytes": 19684
+      },
+      "tile_code": {
+        "gas": 1521625,
+        "calldata_bytes": 5924
+      },
+      "store": {
+        "address": "0xA23D94766ca031675A41Bd830BD805060a17cC05",
+        "hash": "0xf885c7ad191125f50a2df7269da914ad5ef9d542f3ca259ca9ef8dcc28ecbf85",
+        "deployment_gas": 3030872,
+        "runtime_bytes": 13771
+      },
+      "amortization_calls_vs_tile_calldata": 15
+    },
+    {
+      "kind": "sparse",
+      "rows": 9,
+      "groups": 90,
+      "tile_calldata": {
+        "gas": 1652964,
+        "calldata_bytes": 19684
+      },
+      "tile_code": {
+        "gas": 1521613,
+        "calldata_bytes": 5924
+      },
+      "store": {
+        "address": "0x3Aef2BD03ab4aF560a086dF796f4BD04D2f0e484",
+        "hash": "0xe448cd17e057002fdc65549c395d4be5ba1a58849b35c622936ad09e790978e7",
+        "deployment_gas": 2953628,
+        "runtime_bytes": 13771
+      },
+      "amortization_calls_vs_tile_calldata": 23
+    },
+    {
+      "kind": "zeroInputs",
+      "rows": 9,
+      "groups": 90,
+      "tile_calldata": {
+        "gas": 1661340,
+        "calldata_bytes": 19684
+      },
+      "tile_code": {
+        "gas": 1452757,
+        "calldata_bytes": 5924
+      },
+      "store": {
+        "address": "0xe2f04bd65549abFbF3E0CfdE446d292d20eAF426",
+        "hash": "0xf885c7ad191125f50a2df7269da914ad5ef9d542f3ca259ca9ef8dcc28ecbf85",
+        "deployment_gas": 3030872,
+        "runtime_bytes": 13771
+      },
+      "amortization_calls_vs_tile_calldata": 15
+    },
+    {
+      "kind": "zeroWeights",
+      "rows": 9,
+      "groups": 90,
+      "tile_calldata": {
+        "gas": 1730892,
+        "calldata_bytes": 19684
+      },
+      "tile_code": {
+        "gas": 1521613,
+        "calldata_bytes": 5924
+      },
+      "store": {
+        "address": "0xE8F2115c255A62b6594b91D61EcF74Bd68F2d472",
+        "hash": "0xe1333fb522726ad327bf2ece852e009bbeaf166bccd45e90ddfb48a93c621137",
+        "deployment_gas": 3031556,
+        "runtime_bytes": 13771
+      },
+      "amortization_calls_vs_tile_calldata": 15
+    },
+    {
+      "kind": "positiveBound",
+      "rows": 9,
+      "groups": 90,
+      "tile_calldata": {
+        "gas": 1731144,
+        "calldata_bytes": 19684
+      },
+      "tile_code": {
+        "gas": 1521865,
+        "calldata_bytes": 5924
+      },
+      "store": {
+        "address": "0x004C2d949524Fe08ce35E0bc7f4a57612fB04Eb8",
+        "hash": "0x1d71c5acc315705d0d88a68db5c01ea0dbf14a33b1e3b7b60961e1adf2502c53",
+        "deployment_gas": 3031556,
+        "runtime_bytes": 13771
+      },
+      "amortization_calls_vs_tile_calldata": 15
+    },
+    {
+      "kind": "negativeBound",
+      "rows": 9,
+      "groups": 90,
+      "tile_calldata": {
+        "gas": 1696584,
+        "calldata_bytes": 19684
+      },
+      "tile_code": {
+        "gas": 1487317,
+        "calldata_bytes": 5924
+      },
+      "store": {
+        "address": "0x225383Bb7A2Dde369fa263BE1feecf9936Be1eF0",
+        "hash": "0x1d71c5acc315705d0d88a68db5c01ea0dbf14a33b1e3b7b60961e1adf2502c53",
+        "deployment_gas": 3031556,
+        "runtime_bytes": 13771
+      },
+      "amortization_calls_vs_tile_calldata": 15
+    }
+  ],
+  "finished_at": "2026-10-22T17:57:48.230Z"
+}
