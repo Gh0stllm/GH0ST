@@ -140,7 +140,7 @@ for(const kind of ['dense','sparse','zeroInputs','zeroWeights','positiveBound','
  let previous=0;for(const item of c.items)previous+=(await send(old.packed,operands(item))).gas;
  const calldata=await send(best.contract.tile,[hexlify(c.frames),c.x]),code=await send(best.contract.tileCode,args);
  const entry={kind,rows:lanes,groups:90,previous_scalar_transactions_gas:previous,tile_calldata:calldata,tile_code:code,store,
- reduction_vs_previous_eight_transactions_percent:100*(previous-code.gas)/previous,
+ reduction_vs_previous_scalar_transactions_percent:100*(previous-code.gas)/previous,
  amortization_calls_vs_tile_calldata:calldata.gas>code.gas?Math.ceil(store.deployment_gas/(calldata.gas-code.gas)):null};
  report.benchmarks.push(entry);save();console.log(JSON.stringify({stage:'lane_bench',...entry}));
 }
