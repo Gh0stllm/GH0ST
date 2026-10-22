@@ -13,6 +13,36 @@ text are not supplied by an indexer, external model, API, oracle or transaction
 caller. Public RPC is a transport for reading the contracts and submitting
 transactions; it is not an analytics source.
 
+## Using the website
+
+Paste a Robinhood Chain address and select **Analyze**. The website searches the
+on-chain registry, bounded to 256 subjects, for a matching source contract or
+registered watched account. Reading saved observations and reports requires no
+wallet connection and submits no paid transaction. If an address matches more
+than one monitor, choose the monitor chip for the supply, watched balance or
+pool observation you want to view.
+
+For example, the GH0ST token address matches its supply monitor and its
+registered deployer-balance monitor. The deployer address matches that watched
+GH0ST balance; it does not request an inventory of every asset in the account.
+The Raphael pool address matches its reserve and LP-supply monitor.
+
+The result shows a stored report, its observation time and comparison window.
+To record fresh data, open **Update**, connect a Robinhood Chain wallet, and
+review the current gas estimate and fee limit before confirming. The default
+update is one `captureAndAnalyze(subjectId, 1)` transaction: it captures a new
+sample and compares it with the preceding retained sample. Existing sampling
+spacing, freshness, reader and duplicate-report checks still apply.
+
+An unregistered address clears the previous result and is labelled as having no
+registered S0UL monitor. Only the registry owner can add compatible ERC-20
+supply, token/account-balance or V2-style pool monitors. Pasting an arbitrary
+address does not run a general contract audit or generate a safety verdict.
+
+The original language-model interface, technical details and receipt proofs
+remain available in expandable sections. Address lookup changes the frontend
+workflow; it adds no new on-chain reader or analysis capability.
+
 ## Mainnet deployment and launch evidence
 
 The deployment completed on **2026-10-22**. Exact transaction receipts, deployed
