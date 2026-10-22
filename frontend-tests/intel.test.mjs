@@ -66,7 +66,7 @@ function fixture(options = {}) {
   function registered(id) { const s = registry()[Number(id) - 1]; if (!s) throw Error('Unknown registered subject'); return s; }
   function frame(id = 1n) {
     const subject = registered(id), kind = subject.kind, seq = subject.sequence ?? env.sequence;
-    const observedAt = BigInt(subject.timestamp ?? 1800000000), age = BigInt(env.blockTimestamp ?? 1800000000) - observedAt;
+    const observedAt = BigInt(subject.timestamp ?? 1799999940), age = BigInt(env.blockTimestamp ?? 1800000000) - observedAt;
     const fresh = age >= 0n && age <= 60n, values = kind === 2 ? [100_000n,1_000_000n,0n,0n] : kind === 3 ? [1000n,2000n,10000n,observedAt] : [1_000_000n,0n,0n,0n];
     const current = [seq, observedAt, 100n, BLOCK, values],
       previous = [seq > 1n ? seq - 1n : 0n, seq > 1n ? observedAt - 300n : 0n, 99n, seq > 1n ? BLOCK : ZERO, [seq > 1n ? 900_000n : 0n,0n,0n,0n]],
@@ -85,15 +85,15 @@ function fixture(options = {}) {
     async getTransaction(hash) { return env.transactions.get(hash) ?? null; },
     async getTransactionReceipt(hash) { return env.hideReceipts ? null : env.receipts.get(hash) ?? null; },
   };
-  const estimateFunction = method => ({ estimateGas: async () => { env.calls.push('estimate:' + method); await env.onEstimate?.(); return env.gasEstimate; } });
+  const estimateFunction = method => ({ estimateGas: async (...args) => { env.calls.push('estimate:' + method); env.estimateRequests ??= []; env.estimateRequests.push({ method, args }); await env.onEstimate?.(); if (env.estimateError) throw env.estimateError; return env.gasEstimate; } });
   const contracts = {
     observations: { interface: obsInterface, getFunction: estimateFunction,
-      async owner() { return OWNER; }, async subjectCount() { return env.subjectCount ?? BigInt(registry().length); },
+      async owner() { return OWNER; }, async minSpacing() { return env.minSpacing ?? 60n; }, async subjectCount() { return env.subjectCount ?? BigInt(registry().length); },
       async subject(id) {
         env.calls.push('registry:subject:' + id); if (BigInt(id) === BigInt(env.failSubjectAt ?? 0)) throw Error('Registry RPC read failed');
         const s = registered(id); return encodedResult(obsInterface, 'subject', [[s.kind,s.enabled ?? true,s.target,s.account ?? Ethers.ZeroAddress,Ethers.keccak256('0x6004'),s.target,Ethers.ZeroAddress,s.sequence ?? env.sequence,0]]);
       },
-      async features(id) { return frame(id); }, snapshot: { staticCall: async () => [0, env.sequence + 1n] },
+      async features(id) { return frame(id); }, snapshot: { staticCall: async () => { if (env.snapshotError) throw env.snapshotError; return [env.snapshotStatus ?? 0, env.sequence + 1n]; } },
     },
     reports: { interface: reportInterface, getFunction: estimateFunction,
       async observations() { return env.reportObservations ?? OBS; }, async classifier() { return env.reportClassifier ?? MODEL; },
@@ -150,7 +150,7 @@ function fixture(options = {}) {
   const eth = { ...Ethers, BrowserProvider: class { async getBalance() { return env.balance; } async getSigner() { return signer; } destroy() {} } };
   function surface(config = deployment) {
     const d = dom(), mounted = mountS0ULIntel(d.root, { deployment: config, ethers: eth, provider, contracts,
-      ethereum, storage, now: () => env.now, setInterval: () => 1, clearInterval() {} });
+      ethereum: options.noWallet ? null : ethereum, storage, now: () => env.now, setInterval: () => 1, clearInterval() {} });
     return { ...d, mounted };
   }
   const primary = surface(options.noDeployment ? null : deployment);
@@ -431,4 +431,76 @@ test('address form and tracked examples perform only public reads and never regi
   assert.equal(f.mounted.state.current.id, 2n); assert.equal(f.get('address').value, OTHER);
   assert.equal(f.env.calls.some(call => call.startsWith('wallet:') || call.startsWith('estimate:')), false);
   assert.equal(f.env.saved.size, 0); assert.equal(f.env.sends.length, 0);
+});
+
+test('gas cost is available without a browser wallet and the public preview grants no spending approval', async t => {
+  const f = fixture({ noWallet: true }); t.after(() => f.mounted.destroy());
+  await f.mounted.ready; await f.mounted.analyze(TARGET);
+  assert.equal(f.get('estimate').disabled, false, 'reading a tracked address must enable the cost check before wallet connection');
+  await f.get('estimate').fire('click');
+  const q = f.mounted.state.quote;
+  assert.ok(q, f.get('notice').textContent); assert.equal(q.kind, 'preview'); assert.equal(q.preview, true);
+  assert.equal(q.owner, null); assert.equal(q.chainId, 4663);
+  assert.ok(q.estimatedWei > 0n); assert.equal(q.reserveWei, q.gasLimit * q.feeCeilingWei);
+  assert.equal(f.get('fee').textContent, `${formatIntelETH(q.estimatedWei)} ETH`);
+  const request = f.env.estimateRequests.at(-1);
+  assert.equal(request.method, 'captureAndAnalyze');
+  assert.equal(request.args.at(-1).from.toLowerCase(), q.simulationFrom.toLowerCase());
+  assert.notEqual(q.simulationFrom.toLowerCase(), OWNER.toLowerCase(), 'public simulations must not impersonate the privileged registry owner');
+  assert.equal(intelQuoteMatches(q, { address: OWNER, chainId: 4663, action: q.action, contextHash: q.contextHash, now: f.env.now }), false);
+  assert.equal(f.get('consent').disabled, true); assert.equal(f.get('send').disabled, true);
+  f.get('consent').checked = true; await f.get('consent').fire('change'); await f.mounted.send();
+  assert.equal(f.env.calls.some(call => call.startsWith('wallet:')), false);
+  assert.equal(f.env.saved.size, 0); assert.equal(f.env.sends.length, 0);
+});
+
+test('connecting after a public cost preview recomputes the quote for the real wallet and resets consent', async t => {
+  const f = fixture(); t.after(() => f.mounted.destroy()); await f.mounted.ready; await f.mounted.analyze(TARGET);
+  await f.mounted.estimate(); const preview = f.mounted.state.quote;
+  assert.equal(preview?.kind, 'preview'); assert.equal(f.env.calls.some(call => call.startsWith('wallet:')), false);
+  f.get('consent').checked = true;
+  f.env.gasEstimate = 700_000n; f.env.gasPrice = 1_100_000_000n;
+  await f.mounted.connect(); const q = f.mounted.state.quote;
+  assert.ok(q, f.get('notice').textContent); assert.equal(q.kind, 'wallet'); assert.equal(q.preview, false);
+  assert.equal(q.owner, OWNER); assert.equal(q.gasEstimate, 700_000n); assert.equal(q.gasPriceWei, 1_100_000_000n);
+  assert.notEqual(q.estimatedWei, preview.estimatedWei); assert.equal(f.env.estimateRequests.at(-1).args.at(-1).from, OWNER);
+  assert.equal(f.get('consent').checked, false); assert.equal(f.get('consent').disabled, false); assert.equal(f.get('send').disabled, true);
+  await f.mounted.send(); assert.equal(f.env.sends.length, 0); assert.equal(f.env.saved.size, 0);
+  const rejected = fixture(); t.after(() => rejected.mounted.destroy());
+  await rejected.mounted.ready; await rejected.mounted.analyze(TARGET); await rejected.mounted.estimate();
+  assert.equal(rejected.mounted.state.quote?.kind, 'preview'); rejected.get('consent').checked = true;
+  rejected.env.estimateError = Error('Network error during wallet quote'); await rejected.mounted.connect();
+  assert.equal(rejected.mounted.state.quote, null, 'a failed wallet requote must not retain the public preview');
+  assert.equal(rejected.get('consent').checked, false); assert.equal(rejected.get('send').disabled, true);
+  assert.equal(rejected.env.saved.size, 0); assert.equal(rejected.env.sends.length, 0);
+});
+
+test('failed cost checks clear a previous preview and explain sampling or simulation failures without a wallet prompt', async () => {
+  for (const failure of ['spacing','reader','rpc','custom-spacing','duplicate']) {
+    const f = fixture(); await f.mounted.ready; await f.mounted.analyze(TARGET); await f.mounted.estimate();
+    assert.equal(f.mounted.state.quote?.kind, 'preview');
+    if (failure === 'spacing') { f.env.subjects = [{ kind: 1, target: TARGET, timestamp: 1799999990 }]; f.env.snapshotStatus = 7; }
+    if (failure === 'reader') f.env.snapshotStatus = 2;
+    if (failure === 'rpc') f.env.estimateError = Error('Network error while fetching eth_estimateGas');
+    if (failure === 'custom-spacing' || failure === 'duplicate') f.env.estimateError = Object.assign(Error('execution reverted (unknown custom error)'), {
+      code: 'CALL_EXCEPTION', info: { error: { data: reportInterface.encodeErrorResult(failure === 'duplicate' ? 'DuplicateReport' : 'InvalidObservation', failure === 'duplicate' ? [] : [7]) } },
+    });
+    const estimatesBefore = f.env.estimateRequests.length;
+    await f.mounted.estimate();
+    assert.equal(f.mounted.state.quote, null); assert.equal(f.get('fee').textContent, '—');
+    assert.equal(f.get('send').disabled, true); assert.equal(f.get('consent').checked, false);
+    const visible = [f.get('notice').textContent, f.get('cost-status')?.textContent].join(' ');
+    assert.match(visible, failure === 'spacing' || failure === 'custom-spacing' ? /wait|seconds|sampling|interval/i : failure === 'reader' ? /code|reader|changed|source/i : failure === 'duplicate' ? /already.*report|fresh/i : /network|rpc|retry|gas.*unavailable/i);
+    if (failure === 'spacing' || failure === 'reader') assert.equal(f.env.estimateRequests.length, estimatesBefore, 'known reader/spacing failures stop before gas simulation');
+    assert.equal(f.env.calls.some(call => call.startsWith('wallet:')), false); assert.equal(f.env.sends.length, 0); assert.equal(f.env.saved.size, 0);
+    f.mounted.destroy();
+  }
+  for (const event of ['accountsChanged','chainChanged']) {
+    const f = fixture(); await f.mounted.ready; await f.mounted.analyze(TARGET);
+    f.env.onEstimate = async () => f.ethereum.emit(event);
+    await f.mounted.estimate();
+    assert.equal(f.mounted.state.quote, null, 'an in-flight preview must not restore a quote after wallet identity invalidation');
+    assert.equal(f.get('consent').checked, false); assert.equal(f.get('send').disabled, true);
+    assert.equal(f.env.saved.size, 0); assert.equal(f.env.sends.length, 0); f.mounted.destroy();
+  }
 });
