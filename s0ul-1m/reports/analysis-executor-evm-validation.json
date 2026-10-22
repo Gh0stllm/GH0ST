@@ -1,0 +1,104 @@
+{
+  "format": "s0ul-analysis-executor-local-mock-validation-v1",
+  "verifiedUtc": "2026-10-22T10:36:54.895Z",
+  "result": "PASS",
+  "scope": "Funded executor infrastructure only, in-process Ganache31339/shanghai. Engine and facts are deliberately mutable mocks; one integration case uses the real strict word codec.",
+  "mockFixtureOnly": true,
+  "realModelInferenceProof": false,
+  "trainedModelQualityEvaluated": false,
+  "publicRpcCalls": 0,
+  "publicTransactions": 0,
+  "compiler": "0.8.30+commit.73712a01.Emscripten.clang",
+  "optimizerRuns": 200,
+  "viaIR": true,
+  "sourceSha256": {
+    "contracts/analysis/S0ULAnalysisExecutor.sol": "ac3868be85281431c4d9daf1579697f871ff1f7976d0b950579bf460ee2dd2fb",
+    "contracts/analysis/test/S0ULAnalysisMocks.sol": "e9bac5619bde4776ed137aa605d6561729b3cb3b3b5a4dd95a3066373c563ca3",
+    "contracts/analysis/S0ULAnalysisCodec.sol": "3ca0597d89ea9f586125b26369934f7f37dda3f05c048ce078530c63d0e57d6b"
+  },
+  "runtimeBytes": 14882,
+  "tests": {
+    "total": 18,
+    "passed": 18,
+    "failed": 0
+  },
+  "checks": [
+    {
+      "name": "deployment pins dependency code, identities, schema and tokenizer domain",
+      "passed": true
+    },
+    {
+      "name": "opening binds the caller, exact on-chain facts and canonical prompt to an executor-owned engine request",
+      "passed": true
+    },
+    {
+      "name": "any no-code address including zero is accepted, while a changed expected target hash fails closed",
+      "passed": true
+    },
+    {
+      "name": "input bounds and bad adapter data cannot open an injected or malformed model prompt",
+      "passed": true
+    },
+    {
+      "name": "engine begin must produce a live request owned by the executor",
+      "passed": true
+    },
+    {
+      "name": "bounded batching advances real engine calls and preserves inspectable Select boundaries",
+      "passed": true
+    },
+    {
+      "name": "no engine progress or failed engine calls earn no reward and roll back all effects",
+      "passed": true
+    },
+    {
+      "name": "fee ceiling and remaining-budget reserve pause work without exceeding the deposit",
+      "passed": true
+    },
+    {
+      "name": "only the owner can top up and cancel; expiry prevents further charged inference",
+      "passed": true
+    },
+    {
+      "name": "final report decodes only actual terminal engine tokens and settles exactly once",
+      "passed": true
+    },
+    {
+      "name": "bad EOS, special or out-of-range tokens are rejected without a template fallback",
+      "passed": true
+    },
+    {
+      "name": "the real strict word codec receives terminal EOS and decodes exact generated engine tokens",
+      "passed": true
+    },
+    {
+      "name": "codec failure, empty output and oversized output never publish substitute analysis",
+      "passed": true
+    },
+    {
+      "name": "unused completed budget is credited once to its owner and never to a caller-selected recipient",
+      "passed": true
+    },
+    {
+      "name": "worker rewards are pull credits; rejected withdrawals preserve credits and reentrancy cannot double-spend",
+      "passed": true
+    },
+    {
+      "name": "an engine callback cannot enter the executor again or claim unearned work",
+      "passed": true
+    },
+    {
+      "name": "dependency bytecode and identity changes fail closed before charging further work",
+      "passed": true
+    },
+    {
+      "name": "owner cancellation refunds the exact unspent balance even after engine code has changed",
+      "passed": true
+    }
+  ],
+  "gas": {
+    "open": "575973",
+    "firstAdvance": "236124",
+    "finalize": "244876"
+  }
+}
