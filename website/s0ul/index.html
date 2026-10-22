@@ -12,9 +12,10 @@
   <link rel="stylesheet" href="/s0ul-agent.css">
   <link rel="stylesheet" href="/s0ul-page.css">
   <link rel="stylesheet" href="/s0ul-intel.css">
+  <link rel="stylesheet" href="/s0ul-analysis.css">
 </head>
 <body class="soul-page">
-  <a class="soul-skip" href="#intel">Skip to address analysis</a>
+  <a class="soul-skip" href="#report">Skip to observation report</a>
 
   <header class="soul-header">
     <div class="soul-wrap soul-navigation">
@@ -24,7 +25,8 @@
       </a>
       <nav class="soul-nav" aria-label="Main navigation">
         <a href="/s0ul/" aria-current="page">S0UL<span class="soul-nav-dot" aria-hidden="true"></span></a>
-        <a href="#intel">Analyze</a>
+        <a href="#report">Report</a>
+        <a href="#intel">Inspect</a>
         <a href="#proof">Proof <span aria-hidden="true">↗</span></a>
       </nav>
     </div>
@@ -36,7 +38,7 @@
         <div class="soul-introduction">
           <p class="soul-eyebrow">S0UL / On-chain intelligence</p>
           <h1 id="soul-hello">HELLO,<br><span class="soul-dot-type">WORLD.</span></h1>
-          <p class="soul-description">Paste an address. Read its live on-chain facts.</p>
+          <p class="soul-description">Generate an on-chain observation report, or inspect an address for free.</p>
         </div>
 
         <figure class="soul-portrait">
@@ -54,6 +56,11 @@
         </figure>
       </div>
 
+    </section>
+
+    <section id="report" class="soul-terminal soul-wrap" aria-label="S0UL on-chain observation report">
+      <div id="s0ul-analysis-root"><p class="soul-loading">Opening the reporting model…</p></div>
+      <noscript><p class="soul-noscript">Enable JavaScript to review reporting gas, fund a job and follow its on-chain generation. The limited model reads 14 signals; it is not a security audit.</p></noscript>
     </section>
 
     <section id="intel" class="soul-terminal soul-wrap" aria-label="S0UL on-chain intelligence">
@@ -89,6 +96,7 @@
   </footer>
 
   <script type="module" src="/s0ul-character.mjs"></script>
+  <script type="module" src="/s0ul-analysis.mjs"></script>
   <script type="module" src="/s0ul-ui.mjs"></script>
   <script type="module" src="/s0ul-intel.mjs"></script>
 </body>
