@@ -25,6 +25,23 @@ learned arbitrary contract auditing. Structural inspection and numeric history
 comparison are distinct operations. Existing V1 records and contracts remain
 available as historical evidence.
 
+## Live deployment
+
+Robinhood Chain mainnet, chain ID **4663**:
+
+| Contract | Address |
+| --- | --- |
+| Universal reader | `0x5BE840518fb1Be0851f06d68ac0724fdC4e97768` |
+| Permissionless observations | `0x06911434d2E3162EE2432B14f3F04cd13ecDEcA9` |
+| New report instance | `0x4E80F0E9220984B7926E791bd29f1E499Cc8ac47` |
+| Existing numeric classifier | `0x9329833849A0938647217D1e42A1199d174Cf8c0` |
+
+The three deployment transactions succeeded using **6,196,387 gas** in total,
+with receipt fees of **0.00012417176358 ETH**. The enforced cumulative fee cap was
+0.0005 ETH. Creation input, constructor arguments, receipt identity and deployed
+runtime were checked by the deployment script before it emitted the browser
+configuration. No watches or reports were seeded during deployment.
+
 ## Immediate inspection
 
 Paste an address and choose **Analyze**. No wallet, registry entry or paid
@@ -43,7 +60,7 @@ that the contract exposes that function. Metadata and unreachable code can still
 contribute to structural counts. A larger runtime is explicitly marked as a
 partial scan; the full code size and code hash remain available.
 
-ERC165 probes use the standard 30,000-gas allowance and require canonical true for
+ERC165 probes use the [standard 30,000-gas allowance](https://eips.ethereum.org/EIPS/eip-165) and require canonical true for
 the standard identifier and canonical false for `0xffffffff`. Reported ERC721,
 ERC1155 and ERC2981 support is an interface claim made by the target contract.
 `owner()`, `paused()`, `implementation()` and `asset()` results are labelled as
