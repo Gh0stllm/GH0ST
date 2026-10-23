@@ -1,0 +1,398 @@
+{
+  "format": "s0ul-analysis-independent-release-review-v1",
+  "reviewedUtc": "2026-10-22T12:53:59.230999+00:00",
+  "reviewer": "analysis_facts_tests",
+  "result": "PASS_SINGLE_MANUAL_MAINNET_INPUT_SOURCE_ARITHMETIC_AND_ACCOUNTING_SERVICE_UNVERIFIED",
+  "method": "Independent source inspection and cross-component interface review; no mainnet RPC, signing, secret provisioning, GitHub or OAuth actions by this reviewer.",
+  "sourceSha256": {
+    "s0ul-1m/contracts/analysis/S0ULAnalysisExecutor.sol": "ac3868be85281431c4d9daf1579697f871ff1f7976d0b950579bf460ee2dd2fb",
+    "s0ul-1m/scripts/analysis-deploy.mjs": "f172b2ac0c4048033763c6fa323917bc3a6de74446cfd3ba98f3421a2082b6b0",
+    "s0ul-1m/scripts/analysis-worker.mjs": "d75ae1241d802e0957a77bdf8dd5d8b05f64e59ca4d1337960ce8f05aebc6a7e",
+    "website/s0ul-analysis-client.mjs": "65d441aec5b2bce1e57cb17875c1b568f45b4f367309c572f9877f10ed86d7f4",
+    "website/s0ul-analysis.mjs": "b26533ab08a8aec6f5d1db7a629b2dbadfbec0cb86b346c775806b8593318e6a",
+    "netlify/functions/lib/analysis-runtime.mjs": "6d0fb05e1d4e405fe5b05a647bffe9638ac9ebaa671b49a0267cd6835300c462",
+    "netlify/functions/s0ul-analysis.mjs": "fbf1e64f936106b4c4dcc6dfc2f0566297c306554bf6b3dfaed06ffb6e722080",
+    "netlify/functions/s0ul-analysis-background.mjs": "5066f2c81cf92077490cc081d8c8187c8683bc01edc36705a8d9d285afce224d",
+    "netlify/functions/s0ul-analysis-resume.mjs": "6399ba54b19903737e0f76883e1f828e655106a5632e8f00d8eb17279b45c852",
+    "netlify/database/migrations/20261022120000_s0ul_analysis_worker.sql": "b83b4809ee5691ecef40b695bb5764b65e6ce6cb0bf35f50cfe5599004631be1",
+    "s0ul-1m/scripts/analysis-mainnet-proof.mjs": "0c37d02d9e7ce7b3d132eec99bc37be3a262fe38c2b8338afcc23f95668ff014",
+    "s0ul-1m/test/analysis-mainnet-proof-policy.test.mjs": "ce7a4098cfd8271df7e895023168d36b93f15eb5299c75e78bae5941b945132c",
+    "netlify/s0ul-analysis-config.mjs": "46aab4f30ebe94820aa961a26cbd500f6fccada0072701eb102de6ccad2377ec",
+    "website/s0ul-analysis-deployment.json": "daf1c22d4bbcb3f0ddb4c97dd0434e072cc6fec894b385420655da5cee341587",
+    "s0ul-1m/scripts/analysis-mainnet-parity.py": "745e1a97664f5373c9ca30790255de47c29cf41f23e0ae1a2a5d76d3cc2765d0",
+    "s0ul-1m/test/analysis-mainnet-parity-test.py": "45eab4719d990bbf256e405a9fd38ffada680e1bc96494f95ccc5b3019841f55"
+  },
+  "assessment": [
+    "No identified path redirects user escrow or worker credits to a caller-selected recipient in the reviewed sources. This is a scoped review, not a formal audit.",
+    "The executor captures the target facts and prompt on-chain, pins engine/model/adapter/codec runtime identities, and accepts only actual engine output tokens through its strict codec.",
+    "Escrow is conserved as remaining job budget plus worker or owner pull credits. Cancellation and refund are owner-only. Refunding and withdrawing require separate owner transactions.",
+    "Browser quotes bind the serialized transaction request, owner, chain, target code hash, value, gas reserve and expiry; identity, balance, dependencies, fee and gas estimate are checked again before requesting a signature.",
+    "The worker uses one fixed chain, reviewed executor and frozen model. Its public trigger accepts only a job ID. It signs only continuation, finalization and withdrawal of its own credits; it supplies no model weights, features or reports.",
+    "Production nonce coordination uses a SQL signer-wide fenced lease and pending record. Signed bytes are privately journaled before broadcast and strongly read back. Recovery may broadcast exactly those original bytes at most twice total, never change nonce, destination, calldata, value or fees.",
+    "The deployment script checks frozen sources, model payloads and all shard runtime identities, predicted addresses, individual transaction identities and final dependency/configuration pins."
+  ],
+  "resolvedFindings": [
+    {
+      "id": "deployment-preflight",
+      "resolution": "Capped mode checks its total forecast and balance before signing. The separately selected market mode intentionally has no cumulative monetary cap or gas-price ceiling."
+    },
+    {
+      "id": "deployment-final-pins",
+      "resolution": "Final verification covers complete shard registry/payload, model configuration and all executor immutable getters. Exact codec runtime/source also pins its schema."
+    },
+    {
+      "id": "health-api-mismatch",
+      "resolution": "Health emits both ready and available; browser and UI consume the same service status."
+    },
+    {
+      "id": "duplicate-busy-stranding",
+      "resolution": "A duplicate worker invocation no longer persists an unscheduled busy status over the active job."
+    },
+    {
+      "id": "prepare-before-broadcast-crash",
+      "resolution": "Bounded exact-signed-byte recovery handles durable prepare followed by process loss without signing a replacement."
+    },
+    {
+      "id": "post-send-storage-message",
+      "resolution": "Browser preserves pending recovery state and the actual known hash when storage fails after wallet submission or receipt handling."
+    },
+    {
+      "id": "owner-recovery-dependency-failure",
+      "resolution": "Cancel/refund/withdraw verify the executor directly and remain available if an inference dependency fails identity verification."
+    },
+    {
+      "id": "estimated-budget-wording",
+      "resolution": "UI explicitly identifies the budget as an estimate that may pause and require a separately reviewed top-up."
+    },
+    {
+      "id": "manual-action-padded-fee-ceiling",
+      "resolution": "Manual advance/finalize submission gas-price padding is additionally clamped to the on-chain job fee ceiling."
+    },
+    {
+      "id": "canonical-retained-quote",
+      "resolution": "Accepted quotes decode the internal retained serialization and validate retained owner/chain/expiry; active caller serialization cannot replace transaction fields."
+    },
+    {
+      "id": "worker-health-model-binding",
+      "resolution": "Production health is bound to exact model ID in addition to chain and executor."
+    },
+    {
+      "id": "final-recovery-reserve",
+      "resolution": "Final opening affordability is checked after nonce lookup and preserves the separately quoted recovery fee reserve in the wallet."
+    },
+    {
+      "id": "unsent-storage-rollback",
+      "resolution": "A failed mandatory pre-send persistence rolls back the unsent intent and makes no wallet request. Post-send errors retain the exact known hash."
+    },
+    {
+      "id": "private-deployment-transport",
+      "resolution": "Approved private transport is stdin-only, restricted to the fixed HTTPS Alchemy origin/token path with no userinfo/query/fragment, redacted from errors and absent from persisted journal URLs. Broadcast remains single-attempt."
+    },
+    {
+      "id": "fresh-market-fee",
+      "resolution": "Market-mode simulation omits stale explicit price; signing refreshes the RPC market quote and applies fixed5% headroom. Affordability and canonical receipts use that exact signed price."
+    },
+    {
+      "id": "mandatory-separate-worker",
+      "resolution": "Runtime now requires a reviewed nonzero deployer and rejects the same worker address, without relying on optional metadata."
+    },
+    {
+      "id": "disabled-read-only-setup",
+      "resolution": "Setup GET reports ready:false/available:false and verifies deployment plus DB/Blob read access without loading the signing key, writing rows/objects or broadcasting."
+    },
+    {
+      "id": "nitro-effective-receipt-price",
+      "resolution": "Manual proof accepts positive actual Nitro receipt price up to the exact signed price; fee accounting uses the actual receipt price. Prior equality would incorrectly stop after a real successful spend."
+    },
+    {
+      "id": "manual-canonical-history",
+      "resolution": "Manual resume and final PASS revalidate exact signed raw bytes, transaction, canonical receipts and the cumulative fee sum. Canonical executor logs and signed method/job identify actual paid credit."
+    },
+    {
+      "id": "explicit-bounded-shortfall",
+      "resolution": "Core remains strict by default. Explicit policy is capped at5bps and floor-rounds actual fees, requires positive actual paid credit, rejects reverted/over-limit receipts, and checks newly settled and recovered receipts."
+    },
+    {
+      "id": "manual-lifetime-fee-budget",
+      "resolution": "Manual proof uses a0.5ETH lifetime actual-network-fee budget. Opening, advance/finalize, refund and withdrawal all count; the full next signed reserve must fit before each new send."
+    }
+  ],
+  "pendingBeforeUnattendedProductionClaim": [
+    "Explicit authorization and successful provisioning of a separate persistent mainnet worker signer; automatic approval review rejected the attempted new signer provisioning. No workaround was attempted by this reviewer.",
+    "Production worker key must remain limited to the Functions scope and production context, with the required reviewed nonzero deployer distinct from the pinned worker.",
+    "Validate actual SQL migration and signer lease/conflict/pending behavior, private immutable Blobs write/readback, published background invocation and scheduled resume across process loss. Disabled setup GET verifies read access only.",
+    "Keep worker.serviceVerified false and block normal one-approval funding while the production service is unverified."
+  ],
+  "scopeLimits": [
+    "Source review does not establish model accuracy, broad arbitrary-address reasoning or AIXBT-level capabilities. This is a finite14-signal observation model.",
+    "The calibrated deposit is an operational estimate, not a proof that every job finishes within that budget. Longer attention contexts and Nitro posting costs require explicit reserve and pause policies.",
+    "The worker lifetime fee policy and available float can halt continuation; capped reimbursement need not cover every actual network cost.",
+    "Market deployment mode remains finite51 planned zero-value creation operations but has no monetary ceiling below the signer balance and can leave a partial deployment if later fees or funding prevent progress.",
+    "Two exact-byte broadcast attempts do not guarantee delivery during a persistent RPC outage; ambiguous or nonce-conflicting operations stop for original-hash reconciliation.",
+    "The new analyst local integration used6416231501 worker gas, maximum transaction20209833. These are local EVM measurements and do not establish Nitro fees; earlier893million-gas results belong to a different full example.",
+    "This reviewer inspected local deployment/proof journals and source only. This reviewer did not independently query mainnet or submit transactions. The deployed state below is the saved journal observation at its recorded time.",
+    "A0.00025ETH bound follows for the sum of tolerated paid-receipt shortfalls under the0.5ETH fee budget. It is not an unconditional bound on realized loss: an over-limit or reverted transaction has already spent its actual fee before the sender detects it and pauses.",
+    "Owner opening/refund and worker withdrawals are operating fees within the same lifetime manual-proof fee budget. No profitability is claimed. The manual proof budget is separate from deployment fees.",
+    "The core shortfall checks apply to newly settled/recovered paid receipts. Manual proof additionally revalidates all historical policy from canonical logs on resume and before final PASS. Production crash/queue behavior still needs real platform validation.",
+    "One complete manual mainnet job,22tokens including EOS and11264 exact logits, establishes arithmetic/execution for that input only. It does not establish general address-analysis accuracy or autonomous production availability.",
+    "The owner was also the one-off manual worker. Escrow reimbursements and unused escrow returned to the same owner; these are not evidence that a separate production worker has been provisioned.",
+    "The actual stored response repeats 'Positive supply reported.' twice. Exact arithmetic and completed settlement do not establish report quality, audit ability, investment intelligence or AIXBT parity.",
+    "The frozen final mainnet proof retains all850 financial receipts, including owner refund/withdrawal. The missing owner-refund receipt caveat remains confined to the earlier separate local native integration."
+  ],
+  "testEvidence": [
+    {
+      "path": "s0ul-1m/reports/analysis-facts-evm-validation.json",
+      "sha256": "ec83acc216f5a2e0d6709c5b6ec34647e60436a5cee9e0eaf24bde983d8557a1",
+      "result": "18/18 PASS",
+      "provenance": "Executed by this reviewer before release review; unchanged source suite not rerun."
+    },
+    {
+      "path": "s0ul-1m/reports/analysis-worker-infrastructure-validation.json",
+      "sha256": "be28a79843499454850bbca517c62a831adbfe0a033ed0a18d413d376e285125",
+      "result": "13/13 PASS",
+      "provenance": "Author report and targeted reimbursement tests inspected; no unchanged test rerun by this reviewer. Source is newd75ae124 policy variant; earlier full real-model integration used1bad131 baseline."
+    },
+    {
+      "path": "s0ul-1m/reports/analysis-client-validation.json",
+      "sha256": "eac1dd4f7801751b30bdb7865ecb510f229213e22e7f85b6e6be611769e496ed",
+      "result": "40/40 PASS (27 client,13 UI)",
+      "provenance": "Final candidate source, test cases and author report inspected; unchanged tests not rerun by this reviewer. Uses deterministic RPC/wallet doubles and DOM."
+    },
+    {
+      "path": "s0ul-1m/reports/analysis-release-real-model-validation.json",
+      "sha256": "8373a11948085c68ea6c241270d4ca5411182c00def720b90eac78e97b36004a",
+      "result": "PASS;17 output tokens and8704 exact logits, escrow conserved, credits withdrawn",
+      "provenance": "Separate local real-EVM integration inspected. Uses baseline browser1cf42db and unchanged production worker1bad131. It does not exercise the final wallet-only delta bytes. Original owner refund receipt was not retained; opening and withdrawal receipts and all worker receipts are canonical, and owner gas excludes that missing receipt."
+    },
+    {
+      "path": "s0ul-1m/reports/analysis-mainnet-proof-policy-validation.json",
+      "sha256": "1c0ad6a3aca4a9ca7b564bd4198e844e1d930fdbbae36cca4b93302b04904577",
+      "result": "7/7 targeted regressions PASS",
+      "provenance": "Author report/tests inspected: actual196gas shortfall, floor/one-over boundary, zero credit/revert, lifetime operating fee budget, no credit offset, canonical reward and saved-method/job tamper checks. No reviewer network/signing or test rerun."
+    },
+    {
+      "path": "s0ul-1m/reports/analysis-mainnet-generation-proof.json",
+      "sha256": "ea789b24ec2d4724d22dc5559338bc03cce538c410358fa46ea4ad5082552473",
+      "result": "PASS_SINGLE_INPUT",
+      "provenance": "Complete manual mainnet proof read locally; root solely invoked chain transactions and its final850-receipt canonical audit. This reviewer independently checked all raw signatures and local accounting."
+    },
+    {
+      "path": "s0ul-1m/reports/analysis-mainnet-integer-parity.json",
+      "sha256": "cbca99389053b00019b57df35f3d2dca6b382a821a09abcb755cc2f0ef1812bb",
+      "result": "PASS_SINGLE_INPUT",
+      "provenance": "Final22decisions/11264logits exact; matches frozen proof/reference hashes. Read-only CPU outputs never drive chain execution."
+    },
+    {
+      "path": "s0ul-1m/reports/analysis-mainnet-final-validation.json",
+      "sha256": "d50fec13933dcef110d061edfeaf6b96f2907d7a14a905ba06c7fad31895c334",
+      "result": "PASS_SINGLE_INPUT",
+      "provenance": "Separate validating agent summary inspected; this reviewer independently recomputed local receipt/signature/fee/escrow/logit checks."
+    }
+  ],
+  "primaryOperationalSources": [
+    "https://docs.netlify.com/build/functions/background-functions/",
+    "https://docs.netlify.com/build/functions/scheduled-functions/",
+    "https://docs.netlify.com/build/data-and-storage/netlify-blobs/",
+    "https://github.com/netlify/primitives/issues/741"
+  ],
+  "postIntegrationDeltaReview": {
+    "baselineClientSha256": "1cf42db3c532ac896170186264785668e9d7be26ff865e82f964486bd796708b",
+    "finalClientSha256": "65d441aec5b2bce1e57cb17875c1b568f45b4f367309c572f9877f10ed86d7f4",
+    "guardsReviewed": [
+      "Canonical retained quote decoding",
+      "Exact worker model health binding",
+      "Late affordability includes recovery reserve",
+      "Mandatory unsent persistence rollback"
+    ],
+    "fullInferenceRepeatedForWalletOnlyDelta": false,
+    "focusedFinalClientAndUiSuite": "40/40 PASS reported and report inspected",
+    "newSourceReviewBlockerFound": false,
+    "workerPolicyChangedAfterBaseline": true,
+    "workerPolicySha256": "d75ae1241d802e0957a77bdf8dd5d8b05f64e59ca4d1337960ce8f05aebc6a7e",
+    "modelEngineFactsCodecExecutorChanged": false,
+    "focusedWorkerPolicyTests": "13/13 core recovery/policy and7/7 manual history policy author reports inspected."
+  },
+  "subsidyPolicyReview": {
+    "coreDefaultShortfallBps": 0,
+    "hardMaximumShortfallBps": 5,
+    "manualExplicitShortfallBps": 5,
+    "rounding": "floor(actualFeeWei*bps/10000)",
+    "paidReceiptConditions": "Only canonical successful advance/finalize with positive actual RewardCredited amount; each receipt is assessed independently and surplus credit never offsets another receipt loss.",
+    "newAndRecoveredReceiptsAssessed": true,
+    "manualHistoricalReceiptsRevalidated": true,
+    "manualLifetimeActualNetworkFeeBudgetWei": "500000000000000000",
+    "toleratedShortfallUpperBoundWei": "250000000000000",
+    "boundScope": "Sum of tolerated positive-credit paid shortfalls; over-limit/reverted already-spent fees remain separately recorded and stop progress.",
+    "ownerAndWithdrawalOperatingFeesCountTowardBudget": true,
+    "profitabilityClaimed": false,
+    "sameOwnerManualProofIsNotPersistentWorkerProvisioning": true
+  },
+  "savedMainnetStateObservation": {
+    "observedUtc": "2026-10-22T12:53:59.230999+00:00",
+    "reviewerUsedNetwork": false,
+    "deploymentJournal": {
+      "path": "s0ul-1m/deployments/robinhood-mainnet-analysis.json",
+      "sha256": "5a464c9842e51d1e56a8c10069579c4a69b1c894879c7cb3b4766eaa63915810",
+      "complete": true,
+      "chainId": 4663,
+      "modelId": "0xbbebbe2e6ff555505e97c8b674a03f9c1033438e9e73c16661c122b25b47e998",
+      "confirmedReceiptCount": 51,
+      "pending": null,
+      "actualDeploymentFeeWei": "4991091254046000",
+      "contracts": {
+        "reader": {
+          "address": "0x5BE840518fb1Be0851f06d68ac0724fdC4e97768",
+          "codeHash": "0xba82f9bdc1f259eec2310d536ebbfbf37a6e0a4ccfc9a782c7d7782b1b0adf81"
+        },
+        "model": {
+          "address": "0x922AdB3CD39A284813c7Ca74cFA944b0bd49Fe92",
+          "codeHash": "0x317c1718650c3c34ae028508b85454f8dc7b479ef6c97ce576e1fe692248ae82"
+        },
+        "engine": {
+          "address": "0x672549Ff0C5Be42Df2aA9853b9263463dB8DB796",
+          "codeHash": "0x8e57c9b9f076c28dbdc19bddc38ef585c127b526be37e8571e61217cffb699b4"
+        },
+        "adapter": {
+          "address": "0xBAa48125B0D55044EE495E18A0493CBAe233b0dC",
+          "codeHash": "0xfc722d10dde10f22ac52d34b1c2ee5f8fb3487a9297833c14db3cc2e02723338"
+        },
+        "codec": {
+          "address": "0xcBcd05D9FAb2F2cae0479aCE60D07Ec4Ae916BFC",
+          "codeHash": "0x047c5ea173f1687a34c0623cb11fca6335262ecea0be1cd5aae5b1cb5f32dd03"
+        },
+        "executor": {
+          "address": "0x150e7F441bF5218d00716aD3B25a72D6e22423B5",
+          "codeHash": "0x84dfbbfb1f3b228cb3d3945700e9d4e6aaaa087cb220cf2986ac8ca79d8db524"
+        }
+      }
+    },
+    "generationJournal": {
+      "path": "s0ul-1m/reports/analysis-mainnet-generation-proof.json",
+      "sha256": "ea789b24ec2d4724d22dc5559338bc03cce538c410358fa46ea4ad5082552473",
+      "result": "PASS",
+      "complete": true,
+      "jobId": "1",
+      "requestId": "1",
+      "status": {
+        "phase": 17,
+        "position": 36,
+        "layer": 3,
+        "row": 0,
+        "head": 0,
+        "generated": 22,
+        "done": true,
+        "cancelled": false,
+        "saturationCount": "0"
+      },
+      "response": "Runtime code observed. Native balance zero. Positive supply reported. Positive supply reported. Storage writes pattern observed. Safety and value remain unknown.",
+      "generatedTokenIds": [
+        82,
+        100,
+        119,
+        74,
+        95,
+        150,
+        80,
+        140,
+        129,
+        80,
+        140,
+        129,
+        86,
+        148,
+        123,
+        119,
+        83,
+        92,
+        143,
+        128,
+        141,
+        2
+      ],
+      "outputHash": "0x716cea6f8b4cea49cb82fe7270ce4440e695741ba0f5b6e3a60e645e0f0bcd08",
+      "receiptCount": 850,
+      "receiptAudit": {
+        "validatedAt": "2026-10-22T12:47:45.679Z",
+        "count": 850,
+        "anchorBlock": 95123103,
+        "anchorBlockHash": "0x930d80aced9a5008dad610dd3b9c387fb21efb5ff8076387b8a3f5178beff716",
+        "canonicalNetworkFeeWei": "152864521253250000"
+      },
+      "pending": null,
+      "completedAt": "2026-10-22T12:47:45.687Z"
+    },
+    "productionServiceVerified": false,
+    "publicCalibrationDeployedModelId": "0xbbebbe2e6ff555505e97c8b674a03f9c1033438e9e73c16661c122b25b47e998",
+    "localCalibrationSourceModelId": "0x21fc7af9e166caf31098a0f447029fbc44beee332408925f77f90c39742a0dd0",
+    "calibrationPayloadBinding": "b83416a49a7600136a9eb26c8d13b260ed4d4933ec0b1bff7fb5b6419579d901"
+  },
+  "independentFinalLocalVerification": {
+    "result": "PASS_LOCAL_INDEPENDENT_FINAL_REVIEW",
+    "validatedUtc": "2026-10-22T12:53:59.230999+00:00",
+    "method": "Read frozen public proof/parity/reference/deployment and all850 authorized durable raw signed transactions. Independently recover signer and verify transaction fields, integer fee sums, calldata bindings, escrow arithmetic, and each actual logit against reference. No chain calls or signing key access.",
+    "publicProofSha256": "ea789b24ec2d4724d22dc5559338bc03cce538c410358fa46ea4ad5082552473",
+    "paritySha256": "cbca99389053b00019b57df35f3d2dca6b382a821a09abcb755cc2f0ef1812bb",
+    "referenceSha256": "519e14dfb379eb0f65c0e566bbc296bb698fdced35c4dfe4bf4078732a41a24d",
+    "separateFinalValidationSha256": "d50fec13933dcef110d061edfeaf6b96f2907d7a14a905ba06c7fad31895c334",
+    "rawSignedTransactionsVerified": 850,
+    "rawSigningPrivateKeyLoaded": false,
+    "privateRpcCredentialLoaded": false,
+    "networkCalls": 0,
+    "submittedTransactions": 0,
+    "newSignatures": 0,
+    "allTransactionHashesUnique": true,
+    "allRawSignaturesRecoverReviewedOwner": true,
+    "allSignedChainIds": 4663,
+    "allSignedDestinations": "0x150e7F441bF5218d00716aD3B25a72D6e22423B5",
+    "allSignedTransactionTypes": 0,
+    "contiguousNonceRange": [
+      5241,
+      6090
+    ],
+    "methodCounts": {
+      "open": 1,
+      "advance": 752,
+      "withdraw": 95,
+      "finalize": 1,
+      "refundCompleted": 1
+    },
+    "signedMethodJobCalldataValueGasAndFeeCapsVerified": true,
+    "advanceRowsAlways128AndSteps1To4": true,
+    "allActualPricesPositiveAndAtMostSignedPrice": true,
+    "allGasUsedAtMostSignedGasLimit": true,
+    "allNextFullReservesFitManualFeeBudget": true,
+    "totalNetworkFeeWei": "152864521253250000",
+    "paidNetworkFeeWei": "152693929125014000",
+    "ownerAndWithdrawalOperatingFeeWei": "170592128236000",
+    "escrowFundedWei": "343670476257100000",
+    "paidRewardCreditedWei": "153346227163600000",
+    "ownerUnusedEscrowWei": "190324249093500000",
+    "escrowEqualsPaidCreditsPlusUnused": true,
+    "actualAndToleratedPaidShortfallWei": "3960768000",
+    "eachPaidReceiptFitsFloor5BpsPolicy": true,
+    "reportedFinalOwnerCreditWei": "0",
+    "reportedFinalJobRemainingWei": "0",
+    "reportedFinalExecutorBalanceWei": "0",
+    "balanceEvidenceScope": "Final balances and canonical block inclusion are observations recorded by the root-invoked RPC proof runner and its final850-receipt audit; this reviewer verified their local binding/arithmetic and raw signatures without independently querying the chain.",
+    "privateAndPublicReceiptCountsAndFeeTotalsMatch": true,
+    "durableJournalPending": null,
+    "exclusiveSignerLockReleased": true,
+    "all22CapturedRowsExactlyEqualIndependentReference": true,
+    "actualLogitsIndependentlyCompared": 11264,
+    "actualOutputTokensAndStoredTextMatchReference": true,
+    "totalReceiptGas": 7611420991,
+    "paidReceiptGas": 7602918591,
+    "maxSingleReceiptGas": 20200742,
+    "operationalCap": 31000000,
+    "actualResponse": "Runtime code observed. Native balance zero. Positive supply reported. Positive supply reported. Storage writes pattern observed. Safety and value remain unknown.",
+    "positiveSupplyClauseOccurrences": 2,
+    "manualSameOwnerAndWorker": true,
+    "productionPersistentWorkerDisabledAndUnverified": true
+  },
+  "finalArtifactHashes": {
+    "s0ul-1m/reports/analysis-mainnet-generation-proof.json": "ea789b24ec2d4724d22dc5559338bc03cce538c410358fa46ea4ad5082552473",
+    "s0ul-1m/reports/analysis-mainnet-integer-parity.json": "cbca99389053b00019b57df35f3d2dca6b382a821a09abcb755cc2f0ef1812bb",
+    "s0ul-1m/reports/analysis-mainnet-integer-reference.json": "519e14dfb379eb0f65c0e566bbc296bb698fdced35c4dfe4bf4078732a41a24d",
+    "s0ul-1m/reports/analysis-mainnet-final-validation.json": "d50fec13933dcef110d061edfeaf6b96f2907d7a14a905ba06c7fad31895c334"
+  }
+}

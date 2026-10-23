@@ -1,0 +1,133 @@
+{
+  "format": "s0ul-analysis-mainnet-final-validation-v1",
+  "result": "PASS_SINGLE_INPUT_ARITHMETIC_AND_ACCOUNTING",
+  "complete": true,
+  "validatedAt": "2026-10-22T12:48:49.047228+00:00",
+  "chainId": 4663,
+  "jobId": "1",
+  "requestId": "1",
+  "target": "0x2eb2849cDE7957b86d0dFD4B59e450a9F9D15559",
+  "executor": "0x150e7F441bF5218d00716aD3B25a72D6e22423B5",
+  "modelId": "0xbbebbe2e6ff555505e97c8b674a03f9c1033438e9e73c16661c122b25b47e998",
+  "checkpoint": "0x9cf0b5ce17109bda877f21ac08731cd1897bf6d160b4b690de809c750e960716",
+  "payloadSha256": "b83416a49a7600136a9eb26c8d13b260ed4d4933ec0b1bff7fb5b6419579d901",
+  "evidence": {
+    "mainnetProofPath": "s0ul-1m/reports/analysis-mainnet-generation-proof.json",
+    "mainnetProofSha256": "ea789b24ec2d4724d22dc5559338bc03cce538c410358fa46ea4ad5082552473",
+    "independentParityPath": "s0ul-1m/reports/analysis-mainnet-integer-parity.json",
+    "independentParitySha256": "cbca99389053b00019b57df35f3d2dca6b382a821a09abcb755cc2f0ef1812bb",
+    "independentReferencePath": "s0ul-1m/reports/analysis-mainnet-integer-reference.json",
+    "independentReferenceSha256": "519e14dfb379eb0f65c0e566bbc296bb698fdced35c4dfe4bf4078732a41a24d"
+  },
+  "canonicalEvidence": {
+    "receiptCount": 850,
+    "methodCounts": {
+      "open": 1,
+      "advance": 752,
+      "withdraw": 95,
+      "finalize": 1,
+      "refundCompleted": 1
+    },
+    "allConfirmed": true,
+    "allHashesUnique": true,
+    "canonicalAudit": {
+      "validatedAt": "2026-10-22T12:47:45.679Z",
+      "count": 850,
+      "anchorBlock": 95123103,
+      "anchorBlockHash": "0x930d80aced9a5008dad610dd3b9c387fb21efb5ff8076387b8a3f5178beff716",
+      "canonicalNetworkFeeWei": "152864521253250000"
+    },
+    "pending": null,
+    "replayedExactHashReceipts": [],
+    "signerNonceRange": [
+      5241,
+      6090
+    ],
+    "signerNoncesContiguous": true
+  },
+  "gas": {
+    "totalReceiptGas": 7611420991,
+    "paidAdvanceAndFinalizeGas": 7602918591,
+    "advanceGas": 7602389764,
+    "maxSingleReceiptGas": 20200742,
+    "operationalTxCap": 31000000
+  },
+  "accounting": {
+    "totalFundedWei": "343670476257100000",
+    "totalWorkerReimbursementWei": "153346227163600000",
+    "ownerUnusedEscrowWei": "190324249093500000",
+    "allThisOwnerCreditsWithdrawn": true,
+    "finalOwnerCreditWei": "0",
+    "finalJobRemainingWei": "0",
+    "executorTotalBalanceWei": "0",
+    "totalNetworkFeeWei": "152864521253250000",
+    "sameOwnerAndManualWorker": true,
+    "allReceiptFeesSumToRecordedNetworkFee": true,
+    "allRewardCreditsSumToJobTotalPaid": true,
+    "fundingEqualsReimbursementsPlusUnusedEscrow": true,
+    "toleratedPaidShortfallWei": "3960768000",
+    "paidShortfallReceipts": 1,
+    "operatorPolicy": {
+      "maxReimbursementShortfallBps": 5,
+      "shortfallRounding": "floor",
+      "maxTotalNetworkFeeWei": "500000000000000000",
+      "appliesTo": "Positive-credit nonreverted advance/finalize receipts only. Opening, refund and withdrawal fees also consume the lifetime network-fee budget.",
+      "toleratedPaidShortfallBoundWei": "250000000000000",
+      "boundLimit": "The bound covers tolerated paid shortfalls, not the already-spent fee of an over-limit or reverted transaction, which is recorded and stops the worker.",
+      "profitabilityClaimed": false
+    },
+    "profitabilityClaimed": false
+  },
+  "arithmetic": {
+    "independentFullReferenceDecisions": 22,
+    "exactMatchedActualLogits": 11264,
+    "actualGeneratedTokenIds": [
+      82,
+      100,
+      119,
+      74,
+      95,
+      150,
+      80,
+      140,
+      129,
+      80,
+      140,
+      129,
+      86,
+      148,
+      123,
+      119,
+      83,
+      92,
+      143,
+      128,
+      141,
+      2
+    ],
+    "actualStoredText": "Runtime code observed. Native balance zero. Positive supply reported. Positive supply reported. Storage writes pattern observed. Safety and value remain unknown.",
+    "strictFinalEos": true,
+    "actualTokensAndStoredTextMatchIndependentReference": true,
+    "mainnetSaturationCount": "0",
+    "referenceSaturationCount": 0
+  },
+  "observedQualityLimitation": "The actual generated report repeats 'Positive supply reported.' twice. Exact arithmetic and on-chain completion do not establish analyst quality, real-address accuracy, security audit ability, investment intelligence or AIXBT parity.",
+  "executionAttribution": "The root agent solely invoked the owner-authorized real-chain proof. This validating agent read local public evidence only and made no RPC call, loaded no signing key and sent no transaction.",
+  "productionServiceProvisioningVerified": false,
+  "productionServiceLimitation": "One-off manual owner-as-worker process only; no persistent dedicated-worker credential or production server signing configuration was created.",
+  "regressions": {
+    "workerCorePolicyTestsPassed": 13,
+    "manualProofPolicyTestsPassed": 7,
+    "independentParityComparatorTestsPassed": 7
+  },
+  "sourceHashes": {
+    "manualProof": "0c37d02d9e7ce7b3d132eec99bc37be3a262fe38c2b8338afcc23f95668ff014",
+    "workerCore": "d75ae1241d802e0957a77bdf8dd5d8b05f64e59ca4d1337960ce8f05aebc6a7e",
+    "parityValidator": "745e1a97664f5373c9ca30790255de47c29cf41f23e0ae1a2a5d76d3cc2765d0"
+  },
+  "limits": [
+    "One actual GH0ST target/input and one frozen finite trained profile. No general address-analysis quality claim.",
+    "Mainnet financial canonicality is recorded by the separately invoked signed proof runner and its final 850-receipt audit; this independent validator makes no chain calls.",
+    "All canonical mainnet owner-tail receipts are retained here; the earlier local native owner-refund receipt gap remains explicitly confined to that separate local proof."
+  ]
+}

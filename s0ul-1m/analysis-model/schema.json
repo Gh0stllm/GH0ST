@@ -1,0 +1,190 @@
+{
+  "controls": {
+    "bos": 1,
+    "eos": 2,
+    "pad": 0,
+    "sep": 3
+  },
+  "fields": [
+    {
+      "index": 0,
+      "name": "code",
+      "token_offset": 4,
+      "values": [
+        "none",
+        "present"
+      ]
+    },
+    {
+      "index": 1,
+      "name": "native",
+      "token_offset": 6,
+      "values": [
+        "zero",
+        "funded"
+      ]
+    },
+    {
+      "index": 2,
+      "name": "interfaces",
+      "token_offset": 8,
+      "values": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "15"
+      ]
+    },
+    {
+      "index": 3,
+      "name": "owner",
+      "token_offset": 24,
+      "values": [
+        "unavailable",
+        "zero",
+        "nonzero"
+      ]
+    },
+    {
+      "index": 4,
+      "name": "pause",
+      "token_offset": 27,
+      "values": [
+        "unavailable",
+        "false",
+        "true"
+      ]
+    },
+    {
+      "index": 5,
+      "name": "implementation",
+      "token_offset": 30,
+      "values": [
+        "unavailable",
+        "zero",
+        "nonzero"
+      ]
+    },
+    {
+      "index": 6,
+      "name": "asset",
+      "token_offset": 33,
+      "values": [
+        "unavailable",
+        "zero",
+        "nonzero"
+      ]
+    },
+    {
+      "index": 7,
+      "name": "supply",
+      "token_offset": 36,
+      "values": [
+        "unavailable",
+        "zero",
+        "positive"
+      ]
+    },
+    {
+      "index": 8,
+      "name": "pool",
+      "token_offset": 39,
+      "values": [
+        "unavailable",
+        "anyReserveZero",
+        "bothPositive"
+      ]
+    },
+    {
+      "index": 9,
+      "name": "delegate",
+      "token_offset": 42,
+      "values": [
+        "absent",
+        "present"
+      ]
+    },
+    {
+      "index": 10,
+      "name": "writes",
+      "token_offset": 44,
+      "values": [
+        "absent",
+        "present"
+      ]
+    },
+    {
+      "index": 11,
+      "name": "origin",
+      "token_offset": 46,
+      "values": [
+        "absent",
+        "present"
+      ]
+    },
+    {
+      "index": 12,
+      "name": "externalCall",
+      "token_offset": 48,
+      "values": [
+        "absent",
+        "present"
+      ]
+    },
+    {
+      "index": 13,
+      "name": "scan",
+      "token_offset": 50,
+      "values": [
+        "incomplete",
+        "complete"
+      ]
+    }
+  ],
+  "format": "s0ul-analysis-features-v1",
+  "interface_bits": {
+    "1": "self-reported ERC165",
+    "2": "self-reported ERC721",
+    "4": "self-reported ERC1155",
+    "8": "self-reported ERC2981"
+  },
+  "interface_gate": "ERC165 true and invalid 0xffffffff false before recording claims",
+  "limitations": [
+    "Getter values and interface claims may be adversarial.",
+    "Opcode presence is not execution reachability or a vulnerability finding.",
+    "No identity, historic activity, price, valuation, profitability or safety guarantee."
+  ],
+  "max_generated_tokens": 32,
+  "missing_data": "unavailable and incomplete are explicit; no missing getter is coerced to zero",
+  "no_code_rule": "code=0 => fields 2..12 all 0 and scan=1; native remains independent",
+  "prompt_tokens": 16,
+  "provenance": "address, chain, block and full-facts hash must be bound externally; raw address is not a model feature",
+  "reserved_input_ids": [
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61,
+    62,
+    63
+  ],
+  "version": 1,
+  "vocab_size": 512
+}
