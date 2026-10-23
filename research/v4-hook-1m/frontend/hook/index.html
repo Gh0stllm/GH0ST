@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#080b0a"><meta name="description" content="Swap ETH and GH0ST on Robinhood Chain. Read the sentence generated on-chain with every H00K swap.">
+<title>H00K — Every swap has a thought.</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23080b0a'/%3E%3Ctext x='10' y='43' font-size='30' fill='%23b7f7d3'%3E%E2%88%9E%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/hook/styles.css">
+<script defer src="/hook/ethers.umd.min.js"></script><script defer src="/hook/swap-engine.js"></script><script defer src="/hook/ui.js"></script><script defer src="/hook/liquidity-math.js"></script><script defer src="/hook/liquidity-engine.js"></script><script defer src="/hook/liquidity-ui.js"></script>
+</head>
+<body>
+<a class="skip" href="#swap">Skip to swap</a>
+<header class="site-header"><div class="header-inner">
+<a class="brand" href="/" aria-label="GH0ST home"><span class="face" aria-hidden="true">[·_·]</span> GH0ST<span class="brand-divider"></span><span class="product">H00K</span></a>
+<nav aria-label="Main navigation"><a class="active" href="/H00K" aria-current="page">Swap</a><a href="https://github.com/Gh0stllm/GH0ST/tree/research/v4-hook-1m/research/v4-hook-1m" target="_blank" rel="noopener noreferrer">How it works <span aria-hidden="true">↗</span></a></nav>
+<button class="wallet-button" id="connect-wallet"><span class="wallet-icon" aria-hidden="true">◇</span><span id="wallet-label">Connect wallet</span></button>
+</div></header>
+<main class="wrap">
+<section class="intro" aria-labelledby="headline">
+<div><div class="eyebrow"><span class="mint-dot"></span> ON-CHAIN THOUGHTS / ROBINHOOD CHAIN</div><h1 id="headline">A swap.<br><em>A thought.</em></h1></div>
+<div class="intro-copy"><p>Trade ETH and GH0ST.<br>Let the on-chain model do the talking.</p><span class="chain-tag"><span class="tiny-orbit" aria-hidden="true">◉</span> Powered by Uniswap v4</span></div>
+</section>
+<section class="experience" aria-label="Swap and on-chain response">
+<div class="swap-card" id="swap">
+<div class="card-title"><div class="mode-tabs" role="tablist" aria-label="Pool actions"><button id="tab-swap" role="tab" aria-selected="true" aria-controls="swap-form" class="active">Swap</button><button id="tab-liquidity" role="tab" aria-selected="false" aria-controls="liquidity-form">Add liquidity</button></div><details class="slippage-menu"><summary id="slippage" aria-label="Slippage tolerance settings"><span id="slippage-value">0.5%</span> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 3v3m0 12v3M3 12h3m12 0h3M5.6 5.6l2.1 2.1m8.6 8.6 2.1 2.1M5.6 18.4l2.1-2.1m8.6-8.6 2.1-2.1"/><circle cx="12" cy="12" r="4"/></svg></summary><div class="settings"><span>Slippage tolerance</span><div class="slippage-options"><button data-slippage="10">0.1%</button><button data-slippage="50" class="selected">0.5%</button><button data-slippage="100">1%</button></div><p>Your minimum received protects against price changes.</p></div></details></div>
+<div id="swap-form" role="tabpanel" aria-labelledby="tab-swap">
+<div class="amount-panel">
+<div class="amount-label"><label for="from-amount">You pay</label><span id="from-balance">Balance —</span></div>
+<div class="amount-row"><input id="from-amount" inputmode="decimal" autocomplete="off" placeholder="0.0" aria-label="Amount to swap"><span class="token-pill"><span id="from-icon" class="coin eth" aria-hidden="true">♦</span><span id="from-symbol">ETH</span></span></div>
+</div>
+<div class="direction-row"><button id="flip-pair" class="flip-button" aria-label="Reverse swap direction"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M7 4v15m-4-4 4 4 4-4M17 20V5m-4 4 4-4 4 4"/></svg></button></div>
+<div class="amount-panel receive">
+<div class="amount-label"><span>You receive</span><span id="to-balance">Balance —</span></div>
+<div class="amount-row"><output id="to-amount" aria-live="polite">0.0</output><span class="token-pill"><span id="to-icon" class="coin ghost" aria-hidden="true">[·]</span><span id="to-symbol">GH0ST</span></span></div>
+</div>
+<div id="quote-details" class="quote-details" hidden><div><span>Minimum received</span><strong id="min-output">—</strong></div><div><span>Price impact</span><strong id="price-impact">—</strong></div><div><span>Network fee</span><strong id="network-fee">Shown in wallet</strong></div><div><span>Quote</span><strong id="quote-expiry">—</strong><button class="icon-button" id="quote-button" aria-label="Refresh quote">↻</button></div></div>
+<button id="swap-button" class="primary-button">Connect wallet <span aria-hidden="true">↗</span></button>
+<p id="error" class="error" role="alert" hidden></p>
+<div class="pool-state"><span id="status-dot" class="status-dot"></span><span id="pool-status" role="status">Checking pool…</span></div>
+<p id="status-detail" class="status-detail">Reading Robinhood Chain.</p>
+<a id="setup-link" class="setup-link" hidden href="https://gh0st-v4-signing.netlify.app" target="_blank" rel="noopener noreferrer">Add the pool’s initial liquidity <span>↗</span></a>
+<p class="swap-note">You approve each action in your wallet. Swap + on-chain sentence happen in the same transaction.</p>
+</div>
+<div id="liquidity-form" role="tabpanel" aria-labelledby="tab-liquidity" hidden>
+<p class="liquidity-intro">Put your ETH and GH0ST to work in this pool.</p>
+<div class="amount-panel"><div class="amount-label"><label for="lp-amount">You add</label><span id="lp-balance">Balance —</span></div><div class="amount-row"><input id="lp-amount" inputmode="decimal" autocomplete="off" placeholder="0.0" aria-label="ETH to add as liquidity"><span class="token-pill"><span class="coin eth" aria-hidden="true">♦</span>ETH</span></div></div>
+<div class="lp-plus" aria-hidden="true">+</div>
+<div class="amount-panel"><div class="amount-label"><span>Paired with</span><span id="lp-ghost-balance">Balance —</span></div><div class="amount-row"><output id="lp-ghost">—</output><span class="token-pill"><span class="coin ghost" aria-hidden="true">[·]</span>GH0ST</span></div></div>
+<div id="lp-details" class="quote-details" hidden><div><span>Price range</span><strong>Full range</strong></div><div><span>Expected ETH used</span><strong id="lp-used-eth">—</strong></div><div><span>Expected GH0ST used</span><strong id="lp-used-ghost">—</strong></div><div><span>Position owner</span><strong id="lp-owner">Your wallet</strong></div></div>
+<button id="lp-action" class="primary-button">Connect wallet</button><p id="lp-error" class="error" role="alert" hidden></p><p id="lp-status" class="status-detail">Anyone can provide liquidity. Your position belongs to your wallet.</p>
+<p class="swap-note">0.30% pool fee · Full price range · 0.5% price tolerance. Unused tokens stay in or return to your wallet. Network gas is additional.</p>
+<details class="lp-recovery"><summary>Recover a liquidity transaction</summary><div class="recovery-form"><input id="lp-recovery-hash" aria-label="Liquidity transaction hash" placeholder="0x…" autocomplete="off" spellcheck="false"><button id="lp-recover">Check receipt</button></div></details>
+</div>
+</div>
+<article class="thought-card" aria-labelledby="thought-heading">
+<div class="thought-heading"><div class="eyebrow"><span class="mint-dot"></span> THE OTHER SIDE OF YOUR SWAP</div><span class="live-chip" id="message-status">ON-CHAIN</span></div>
+<div class="ghost-art" aria-hidden="true"><svg viewBox="0 0 220 190" fill="none"><defs><pattern id="dots" width="7" height="7" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="#a4eac3"/></pattern><radialGradient id="halo"><stop stop-color="#91dcb1" stop-opacity=".12"/><stop offset="1" stop-color="#91dcb1" stop-opacity="0"/></radialGradient></defs><ellipse cx="110" cy="100" rx="109" ry="89" fill="url(#halo)"/><path d="M57 155V89a53 53 0 0 1 106 0v66l-18-13-18 14-17-14-17 14-18-14-18 13Z" fill="url(#dots)"/><rect x="84" y="87" width="12" height="15" rx="3" fill="#c9f3dc"/><rect x="124" y="87" width="12" height="15" rx="3" fill="#c9f3dc"/><path d="M103 117h14" stroke="#c9f3dc" stroke-width="2" stroke-linecap="round"/></svg></div>
+<div class="thought-body"><h2 id="thought-heading" class="sr-only">Latest on-chain thought</h2><p id="latest-message" class="message empty" aria-live="polite">Quiet, for now.</p><p id="message-meta" class="message-meta">A confirmed swap will leave its words here.</p><a id="message-tx" class="transaction-link" hidden target="_blank" rel="noopener noreferrer">Read the transaction <span>↗</span></a></div>
+<div class="thought-footer"><span>GENERATED ON-CHAIN</span><span>ONE SWAP, ONE SENTENCE <span class="mini-star">✳</span></span></div>
+</article>
+</section>
+<section class="feed-section" aria-labelledby="feed-title"><div class="section-heading"><div><span class="eyebrow">THE PUBLIC RECORD</span><h2 id="feed-title">Thoughts, on record.</h2></div><button id="refresh-feed" class="text-button">Refresh <span aria-hidden="true">↻</span></button></div>
+<ul id="feed-list" class="feed-list"></ul><div id="feed-empty" class="feed-empty"><span class="empty-orbit" aria-hidden="true">◎</span><p>No confirmed thoughts yet.</p><span>Messages appear here only after a real swap.</span></div>
+</section>
+<details class="recovery"><summary>Find a swap by transaction hash <span>+</span></summary><div class="recovery-body"><label for="tx-hash">Transaction hash</label><div class="recovery-form"><input id="tx-hash" placeholder="0x…" autocomplete="off" spellcheck="false"><button id="load-transaction">Read message</button><button id="recover-pending" hidden>Recover pending</button></div><p>Read a confirmed message, or check an interrupted wallet transaction.</p></div></details>
+<footer><a class="footer-brand" href="/">GH0ST <span>Intelligence, under the hood.</span></a><div><a id="hook-contract" href="https://robinhoodchain.blockscout.com/address/0x25E6366C490225358625d941C7B147360b155040" target="_blank" rel="noopener noreferrer">Hook contract ↗</a><span>0.30% pool fee · Network gas additional</span></div></footer>
+</main>
+</body></html>
