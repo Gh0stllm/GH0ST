@@ -20,7 +20,8 @@
     "verify:quality": "node scripts/verify-runtime-model.mjs swap-speaker-535k/composition-candidate-v2",
     "quality:composition": "python3 swap-speaker-535k/python/finetune_composition.py",
     "quality:sampled": "python3 swap-speaker-535k/python/evaluate_sampled.py",
-    "quality:novelty": "python3 scripts/audit-sentence-novelty.py --outputs swap-speaker-535k/reports/composition-v2-sampled-keccak.json --corpus swap-speaker-535k/model/voice-corpus.json --corpus swap-speaker-535k/quality-candidate-final/quality-corpus.json --corpus swap-speaker-535k/composition-candidate-v2/composition-corpus.json --out swap-speaker-535k/reports/composition-v2-sampled-novelty-audit.json"
+    "quality:novelty": "python3 scripts/audit-sentence-novelty.py --outputs swap-speaker-535k/reports/composition-v2-sampled-keccak.json --corpus swap-speaker-535k/model/voice-corpus.json --corpus swap-speaker-535k/quality-candidate-final/quality-corpus.json --corpus swap-speaker-535k/composition-candidate-v2/composition-corpus.json --out swap-speaker-535k/reports/composition-v2-sampled-novelty-audit.json",
+    "package:signing-site": "node scripts/package-signing-site.mjs"
   },
   "devDependencies": {
     "@uniswap/v4-core": "1.0.2",
