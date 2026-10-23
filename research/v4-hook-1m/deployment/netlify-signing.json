@@ -4,8 +4,8 @@
   "site_name": "gh0st-v4-signing",
   "url": "https://gh0st-v4-signing.netlify.app",
   "dashboard_url": "https://app.netlify.com/projects/gh0st-v4-signing",
-  "deploy_id": "6adb7d857d0335cbe44fed37",
-  "deploy_url": "https://6adb7d857d0335cbe44fed37--gh0st-v4-signing.netlify.app",
+  "deploy_id": "6adb85318862df4b3c6a433f",
+  "deploy_url": "https://6adb85318862df4b3c6a433f--gh0st-v4-signing.netlify.app",
   "state": "ready",
   "context": "production",
   "protection": {
@@ -16,6 +16,8 @@
     "verified_paths": [
       "/",
       "/wallet-deploy.js",
+      "/liquidity-plan.js",
+      "/liquidity-wallet.js",
       "/robinhood-mainnet-plan.json",
       "/vendor/ethers.umd.min.js"
     ],
@@ -25,16 +27,24 @@
   "model_hash": "0x03047f3adb84443ebbd6f1ba45d948fe4872f51ce0f6326e3f35a434c5b02f62",
   "files": {
     "index.html": {
-      "bytes": 2746,
-      "sha256": "3c8470a43797bb8a6add7c30e56827618afd9da55c55c7edb040070f6c8dbcb4"
+      "bytes": 3958,
+      "sha256": "c809ae9fa761760ad79f81ded29a9e2f2e6f05b4d7512ba52a88523a2280c387"
     },
     "wallet-deploy.html": {
-      "bytes": 2746,
-      "sha256": "3c8470a43797bb8a6add7c30e56827618afd9da55c55c7edb040070f6c8dbcb4"
+      "bytes": 3958,
+      "sha256": "c809ae9fa761760ad79f81ded29a9e2f2e6f05b4d7512ba52a88523a2280c387"
     },
     "wallet-deploy.js": {
-      "bytes": 7912,
-      "sha256": "0367e669e4994046a67af8a103f74463c5a1c6d53b755345ff46deb30e350cc2"
+      "bytes": 8378,
+      "sha256": "4127e4c37e3b7bae0b0ffebb4c9512e8c8dff79946d1f75997c83c7fa7746cff"
+    },
+    "liquidity-plan.js": {
+      "bytes": 16350,
+      "sha256": "30bd842edeb98b0dd46371b77c8fdc62a94245216534130154f458187d66ebc1"
+    },
+    "liquidity-wallet.js": {
+      "bytes": 19030,
+      "sha256": "eecd6a476d0484d13d9b633310076cd37a9581c999be077e6cfe304729c87a64"
     },
     "robinhood-mainnet-plan.json": {
       "bytes": 5468797,
@@ -53,16 +63,30 @@
       "sha256": "331ea9090db0c9f6f597bd9840fd5b171830f6e0b3ba1cb24dfa91f0c95aedc1"
     },
     "_headers": {
-      "bytes": 539,
-      "sha256": "f54563aff1bb8062ee60fcb68dc24f73bfd37d838f7681757b34ef89a505914c"
+      "bytes": 564,
+      "sha256": "96f1a7ad0131a4e2b8c2899f729afd3607684f350a921b785a0c145409b10cca"
     }
   },
   "verification": {
-    "all_eight_hosted_file_hashes_match": true,
+    "all_ten_hosted_file_hashes_match": true,
     "header_rules_processed": 1,
-    "wallet_tests_passed": 6,
-    "api_token_in_published_files": false
+    "wallet_tests_passed": 15,
+    "planner_tests_passed": 8,
+    "total_wallet_and_planner_tests_passed": 23,
+    "anonymous_requests_checked": 12,
+    "api_token_in_published_files": false,
+    "cross_tab_mint_lock": true
   },
-  "published_at": "2026-10-23T15:30:16.272Z",
-  "blockchain_deployment": "No blockchain transaction was submitted by publishing this site."
+  "published_at": "2026-10-23T16:02:58.514Z",
+  "blockchain_deployment": "No blockchain transaction was submitted by publishing this site.",
+  "gas_policy": {
+    "limit_multiplier_bps": 15000,
+    "network_fee_pricing": "wallet default"
+  },
+  "liquidity": {
+    "maximum_usd_each": "100",
+    "maximum_usd_total": "200",
+    "gas_additional": true,
+    "requires_verified_contract_deployments": true
+  }
 }

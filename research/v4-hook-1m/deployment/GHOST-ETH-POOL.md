@@ -1,37 +1,31 @@
-# GHOST / native ETH pool preparation
+# GH0ST / native ETH liquidity
 
-The selected pair is native ETH and the user-specified GHOST token at `0x2eb2849cde7957b86d0dfd4b59e450a9f9d15559`, on Robinhood Chain mainnet (4663). The proposed pool uses the existing planned sentence hook `0x25E6366C490225358625d941C7B147360b155040` and canonical PoolManager `0x8366a39cc670b4001a1121b8f6a443a643e40951`.
+The selected pool is native ETH / GH0ST on Robinhood Chain mainnet (4663), with the sampled sentence hook `0x25E6366C490225358625d941C7B147360b155040`. Its pool ID is `0x90fbab7e58f154bff561fb7ee00f2aaa59ba66b77b0c4e1535f1b1c26a00f7d7`. Native ETH is currency0 and GH0ST (`0x2eb2849cde7957b86d0dfd4b59e450a9f9d15559`) is currency1. The proposed static LP fee is 0.30% and tick spacing is 60.
 
-Native ETH is `currency0 = address(0)`; GHOST is `currency1`. WETH is not substituted. The disclosed proposal is a 0.30% static LP fee (`3000`) and tick spacing `60`. A different fee, tick spacing or hook identifies a different pool.
+The user selected **$100 of each token, $200 total, with gas additional**. The signing page proposes full-range ticks `[-887220, 887220]`. It uses the canonical PositionManager `0x58daec3116aae6d93017baaea7749052e8a04fa7` and Permit2 `0x000000000022D473030F116dDEE9F6B43aC78BA3`, checked against live bytecode and PositionManager getters. See [Uniswap's deployment list](https://developers.uniswap.org/docs/protocols/v4/deployments) and [position minting guide](https://developers.uniswap.org/docs/protocols/v4/guides/managing-liquidity/mint-position).
 
-## Inputs still needed
+## Signing flow
 
-The supplied GMGN market link identified the existing Pons ETH/GH0ST v4 pool. Its onchain reference was **17,333,971.896490555095140237106220669711550712 GH0ST per ETH** at block 96,020,379 (23 October 2026, 20:17:49 IST). `ghost-eth-market-reference.json` contains the exact price, pool key, fixed-block RPC requests and timestamp. Refresh this spot price before preparing the initialization signature; the saved observation is not a current execution quote.
+Open the [private signing page](https://gh0st-v4-signing.netlify.app), log in to the Netlify team, load the reviewed deployment plan, and connect the confirmed wallet. Complete the 57 data-shard deployments, model deployment and hook deployment. Each transaction requires a wallet signature; existing contracts are accepted only when their runtime hashes match.
 
-Liquidity is separate. Before producing a liquidity transaction, the user must supply maximum ETH and GHOST amounts and a position range (or approve an explicit range proposal). The current configuration generates no token approvals, liquidity transfers, or swaps.
+Once the model and hook are verified, refresh the liquidity quote. The page reads the ETH/GH0ST source pool from the supplied GMGN market's linked Pons pool and obtains ETH/USD from the [Coinbase spot endpoint](https://docs.cdp.coinbase.com/coinbase-app/track-apis/prices). The source Pons pool is only a price reference. Funds go into the separate sentence-hook pool above.
 
-## Read-only readiness
+Review the displayed token caps and full-range position. Approve the exact GH0ST cap to Permit2, then the exact cap to PositionManager with a 15-minute expiry. An existing different ERC20 allowance is first reset to zero. Finally, sign the liquidity transaction; it atomically initializes the pool if necessary and mints a position NFT to the confirmed wallet. The helper checks the receipt, NFT owner, pool key and position liquidity. It prevents a second mint while the outcome of an earlier transaction is unresolved.
 
-```sh
-node scripts/prepare-ghost-eth-pool.mjs
-```
+All transaction gas limits are **150% of a fresh estimate**. The wallet supplies current network fee pricing. Higher gas limits do not force all reserved gas to be consumed.
 
-This reads chain identity, token metadata, expected model/hook code, and the exact proposed pool's initialization state. It writes `deployment/ghost-eth-pool-readiness.json`. Missing inputs remain null, and an uninitialized pool has no unsigned initialization transaction until an initial price is supplied.
+The fixed liquidity amount is chosen conservatively over a 0.5% price band with hard maximums on both tokens. Actual spending can be slightly below $100 per side; unused native ETH is refunded and unspent GH0ST stays in the wallet. USD amounts are quote-time estimates. Market prices can change before settlement. Quotes older than five minutes must be refreshed, and transactions expire after 15 minutes.
 
-After the user chooses a price:
+## Recorded preflight
 
-```sh
-node scripts/prepare-ghost-eth-pool.mjs --ghost-per-eth USER_CHOSEN_DECIMAL_PRICE
-```
+At block **96,049,862** (2026-10-23 15:38:27 UTC), none of the 57 planned data shards, the model or hook existed on mainnet. The intended pool was uninitialized with zero liquidity. Publishing the signing page does not deploy contracts or add liquidity.
 
-The price is parsed as an exact decimal fraction, adjusted for the token's live decimals and ETH's 18 decimals, and converted to `floor(sqrt(raw GHOST units / wei) * 2^96)` without floating-point arithmetic. Prices outside v4's allowed range are rejected. The script never broadcasts. It estimates initialization gas only after the expected model and hook exist.
+The recorded source-pool price was 18,113,539.696258702829761879 GH0ST per ETH. The separate ETH/USD observation was $2,398.48 at 15:39:02 UTC. At those prices, the maximums were **0.041693072279110103 ETH** and **755,209.119786644159207576 GH0ST**. These are historical reference amounts, not a current quote. Exact evidence is in `ghost-eth-liquidity-preflight.json`.
 
-Initialization fixes the starting price but adds no liquidity. Anyone can initialize a particular pool key, so its state must be rechecked before signing. An already initialized pool is reported and is never reinitialized by the preparer. [Uniswap's pool creation guide](https://developers.uniswap.org/docs/protocols/v4/guides/create-pool) documents native currency ordering, fee units, initial-price encoding, and the distinction between initialization and liquidity.
+A complete Alchemy-backed mainnet fork at block **96,065,017** passed all **59** actual CREATE2 deployments with matching runtime hashes, two exact-cap approvals, and the canonical PositionManager initialize-and-mint. The isolated position received 0.041588708980812855 ETH and 753,318.731040104642230998 GH0ST, about $99.75 per side under the reference prices. Its owner, pool, range, liquidity, refund and allowance revocations were verified. All 64 transactions were local simulations; no mainnet transactions were sent. See `ghost-eth-liquidity-fork-validation.json`. Earlier attempts against the public RPC stopped on unavailable historical state; the Alchemy run supersedes that incomplete result.
 
-## Validation scope
+Four direct-transfer and transferFrom checks against the actual GH0ST token on an isolated local fork credited exactly the requested amount, including transfers into and out of PoolManager. This supports compatibility at the observed state; it does not prove every future token behavior. The GMGN/Pons venue's displayed fee must not be assumed to be this new pool's fee.
 
-`node --test tests/evm/ghost-eth-pool.test.mjs` checks decimal scaling, exact square-root rounding, invalid price rejection, pool ID encoding, and unsigned initialization calldata. It also initializes an actual v4 PoolManager pool and settles native/token liquidity in an isolated Cancun EVM, using clearly test-only prices, budgets and a test token. This validates the preparation mechanics, not the live token's transfer behavior or a chosen market price.
+## Reproduction
 
-The existing model deployment plan and its pinned wallet helper remain unchanged. Pair setup will need a separate reviewed transaction after the missing price and liquidity decisions are supplied.
-
-GMGN displayed 2.5% / 2.5% total tax. The source Pons pool uses LP fee zero plus a separate Pons hook; that supports a venue-fee explanation but does not establish that ordinary GH0ST transfers are untaxed. Verified token source was unavailable. Check actual token-transfer behavior before funding this separate pool.
+`node scripts/prepare-ghost-eth-pool.mjs` performs read-only deployment and pool-state checks. It records configured USD intent but does not fix a market price or broadcast transactions. `deployment/liquidity-plan.js` contains the unsigned calldata and exact integer math used by the browser. Run `npm run test:wallet` for the deployment, amount-cap, calldata and browser-flow checks.

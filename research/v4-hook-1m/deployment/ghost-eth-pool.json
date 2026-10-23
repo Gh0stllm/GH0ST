@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "status": "PAIR_SELECTED_PRICE_AND_LIQUIDITY_UNSET",
+  "status": "USD_BUDGET_SELECTED_PENDING_DEPLOYMENT_AND_FRESH_QUOTE",
   "chain_id": 4663,
   "network": "Robinhood Chain mainnet",
   "rpc_url": "https://rpc.mainnet.chain.robinhood.com",
@@ -20,11 +20,21 @@
   "initial_price_ghost_per_eth": null,
   "liquidity_budget_eth": null,
   "liquidity_budget_ghost": null,
-  "liquidity_tick_range": null,
+  "liquidity_budget_usd_each": "100",
+  "liquidity_budget_usd_total": "200",
+  "liquidity_gas_is_additional": true,
+  "liquidity_tick_range": [-887220, 887220],
+  "liquidity_range_policy": "Full range proposed on signing page; wallet confirmation is required.",
+  "liquidity_slippage_bps": 50,
+  "liquidity_deadline_seconds": 900,
+  "gas_limit_multiplier_bps": 15000,
+  "position_manager": "0x58daec3116aae6d93017baaea7749052e8a04fa7",
+  "permit2": "0x000000000022D473030F116dDEE9F6B43aC78BA3",
   "notes": [
-    "Token pair selected by the user. Market reference saved from the supplied GMGN link and its linked Pons pool; refresh before initialization. Liquidity budget remains unset.",
+    "The user selected $100 of native ETH and $100 of GH0ST, excluding gas. Refresh USD and source-pool prices before generating exact token caps.",
     "currency0 is native ETH, not WETH. Price input is human GHOST units per one ETH.",
-    "No initialization, token approval, liquidity transfer, or swap has been authorized by this file alone."
+    "Wallet signatures are required for each contract deployment, capped approval, and initialize-and-mint transaction. No public transaction has been submitted by this configuration.",
+    "Gas limits use 150% of each fresh estimate. The wallet supplies current network fee pricing."
   ],
   "market_reference": "deployment/ghost-eth-market-reference.json",
   "initial_price_policy": "Match the source pool spot price after a fresh read before signing; saved quote is reference only."

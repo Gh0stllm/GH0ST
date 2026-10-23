@@ -11,6 +11,12 @@ const EXPECTED = {
 };
 const el = id => document.getElementById(id);
 let plan, provider, signer, cursor = 0, busy = false, receipts = {};
+const statusListeners = new Set();
+// Read-only access for the separately gated liquidity panel. Loading this API never connects a wallet.
+globalThis.GH0STDeployment = Object.freeze({
+  getContext: () => ({ plan, provider, signer, busy, allDeployed: !!plan && cursor === plan.transactions.length }),
+  subscribe: listener => { statusListeners.add(listener); return () => statusListeners.delete(listener); },
+});
 const lower = value => value.toLowerCase();
 const storageKey = () => `gh0st-v4:${plan.chain_id}:${plan.hook_address.toLowerCase()}`;
 function log(text) { el('log').textContent += `${new Date().toISOString()}  ${text}\n`; }
@@ -28,6 +34,7 @@ function buttons() {
   el('connect').disabled = busy || !plan;
   el('refresh').disabled = busy || !signer || !plan;
   el('deploy').disabled = busy || !signer || !plan || cursor >= (plan?.transactions.length ?? 0);
+  for (const listener of statusListeners) listener();
 }
 async function verify() {
   assert(BigInt(await provider.send('eth_chainId', [])) === EXPECTED.chain, 'Switch the wallet to Robinhood Chain mainnet (4663).');
@@ -120,7 +127,7 @@ el('deploy').addEventListener('click', () => act(async () => {
   const request = { from: EXPECTED.sender, to: EXPECTED.factory, data: entry.unsigned_transaction.data,
     value: 0n, chainId: EXPECTED.chain };
   const estimate = await signer.estimateGas(request);
-  const tx = await signer.sendTransaction({ ...request, gasLimit: (estimate * 120n + 99n) / 100n });
+  const tx = await signer.sendTransaction({ ...request, gasLimit: (estimate * 150n + 99n) / 100n });
   receipts[entry.order] = { hash: tx.hash, expected_address: entry.predicted_address }; save();
   log(`${entry.kind} submitted: ${tx.hash}`);
   const receipt = await tx.wait();

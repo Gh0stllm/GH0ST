@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "status": "PENDING_USER_INPUT_OR_DEPLOYMENT",
+  "status": "PENDING_DEPLOYMENT_AND_FRESH_LIQUIDITY_QUOTE",
   "chain_id": 4663,
   "observed_block": {
-    "number": 96036628,
-    "hash": "0x6a5767d88e5d8a5b25901525d0980b0825f0bc320404ccf66a9b21ee608f1e37",
-    "timestamp": 1792768548
+    "number": 96049862,
+    "hash": "0x7ec423db5f8ee81360d20e388612f956952c1eb4a3fbf320f4f8762712b61962",
+    "timestamp": 1792769907
   },
   "token": {
     "address": "0x2eb2849cDE7957b86d0dFD4B59e450a9F9D15559",
@@ -42,16 +42,24 @@
   "unsigned_initialize_transaction": null,
   "public_gas_estimate": null,
   "missing_requirements": [
-    "Deploy and verify the planned model.",
-    "Deploy and verify the planned hook and all model dependencies.",
-    "Supply the initial GHOST-per-ETH price selected by the user."
+    "Deploy and verify all 57 data shards, the model, and the hook.",
+    "Refresh source-pool and ETH/USD prices on the signing page.",
+    "Review and sign capped approvals and the initialize-and-mint transaction in the confirmed wallet."
   ],
   "liquidity": {
-    "status": "NOT_CONFIGURED",
+    "status": "BUDGET_CONFIGURED_REQUIRES_FRESH_QUOTE",
+    "maximum_usd_each": "100",
+    "maximum_usd_total": "200",
+    "gas_additional": true,
     "maximum_eth": null,
     "maximum_ghost": null,
-    "tick_range": null,
-    "note": "No liquidity amounts, token approvals, transfers or swaps are generated without user-supplied budgets and range."
+    "tick_range": [
+      -887220,
+      887220
+    ],
+    "range": "full_range_proposal",
+    "quote_reference": "deployment/ghost-eth-liquidity-preflight.json",
+    "signing_page": "https://gh0st-v4-signing.netlify.app"
   },
   "notes": [
     "Native ETH is currency0; GHOST is currency1. WETH is not used.",

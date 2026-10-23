@@ -34,8 +34,20 @@
   <button id="deploy" disabled>Deploy next contract</button>
   <p id="error" role="alert"></p>
 </div>
-<p class="muted">This deploys contracts only. It does not initialize a pool, add liquidity, approve tokens, or perform swaps. Keep the plan and transaction receipts for recovery.</p>
+<div class="card">
+  <div class="label">4 · Add $200 of starting liquidity</div>
+  <p>After all 59 contracts are verified, review a fresh quote for up to <strong>$100 of native ETH and $100 of GH0ST</strong>. Gas is additional. This creates a position in the new GH0ST model pool at a 0.3% pool fee, across the full price range (ticks −887220 to 887220).</p>
+  <p class="muted">The existing Pons pool supplies the price reference only. Your liquidity goes to the new pool shown below. Each button click requests just one wallet confirmation. Approvals are capped at the displayed GH0ST amount, with a 15-minute spending permission; the final transaction initializes the pool if needed and adds liquidity.</p>
+  <button id="liquidity-quote" disabled>Get fresh $200 quote</button>
+  <pre id="liquidity-review">Complete and verify all 59 deployments first.</pre>
+  <button id="liquidity-sign" disabled>Review quote first</button>
+  <button id="liquidity-receipt" disabled>Check pending receipt</button>
+  <p id="liquidity-error" role="alert"></p>
+  <p class="muted">Quotes expire after five minutes. The amount actually used may be lower; unused ETH returns to this wallet and unused GH0ST stays in it. Liquidity can lose value as prices move. Keep this browser's transaction records for recovery.</p>
+</div>
 <pre id="log"></pre>
 <script src="vendor/ethers.umd.min.js"></script>
 <script src="wallet-deploy.js"></script>
+<script src="liquidity-plan.js"></script>
+<script src="liquidity-wallet.js"></script>
 </html>

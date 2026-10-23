@@ -24,11 +24,13 @@ const html = readFileSync(path.join(source, 'wallet-deploy.html'));
 const styles = [...html.toString().matchAll(/<style>([\s\S]*?)<\/style>/g)];
 assert.equal(styles.length, 1, 'Review the CSP when changing the style blocks');
 const styleHash = createHash('sha256').update(styles[0][1]).digest('base64');
-const csp = `default-src 'none'; script-src 'self'; style-src 'sha256-${styleHash}'; connect-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'`;
+const csp = `default-src 'none'; script-src 'self'; style-src 'sha256-${styleHash}'; connect-src 'self' https://api.coinbase.com; base-uri 'none'; form-action 'none'; frame-ancestors 'none'`;
 const files = new Map([
   ['index.html', html],
   ['wallet-deploy.html', html],
   ['wallet-deploy.js', helper],
+  ['liquidity-plan.js', readFileSync(path.join(source, 'liquidity-plan.js'))],
+  ['liquidity-wallet.js', readFileSync(path.join(source, 'liquidity-wallet.js'))],
   ['robinhood-mainnet-plan.json', planBytes],
   ['vendor/ethers.umd.min.js', readFileSync(path.join(source, 'vendor/ethers.umd.min.js'))],
   ['vendor/LICENSE-ethers.md', readFileSync(path.join(source, 'vendor/LICENSE-ethers.md'))],

@@ -1,0 +1,259 @@
+{
+  "schema_version": 1,
+  "status": "REFERENCE_ONLY_REQUOTE_BEFORE_SIGNING",
+  "public_transactions_submitted": 0,
+  "chain_id": 4663,
+  "observed_block": {
+    "number": 96049862,
+    "hash": "0x7ec423db5f8ee81360d20e388612f956952c1eb4a3fbf320f4f8762712b61962",
+    "timestamp": 1792769907,
+    "utc": "2026-10-23T15:38:27.000Z"
+  },
+  "budget_usd_each": "100",
+  "budget_usd_total": "200",
+  "gas_additional": true,
+  "wallet": "0x8D6B11CFdF079e27C17e05Cb7Ea81235887691c6",
+  "gas_policy": {
+    "limit_multiplier_bps": 15000,
+    "fee_price": "Wallet current network recommendation"
+  },
+  "token": {
+    "address": "0x2eb2849cde7957b86d0dfd4b59e450a9f9d15559",
+    "name": "GH0ST",
+    "symbol": "GH0ST",
+    "decimals": 18,
+    "code": {
+      "address": "0x2eb2849cde7957b86d0dfd4b59e450a9f9d15559",
+      "bytes": 3248,
+      "present": true,
+      "runtimeHash": "0x7c38fa1b069b5e677034bab6219dd2f519f219f7637910131d9a0f58a05ae164",
+      "expectedHash": "0x7c38fa1b069b5e677034bab6219dd2f519f219f7637910131d9a0f58a05ae164",
+      "hashMatches": true
+    },
+    "transfer_compatibility": {
+      "status": "PASS_LOCAL_FORK_EXACT_TRANSFER_DELTAS",
+      "localChainId": 1337,
+      "upstreamForkBlock": 96049862,
+      "tests": [
+        {
+          "label": "wallet direct transfer to PoolManager",
+          "amount": "100000000000000000000",
+          "from": "0x8D6B11CFdF079e27C17e05Cb7Ea81235887691c6",
+          "to": "0x8366a39cc670b4001a1121b8f6a443a643e40951",
+          "status": 1,
+          "fromDebited": "100000000000000000000",
+          "toCredited": "100000000000000000000",
+          "exactAmount": true,
+          "gasUsed": "34264"
+        },
+        {
+          "label": "PoolManager return transfer to wallet",
+          "amount": "100000000000000000000",
+          "from": "0x8366a39cc670b4001a1121b8f6a443a643e40951",
+          "to": "0x8D6B11CFdF079e27C17e05Cb7Ea81235887691c6",
+          "status": 1,
+          "fromDebited": "100000000000000000000",
+          "toCredited": "100000000000000000000",
+          "exactAmount": true,
+          "gasUsed": "34276"
+        },
+        {
+          "label": "spender transferFrom wallet to PoolManager",
+          "amount": "100000000000000000000",
+          "from": "0x8D6B11CFdF079e27C17e05Cb7Ea81235887691c6",
+          "to": "0x8366a39cc670b4001a1121b8f6a443a643e40951",
+          "status": 1,
+          "fromDebited": "100000000000000000000",
+          "toCredited": "100000000000000000000",
+          "exactAmount": true,
+          "gasUsed": "35183"
+        },
+        {
+          "label": "PoolManager transfer to external recipient",
+          "amount": "100000000000000000000",
+          "from": "0x8366a39cc670b4001a1121b8f6a443a643e40951",
+          "to": "0x1111111111111111111111111111111111111111",
+          "status": 1,
+          "fromDebited": "100000000000000000000",
+          "toCredited": "100000000000000000000",
+          "exactAmount": true,
+          "gasUsed": "51376"
+        }
+      ],
+      "limitation": "Current-state token transfer/transferFrom delta checks in an isolated local fork only. No public transactions were submitted. Not a complete PoolManager liquidity integration test."
+    }
+  },
+  "canonical_contracts": {
+    "pool_manager": {
+      "address": "0x8366a39cc670b4001a1121b8f6a443a643e40951",
+      "bytes": 24009,
+      "present": true,
+      "runtimeHash": "0xbd3881180b547f5fe817545743cfb4343e96b1bc6640dcd70c106b0066e95626",
+      "expectedHash": "0xbd3881180b547f5fe817545743cfb4343e96b1bc6640dcd70c106b0066e95626",
+      "hashMatches": true
+    },
+    "block": 96049862,
+    "positionManager": {
+      "address": "0x58daec3116aae6d93017baaea7749052e8a04fa7",
+      "bytes": 23877,
+      "present": true,
+      "runtimeHash": "0xc873e135dc9aaec88489cfbad146b4cb49d6a32e0d80326377784b7ba17670b2",
+      "poolManager": "0x8366a39CC670B4001A1121B8F6A443A643e40951",
+      "permit2": "0x000000000022D473030F116dDEE9F6B43aC78BA3"
+    },
+    "permit2": {
+      "address": "0x000000000022D473030F116dDEE9F6B43aC78BA3",
+      "bytes": 9152,
+      "present": true,
+      "runtimeHash": "0x5208783f52488f7d3493e5e38311ab707c1d75457fe472a19b0b4d57d66a7fca"
+    }
+  },
+  "deployment": {
+    "shards_present": 0,
+    "shards_total": 57,
+    "model": {
+      "address": "0xb45b782c3a8057b32B44D4c4415B2686A7AB4fD5",
+      "bytes": 0,
+      "present": false,
+      "runtimeHash": "0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470",
+      "expectedHash": "0x36b6be48df51752b8245c8809a407a30dfeeb9ac33be7ec2347aa02a74cac4a9",
+      "hashMatches": false
+    },
+    "hook": {
+      "address": "0x25E6366C490225358625d941C7B147360b155040",
+      "bytes": 0,
+      "present": false,
+      "runtimeHash": "0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470",
+      "expectedHash": "0x63a9eb26487da6deedde8561779d46cbd35218155159a7225087f523a6bf723f",
+      "hashMatches": false
+    }
+  },
+  "intended_pool": {
+    "key": {
+      "currency0": "0x0000000000000000000000000000000000000000",
+      "currency1": "0x2eb2849cde7957b86d0dfd4b59e450a9f9d15559",
+      "fee": 3000,
+      "tickSpacing": 60,
+      "hooks": "0x25E6366C490225358625d941C7B147360b155040"
+    },
+    "poolId": "0x90fbab7e58f154bff561fb7ee00f2aaa59ba66b77b0c4e1535f1b1c26a00f7d7",
+    "storageSlot": "0x2ef0fa577257c2bcec979a0b38ef5ead9d140e8abaf0addc82414f1bf15c3c8e",
+    "slot0Raw": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "sqrtPriceX96": "0",
+    "tick": 0,
+    "protocolFee": 0,
+    "lpFee": 0,
+    "initialized": false,
+    "activeLiquidity": "0",
+    "exactGhostPerEth": {
+      "numerator": "0",
+      "denominator": "6277101735386680763835789423207666416102355444464034512896"
+    },
+    "ghostPerEthFloor36": "0.000000000000000000000000000000000000"
+  },
+  "source_pool": {
+    "key": {
+      "currency0": "0x0000000000000000000000000000000000000000",
+      "currency1": "0x2eb2849cDE7957b86d0dFD4B59e450a9F9D15559",
+      "fee": 0,
+      "tickSpacing": 200,
+      "hooks": "0xE5e702641Ea86F4ae6cC3cDaeD2B886f976Be044"
+    },
+    "poolId": "0x42ce003822cbaa9eb94e9e07ef8d988e5a998ded86b189fd4f3e25b68f001d01",
+    "storageSlot": "0xd1e1449381bd39ab9322335b9a3cbc64c41aa5592ccfd6b15edf295a43bc4d57",
+    "slot0Raw": "0x000000000000000000028cda00000000000010a0001c755a7360d764040e30a4",
+    "sqrtPriceX96": "337195094064817369351858984726692",
+    "tick": 167130,
+    "protocolFee": 0,
+    "lpFee": 0,
+    "initialized": true,
+    "activeLiquidity": "29277002188455996411301",
+    "exactGhostPerEth": {
+      "numerator": "113700531461381033907066910229018254919891464159594474129937262864",
+      "denominator": "6277101735386680763835789423207666416102355444464034512896"
+    },
+    "ghostPerEthFloor36": "18113539.696258702829761879250222227276779468"
+  },
+  "eth_usd": {
+    "amount": "2398.48",
+    "source": "https://api.coinbase.com/v2/prices/ETH-USD/spot",
+    "observed_at": "2026-10-23T15:39:02Z"
+  },
+  "quote": {
+    "prices": {
+      "eth_usd": {
+        "numerator": "59962",
+        "denominator": "25",
+        "decimal": "2398.48"
+      },
+      "ghost_usd": {
+        "numerator": "23524223391078509497570100337148630852645589822559527341391872",
+        "denominator": "177657080408407865479792047232841023312330412749366365828026973225",
+        "decimal": "0.000132413655211487947523"
+      },
+      "ghost_per_eth": {
+        "numerator": "7106283216336314619191681889313640932493216509974654633121078929",
+        "denominator": "392318858461667547739736838950479151006397215279002157056",
+        "decimal": "18113539.696258702829761879"
+      }
+    },
+    "liquidity": {
+      "units": "177001563481857839814",
+      "tick_lower": -887220,
+      "tick_upper": 887220,
+      "range": "full_range",
+      "slippage_bps": 50,
+      "sqrt_price_lower": "336351049952388477359093599662744",
+      "sqrt_price_upper": "338037030691443535932303158322030",
+      "amount0_max": "41693072279110103",
+      "amount1_max": "755209119786644159207576",
+      "expected_amount0": "41588708980812855",
+      "expected_amount1": "753318731040104642230998",
+      "expected_unused_amount0": "104363298297248",
+      "expected_unused_amount1": "1890388746539516976578"
+    },
+    "expires_for_signing": true,
+    "maximum_eth": "0.041693072279110103",
+    "maximum_ghost": "755209.119786644159207576"
+  },
+  "safeguards": [
+    "Fresh price and deployment verification before signing",
+    "Exact token approvals; Permit2 spender allowance expires after 15 minutes",
+    "Fixed liquidity and hard caps for both tokens",
+    "Unspent native ETH swept to the wallet; unspent GH0ST stays in wallet",
+    "Position NFT and liquidity verified after receipt; ambiguous pending transaction blocks duplicate mint"
+  ],
+  "limitations": [
+    "Spot prices are references and can move. Quote-time USD caps cannot guarantee settlement-time USD value.",
+    "Transfer compatibility tests cover only the observed local-fork state, not all future token behavior.",
+    "Contract deployment and liquidity provision remain pending user wallet signatures.",
+    "The full fork simulation passed with observed state and reference prices; live execution still needs fresh wallet estimates and signatures."
+  ],
+  "full_fork_validation": {
+    "status": "PASS_LOCAL_FORK_ONLY",
+    "provider": "Alchemy",
+    "local_chain_id": 31337,
+    "fork_block": {
+      "number": 96065017,
+      "hash": "0x215439076fcc77ec19fbdcd987d4b11eb76fcc48bcca6243fad204e72a729d69",
+      "timestamp": 1792771488,
+      "utc": "2026-10-23T16:04:48.000Z"
+    },
+    "contracts_deployed_and_verified": 59,
+    "planned_contracts": 59,
+    "liquidity_approval_reached": true,
+    "liquidity_mint_reached": true,
+    "public_transactions_submitted": 0,
+    "checks": {
+      "deployedContracts": 59,
+      "runtimeHashesMatch": true,
+      "nftOwnedByConfirmedWallet": true,
+      "liquidityMatchesPlan": true,
+      "bothDepositsWithinUsd100Caps": true,
+      "actualAmountsMatchIntegerPlan": true,
+      "localOnly": true
+    },
+    "evidence": "deployment/ghost-eth-liquidity-fork-validation.json",
+    "scope": "Isolated local fork with impersonated accounts; all receipts, balances and position IDs are simulation-only. Not a public-chain deployment or current execution quote."
+  }
+}

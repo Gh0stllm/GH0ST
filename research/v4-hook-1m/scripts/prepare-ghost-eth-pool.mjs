@@ -71,6 +71,29 @@ export function initializationTransaction(manager, key, sqrtPriceX96, sender, ch
     data: new Interface(INITIALIZE_ABI).encodeFunctionData('initialize', [key, sqrtPriceX96]), value: '0' };
 }
 
+export function liquidityIntentFromConfig(config) {
+  const usdEach = config.liquidity_budget_usd_each;
+  if (usdEach === undefined || usdEach === null) return {
+    status: 'NOT_CONFIGURED', maximum_eth: null, maximum_ghost: null, tick_range: null,
+    note: 'No liquidity amounts, token approvals, transfers or swaps are generated without user-supplied budgets and range.',
+  };
+  decimalFraction(String(usdEach));
+  const ticks = config.liquidity_tick_range;
+  assert(Array.isArray(ticks) && ticks.length === 2 && ticks.every(Number.isInteger) && ticks[0] < ticks[1],
+    'Configured liquidity tick range must contain two ordered integer ticks');
+  assert(ticks.every(tick => tick >= -887272 && tick <= 887272 && tick % config.tick_spacing === 0),
+    'Configured liquidity tick range must use valid ticks aligned to tick spacing');
+  return {
+    status: 'BUDGET_CONFIGURED_AWAITING_FRESH_QUOTE_AND_DEPLOYMENT',
+    maximum_usd_each: String(usdEach), maximum_usd_total: config.liquidity_budget_usd_total ?? null,
+    maximum_eth: null, maximum_ghost: null, tick_range: [...ticks],
+    slippage_bps: config.liquidity_slippage_bps ?? null,
+    deadline_seconds: config.liquidity_deadline_seconds ?? null,
+    gas_is_additional: config.liquidity_gas_is_additional ?? true,
+    note: 'The configured USD budget and tick range are preserved. Verify all deployment dependencies and refresh ETH/USD and source-pool quotes in the wallet UI before using deployment/liquidity-plan.js to prepare exact token caps, approvals, and unsigned mint calldata.',
+  };
+}
+
 export async function preparePair(argv = process.argv.slice(2)) {
   const option = (name, fallback) => { const i = argv.indexOf(name); return i < 0 ? fallback : argv[i + 1]; };
   const configPath = path.resolve(base, option('--config', 'deployment/ghost-eth-pool.json'));
@@ -127,8 +150,7 @@ export async function preparePair(argv = process.argv.slice(2)) {
       initial_price_ghost_per_eth: price ?? null, sqrt_price_x96: sqrtPrice?.toString() ?? null,
       fee_note: `${key.fee} pips (${key.fee / 10_000}%) static LP fee; tick spacing ${key.tickSpacing}.`,
       unsigned_initialize_transaction: transaction, public_gas_estimate: estimate, missing_requirements: missing,
-      liquidity: { status: 'NOT_CONFIGURED', maximum_eth: null, maximum_ghost: null, tick_range: null,
-        note: 'No liquidity amounts, token approvals, transfers or swaps are generated without user-supplied budgets and range.' },
+      liquidity: liquidityIntentFromConfig({ ...config, tick_spacing: key.tickSpacing }),
       notes: ['Native ETH is currency0; GHOST is currency1. WETH is not used.',
         'Initializing a pool only sets its initial price. It does not fund the pool.',
         'Anyone can initialize this pool key; recheck live state immediately before signing. An initialized pool cannot be reinitialized.',

@@ -140,7 +140,7 @@ test('one user click sends only the next pinned zero-value CREATE2 deployment', 
   assert.equal(sent.data, plan.transactions[0].unsigned_transaction.data);
   assert.equal(sent.value, 0n);
   assert.equal(sent.chainId, 4663n);
-  assert.equal(sent.gasLimit, 6_000_000n);
+  assert.equal(sent.gasLimit, 7_500_000n);
   assert.equal(app.element('progress').value, 1);
 });
 
