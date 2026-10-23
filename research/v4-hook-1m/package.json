@@ -4,16 +4,25 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "npm run test:evm",
+    "test": "node --test tests/evm/policy-hook.test.mjs tests/evm/sentence-v4-poolmanager.test.mjs",
     "test:evm": "node --test tests/evm/policy-hook.test.mjs",
+    "test:v4": "node --test tests/evm/sentence-v4-poolmanager.test.mjs",
+    "verify:model": "node scripts/verify-runtime-model.mjs",
+    "quality:baseline": "python3 swap-speaker-535k/python/quality_eval.py",
+    "quality:train": "python3 swap-speaker-535k/python/finetune_quality.py",
     "bench:evm": "node scripts/bench-evm.mjs --output reports/hook-integration.json",
     "bench:kernel": "node benchmarks/bench-kernel.mjs",
-    "bench:speaker": "node scripts/bench-speaker.mjs"
+    "bench:speaker": "node scripts/bench-speaker.mjs",
+    "bench:sentences": "node scripts/bench-sentences.mjs",
+    "test:v4:quality": "GH0ST_MODEL_DIR=swap-speaker-535k/quality-candidate-final GH0ST_V4_REPORT=swap-speaker-535k/reports/quality-final-v4-integration.json node --test tests/evm/sentence-v4-poolmanager.test.mjs",
+    "verify:quality": "node scripts/verify-runtime-model.mjs swap-speaker-535k/quality-candidate-final"
   },
   "devDependencies": {
     "@uniswap/v4-core": "1.0.2",
     "ethers": "6.13.5",
     "ganache": "7.9.2",
-    "solc": "0.8.30"
+    "hardhat": "2.26.3",
+    "solc": "0.8.30",
+    "solc-v4": "npm:solc@0.8.26"
   }
 }

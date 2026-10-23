@@ -1,0 +1,363 @@
+{
+  "schema_version": 1,
+  "status": "PASSED_REAL_LOCAL_POOLMANAGER",
+  "network": "Hardhat local EVM, Cancun, 30 million block gas limit; no public transactions",
+  "upstream": "@uniswap/v4-core@1.0.2 unmodified PoolManager",
+  "compiler": {
+    "version": "0.8.30+commit.73712a01.Emscripten.clang",
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "viaIR": true,
+    "evmVersion": "cancun",
+    "outputSelection": {
+      "*": {
+        "*": [
+          "abi",
+          "evm.bytecode.object",
+          "evm.deployedBytecode.object"
+        ]
+      }
+    }
+  },
+  "upstream_compiler": {
+    "version": "0.8.26+commit.8a97fa7a.Emscripten.clang",
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "viaIR": true,
+    "evmVersion": "cancun",
+    "outputSelection": {
+      "*": {
+        "*": [
+          "abi",
+          "evm.bytecode.object",
+          "evm.deployedBytecode.object"
+        ]
+      }
+    }
+  },
+  "model_hash": "0xb277cece625d8abc5a54406d99ffbc34dcbdaa48fcf49e00f95acedaed513105",
+  "max_words": 12,
+  "inference_gas_limit": 6000000,
+  "model_directory": "swap-speaker-535k/model",
+  "model_artifacts": {
+    "core.bin": {
+      "bytes": 4544,
+      "sha256": "2d3aaeb2474140b51683170b19b104fccf6f54dfb8c435a3d16badb45f2ea450"
+    },
+    "embeddings.bin": {
+      "bytes": 524352,
+      "sha256": "39561cfcb250234cdd49a8781fb4282200b67e1f4cd8561c3df1b0b45356a309"
+    },
+    "nodes.bin": {
+      "bytes": 540606,
+      "sha256": "41f47b81bc984559e1734e21e1b0a94f3d94e0c4ac38ac9fa797477db9f14d1d"
+    },
+    "vocabulary.bin": {
+      "bytes": 262144,
+      "sha256": "f3809a83bb9059f91091977717235103041e1980517ae7bea0d45e6d27383b61"
+    },
+    "vocabulary.json": {
+      "bytes": 105033,
+      "sha256": "2a63655a371d8023e17af22322291327fb3825585252ecec9c7e37f2e08014df"
+    }
+  },
+  "failure_fixtures": [
+    {
+      "model": "SentenceV4MalformedModel",
+      "constructor_arguments": [],
+      "gas_used": "170074"
+    },
+    {
+      "model": "SentenceV4OversizedModel",
+      "constructor_arguments": [],
+      "gas_used": "170628"
+    },
+    {
+      "model": "SentenceV4InvalidBooleanModel",
+      "constructor_arguments": [],
+      "gas_used": "179032"
+    },
+    {
+      "model": "SentenceV4GasBurningModel",
+      "constructor_arguments": [],
+      "gas_used": "463614"
+    },
+    {
+      "model": "SentenceV4InvalidLengthModel",
+      "constructor_arguments": [],
+      "gas_used": "178260"
+    },
+    {
+      "model": "SentenceV4InvalidOutputModel",
+      "constructor_arguments": [
+        0
+      ],
+      "gas_used": "179363"
+    },
+    {
+      "model": "SentenceV4InvalidOutputModel",
+      "constructor_arguments": [
+        1
+      ],
+      "gas_used": "179767"
+    },
+    {
+      "model": "SentenceV4InvalidOutputModel",
+      "constructor_arguments": [
+        2
+      ],
+      "gas_used": "179903"
+    },
+    {
+      "model": "SentenceV4InvalidOutputModel",
+      "constructor_arguments": [
+        3
+      ],
+      "gas_used": "179377"
+    },
+    {
+      "model": "SentenceV4InvalidOutputModel",
+      "constructor_arguments": [
+        4
+      ],
+      "gas_used": "182823"
+    },
+    {
+      "model": "SentenceV4InvalidOutputModel",
+      "constructor_arguments": [
+        5
+      ],
+      "gas_used": "188550"
+    },
+    {
+      "model": "SentenceV4InvalidOutputModel",
+      "constructor_arguments": [
+        6
+      ],
+      "gas_used": "188765"
+    },
+    {
+      "model": "SentenceV4InvalidOutputModel",
+      "constructor_arguments": [
+        7
+      ],
+      "gas_used": "180634"
+    },
+    {
+      "model": "SentenceV4InvalidOutputModel",
+      "constructor_arguments": [
+        8
+      ],
+      "gas_used": "179810"
+    }
+  ],
+  "required_speech_hook_data": "0x53504b31",
+  "required_speech_gas_estimate": "6790524",
+  "required_speech_gas_used": "3576901",
+  "hooks_permissions": "0x1040 (afterInitialize, afterSwap)",
+  "checks": [
+    "both_directions_exact_input_and_output",
+    "multi_pool_isolation",
+    "dynamic_fee_pool_compatibility",
+    "native_currency_settlement",
+    "elapsed_time_clamp",
+    "low_gas_fail_open",
+    "recovery_after_skip",
+    "canonical_manager_only",
+    "uninitialized_pool_rejected",
+    "router_callback_authorization",
+    "unsettled_swap_rollback",
+    "post_settlement_revert_rollback",
+    "model_revert_fail_open",
+    "bounded_returndata_and_output_validation",
+    "gas_exhaustion_fail_open",
+    "model_runtime_hash_pinned",
+    "required_speech_gas_estimation",
+    "required_speech_rollback",
+    "unrecognized_hook_data_remains_optional"
+  ],
+  "swaps": [
+    {
+      "pool_id": "0x4e9f459052a6ce19dfd08a63b33d23997225cac2156383c03f69f55aa3987768",
+      "pool_kind": "static_fee",
+      "zero_for_one": true,
+      "exact_input": true,
+      "gas_used": "4059291",
+      "event": "SentenceSpoken",
+      "text": "the memory is a patient clock inside the chain.",
+      "features": [
+        8,
+        0,
+        8,
+        20,
+        1024,
+        1024
+      ],
+      "input_hash": "0x809a616c76a882ead7819c589c0a62da9d81879e917f776e08a7cec5927761c3"
+    },
+    {
+      "pool_id": "0x4e9f459052a6ce19dfd08a63b33d23997225cac2156383c03f69f55aa3987768",
+      "pool_kind": "static_fee",
+      "zero_for_one": true,
+      "exact_input": false,
+      "gas_used": "3997565",
+      "event": "SentenceSpoken",
+      "text": "the memory is a patient clock inside the chain.",
+      "features": [
+        8,
+        0,
+        0,
+        3,
+        1024,
+        -1024
+      ],
+      "input_hash": "0xb948daed42863bc8c1833be5158283c8000bc7069d518fb96cd27a56b1fecac0"
+    },
+    {
+      "pool_id": "0x4e9f459052a6ce19dfd08a63b33d23997225cac2156383c03f69f55aa3987768",
+      "pool_kind": "static_fee",
+      "zero_for_one": false,
+      "exact_input": true,
+      "gas_used": "4015353",
+      "event": "SentenceSpoken",
+      "text": "the memory is a patient clock inside the chain.",
+      "features": [
+        4,
+        0,
+        4,
+        3,
+        -1024,
+        1024
+      ],
+      "input_hash": "0xe264b946c404be809a95c4f883d5d8bef03805bf8535f181910ed538db166645"
+    },
+    {
+      "pool_id": "0x4e9f459052a6ce19dfd08a63b33d23997225cac2156383c03f69f55aa3987768",
+      "pool_kind": "static_fee",
+      "zero_for_one": false,
+      "exact_input": false,
+      "gas_used": "3998293",
+      "event": "SentenceSpoken",
+      "text": "the memory is a patient clock inside the chain.",
+      "features": [
+        8,
+        0,
+        4,
+        3,
+        -1024,
+        -1024
+      ],
+      "input_hash": "0x53df50b73f88e21783a9ca0554666ba56eeb948bb954e1d8c1d5647d4b9c754a"
+    },
+    {
+      "pool_id": "0x026a0f018b9181e6448750435f548a80b75030d30be4620972df1f112582a379",
+      "pool_kind": "dynamic_fee",
+      "zero_for_one": false,
+      "exact_input": true,
+      "gas_used": "3634028",
+      "event": "SentenceSpoken",
+      "text": "the memory moves but my questions remain shifting.",
+      "features": [
+        4,
+        0,
+        4,
+        27,
+        -1024,
+        1024
+      ],
+      "input_hash": "0x87b0b13f06d00428296d355d731d425b22cc1221913e41a0b316d3b0e8fe7ce5"
+    },
+    {
+      "pool_id": "0x70cf29506f21d41a92ae03179949195cb982b697abe743d202f4e009a13df96d",
+      "pool_kind": "native",
+      "zero_for_one": true,
+      "exact_input": true,
+      "gas_used": "3629006",
+      "event": "SentenceSpoken",
+      "text": "the signal moves but my questions remain steady.",
+      "features": [
+        796,
+        0,
+        796,
+        23,
+        1024,
+        1024
+      ],
+      "input_hash": "0x8726eadf81ae98309ba38de4c2be38fe9f2e3a00a7d86a9c91f2958ca6f577dd"
+    },
+    {
+      "pool_id": "0x4e9f459052a6ce19dfd08a63b33d23997225cac2156383c03f69f55aa3987768",
+      "pool_kind": "static_fee",
+      "zero_for_one": true,
+      "exact_input": true,
+      "gas_used": "3998219",
+      "event": "SentenceSpoken",
+      "text": "the memory is a patient clock inside the chain.",
+      "features": [
+        4,
+        0,
+        4,
+        1024,
+        1024,
+        1024
+      ],
+      "input_hash": "0x206b442c7dc482a833dc4e2fa3128e376c2b4bcadf4044e3e6c55c59fd7ae7d8"
+    },
+    {
+      "pool_id": "0x4e9f459052a6ce19dfd08a63b33d23997225cac2156383c03f69f55aa3987768",
+      "pool_kind": "static_fee",
+      "zero_for_one": false,
+      "exact_input": true,
+      "gas_used": "129880",
+      "event": "SentenceSkipped",
+      "text": null,
+      "features": [
+        8,
+        0,
+        4,
+        3,
+        -1024,
+        1024
+      ],
+      "input_hash": "0x90731dbf2006137cefc119c0272152908508f06456bee2df06cc690453e3d96a"
+    },
+    {
+      "pool_id": "0x4e9f459052a6ce19dfd08a63b33d23997225cac2156383c03f69f55aa3987768",
+      "pool_kind": "static_fee",
+      "zero_for_one": false,
+      "exact_input": false,
+      "gas_used": "3617060",
+      "event": "SentenceSpoken",
+      "text": "the memory moves but my questions remain shifting.",
+      "features": [
+        8,
+        0,
+        0,
+        3,
+        -1024,
+        -1024
+      ],
+      "input_hash": "0x9d71a27ac539fdbf0ea9fbf96e9e09a948644992e04754b68660387572fb6922"
+    }
+  ],
+  "gas_scope": "Full router transaction: real PoolManager AMM math, callback inference, ERC20/native settlement and logs",
+  "deployment_count": 79,
+  "total_local_deployment_gas": "299125430",
+  "source_sha256": {
+    "swap-speaker-535k/contracts/SentenceSpeakerV4Hook.sol": "9f08ed53bb5547b4ce69a0f0544e8c43e8610a9ff4607835637f81e24953c608",
+    "swap-speaker-535k/contracts/SentenceSpeakerModel.sol": "2e5de2a03dc945dbda3ca3e9419fc16a325854bec5d9bb03bbf56571beecf882",
+    "tests/evm/SentenceV4IntegrationHarness.sol": "b4069bfc30053d1a9e44b6b706e2a85167e2a9317968a674116bad880762cb97",
+    "tests/evm/SentenceV4AdversarialModels.sol": "86b9402da2677724b47e2f1ee66aa303d19110cf8505679e6b4aae4fa5c94fc8",
+    "tests/evm/sentence-v4-poolmanager.test.mjs": "7b73fa7bff2dd39d7e1304864a7525ee2e19ba3282e32f52898e37498e69d52d"
+  },
+  "limitations": [
+    "Local execution only; no fork, deployed public PoolManager, periphery router or external security audit.",
+    "Dynamic fee pools receive the configured fixed 3000 initial LP fee; this adapter has no learned fee policy.",
+    "Inference is intentionally optional. Insufficient gas or a failing model emits SentenceSkipped and resets language state.",
+    "No reserve can make an arbitrarily gas-starved transaction succeed; the transaction must cover core swap and bookkeeping gas."
+  ]
+}

@@ -6,6 +6,16 @@ Branch: `research/v4-hook-1m` · Started: 23 October 2026 · Baseline: `d9d6306b
 
 [Status and research gates](STATUS.md) · [Latest experiment](RESULTS-002.md) · [Model selection](MODEL-SELECTION.md) · [Research protocol](RESEARCH.md) · [Model attribution](model-data/NOTICE.txt)
 
+## Optimized sentence model and real v4 integration
+
+The [selected sentence-model candidate](OPTIMIZATION.md) improves movement-aware
+wording while retaining the saved baseline and full reports, including grammar
+regressions. It adds a multi-pool adapter verified with real local v4 PoolManager
+swaps and token settlement. See [quality results](swap-speaker-535k/reports/QUALITY.md),
+[adapter behavior](swap-speaker-535k/V4-ADAPTER.md), and the exact
+[selected export](selected-quality-model.json). This is research code; local
+validation does not imply a public-chain deployment.
+
 ## Execution policy
 
 Run training, model selection and benchmarks locally. GitHub is used to publish source, saved weights and completed reports. Do not launch model training on GitHub Actions or other GitHub-hosted compute for this study.

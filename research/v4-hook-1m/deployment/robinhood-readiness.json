@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "status": "PREPARED_UNSIGNED_NOT_BROADCAST",
+  "network": "Robinhood Chain mainnet",
+  "chain_id": 4663,
+  "observed_block": {
+    "number": 95997968,
+    "hash": "0xb8dc6d9a77702c282b7b670a9148636bdd58449b201d558f398df93272ab78d9",
+    "timestamp": 1792764492
+  },
+  "sender": {
+    "address": "0x8D6B11CFdF079e27C17e05Cb7Ea81235887691c6",
+    "pending_nonce": 6114,
+    "balance_wei": "410921649975127721"
+  },
+  "dependencies": {
+    "pool_manager": "0x8366a39CC670B4001A1121B8F6A443A643e40951",
+    "pool_manager_code_hash": "0xbd3881180b547f5fe817545743cfb4343e96b1bc6640dcd70c106b0066e95626",
+    "create2_deployer": "0x4e59b44847b379578588920cA78FbF26c0B4956C",
+    "create2_deployer_code_hash": "0x2fa86add0aed31f33a762c9d88e807c475bd51d0f52bd0955754b2608f7e4989"
+  },
+  "selected_model": {
+    "directory": "swap-speaker-535k/quality-candidate-final",
+    "model_hash": "0x9fed9dd44d7301fca32c4abff70bb8f722a01b3087540f93c4b666b8e4181b48",
+    "artifacts": {
+      "core.bin": {
+        "bytes": 4544,
+        "sha256": "b8fe0167899f1830273cdd6197d571351aea038e4e74c9c5012601353a0bed09"
+      },
+      "embeddings.bin": {
+        "bytes": 524352,
+        "sha256": "b407d54d7c572573e6f4a0f11dcdc291bdde91290ae315ab6a5292dd5a1a6896"
+      },
+      "nodes.bin": {
+        "bytes": 540606,
+        "sha256": "d10789ea22466cb47f7f869ebf17220956762ed0ccb272ac2e240d1cfc94eb3d"
+      },
+      "vocabulary.bin": {
+        "bytes": 262144,
+        "sha256": "f3809a83bb9059f91091977717235103041e1980517ae7bea0d45e6d27383b61"
+      }
+    }
+  },
+  "model_address": "0x24f8A0669c903E6D18A2630f08D4795fcc594B57",
+  "hook_address": "0x8400bA05C94b8c476b4cE4c958DA56EE26E15040",
+  "constructor": {
+    "maximum_words": 12,
+    "inference_gas_limit": 6000000,
+    "initial_dynamic_lp_fee": 3000
+  },
+  "hook_permission_mask": "0x1040",
+  "require_speech_hook_data": "0x53504b31",
+  "transactions": 59,
+  "matching_contracts_already_present": 0,
+  "local_execution_gas": "291914355",
+  "costs": {
+    "local_execution_gas": "291914355",
+    "observed_gas_price_wei": "20526000",
+    "local_execution_cost_eth_at_observed_gas_price": "0.00599183405073",
+    "public_estimated_shard_gas": "292560003",
+    "public_estimated_shard_cost_eth": "0.006005086621578",
+    "note": "Local execution is not an all-in funding quote. Shard RPC estimates include current chain overhead. Model and hook must be estimated after dependencies exist; gas prices and data fees may change."
+  },
+  "source_sha256": {
+    "swap-speaker-535k/contracts/SentenceSpeakerModel.sol": "2e5de2a03dc945dbda3ca3e9419fc16a325854bec5d9bb03bbf56571beecf882",
+    "swap-speaker-535k/contracts/SentenceSpeakerV4Hook.sol": "9f08ed53bb5547b4ce69a0f0544e8c43e8610a9ff4607835637f81e24953c608",
+    "scripts/prepare-v4-deployment.mjs": "b6cd191c7c539608de211b433ee3b4f1c7705edf99d3274c5a78f018d526f398"
+  },
+  "unsigned_plan_sha256": "1c8a9676c7899225aa4937b890d25642870a68e58a2e84ec9a8b8d653a611e7d",
+  "checks": [
+    "57 data-shard deployments locally executed and exact runtime hashes verified",
+    "model constructor and model hash locally verified",
+    "hook constructor and permission bits locally verified",
+    "public RPC chain and dependency runtime hashes verified",
+    "predicted public addresses checked for conflicting code"
+  ],
+  "next_steps": [
+    "Confirm the signing wallet; rerun with --from to record its balance and pending nonce.",
+    "Recheck dependency code, chain ID and expected runtime hashes before signing.",
+    "Submit in listed order, estimate gas just before each transaction, and verify each receipt and runtime hash.",
+    "Pool initialization and liquidity need an explicitly chosen pair, initial price and budget; they are not included."
+  ]
+}

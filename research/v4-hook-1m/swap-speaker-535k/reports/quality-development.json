@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "experiments": [
+    {
+      "name": "unbalanced-all-features-24",
+      "natural_completions": 294,
+      "controlled_pattern_matches_before_article_fix": 200,
+      "regime_consistent": 117,
+      "distinct_outputs": 113,
+      "decision": "rejected: degraded completion and grammar"
+    },
+    {
+      "name": "unbalanced-all-features-160",
+      "natural_completions": 300,
+      "controlled_pattern_matches_before_article_fix": 300,
+      "regime_consistent": 185,
+      "distinct_outputs": 23,
+      "decision": "rejected: increased repetition and missed calm regimes"
+    },
+    {
+      "name": "unbalanced-current-move-only-240",
+      "metrics": {
+        "controlled_grammar_passes": 300,
+        "distinct_outputs": 10,
+        "mean_words": 7.04,
+        "natural_completions": 300,
+        "regime_consistent_outputs": 161,
+        "repeated_bigram_outputs": 0,
+        "samples": 300
+      },
+      "decision": "rejected: only 10 distinct outputs and weaker semantics"
+    },
+    {
+      "name": "balanced-signed-style-no-anchors-160",
+      "metrics": {
+        "article_agreement_passes": 300,
+        "controlled_grammar_passes": 300,
+        "distinct_outputs": 52,
+        "mean_words": 8.693333333333333,
+        "natural_completions": 300,
+        "regime_consistent_outputs": 209,
+        "repeated_bigram_outputs": 0,
+        "samples": 300
+      },
+      "confirmation": {
+        "article_agreement_passes": 600,
+        "controlled_grammar_passes": 600,
+        "distinct_outputs": 57,
+        "mean_words": 8.733333333333333,
+        "natural_completions": 600,
+        "regime_consistent_outputs": 422,
+        "repeated_bigram_outputs": 0,
+        "samples": 600
+      },
+      "decision": "retained as fallback; test fixed feature conditioning to improve regime matching"
+    },
+    {
+      "name": "balanced-signed-style-anchors-160-unweighted",
+      "metrics": {
+        "article_agreement_passes": 300,
+        "controlled_grammar_passes": 297,
+        "distinct_outputs": 45,
+        "mean_words": 8.74,
+        "natural_completions": 300,
+        "regime_consistent_outputs": 232,
+        "repeated_bigram_outputs": 0,
+        "samples": 300
+      },
+      "decision": "retained fallback; weighted final pass prioritizes movement meaning"
+    }
+  ],
+  "note": "Development-set audits prompted changes; final candidate requires a fresh confirmation seed. Pattern matches here precede stricter article checks, and are not broad English quality scores."
+}

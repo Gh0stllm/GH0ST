@@ -1,0 +1,94 @@
+{
+  "artifacts": {
+    "core.bin": {
+      "bytes": 4544,
+      "sha256": "b8fe0167899f1830273cdd6197d571351aea038e4e74c9c5012601353a0bed09"
+    },
+    "embeddings.bin": {
+      "bytes": 524352,
+      "sha256": "b407d54d7c572573e6f4a0f11dcdc291bdde91290ae315ab6a5292dd5a1a6896"
+    },
+    "nodes.bin": {
+      "bytes": 540606,
+      "sha256": "d10789ea22466cb47f7f869ebf17220956762ed0ccb272ac2e240d1cfc94eb3d"
+    },
+    "quality-checkpoint.npz": {
+      "bytes": 1023852,
+      "sha256": "4e1cc369b0ba76fe8862ee966acbb0811b7aaa21f5a03e373f4dbc5e696333b2"
+    },
+    "vocabulary.bin": {
+      "bytes": 262144,
+      "sha256": "f3809a83bb9059f91091977717235103041e1980517ae7bea0d45e6d27383b61"
+    },
+    "vocabulary.json": {
+      "bytes": 105033,
+      "sha256": "2a63655a371d8023e17af22322291327fb3825585252ecec9c7e37f2e08014df"
+    }
+  },
+  "candidate": {
+    "checkpoint_selection": "held-out cross entropy + 2*(1 - teacher-forced style regime accuracy)",
+    "deliberately_inactive_feature_weights": 96,
+    "epochs": 160,
+    "feature_policy": "move-and-swap-style",
+    "feature_policy_details": "current absolute tick movement sets expressive intensity; signed direction and exactness choose four learned opening styles; historical movement, acceleration and elapsed-time columns are zero",
+    "fixed_feature_conditioning_details": "hidden[0]=current movement/1024; hidden[1]=direction/1024+1; hidden[2]=exactness/1024+1, independent of prior token and recurrent state",
+    "fixed_feature_conditioning_rows": 3,
+    "inference_changes": "none: same integer recurrent step and depth-13 greedy decoder",
+    "learning_rate": 0.0008,
+    "parameter_count": 534751,
+    "seed": 846652,
+    "selected_epoch": 148,
+    "source_precision": "reconstructed from verified int16 export; original float checkpoint unavailable",
+    "style_token_loss_weight": 4.0,
+    "training_location": "local CPU; NumPy only",
+    "unconstrained_parameter_values": 534451
+  },
+  "changed_parameter_values_from_recovered_export": {
+    "bh": 32,
+    "bias": 400,
+    "embedding": 1852,
+    "nodes": 12438,
+    "wf": 191,
+    "wh": 1021,
+    "wx": 1020
+  },
+  "core_order": [
+    "input_weight",
+    "recurrent_weight",
+    "feature_weight",
+    "hidden_bias"
+  ],
+  "decoding": "Greedy binary routing through a complete learned depth-13 tree; not global flat-softmax argmax",
+  "embedding_size": 32,
+  "features": 6,
+  "hidden_size": 32,
+  "node_record_bytes": 66,
+  "nonzero_parameter_values": {
+    "bh": 31,
+    "bias": 8190,
+    "embedding": 261654,
+    "nodes": 261298,
+    "wf": 90,
+    "wh": 925,
+    "wx": 928
+  },
+  "parameter_accounting": {
+    "embedding.weight": 262176,
+    "feature_weight": 192,
+    "hidden_bias": 32,
+    "input_weight": 1024,
+    "node_bias.weight": 8191,
+    "nodes.weight": 262112,
+    "recurrent_weight": 1024
+  },
+  "parameters": 534751,
+  "scale": 1024,
+  "schema_version": 1,
+  "shard_sizes": {
+    "embeddings": 24000,
+    "nodes": 23760,
+    "vocabulary": 24000
+  },
+  "tree_depth": 13,
+  "vocabulary_size": 8192
+}

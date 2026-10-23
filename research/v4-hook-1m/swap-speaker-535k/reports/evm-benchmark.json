@@ -1,0 +1,348 @@
+{
+  "schema_version": 1,
+  "status": "PASSED_LOCAL_EVM",
+  "parameters": 534751,
+  "vocabulary_tokens": 8192,
+  "training_location": "Local CPU only; no GitHub training jobs",
+  "network": "In-process Ganache Shanghai, 30 million block gas limit; no public transactions",
+  "architecture": "32-dimensional embedding, 32-dimensional recurrent state, 6 features, learned depth-13 binary word decoder",
+  "data_shards": 57,
+  "model_hash": "0xb277cece625d8abc5a54406d99ffbc34dcbdaa48fcf49e00f95acedaed513105",
+  "compiler": {
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "viaIR": true,
+    "evmVersion": "shanghai",
+    "outputSelection": {
+      "*": {
+        "*": [
+          "abi",
+          "evm.bytecode.object",
+          "evm.deployedBytecode.object"
+        ]
+      }
+    }
+  },
+  "parity": {
+    "vectors": 26,
+    "branch_scores_matched": 338,
+    "all_hidden_states_exact": true,
+    "full_sentence_reference_cases": 3
+  },
+  "sentence_events": 8,
+  "natural_completions": 8,
+  "exactly_one_sentence_per_callback": true,
+  "multiple_callbacks_same_block_verified": true,
+  "caller_and_pool_checks_passed": true,
+  "invalid_inputs_rejected": [
+    "previous",
+    "state_negative",
+    "state_above_clamp",
+    "feature_bound",
+    "zero_word_limit",
+    "oversized_word_limit"
+  ],
+  "gas_range_single_callback_transactions": [
+    3893881,
+    3966974
+  ],
+  "measurements": [
+    {
+      "callbacks": 1,
+      "gas_used": "3966974",
+      "scope": "Local callback-harness transaction, including complete sentence inference, state writes and event; no AMM math or token settlement"
+    },
+    {
+      "callbacks": 1,
+      "gas_used": "3893931",
+      "scope": "Local callback-harness transaction, including complete sentence inference, state writes and event; no AMM math or token settlement"
+    },
+    {
+      "callbacks": 1,
+      "gas_used": "3893912",
+      "scope": "Local callback-harness transaction, including complete sentence inference, state writes and event; no AMM math or token settlement"
+    },
+    {
+      "callbacks": 1,
+      "gas_used": "3893944",
+      "scope": "Local callback-harness transaction, including complete sentence inference, state writes and event; no AMM math or token settlement"
+    },
+    {
+      "callbacks": 1,
+      "gas_used": "3893959",
+      "scope": "Local callback-harness transaction, including complete sentence inference, state writes and event; no AMM math or token settlement"
+    },
+    {
+      "callbacks": 1,
+      "gas_used": "3893881",
+      "scope": "Local callback-harness transaction, including complete sentence inference, state writes and event; no AMM math or token settlement"
+    },
+    {
+      "callbacks": 2,
+      "gas_used": "7594339",
+      "scope": "Local callback-harness transaction, including complete sentence inference, state writes and event; no AMM math or token settlement"
+    }
+  ],
+  "total_local_deployment_gas": "296873228",
+  "deployment_receipts": [
+    {
+      "name": "core_shard",
+      "gas": "1053092"
+    },
+    {
+      "name": "embeddings_shard",
+      "gas": "5306448"
+    },
+    {
+      "name": "embeddings_shard",
+      "gas": "5306568"
+    },
+    {
+      "name": "embeddings_shard",
+      "gas": "5306148"
+    },
+    {
+      "name": "embeddings_shard",
+      "gas": "5304852"
+    },
+    {
+      "name": "embeddings_shard",
+      "gas": "5305344"
+    },
+    {
+      "name": "embeddings_shard",
+      "gas": "5305728"
+    },
+    {
+      "name": "embeddings_shard",
+      "gas": "5305512"
+    },
+    {
+      "name": "embeddings_shard",
+      "gas": "5304672"
+    },
+    {
+      "name": "embeddings_shard",
+      "gas": "5306760"
+    },
+    {
+      "name": "embeddings_shard",
+      "gas": "5305908"
+    },
+    {
+      "name": "embeddings_shard",
+      "gas": "5307336"
+    },
+    {
+      "name": "embeddings_shard",
+      "gas": "5306484"
+    },
+    {
+      "name": "embeddings_shard",
+      "gas": "5305044"
+    },
+    {
+      "name": "embeddings_shard",
+      "gas": "5306160"
+    },
+    {
+      "name": "embeddings_shard",
+      "gas": "5305416"
+    },
+    {
+      "name": "embeddings_shard",
+      "gas": "5304792"
+    },
+    {
+      "name": "embeddings_shard",
+      "gas": "5305224"
+    },
+    {
+      "name": "embeddings_shard",
+      "gas": "5306064"
+    },
+    {
+      "name": "embeddings_shard",
+      "gas": "5305548"
+    },
+    {
+      "name": "embeddings_shard",
+      "gas": "5304972"
+    },
+    {
+      "name": "embeddings_shard",
+      "gas": "5307444"
+    },
+    {
+      "name": "embeddings_shard",
+      "gas": "4508118"
+    },
+    {
+      "name": "nodes_shard",
+      "gas": "5248164"
+    },
+    {
+      "name": "nodes_shard",
+      "gas": "5246964"
+    },
+    {
+      "name": "nodes_shard",
+      "gas": "5246880"
+    },
+    {
+      "name": "nodes_shard",
+      "gas": "5247348"
+    },
+    {
+      "name": "nodes_shard",
+      "gas": "5245404"
+    },
+    {
+      "name": "nodes_shard",
+      "gas": "5248824"
+    },
+    {
+      "name": "nodes_shard",
+      "gas": "5245416"
+    },
+    {
+      "name": "nodes_shard",
+      "gas": "5246568"
+    },
+    {
+      "name": "nodes_shard",
+      "gas": "5247288"
+    },
+    {
+      "name": "nodes_shard",
+      "gas": "5246580"
+    },
+    {
+      "name": "nodes_shard",
+      "gas": "5245992"
+    },
+    {
+      "name": "nodes_shard",
+      "gas": "5249052"
+    },
+    {
+      "name": "nodes_shard",
+      "gas": "5246820"
+    },
+    {
+      "name": "nodes_shard",
+      "gas": "5245188"
+    },
+    {
+      "name": "nodes_shard",
+      "gas": "5246184"
+    },
+    {
+      "name": "nodes_shard",
+      "gas": "5244732"
+    },
+    {
+      "name": "nodes_shard",
+      "gas": "5247384"
+    },
+    {
+      "name": "nodes_shard",
+      "gas": "5247096"
+    },
+    {
+      "name": "nodes_shard",
+      "gas": "5245380"
+    },
+    {
+      "name": "nodes_shard",
+      "gas": "5244936"
+    },
+    {
+      "name": "nodes_shard",
+      "gas": "5245788"
+    },
+    {
+      "name": "nodes_shard",
+      "gas": "5246424"
+    },
+    {
+      "name": "nodes_shard",
+      "gas": "3962145"
+    },
+    {
+      "name": "vocabulary_shard",
+      "gas": "5135676"
+    },
+    {
+      "name": "vocabulary_shard",
+      "gas": "5136144"
+    },
+    {
+      "name": "vocabulary_shard",
+      "gas": "5142540"
+    },
+    {
+      "name": "vocabulary_shard",
+      "gas": "5133852"
+    },
+    {
+      "name": "vocabulary_shard",
+      "gas": "5133828"
+    },
+    {
+      "name": "vocabulary_shard",
+      "gas": "5127024"
+    },
+    {
+      "name": "vocabulary_shard",
+      "gas": "5131884"
+    },
+    {
+      "name": "vocabulary_shard",
+      "gas": "5139060"
+    },
+    {
+      "name": "vocabulary_shard",
+      "gas": "5133912"
+    },
+    {
+      "name": "vocabulary_shard",
+      "gas": "5133204"
+    },
+    {
+      "name": "vocabulary_shard",
+      "gas": "4736771"
+    },
+    {
+      "name": "SentenceSpeakerModel",
+      "gas": "2397876"
+    },
+    {
+      "name": "V4CallbackHarness",
+      "gas": "818308"
+    },
+    {
+      "name": "ResearchCreate2Factory",
+      "gas": "136989"
+    },
+    {
+      "name": "SentenceSpeakerHook with test factory",
+      "gas": "1065969"
+    }
+  ],
+  "source_sha256": {
+    "swap-speaker-535k/contracts/SentenceSpeakerModel.sol": "2e5de2a03dc945dbda3ca3e9419fc16a325854bec5d9bb03bbf56571beecf882",
+    "swap-speaker-535k/contracts/SentenceSpeakerHook.sol": "100e37b16b2090f0e0d3cb2c890b2ede6b9387319ba0043a9eeba445526b3907",
+    "tests/evm/ResearchHarness.sol": "8c56418d3d546dd78e26ab0d8ad1b3f1b2615ccbf17dccd5e103f2898afde29d",
+    "scripts/bench-sentences.mjs": "9baadcbbb440295fd73438f99d7f89db263e41fb2673bff00774007c035e613d"
+  },
+  "limitations": [
+    "This is a callback harness with upstream hook handling, not a full real PoolManager swap.",
+    "Sentence length is capped at 12 words; capped output receives a formatting period and an explicit endedNaturally=false flag.",
+    "All parameters are part of the trained model, but conditional decoding activates only one vocabulary path per word.",
+    "A half-million-parameter research model does not match a large general-purpose language model.",
+    "Greedy output can repeat, become incoherent or make inaccurate statements; no economic utility is established."
+  ]
+}

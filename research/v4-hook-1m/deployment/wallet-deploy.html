@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GH0ST · Robinhood deployment</title>
+<style>
+  :root{color-scheme:dark;font-family:system-ui,sans-serif;background:#101311;color:#edf5ef}
+  body{max-width:820px;margin:50px auto;padding:0 22px;line-height:1.55}h1{font-size:30px;letter-spacing:-1px}
+  .muted{color:#a6b4aa}.card{border:1px solid #33473a;background:#19221c;border-radius:14px;padding:22px;margin:18px 0}
+  button,input{font:inherit}button{background:#b7ecc4;color:#102515;border:0;border-radius:7px;padding:10px 16px;cursor:pointer;margin:8px 8px 8px 0}
+  button:disabled{opacity:.35;cursor:default}pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px}progress{width:100%;height:15px}
+  code{overflow-wrap:anywhere}a{color:#b7ecc4}#error{color:#ffbbac}.label{font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:#a6b4aa}
+</style>
+<h1>Deploy the GH0ST sentence model</h1>
+<p class="muted">Robinhood Chain mainnet · chain 4663 · 57 weight shards, model, and v4 hook.</p>
+<div class="card">
+  <div class="label">1 · Load the prepared plan</div>
+  <p>Load the reviewed <code>robinhood-mainnet-plan.json</code> from this local page, or choose the file below. Both options verify the exact approved file hash. This page has no analytics or remote scripts.</p>
+  <button id="load-reviewed">Load reviewed plan</button>
+  <input id="plan" type="file" accept=".json,application/json">
+  <pre id="summary">No plan loaded.</pre>
+</div>
+<div class="card">
+  <div class="label">2 · Verify your wallet</div>
+  <p>Only the confirmed wallet <code>0x8D6B11CFdF079e27C17e05Cb7Ea81235887691c6</code> can continue. Connect a browser wallet and select Robinhood Chain mainnet.</p>
+  <button id="connect" disabled>Connect and verify</button><span id="account"></span>
+</div>
+<div class="card">
+  <div class="label">3 · Review and sign one deployment at a time</div>
+  <p>Every deployment spends ETH gas. The wallet displays a fresh fee estimate before you confirm. Existing matching contracts are verified and skipped. This page never requests a seed phrase or private key.</p>
+  <progress id="progress" value="0" max="59"></progress>
+  <pre id="next">Load the plan first.</pre>
+  <button id="refresh" disabled>Check deployed contracts</button>
+  <button id="deploy" disabled>Deploy next contract</button>
+  <p id="error" role="alert"></p>
+</div>
+<p class="muted">This deploys contracts only. It does not initialize a pool, add liquidity, approve tokens, or perform swaps. Keep the plan and transaction receipts for recovery.</p>
+<pre id="log"></pre>
+<script src="vendor/ethers.umd.min.js"></script>
+<script src="wallet-deploy.js"></script>
+</html>

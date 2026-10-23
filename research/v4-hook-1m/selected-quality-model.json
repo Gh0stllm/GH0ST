@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "status": "selected_local_candidate_verified",
+  "model_directory": "swap-speaker-535k/quality-candidate-final",
+  "parameters_stored": 534751,
+  "unconstrained_parameter_values": 534451,
+  "model_hash": "0x9fed9dd44d7301fca32c4abff70bb8f722a01b3087540f93c4b666b8e4181b48",
+  "artifacts": {
+    "core.bin": {
+      "bytes": 4544,
+      "sha256": "b8fe0167899f1830273cdd6197d571351aea038e4e74c9c5012601353a0bed09"
+    },
+    "embeddings.bin": {
+      "bytes": 524352,
+      "sha256": "b407d54d7c572573e6f4a0f11dcdc291bdde91290ae315ab6a5292dd5a1a6896"
+    },
+    "nodes.bin": {
+      "bytes": 540606,
+      "sha256": "d10789ea22466cb47f7f869ebf17220956762ed0ccb272ac2e240d1cfc94eb3d"
+    },
+    "quality-checkpoint.npz": {
+      "bytes": 1023852,
+      "sha256": "4e1cc369b0ba76fe8862ee966acbb0811b7aaa21f5a03e373f4dbc5e696333b2"
+    },
+    "vocabulary.bin": {
+      "bytes": 262144,
+      "sha256": "f3809a83bb9059f91091977717235103041e1980517ae7bea0d45e6d27383b61"
+    },
+    "vocabulary.json": {
+      "bytes": 105033,
+      "sha256": "2a63655a371d8023e17af22322291327fb3825585252ecec9c7e37f2e08014df"
+    }
+  },
+  "quality_report": "swap-speaker-535k/reports/quality-finetune.json",
+  "integration_report": "swap-speaker-535k/reports/quality-final-v4-integration.json",
+  "stress_quality_comparison": {
+    "baseline": {
+      "article_agreement_passes": 299,
+      "controlled_grammar_passes": 298,
+      "distinct_outputs": 75,
+      "mean_words": 7.866666666666666,
+      "natural_completions": 299,
+      "regime_consistent_outputs": 128,
+      "repeated_bigram_outputs": 0,
+      "samples": 300
+    },
+    "candidate": {
+      "article_agreement_passes": 299,
+      "controlled_grammar_passes": 296,
+      "distinct_outputs": 65,
+      "mean_words": 8.47,
+      "natural_completions": 300,
+      "regime_consistent_outputs": 265,
+      "repeated_bigram_outputs": 1,
+      "samples": 300
+    }
+  },
+  "hook_trajectory_comparison": {
+    "seed": 491807,
+    "description": "Additional development-time trajectory check; reserved results above are primary",
+    "baseline": {
+      "article_agreement_passes": 600,
+      "controlled_grammar_passes": 600,
+      "distinct_outputs": 48,
+      "mean_words": 8.083333333333334,
+      "natural_completions": 600,
+      "regime_consistent_outputs": 368,
+      "repeated_bigram_outputs": 0,
+      "samples": 600
+    },
+    "candidate": {
+      "article_agreement_passes": 599,
+      "controlled_grammar_passes": 588,
+      "distinct_outputs": 82,
+      "mean_words": 8.436666666666667,
+      "natural_completions": 600,
+      "regime_consistent_outputs": 517,
+      "repeated_bigram_outputs": 1,
+      "samples": 600
+    }
+  },
+  "tradeoffs": [
+    "Controlled synthetic-language evaluation, not general-language or market validation.",
+    "Movement relevance and reserved-trajectory diversity improve; controlled grammar falls from 600/600 to 588/600, and natural completion from 600/600 to 599/600.",
+    "Three hidden units use fixed feature conditioning; 96 historical/acceleration/elapsed feature weights are deliberately inactive.",
+    "The original float checkpoint is unavailable; this candidate was fine-tuned locally from verified integer exports."
+  ],
+  "deployment": "not published or deployed",
+  "reserved_confirmation": {
+    "seed": 523951,
+    "baseline": {
+      "article_agreement_passes": 600,
+      "controlled_grammar_passes": 600,
+      "distinct_outputs": 46,
+      "mean_words": 8.0,
+      "natural_completions": 600,
+      "regime_consistent_outputs": 356,
+      "repeated_bigram_outputs": 0,
+      "samples": 600
+    },
+    "candidate": {
+      "article_agreement_passes": 600,
+      "controlled_grammar_passes": 588,
+      "distinct_outputs": 84,
+      "mean_words": 8.405,
+      "natural_completions": 599,
+      "regime_consistent_outputs": 504,
+      "repeated_bigram_outputs": 0,
+      "samples": 600
+    }
+  }
+}

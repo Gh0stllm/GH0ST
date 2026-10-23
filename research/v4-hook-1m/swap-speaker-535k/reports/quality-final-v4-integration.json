@@ -1,0 +1,363 @@
+{
+  "schema_version": 1,
+  "status": "PASSED_REAL_LOCAL_POOLMANAGER",
+  "network": "Hardhat local EVM, Cancun, 30 million block gas limit; no public transactions",
+  "upstream": "@uniswap/v4-core@1.0.2 unmodified PoolManager",
+  "compiler": {
+    "version": "0.8.30+commit.73712a01.Emscripten.clang",
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "viaIR": true,
+    "evmVersion": "cancun",
+    "outputSelection": {
+      "*": {
+        "*": [
+          "abi",
+          "evm.bytecode.object",
+          "evm.deployedBytecode.object"
+        ]
+      }
+    }
+  },
+  "upstream_compiler": {
+    "version": "0.8.26+commit.8a97fa7a.Emscripten.clang",
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "viaIR": true,
+    "evmVersion": "cancun",
+    "outputSelection": {
+      "*": {
+        "*": [
+          "abi",
+          "evm.bytecode.object",
+          "evm.deployedBytecode.object"
+        ]
+      }
+    }
+  },
+  "model_hash": "0x9fed9dd44d7301fca32c4abff70bb8f722a01b3087540f93c4b666b8e4181b48",
+  "max_words": 12,
+  "inference_gas_limit": 6000000,
+  "model_directory": "swap-speaker-535k/quality-candidate-final",
+  "model_artifacts": {
+    "core.bin": {
+      "bytes": 4544,
+      "sha256": "b8fe0167899f1830273cdd6197d571351aea038e4e74c9c5012601353a0bed09"
+    },
+    "embeddings.bin": {
+      "bytes": 524352,
+      "sha256": "b407d54d7c572573e6f4a0f11dcdc291bdde91290ae315ab6a5292dd5a1a6896"
+    },
+    "nodes.bin": {
+      "bytes": 540606,
+      "sha256": "d10789ea22466cb47f7f869ebf17220956762ed0ccb272ac2e240d1cfc94eb3d"
+    },
+    "vocabulary.bin": {
+      "bytes": 262144,
+      "sha256": "f3809a83bb9059f91091977717235103041e1980517ae7bea0d45e6d27383b61"
+    },
+    "vocabulary.json": {
+      "bytes": 105033,
+      "sha256": "2a63655a371d8023e17af22322291327fb3825585252ecec9c7e37f2e08014df"
+    }
+  },
+  "failure_fixtures": [
+    {
+      "model": "SentenceV4MalformedModel",
+      "constructor_arguments": [],
+      "gas_used": "170074"
+    },
+    {
+      "model": "SentenceV4OversizedModel",
+      "constructor_arguments": [],
+      "gas_used": "170628"
+    },
+    {
+      "model": "SentenceV4InvalidBooleanModel",
+      "constructor_arguments": [],
+      "gas_used": "179032"
+    },
+    {
+      "model": "SentenceV4GasBurningModel",
+      "constructor_arguments": [],
+      "gas_used": "463614"
+    },
+    {
+      "model": "SentenceV4InvalidLengthModel",
+      "constructor_arguments": [],
+      "gas_used": "178260"
+    },
+    {
+      "model": "SentenceV4InvalidOutputModel",
+      "constructor_arguments": [
+        0
+      ],
+      "gas_used": "179363"
+    },
+    {
+      "model": "SentenceV4InvalidOutputModel",
+      "constructor_arguments": [
+        1
+      ],
+      "gas_used": "179767"
+    },
+    {
+      "model": "SentenceV4InvalidOutputModel",
+      "constructor_arguments": [
+        2
+      ],
+      "gas_used": "179903"
+    },
+    {
+      "model": "SentenceV4InvalidOutputModel",
+      "constructor_arguments": [
+        3
+      ],
+      "gas_used": "179377"
+    },
+    {
+      "model": "SentenceV4InvalidOutputModel",
+      "constructor_arguments": [
+        4
+      ],
+      "gas_used": "182823"
+    },
+    {
+      "model": "SentenceV4InvalidOutputModel",
+      "constructor_arguments": [
+        5
+      ],
+      "gas_used": "188550"
+    },
+    {
+      "model": "SentenceV4InvalidOutputModel",
+      "constructor_arguments": [
+        6
+      ],
+      "gas_used": "188765"
+    },
+    {
+      "model": "SentenceV4InvalidOutputModel",
+      "constructor_arguments": [
+        7
+      ],
+      "gas_used": "180634"
+    },
+    {
+      "model": "SentenceV4InvalidOutputModel",
+      "constructor_arguments": [
+        8
+      ],
+      "gas_used": "179810"
+    }
+  ],
+  "required_speech_hook_data": "0x53504b31",
+  "required_speech_gas_estimate": "6800904",
+  "required_speech_gas_used": "3974957",
+  "hooks_permissions": "0x1040 (afterInitialize, afterSwap)",
+  "checks": [
+    "both_directions_exact_input_and_output",
+    "multi_pool_isolation",
+    "dynamic_fee_pool_compatibility",
+    "native_currency_settlement",
+    "elapsed_time_clamp",
+    "low_gas_fail_open",
+    "recovery_after_skip",
+    "canonical_manager_only",
+    "uninitialized_pool_rejected",
+    "router_callback_authorization",
+    "unsettled_swap_rollback",
+    "post_settlement_revert_rollback",
+    "model_revert_fail_open",
+    "bounded_returndata_and_output_validation",
+    "gas_exhaustion_fail_open",
+    "model_runtime_hash_pinned",
+    "required_speech_gas_estimation",
+    "required_speech_rollback",
+    "unrecognized_hook_data_remains_optional"
+  ],
+  "swaps": [
+    {
+      "pool_id": "0x4e9f459052a6ce19dfd08a63b33d23997225cac2156383c03f69f55aa3987768",
+      "pool_kind": "static_fee",
+      "zero_for_one": true,
+      "exact_input": true,
+      "gas_used": "4026492",
+      "event": "SentenceSpoken",
+      "text": "each swap brings a steady rhythm to the chain.",
+      "features": [
+        8,
+        0,
+        8,
+        20,
+        1024,
+        1024
+      ],
+      "input_hash": "0x7bf780e4f8b42478b593975bdfd2479b654aae168d8af91c18f5f80002886732"
+    },
+    {
+      "pool_id": "0x4e9f459052a6ce19dfd08a63b33d23997225cac2156383c03f69f55aa3987768",
+      "pool_kind": "static_fee",
+      "zero_for_one": true,
+      "exact_input": false,
+      "gas_used": "3575471",
+      "event": "SentenceSpoken",
+      "text": "i hear the steady rhythm beneath the price.",
+      "features": [
+        8,
+        0,
+        0,
+        3,
+        1024,
+        -1024
+      ],
+      "input_hash": "0xe2d3c4741ef000201a2917511a56c1c58e057868afc494b711840e70aac25b0f"
+    },
+    {
+      "pool_id": "0x4e9f459052a6ce19dfd08a63b33d23997225cac2156383c03f69f55aa3987768",
+      "pool_kind": "static_fee",
+      "zero_for_one": false,
+      "exact_input": true,
+      "gas_used": "3998537",
+      "event": "SentenceSpoken",
+      "text": "my memory carries the steady rhythm of this trade.",
+      "features": [
+        4,
+        0,
+        4,
+        3,
+        -1024,
+        1024
+      ],
+      "input_hash": "0x8a7eb2c5d6f312e6a9aeb6f32f67f97577c9bb0da048bd26231415deffbad9db"
+    },
+    {
+      "pool_id": "0x4e9f459052a6ce19dfd08a63b33d23997225cac2156383c03f69f55aa3987768",
+      "pool_kind": "static_fee",
+      "zero_for_one": false,
+      "exact_input": false,
+      "gas_used": "4003420",
+      "event": "SentenceSpoken",
+      "text": "the calm rhythm leaves a trace in my memory.",
+      "features": [
+        8,
+        0,
+        4,
+        3,
+        -1024,
+        -1024
+      ],
+      "input_hash": "0xa413b59d7c638c143ad1d0defc4e4b1191bd7e24b1985c4c5b3fb667772c740b"
+    },
+    {
+      "pool_id": "0x026a0f018b9181e6448750435f548a80b75030d30be4620972df1f112582a379",
+      "pool_kind": "dynamic_fee",
+      "zero_for_one": false,
+      "exact_input": true,
+      "gas_used": "4046224",
+      "event": "SentenceSpoken",
+      "text": "my memory carries the gentle rhythm of this trade.",
+      "features": [
+        4,
+        0,
+        4,
+        27,
+        -1024,
+        1024
+      ],
+      "input_hash": "0x5d9b80add39fe0619de3bfbd37b7529894e1916705c93806a095c35dfcf4ad7f"
+    },
+    {
+      "pool_id": "0x70cf29506f21d41a92ae03179949195cb982b697abe743d202f4e009a13df96d",
+      "pool_kind": "native",
+      "zero_for_one": true,
+      "exact_input": true,
+      "gas_used": "4015190",
+      "event": "SentenceSpoken",
+      "text": "each swap brings a shifting rhythm to the chain.",
+      "features": [
+        796,
+        0,
+        796,
+        23,
+        1024,
+        1024
+      ],
+      "input_hash": "0xbfc780abbaf38d0085a9aeecdbe23bc2a1bd3311f8e2c8889a9886455e70efcc"
+    },
+    {
+      "pool_id": "0x4e9f459052a6ce19dfd08a63b33d23997225cac2156383c03f69f55aa3987768",
+      "pool_kind": "static_fee",
+      "zero_for_one": true,
+      "exact_input": true,
+      "gas_used": "3974315",
+      "event": "SentenceSpoken",
+      "text": "this trade leaves a steady trace in my memory.",
+      "features": [
+        4,
+        0,
+        4,
+        1024,
+        1024,
+        1024
+      ],
+      "input_hash": "0xd0959244cbfc9bf5ea70140db287f0a417650afb65752e9ad5c4411265895449"
+    },
+    {
+      "pool_id": "0x4e9f459052a6ce19dfd08a63b33d23997225cac2156383c03f69f55aa3987768",
+      "pool_kind": "static_fee",
+      "zero_for_one": false,
+      "exact_input": true,
+      "gas_used": "129880",
+      "event": "SentenceSkipped",
+      "text": null,
+      "features": [
+        8,
+        0,
+        4,
+        3,
+        -1024,
+        1024
+      ],
+      "input_hash": "0x497842520171efab9cd1e5c182db98903b53272f11dce2b08883c6719c276cb5"
+    },
+    {
+      "pool_id": "0x4e9f459052a6ce19dfd08a63b33d23997225cac2156383c03f69f55aa3987768",
+      "pool_kind": "static_fee",
+      "zero_for_one": false,
+      "exact_input": false,
+      "gas_used": "4026046",
+      "event": "SentenceSpoken",
+      "text": "the steady rhythm leaves a trace in my memory.",
+      "features": [
+        8,
+        0,
+        0,
+        3,
+        -1024,
+        -1024
+      ],
+      "input_hash": "0xd69ebd882f72716dd504b3d7c751b95cd7d5d526cf3668d55bc27492592bfa9e"
+    }
+  ],
+  "gas_scope": "Full router transaction: real PoolManager AMM math, callback inference, ERC20/native settlement and logs",
+  "deployment_count": 79,
+  "total_local_deployment_gas": "299129186",
+  "source_sha256": {
+    "swap-speaker-535k/contracts/SentenceSpeakerV4Hook.sol": "9f08ed53bb5547b4ce69a0f0544e8c43e8610a9ff4607835637f81e24953c608",
+    "swap-speaker-535k/contracts/SentenceSpeakerModel.sol": "2e5de2a03dc945dbda3ca3e9419fc16a325854bec5d9bb03bbf56571beecf882",
+    "tests/evm/SentenceV4IntegrationHarness.sol": "b4069bfc30053d1a9e44b6b706e2a85167e2a9317968a674116bad880762cb97",
+    "tests/evm/SentenceV4AdversarialModels.sol": "86b9402da2677724b47e2f1ee66aa303d19110cf8505679e6b4aae4fa5c94fc8",
+    "tests/evm/sentence-v4-poolmanager.test.mjs": "7b73fa7bff2dd39d7e1304864a7525ee2e19ba3282e32f52898e37498e69d52d"
+  },
+  "limitations": [
+    "Local execution only; no fork, deployed public PoolManager, periphery router or external security audit.",
+    "Dynamic fee pools receive the configured fixed 3000 initial LP fee; this adapter has no learned fee policy.",
+    "Inference is intentionally optional. Insufficient gas or a failing model emits SentenceSkipped and resets language state.",
+    "No reserve can make an arbitrarily gas-starved transaction succeed; the transaction must cover core swap and bookkeeping gas."
+  ]
+}
