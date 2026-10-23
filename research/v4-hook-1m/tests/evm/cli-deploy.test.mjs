@@ -14,7 +14,7 @@ function harness() {
   plan.dependencies.create2_deployer_code_hash = keccak256(runtime);
   plan.dependencies.pool_manager_code_hash = keccak256(runtime);
   code.set(PIN.factory.toLowerCase(), runtime); code.set(PIN.manager.toLowerCase(), runtime);
-  const status = { chain: PIN.chain, signer: PIN.sender, nonce: 0, pendingNonce: 0, failReceipt: false };
+  const status = { chain: PIN.chain, signer: PIN.sender, nonce: 6118, pendingNonce: 6118, failReceipt: false };
   const provider = {
     send: async () => status.chain,
     getCode: async address => code.get(address.toLowerCase()) || '0x',
@@ -30,7 +30,7 @@ function harness() {
       assert.equal(events.at(-1).row.status, 'submitting');
       assert.equal(request.gasLimit, 152n); assert.equal(request.value, 0n); assert.equal(request.chainId, PIN.chain);
       assert.equal(request.to, PIN.factory); assert.equal(request.gasPrice, undefined); assert.equal(request.maxFeePerGas, undefined);
-      const index = events.filter(e => e.type === 'send').length;
+      const index = plan.transactions.findIndex(entry => entry.unsigned_transaction.data === request.data);
       events.push({ type: 'send', request });
       return { hash: '0x' + String(index + 1).padStart(64, '0'), wait: async () => {
         assert.equal(events.at(-1).row.status, 'pending');
@@ -55,7 +55,7 @@ test('wrong chain, signer, dependency or pending nonce prevents every broadcast'
     if (alteration === 'chain') h.status.chain = 1n;
     if (alteration === 'signer') h.status.signer = PIN.factory;
     if (alteration === 'dependency') h.code.set(PIN.factory.toLowerCase(), '0x');
-    if (alteration === 'nonce') h.status.pendingNonce = 1;
+    if (alteration === 'nonce') h.status.pendingNonce = 6119;
     await assert.rejects(deployEntries(h)); assert.equal(h.events.filter(e => e.type === 'send').length, 0);
   }
 });
@@ -81,4 +81,20 @@ test('submission and hash are journaled before send and wait, and failures stop 
   await assert.rejects(deployEntries(bad), /failed/);
   assert.equal(bad.events.filter(e => e.type === 'send').length, 1);
   assert.equal(Object.values(bad.state.transactions)[0].status, 'pending');
+});
+
+test('explicit nonces advance despite stale RPC pending counts after a confirmed deployment', async () => {
+  const h = harness();
+  // The RPC mock deliberately keeps returning 6118 after both sends.
+  await deployEntries(h);
+  assert.deepEqual(h.events.filter(e => e.type === 'send').map(e => e.request.nonce), [6118, 6119]);
+  assert.deepEqual(Object.values(h.state.transactions).map(e => e.nonce), [6118, 6119]);
+});
+
+test('resuming past matching contracts starts at the live account nonce without incrementing for skipped rows', async () => {
+  const h = harness();
+  h.code.set(h.plan.transactions[0].predicted_address.toLowerCase(), runtime);
+  h.state.transactions[h.plan.transactions[0].order] = { status: 'submitting' };
+  await deployEntries(h);
+  assert.deepEqual(h.events.filter(e => e.type === 'send').map(e => e.request.nonce), [6118]);
 });

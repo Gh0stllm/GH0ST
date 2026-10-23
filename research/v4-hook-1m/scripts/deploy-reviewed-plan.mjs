@@ -67,18 +67,22 @@ export async function inspectEntry(provider, entry, state) {
 export async function deployEntries({ provider, signer, plan, state, save, log = () => {} }) {
   assert(same(await signer.getAddress(), PIN.sender), 'Key does not belong to the confirmed deployment wallet.');
   await verifyNetwork(provider, plan);
-  assert.equal(await provider.getTransactionCount(PIN.sender, 'pending'), await provider.getTransactionCount(PIN.sender, 'latest'),
+  let nextNonce = await provider.getTransactionCount(PIN.sender, 'pending');
+  assert.equal(nextNonce, await provider.getTransactionCount(PIN.sender, 'latest'),
     'This wallet has pending transactions. Wait for them before starting or resuming.');
   for (const entry of plan.transactions) {
     if (await inspectEntry(provider, entry, state)) { log(`Verified ${entry.kind}: ${entry.predicted_address}`); continue; }
     await verifyNetwork(provider, plan);
-    const request = { from: PIN.sender, to: PIN.factory, data: entry.unsigned_transaction.data, value: 0n, chainId: PIN.chain };
+    // Choose the starting nonce once, then advance locally after each confirmed
+    // transaction. Some RPC backends briefly return the previous pending nonce.
+    const request = { from: PIN.sender, to: PIN.factory, data: entry.unsigned_transaction.data,
+      value: 0n, chainId: PIN.chain, nonce: nextNonce };
     const gasLimit = gasWithHeadroom(await signer.estimateGas(request));
     const fees = await provider.getFeeData(), price = fees.maxFeePerGas ?? fees.gasPrice;
     assert(price !== null, 'Cannot estimate current network fee.');
     assert(await provider.getBalance(PIN.sender, 'pending') >= gasLimit * price, 'Insufficient ETH for the current gas estimate.');
     // Record before sending so an ambiguous RPC outcome cannot cause a blind duplicate retry.
-    state.transactions[entry.order] = { status: 'submitting', expected_address: entry.predicted_address };
+    state.transactions[entry.order] = { status: 'submitting', expected_address: entry.predicted_address, nonce: nextNonce };
     save(state);
     const tx = await signer.sendTransaction({ ...request, gasLimit });
     state.transactions[entry.order] = { ...state.transactions[entry.order], status: 'pending', hash: tx.hash };
@@ -87,6 +91,7 @@ export async function deployEntries({ provider, signer, plan, state, save, log =
     assert.equal(Number(receipt.status), 1, 'Deployment transaction failed.');
     assert.equal(keccak256(await provider.getCode(entry.predicted_address)), entry.runtime_code_hash, 'Deployed runtime mismatch.');
     state.transactions[entry.order].status = 'verified'; save(state);
+    nextNonce++;
     log(`Verified ${entry.kind}: ${entry.predicted_address}`);
   }
 }

@@ -51,6 +51,8 @@ contract count, asks you to type `DEPLOY`, then accepts the key without echoing
 or storing it. It verifies the key belongs to the confirmed wallet, sends only
 the pinned zero-value factory deployments, uses 150% of fresh gas estimates,
 and verifies each runtime before continuing. It does not fund the pool.
+The CLI reads the live starting nonce once and advances it after each confirmed
+deployment, so a lagging RPC response cannot reuse the previous transaction's nonce.
 
 Receipts and an exclusive process lock are stored in gitignored
 `deployment/.local/`. Run the same command to resume. An unresolved submission
