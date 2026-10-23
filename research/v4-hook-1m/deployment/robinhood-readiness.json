@@ -4,14 +4,14 @@
   "network": "Robinhood Chain mainnet",
   "chain_id": 4663,
   "observed_block": {
-    "number": 95997968,
-    "hash": "0xb8dc6d9a77702c282b7b670a9148636bdd58449b201d558f398df93272ab78d9",
-    "timestamp": 1792764492
+    "number": 96033916,
+    "hash": "0x5ddab0177614db6b8c5071e79dd819a1ed9bb18501baa5833fc2578f85e93c9d",
+    "timestamp": 1792768268
   },
   "sender": {
     "address": "0x8D6B11CFdF079e27C17e05Cb7Ea81235887691c6",
-    "pending_nonce": 6114,
-    "balance_wei": "410921649975127721"
+    "pending_nonce": 6115,
+    "balance_wei": "310917718924461721"
   },
   "dependencies": {
     "pool_manager": "0x8366a39CC670B4001A1121B8F6A443A643e40951",
@@ -20,20 +20,20 @@
     "create2_deployer_code_hash": "0x2fa86add0aed31f33a762c9d88e807c475bd51d0f52bd0955754b2608f7e4989"
   },
   "selected_model": {
-    "directory": "swap-speaker-535k/quality-candidate-final",
-    "model_hash": "0x9fed9dd44d7301fca32c4abff70bb8f722a01b3087540f93c4b666b8e4181b48",
+    "directory": "swap-speaker-535k/composition-candidate-v2",
+    "model_hash": "0x03047f3adb84443ebbd6f1ba45d948fe4872f51ce0f6326e3f35a434c5b02f62",
     "artifacts": {
       "core.bin": {
         "bytes": 4544,
-        "sha256": "b8fe0167899f1830273cdd6197d571351aea038e4e74c9c5012601353a0bed09"
+        "sha256": "31a3e545b8fe2d7bb7528d65711f34da70b48cca191776ecfb4c867a99c3514b"
       },
       "embeddings.bin": {
         "bytes": 524352,
-        "sha256": "b407d54d7c572573e6f4a0f11dcdc291bdde91290ae315ab6a5292dd5a1a6896"
+        "sha256": "fcb6469d472fee834955802b479bfe3f23f063885b9cc9526aabb506eca080a0"
       },
       "nodes.bin": {
         "bytes": 540606,
-        "sha256": "d10789ea22466cb47f7f869ebf17220956762ed0ccb272ac2e240d1cfc94eb3d"
+        "sha256": "47251647e4c827015aed915cd278c5007e0fdf7708f70d9e35e3bb0f3fd77759"
       },
       "vocabulary.bin": {
         "bytes": 262144,
@@ -41,8 +41,8 @@
       }
     }
   },
-  "model_address": "0x24f8A0669c903E6D18A2630f08D4795fcc594B57",
-  "hook_address": "0x8400bA05C94b8c476b4cE4c958DA56EE26E15040",
+  "model_address": "0xb45b782c3a8057b32B44D4c4415B2686A7AB4fD5",
+  "hook_address": "0x25E6366C490225358625d941C7B147360b155040",
   "constructor": {
     "maximum_words": 12,
     "inference_gas_limit": 6000000,
@@ -50,23 +50,19 @@
   },
   "hook_permission_mask": "0x1040",
   "require_speech_hook_data": "0x53504b31",
-  "transactions": 59,
-  "matching_contracts_already_present": 0,
-  "local_execution_gas": "291914355",
   "costs": {
-    "local_execution_gas": "291914355",
-    "observed_gas_price_wei": "20526000",
-    "local_execution_cost_eth_at_observed_gas_price": "0.00599183405073",
-    "public_estimated_shard_gas": "292560003",
-    "public_estimated_shard_cost_eth": "0.006005086621578",
+    "local_execution_gas": "292660318",
+    "observed_gas_price_wei": "20546000",
+    "local_execution_cost_eth_at_observed_gas_price": "0.006012998893628",
+    "public_estimated_shard_gas": "297506406",
+    "public_estimated_shard_cost_eth": "0.006112566617676",
     "note": "Local execution is not an all-in funding quote. Shard RPC estimates include current chain overhead. Model and hook must be estimated after dependencies exist; gas prices and data fees may change."
   },
   "source_sha256": {
-    "swap-speaker-535k/contracts/SentenceSpeakerModel.sol": "2e5de2a03dc945dbda3ca3e9419fc16a325854bec5d9bb03bbf56571beecf882",
-    "swap-speaker-535k/contracts/SentenceSpeakerV4Hook.sol": "9f08ed53bb5547b4ce69a0f0544e8c43e8610a9ff4607835637f81e24953c608",
-    "scripts/prepare-v4-deployment.mjs": "b6cd191c7c539608de211b433ee3b4f1c7705edf99d3274c5a78f018d526f398"
+    "swap-speaker-535k/contracts/SentenceSpeakerModel.sol": "ae6dc36e9428f7098583c35f801151bde78162633f6ce012b93c742e889a748f",
+    "swap-speaker-535k/contracts/SentenceSpeakerV4Hook.sol": "5be6f500bee8e37b281dbd379c53e8b25e31d3fab6741cb157bb8752a10e1d97",
+    "scripts/prepare-v4-deployment.mjs": "e9219a69dc1f17d66432d48e793dc22075ef7ed25cd14102ce436232a5ccdf5f"
   },
-  "unsigned_plan_sha256": "1c8a9676c7899225aa4937b890d25642870a68e58a2e84ec9a8b8d653a611e7d",
   "checks": [
     "57 data-shard deployments locally executed and exact runtime hashes verified",
     "model constructor and model hash locally verified",
@@ -79,5 +75,8 @@
     "Recheck dependency code, chain ID and expected runtime hashes before signing.",
     "Submit in listed order, estimate gas just before each transaction, and verify each receipt and runtime hash.",
     "Pool initialization and liquidity need an explicitly chosen pair, initial price and budget; they are not included."
-  ]
+  ],
+  "transactions": 59,
+  "matching_contracts_already_present": 0,
+  "unsigned_plan_sha256": "2d4f3d60ef3208c92d0dff3295cc4cc0b89d53d6ebb4da7dd63324cc5b4b7911"
 }

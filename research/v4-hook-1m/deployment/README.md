@@ -39,10 +39,12 @@ Robinhood is an Arbitrum chain with execution and data-posting costs. The local 
 
 `wallet-deploy.html` is a local browser-wallet helper for the confirmed wallet and selected model. Serve this directory through localhost, open the helper in a browser with an injected wallet, and click **Load reviewed plan** or choose the generated file. Both paths verify the exact reviewed plan SHA-256 before parsing it. Its bundled ethers 6.13.5 library avoids loading third-party scripts. It checks the chain, sender, dependency code, calldata hashes and predicted addresses; estimates each transaction's gas at signing time; and verifies deployed runtime hashes after confirmation. Each click requests one wallet signature. Existing contracts with the expected runtime are skipped, and pending transaction hashes are retained in browser storage. If a transaction is dropped or replaced without resulting in the expected code, inspect that transaction before retrying; the helper does not guess at replacements.
 
-The helper pins the current reviewed plan digest `1c8a9676c7899225aa4937b890d25642870a68e58a2e84ec9a8b8d653a611e7d`. A regenerated plan is deliberately refused until its contents are reviewed and this embedded digest is explicitly updated. Never automatically repin an unreviewed replacement plan.
+The helper pins the current reviewed plan digest `2d4f3d60ef3208c92d0dff3295cc4cc0b89d53d6ebb4da7dd63324cc5b4b7911`. A regenerated plan is deliberately refused until its contents are reviewed and this embedded digest is explicitly updated. Never automatically repin an unreviewed replacement plan.
 
 ## Scope after deployment
 
 Deploying the model and hook does not initialize a pool or supply liquidity. Those actions require a chosen token pair, initial price, fee/tick spacing, amount budget, and approved router. This preparation does not choose tokens, spend allowances, or transfer liquidity funds.
 
 The hook supports multiple pools and sets the configured initial LP fee for dynamic-fee pools. Required speech uses hook data `0x53504b31`; otherwise inference is optional and may explicitly skip to preserve a valid swap. See [V4-ADAPTER.md](../swap-speaker-535k/V4-ADAPTER.md) for the tested behavior and remaining trust assumptions.
+
+The compositional sampled release supersedes the previous unsigned plan from commit `229339b760033efb8b5a2d69cb77e9fc7c7b240e`. Its temperature is 0.25 and its model hash includes the decoder version and temperature domain. The old plan has not been broadcast by this task.

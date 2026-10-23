@@ -1,121 +1,58 @@
-# Sentence-model quality and Uniswap v4 integration
+# Compositional onchain sentence model
 
-This is a local optimization of the recovered 534,751-coefficient sentence
-model. The original integer payloads and single-pool hook remain available as
-the baseline. See `RECOVERY.md` for source provenance and the missing
-original full-precision checkpoint.
+The selected release uses `swap-speaker-535k/composition-candidate-v2/` with seeded word sampling at temperature **0.25**. `selected-quality-model.json` records its exact artifacts, runtime identity and reports. The recovered baseline and previous fine-tune remain unchanged.
+
+This is a small recurrent neural language model, not a large general-purpose language model or a transformer. Solidity computes each next word from learned weights, prior words, recurrent state and swap features. No full-sentence lookup, inference grammar, output filter or external AI service selects the text.
 
 ## What changed
 
-The quality experiment fine-tunes the recovered integer model locally, uses
-balanced expressive-language training examples, and exposes persistent memory
-to changes between successive sentences. It retains the 8,192-word vocabulary,
-32-dimensional recurrent state, integer tensor layout, and onchain decoder.
-Quality measurements are limited to a controlled synthetic language domain.
-They do not establish open-domain language quality or trading insight.
+The previous fine-tune reproduced known training sentences in 579 of 600 tested outputs. The new local NumPy run trains on 2,400 composed sentences and reserves 300 validation and 300 test sentences with entire object/tail pairs held out. Thirty epochs took about 18 seconds; checkpoint selection uses validation loss, not final generation results. Article agreement was corrected before the selected run.
 
-## Selected result
+The model retains 534,751 stored coefficients, an 8,192-word vocabulary and a 32-unit recurrent state. Three units have fixed feature conditioning; 534,451 values are unconstrained in training. The hook retains independent pool memory and its existing optional/required speech policy.
 
-Use `swap-speaker-535k/quality-candidate-final`. Its exact hashes and report
-paths are recorded in `selected-quality-model.json`. The original `model/`
-directory is unchanged. Earlier candidate directories are experiments, not
-the selected export.
+`generateSampled` traverses learned binary probabilities using an integer Q16 sigmoid table. Temperature is fixed at Q10 value 256. One Keccak hash per word supplies thirteen nonoverlapping 16-bit draws. The hook supplies its swap input commitment, which includes pool identity, sequence and state, as the seed. This gives reproducible creative variation; it is not secure randomness. Legacy greedy `generate` remains available. The runtime identity domain includes the decoder version and temperature.
 
-The final export stores 534,751 coefficients; 534,451 are unconstrained during
-fine-tuning. Three existing hidden units have fixed feature-conditioning rows
-for current movement, swap direction, and exact-input/output mode. Historical
-movement, acceleration, and elapsed-time feature columns are inactive. This
-explicit conditioning prevents old sentence context from masking the inputs
-the text is meant to describe; it adds no operations or tensors to inference.
+## Reserved confirmation
 
-The reserved confirmation run (seed 523951) contains 600 synthetic swaps with evolving
-pool-consistent tick, time, and EWMA state. Results are diagnostic counts, not
-claims of general language competence:
+The final sampled run uses trajectory seed 792461 and sampling seed 823114. All 600 raw outputs, inputs and failures are in `swap-speaker-535k/reports/composition-v2-sampled-keccak.json`.
 
-| Measurement | Recovered baseline | Selected candidate |
-| --- | ---: | ---: |
-| Movement-category wording agrees with input | 356/600 (59.3%) | 504/600 (84.0%) |
-| Natural sentence completion | 600/600 | 599/600 |
-| Controlled grammar match | 600/600 | 588/600 (98.0%) |
-| Article agreement | 600/600 | 600/600 |
-| Distinct sentences | 46 | 84 |
-| Outputs with repeated bigrams | 0 | 0 |
+| Diagnostic | Result |
+| --- | ---: |
+| Exact matches to known authored training sentences | 16/600 (2.7%) |
+| Distinct output strings | 536/600 |
+| Natural completions | 600/600 |
+| Productive grammar passes | 574/600 |
+| Article agreement | 600/600 |
+| Movement-category agreement | 566/600 |
+| Joint noncopy, complete, grammar, article and movement passes | 529/600 |
+| Distinct sentences among those joint passes | 473 |
 
-This is a relevance and diversity improvement with a small grammar regression
-and one capped output. Every failed grammar/length example remains in the
-saved reports. No post-processing hides them.
-The separate 300-case stress audit improves movement agreement from 128/300 to
-265/300, but diversity declines from 75 to 65 outputs on that input set.
-Training and held-out phrases share compositional templates; neither set is
-an out-of-domain evaluation. General-language retention is unmeasured because
-the original text-data cache and full-precision checkpoint were unavailable.
+The independent audit also excludes repeated-bigram outputs, leaving 522 noncopies passing that stricter set. An independent assistant reviewed 48 balanced diagnostic samples: 46 were complete, interpretable and grounded in movement. This is qualitative review, not a human participant study or an unbiased population estimate.
 
-The selected weights also pass the complete real local PoolManager suite:
-9 tests, 19 behavioral checks, and 14 adversarial model fixtures. All generated
-tokens, text, and recurrent states match the independent integer reference
-during the tested swaps. Full spoken swap transactions use
-3,575,471–4,046,224 gas in this local setup; those values include AMM execution,
-hook inference, token settlement, and events. They are not chain-specific
-deployment or production-router estimates.
+The result generates fresh combinations within a narrow learned grammar. It does not guarantee every output is new: 521 of 600 outputs are within two word edits of a known training sentence. Only 25 use an object/tail pair absent from supplied training corpora. The original WikiText pretraining prefix is unavailable, so absence from all historical training cannot be established. The model does not demonstrate broad reasoning or general English ability. Failed examples remain in the reports, including the fragment “another shifting market.”
 
-`SentenceSpeakerV4Hook.sol` adds a separate reusable adapter:
+The selected low temperature trades some joint quality for diversity: the decoder comparison found 478 distinct joint-valid new sentences at temperature 0.25 versus 128 with greedy decoding. Temperature 0.75 was rejected for poorer grammar. These development results are separate from the reserved confirmation.
 
-- Independent memory and swap context for each initialized pool.
-- Real swaps in both directions and exact-input/exact-output modes.
-- ERC20 and native currency pools, static fees, and a configurable fixed initial
-  fee for dynamic pools. No learned fee policy or custom accounting deltas.
-- Bounded model execution, bounded return-data decoding, output validation,
-  and an immutable direct-model runtime code hash.
-- Optional speech when hook data is empty. Low gas or invalid inference emits
-  `SentenceSkipped`, resets that pool's language memory, and allows the swap
-  to continue when sufficient core swap/settlement gas remains.
-- Required speech when hook data is exactly `0x53504b31` (`SPK1`). Estimation
-  then funds inference; a speech failure reverts only that opt-in transaction.
+## Onchain checks
 
-See `swap-speaker-535k/V4-ADAPTER.md` for constructor arguments and integration
-behavior. The CREATE2 permission mask remains `0x1040`.
+The selected model passes 9 real local v4 PoolManager tests, 19 behavior checks and 14 adversarial fixtures. Six independent Python Keccak fixtures match all 78 branch scores, complete sentences and hidden states in Solidity; legacy greedy parity also passes. Spoken swaps use **4,108,881–5,034,650 gas** locally. Required-speech gas estimation funds the inference budget. Empty hook data may estimate the cheaper skip path; use exact `SPK1` data when speech is required.
+
+The new unsigned Robinhood mainnet plan contains 59 locally executed and verified deployments. It supersedes the previous plan; no public transactions have been broadcast by this task. GH0ST/native ETH remains the selected pair. Liquidity amounts and token transfer compatibility still need to be settled before funding.
 
 ## Reproduction
 
-Use Node with pnpm and a Python environment containing the pinned NumPy
-dependency. All commands run from this directory.
+From this directory, with Node and Python available:
 
 ```sh
 pnpm install --frozen-lockfile --ignore-scripts
-python3 -m venv .venv
-.venv/bin/python -m pip install -r requirements-quality.txt
-pnpm verify:model
+python3 -m pip install -r requirements-quality.txt
 pnpm verify:quality
-pnpm test:evm
-pnpm test:v4
+python3 swap-speaker-535k/python/finetune_composition.py --epochs 30 --output /tmp/gh0st-composition-reproduction
+python3 swap-speaker-535k/python/evaluate_sampled.py --out /tmp/gh0st-sampled-reproduction.json
+pnpm quality:novelty
 pnpm test:v4:quality
-.venv/bin/python swap-speaker-535k/python/quality_eval.py
+pnpm test:pool
+node --test tests/evm/wallet-deploy.test.mjs
 ```
 
-The baseline integration report is
-`swap-speaker-535k/reports/v4-poolmanager-integration.json`. Tests deploy the
-unmodified v4-core 1.0.2 PoolManager on a local Cancun EVM, add liquidity,
-execute AMM swaps, and settle actual token deltas. They check integer-reference
-parity, pool isolation, failure handling, opt-in gas estimation, and transaction
-rollback. PoolManager is compiled with Solidity 0.8.26; the model and adapter
-use 0.8.30. Contract-size limits are enforced.
-
-The candidate's integration report is
-`swap-speaker-535k/reports/quality-final-v4-integration.json`, and its complete
-development comparison is `swap-speaker-535k/reports/quality-finetune.json`.
-The reserved confirmation reports are
-`swap-speaker-535k/reports/quality-confirmation-baseline.json` and
-`swap-speaker-535k/reports/quality-confirmation-candidate.json`.
-
-## Remaining deployment work
-
-The requested target is Robinhood mainnet (chain ID 4663). Confirm the supported
-assets and deployment signer. Verify these changes on a fork of that chain and with
-the intended production router. Deploy and verify the model data shards, model,
-and mined hook address before initializing a funded pool. This task has not
-broadcast transactions. Publication status is tracked by the branch commit,
-not by this local report.
-
-The tests provide local integration evidence, not an external security audit.
-The model is a compact expressive-language experiment. Its statements should
-not be treated as predictions, liquidity analysis, or financial advice.
+See `swap-speaker-535k/reports/composition-v2-sampled-novelty-audit.json`, `composition-v2-sampled-manual-review.json`, and `composition-v2-sampled-v4-integration.json` for the detailed evidence. Earlier `reports/QUALITY.md` describes the superseded fine-tune.

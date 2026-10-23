@@ -16,6 +16,9 @@ contract SentenceSpeakerModel {
     uint256 public constant PARAMETERS = 534751;
     uint256 public constant HIDDEN = 32;
     uint256 public constant MAX_WORDS = 16;
+    uint256 public constant TEMPERATURE_Q10 = 256;
+    // round(65536 * sigmoid(i / 16)) - 32768, i=0..256. All inference uses integer lookup.
+    bytes private constant SIGMOID_DELTA = hex"0000040007fd0bf70feb13d717b91b901f59231426bf2a582ddf315134ae37f63b273e404142442c46fd49b64c564edd514d53a355e2580a5a1a5c135df65fc4617c632064b0662d679768f06a376b6e6c956dac6eb56fb0709e717f7254731e73dc7490753a75da7672770177887807787f78f0795b79bf7a1e7a777acb7b1b7b657bab7bee7c2c7c667c9d7cd17d027d307d5b7d847daa7dce7df07e0f7e2d7e497e647e7d7e947eaa7ebf7ed27ee47ef57f057f147f237f307f3d7f487f547f5e7f687f717f7a7f827f897f917f977f9e7fa47fa97fae7fb37fb87fbc7fc07fc47fc87fcb7fce7fd17fd47fd77fd97fdc7fde7fe07fe27fe47fe57fe77fe97fea7feb7fed7fee7fef7ff07ff17ff27ff37ff37ff47ff57ff67ff67ff77ff77ff87ff87ff97ff97ffa7ffa7ffa7ffb7ffb7ffb7ffc7ffc7ffc7ffc7ffd7ffd7ffd7ffd7ffd7ffe7ffe7ffe7ffe7ffe7ffe7ffe7ffe7fff7fff7fff7fff7fff7fff7fff7fff7fff7fff7fff7fff7fff7fff7fff7fff7fff7fff80008000800080008000800080008000800080008000800080008000800080008000800080008000800080008000800080008000800080008000800080008000800080008000800080008000800080008000800080008000800080008000800080008000800080008000800080008000800080008000800080008000800080008000800080008000";
     address public immutable core;
     bytes32 public immutable modelHash;
     address[] private _embeddings;
@@ -31,7 +34,7 @@ contract SentenceSpeakerModel {
         bytes32 a = _pin(embeddings, 524352, 24000, _embeddings);
         bytes32 b = _pin(nodes, 540606, 23760, _nodes);
         bytes32 c = _pin(vocabulary, 262144, 24000, _vocabulary);
-        modelHash = keccak256(abi.encode("GH0ST_SENTENCE_SPEAKER_535K_V1", core_.codehash, a, b, c));
+        modelHash = keccak256(abi.encode("GH0ST_SENTENCE_SPEAKER_535K_SAMPLED_T256_V2", core_.codehash, a, b, c));
     }
 
     function _pin(address[] memory sources, uint256 total, uint256 chunk, address[] storage destination)
@@ -84,7 +87,20 @@ contract SentenceSpeakerModel {
         for (uint256 i; i < 6; ++i) if (features[i] < -4096 || features[i] > 4096) revert InvalidInput();
     }
 
-    function _step(bytes memory weights, uint16 previous, int16[32] memory state, int32[6] memory features)
+    function _rightProbability(int256 score, bytes memory table) private pure returns (uint32) {
+        uint256 magnitude = uint256(score < 0 ? -score : score);
+        uint256 index = (magnitude * 1024 / TEMPERATURE_Q10 + 32) / 64;
+        if (index > 256) index = 256;
+        uint32 delta = (uint32(uint8(table[index * 2])) << 8) | uint32(uint8(table[index * 2 + 1]));
+        return score >= 0 ? 32768 + delta : 32768 - delta;
+    }
+
+    function rightProbability(int256 score) external pure returns (uint32) {
+        return _rightProbability(score, SIGMOID_DELTA);
+    }
+
+    function _step(bytes memory weights, uint16 previous, int16[32] memory state, int32[6] memory features,
+        bool sampled, uint256 randomBits)
         private view returns (uint16 token, int16[32] memory next, int256[13] memory scores)
     {
         uint256 byteOffset = uint256(previous) * 64;
@@ -100,12 +116,15 @@ contract SentenceSpeakerModel {
             next[i] = int16(sum <= 0 ? int256(0) : sum >= 8192 ? int256(8192) : sum);
         }
         uint256 node;
+        bytes memory table;
+        if (sampled) table = SIGMOID_DELTA;
         for (uint256 depth; depth < 13; ++depth) {
             uint256 offset = node * 66;
             bytes memory classifier = _copy(_nodes[offset / 23760], 1 + offset % 23760, 66);
             int256 score = (_dot32(classifier, 0, next) + _weight(classifier, 32) * 1024) / 1024;
             scores[depth] = score;
-            node = node * 2 + 1 + (score > 0 ? 1 : 0);
+            bool right = sampled ? uint16(randomBits >> (depth * 16)) < _rightProbability(score, table) : score > 0;
+            node = node * 2 + 1 + (right ? 1 : 0);
         }
         token = uint16(node - 8191);
     }
@@ -130,11 +149,34 @@ contract SentenceSpeakerModel {
         external view returns (uint16 token, int16[32] memory next, int256[13] memory scores)
     {
         _validate(previous, state, features);
-        return _step(_copy(core, 1, 4544), previous, state, features);
+        return _step(_copy(core, 1, 4544), previous, state, features, false, 0);
+    }
+
+    function inspectSampled(uint16 previous, int16[32] memory state, int32[6] memory features, bytes32 seed, uint256 wordIndex)
+        external view returns (uint16 token, int16[32] memory next, int256[13] memory scores)
+    {
+        _validate(previous, state, features);
+        return _step(_copy(core, 1, 4544), previous, state, features, true,
+            uint256(keccak256(abi.encode(seed, wordIndex))));
     }
 
     function generate(uint16 previous, int16[32] memory state, int32[6] memory features, uint8 maximumWords)
         external view returns (uint16 nextPrevious, int16[32] memory nextState, uint16[] memory tokens, string memory text, bool endedNaturally)
+    {
+        return _generate(previous, state, features, maximumWords, false, bytes32(0));
+    }
+
+    /// @notice Seeded Bernoulli traversal of the model's learned binary probabilities.
+    /// @dev Seed is deterministic creative variation, not secure or unbiased randomness.
+    function generateSampled(uint16 previous, int16[32] memory state, int32[6] memory features, uint8 maximumWords, bytes32 seed)
+        external view returns (uint16 nextPrevious, int16[32] memory nextState, uint16[] memory tokens, string memory text, bool endedNaturally)
+    {
+        return _generate(previous, state, features, maximumWords, true, seed);
+    }
+
+    function _generate(uint16 previous, int16[32] memory state, int32[6] memory features, uint8 maximumWords,
+        bool sampled, bytes32 seed)
+        private view returns (uint16 nextPrevious, int16[32] memory nextState, uint16[] memory tokens, string memory text, bool endedNaturally)
     {
         _validate(previous, state, features);
         if (maximumWords == 0 || maximumWords > MAX_WORDS) revert InvalidInput();
@@ -146,7 +188,8 @@ contract SentenceSpeakerModel {
         nextPrevious = previous;
         nextState = state;
         for (uint256 i; i < maximumWords; ++i) {
-            (uint16 token, int16[32] memory hidden,) = _step(weights, nextPrevious, nextState, features);
+            uint256 randomBits = sampled ? uint256(keccak256(abi.encode(seed, i))) : 0;
+            (uint16 token, int16[32] memory hidden,) = _step(weights, nextPrevious, nextState, features, sampled, randomBits);
             (bytes32 value, uint8 size, bool terminal) = word(token);
             if (i != 0) output[length++] = bytes1(" ");
             for (uint256 j; j < size; ++j) output[length++] = value[j];

@@ -137,4 +137,7 @@ contract SentenceV4FailingModel is ISentenceSpeakerV4Model {
     function generate(uint16, int16[32] memory, int32[6] memory, uint8)
         external pure returns (uint16, int16[32] memory, uint16[] memory, string memory, bool)
     { revert("model unavailable"); }
+    function generateSampled(uint16, int16[32] memory, int32[6] memory, uint8, bytes32)
+        external pure returns (uint16, int16[32] memory, uint16[] memory, string memory, bool)
+    { revert("model unavailable"); }
 }

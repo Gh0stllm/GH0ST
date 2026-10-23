@@ -5,9 +5,9 @@ const EXPECTED = {
   sender: '0x8D6B11CFdF079e27C17e05Cb7Ea81235887691c6',
   manager: '0x8366a39cc670b4001a1121b8f6a443a643e40951',
   factory: '0x4e59b44847b379578588920cA78FbF26c0B4956C',
-  modelHash: '0x9fed9dd44d7301fca32c4abff70bb8f722a01b3087540f93c4b666b8e4181b48',
+  modelHash: '0x03047f3adb84443ebbd6f1ba45d948fe4872f51ce0f6326e3f35a434c5b02f62',
   // Pin the exact reviewed plan, including every deployment's calldata and runtime hash.
-  planSha256: '0x1c8a9676c7899225aa4937b890d25642870a68e58a2e84ec9a8b8d653a611e7d',
+  planSha256: '0x2d4f3d60ef3208c92d0dff3295cc4cc0b89d53d6ebb4da7dd63324cc5b4b7911',
 };
 const el = id => document.getElementById(id);
 let plan, provider, signer, cursor = 0, busy = false, receipts = {};

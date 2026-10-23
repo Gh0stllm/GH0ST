@@ -55,10 +55,21 @@ function referenceModel() {
   };
   const core = toWeights('core.bin'), embeddings = toWeights('embeddings.bin'), nodes = toWeights('nodes.bin');
   const vocabulary = JSON.parse(readModel('vocabulary.json'));
-  return (previous, state, features, maximumWords = 12) => {
+  const lutHex = read(modelFile).toString().match(/SIGMOID_DELTA = hex"([0-9a-f]+)"/)[1];
+  const lutBytes = Buffer.from(lutHex, 'hex');
+  assert.equal(lutBytes.length, 514);
+  const deltas = Array.from({ length: 257 }, (_, i) => lutBytes.readUInt16BE(i * 2));
+  const probability = score => {
+    const magnitude = score < 0n ? -score : score;
+    const rawIndex = (magnitude * 1024n / 256n + 32n) / 64n;
+    const delta = deltas[Number(rawIndex > 256n ? 256n : rawIndex)];
+    return BigInt(score >= 0n ? 32768 + delta : 32768 - delta);
+  };
+  return (previous, state, features, maximumWords = 12, seed = null) => {
     const tokens = [];
     let ended = false;
     for (let word = 0; word < maximumWords; word++) {
+      const entropy = seed ? BigInt(keccak256(abi.encode(['bytes32', 'uint256'], [seed, word]))) : 0n;
       const next = [];
       for (let row = 0; row < 32; row++) {
         let sum = core[2240 + row] * 1024n;
@@ -75,7 +86,8 @@ function referenceModel() {
         let score = nodes[node * 33 + 32] * 1024n;
         for (let j = 0; j < 32; j++) score += nodes[node * 33 + j] * BigInt(next[j]);
         score /= 1024n;
-        node = node * 2 + 1 + (score > 0n ? 1 : 0);
+        const right = seed ? ((entropy >> BigInt(depth * 16)) & 65535n) < probability(score) : score > 0n;
+        node = node * 2 + 1 + (right ? 1 : 0);
       }
       previous = node - 8191;
       state = next;
@@ -95,6 +107,7 @@ test('sentence adapter settles real v4 swaps, isolates pools and keeps inference
   const signer = await provider.getSigner(0), payer = await signer.getAddress();
   const deployments = [], swaps = [], checks = [], failureFixtures = [];
   let requiredSpeechGasEstimate, requiredSpeechGasUsed;
+  let sampledFixtureParity = { cases: 0, branch_scores: 0, legacy_generate_checked: false };
   const artifact = (file, name) => contracts[file][name];
   async function deploy(file, name, args = [], gasLimit = 8_000_000) {
     const a = artifact(file, name);
@@ -141,6 +154,34 @@ test('sentence adapter settles real v4 swaps, isolates pools and keeps inference
     const model = await deploy(modelFile, 'SentenceSpeakerModel',
       [groups.core[0], groups.embeddings, groups.nodes, groups.vocabulary]);
     const generate = referenceModel();
+    assert.equal(await model.TEMPERATURE_Q10(), 256n);
+    assert.equal(await model.rightProbability(0), 32768n);
+    assert.equal(await model.rightProbability(1000000), 65536n);
+    assert.equal(await model.rightProbability(-1000000), 0n);
+    const legacyFeatures = [128, 256, 128, 512, -1024, -1024];
+    const legacyExpected = generate(8192, Array(32).fill(0), legacyFeatures);
+    const legacy = await model.generate(8192, Array(32).fill(0), legacyFeatures, 12);
+    assert.equal(legacy.text, legacyExpected.text);
+    assert.deepEqual(Array.from(legacy.nextState, Number), legacyExpected.state);
+    sampledFixtureParity.legacy_generate_checked = true;
+    const fixturePath = path.join(base, track, 'reports/sampled-parity-fixtures.json');
+    if (existsSync(fixturePath)) {
+      const fixtures = JSON.parse(readFileSync(fixturePath));
+      const matching = Object.entries(fixtures.model_sha256).every(([file, hash]) => sha(readModel(file)) === hash);
+      if (matching) for (const fixture of fixtures.cases) {
+        const step = await model.inspectSampled(fixture.previous, fixture.state, fixture.features, fixture.seed, fixture.word_index);
+        assert.equal(Number(step.token), fixture.token);
+        assert.deepEqual(Array.from(step.next, Number), fixture.next_state);
+        assert.deepEqual(Array.from(step.scores, Number), fixture.scores);
+        const sentence = await model.generateSampled(fixture.previous, fixture.state, fixture.features, 12, fixture.seed);
+        assert.equal(sentence.text, fixture.sentence.text);
+        assert.deepEqual(Array.from(sentence.tokens, Number), fixture.sentence.tokens);
+        assert.deepEqual(Array.from(sentence.nextState, Number), fixture.sentence.next_state);
+        assert.equal(sentence.endedNaturally, fixture.sentence.ended_naturally);
+        sampledFixtureParity.cases++;
+        sampledFixtureParity.branch_scores += 13;
+      }
+    }
     async function deployHook(modelAddress, budget = 6_000_000) {
       const a = artifact(hookFile, 'SentenceSpeakerV4Hook');
       const request = await new ContractFactory(a.abi, a.evm.bytecode.object, signer)
@@ -196,7 +237,7 @@ test('sentence adapter settles real v4 swaps, isolates pools and keeps inference
       let next;
       if (mode === 'spoken') {
         assert.equal(event.name, 'SentenceSpoken');
-        const expected = generate(before.previous, before.state, features);
+        const expected = generate(before.previous, before.state, features, 12, inputHash);
         assert.equal(event.args.text, expected.text);
         assert.equal(Number(event.args.words), expected.tokens.length);
         assert.equal(event.args.endedNaturally, expected.ended);
@@ -393,6 +434,10 @@ test('sentence adapter settles real v4 swaps, isolates pools and keeps inference
       model_directory: path.relative(base, modelDirectory),
       model_artifacts: Object.fromEntries(onchainArtifacts.map(file => [file, manifest.artifacts[file]])),
       failure_fixtures: failureFixtures,
+      sampled_fixture_parity: sampledFixtureParity,
+      sampling: { algorithm: 'Q16 sigmoid Bernoulli tree traversal', temperature_q10: 256,
+        seed: 'event inputHash; one Keccak(seed,wordIndex) per word, thirteen disjoint 16-bit draws',
+        randomness_claim: 'Deterministic creative variation, not secure randomness' },
       required_speech_hook_data: '0x53504b31', required_speech_gas_estimate: requiredSpeechGasEstimate,
       required_speech_gas_used: requiredSpeechGasUsed,
       hooks_permissions: '0x1040 (afterInitialize, afterSwap)', checks, swaps,

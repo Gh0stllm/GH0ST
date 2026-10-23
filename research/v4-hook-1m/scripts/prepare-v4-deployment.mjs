@@ -81,7 +81,7 @@ try {
   }
   const coreCodeHash = parts.find(part => part.group === 'core').codeHash;
   const modelHash = keccak256(abi.encode(['string', 'bytes32', 'bytes32', 'bytes32', 'bytes32'],
-    ['GH0ST_SENTENCE_SPEAKER_535K_V1', coreCodeHash, commitments.embeddings, commitments.nodes, commitments.vocabulary]));
+    ['GH0ST_SENTENCE_SPEAKER_535K_SAMPLED_T256_V2', coreCodeHash, commitments.embeddings, commitments.nodes, commitments.vocabulary]));
   if (config.expected_model_hash) assert.equal(modelHash, config.expected_model_hash, 'Selected model hash mismatch');
   const namespace = keccak256(abi.encode(['string', 'uint256', 'bytes32'],
     ['GH0ST_SENTENCE_DEPLOY_V1', config.chain_id, modelHash]));

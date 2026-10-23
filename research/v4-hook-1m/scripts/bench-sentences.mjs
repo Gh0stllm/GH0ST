@@ -77,7 +77,7 @@ try{
  const model=await deploy(dataFile,'SentenceSpeakerModel',[groups.core[0],groups.embeddings,groups.nodes,groups.vocabulary]);
  assert.equal(Number(await model.PARAMETERS()),534751);
  const expectedModelHash=keccak256(abi.encode(['string','bytes32','bytes32','bytes32','bytes32'],
-  ['GH0ST_SENTENCE_SPEAKER_535K_V1',keccak256(await provider.getCode(groups.core[0])),commitments.embeddings,commitments.nodes,commitments.vocabulary]));
+  ['GH0ST_SENTENCE_SPEAKER_535K_SAMPLED_T256_V2',keccak256(await provider.getCode(groups.core[0])),commitments.embeddings,commitments.nodes,commitments.vocabulary]));
  assert.equal(await model.modelHash(),expectedModelHash);
  let scoresMatched=0;
  for(const vector of vectors){

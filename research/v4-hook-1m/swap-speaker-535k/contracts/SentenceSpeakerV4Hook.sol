@@ -17,6 +17,9 @@ interface ISentenceSpeakerV4Model {
     function generate(uint16 previous, int16[32] memory state, int32[6] memory features, uint8 maximumWords)
         external view returns (uint16 nextPrevious, int16[32] memory nextState, uint16[] memory tokens,
             string memory text, bool endedNaturally);
+    function generateSampled(uint16 previous, int16[32] memory state, int32[6] memory features, uint8 maximumWords, bytes32 seed)
+        external view returns (uint16 nextPrevious, int16[32] memory nextState, uint16[] memory tokens,
+            string memory text, bool endedNaturally);
 }
 
 /// @notice Optional multi-pool adapter for the sentence model. Inference failures skip speech, never change swap deltas.
@@ -141,11 +144,11 @@ contract SentenceSpeakerV4Hook {
         if (output.tokens[output.tokens.length - 1] != output.previous) revert InvalidConfiguration();
     }
 
-    function _infer(uint16 previous, int16[32] memory state, int32[6] memory features)
+    function _infer(uint16 previous, int16[32] memory state, int32[6] memory features, bytes32 seed)
         private view returns (bool ok, Generation memory output)
     {
         if (address(model).codehash != modelCodeHash) return (false, output);
-        bytes memory input = abi.encodeCall(ISentenceSpeakerV4Model.generate, (previous, state, features, maximumWords));
+        bytes memory input = abi.encodeCall(ISentenceSpeakerV4Model.generateSampled, (previous, state, features, maximumWords, seed));
         address target = address(model);
         uint256 budget = inferenceGasLimit;
         uint256 size;
@@ -194,7 +197,7 @@ contract SentenceSpeakerV4Hook {
             _reset(id, c);
             emit SentenceSkipped(id, c.sequence, SKIP_LOW_GAS, inputHash);
         } else {
-            (bool ok, Generation memory generated) = _infer(c.previousToken, previousState, features);
+            (bool ok, Generation memory generated) = _infer(c.previousToken, previousState, features, inputHash);
             if (ok) {
                 if (generated.ended) {
                     c.previousToken = generated.previous;

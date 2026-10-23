@@ -1,6 +1,6 @@
 # Optional v4 PoolManager adapter
 
-`contracts/SentenceSpeakerV4Hook.sol` is a separate adapter. It preserves the original single-pool `SentenceSpeakerHook.sol` and the model's integer inference rules.
+`contracts/SentenceSpeakerV4Hook.sol` is a separate adapter. It preserves the original single-pool `SentenceSpeakerHook.sol`. The current release calls the integer `generateSampled` API with the swap input commitment as its seed; legacy greedy `generate` remains available on the model.
 
 ## Behavior
 
@@ -46,7 +46,7 @@ node --test tests/evm/sentence-v4-poolmanager.test.mjs
 
 The suite runs an unmodified `@uniswap/v4-core@1.0.2` PoolManager on a local Cancun EVM. PoolManager is compiled with its exact Solidity 0.8.26 pragma; the model, adapter, and test router use Solidity 0.8.30. The suite deploys and byte-checks all 57 model data shards, initializes pools, supplies liquidity, calls real swaps through `unlock`, and completes ERC20/native `sync`, `settle`, and `take` accounting.
 
-It verifies independent integer-model parity, both directions, exact input/output, multiple pool isolation, dynamic starting fees, native currency settlement, elapsed-time clamping, low-gas skipping and recovery, callback authorization, and rollback of state and balances after failed settlement. Failure injection includes a reverting model, malformed ABI, oversized return data, noncanonical booleans, invalid tokens/states/output sizes, exhausted model gas, and changed model runtime code.
+It verifies independent integer-model parity, six exact Python Keccak fixtures including 78 sampled branch scores, both directions, exact input/output, multiple pool isolation, dynamic starting fees, native currency settlement, elapsed-time clamping, low-gas skipping and recovery, callback authorization, and rollback of state and balances after failed settlement. Failure injection includes a reverting model, malformed ABI, oversized return data, noncanonical booleans, invalid tokens/states/output sizes, exhausted model gas, and changed model runtime code.
 
 The suite writes `reports/v4-poolmanager-integration.json` only after its assertions pass. To validate alternate compatible model artifacts without replacing the original model:
 

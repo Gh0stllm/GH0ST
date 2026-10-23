@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "kind": "READ_ONLY_ONCHAIN_SPOT_QUOTE",
+  "rpc": "https://rpc.mainnet.chain.robinhood.com",
+  "chainId": 4663,
+  "block": {
+    "number": 96020379,
+    "hex": "0x05b9279b",
+    "hash": "0x15785f2dedaf775fba4be845365a5e2b95db80901a56a8aed4ec8f5695a424ca",
+    "timestamp": 1792766869,
+    "utc": "2026-10-23T14:47:49.000Z",
+    "indiaTime": "2026-10-23 20:17:49 IST"
+  },
+  "sourceTransaction": "0xf3907c7258044b664e77203163b36c371b675961bdfa0ca5909bf9cc7077cb59",
+  "sourceTransactionBlock": 96014167,
+  "manager": "0x8366a39CC670B4001A1121B8F6A443A643e40951",
+  "poolKey": {
+    "currency0": "0x0000000000000000000000000000000000000000",
+    "currency1": "0x2eb2849cDE7957b86d0dFD4B59e450a9F9D15559",
+    "fee": 0,
+    "tickSpacing": 200,
+    "hooks": "0xE5e702641Ea86F4ae6cC3cDaeD2B886f976Be044"
+  },
+  "poolId": "0x42ce003822cbaa9eb94e9e07ef8d988e5a998ded86b189fd4f3e25b68f001d01",
+  "storage": {
+    "poolsMappingSlot": 6,
+    "stateSlot": "0xd1e1449381bd39ab9322335b9a3cbc64c41aa5592ccfd6b15edf295a43bc4d57",
+    "slot0Raw": "0x000000000000000000028b220000000000001043689fb91accd6d3a137637ae5"
+  },
+  "sqrtPriceX96": "329859220081241350909428559477477",
+  "tick": 166690,
+  "protocolFee": 0,
+  "lpFee": 0,
+  "activeLiquidity": "29277002188455996411301",
+  "tokenDecimals": {
+    "nativeEth": 18,
+    "ghost": 18
+  },
+  "ghostPerEthFloor36": "17333971.896490555095140237106220669711550712",
+  "ethPerGhostFloor36": "0.000000057690182375480862328965804138",
+  "ethPerMillionGhostFloor36": "0.057690182375480862328965804138156896",
+  "exactGhostPerEth": {
+    "numerator": "108807105072604817292060947647517250203951356941178921359270285529",
+    "denominator": "6277101735386680763835789423207666416102355444464034512896"
+  },
+  "formula": "GHOST per ETH = sqrtPriceX96^2 / 2^192, because both currencies use 18 decimals.",
+  "readRequests": [
+    {
+      "jsonrpc": "2.0",
+      "id": 1,
+      "method": "eth_getTransactionReceipt",
+      "params": [
+        "0xf3907c7258044b664e77203163b36c371b675961bdfa0ca5909bf9cc7077cb59"
+      ]
+    },
+    {
+      "jsonrpc": "2.0",
+      "id": 2,
+      "method": "eth_getBlockByNumber",
+      "params": [
+        "0x05b9279b",
+        false
+      ]
+    },
+    {
+      "jsonrpc": "2.0",
+      "id": 3,
+      "method": "eth_call",
+      "params": [
+        {
+          "to": "0x8366a39CC670B4001A1121B8F6A443A643e40951",
+          "data": "0x1e2eaeafd1e1449381bd39ab9322335b9a3cbc64c41aa5592ccfd6b15edf295a43bc4d57"
+        },
+        "0x05b9279b"
+      ]
+    }
+  ],
+  "notes": [
+    "Price is the pool mid-price at the stated block, not a USD valuation or an execution quote after hook charges/slippage.",
+    "The supplied trade identifies the pool; slot0 changed after that transaction, so current price uses the later fixed block.",
+    "No files in the repository were changed and no transactions were submitted."
+  ]
+}

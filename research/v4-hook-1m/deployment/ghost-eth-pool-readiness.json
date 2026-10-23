@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "status": "PENDING_USER_INPUT_OR_DEPLOYMENT",
+  "chain_id": 4663,
+  "observed_block": {
+    "number": 96036628,
+    "hash": "0x6a5767d88e5d8a5b25901525d0980b0825f0bc320404ccf66a9b21ee608f1e37",
+    "timestamp": 1792768548
+  },
+  "token": {
+    "address": "0x2eb2849cDE7957b86d0dFD4B59e450a9F9D15559",
+    "name": "GH0ST",
+    "symbol": "GH0ST",
+    "decimals": 18,
+    "runtime_code_hash": "0x7c38fa1b069b5e677034bab6219dd2f519f219f7637910131d9a0f58a05ae164"
+  },
+  "pool_manager": "0x8366a39CC670B4001A1121B8F6A443A643e40951",
+  "hook": "0x25E6366C490225358625d941C7B147360b155040",
+  "model": "0xb45b782c3a8057b32B44D4c4415B2686A7AB4fD5",
+  "pool_key": {
+    "currency0": "0x0000000000000000000000000000000000000000",
+    "currency1": "0x2eb2849cDE7957b86d0dFD4B59e450a9F9D15559",
+    "fee": 3000,
+    "tickSpacing": 60,
+    "hooks": "0x25E6366C490225358625d941C7B147360b155040"
+  },
+  "pool_id": "0x90fbab7e58f154bff561fb7ee00f2aaa59ba66b77b0c4e1535f1b1c26a00f7d7",
+  "pool_state": {
+    "sqrt_price_x96": "0",
+    "tick": 0,
+    "protocol_fee": 0,
+    "lp_fee": 0
+  },
+  "already_initialized": false,
+  "dependencies": {
+    "hook_deployed": false,
+    "model_deployed": false
+  },
+  "initial_price_ghost_per_eth": null,
+  "sqrt_price_x96": null,
+  "fee_note": "3000 pips (0.3%) static LP fee; tick spacing 60.",
+  "unsigned_initialize_transaction": null,
+  "public_gas_estimate": null,
+  "missing_requirements": [
+    "Deploy and verify the planned model.",
+    "Deploy and verify the planned hook and all model dependencies.",
+    "Supply the initial GHOST-per-ETH price selected by the user."
+  ],
+  "liquidity": {
+    "status": "NOT_CONFIGURED",
+    "maximum_eth": null,
+    "maximum_ghost": null,
+    "tick_range": null,
+    "note": "No liquidity amounts, token approvals, transfers or swaps are generated without user-supplied budgets and range."
+  },
+  "notes": [
+    "Native ETH is currency0; GHOST is currency1. WETH is not used.",
+    "Initializing a pool only sets its initial price. It does not fund the pool.",
+    "Anyone can initialize this pool key; recheck live state immediately before signing. An initialized pool cannot be reinitialized.",
+    "Changing fee, tick spacing or hook changes the pool ID and creates a different pool."
+  ]
+}

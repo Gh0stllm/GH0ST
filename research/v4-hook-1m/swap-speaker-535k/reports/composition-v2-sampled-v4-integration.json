@@ -1,0 +1,374 @@
+{
+  "schema_version": 1,
+  "status": "PASSED_REAL_LOCAL_POOLMANAGER",
+  "network": "Hardhat local EVM, Cancun, 30 million block gas limit; no public transactions",
+  "upstream": "@uniswap/v4-core@1.0.2 unmodified PoolManager",
+  "compiler": {
+    "version": "0.8.30+commit.73712a01.Emscripten.clang",
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "viaIR": true,
+    "evmVersion": "cancun",
+    "outputSelection": {
+      "*": {
+        "*": [
+          "abi",
+          "evm.bytecode.object",
+          "evm.deployedBytecode.object"
+        ]
+      }
+    }
+  },
+  "upstream_compiler": {
+    "version": "0.8.26+commit.8a97fa7a.Emscripten.clang",
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "viaIR": true,
+    "evmVersion": "cancun",
+    "outputSelection": {
+      "*": {
+        "*": [
+          "abi",
+          "evm.bytecode.object",
+          "evm.deployedBytecode.object"
+        ]
+      }
+    }
+  },
+  "model_hash": "0x03047f3adb84443ebbd6f1ba45d948fe4872f51ce0f6326e3f35a434c5b02f62",
+  "max_words": 12,
+  "inference_gas_limit": 6000000,
+  "model_directory": "swap-speaker-535k/composition-candidate-v2",
+  "model_artifacts": {
+    "core.bin": {
+      "bytes": 4544,
+      "sha256": "31a3e545b8fe2d7bb7528d65711f34da70b48cca191776ecfb4c867a99c3514b"
+    },
+    "embeddings.bin": {
+      "bytes": 524352,
+      "sha256": "fcb6469d472fee834955802b479bfe3f23f063885b9cc9526aabb506eca080a0"
+    },
+    "nodes.bin": {
+      "bytes": 540606,
+      "sha256": "47251647e4c827015aed915cd278c5007e0fdf7708f70d9e35e3bb0f3fd77759"
+    },
+    "vocabulary.bin": {
+      "bytes": 262144,
+      "sha256": "f3809a83bb9059f91091977717235103041e1980517ae7bea0d45e6d27383b61"
+    },
+    "vocabulary.json": {
+      "bytes": 105033,
+      "sha256": "2a63655a371d8023e17af22322291327fb3825585252ecec9c7e37f2e08014df"
+    }
+  },
+  "failure_fixtures": [
+    {
+      "model": "SentenceV4MalformedModel",
+      "constructor_arguments": [],
+      "gas_used": "179156"
+    },
+    {
+      "model": "SentenceV4OversizedModel",
+      "constructor_arguments": [],
+      "gas_used": "181972"
+    },
+    {
+      "model": "SentenceV4InvalidBooleanModel",
+      "constructor_arguments": [],
+      "gas_used": "188417"
+    },
+    {
+      "model": "SentenceV4GasBurningModel",
+      "constructor_arguments": [],
+      "gas_used": "459153"
+    },
+    {
+      "model": "SentenceV4InvalidLengthModel",
+      "constructor_arguments": [],
+      "gas_used": "187645"
+    },
+    {
+      "model": "SentenceV4InvalidOutputModel",
+      "constructor_arguments": [
+        0
+      ],
+      "gas_used": "188560"
+    },
+    {
+      "model": "SentenceV4InvalidOutputModel",
+      "constructor_arguments": [
+        1
+      ],
+      "gas_used": "188964"
+    },
+    {
+      "model": "SentenceV4InvalidOutputModel",
+      "constructor_arguments": [
+        2
+      ],
+      "gas_used": "189088"
+    },
+    {
+      "model": "SentenceV4InvalidOutputModel",
+      "constructor_arguments": [
+        3
+      ],
+      "gas_used": "188567"
+    },
+    {
+      "model": "SentenceV4InvalidOutputModel",
+      "constructor_arguments": [
+        4
+      ],
+      "gas_used": "192111"
+    },
+    {
+      "model": "SentenceV4InvalidOutputModel",
+      "constructor_arguments": [
+        5
+      ],
+      "gas_used": "197753"
+    },
+    {
+      "model": "SentenceV4InvalidOutputModel",
+      "constructor_arguments": [
+        6
+      ],
+      "gas_used": "197952"
+    },
+    {
+      "model": "SentenceV4InvalidOutputModel",
+      "constructor_arguments": [
+        7
+      ],
+      "gas_used": "189916"
+    },
+    {
+      "model": "SentenceV4InvalidOutputModel",
+      "constructor_arguments": [
+        8
+      ],
+      "gas_used": "189018"
+    }
+  ],
+  "sampled_fixture_parity": {
+    "cases": 6,
+    "branch_scores": 78,
+    "legacy_generate_checked": true
+  },
+  "sampling": {
+    "algorithm": "Q16 sigmoid Bernoulli tree traversal",
+    "temperature_q10": 256,
+    "seed": "event inputHash; one Keccak(seed,wordIndex) per word, thirteen disjoint 16-bit draws",
+    "randomness_claim": "Deterministic creative variation, not secure randomness"
+  },
+  "required_speech_hook_data": "0x53504b31",
+  "required_speech_gas_estimate": "6790047",
+  "required_speech_gas_used": "4550398",
+  "hooks_permissions": "0x1040 (afterInitialize, afterSwap)",
+  "checks": [
+    "both_directions_exact_input_and_output",
+    "multi_pool_isolation",
+    "dynamic_fee_pool_compatibility",
+    "native_currency_settlement",
+    "elapsed_time_clamp",
+    "low_gas_fail_open",
+    "recovery_after_skip",
+    "canonical_manager_only",
+    "uninitialized_pool_rejected",
+    "router_callback_authorization",
+    "unsettled_swap_rollback",
+    "post_settlement_revert_rollback",
+    "model_revert_fail_open",
+    "bounded_returndata_and_output_validation",
+    "gas_exhaustion_fail_open",
+    "model_runtime_hash_pinned",
+    "required_speech_gas_estimation",
+    "required_speech_rollback",
+    "unrecognized_hook_data_remains_optional"
+  ],
+  "swaps": [
+    {
+      "pool_id": "0x01cf8b144464db24890bc7ef3151bb9ff0c7b1cb26b22b2140af2cc6a8707fe3",
+      "pool_kind": "static_fee",
+      "zero_for_one": true,
+      "exact_input": true,
+      "gas_used": "4572740",
+      "event": "SentenceSpoken",
+      "text": "another swap now brings one soft sound across the chain.",
+      "features": [
+        8,
+        0,
+        8,
+        20,
+        1024,
+        1024
+      ],
+      "input_hash": "0x6d4643b8287a0c3ca2c2c0da72eaffbfcc1ace00fa601e214efde4b549977cea"
+    },
+    {
+      "pool_id": "0x01cf8b144464db24890bc7ef3151bb9ff0c7b1cb26b22b2140af2cc6a8707fe3",
+      "pool_kind": "static_fee",
+      "zero_for_one": true,
+      "exact_input": false,
+      "gas_used": "4108881",
+      "event": "SentenceSpoken",
+      "text": "i still find a steady pattern after another trade.",
+      "features": [
+        8,
+        0,
+        0,
+        3,
+        1024,
+        -1024
+      ],
+      "input_hash": "0xbf4e866aebfd6d0216454519137a205d39b2489767f72e52756ba15258ce3606"
+    },
+    {
+      "pool_id": "0x01cf8b144464db24890bc7ef3151bb9ff0c7b1cb26b22b2140af2cc6a8707fe3",
+      "pool_kind": "static_fee",
+      "zero_for_one": false,
+      "exact_input": true,
+      "gas_used": "4577934",
+      "event": "SentenceSpoken",
+      "text": "my memory now follows another steady signal within the market.",
+      "features": [
+        4,
+        0,
+        4,
+        3,
+        -1024,
+        1024
+      ],
+      "input_hash": "0x9612d9a78e00820e0920e2c84e337c53dc137d05f8e337a320b4dff36ebea3bc"
+    },
+    {
+      "pool_id": "0x01cf8b144464db24890bc7ef3151bb9ff0c7b1cb26b22b2140af2cc6a8707fe3",
+      "pool_kind": "static_fee",
+      "zero_for_one": false,
+      "exact_input": false,
+      "gas_used": "4558112",
+      "event": "SentenceSpoken",
+      "text": "the current now carries another steady rhythm beneath the price.",
+      "features": [
+        8,
+        0,
+        4,
+        3,
+        -1024,
+        -1024
+      ],
+      "input_hash": "0xf123d52741336b7c2c2d81631921275d62b24fcbfdeacaf9cbe5c5f19596fdf1"
+    },
+    {
+      "pool_id": "0x6bc2e43ce07ac1923d71f19dee12c4dc6e8240bf01554ad03dd4453759189e9a",
+      "pool_kind": "dynamic_fee",
+      "zero_for_one": false,
+      "exact_input": true,
+      "gas_used": "5003953",
+      "event": "SentenceSpoken",
+      "text": "my voice now holds one gentle sound until the next trade.",
+      "features": [
+        4,
+        0,
+        4,
+        27,
+        -1024,
+        1024
+      ],
+      "input_hash": "0x29455b8a45c8d5a347a90d256c8999c2923d447d614a7cfe3f9ad5edab1fbeb6"
+    },
+    {
+      "pool_id": "0x00b849827588047bdd79620fc409745a2d235b63856afa232f06289a0452815a",
+      "pool_kind": "native",
+      "zero_for_one": true,
+      "exact_input": true,
+      "gas_used": "4577891",
+      "event": "SentenceSpoken",
+      "text": "another trade now brings another uneven rhythm after another trade.",
+      "features": [
+        796,
+        0,
+        796,
+        23,
+        1024,
+        1024
+      ],
+      "input_hash": "0x33bc7360abb006225ca09762dd5a3c3d7fee8261394907136322069ce4d9880a"
+    },
+    {
+      "pool_id": "0x01cf8b144464db24890bc7ef3151bb9ff0c7b1cb26b22b2140af2cc6a8707fe3",
+      "pool_kind": "static_fee",
+      "zero_for_one": true,
+      "exact_input": true,
+      "gas_used": "4961615",
+      "event": "SentenceSpoken",
+      "text": "every swap now brings one soft sound as the price moves.",
+      "features": [
+        4,
+        0,
+        4,
+        1024,
+        1024,
+        1024
+      ],
+      "input_hash": "0x6d47118c55e31a3bfc43280e6971434c4735513ffe42adcd5a1b759e8a2826f9"
+    },
+    {
+      "pool_id": "0x01cf8b144464db24890bc7ef3151bb9ff0c7b1cb26b22b2140af2cc6a8707fe3",
+      "pool_kind": "static_fee",
+      "zero_for_one": false,
+      "exact_input": true,
+      "gas_used": "129880",
+      "event": "SentenceSkipped",
+      "text": null,
+      "features": [
+        8,
+        0,
+        4,
+        3,
+        -1024,
+        1024
+      ],
+      "input_hash": "0x5218b5e4c58a1b2c9fa71c415d80d8ddbf51b41a9c03e1cec81ea93bc364c2e4"
+    },
+    {
+      "pool_id": "0x01cf8b144464db24890bc7ef3151bb9ff0c7b1cb26b22b2140af2cc6a8707fe3",
+      "pool_kind": "static_fee",
+      "zero_for_one": false,
+      "exact_input": false,
+      "gas_used": "5034650",
+      "event": "SentenceSpoken",
+      "text": "the pool now brings a gentle rhythm while the current moves.",
+      "features": [
+        8,
+        0,
+        0,
+        3,
+        -1024,
+        -1024
+      ],
+      "input_hash": "0x5fcada54ae864380b7bb02788221d634cc803d9742988d13a535aee1694de46a"
+    }
+  ],
+  "gas_scope": "Full router transaction: real PoolManager AMM math, callback inference, ERC20/native settlement and logs",
+  "deployment_count": 79,
+  "total_local_deployment_gas": "301134286",
+  "source_sha256": {
+    "swap-speaker-535k/contracts/SentenceSpeakerV4Hook.sol": "5be6f500bee8e37b281dbd379c53e8b25e31d3fab6741cb157bb8752a10e1d97",
+    "swap-speaker-535k/contracts/SentenceSpeakerModel.sol": "ae6dc36e9428f7098583c35f801151bde78162633f6ce012b93c742e889a748f",
+    "tests/evm/SentenceV4IntegrationHarness.sol": "a8693ea052b23b16f18b5f34e7f50b573b293e2621b0984be08d6fe21a50918f",
+    "tests/evm/SentenceV4AdversarialModels.sol": "d6e7cade8d6d6213690570c6c7e92a14f79bd37322cff4a2f7bb8800db3eea8e",
+    "tests/evm/sentence-v4-poolmanager.test.mjs": "331e52a014b511b517280c954b8445c7306d6e7f695e2aa43fd0a764a1f1bc1a"
+  },
+  "limitations": [
+    "Local execution only; no fork, deployed public PoolManager, periphery router or external security audit.",
+    "Dynamic fee pools receive the configured fixed 3000 initial LP fee; this adapter has no learned fee policy.",
+    "Inference is intentionally optional. Insufficient gas or a failing model emits SentenceSkipped and resets language state.",
+    "No reserve can make an arbitrarily gas-starved transaction succeed; the transaction must cover core swap and bookkeeping gas."
+  ]
+}

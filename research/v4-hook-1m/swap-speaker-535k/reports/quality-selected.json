@@ -1,52 +1,71 @@
 {
-  "selected_model_directory": "quality-candidate-final",
-  "selected_epoch": 148,
-  "frozen": true,
-  "runtime_manifest": "quality-candidate-final/manifest.json",
-  "development": {
-    "baseline": {
-      "article_agreement_passes": 299,
-      "controlled_grammar_passes": 298,
-      "distinct_outputs": 75,
-      "mean_words": 7.866666666666666,
-      "natural_completions": 299,
-      "regime_consistent_outputs": 128,
-      "repeated_bigram_outputs": 0,
-      "samples": 300
+  "schema_version": 2,
+  "status": "SELECTED_VERIFIED_UNSIGNED",
+  "model_directory": "swap-speaker-535k/composition-candidate-v2",
+  "parameters_stored": 534751,
+  "unconstrained_parameter_values": 534451,
+  "model_hash": "0x03047f3adb84443ebbd6f1ba45d948fe4872f51ce0f6326e3f35a434c5b02f62",
+  "artifacts": {
+    "core.bin": {
+      "bytes": 4544,
+      "sha256": "31a3e545b8fe2d7bb7528d65711f34da70b48cca191776ecfb4c867a99c3514b"
     },
-    "candidate": {
-      "article_agreement_passes": 299,
-      "controlled_grammar_passes": 296,
-      "distinct_outputs": 65,
-      "mean_words": 8.47,
-      "natural_completions": 300,
-      "regime_consistent_outputs": 265,
-      "repeated_bigram_outputs": 1,
-      "samples": 300
+    "embeddings.bin": {
+      "bytes": 524352,
+      "sha256": "fcb6469d472fee834955802b479bfe3f23f063885b9cc9526aabb506eca080a0"
+    },
+    "nodes.bin": {
+      "bytes": 540606,
+      "sha256": "47251647e4c827015aed915cd278c5007e0fdf7708f70d9e35e3bb0f3fd77759"
+    },
+    "quality-checkpoint.npz": {
+      "bytes": 1031439,
+      "sha256": "030c700f3219328e361378766f5c8517c2b42a1c557eaa449d76ad7566063ec0"
+    },
+    "vocabulary.bin": {
+      "bytes": 262144,
+      "sha256": "f3809a83bb9059f91091977717235103041e1980517ae7bea0d45e6d27383b61"
+    },
+    "vocabulary.json": {
+      "bytes": 105033,
+      "sha256": "2a63655a371d8023e17af22322291327fb3825585252ecec9c7e37f2e08014df"
     }
+  },
+  "decoder": {
+    "strategy": "Seeded Bernoulli traversal of learned hierarchical word probabilities",
+    "temperature_q10": 256,
+    "probability_scale": 65536,
+    "domain": "GH0ST_SENTENCE_SPEAKER_535K_SAMPLED_T256_V2",
+    "seed": "Swap inputHash; deterministic creative variation"
   },
   "reserved_confirmation": {
-    "seed": 523951,
-    "baseline": {
-      "article_agreement_passes": 600,
-      "controlled_grammar_passes": 600,
-      "distinct_outputs": 46,
-      "mean_words": 8.0,
+    "trajectory_seed": 792461,
+    "sampling_seed": 823114,
+    "metrics": {
+      "samples": 600,
       "natural_completions": 600,
-      "regime_consistent_outputs": 356,
-      "repeated_bigram_outputs": 0,
-      "samples": 600
-    },
-    "candidate": {
+      "controlled_grammar_passes": 574,
+      "regime_consistent_outputs": 566,
+      "repeated_bigram_outputs": 9,
       "article_agreement_passes": 600,
-      "controlled_grammar_passes": 588,
-      "distinct_outputs": 84,
-      "mean_words": 8.405,
-      "natural_completions": 599,
-      "regime_consistent_outputs": 504,
-      "repeated_bigram_outputs": 0,
-      "samples": 600
+      "distinct_outputs": 536,
+      "mean_words": 9.828333333333333,
+      "exact_new_train_matches": 16,
+      "exact_any_known_corpus_matches": 16,
+      "valid_novel_outputs": 529,
+      "distinct_valid_novel_sentences": 473
     }
   },
-  "selection_note": "Better movement conditioning with small grammar regressions; see reports/QUALITY.md. No further tuning after reserved confirmation."
+  "quality_report": "swap-speaker-535k/reports/composition-v2-sampled-keccak.json",
+  "novelty_report": "swap-speaker-535k/reports/composition-v2-sampled-novelty-audit.json",
+  "qualitative_review": "swap-speaker-535k/reports/composition-v2-sampled-manual-review.json",
+  "integration_report": "swap-speaker-535k/reports/composition-v2-sampled-v4-integration.json",
+  "deployment": "PREPARED_UNSIGNED_NOT_BROADCAST",
+  "previous_candidate": "quality-candidate-final is preserved as a historical experiment; it fails the novelty goal.",
+  "limitations": [
+    "Fresh combinations within a narrow trained grammar; not a large language model or broad reasoning.",
+    "16/600 sampled outputs still exactly match known authored training sentences; uniqueness is not guaranteed.",
+    "521/600 outputs are within two word edits of a known training sentence.",
+    "Original WikiText training prefix is unavailable, so full historical training overlap is unmeasured."
+  ]
 }

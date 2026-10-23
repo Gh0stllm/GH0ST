@@ -1,3 +1,5 @@
+> Historical fine-tune, superseded by the compositional sampled release. See `NOVELTY.md` and `../../selected-quality-model.json` for the current selection.
+
 # Sentence-quality candidate
 
 Selected artifact: `../quality-candidate-final/`. Its weights are frozen after

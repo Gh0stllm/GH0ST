@@ -5,6 +5,17 @@ pragma solidity 0.8.30;
 abstract contract SentenceV4AdversarialModelBase {
     uint16 public constant VOCABULARY = 8192;
     bytes32 public constant modelHash = keccak256("adversarial-sentence-model-fixture");
+    function generateSampled(uint16 previous, int16[32] memory state, int32[6] memory features, uint8 maximumWords, bytes32)
+        external view returns (uint16, int16[32] memory, uint16[] memory, string memory, bool)
+    {
+        // Preserve each fixture's exact malformed/reverting behavior under the sampled API.
+        (bool ok, bytes memory result) = address(this).staticcall(abi.encodeWithSignature(
+            "generate(uint16,int16[32],int32[6],uint8)", previous, state, features, maximumWords));
+        assembly ("memory-safe") {
+            if iszero(ok) { revert(add(result, 32), mload(result)) }
+            return(add(result, 32), mload(result))
+        }
+    }
 }
 
 /// @dev A successful call with insufficient ABI data must be treated as a skipped inference.

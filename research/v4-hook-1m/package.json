@@ -7,6 +7,8 @@
     "test": "node --test tests/evm/policy-hook.test.mjs tests/evm/sentence-v4-poolmanager.test.mjs",
     "test:evm": "node --test tests/evm/policy-hook.test.mjs",
     "test:v4": "node --test tests/evm/sentence-v4-poolmanager.test.mjs",
+    "test:pool": "node --test tests/evm/ghost-eth-pool.test.mjs",
+    "prepare:pool": "node scripts/prepare-ghost-eth-pool.mjs",
     "verify:model": "node scripts/verify-runtime-model.mjs",
     "quality:baseline": "python3 swap-speaker-535k/python/quality_eval.py",
     "quality:train": "python3 swap-speaker-535k/python/finetune_quality.py",
@@ -14,8 +16,11 @@
     "bench:kernel": "node benchmarks/bench-kernel.mjs",
     "bench:speaker": "node scripts/bench-speaker.mjs",
     "bench:sentences": "node scripts/bench-sentences.mjs",
-    "test:v4:quality": "GH0ST_MODEL_DIR=swap-speaker-535k/quality-candidate-final GH0ST_V4_REPORT=swap-speaker-535k/reports/quality-final-v4-integration.json node --test tests/evm/sentence-v4-poolmanager.test.mjs",
-    "verify:quality": "node scripts/verify-runtime-model.mjs swap-speaker-535k/quality-candidate-final"
+    "test:v4:quality": "GH0ST_MODEL_DIR=swap-speaker-535k/composition-candidate-v2 GH0ST_V4_REPORT=swap-speaker-535k/reports/composition-v2-sampled-v4-integration.json node --test tests/evm/sentence-v4-poolmanager.test.mjs",
+    "verify:quality": "node scripts/verify-runtime-model.mjs swap-speaker-535k/composition-candidate-v2",
+    "quality:composition": "python3 swap-speaker-535k/python/finetune_composition.py",
+    "quality:sampled": "python3 swap-speaker-535k/python/evaluate_sampled.py",
+    "quality:novelty": "python3 scripts/audit-sentence-novelty.py --outputs swap-speaker-535k/reports/composition-v2-sampled-keccak.json --corpus swap-speaker-535k/model/voice-corpus.json --corpus swap-speaker-535k/quality-candidate-final/quality-corpus.json --corpus swap-speaker-535k/composition-candidate-v2/composition-corpus.json --out swap-speaker-535k/reports/composition-v2-sampled-novelty-audit.json"
   },
   "devDependencies": {
     "@uniswap/v4-core": "1.0.2",
