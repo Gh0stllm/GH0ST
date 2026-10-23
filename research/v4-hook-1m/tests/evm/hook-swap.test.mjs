@@ -15,6 +15,7 @@ function speech(overrides = {}) {
 }
 function harness(options = {}) {
   const state = { now: 1800000000000, account: wallet, chain: 4663n, initialized: true, liquidity: 10n ** 25n,
+    blockNumber: 100, reorg: 0,
     allowance: 0n, permit: 0n, expiration: 0n, eth: 10n ** 20n, ghost: 10n ** 30n, codeMismatch: null,
     sends: [], calls: [], logs: [speech()], receipts: new Map(), txs: new Map(), publicDown: false, pending: false, reject: false };
   const storage = new Map();
@@ -24,14 +25,14 @@ function harness(options = {}) {
     : target === C.router.toLowerCase() ? ['router', interfaces.router] : target === C.hook.toLowerCase() ? ['hook', interfaces.hook] : ['model', interfaces.model];
   const provider = {
     send: async method => method === 'eth_chainId' ? ethers.toQuantity(state.chain) : [state.account],
-    getBlock: async () => ({ number: 100, timestamp: Math.floor(state.now / 1000), hash: ethers.id('block') }),
-    getBlockNumber: async () => 100,
+    getBlock: async tag => ({ number: typeof tag === 'number' ? tag : state.blockNumber, timestamp: Math.floor(state.now / 1000), hash: ethers.id(`block-${tag}-${state.reorg}`) }),
+    getBlockNumber: async () => state.blockNumber,
     getCode: async address => state.codeMismatch === address ? '0x' : code(address),
     getBalance: async () => state.eth,
     getFeeData: async () => ({ maxFeePerGas: 2n }),
     getTransactionReceipt: async hash => state.receipts.get(hash) || null,
     getTransaction: async hash => { if (state.beforeReadTransaction) await state.beforeReadTransaction(hash); return state.txs.get(hash) || null; },
-    getLogs: async filter => { state.calls.push({ logs: filter }); return state.logs; },
+    getLogs: async filter => { state.calls.push({ logs: filter }); return state.logs.filter(log => log.blockNumber >= filter.fromBlock && log.blockNumber <= filter.toBlock); },
     call: async request => {
       state.calls.push(request);
       const [name, iface] = ifaceFor(request.to.toLowerCase()), p = iface.parseTransaction(request);
@@ -226,4 +227,43 @@ test('a stale recovery cannot overwrite or clear a changed shared pending record
     await assert.rejects(h.client.recoverPending(h.state.lastHash), /changed in another tab/);
     assert.deepEqual(JSON.parse(h.storage.get(key)), newer); assert.equal(h.state.sends.length, 1);
   }
+});
+
+test('paginated history reaches deployment-era thoughts without an unbounded request', async () => {
+  const { client, state } = harness(); state.blockNumber = C.hookDeploymentBlock + 9000;
+  state.logs = [speech({ blockNumber: C.hookDeploymentBlock + 5 })];
+  const seen = []; let cursor = null, pages = 0;
+  do {
+    const before = state.calls.filter(x => x.logs).length;
+    const page = await client.historyPage({ cursor, limit: 20 });
+    assert.ok(page.rangesScanned <= 4); assert.ok(state.calls.filter(x => x.logs).length - before <= 4);
+    for (const req of state.calls.filter(x => x.logs)) { assert.ok(req.logs.toBlock - req.logs.fromBlock < 1000); assert.ok(req.logs.fromBlock >= C.hookDeploymentBlock); }
+    seen.push(...page.rows); cursor = page.nextCursor; pages++;
+    assert.equal(page.hasMore, cursor !== null); assert.ok(pages < 10);
+  } while (cursor);
+  assert.equal(seen.length, 1); assert.equal(seen[0].blockNumber, C.hookDeploymentBlock + 5); assert.ok(pages > 1);
+});
+
+test('dense-block history pages preserve every log and reuse the validated range cache', async () => {
+  const { client, state } = harness(); state.blockNumber = C.hookDeploymentBlock + 400;
+  const block = C.hookDeploymentBlock + 10;
+  state.logs = Array.from({ length: 7 }, (_, index) => speech({ blockNumber: block, index, transactionHash: ethers.id(`history-${index}`) }));
+  let cursor = null; const seen = [];
+  const first = await client.historyPage({ limit: 2 }); seen.push(...first.rows); cursor = first.nextCursor;
+  const requests = state.calls.filter(x => x.logs).length;
+  while (cursor) { const page = await client.historyPage({ cursor, limit: 2 }); seen.push(...page.rows); cursor = page.nextCursor; }
+  assert.deepEqual(seen.map(row => row.logIndex), [6, 5, 4, 3, 2, 1, 0]);
+  assert.equal(state.calls.filter(x => x.logs).length, requests);
+});
+
+test('history cache refreshes on canonical block change and only returns exact hook provenance', async () => {
+  const { client, state } = harness(); state.blockNumber = C.hookDeploymentBlock + 400;
+  const valid = speech({ blockNumber: C.hookDeploymentBlock + 10 });
+  const badPool = speech({ blockNumber: valid.blockNumber }); badPool.topics = [...badPool.topics]; badPool.topics[1] = ethers.ZeroHash;
+  state.logs = [valid, valid, badPool, speech({ blockNumber: valid.blockNumber, address: C.token })];
+  assert.equal((await client.historyPage()).rows.length, 1);
+  state.logs = []; state.reorg++;
+  assert.equal((await client.historyPage()).rows.length, 0);
+  await assert.rejects(client.historyPage({ cursor: 'h1:1:1:1' }), /cursor is invalid/);
+  state.chain = 1n; await assert.rejects(client.historyPage(), /wrong chain/);
 });

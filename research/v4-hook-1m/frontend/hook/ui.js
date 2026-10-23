@@ -5,7 +5,8 @@
   const text = (id, value) => { const node = $(id); if (node) node.textContent = value; };
   const disabled = (id, value) => { const node = $(id); if (node) node.disabled = value; };
   const state = { ready: false, checked: false, connected: false, busy: false, refreshing: false, direction: 'ETH_TO_GH0ST',
-    slippageBps: 50, quote: null, action: null, snapshot: null, feed: [], message: null };
+    slippageBps: 50, quote: null, action: null, snapshot: null, feed: [], message: null,
+    historyCursor: null, historyStarted: false, historyDone: false, historyBusy: false, historyError: null };
   const owner = '0x8d6b11cfdf079e27c17e05cb7ea81235887691c6';
   const short = value => value ? `${value.slice(0, 6)}…${value.slice(-4)}` : '';
   let client;
@@ -99,11 +100,15 @@
     }
   }
   function renderFeed(rows) {
-    state.feed = rows;
+    const combined = new Map(state.feed.map(row => [`${row.transactionHash}:${row.logIndex}`, row]));
+    for (const row of rows) combined.set(`${row.transactionHash}:${row.logIndex}`, row);
+    state.feed = [...combined.values()].sort((a,b) => b.blockNumber-a.blockNumber || b.logIndex-a.logIndex);
     const list = $('feed-list'); if (!list) return;
     list.replaceChildren();
-    const empty = $('feed-empty'); if (empty) empty.hidden = rows.length > 0;
-    for (const row of rows) {
+    const empty = $('feed-empty'); if (empty) empty.hidden = state.feed.length > 0 || !state.historyDone;
+    text('history-count', state.historyStarted ? `${state.feed.length} ${state.feed.length === 1 ? 'thought' : 'thoughts'}${state.historyDone ? '' : ' loaded'}` : 'Reading the chain');
+    // The newest thought has its own prominent block; earlier thoughts appear once below it.
+    for (const row of state.feed.slice(1)) {
       const item = document.createElement('li'); item.className = 'feed-item';
       const words = document.createElement('p'); words.className = 'feed-message'; words.textContent = row.text;
       const meta = document.createElement('div'); meta.className = 'feed-meta';
@@ -114,13 +119,41 @@
       }
       item.append(words, meta); list.append(item);
     }
-    if (rows.length && (!state.message || BigInt(rows[0].sequence) > BigInt(state.message.sequence))) showMessage(rows[0]);
+    if (state.feed.length && (!state.message || BigInt(state.feed[0].sequence) > BigInt(state.message.sequence))) showMessage(state.feed[0]);
+    if (!state.feed.length && state.historyDone) {
+      text('latest-message', 'Quiet, for now.'); text('message-meta', 'A confirmed swap will leave its words here.');
+    }
+    const more = $('load-more-thoughts');
+    if (more) { more.hidden = !state.historyStarted || state.historyDone; more.disabled = state.historyBusy; more.textContent = state.historyBusy ? 'Reading history…' : 'Load earlier thoughts ↓'; }
+    disabled('refresh-feed', state.historyBusy);
+    text('history-status', state.historyError || (state.historyBusy ? 'Reading confirmed events from Robinhood Chain…' : state.historyDone ? 'All confirmed thoughts from this pool. Updates automatically.' : 'Newest first. Load earlier thoughts to continue the on-chain history.'));
+  }
+  async function loadHistory() {
+    if (state.historyBusy || state.historyDone) return;
+    state.historyBusy = true; state.historyError = null; renderFeed([]);
+    try {
+      // Fill the visible archive automatically, including quiet gaps since deployment.
+      let collected = 0;
+      for (let pageNumber=0; pageNumber<16; pageNumber++) {
+        const page = await client.historyPage({ cursor: state.historyCursor, limit: 20-collected });
+        state.historyStarted = true; state.historyCursor = page.nextCursor; state.historyDone = !page.hasMore;
+        renderFeed(page.rows);
+        collected += page.rows.length;
+        if (collected >= 20 || state.historyDone) break;
+      }
+    } catch (_) { state.historyError = 'Could not load the full history. Refresh to try again.'; }
+    finally { state.historyBusy = false; renderFeed([]); }
   }
   async function refreshStatus() {
     const result = await client.status(); state.snapshot = result; state.checked = true; state.ready = result.ready;
     state.connected = !!client.account; render(); return result;
   }
-  async function refreshFeed() { renderFeed(await client.messages({ limit: 12 })); }
+  async function refreshFeed() {
+    if (!state.historyStarted) return loadHistory();
+    if (state.historyBusy) return;
+    try { renderFeed(await client.messages({ limit: 20 })); state.historyError = null; renderFeed([]); }
+    catch (_) { state.historyError = 'Could not refresh the latest thoughts. Your loaded history is still here.'; renderFeed([]); }
+  }
   async function run(work) {
     if (state.busy) return;
     state.busy = true; setError(null); render();
@@ -180,14 +213,15 @@
       showMessage(result.messages.at(-1));
     }));
     $('recover-pending')?.addEventListener('click', () => run(async () => processResult(await client.recoverPending($('tx-hash').value.trim()))));
-    $('refresh-feed')?.addEventListener('click', () => run(refreshFeed));
+    $('refresh-feed')?.addEventListener('click', refreshFeed);
+    $('load-more-thoughts')?.addEventListener('click', loadHistory);
     const refresh = async () => {
       if (document.hidden || state.busy || state.refreshing) return;
       state.refreshing = true;
-      try { await refreshStatus(); await refreshFeed(); }
+      try { await Promise.all([refreshStatus(), refreshFeed()]); }
       catch (e) {
         if (!state.checked) { text('pool-status', 'Connection delayed'); text('status-detail', 'The public network is taking a moment. Connect your wallet or try again shortly.'); }
-        if (!state.feed.length) text('feed-empty', 'No confirmed sentences loaded yet.');
+        if (!state.feed.length && !state.historyDone) text('history-status', 'History is taking a moment to load. Refresh to try again.');
       } finally { state.refreshing = false; }
     };
     document.addEventListener('h00k-liquidity-added', () => { refresh(); });

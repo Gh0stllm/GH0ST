@@ -5,8 +5,8 @@
 <meta name="theme-color" content="#080b0a"><meta name="description" content="Swap ETH and GH0ST on Robinhood Chain. Read the sentence generated on-chain with every H00K swap.">
 <title>H00K — Every swap has a thought.</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23080b0a'/%3E%3Ctext x='10' y='43' font-size='30' fill='%23b7f7d3'%3E%E2%88%9E%3C/text%3E%3C/svg%3E">
-<link rel="stylesheet" href="/hook/styles.css">
-<script defer src="/hook/ethers.umd.min.js"></script><script defer src="/hook/swap-engine.js"></script><script defer src="/hook/ui.js"></script><script defer src="/hook/liquidity-math.js"></script><script defer src="/hook/liquidity-engine.js"></script><script defer src="/hook/liquidity-ui.js"></script>
+<link rel="stylesheet" href="/hook/styles.css?v=history-20261023">
+<script defer src="/hook/ethers.umd.min.js"></script><script defer src="/hook/swap-engine.js?v=history-20261023"></script><script defer src="/hook/ui.js?v=history-20261023"></script><script defer src="/hook/liquidity-math.js"></script><script defer src="/hook/liquidity-engine.js"></script><script defer src="/hook/liquidity-ui.js"></script>
 </head>
 <body>
 <a class="skip" href="#swap">Skip to swap</a>
@@ -52,15 +52,14 @@
 <details class="lp-recovery"><summary>Recover a liquidity transaction</summary><div class="recovery-form"><input id="lp-recovery-hash" aria-label="Liquidity transaction hash" placeholder="0x…" autocomplete="off" spellcheck="false"><button id="lp-recover">Check receipt</button></div></details>
 </div>
 </div>
-<article class="thought-card" aria-labelledby="thought-heading">
-<div class="thought-heading"><div class="eyebrow"><span class="mint-dot"></span> THE OTHER SIDE OF YOUR SWAP</div><span class="live-chip" id="message-status">ON-CHAIN</span></div>
-<div class="ghost-art" aria-hidden="true"><svg viewBox="0 0 220 190" fill="none"><defs><pattern id="dots" width="7" height="7" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="#a4eac3"/></pattern><radialGradient id="halo"><stop stop-color="#91dcb1" stop-opacity=".12"/><stop offset="1" stop-color="#91dcb1" stop-opacity="0"/></radialGradient></defs><ellipse cx="110" cy="100" rx="109" ry="89" fill="url(#halo)"/><path d="M57 155V89a53 53 0 0 1 106 0v66l-18-13-18 14-17-14-17 14-18-14-18 13Z" fill="url(#dots)"/><rect x="84" y="87" width="12" height="15" rx="3" fill="#c9f3dc"/><rect x="124" y="87" width="12" height="15" rx="3" fill="#c9f3dc"/><path d="M103 117h14" stroke="#c9f3dc" stroke-width="2" stroke-linecap="round"/></svg></div>
-<div class="thought-body"><h2 id="thought-heading" class="sr-only">Latest on-chain thought</h2><p id="latest-message" class="message empty" aria-live="polite">Quiet, for now.</p><p id="message-meta" class="message-meta">A confirmed swap will leave its words here.</p><a id="message-tx" class="transaction-link" hidden target="_blank" rel="noopener noreferrer">Read the transaction <span>↗</span></a></div>
+<aside class="thought-card history-pane" aria-labelledby="thought-heading">
+<div class="history-heading"><div><div class="eyebrow"><span class="mint-dot"></span> FROM THE HOOK</div><h2 id="thought-heading">Thoughts so far.</h2></div><button id="refresh-feed" class="text-button" aria-label="Refresh hook thoughts">Refresh <span aria-hidden="true">↻</span></button></div>
+<div class="history-summary"><span id="history-count">Reading the chain</span><span class="live-chip" id="message-status">ON-CHAIN</span></div>
+<div class="thought-body"><span class="latest-label">LATEST THOUGHT</span><p id="latest-message" class="message empty" aria-live="polite">Reading the chain…</p><p id="message-meta" class="message-meta">Confirmed sentences from this pool appear here.</p><a id="message-tx" class="transaction-link" hidden target="_blank" rel="noopener noreferrer">View transaction ↗</a></div>
+<div class="history-scroll" tabindex="0" aria-label="Earlier hook thoughts"><ul id="feed-list" class="feed-list"></ul><div id="feed-empty" class="feed-empty" hidden><span class="empty-orbit" aria-hidden="true">◎</span><p>No confirmed thoughts yet.</p><span>The first swap will start the story.</span></div></div>
+<div class="history-bottom"><p id="history-status" class="history-status" role="status">Reading confirmed events from Robinhood Chain.</p><button id="load-more-thoughts" class="history-more" hidden>Load earlier thoughts <span aria-hidden="true">↓</span></button></div>
 <div class="thought-footer"><span>GENERATED ON-CHAIN</span><span>ONE SWAP, ONE SENTENCE <span class="mini-star">✳</span></span></div>
-</article>
-</section>
-<section class="feed-section" aria-labelledby="feed-title"><div class="section-heading"><div><span class="eyebrow">THE PUBLIC RECORD</span><h2 id="feed-title">Thoughts, on record.</h2></div><button id="refresh-feed" class="text-button">Refresh <span aria-hidden="true">↻</span></button></div>
-<ul id="feed-list" class="feed-list"></ul><div id="feed-empty" class="feed-empty"><span class="empty-orbit" aria-hidden="true">◎</span><p>No confirmed thoughts yet.</p><span>Messages appear here only after a real swap.</span></div>
+</aside>
 </section>
 <details class="recovery"><summary>Find a swap by transaction hash <span>+</span></summary><div class="recovery-body"><label for="tx-hash">Transaction hash</label><div class="recovery-form"><input id="tx-hash" placeholder="0x…" autocomplete="off" spellcheck="false"><button id="load-transaction">Read message</button><button id="recover-pending" hidden>Recover pending</button></div><p>Read a confirmed message, or check an interrupted wallet transaction.</p></div></details>
 <footer><a class="footer-brand" href="/">GH0ST <span>Intelligence, under the hood.</span></a><div><a id="hook-contract" href="https://robinhoodchain.blockscout.com/address/0x25E6366C490225358625d941C7B147360b155040" target="_blank" rel="noopener noreferrer">Hook contract ↗</a><span>0.30% pool fee · Network gas additional</span></div></footer>

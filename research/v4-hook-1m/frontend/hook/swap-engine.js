@@ -21,6 +21,8 @@
     poolId: '0x90fbab7e58f154bff561fb7ee00f2aaa59ba66b77b0c4e1535f1b1c26a00f7d7',
     fee: 3000, tickSpacing: 60, hookData: '0x53504b31', decimals: 18,
     quoteSeconds: 120, deadlineSeconds: 900, maximumSlippageBps: 500,
+    hookDeploymentBlock: 96085850,
+    hookDeploymentTransaction: '0x283c7f8f05cd69a0b84cc2cf549bf3b03fe18326f13a3bebdcc58e782e20a8e2',
   });
   const PINS = Object.freeze({
     [C.poolManager]: '0xbd3881180b547f5fe817545743cfb4343e96b1bc6640dcd70c106b0066e95626',
@@ -100,6 +102,7 @@
     const interfaces = Object.fromEntries(Object.entries(ABI).map(([key, abi]) => [key, new ethers.Interface(abi)]));
     let walletProvider = options.walletProvider || null, signer = options.signer || null, account = null, busy = false;
     const issued = new WeakSet(), consumed = new Set(); let latest = null, quoteCounter = 0;
+    const historyCache = new Map();
     const recordKey = who => `gh0st:h00k:pending:${C.chainId}:${lower(who)}`;
     const pending = who => { const raw = store?.getItem(recordKey(who)); try { return raw ? JSON.parse(raw) : null; } catch (_) { throw Error('The saved transaction record needs review before another swap.'); } };
     const save = (who, record) => { if (record) store?.setItem(recordKey(who), JSON.stringify(record)); else store?.removeItem(recordKey(who)); };
@@ -303,6 +306,70 @@
         return found.sort((a, b) => b.blockNumber - a.blockNumber || b.logIndex - a.logIndex).slice(0, limit);
       });
     }
+    // Cursors are exclusive (block, log index) boundaries. Keeping the log index
+    // prevents a busy block from losing events when its rows span several pages.
+    async function historyPage({ cursor = null, limit = 20 } = {}) {
+      ensure(Number.isInteger(limit) && limit > 0 && limit <= 100, 'Read between 1 and 100 thoughts per page.');
+      return read(async provider => {
+        ensure(BigInt(await provider.send('eth_chainId', [])) === BigInt(C.chainId), 'The history provider is on the wrong chain.');
+        const code = await provider.getCode(C.hook);
+        ensure(code !== '0x' && lower(ethers.keccak256(code)) === lower(PINS[C.hook]), 'The history hook does not match this release.');
+        let block, index, head;
+        if (cursor === null) {
+          head = await provider.getBlockNumber(); block = head; index = Number.MAX_SAFE_INTEGER;
+        } else {
+          ensure(typeof cursor === 'string' && /^h1:[0-9a-z]+:[0-9a-z]+:[0-9a-z]+$/.test(cursor), 'This thought-history cursor is invalid.');
+          const values = cursor.split(':').slice(1).map(x => parseInt(x, 36));
+          [block, index, head] = values;
+          ensure(values.every(x => Number.isSafeInteger(x) && x >= 0) && block <= head
+            && block >= C.hookDeploymentBlock, 'This thought-history cursor is invalid.');
+        }
+        const encode = (b, i) => `h1:${b.toString(36)}:${i.toString(36)}:${head.toString(36)}`;
+        const rows = [], topic = interfaces.hook.getEvent('SentenceSpoken').topicHash;
+        let ranges = 0;
+        while (block >= C.hookDeploymentBlock && ranges < 4) {
+          const start = Math.max(C.hookDeploymentBlock, Math.floor(block / 1000) * 1000);
+          const end = Math.min(head, Math.floor(block / 1000) * 1000 + 999);
+          const key = `${start}:${end}`;
+          const cacheable = end <= head - 64;
+          let entries;
+          let boundary;
+          if (cacheable) {
+            boundary = await provider.getBlock(end);
+            const cached = historyCache.get(key);
+            if (cached && boundary?.hash === cached.hash) entries = cached.rows;
+          }
+          if (!entries) {
+            const logs = await provider.getLogs({ address: C.hook, topics: [topic, C.poolId, null, C.modelHash], fromBlock: start, toBlock: end });
+            const unique = new Map();
+            for (const log of logs) {
+              const row = decodeMessage(log, ethers);
+              if (row && Number.isSafeInteger(row.blockNumber) && row.blockNumber >= start && row.blockNumber <= end
+                && Number.isSafeInteger(row.logIndex) && row.logIndex >= 0)
+                unique.set(`${row.transactionHash}:${row.logIndex}`, row);
+            }
+            entries = [...unique.values()].sort((a, b) => b.blockNumber - a.blockNumber || b.logIndex - a.logIndex);
+            if (cacheable && boundary?.hash) {
+              historyCache.set(key, { hash: boundary.hash, rows: entries });
+              if (historyCache.size > 64) historyCache.delete(historyCache.keys().next().value);
+            }
+          }
+          ranges++;
+          const eligible = entries.filter(row => row.blockNumber < block || (row.blockNumber === block && row.logIndex < index));
+          const remaining = limit - rows.length;
+          rows.push(...eligible.slice(0, remaining));
+          if (eligible.length >= remaining) {
+            const last = rows.at(-1), hasMore = eligible.length > remaining || start > C.hookDeploymentBlock;
+            return freeze({ rows, nextCursor: hasMore ? encode(last.blockNumber, last.logIndex) : null, hasMore,
+              deploymentBlock: C.hookDeploymentBlock, rangesScanned: ranges });
+          }
+          block = start - 1; index = Number.MAX_SAFE_INTEGER;
+        }
+        const hasMore = block >= C.hookDeploymentBlock;
+        return freeze({ rows, nextCursor: hasMore ? encode(block, index) : null, hasMore,
+          deploymentBlock: C.hookDeploymentBlock, rangesScanned: ranges });
+      });
+    }
     async function receipt(hash) {
       ensure(/^0x[0-9a-f]{64}$/i.test(hash), 'Enter a valid transaction hash.');
       const r = await read(provider => provider.getTransactionReceipt(hash));
@@ -328,7 +395,7 @@
       ethereum.on('accountsChanged', () => { account = null; signer = null; notify({ phase: 'disconnected' }); });
       ethereum.on('chainChanged', () => { account = null; signer = null; notify({ phase: 'disconnected' }); });
     }
-    return Object.freeze({ status, connect, quote, nextAction, executeNext, messages, receipt, recoverPending,
+    return Object.freeze({ status, connect, quote, nextAction, executeNext, messages, historyPage, receipt, recoverPending,
       get account() { return account; }, get busy() { return busy; }, get latest() { return latest; } });
   }
   root.GH0STSwap = Object.freeze({ CONSTANTS: C, PINS, ABI, POOL_KEY: KEY, KEY_TYPE, parseAmount, minimumOutput, buildSwap, decodeMessage, createClient });

@@ -2,6 +2,10 @@
 
 Public route: https://gh0st.fyi/H00K (GH0ST uses a zero). The static page supports native ETH ↔ GH0ST on Robinhood mainnet4663, through the exact deployed sentence-hook pool. The existing website, worker functions, and other pages are preserved when publishing.
 
+## Visible thought history
+
+The side pane shows the latest sentence and earlier sentences directly on the page, without connecting a wallet or opening a drawer. It automatically fills the first 20 confirmed thoughts, newest first, by reading back to the verified hook deployment at block96085850. More history is paginated; each entry links to its transaction. Model text is filtered by hook, pool and model hash.
+
 ## Public liquidity
 
 The Add liquidity tab accepts any connected wallet. Users choose an ETH maximum and review the paired GH0ST maximum. First deposits use the existing GH0ST market as a reference and atomically initialize the new pool; later deposits use the pool price. Positions span the full price range and mint an NFT to the user. Both caps are enforced over a 0.5% price band, with unused ETH refunded and unspent GH0ST retained. Approvals, mint and receipt recovery each stay user-controlled.
