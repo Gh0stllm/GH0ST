@@ -53,6 +53,9 @@ the pinned zero-value factory deployments, uses 150% of fresh gas estimates,
 and verifies each runtime before continuing. It does not fund the pool.
 The CLI reads the live starting nonce once and advances it after each confirmed
 deployment, so a lagging RPC response cannot reuse the previous transaction's nonce.
+It also saves the signed transaction's exact hash before submission. If the RPC
+accepts a transaction but responds with an error, the CLI checks that exact
+receipt and expected deployed code before continuing; it never blindly resends.
 
 Receipts and an exclusive process lock are stored in gitignored
 `deployment/.local/`. Run the same command to resume. An unresolved submission

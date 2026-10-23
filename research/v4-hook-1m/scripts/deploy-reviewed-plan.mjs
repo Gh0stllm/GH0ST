@@ -81,13 +81,24 @@ export async function deployEntries({ provider, signer, plan, state, save, log =
     const fees = await provider.getFeeData(), price = fees.maxFeePerGas ?? fees.gasPrice;
     assert(price !== null, 'Cannot estimate current network fee.');
     assert(await provider.getBalance(PIN.sender, 'pending') >= gasLimit * price, 'Insufficient ETH for the current gas estimate.');
-    // Record before sending so an ambiguous RPC outcome cannot cause a blind duplicate retry.
-    state.transactions[entry.order] = { status: 'submitting', expected_address: entry.predicted_address, nonce: nextNonce };
-    save(state);
-    const tx = await signer.sendTransaction({ ...request, gasLimit });
-    state.transactions[entry.order] = { ...state.transactions[entry.order], status: 'pending', hash: tx.hash };
-    save(state); log(`Submitted ${entry.kind}: ${tx.hash}`);
-    const receipt = await tx.wait();
+    // Compute and persist the exact signed transaction hash BEFORE broadcast.
+    // Some RPC gateways accept a transaction but return a nonce error instead
+    // of its hash. Reconcile that hash; never create a replacement blindly.
+    const populated = await signer.populateTransaction({ ...request, gasLimit });
+    const serialized = await signer.signTransaction(populated);
+    const hash = keccak256(serialized);
+    state.transactions[entry.order] = { status: 'pending', expected_address: entry.predicted_address, nonce: nextNonce, hash };
+    save(state); log(`Prepared ${entry.kind}: ${hash}`);
+    let broadcastError;
+    try { await provider.broadcastTransaction(serialized); }
+    catch (error) { broadcastError = error; log(`RPC reported an error; checking the prepared transaction's receipt.`); }
+    let receipt = await provider.getTransactionReceipt(hash);
+    if (!receipt) {
+      const timeout = broadcastError ? 30_000 : 120_000;
+      try { receipt = await provider.waitForTransaction(hash, 1, timeout); } catch (_) { /* preserve the journal */ }
+    }
+    assert(receipt, 'Submission outcome is still unresolved. Its exact hash is saved; inspect the receipt before retrying.');
+    assert.equal(receipt.hash, hash, 'RPC returned a receipt for a different transaction.');
     assert.equal(Number(receipt.status), 1, 'Deployment transaction failed.');
     assert.equal(keccak256(await provider.getCode(entry.predicted_address)), entry.runtime_code_hash, 'Deployed runtime mismatch.');
     state.transactions[entry.order].status = 'verified'; save(state);

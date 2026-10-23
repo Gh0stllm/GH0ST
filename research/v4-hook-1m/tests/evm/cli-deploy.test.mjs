@@ -8,35 +8,55 @@ const bytes = readFileSync(new URL('../../deployment/robinhood-mainnet-plan.json
 const original = loadReviewedPlan(bytes);
 const runtime = '0x6001600055';
 function harness() {
-  const events = [], code = new Map(), state = { transactions: {} };
+  const events = [], code = new Map(), receipts = new Map(), signedRequests = new Map(), state = { transactions: {} };
   const plan = structuredClone(original);
   plan.transactions = plan.transactions.slice(0, 2).map(row => ({ ...row, runtime_code_hash: keccak256(runtime) }));
   plan.dependencies.create2_deployer_code_hash = keccak256(runtime);
   plan.dependencies.pool_manager_code_hash = keccak256(runtime);
   code.set(PIN.factory.toLowerCase(), runtime); code.set(PIN.manager.toLowerCase(), runtime);
-  const status = { chain: PIN.chain, signer: PIN.sender, nonce: 6118, pendingNonce: 6118, failReceipt: false };
+  const status = { chain: PIN.chain, signer: PIN.sender, nonce: 6118, pendingNonce: 6118,
+    failReceipt: false, ackError: false, noReceipt: false, delayedReceipt: false, wrongReceipt: false, wrongRuntime: false };
+  function mine(hash, request) {
+    if (!status.failReceipt) {
+      const entry = plan.transactions.find(entry => entry.unsigned_transaction.data === request.data);
+      code.set(entry.predicted_address.toLowerCase(), status.wrongRuntime ? '0x6000' : runtime);
+    }
+    const receipt = { status: status.failReceipt ? 0 : 1, hash: status.wrongReceipt ? '0x' + '99'.repeat(32) : hash };
+    receipts.set(hash, receipt); return receipt;
+  }
   const provider = {
     send: async () => status.chain,
     getCode: async address => code.get(address.toLowerCase()) || '0x',
     getTransactionCount: async (_, tag) => tag === 'pending' ? status.pendingNonce : status.nonce,
-    getTransactionReceipt: async () => null,
+    getTransactionReceipt: async hash => receipts.get(hash) || null,
+    waitForTransaction: async hash => {
+      if (status.noReceipt) return null;
+      const pair = [...signedRequests].find(([serialized]) => keccak256(serialized) === hash);
+      return receipts.get(hash) || mine(hash, pair[1]);
+    },
     getFeeData: async () => ({ gasPrice: 1n }), getBalance: async () => 10n ** 18n,
+    broadcastTransaction: async serialized => {
+      const request = signedRequests.get(serialized), hash = keccak256(serialized);
+      assert.equal(events.at(-1).type, 'save');
+      assert.equal(events.at(-1).row.status, 'pending');
+      assert.equal(events.at(-1).row.hash, hash);
+      events.push({ type: 'send', request });
+      if (!status.noReceipt && !status.delayedReceipt) mine(hash, request);
+      if (status.ackError) throw Object.assign(Error('nonce has already been used'), { code: 'NONCE_EXPIRED' });
+      return { hash };
+    },
   };
   const signer = {
     getAddress: async () => status.signer,
     estimateGas: async () => 101n,
-    sendTransaction: async request => {
-      assert.equal(events.at(-1).type, 'save');
-      assert.equal(events.at(-1).row.status, 'submitting');
+    populateTransaction: async request => {
       assert.equal(request.gasLimit, 152n); assert.equal(request.value, 0n); assert.equal(request.chainId, PIN.chain);
       assert.equal(request.to, PIN.factory); assert.equal(request.gasPrice, undefined); assert.equal(request.maxFeePerGas, undefined);
-      const index = plan.transactions.findIndex(entry => entry.unsigned_transaction.data === request.data);
-      events.push({ type: 'send', request });
-      return { hash: '0x' + String(index + 1).padStart(64, '0'), wait: async () => {
-        assert.equal(events.at(-1).row.status, 'pending');
-        if (!status.failReceipt) code.set(plan.transactions[index].predicted_address.toLowerCase(), runtime);
-        return { status: status.failReceipt ? 0 : 1 };
-      } };
+      return request;
+    },
+    signTransaction: async request => {
+      const serialized = '0x' + request.nonce.toString(16).padStart(8, '0');
+      signedRequests.set(serialized, request); return serialized;
     },
   };
   const save = current => { const row = Object.values(current.transactions).at(-1); events.push({ type: 'save', row: structuredClone(row) }); };
@@ -97,4 +117,31 @@ test('resuming past matching contracts starts at the live account nonce without 
   h.state.transactions[h.plan.transactions[0].order] = { status: 'submitting' };
   await deployEntries(h);
   assert.deepEqual(h.events.filter(e => e.type === 'send').map(e => e.request.nonce), [6118]);
+});
+
+test('an accepted transaction followed by a nonce-error response is recovered by its exact pre-saved hash', async () => {
+  for (const delayed of [false, true]) {
+    const h = harness(); h.status.ackError = true; h.status.delayedReceipt = delayed;
+    await deployEntries(h);
+    assert.equal(h.events.filter(e => e.type === 'send').length, 2);
+    assert(Object.values(h.state.transactions).every(row => row.status === 'verified' && /^0x[0-9a-f]{64}$/.test(row.hash)));
+  }
+});
+
+test('a broadcast error without a receipt preserves its hash and stops without a second broadcast', async () => {
+  const h = harness(); h.status.ackError = true; h.status.noReceipt = true;
+  await assert.rejects(deployEntries(h), /unresolved/);
+  assert.equal(h.events.filter(e => e.type === 'send').length, 1);
+  const row = Object.values(h.state.transactions)[0];
+  assert.equal(row.status, 'pending'); assert.match(row.hash, /^0x[0-9a-f]{64}$/);
+  await assert.rejects(inspectEntry(h.provider, h.plan.transactions[0], h.state), /pending or replaced/);
+});
+
+test('broadcast-error recovery refuses another receipt or a mismatching deployed runtime', async () => {
+  for (const kind of ['wrongReceipt', 'wrongRuntime']) {
+    const h = harness(); h.status.ackError = true; h.status[kind] = true;
+    await assert.rejects(deployEntries(h), kind === 'wrongReceipt' ? /different transaction/ : /runtime mismatch/);
+    assert.equal(h.events.filter(e => e.type === 'send').length, 1);
+    assert.equal(Object.values(h.state.transactions)[0].status, 'pending');
+  }
 });
