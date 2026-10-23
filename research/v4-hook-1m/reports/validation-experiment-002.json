@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "generated_at_utc": "2026-10-23T08:59:41.424218+00:00",
+  "publication_parent": "d70e410b97e04108912232b044cc6a5ca5c3f6a1",
+  "scope": "Local frozen-model synthetic evaluation and CPU operation audit",
+  "checks": {
+    "generalization_script_exit_code": 0,
+    "operation_audit_script_exit_code": 0,
+    "sample_level_predictions": 8192,
+    "all_aggregate_accuracies_recomputed_from_sample_rows": true,
+    "report_source_and_configuration_digests_match": true,
+    "compressed_predictions_preserve_every_sample": true,
+    "operation_totals_match_module_trace": true
+  },
+  "commands": [
+    "python python/evaluate_generalization.py",
+    "python python/audit_operations.py"
+  ]
+}

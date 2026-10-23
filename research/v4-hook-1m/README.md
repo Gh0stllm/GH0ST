@@ -4,7 +4,7 @@
 
 Branch: `research/v4-hook-1m` · Started: 23 October 2026 · Baseline: `d9d6306b8cbf0eb39e844097e7aa669afe82729e`
 
-[Status and research gates](STATUS.md) · [Model selection](MODEL-SELECTION.md) · [Research protocol](RESEARCH.md) · [Model attribution](model-data/NOTICE.txt)
+[Status and research gates](STATUS.md) · [Latest experiment](RESULTS-002.md) · [Model selection](MODEL-SELECTION.md) · [Research protocol](RESEARCH.md) · [Model attribution](model-data/NOTICE.txt)
 
 The selected candidate is **IBM Granite TinyTimeMixer R2 plus a trained bounded fee head: 812,195 total parameters**. This is a numerical time-series model. The pretrained backbone is frozen; the new classification head is trained on synthetic volatility histories.
 
@@ -42,6 +42,12 @@ The saved compressed model file contains 812,195 signed-byte parameters, 138 FP3
 
 The results establish a reproducible synthetic functional experiment. They do not establish market performance, statistical superiority, improved LP returns, resistance to manipulation or suitability for live fee selection.
 
+## Additional evaluation and operation audit
+
+The frozen candidates were tested on **8,192 additional synthetic histories**. On 4,096 histories from the original generator, the pretrained candidate scored **90.89%**, versus **91.28%** for the history-only control (paired exact p = 0.0929). A faster-switching stress scenario favoured the pretrained candidate by 1.61 percentage points; this is exploratory and does not establish market performance.
+
+One complete prediction executes **7,813,824 linear multiply-accumulates** across 53 linear calls, before counting all normalization, nonlinearities and other arithmetic. This is not a gas estimate. [Experiment 002](RESULTS-002.md) retains the full comparison, operation trace, reproduction commands and per-sample results.
+
 ## First arithmetic results
 
 Solidity 0.8.30, optimizer enabled with 200 runs, Shanghai EVM, local Ganache. Both kernels enforce the same signed INT32 ABI validation. The optimized version reads a 32-byte group of signed INT8 weights at once.
@@ -73,6 +79,8 @@ python -m venv .venv
 .venv/bin/python -m pip install -r requirements.txt
 .venv/bin/python python/model_experiment.py --download
 .venv/bin/python python/verify_model.py
+.venv/bin/python python/evaluate_generalization.py
+.venv/bin/python python/audit_operations.py
 
 npm ci --ignore-scripts --no-audit --no-fund
 npm test
@@ -99,4 +107,4 @@ The pinned base checkpoint, trained heads, preprocessing, held-out fixtures and 
 
 ## Next research gate
 
-The next meaningful step is to test real, regularly sampled pool histories and determine whether the near-million-parameter model adds value over the much smaller control. In parallel, the full model's integer graph needs a faithful reference before a complete onchain gas claim can be made. Preserve both successful and negative measurements.
+The next gates are a faithful full-model integer reference, real regularly sampled pool histories and complete PoolManager integration. Additional synthetic evaluation has not established an advantage on the primary original-generator endpoint; the regime-transition result should be tested further. Preserve both successful and negative measurements before making any full-model gas or economic claim.

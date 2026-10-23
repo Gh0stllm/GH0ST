@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "question": "Does the frozen adapted pretrained model outperform its frozen history-only control on additional independent synthetic histories?",
+  "training": "No retraining, checkpoint selection or scaler refitting in this experiment.",
+  "samples_per_seed": 512,
+  "conditions": [
+    {"name": "same_generator", "seeds": [466310, 466311, 466312, 466313, 466314, 466315, 466316, 466317], "switch_probability": 0.002, "shock_probability": 0.003, "observation_noise": 0.12},
+    {"name": "faster_regime_changes", "seeds": [466410, 466411, 466412, 466413], "switch_probability": 0.01, "shock_probability": 0.003, "observation_noise": 0.12},
+    {"name": "noisier_frequent_shocks", "seeds": [466510, 466511, 466512, 466513], "switch_probability": 0.002, "shock_probability": 0.015, "observation_noise": 0.24}
+  ],
+  "primary_comparison": "Paired exact McNemar test on same_generator; conditional on this simulator and the already selected frozen models.",
+  "stress_comparisons": "Exploratory only; no inference about real pool performance."
+}

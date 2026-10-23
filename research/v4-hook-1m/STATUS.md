@@ -13,6 +13,8 @@ Updated: 23 October 2026. Branch: `research/v4-hook-1m`.
 | Saved-artifact verification | Exact reproduced outputs; malformed inputs and modified checkpoint rejected | [Verification report](reports/model-verification.json) |
 | EVM row kernels | 120 oracle comparisons; 30 invalid inputs rejected; 35–42% lower receipt gas at widths 128–1,024 | [Kernel report](reports/kernel-benchmark.json) |
 | Hook consumer | Pool/model binding, policy bounds, freshness, rollback prevention and fixed-fee fallback | [Contract](contracts/GH0STPolicyHook.sol) · [Tests](tests/evm/policy-hook.test.mjs) · [Local callback measurements](reports/hook-integration.json) |
+| Additional synthetic evaluation | 8,192 new histories; no advantage on the original generator; exploratory benefit during faster regime changes | [Experiment 002](RESULTS-002.md) · [Full results](reports/generalization-benchmark.json) |
+| Executed operation audit | 7,813,824 linear MACs across 53 calls for one complete prediction | [Operation audit](reports/operation-audit.json) |
 
 ## Research gates
 
@@ -20,8 +22,9 @@ Updated: 23 October 2026. Branch: `research/v4-hook-1m`.
 - [x] Retain first synthetic results, smaller controls and representation regressions.
 - [x] Check signed arithmetic against an independent oracle.
 - [x] Exercise bounded hook consumption using a local mocked policy source.
-- [ ] Evaluate frozen candidates on additional unseen simulation seeds and changed regimes.
-- [ ] Count the executed model operations and specify the complete integer graph.
+- [x] Evaluate frozen candidates on additional unseen simulation seeds and changed regimes.
+- [x] Count executed linear operations through the complete selected model.
+- [ ] Specify and validate the complete integer graph, including functional nonlinearities and normalization.
 - [ ] Execute the full model with authenticated inputs and deterministic integer arithmetic.
 - [ ] Connect verified inference to a real Uniswap PoolManager swap.
 - [ ] Evaluate real regularly sampled pool histories and economic outcomes.
