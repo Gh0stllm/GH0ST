@@ -41,7 +41,23 @@ Robinhood is an Arbitrum chain with execution and data-posting costs. The local 
 
 The helper pins the current reviewed plan digest `2d4f3d60ef3208c92d0dff3295cc4cc0b89d53d6ebb4da7dd63324cc5b4b7911`. A regenerated plan is deliberately refused until its contents are reviewed and this embedded digest is explicitly updated. Never automatically repin an unreviewed replacement plan.
 
-## Scope after deployment
+## Optional user-run CLI
+
+From this research directory, `node scripts/deploy-reviewed-plan.mjs` checks the
+reviewed plan and live deployments without signing. To deploy from your own
+interactive terminal, run `node scripts/deploy-reviewed-plan.mjs --broadcast`.
+It reads the private RPC from `.env.local`, shows the wallet and remaining
+contract count, asks you to type `DEPLOY`, then accepts the key without echoing
+or storing it. It verifies the key belongs to the confirmed wallet, sends only
+the pinned zero-value factory deployments, uses 150% of fresh gas estimates,
+and verifies each runtime before continuing. It does not fund the pool.
+
+Receipts and an exclusive process lock are stored in gitignored
+`deployment/.local/`. Run the same command to resume. An unresolved submission
+or failed receipt stops the script; inspect it before removing journal entries.
+Do not put keys on the command line, in the environment, or in repository files.
+
+## Pool funding after deployment
 
 Deploying the model and hook does not initialize a pool or supply liquidity. The user selected the native ETH/GH0ST pair and a $100 budget per side, excluding gas. The private signing page now provides a separate full-range liquidity proposal after contract verification, with a fresh price quote, exact capped approvals and a position NFT minted to the confirmed wallet. See [GHOST-ETH-POOL.md](GHOST-ETH-POOL.md). All deployment and liquidity transactions still require wallet signatures.
 
