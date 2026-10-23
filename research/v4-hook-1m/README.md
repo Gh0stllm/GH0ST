@@ -6,6 +6,14 @@ Branch: `research/v4-hook-1m` · Started: 23 October 2026 · Baseline: `d9d6306b
 
 [Status and research gates](STATUS.md) · [Latest experiment](RESULTS-002.md) · [Model selection](MODEL-SELECTION.md) · [Research protocol](RESEARCH.md) · [Model attribution](model-data/NOTICE.txt)
 
+## Execution policy
+
+Run training, model selection and benchmarks locally. GitHub is used to publish source, saved weights and completed reports. Do not launch model training on GitHub Actions or other GitHub-hosted compute for this study.
+
+## New track: one word on each swap
+
+[SwapSpeaker](swap-speaker/README.md) is a separate **4,522-parameter recurrent language model** with **94 whole-word tokens (54 lexical words)**. It retains sentence context between swaps and executes one complete integer next-word step in `afterSwap`. This is distinct from the numerical forecasting candidate below. A [three-label control](one-word/README.md) is also retained. Training runs locally; source, completed artifacts and reports are published here.
+
 The selected candidate is **IBM Granite TinyTimeMixer R2 plus a trained bounded fee head: 812,195 total parameters**. This is a numerical time-series model. The pretrained backbone is frozen; the new classification head is trained on synthetic volatility histories.
 
 The initial test does **not** show that the large backbone improves the task: a 771-parameter history-only ablation scored higher. This negative result is retained as part of the research.

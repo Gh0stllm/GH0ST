@@ -15,6 +15,8 @@ Updated: 23 October 2026. Branch: `research/v4-hook-1m`.
 | Hook consumer | Pool/model binding, policy bounds, freshness, rollback prevention and fixed-fee fallback | [Contract](contracts/GH0STPolicyHook.sol) · [Tests](tests/evm/policy-hook.test.mjs) · [Local callback measurements](reports/hook-integration.json) |
 | Additional synthetic evaluation | 8,192 new histories; no advantage on the original generator; exploratory benefit during faster regime changes | [Experiment 002](RESULTS-002.md) · [Full results](reports/generalization-benchmark.json) |
 | Executed operation audit | 7,813,824 linear MACs across 53 calls for one complete prediction | [Operation audit](reports/operation-audit.json) |
+| Per-swap sentence model | Separate 4,522-parameter recurrent model; 94 whole-word tokens representing 54 lexical words | [SwapSpeaker](swap-speaker/README.md) |
+| Complete recurrent integer EVM execution | 7,520/7,520 logits and all hidden states matched; 34 word events produced 8 sentences | [EVM report](swap-speaker/reports/evm-benchmark.json) · [Word stream](swap-speaker/reports/swap-word-stream.json) |
 
 ## Research gates
 
@@ -32,3 +34,5 @@ Updated: 23 October 2026. Branch: `research/v4-hook-1m`.
 ## Interpretation
 
 This is a set of local component experiments. The full TTM model does not execute inside the hook. The mock policy source attests to a policy but does not prove inference. No full-swap gas, market advantage, production readiness or public-chain deployment is established. Keep new experiment results separate from the first split.
+
+The separate compact SwapSpeaker path executes its complete integer recurrent model directly during each local `afterSwap` callback; it does not use the cached-policy mock. That result is distinct from completing the much larger TTM port. All training and benchmarks run locally; do not launch GitHub-hosted training jobs.

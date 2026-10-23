@@ -12,8 +12,7 @@ export const compilationSettings = {
   outputSelection: { '*': { '*': ['abi', 'evm.bytecode.object', 'evm.deployedBytecode.object'] } },
 };
 
-export function compileResearch() {
-  const files = ['contracts/GH0STPolicyHook.sol', 'contracts/IFinalizedPolicySource.sol', 'tests/evm/ResearchHarness.sol'];
+export function compileResearch(files = ['contracts/GH0STPolicyHook.sol', 'contracts/IFinalizedPolicySource.sol', 'tests/evm/ResearchHarness.sol']) {
   const sources = Object.fromEntries(files.map(file => [file, { content: readFileSync(path.join(base, file), 'utf8') }]));
   const output = JSON.parse(solc.compile(JSON.stringify({ language: 'Solidity', sources, settings: compilationSettings }), {
     import(importPath) {
