@@ -6,6 +6,8 @@ The recovery staging tree brings the surviving research, website and Genesis fil
 
 ## Recovered tracks
 
+Current research: [approximately 1M-parameter Uniswap v4 hook](../research/v4-hook-1m/README.md), with [status and research gates](../research/v4-hook-1m/STATUS.md). This new local study is separate from the recovered historical tracks below.
+
 | Track | Recovered entry point | Scope |
 | --- | --- | --- |
 | Falcon inference | [Runtime](../falcon-agent/runtime/README.md) · [four-bit weights](../falcon-agent/fourbit-study/README.md) | Deployed-weight records, fixed-point reference and resumable Solidity inference research |

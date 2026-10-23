@@ -2,6 +2,8 @@
 
 # GH0ST
 
+**Research branch: [approximately 1M-parameter Uniswap v4 hook](research/v4-hook-1m/README.md).** Initial model adaptation and local EVM component experiments are available, including saved weights, reproduction commands, measured limits and [next research gates](research/v4-hook-1m/STATUS.md). Full-model hook inference is not yet implemented.
+
 Research into language models and agents with weights, inference and execution records on-chain. This recovery combines the surviving research Git history, model artifacts, verified S0UL runtime, website and Genesis collection from the project's separate workspaces and saved files.
 
 [Research index](docs/RESEARCH.md) · [Repository map](docs/REPOSITORY-MAP.md) · [Recovery record](docs/recovery/RECOVERY.md) · [Website](website/) · [Contributing](CONTRIBUTING.md)

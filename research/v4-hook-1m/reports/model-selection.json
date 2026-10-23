@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "selection": "ibm-granite/granite-timeseries-ttm-r2",
+  "selected_revision": "d6a79570cac0f33d526601cd3a0fc7c80a8f9a2f",
+  "decision": "Adapt a published numeric forecaster for the requested approximate-one-million-parameter research track; retain a much smaller history-only ablation because parameter count alone does not establish useful policy quality.",
+  "candidates": [
+    {
+      "id": "ibm-granite/granite-timeseries-ttm-r2",
+      "revision": "d6a79570cac0f33d526601cd3a0fc7c80a8f9a2f",
+      "parameters": 805280,
+      "count_method": "Sum of all shapes in the actual downloaded safetensors header, independently matched to all parameters of the loaded model.",
+      "tensor_count": 134,
+      "pretrained_checkpoint": true,
+      "declared_license": "Apache-2.0",
+      "model_card_url": "https://huggingface.co/ibm-granite/granite-timeseries-ttm-r2",
+      "config_url": "https://huggingface.co/ibm-granite/granite-timeseries-ttm-r2/blob/d6a79570cac0f33d526601cd3a0fc7c80a8f9a2f/config.json",
+      "source_code_url": "https://github.com/ibm-granite/granite-tsfm/tree/main/tsfm_public/models/tinytimemixer",
+      "fit": "Pretrained for numerical time-series forecasting; requires adaptation and domain evaluation. The published main checkpoint uses 512 history observations and predicts 96 future observations.",
+      "limitations": "The checkpoint is a numerical forecaster, not a language model or a validated trading policy. Computation reuses matrices across patches, so parameter count is not its multiply count or gas cost."
+    },
+    {
+      "id": "roneneldan/TinyStories-1M",
+      "revision": "77f1b168e219585646439073245fe87e56b3023e",
+      "parameters": 3745984,
+      "count_method": "Instantiate GPTNeoForCausalLM from the pinned upstream config with transformers 4.57.6 and sum unique model parameters, counting tied embeddings once. The pretrained binary was not loaded for this comparison.",
+      "token_embedding_parameters": 3216448,
+      "position_embedding_parameters": 131072,
+      "pretrained_checkpoint": true,
+      "declared_license": null,
+      "license_observation": "The current public model card contains no license field and its listed repository files contain no LICENSE file. No license was inferred from the TinyStories dataset.",
+      "model_card_url": "https://huggingface.co/roneneldan/TinyStories-1M",
+      "config_url": "https://huggingface.co/roneneldan/TinyStories-1M/blob/77f1b168e219585646439073245fe87e56b3023e/config.json",
+      "fit": "A short-story language model. Its advertised name does not describe the actual total parameter count including embeddings.",
+      "decision": "Not selected: 3.746M total architecture parameters, mismatched numeric task, and unestablished checkpoint license."
+    },
+    {
+      "id": "GH0ST S0UL-1M",
+      "parameters": 984192,
+      "count_method": "Existing project model/export and published deployment documentation; not retrained or modified in this experiment.",
+      "source_url": "https://github.com/Gh0stllm/GH0ST/tree/main/s0ul-1m",
+      "fit": "Existing onchain integer-language-model and constrained-action baseline.",
+      "limitations": "Its demonstrated WAIT request takes 398 transactions and 892989640 gas. Existing action support is memory/tasks/balance reads, not a pretrained numerical AMM policy.",
+      "decision": "Preserved unchanged as existing research; not inserted into a synchronous swap."
+    }
+  ],
+  "implemented_adaptation": {
+    "base_frozen_parameters": 805280,
+    "trainable_head_parameters": 6915,
+    "total_parameters": 812195,
+    "numeric_feature_count": 104,
+    "head": "104 inputs -> 64 ReLU units -> 3 class logits",
+    "action_mapping": "argmax class mapped to one of three fixed illustrative LP fee tiers",
+    "data_scope": "Explicit independent synthetic histories only; no live trading or economic validation."
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "name": "gh0st-v4-hook-1m-research",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "npm run test:evm",
+    "test:evm": "node --test tests/evm/policy-hook.test.mjs",
+    "bench:evm": "node scripts/bench-evm.mjs --output reports/hook-integration.json",
+    "bench:kernel": "node benchmarks/bench-kernel.mjs"
+  },
+  "devDependencies": {
+    "@uniswap/v4-core": "1.0.2",
+    "ethers": "6.13.5",
+    "ganache": "7.9.2",
+    "solc": "0.8.30"
+  }
+}

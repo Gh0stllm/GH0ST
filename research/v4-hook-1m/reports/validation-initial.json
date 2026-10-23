@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "generated_at_utc": "2026-10-23T08:22:39.300752+00:00",
+  "scope": "Local initial publication validation; no public transactions",
+  "checks": [
+    {
+      "command": "npm run test:evm",
+      "exit_code": 0,
+      "tests": 16,
+      "passed": 16,
+      "failed": 0
+    },
+    {
+      "command": "python python/verify_model.py",
+      "exit_code": 0,
+      "report": "model-verification.json"
+    },
+    {
+      "command": "node scripts/bench-evm.mjs --output reports/hook-integration.json",
+      "exit_code": 0,
+      "report": "hook-integration.json"
+    },
+    {
+      "check": "retained kernel report source digest",
+      "passed": true
+    },
+    {
+      "check": "relative links in research Markdown",
+      "passed": true
+    }
+  ],
+  "source_sha256": {
+    "contracts/GH0STPolicyHook.sol": "9824d05c7de8e72bdb3e6d7c7ca7e39ddc623f5ec741c5cb48c9ab3271407500",
+    "contracts/IFinalizedPolicySource.sol": "eef6da641269d5583eeb5b5d8208f77e814109cb5e3cf51c20dbfefcab3b3dd3",
+    "tests/evm/ResearchHarness.sol": "8c56418d3d546dd78e26ab0d8ad1b3f1b2615ccbf17dccd5e103f2898afde29d",
+    "tests/evm/policy-hook.test.mjs": "473cfe19807b01ba11afd5a1c9b12571904fd11129eaac65eeb9b9bcb5ee918e",
+    "tests/evm/helpers.mjs": "5f0576aaaafe3574f92f7c7579142900ef7089168b015994934c8fa742f58517",
+    "python/verify_model.py": "fd30ae655c78074c7798a927795b73ea863c1dc364735c76189078ad479778e3",
+    "python/predict_model.py": "801259c239b666b42b254cf89eb79bd1e00b5bf30d00713b9c4af3a9af09a2c8",
+    "python/model_experiment.py": "df545fbe58aab5351682f677773d91ba6ead76f2f2b880dc25e466e963cf2268"
+  }
+}

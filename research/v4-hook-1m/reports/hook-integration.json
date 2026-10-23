@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "generated_at_utc": "2026-10-23T08:22:05.064Z",
+  "status": "LOCAL_RESEARCH_ONLY",
+  "scope": "Bounded cached-policy hook consumer; mock publisher attestation; no trained model executes in this harness.",
+  "chain": "In-process Ganache Shanghai; no public network transactions",
+  "compiler": {
+    "version": "0.8.30+commit.73712a01.Emscripten.clang",
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "viaIR": true,
+    "evmVersion": "shanghai",
+    "outputSelection": {
+      "*": {
+        "*": [
+          "abi",
+          "evm.bytecode.object",
+          "evm.deployedBytecode.object"
+        ]
+      }
+    }
+  },
+  "dependencies": {
+    "@uniswap/v4-core": "1.0.2",
+    "ethers": "6.13.5",
+    "ganache": "7.9.2",
+    "solc": "0.8.30"
+  },
+  "hook_runtime_bytes": 5527,
+  "hook_template_runtime_keccak256": "0xd6c0684c31ff2aef96f015165f310fdd87c258b14773b49781271bc4071b52c5",
+  "actual_deployed_hook_runtime_keccak256": "0xe8df5df589a0ece81a19e17669b6afc7a881a325618416bcbc698210bb8d6232",
+  "deployment_gas_including_test_factory": "1276908",
+  "source_sha256": {
+    "contracts/GH0STPolicyHook.sol": "9824d05c7de8e72bdb3e6d7c7ca7e39ddc623f5ec741c5cb48c9ab3271407500",
+    "contracts/IFinalizedPolicySource.sol": "eef6da641269d5583eeb5b5d8208f77e814109cb5e3cf51c20dbfefcab3b3dd3",
+    "tests/evm/ResearchHarness.sol": "8c56418d3d546dd78e26ab0d8ad1b3f1b2615ccbf17dccd5e103f2898afde29d"
+  },
+  "config": {
+    "minimum_fee": 500,
+    "maximum_fee": 10000,
+    "fallback_fee": 3000,
+    "maximum_tick_drift": 120,
+    "maximum_policy_age_seconds": 600,
+    "source_gas_cap": 60000,
+    "snapshots": 64
+  },
+  "limitations": [
+    "V4CallbackHarness uses upstream Hooks.sol and the StateLibrary read layout, but implements no AMM math, liquidity, unlocking, or token settlement.",
+    "MockAttestedPolicySource restricts its publisher but does not verify inference or complete model inputs.",
+    "Snapshot hash binds sampled tick metadata; the full time-series input hash is an unverified source assertion.",
+    "Snapshot sampling and tick drift checks are not proof of manipulation resistance.",
+    "Measurements include transaction intrinsic gas and harness bookkeeping; they are not incremental production swap overhead.",
+    "No Robinhood deployment, chain-specific fee estimate, full-model EVM inference, or performance/alpha claim is made."
+  ],
+  "measurements": [
+    {
+      "name": "baseline_beforeSwap_without_policy",
+      "gas_used": "81523",
+      "transaction_hash": "0x0e0db7869b8564ad00a65e07d3c894b0fb795b7181340379a5783aebb7afd267",
+      "intrinsic_gas_included": true,
+      "scope": "local callback harness transaction, not a complete v4 swap or neural inference"
+    },
+    {
+      "name": "mock_publisher_attestation_storage_only",
+      "gas_used": "245472",
+      "transaction_hash": "0xcda4e08af61a86412c00bd60d7794bc635b6169aab0727e67c4c4b85e19cdf95",
+      "intrinsic_gas_included": true,
+      "scope": "local callback harness transaction, not a complete v4 swap or neural inference"
+    },
+    {
+      "name": "accepted_policy_first_beforeSwap",
+      "gas_used": "101911",
+      "transaction_hash": "0xab5064ab47f432d6c7e1d349684c11dba0595ffd541471eda0c5fb2ff20c8bc2",
+      "intrinsic_gas_included": true,
+      "scope": "local callback harness transaction, not a complete v4 swap or neural inference"
+    },
+    {
+      "name": "accepted_policy_reused_beforeSwap",
+      "gas_used": "75960",
+      "transaction_hash": "0x10aa9f4eb80634531eea4c1b262ccca4913e31bf1af4279583053e57ae1fefc3",
+      "intrinsic_gas_included": true,
+      "scope": "local callback harness transaction, not a complete v4 swap or neural inference"
+    },
+    {
+      "name": "accepted_policy_beforeSwap_plus_afterSwap_new_sample",
+      "gas_used": "135677",
+      "transaction_hash": "0xd9cfd99b2c0cbabfba38adda5ac28643cd52d2c6261f942327f047cc19567ff8",
+      "intrinsic_gas_included": true,
+      "scope": "local callback harness transaction, not a complete v4 swap or neural inference"
+    },
+    {
+      "name": "gas_exhausting_source_baseline_beforeSwap",
+      "gas_used": "99804",
+      "transaction_hash": "0xc8c19f24f31b7fbb0ffc06a0e3922a11e91fa0e670a6aa761496ee75f0907ea1",
+      "intrinsic_gas_included": true,
+      "scope": "local callback harness transaction, not a complete v4 swap or neural inference"
+    },
+    {
+      "name": "expired_policy_baseline_beforeSwap",
+      "gas_used": "71772",
+      "transaction_hash": "0x07acfe7a46b30fb31fcab241f1fffcc94e3f95ed32cccf32641b7c5d8b0f2dbe",
+      "intrinsic_gas_included": true,
+      "scope": "local callback harness transaction, not a complete v4 swap or neural inference"
+    }
+  ]
+}

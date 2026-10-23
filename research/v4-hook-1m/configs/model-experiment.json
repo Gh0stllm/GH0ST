@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "experiment": "ttm-r2-frozen-forecast-bounded-fee-head",
+  "model_id": "ibm-granite/granite-timeseries-ttm-r2",
+  "revision": "d6a79570cac0f33d526601cd3a0fc7c80a8f9a2f",
+  "declared_license": "Apache-2.0",
+  "expected_base_parameters": 805280,
+  "expected_source_sha256": {
+    "README.md": "e20234ff1a9eec054fd643d5ef7a4683857c8b24c7b00b466a9f55b6e22728ff",
+    "config.json": "5e2367547c103e92cb8ebc63cbd5ad4d7bf83facad5a2a2ec261fa770ed659d5",
+    "model.safetensors": "a706726a7eb01bbcb42994b7dcb3c06ea9557898dbae8d480eb04fe8ccb89710"
+  },
+  "context_length": 512,
+  "forecast_length": 96,
+  "input_channels": 1,
+  "head_hidden_width": 64,
+  "actions": [
+    {"id": 0, "fee_millionths": 500, "label": "low synthetic volatility"},
+    {"id": 1, "fee_millionths": 3000, "label": "medium synthetic volatility"},
+    {"id": 2, "fee_millionths": 10000, "label": "high synthetic volatility"}
+  ],
+  "synthetic_target_thresholds_bps": [5.5, 12.0],
+  "synthetic_splits": {
+    "train": {"count": 768, "seed": 466301},
+    "validation": {"count": 192, "seed": 466302},
+    "test": {"count": 384, "seed": 466303}
+  },
+  "training": {
+    "seed": 466300,
+    "epochs": 180,
+    "patience": 24,
+    "batch_size": 128,
+    "learning_rate": 0.003,
+    "weight_decay": 0.001,
+    "cpu_threads": 2
+  },
+  "quantization": {
+    "scheme": "symmetric signed int8 per tensor, including matrix weights, biases and normalization weights",
+    "scale": "max(abs(tensor))/127, or 1 for an all-zero tensor",
+    "evaluation": "round to int8 then dequantize to float32; activations and arithmetic remain float32"
+  },
+  "scope": "Synthetic numeric adaptation only. No real pool data, economic objective, profitability claim, Solidity equivalence, or measured EVM gas."
+}

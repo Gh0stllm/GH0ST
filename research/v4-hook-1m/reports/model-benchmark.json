@@ -1,0 +1,364 @@
+{
+  "architecture": {
+    "adapter": "104 -> 64 ReLU -> 3 logits; argmax to fixed LP fee tiers",
+    "all_weights_resident_during_float_inference": 812195,
+    "base": "TinyTimeMixerForPrediction; frozen pretrained 512-to-96 numeric forecaster",
+    "base_parameters": 805280,
+    "total_parameters": 812195,
+    "trainable_adapter_parameters": 6915
+  },
+  "artifact_hashes": {
+    "model-data/adapted/fee-head.safetensors": {
+      "bytes": 27940,
+      "sha256": "79c2f7e23ea4203179eeff39942a020c3e7e86cc05e886e0983bd1d8e02453b3"
+    },
+    "model-data/adapted/heldout-fixtures.npz": {
+      "bytes": 1251110,
+      "sha256": "78e030605b0107b134d53d5a9df0903a56706f4443a1352d6c96d830a271e2f3"
+    },
+    "model-data/adapted/history-only-head.safetensors": {
+      "bytes": 3356,
+      "sha256": "5c75611b730867288e4a6705e974f6277be70dc49eae9894c274341041d23eeb"
+    },
+    "model-data/adapted/model-int8-storage.safetensors": {
+      "bytes": 853435,
+      "sha256": "221ee8bb9d432744e6e8c06442913e1215371647b58ba000846788167afcd8fd"
+    },
+    "model-data/adapted/preprocessing.json": {
+      "bytes": 7968,
+      "sha256": "d34c87762b6b1d9c911374918b89176aa0bec5be628cf0a4a1bac47059829a70"
+    }
+  },
+  "data": {
+    "actions": [
+      {
+        "fee_millionths": 500,
+        "id": 0,
+        "label": "low synthetic volatility"
+      },
+      {
+        "fee_millionths": 3000,
+        "id": 1,
+        "label": "medium synthetic volatility"
+      },
+      {
+        "fee_millionths": 10000,
+        "id": 2,
+        "label": "high synthetic volatility"
+      }
+    ],
+    "leakage_controls": [
+      "independent RNG seeds and independently generated samples per split",
+      "all input and feature scaling fit on training data only",
+      "early stopping uses validation only",
+      "test labels never used for training, thresholds, or selection"
+    ],
+    "splits": {
+      "test": {
+        "class_counts": [
+          121,
+          138,
+          125
+        ],
+        "count": 384,
+        "future_sha256": "6add2592b18969132878faebc9efc2fa6c4d9962df92802b8505d1a07efa1cf2",
+        "history_sha256": "fdb74d723e73df86ebf32c017b04db2ca4d602630f7b3586f36cca7049991995",
+        "seed": 466303
+      },
+      "train": {
+        "class_counts": [
+          236,
+          281,
+          251
+        ],
+        "count": 768,
+        "future_sha256": "2230b595bdd4510a0a78be6102151a49c774b424903cff61250f0ff293f395ce",
+        "history_sha256": "4debc0d2429e88f6f08600674c26035d7194abc9329954e0a21b9df9cd2cc937",
+        "seed": 466301
+      },
+      "validation": {
+        "class_counts": [
+          65,
+          56,
+          71
+        ],
+        "count": 192,
+        "future_sha256": "98ab90de2598ac682c546c3c913635958017a0d216f74ada33df7c69dd0bd13e",
+        "history_sha256": "04ed05ca9f53c2414a946cb2784b9376b5241e8d3e21366622910c9d6d72e014",
+        "seed": 466302
+      }
+    },
+    "target": "class of the mean observed volatility in the next 96 synthetic time steps",
+    "target_thresholds_bps": [
+      5.5,
+      12.0
+    ],
+    "type": "synthetic regime-switching volatility observations"
+  },
+  "elapsed_seconds": 1.4260314729999664,
+  "environment": {
+    "cpu_threads": 2,
+    "deterministic_algorithms": true,
+    "packages": {
+      "granite-tsfm": "0.3.11",
+      "numpy": "2.5.4",
+      "safetensors": "0.8.0",
+      "torch": "2.10.0+cpu",
+      "transformers": "4.57.6"
+    },
+    "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+    "python": "3.12.14"
+  },
+  "history_ablation_training": {
+    "best_epoch": 24,
+    "best_validation_cross_entropy": 0.3660377264022827,
+    "epochs_run": 48
+  },
+  "limitations": [
+    "Synthetic-only numeric target; no real pool data or financial/economic objective.",
+    "Chosen fee tiers are illustrative labels, not optimized market fees.",
+    "No validation of profitability, LP loss reduction, adversarial manipulation resistance, or routing behaviour.",
+    "Training and inference here run offline on CPU; pretrained weights alone do not establish native integer inference.",
+    "This 812k-class model is a research candidate; no claim that its 512-step inference fits an atomic swap gas budget.",
+    "Results compare fixed supplied seeds; they do not establish broad statistical significance."
+  ],
+  "model": {
+    "checkpoint_parameter_count": 805280,
+    "checkpoint_tensor_count": 134,
+    "declared_license": "Apache-2.0",
+    "loader": "Installed granite-tsfm 0.3.11; local safetensors; no remote Python code",
+    "model_id": "ibm-granite/granite-timeseries-ttm-r2",
+    "revision": "d6a79570cac0f33d526601cd3a0fc7c80a8f9a2f",
+    "source_files": {
+      "README.md": {
+        "bytes": 18233,
+        "sha256": "e20234ff1a9eec054fd643d5ef7a4683857c8b24c7b00b466a9f55b6e22728ff",
+        "url": "https://huggingface.co/ibm-granite/granite-timeseries-ttm-r2/resolve/d6a79570cac0f33d526601cd3a0fc7c80a8f9a2f/README.md"
+      },
+      "config.json": {
+        "bytes": 1563,
+        "sha256": "5e2367547c103e92cb8ebc63cbd5ad4d7bf83facad5a2a2ec261fa770ed659d5",
+        "url": "https://huggingface.co/ibm-granite/granite-timeseries-ttm-r2/resolve/d6a79570cac0f33d526601cd3a0fc7c80a8f9a2f/config.json"
+      },
+      "model.safetensors": {
+        "bytes": 3240592,
+        "sha256": "a706726a7eb01bbcb42994b7dcb3c06ea9557898dbae8d480eb04fe8ccb89710",
+        "url": "https://huggingface.co/ibm-granite/granite-timeseries-ttm-r2/resolve/d6a79570cac0f33d526601cd3a0fc7c80a8f9a2f/model.safetensors"
+      }
+    }
+  },
+  "quantization": {
+    "adapter": {
+      "arithmetic": "float32 after int8 round-and-dequantize; not integer inference",
+      "float32_scale_bytes": 16,
+      "parameters_quantized": 6915,
+      "quantized_tensor_count": 4,
+      "raw_fp32_payload_bytes": 27660,
+      "raw_int8_payload_bytes": 6915,
+      "weight_max_absolute_error": 0.0021548718214035034,
+      "weight_rmse": 0.0007987541992041653
+    },
+    "base": {
+      "arithmetic": "float32 after int8 round-and-dequantize; not integer inference",
+      "float32_scale_bytes": 536,
+      "parameters_quantized": 805280,
+      "quantized_tensor_count": 134,
+      "raw_fp32_payload_bytes": 3221120,
+      "raw_int8_payload_bytes": 805280,
+      "weight_max_absolute_error": 0.019778192043304443,
+      "weight_rmse": 0.0037242450091113754
+    },
+    "changed_actions": 2,
+    "float32_action_agreement": 0.9947916666666666,
+    "forecast_rmse_bps": 0.08855663239955902,
+    "limitation": "Storage compression and rounded-dequantized sensitivity only; inference still uses float32 operations and activations.",
+    "logit_rmse": 0.024506287649273872,
+    "packed_file_bytes": 853435,
+    "total_int8_payload_bytes": 812195
+  },
+  "schema_version": 1,
+  "status": "completed local synthetic adaptation experiment",
+  "test_metrics": {
+    "adapted_pretrained_float32": {
+      "accuracy": 0.90625,
+      "actual_class_counts": [
+        121,
+        138,
+        125
+      ],
+      "confusion_rows_actual_columns_predicted": [
+        [
+          112,
+          9,
+          0
+        ],
+        [
+          12,
+          120,
+          6
+        ],
+        [
+          0,
+          9,
+          116
+        ]
+      ],
+      "macro_f1": 0.9077073955792491,
+      "samples": 384
+    },
+    "adapted_pretrained_int8_dequantized": {
+      "accuracy": 0.90625,
+      "actual_class_counts": [
+        121,
+        138,
+        125
+      ],
+      "confusion_rows_actual_columns_predicted": [
+        [
+          111,
+          10,
+          0
+        ],
+        [
+          11,
+          121,
+          6
+        ],
+        [
+          0,
+          9,
+          116
+        ]
+      ],
+      "macro_f1": 0.9077850330322037,
+      "samples": 384
+    },
+    "constant_training_majority": {
+      "accuracy": 0.359375,
+      "actual_class_counts": [
+        121,
+        138,
+        125
+      ],
+      "confusion_rows_actual_columns_predicted": [
+        [
+          0,
+          121,
+          0
+        ],
+        [
+          0,
+          138,
+          0
+        ],
+        [
+          0,
+          125,
+          0
+        ]
+      ],
+      "macro_f1": 0.17624521072796936,
+      "samples": 384
+    },
+    "pretrained_forecast_threshold_rule": {
+      "accuracy": 0.8802083333333334,
+      "actual_class_counts": [
+        121,
+        138,
+        125
+      ],
+      "confusion_rows_actual_columns_predicted": [
+        [
+          104,
+          17,
+          0
+        ],
+        [
+          12,
+          118,
+          8
+        ],
+        [
+          0,
+          9,
+          116
+        ]
+      ],
+      "macro_f1": 0.8820811570187744,
+      "samples": 384
+    },
+    "trailing_32_volatility_rule": {
+      "accuracy": 0.8932291666666666,
+      "actual_class_counts": [
+        121,
+        138,
+        125
+      ],
+      "confusion_rows_actual_columns_predicted": [
+        [
+          107,
+          13,
+          1
+        ],
+        [
+          12,
+          119,
+          7
+        ],
+        [
+          0,
+          8,
+          117
+        ]
+      ],
+      "macro_f1": 0.8945939248601119,
+      "samples": 384
+    },
+    "trained_history_only_ablation": {
+      "accuracy": 0.921875,
+      "actual_class_counts": [
+        121,
+        138,
+        125
+      ],
+      "confusion_rows_actual_columns_predicted": [
+        [
+          114,
+          6,
+          1
+        ],
+        [
+          12,
+          122,
+          4
+        ],
+        [
+          0,
+          7,
+          118
+        ]
+      ],
+      "macro_f1": 0.9228209066918746,
+      "samples": 384
+    }
+  },
+  "training": {
+    "best_epoch": 30,
+    "best_validation_cross_entropy": 0.3676581084728241,
+    "epochs_run": 54
+  },
+  "validation": {
+    "all_actions_in_allowlist": true,
+    "all_logits_finite": true,
+    "all_quantized_actions_in_allowlist": true,
+    "base_checkpoint_unchanged": true,
+    "checkpoint_parameter_count_matches": true,
+    "source_sha256_enforced": true,
+    "strict_loading_info": {
+      "error_msgs": [],
+      "mismatched_keys": [],
+      "missing_keys": [],
+      "unexpected_keys": []
+    }
+  }
+}

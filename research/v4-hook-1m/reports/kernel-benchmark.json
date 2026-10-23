@@ -1,0 +1,489 @@
+{
+  "schema_version": 1,
+  "date_utc": "2026-10-23T05:11:49.164Z",
+  "scope": "Local EVM signed INT8/INT32 row dot-product kernel only; not full TTM inference or a swap benchmark.",
+  "network": "in-process Ganache; no public-chain transactions",
+  "limitations": [
+    "TTM also requires normalization, GELU, gating, reshaping, forecast scaling and repeated matrix evaluations.",
+    "No full-model gas, market performance, Robinhood-chain receipt or production readiness is implied.",
+    "The isolated primitive accepts caller-selected shards; an authenticated model runtime must pin identities.",
+    "Gas includes transaction calldata, intrinsic gas and ABI decoding; do not multiply by parameter count."
+  ],
+  "compiler": "0.8.30+commit.73712a01.Emscripten.clang",
+  "optimizer": {
+    "enabled": true,
+    "runs": 200
+  },
+  "evm_version": "shanghai",
+  "source_sha256": "d3cdda3320514acc14d1467ad7617b12f4b1f977e1447501c3cc6b5c037d6e1a",
+  "runtime_sha256": "e193a83aec32a66e90316e13fbe322e13a1c16f803623afbc9a46366954d5fd7",
+  "random_seed": 20261023,
+  "parity": [
+    {
+      "width": 1,
+      "expected": "274877906944",
+      "methods_matched": 4
+    },
+    {
+      "width": 1,
+      "expected": "272730423169",
+      "methods_matched": 4
+    },
+    {
+      "width": 5,
+      "expected": "547608330115",
+      "methods_matched": 4
+    },
+    {
+      "width": 7,
+      "expected": "-73114971127",
+      "methods_matched": 4
+    },
+    {
+      "width": 31,
+      "expected": "29031580670",
+      "methods_matched": 4
+    },
+    {
+      "width": 32,
+      "expected": "550204961994",
+      "methods_matched": 4
+    },
+    {
+      "width": 33,
+      "expected": "-480952260145",
+      "methods_matched": 4
+    },
+    {
+      "width": 63,
+      "expected": "469307893845",
+      "methods_matched": 4
+    },
+    {
+      "width": 64,
+      "expected": "575505332725",
+      "methods_matched": 4
+    },
+    {
+      "width": 65,
+      "expected": "777988137025",
+      "methods_matched": 4
+    },
+    {
+      "width": 127,
+      "expected": "-53952883179",
+      "methods_matched": 4
+    },
+    {
+      "width": 128,
+      "expected": "589439860589",
+      "methods_matched": 4
+    },
+    {
+      "width": 129,
+      "expected": "-621447037191",
+      "methods_matched": 4
+    },
+    {
+      "width": 511,
+      "expected": "982104228225",
+      "methods_matched": 4
+    },
+    {
+      "width": 512,
+      "expected": "3525274544416",
+      "methods_matched": 4
+    },
+    {
+      "width": 513,
+      "expected": "-1662397793197",
+      "methods_matched": 4
+    },
+    {
+      "width": 1023,
+      "expected": "116379711248",
+      "methods_matched": 4
+    },
+    {
+      "width": 1024,
+      "expected": "-4192232698069",
+      "methods_matched": 4
+    },
+    {
+      "width": 879,
+      "expected": "142331456914",
+      "methods_matched": 4
+    },
+    {
+      "width": 108,
+      "expected": "696055064436",
+      "methods_matched": 4
+    },
+    {
+      "width": 967,
+      "expected": "-644705218048",
+      "methods_matched": 4
+    },
+    {
+      "width": 980,
+      "expected": "3976360312432",
+      "methods_matched": 4
+    },
+    {
+      "width": 671,
+      "expected": "-3229788370676",
+      "methods_matched": 4
+    },
+    {
+      "width": 188,
+      "expected": "-328029565515",
+      "methods_matched": 4
+    },
+    {
+      "width": 1015,
+      "expected": "5568814126932",
+      "methods_matched": 4
+    },
+    {
+      "width": 804,
+      "expected": "-1205813404313",
+      "methods_matched": 4
+    },
+    {
+      "width": 975,
+      "expected": "-128628564228",
+      "methods_matched": 4
+    },
+    {
+      "width": 780,
+      "expected": "-951977547312",
+      "methods_matched": 4
+    },
+    {
+      "width": 551,
+      "expected": "199780781116",
+      "methods_matched": 4
+    },
+    {
+      "width": 116,
+      "expected": "-44426014874",
+      "methods_matched": 4
+    }
+  ],
+  "invalid_cases_rejected": [
+    "scalar:empty",
+    "scalar:mismatch",
+    "scalar:oversize",
+    "packed:empty",
+    "packed:mismatch",
+    "packed:oversize",
+    "scalar:noncanonical-int32:100000001",
+    "scalar:noncanonical-int32:80000000",
+    "scalar:noncanonical-int32:ffffffffffffffffffffffffffffffffffffffffffffffffffffffff7fffffff",
+    "packed:noncanonical-int32:100000001",
+    "packed:noncanonical-int32:80000000",
+    "packed:noncanonical-int32:ffffffffffffffffffffffffffffffffffffffffffffffffffffffff7fffffff",
+    "scalarFromCode:noncanonical-int32:100000001",
+    "scalarFromCode:noncanonical-int32:80000000",
+    "scalarFromCode:noncanonical-int32:ffffffffffffffffffffffffffffffffffffffffffffffffffffffff7fffffff",
+    "packedFromCode:noncanonical-int32:100000001",
+    "packedFromCode:noncanonical-int32:80000000",
+    "packedFromCode:noncanonical-int32:ffffffffffffffffffffffffffffffffffffffffffffffffffffffff7fffffff",
+    "scalarFromCode:absent-code",
+    "scalarFromCode:end-of-code",
+    "scalarFromCode:cross-boundary",
+    "scalarFromCode:overflow-offset",
+    "scalarFromCode:empty",
+    "scalarFromCode:oversize",
+    "packedFromCode:absent-code",
+    "packedFromCode:end-of-code",
+    "packedFromCode:cross-boundary",
+    "packedFromCode:overflow-offset",
+    "packedFromCode:empty",
+    "packedFromCode:oversize"
+  ],
+  "receipts": [
+    {
+      "method": "scalar",
+      "width": 32,
+      "transaction_gas": 51812,
+      "calldata_bytes": 1188,
+      "weights_sha256": "3ae9ba3e0376be0c402542e00c6e22521183bfebce1bf764f1c9507ccab15d1c",
+      "activations_sha256": "c5dc5ddcbf4b1fa8c2bb7e5ab47decbdba1f96127e41addff7d48b7e7f368efd",
+      "standalone_weight_shard_deployment_gas": 60326,
+      "includes_intrinsic_gas_and_abi_decode": true
+    },
+    {
+      "method": "packed",
+      "width": 32,
+      "transaction_gas": 39630,
+      "calldata_bytes": 1188,
+      "weights_sha256": "3ae9ba3e0376be0c402542e00c6e22521183bfebce1bf764f1c9507ccab15d1c",
+      "activations_sha256": "c5dc5ddcbf4b1fa8c2bb7e5ab47decbdba1f96127e41addff7d48b7e7f368efd",
+      "standalone_weight_shard_deployment_gas": 60326,
+      "includes_intrinsic_gas_and_abi_decode": true
+    },
+    {
+      "method": "scalarFromCode",
+      "width": 32,
+      "transaction_gas": 54449,
+      "calldata_bytes": 1156,
+      "weights_sha256": "3ae9ba3e0376be0c402542e00c6e22521183bfebce1bf764f1c9507ccab15d1c",
+      "activations_sha256": "c5dc5ddcbf4b1fa8c2bb7e5ab47decbdba1f96127e41addff7d48b7e7f368efd",
+      "standalone_weight_shard_deployment_gas": 60326,
+      "includes_intrinsic_gas_and_abi_decode": true
+    },
+    {
+      "method": "packedFromCode",
+      "width": 32,
+      "transaction_gas": 42334,
+      "calldata_bytes": 1156,
+      "weights_sha256": "3ae9ba3e0376be0c402542e00c6e22521183bfebce1bf764f1c9507ccab15d1c",
+      "activations_sha256": "c5dc5ddcbf4b1fa8c2bb7e5ab47decbdba1f96127e41addff7d48b7e7f368efd",
+      "standalone_weight_shard_deployment_gas": 60326,
+      "includes_intrinsic_gas_and_abi_decode": true
+    },
+    {
+      "method": "scalar",
+      "width": 64,
+      "transaction_gas": 78472,
+      "calldata_bytes": 2244,
+      "weights_sha256": "3536ce46b114ec9e9cfa6587cbc523777a02dfbf3bb0d4ecc337b0ef9b1f055b",
+      "activations_sha256": "e4b20010e19a4becb168dd74576f4a82d7ab78c7d97921d9b88c5db195893d70",
+      "standalone_weight_shard_deployment_gas": 67246,
+      "includes_intrinsic_gas_and_abi_decode": true
+    },
+    {
+      "method": "packed",
+      "width": 64,
+      "transaction_gas": 54157,
+      "calldata_bytes": 2244,
+      "weights_sha256": "3536ce46b114ec9e9cfa6587cbc523777a02dfbf3bb0d4ecc337b0ef9b1f055b",
+      "activations_sha256": "e4b20010e19a4becb168dd74576f4a82d7ab78c7d97921d9b88c5db195893d70",
+      "standalone_weight_shard_deployment_gas": 67246,
+      "includes_intrinsic_gas_and_abi_decode": true
+    },
+    {
+      "method": "scalarFromCode",
+      "width": 64,
+      "transaction_gas": 80638,
+      "calldata_bytes": 2180,
+      "weights_sha256": "3536ce46b114ec9e9cfa6587cbc523777a02dfbf3bb0d4ecc337b0ef9b1f055b",
+      "activations_sha256": "e4b20010e19a4becb168dd74576f4a82d7ab78c7d97921d9b88c5db195893d70",
+      "standalone_weight_shard_deployment_gas": 67246,
+      "includes_intrinsic_gas_and_abi_decode": true
+    },
+    {
+      "method": "packedFromCode",
+      "width": 64,
+      "transaction_gas": 56364,
+      "calldata_bytes": 2180,
+      "weights_sha256": "3536ce46b114ec9e9cfa6587cbc523777a02dfbf3bb0d4ecc337b0ef9b1f055b",
+      "activations_sha256": "e4b20010e19a4becb168dd74576f4a82d7ab78c7d97921d9b88c5db195893d70",
+      "standalone_weight_shard_deployment_gas": 67246,
+      "includes_intrinsic_gas_and_abi_decode": true
+    },
+    {
+      "method": "scalar",
+      "width": 128,
+      "transaction_gas": 137180,
+      "calldata_bytes": 4356,
+      "weights_sha256": "219492f53476e457fedde4d544970d890e5ff4bfd409c1aa5c70cdbb6c9ade9e",
+      "activations_sha256": "415ea7d38c590c054035f98bdf0fb67c76fd6214309328bf337b02cb5ea3227c",
+      "standalone_weight_shard_deployment_gas": 81086,
+      "includes_intrinsic_gas_and_abi_decode": true
+    },
+    {
+      "method": "packed",
+      "width": 128,
+      "transaction_gas": 88599,
+      "calldata_bytes": 4356,
+      "weights_sha256": "219492f53476e457fedde4d544970d890e5ff4bfd409c1aa5c70cdbb6c9ade9e",
+      "activations_sha256": "415ea7d38c590c054035f98bdf0fb67c76fd6214309328bf337b02cb5ea3227c",
+      "standalone_weight_shard_deployment_gas": 81086,
+      "includes_intrinsic_gas_and_abi_decode": true
+    },
+    {
+      "method": "scalarFromCode",
+      "width": 128,
+      "transaction_gas": 138404,
+      "calldata_bytes": 4228,
+      "weights_sha256": "219492f53476e457fedde4d544970d890e5ff4bfd409c1aa5c70cdbb6c9ade9e",
+      "activations_sha256": "415ea7d38c590c054035f98bdf0fb67c76fd6214309328bf337b02cb5ea3227c",
+      "standalone_weight_shard_deployment_gas": 81086,
+      "includes_intrinsic_gas_and_abi_decode": true
+    },
+    {
+      "method": "packedFromCode",
+      "width": 128,
+      "transaction_gas": 89812,
+      "calldata_bytes": 4228,
+      "weights_sha256": "219492f53476e457fedde4d544970d890e5ff4bfd409c1aa5c70cdbb6c9ade9e",
+      "activations_sha256": "415ea7d38c590c054035f98bdf0fb67c76fd6214309328bf337b02cb5ea3227c",
+      "standalone_weight_shard_deployment_gas": 81086,
+      "includes_intrinsic_gas_and_abi_decode": true
+    },
+    {
+      "method": "scalar",
+      "width": 512,
+      "transaction_gas": 482324,
+      "calldata_bytes": 17028,
+      "weights_sha256": "345d704bb6f265e12dc09820f415fdc76dafb0b35e03d01a69f4afeaa919653d",
+      "activations_sha256": "bb5c7d7640212eb62cecfc8ffd42752edebe2259fb203a82e444c1e6e6f1e36d",
+      "standalone_weight_shard_deployment_gas": 164138,
+      "includes_intrinsic_gas_and_abi_decode": true
+    },
+    {
+      "method": "packed",
+      "width": 512,
+      "transaction_gas": 288147,
+      "calldata_bytes": 17028,
+      "weights_sha256": "345d704bb6f265e12dc09820f415fdc76dafb0b35e03d01a69f4afeaa919653d",
+      "activations_sha256": "bb5c7d7640212eb62cecfc8ffd42752edebe2259fb203a82e444c1e6e6f1e36d",
+      "standalone_weight_shard_deployment_gas": 164138,
+      "includes_intrinsic_gas_and_abi_decode": true
+    },
+    {
+      "method": "scalarFromCode",
+      "width": 512,
+      "transaction_gas": 477896,
+      "calldata_bytes": 16516,
+      "weights_sha256": "345d704bb6f265e12dc09820f415fdc76dafb0b35e03d01a69f4afeaa919653d",
+      "activations_sha256": "bb5c7d7640212eb62cecfc8ffd42752edebe2259fb203a82e444c1e6e6f1e36d",
+      "standalone_weight_shard_deployment_gas": 164138,
+      "includes_intrinsic_gas_and_abi_decode": true
+    },
+    {
+      "method": "packedFromCode",
+      "width": 512,
+      "transaction_gas": 283396,
+      "calldata_bytes": 16516,
+      "weights_sha256": "345d704bb6f265e12dc09820f415fdc76dafb0b35e03d01a69f4afeaa919653d",
+      "activations_sha256": "bb5c7d7640212eb62cecfc8ffd42752edebe2259fb203a82e444c1e6e6f1e36d",
+      "standalone_weight_shard_deployment_gas": 164138,
+      "includes_intrinsic_gas_and_abi_decode": true
+    },
+    {
+      "method": "scalar",
+      "width": 1024,
+      "transaction_gas": 936556,
+      "calldata_bytes": 33924,
+      "weights_sha256": "1b5d3a1eca47ac9bd07343ba7185139863472482523fc01c7405869deb95f772",
+      "activations_sha256": "184d5061cd72bd0d5fe66963336f3a918dbddd7691b55ecc1ffca95968bd70cc",
+      "standalone_weight_shard_deployment_gas": 274848,
+      "includes_intrinsic_gas_and_abi_decode": true
+    },
+    {
+      "method": "packed",
+      "width": 1024,
+      "transaction_gas": 548251,
+      "calldata_bytes": 33924,
+      "weights_sha256": "1b5d3a1eca47ac9bd07343ba7185139863472482523fc01c7405869deb95f772",
+      "activations_sha256": "184d5061cd72bd0d5fe66963336f3a918dbddd7691b55ecc1ffca95968bd70cc",
+      "standalone_weight_shard_deployment_gas": 274848,
+      "includes_intrinsic_gas_and_abi_decode": true
+    },
+    {
+      "method": "scalarFromCode",
+      "width": 1024,
+      "transaction_gas": 924606,
+      "calldata_bytes": 32900,
+      "weights_sha256": "1b5d3a1eca47ac9bd07343ba7185139863472482523fc01c7405869deb95f772",
+      "activations_sha256": "184d5061cd72bd0d5fe66963336f3a918dbddd7691b55ecc1ffca95968bd70cc",
+      "standalone_weight_shard_deployment_gas": 274848,
+      "includes_intrinsic_gas_and_abi_decode": true
+    },
+    {
+      "method": "packedFromCode",
+      "width": 1024,
+      "transaction_gas": 535562,
+      "calldata_bytes": 32900,
+      "weights_sha256": "1b5d3a1eca47ac9bd07343ba7185139863472482523fc01c7405869deb95f772",
+      "activations_sha256": "184d5061cd72bd0d5fe66963336f3a918dbddd7691b55ecc1ffca95968bd70cc",
+      "standalone_weight_shard_deployment_gas": 274848,
+      "includes_intrinsic_gas_and_abi_decode": true
+    }
+  ],
+  "comparisons": [
+    {
+      "width": 32,
+      "baseline": "scalar",
+      "candidate": "packed",
+      "baseline_gas": 51812,
+      "candidate_gas": 39630,
+      "reduction_pct": 23.51
+    },
+    {
+      "width": 32,
+      "baseline": "scalarFromCode",
+      "candidate": "packedFromCode",
+      "baseline_gas": 54449,
+      "candidate_gas": 42334,
+      "reduction_pct": 22.25
+    },
+    {
+      "width": 64,
+      "baseline": "scalar",
+      "candidate": "packed",
+      "baseline_gas": 78472,
+      "candidate_gas": 54157,
+      "reduction_pct": 30.99
+    },
+    {
+      "width": 64,
+      "baseline": "scalarFromCode",
+      "candidate": "packedFromCode",
+      "baseline_gas": 80638,
+      "candidate_gas": 56364,
+      "reduction_pct": 30.1
+    },
+    {
+      "width": 128,
+      "baseline": "scalar",
+      "candidate": "packed",
+      "baseline_gas": 137180,
+      "candidate_gas": 88599,
+      "reduction_pct": 35.41
+    },
+    {
+      "width": 128,
+      "baseline": "scalarFromCode",
+      "candidate": "packedFromCode",
+      "baseline_gas": 138404,
+      "candidate_gas": 89812,
+      "reduction_pct": 35.11
+    },
+    {
+      "width": 512,
+      "baseline": "scalar",
+      "candidate": "packed",
+      "baseline_gas": 482324,
+      "candidate_gas": 288147,
+      "reduction_pct": 40.26
+    },
+    {
+      "width": 512,
+      "baseline": "scalarFromCode",
+      "candidate": "packedFromCode",
+      "baseline_gas": 477896,
+      "candidate_gas": 283396,
+      "reduction_pct": 40.7
+    },
+    {
+      "width": 1024,
+      "baseline": "scalar",
+      "candidate": "packed",
+      "baseline_gas": 936556,
+      "candidate_gas": 548251,
+      "reduction_pct": 41.46
+    },
+    {
+      "width": 1024,
+      "baseline": "scalarFromCode",
+      "candidate": "packedFromCode",
+      "baseline_gas": 924606,
+      "candidate_gas": 535562,
+      "reduction_pct": 42.08
+    }
+  ]
+}
