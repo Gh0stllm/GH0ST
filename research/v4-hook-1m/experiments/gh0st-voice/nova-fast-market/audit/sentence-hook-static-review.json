@@ -1,0 +1,33 @@
+{
+  "status": "PASS_STATIC_REVIEW",
+  "scope": "LOCAL_ONLY_STATIC_NOT_EXTERNAL_AUDIT",
+  "hookSha256": "d67128bba36605a920076bde145ce6964e437833c32939a12ccb7eeecc2fbeaa",
+  "baselinePackedHookSha256": "3569cd78e52b16296d2852df7469bf062a9a46b5708b24f9e52d7cc73d49e838",
+  "unchangedSecurityFunctions": [
+    "getHookPermissions",
+    "_authorize",
+    "beforeInitialize",
+    "afterInitialize",
+    "hiddenState",
+    "_saveState",
+    "_checkWord",
+    "decodeStep"
+  ],
+  "inferOnlyDifference": "use supplied in-memory hidden state for subsequent neural words instead of reloading old stored state",
+  "reserveGas": 2000000,
+  "reserveCheckedBeforeEachWord": true,
+  "maxSentenceWords": 32,
+  "maxSentenceUtf8Bytes": 1087,
+  "requiresNeuralTerminalPunctuation": true,
+  "capOrInferenceFailureRevertsAllWords": true,
+  "stateOnlyStoredAfterTerminal": true,
+  "hashAndWordIndexAdvancePerNeuralStep": true,
+  "sentenceCounterOverflowRevertsTransaction": true,
+  "priorHookDataIgnored": true,
+  "mainnetActions": 0,
+  "caveats": [
+    "Fail-closed complete sentences can make trading fail when budget cannot cover all words.",
+    "Complete punctuation is not a proof of grammatical or semantic coherence.",
+    "Full PoolManager and router settlement validation must come from separate integration tests."
+  ]
+}

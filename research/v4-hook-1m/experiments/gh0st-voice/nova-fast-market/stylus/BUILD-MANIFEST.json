@@ -1,0 +1,103 @@
+{
+  "status": "PASS_LOCAL_NUMERICAL_TESTS_ONLY",
+  "public_transactions": 0,
+  "chain_rpc_calls": 0,
+  "checkpoint_sha256": "904e4ee0426dc62c06b5551db19d2ee40d0c0c618fdb62c4a49a39af80d390d3",
+  "sources": {
+    "export-raw.py": "66428f55bc4ef87b5d20d3f691098f77cafad2de112a3d8ec353062a7218bd90",
+    "export-packed3.py": "262a46bc8b351db6bd3b3e828b739210ab85b20aa29373c2be5ae5afb945bbb6",
+    "make-probes.py": "479593ab55aca9f2ea3119b42521f4d7a726f2cba926f625eb3093e7aa0bf9d3",
+    "benchmark-wasm.mjs": "3d33deddf1a3963dfcc93b0293ee3d8e8a39302fc4195b036211f79c59a1fa48",
+    "test-probes.mjs": "67024ce3938a603405d5498bfac52a0b22ddb28cc5b39efdfc53536d7e1730c0",
+    "test-meter-entry.mjs": "3d10eb1142195f1903b20d5e93df3a1f1903ff067707fd1b15a1ffa748927899",
+    "benchmark-packed3.mjs": "933e4c08b78d2de58aefd68ea47b64ff8fc5b271f6d41baaafc82d7e7539ec3c",
+    "test-packed3-probes.mjs": "32d71300e01a51c44958fd5593b5889dd8e13bcb360239429794dca27e3cde74",
+    "test-packed3-meter-entry.mjs": "bf9cbbf2493fe317dab5e388aad077757487582ea15c31ff26d9df0e72427991",
+    "wasm-kernel/Cargo.toml": "0e3e5a14c3965dfb03453ddadc420a1de149d77d162ded82498a7ff311fa9e57",
+    "wasm-kernel/src/lib.rs": "bbe6f50adfb1deb6892fdf802c9f85749b9757bd70baf9cbf6beaaddc2d7b236",
+    "wasm-packed3/Cargo.toml": "945ced5883fda6d349d1c2916ee1e03b62e496895d930652c4edfa37d35bb8b2",
+    "wasm-packed3/src/lib.rs": "b3950679404863a2aaa0aaaf30470d735e60d48d9cc479f11a94c8526c67b3be",
+    "reproduce-local.sh": "5436597ba5c38aa1e725b64e526463fbf8b224809bb8ac52e75a98fefcee133c",
+    "finalize.py": "c51f7e34068de4f5295af86cee0b676acf2c7d49bf1a042f365c591747ae5a0e",
+    "test-packed3-seed-entry.mjs": "3851cb0a53f8b470180c4c7b81e5b96b16e5af60d5116fb2f78f7d6ae32f2eb9",
+    "review-delta-packed.py": "29344c0a8680d20198b0a1d03febedb1f7c9e386ab44c9dfb822b90eecb6358f"
+  },
+  "variants": {
+    "wasm-kernel": {
+      "source_sha256": "bbe6f50adfb1deb6892fdf802c9f85749b9757bd70baf9cbf6beaaddc2d7b236",
+      "numerical_wasm": {
+        "path": "artifacts/wasm-kernel.wasm",
+        "sha256": "c1626216f0ff685056493f1b96a1958f9966de6b7ab28fa5b0bc59ae8da9b7ae",
+        "bytes": 8197
+      },
+      "meter_entry_wasm": {
+        "path": "artifacts/wasm-kernel-entrypoint.wasm",
+        "sha256": "0f63417dee71cda714f8f28fd8810028ccda981ae070883b281090d0a1c0a2bb",
+        "bytes": 9685
+      },
+      "neural_words_checked": 502,
+      "additional_exact_vectors": 16,
+      "rejected_invalid_inputs": 10,
+      "reference_report_sha256": "29f378f4028f2e957c5211e3fa153663d05e72c72982672780d5051c063ffc5b",
+      "probe_report_sha256": "5f69e4145bddc909c9857a7360478c6b2a38aa45c1f695b3169bae290b0d5d4f",
+      "meter_entry_report_sha256": "366abd71da874672b6cf1aba6b3ad3b2b8f9461c534db2d20ad9f73866cb5a04"
+    },
+    "wasm-packed3": {
+      "source_sha256": "b3950679404863a2aaa0aaaf30470d735e60d48d9cc479f11a94c8526c67b3be",
+      "numerical_wasm": {
+        "path": "artifacts/wasm-packed3.wasm",
+        "sha256": "95dd44272af649d0c614392275b6574155daa88ce8c9923bab8c70e5f9673e95",
+        "bytes": 8814
+      },
+      "meter_entry_wasm": {
+        "path": "artifacts/wasm-packed3-entrypoint.wasm",
+        "sha256": "e0fa0ef1c05b44057b85cdaf73e7f88910fa0b869ed7ad1f2656bb5ae683193b",
+        "bytes": 10302
+      },
+      "neural_words_checked": 502,
+      "additional_exact_vectors": 16,
+      "rejected_invalid_inputs": 10,
+      "reference_report_sha256": "ead35d9e649b62374db71a3f22d2bd8373508c37bbbc47d57790923e90310fe8",
+      "probe_report_sha256": "5f69e4145bddc909c9857a7360478c6b2a38aa45c1f695b3169bae290b0d5d4f",
+      "meter_entry_report_sha256": "d063e4c20fc115dbe8f65252de624e66866f6ec54568117f0d6ba4a62dac393b"
+    }
+  },
+  "claims": {
+    "same_quantized_model": true,
+    "stylus_gas_measured_by_this_script": false,
+    "v4_hook_integrated": false,
+    "ten_sentences_per_second_on_chain_proven": false,
+    "production_immutable_catalogs_bound": false
+  },
+  "seed_entrypoint": {
+    "path": "artifacts/wasm-packed3-seed-entrypoint.wasm",
+    "sha256": "cf2ffcfe9d531362308198a7b0b49268964a15d10f3e380689bc3d26de4a7028",
+    "seeds_tested": 16,
+    "report_sha256": "e6ae90f9aae8eaa89591b35f196ec3d2f5a2ab2be8db7763ecba639935e194cd"
+  },
+  "selected_offline_meter_candidate": {
+    "name": "unroll32-packed3",
+    "same_checkpoint": true,
+    "sentence_scope": "Zero hidden state/BOS reset; fixed features;16seeds; no arbitrary-context or continuous-story guarantee.",
+    "fixed_source_path": "../kernels/wasm-unroll/32/src/lib.rs",
+    "fixed_source_sha256": "3e027ef6cd538da1d9077b3cdde47fd6fdb9d41b9d7a9893b246864ffabcefc2",
+    "seed_source_path": "../kernels/wasm-unroll/32-seeds/src/lib.rs",
+    "seed_source_sha256": "44d7145ace69b102603931905ae05b528f33607e35f9fbd6b81f8c172a6a5a43",
+    "fixed_artifact": {
+      "path": "artifacts/nova-unroll32-fixed.wasm",
+      "sha256": "5beada261ba66b4b0b06832892cdcd80281eb54d55a2b944e649b5bdabfbce95",
+      "bytes": 19877
+    },
+    "seed_artifact": {
+      "path": "artifacts/nova-unroll32-seeds.wasm",
+      "sha256": "b43f134ee74ef48e95aacb18f1eba5bab0865251ccbaa15d4b510ed6216be624",
+      "bytes": 19961
+    },
+    "reports": {
+      "unroll32-results.json": "4a802cbf5b85832e41b4eaa15c1c80188d52efae46e6771a1ab1a34ed3c08fe4",
+      "unroll32-probe-results.json": "ec242bb33828beaafcb8d2ba9219a3dc41f9035c787bc4e44675b6739f229538",
+      "seed-entry-parity.json": "8a0192a0f5a9a076832522f1139f35fc5c70bc6eb905196c48f76f9505e15e38"
+    },
+    "full_swap_integrated": false
+  }
+}

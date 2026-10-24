@@ -1,0 +1,39 @@
+{
+  "status": "PASS_LOCAL_UNMETERED_ENTRYPOINT",
+  "wasm_sha256": "e0fa0ef1c05b44057b85cdaf73e7f88910fa0b869ed7ad1f2656bb5ae683193b",
+  "wasm_bytes": 10302,
+  "entrypoint": "user_entrypoint(i32)->i32",
+  "empty_input_returns_success": true,
+  "nonempty_input_rejected": true,
+  "words": 20,
+  "result_bytes": 80,
+  "imports": [
+    {
+      "module": "vm_hooks",
+      "name": "account_code",
+      "kind": "function"
+    },
+    {
+      "module": "vm_hooks",
+      "name": "native_keccak256",
+      "kind": "function"
+    },
+    {
+      "module": "vm_hooks",
+      "name": "msg_reentrant",
+      "kind": "function"
+    },
+    {
+      "module": "vm_hooks",
+      "name": "pay_for_memory_grow",
+      "kind": "function"
+    },
+    {
+      "module": "vm_hooks",
+      "name": "write_result",
+      "kind": "function"
+    }
+  ],
+  "no_chain_rpc_calls": true,
+  "stylus_gas_measured": false
+}

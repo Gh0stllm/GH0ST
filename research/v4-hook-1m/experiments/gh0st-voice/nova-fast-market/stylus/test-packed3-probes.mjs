@@ -1,0 +1,22 @@
+// CPU-hosted WASM reference parity, not a Stylus gas or throughput measurement.
+import fs from 'node:fs';import path from 'node:path';import assert from 'node:assert/strict';import{fileURLToPath}from'node:url';import{createHash}from'node:crypto';import{performance}from'node:perf_hooks';import{keccak256,getBytes}from'ethers';
+const here=path.dirname(fileURLToPath(import.meta.url));const sha=x=>createHash('sha256').update(x).digest('hex'),json=x=>JSON.stringify(x,null,2)+'\n';
+const raw=path.join(here,'packed3-model'),manifest=JSON.parse(fs.readFileSync(path.join(raw,'manifest.json'))),fileNames=[null,'core.bin','groups.bin','words.bin','punct.bin','fused.bin','punct-fold.bin','sigmoid-delta.bin','exp-q32.bin','word-punct.bin'];
+const blobs=fileNames.map(file=>{if(!file)return null;const data=fs.readFileSync(path.join(raw,file));assert.equal(sha(data),manifest.artifacts[file].sha256);return data;});
+const reference=JSON.parse(fs.readFileSync(path.join(here,'../layout/sentence-reference.json'))),vocab=JSON.parse(fs.readFileSync(path.join(raw,'vocabulary.json')));
+const wasmPath=path.join(here,'wasm-packed3/target/wasm32-unknown-unknown/release/nova_wasm_packed3.wasm'),wasm=fs.readFileSync(wasmPath),module=await WebAssembly.compile(wasm);
+let instance,readCalls=0,readBytes=0;
+const host={vm_hooks:{account_code(address,offset,size,dest){const memory=Buffer.from(instance.exports.memory.buffer);assert(address>=0&&address+20<=memory.length);const a=memory.subarray(address,address+20),kind=a[0],index=a.readUInt32BE(16);assert(a.subarray(1,16).every(v=>v===0));assert(kind>=1&&kind<blobs.length);assert(offset>=1&&offset<=24001);assert(size>=0&&offset+size<=24001);const start=index*24000+offset-1;assert(start+size<=blobs[kind].length);assert(dest>=0&&dest+size<=memory.length);blobs[kind].copy(memory,dest,start,start+size);readCalls++;readBytes+=size;return size;},native_keccak256(input,length,output){const memory=Buffer.from(instance.exports.memory.buffer);assert.equal(length,96);assert(input>=0&&input+length<=memory.length&&output>=0&&output+32<=memory.length);Buffer.from(getBytes(keccak256(memory.subarray(input,input+length)))).copy(memory,output);}}};
+instance=await WebAssembly.instantiate(module,host);const e=instance.exports;
+const state=()=>Array.from(new Int16Array(e.memory.buffer,e.state_ptr(),768)),scores=()=>Array.from(new BigInt64Array(e.memory.buffer,e.scores_ptr(),197),Number),stateHash=()=>sha(JSON.stringify(state())),scoresHash=()=>sha(JSON.stringify(scores()));
+
+const inputs=JSON.parse(fs.readFileSync(path.join(here,'wasm-probes.json'))),checks=[];
+for(const row of inputs){e.reset(row.seed,row.temp,...row.features);new Int16Array(e.memory.buffer,e.state_ptr(),768).set(row.hidden);const result=e.step();assert.equal(result&65535,row.expected.token);assert.equal(result>>>16,row.expected.punct);assert.deepEqual(state(),row.expected.hidden);assert.deepEqual(scores(),row.expected.scores);checks.push({seed:row.seed,temp:row.temp,all768HiddenMatch:true,all197ScoresMatch:true,token:row.expected.token,punct:row.expected.punct});}
+const rejects=[];
+for(const t of [0,63,4097,65535]){assert.throws(()=>e.reset(42,t,0,0,0,0,1024,1024),WebAssembly.RuntimeError);rejects.push('temperature-'+t);}
+for(const bad of [-4097,4097]){e.reset(42,512,bad,0,0,0,1024,1024);assert.throws(()=>e.step(),WebAssembly.RuntimeError);rejects.push('feature-'+bad);}
+for(const bad of [-1025,1025]){e.reset(42,512,0,0,0,0,1024,1024);new Int16Array(e.memory.buffer,e.state_ptr(),768)[0]=bad;const before=state();assert.throws(()=>e.step(),WebAssembly.RuntimeError);assert.deepEqual(state(),before);rejects.push('hidden-'+bad);}
+e.reset(42,512,0,0,0,0,1024,1024);for(const max of [0,65]){assert.throws(()=>e.sentence(max),WebAssembly.RuntimeError);rejects.push('cap-'+max);}
+e.reset(42,512,0,0,0,0,1024,1024);assert.equal(e.sentence(1),0);assert(state().some(x=>x!==0));
+const report={status:'PASS',scope:'UNMETERED_LOCAL_WASM_NUMERICAL_PROBES',public_transactions:0,stylus_gas_measured:false,checks,rejects,cap_marker:{one_word_cap_returned_zero:true,partial_internal_state_advanced:true,production_requirement:'The Solidity hook or canonical Stylus entrypoint MUST revert when terminal is not reached. This raw numerical kernel does not implement transaction atomicity.'}};
+fs.writeFileSync(path.join(here,'packed3-wasm-probe-results.json'),json(report));console.log(json({status:report.status,numerical_vectors:checks.length,rejected_invalid_inputs:rejects.length,cap_marker:report.cap_marker}));

@@ -1,0 +1,81 @@
+{
+  "status": "PASS",
+  "scope": "UNFORKED_LOCAL_CALLBACK_ONLY",
+  "notFullPoolManagerIntegration": true,
+  "mainnetActions": 0,
+  "hookSha256": "20fa9fc808d36cf6ac8b3c2ed9cb5b382aafd752cd3e726bfc5513abce64a07d",
+  "mockModelSha256": "a8f89291c22cccbc7675b62db6ac852db3b840f977aefbe7ac6b83514f3787e9",
+  "localDiagnosticBlockGasLimit": 512000000,
+  "normalFailureTransactionGasLimit": 32000000,
+  "wordCapDiagnosticsTransactionGasLimit": 500000000,
+  "hookRuntimeBytes": 10816,
+  "checks": [
+    {
+      "name": "two_word_sentence_advances_canonical_state_and_commits_once",
+      "passed": true,
+      "gasUsed": "2053904"
+    },
+    {
+      "name": "second_word_revert",
+      "passed": true,
+      "allHookAndManagerStateRolledBack": true,
+      "noCommittedLogs": true,
+      "gasUsed": "1170726",
+      "diagnosticError": "0x5e562fe00000000000000000000000000000000000000000000000000000000000000003",
+      "transactionGasLimit": 32000000
+    },
+    {
+      "name": "second_word_invalid_hidden",
+      "passed": true,
+      "allHookAndManagerStateRolledBack": true,
+      "noCommittedLogs": true,
+      "gasUsed": "1379627",
+      "diagnosticError": "0x5e562fe00000000000000000000000000000000000000000000000000000000000000004",
+      "transactionGasLimit": 32000000
+    },
+    {
+      "name": "no_terminal_at_32_word_cap",
+      "passed": true,
+      "allHookAndManagerStateRolledBack": true,
+      "noCommittedLogs": true,
+      "gasUsed": "27632144",
+      "diagnosticError": "0x5e562fe00000000000000000000000000000000000000000000000000000000000000006",
+      "transactionGasLimit": 500000000
+    },
+    {
+      "name": "second_word_gas_exhaustion",
+      "passed": true,
+      "allHookAndManagerStateRolledBack": true,
+      "noCommittedLogs": true,
+      "gasUsed": "2081829",
+      "diagnosticError": "0x5e562fe00000000000000000000000000000000000000000000000000000000000000003",
+      "transactionGasLimit": 32000000
+    },
+    {
+      "name": "second_word_text_mismatch",
+      "passed": true,
+      "allHookAndManagerStateRolledBack": true,
+      "noCommittedLogs": true,
+      "gasUsed": "1766354",
+      "diagnosticError": "0x5e562fe00000000000000000000000000000000000000000000000000000000000000004",
+      "transactionGasLimit": 32000000
+    },
+    {
+      "name": "neural_terminal_on_exact_32nd_word_commits",
+      "passed": true,
+      "gasUsed": "27753509",
+      "transactionGasLimit": 500000000
+    },
+    {
+      "name": "all_32_word_logs_match_standard_ABI_and_independent_state_hash",
+      "passed": true,
+      "wordEvents": 32,
+      "scoresChecked": 6304,
+      "hiddenValuesHashed": 24576
+    },
+    {
+      "name": "complete_sentence_event_and_persisted_state_match_independent_reference",
+      "passed": true
+    }
+  ]
+}

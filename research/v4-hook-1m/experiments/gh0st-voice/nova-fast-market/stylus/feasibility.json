@@ -1,0 +1,56 @@
+{
+  "status": "LOCAL_NUMERICAL_PROTOTYPE_WITH_SEPARATE_OFFICIAL_NITRO_METER",
+  "verified_date": "2026-10-24",
+  "chain_rpc_calls": 0,
+  "public_transactions": 0,
+  "public_deployments": 0,
+  "sources": [
+    {
+      "url": "https://docs.robinhood.com/chain/protocol-contracts/",
+      "finding": "Official Robinhood list includes ArbWasm 0x71 and ArbWasmCache 0x72."
+    },
+    {
+      "url": "https://docs.robinhood.com/chain/run-a-full-node/",
+      "finding": "Official Robinhood guide reports ArbOS61."
+    },
+    {
+      "url": "https://developer.arbitrum.io/stylus/advanced/hostio-exports",
+      "finding": "Account code access and Keccak host operations documented."
+    },
+    {
+      "url": "https://developer.arbitrum.io/stylus/gentle-introduction",
+      "finding": "Stylus programs have configurable expiry and need reactivation; documented default365days."
+    },
+    {
+      "url": "https://docs.arbitrum.io/stylus/concepts/gas-metering",
+      "finding": "Ink pricing and runtime overhead are chain configurable; Node elapsed time is not gas."
+    }
+  ],
+  "chain_support_conclusion": "Documented infrastructure present; no current activation-policy/parameter verification performed.",
+  "toolchain": {
+    "rustc": "1.91.0 (f8297e351 2025-10-28)",
+    "wasm_target": "wasm32-unknown-unknown",
+    "location": "toolchain/ only",
+    "system_path_changed": false,
+    "installer_url": "https://static.rust-lang.org/rustup/dist/aarch64-apple-darwin/rustup-init",
+    "installer_sha256": "f7c7e11eb2e07f006e532a8aaac77b32f4527d305ac386c0c633ca6133d35ca9",
+    "docker_available": false,
+    "nitro_runner_was_available_initially": false
+  },
+  "wasm": {
+    "wasm_bytes": 8197,
+    "wasm_sha256": "c1626216f0ff685056493f1b96a1958f9966de6b7ab28fa5b0bc59ae8da9b7ae",
+    "wasm_memory_bytes": 3932160,
+    "total_neural_words": 502,
+    "ten_swaps_per_second_proven": false,
+    "stylus_gas_measured_by_node_harness": false
+  },
+  "gaps": [
+    "Canonical Solidity ABI and immutable code catalogs/model hashes",
+    "Full v4 hook integration and full-transaction gas measurement",
+    "Atomic revert on missing neural sentence terminal",
+    "Reactivation/expiry security and liveness tests"
+  ],
+  "separate_offline_meter_report": "../audit/official-stylus-meter.json",
+  "sentence_scope": "Resets zero hidden state/BOS; fixed features;16seeds; not arbitrary-context or continuous-story guarantee"
+}

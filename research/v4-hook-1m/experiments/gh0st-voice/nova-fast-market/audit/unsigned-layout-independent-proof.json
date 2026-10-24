@@ -1,0 +1,63 @@
+{
+  "status": "PASS",
+  "directory": "layout/b25x10a5",
+  "sourceSha256": "57af09b3a4c2bbafe41b9816bdadbea08eee8dc9f0b259193f572a9f77a0b70c",
+  "bits": 25,
+  "lanes": 10,
+  "batch": 5,
+  "chunks": 39,
+  "shift": 225,
+  "weightsCompared": 4523904,
+  "batchesProved": 94248,
+  "maximumCoefficientBound": 29218816,
+  "matrices": {
+    "core.bin": {
+      "rows": 3456,
+      "weightsCompared": 1327104,
+      "allWeightsEqualOriginalSimd8AndNpz": true,
+      "offsetsRowSumsBiasAndStaticSuffixExact": true,
+      "maxAnyConvolutionCoefficient": 29218816,
+      "exclusiveLimit": 33554432,
+      "universalBatchBounds": 27648,
+      "independentDotComparisons": 27648,
+      "fileSha256": "8fce0cafed7f2ca8014b003ab5d71c10790658f43fdcea5366500cadec35a60b"
+    },
+    "groups.bin": {
+      "rows": 128,
+      "weightsCompared": 49152,
+      "allWeightsEqualOriginalSimd8AndNpz": true,
+      "offsetsRowSumsBiasAndStaticSuffixExact": true,
+      "maxAnyConvolutionCoefficient": 17285120,
+      "exclusiveLimit": 33554432,
+      "universalBatchBounds": 1024,
+      "independentDotComparisons": 1024,
+      "fileSha256": "89b2ca64c3dd9979ecd064cc6969223462a825d74c8bb3cdb8943dd15f7dec68"
+    },
+    "words.bin": {
+      "rows": 8192,
+      "weightsCompared": 3145728,
+      "allWeightsEqualOriginalSimd8AndNpz": true,
+      "offsetsRowSumsBiasAndStaticSuffixExact": true,
+      "maxAnyConvolutionCoefficient": 22566912,
+      "exclusiveLimit": 33554432,
+      "universalBatchBounds": 65536,
+      "independentDotComparisons": 65536,
+      "fileSha256": "e7cbf8bd36aa3c0ac8ced97792e4de340a3def4d655dbfb289471c7a88779f64"
+    },
+    "punctuation.bin": {
+      "rows": 5,
+      "weightsCompared": 1920,
+      "allWeightsEqualOriginalSimd8AndNpz": true,
+      "offsetsRowSumsBiasAndStaticSuffixExact": true,
+      "maxAnyConvolutionCoefficient": 14940160,
+      "exclusiveLimit": 33554432,
+      "universalBatchBounds": 40,
+      "independentDotComparisons": 40,
+      "fileSha256": "50e76d14fcfae02d115d7706eb370cd470c9fe381859dd092863d288d21c457d"
+    }
+  },
+  "mainnetActions": 0,
+  "staticBlobsAndReferenceUnchanged": true,
+  "universalProof": "For each batch, every convolution coefficient is nonnegative and <=2048 times the sum of shifted row weights in that batch. Verified this bound is strictly below2^25 for every row/batch. Consequently no base2^25 carry crosses any digit. The desired center digit is entirely below bit256, so modulo2^256 removes only higher digits. Extracting then subtracting exact shift corrections recovers the scalar dot for every hidden input in[-1024,1024].",
+  "totalIndependentDotComparisons": 94248
+}

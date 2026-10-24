@@ -1,0 +1,106 @@
+diff --git a/Cargo.lock b/Cargo.lock
+index 4266856..0e412d5 100644
+--- a/Cargo.lock
++++ b/Cargo.lock
+@@ -4714,6 +4714,8 @@ dependencies = [
+  "prover",
+  "prover-ffi",
+  "rand 0.10.1",
++ "serde_json",
++ "sha2 0.10.9",
+  "thiserror 1.0.63",
+  "user-host-trait",
+  "wasmer",
+diff --git a/crates/stylus/Cargo.toml b/crates/stylus/Cargo.toml
+index e91a9db..d5cabd8 100644
+--- a/crates/stylus/Cargo.toml
++++ b/crates/stylus/Cargo.toml
+@@ -32,6 +32,8 @@ wasmer-types = { workspace = true }
+ wasmer-vm = { workspace = true }
+ 
+ [dev-dependencies]
++sha2 = { workspace = true }
++serde_json = { workspace = true }
+ num-bigint = { workspace = true }
+ rand = { workspace = true, features = ["default", "thread_rng"] }
+ 
+diff --git a/crates/stylus/src/test/api.rs b/crates/stylus/src/test/api.rs
+index 977d0a6..5ab491b 100644
+--- a/crates/stylus/src/test/api.rs
++++ b/crates/stylus/src/test/api.rs
+@@ -1,7 +1,7 @@
+ // Copyright 2022-2026, Offchain Labs, Inc.
+ // For license information, see https://github.com/OffchainLabs/nitro/blob/master/LICENSE.md
+ 
+-use std::{collections::HashMap, sync::Arc};
++use std::{collections::{HashMap, HashSet}, sync::Arc};
+ 
+ use arbutil::{
+     Bytes20, Bytes32,
+@@ -29,6 +29,9 @@ pub(crate) struct TestEvmApi {
+     configs: Arc<Mutex<HashMap<Bytes20, StylusConfig>>>,
+     evm_data: EvmData,
+     pages: Arc<Mutex<(u16, u16)>>,
++    pub nova_warm: Arc<Mutex<HashSet<Bytes20>>>,
++    pub nova_stats: Arc<Mutex<(u64,u64,u64,u64)>>,
++    pub nova_max_code_size: u64,
+ }
+ 
+ impl TestEvmApi {
+@@ -48,6 +51,9 @@ impl TestEvmApi {
+             configs: Arc::new(Mutex::new(HashMap::new())),
+             evm_data,
+             pages: Arc::new(Mutex::new((0, 0))),
++            nova_warm: Arc::new(Mutex::new(HashSet::new())),
++            nova_stats: Arc::new(Mutex::new((0,0,0,0))),
++            nova_max_code_size: 24576,
+         };
+         (api, evm_data)
+     }
+@@ -61,6 +67,14 @@ impl TestEvmApi {
+         Ok(())
+     }
+ 
++    pub fn nova_install_blob(&mut self, kind: u8, bytes: &[u8]) {
++        for (i, chunk) in bytes.chunks(24000).enumerate() {
++            let mut address = [0u8;20]; address[0]=kind; address[16..20].copy_from_slice(&(i as u32).to_be_bytes());
++            let mut code=vec![0u8]; code.extend_from_slice(chunk);
++            self.contracts.lock().insert(address.into(),code);
++        }
++    }
++
+     pub fn set_pages(&mut self, open: u16) {
+         let mut pages = self.pages.lock();
+         pages.0 = open;
+@@ -186,12 +200,16 @@ impl EvmApi<VecReader> for TestEvmApi {
+     }
+ 
+     fn account_code(
+-        &mut self,
+-        _arbos_version: u64,
+-        _address: Bytes20,
+-        _gas_left: Gas,
++        &mut self, _arbos_version: u64, address: Bytes20, gas_left: Gas,
+     ) -> Result<(VecReader, Gas)> {
+-        unimplemented!()
++        // Same scalar formula as pinned geth WasmAccountTouchCost, with an explicit
++        // max-code-size scenario. Access-list state is local to this test transaction.
++        let cold = self.nova_warm.lock().insert(address);
++        let cost = self.nova_max_code_size / 24576 * 700 + if cold {2600} else {100};
++        let data = self.contracts.lock().get(&address).cloned().expect("unknown fixture code address");
++        let mut stats = self.nova_stats.lock();
++        stats.0 += 1; stats.1 += u64::from(cold); stats.2 += cost; stats.3 += data.len() as u64;
++        Ok((VecReader::new(if gas_left.0 >= cost {data} else {vec![]}), Gas(cost)))
+     }
+ 
+     fn account_codehash(&mut self, _address: Bytes20) -> Result<(Bytes32, Gas)> {
+diff --git a/crates/stylus/src/test/mod.rs b/crates/stylus/src/test/mod.rs
+index 8b9033c..08444a1 100644
+--- a/crates/stylus/src/test/mod.rs
++++ b/crates/stylus/src/test/mod.rs
+@@ -225,3 +225,5 @@ fn check_instrumentation(mut native: TestInstance, mut machine: Machine) -> Resu
+     assert_eq!(native_counts, machine_counts);
+     Ok(())
+ }
++
++mod nova_meter;
