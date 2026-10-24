@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "status": "LOCAL_32M_PER_STEP_PASS",
+  "scope": "Local, unforked Anvil chain 31337 only. No public-chain RPC, signing, deployment, or transactions in this experiment.",
+  "model": "SimpleStories/SimpleStories-V2-1.25M",
+  "revision": "2f445183fbfc45753adb1f9444f81bbdddde9b84",
+  "parameters": 1235968,
+  "arithmetic": "Unchanged Q12 integer reference; optimization preserves its outputs, not FP32 bitwise equivalence.",
+  "selected_model": "kernel8streaming/SimpleStoriesV2ModelOptimized.sol",
+  "selected_hook": "benchmark/SimpleStoriesV2StreamingHook.sol",
+  "normal_transaction_gas_limit": 32000000,
+  "streaming_inference_budget": 29000000,
+  "success_definition": "One input token per swap, persistent lossless KV cache, full four-layer model and all 4019 logits; multi-token prompt prefill is separately paid.",
+  "streaming": {
+    "verified_streaming_steps": 37,
+    "full_hidden_values_compared": 4736,
+    "full_vocabulary_logit_hashes_compared": 37,
+    "logits_per_hash": 4019,
+    "maximum_verified_streaming_gas": 26599994,
+    "first_four_swap_gas": [
+      21651823,
+      21914830,
+      22248882,
+      22574982
+    ],
+    "context_16_gas": 26599994,
+    "context_17_automatic_reset_gas": 20321097,
+    "streams": [
+      {
+        "name": "minimal",
+        "poolId": "0x99f8754fd00808bccf59514f241a3a0ea5c725204b7b97336e95eff5d2eed082",
+        "promptTokenCount": 1,
+        "swapsToFirstCompletion": 1,
+        "totalSwaps": 4,
+        "totalGas": "88390517",
+        "maximumGas": "22574982",
+        "allSwapsBelow32M": true,
+        "completionTokens": [
+          307,
+          165,
+          381,
+          156
+        ],
+        "completionText": "boy had lost his",
+        "ended": false,
+        "stopReason": "configured_output_cap"
+      },
+      {
+        "name": "qa-short",
+        "poolId": "0x9025d8ef7ccd3e10be922f9883f3278e3a788c77c807d36aa25c49f2aa05c431",
+        "promptTokenCount": 10,
+        "swapsToFirstCompletion": 10,
+        "totalSwaps": 13,
+        "totalGas": "306550395",
+        "maximumGas": "25576676",
+        "allSwapsBelow32M": true,
+        "completionTokens": [
+          3,
+          40,
+          462,
+          190
+        ],
+        "completionText": "\" i am not",
+        "ended": false,
+        "stopReason": "configured_output_cap"
+      },
+      {
+        "name": "context-16",
+        "poolId": "0xd4aa822b2bb63465fc6e202252e06c17c21aa8d93b738acd61bb912ca58be9a2",
+        "promptTokenCount": 16,
+        "swapsToFirstCompletion": 16,
+        "totalSwaps": 16,
+        "totalGas": "385446033",
+        "maximumGas": "26599994",
+        "allSwapsBelow32M": true,
+        "completionTokens": [
+          307
+        ],
+        "completionText": "boy",
+        "ended": true,
+        "stopReason": "model_or_context_end"
+      }
+    ],
+    "checks": {
+      "originalArtifactsVerifiedBefore": 13,
+      "totalUniqueParameterCountVerified": true,
+      "eip170EnabledAndSatisfied": true,
+      "allRuntimeDataVerified": true,
+      "fullModelIdentityVerified": true,
+      "invalidModelInputsRejected": 6,
+      "minimal_automaticResetVerified": true,
+      "qa-short_automaticResetVerified": true,
+      "context-16_automaticResetVerified": true,
+      "requiredPartialModelWritesFullyRolledBack": true,
+      "callerNamespacesIsolated": true,
+      "poolSessionsIsolated": true,
+      "directHookCallsRejected": true,
+      "allStreamingOutputsMatchIndependentReference": true,
+      "realV4SettlementAndModelInferenceRequired": true,
+      "originalArtifactsVerifiedAfter": 13,
+      "optimizedSourceUnchangedDuringRun": true,
+      "localNormalGasLimitRestored": true
+    }
+  },
+  "stateless_one_input_one_output": {
+    "measurement": "required_minimal-1_measured",
+    "original_gas": 179978646,
+    "optimized_gas": 19725577,
+    "reduction_percent": 89.04,
+    "speedup": 9.12413,
+    "prompt_tokens": 1,
+    "new_token_cap": 1,
+    "generated": "boy",
+    "ended": false
+  },
+  "stateless_cases_still_above32M": [
+    {
+      "measurement": "required_minimal-4_measured",
+      "optimized_gas": 141259613,
+      "prompt_tokens": 1,
+      "new_token_cap": 4
+    },
+    {
+      "measurement": "required_qa-short-1_measured",
+      "optimized_gas": 110660388,
+      "prompt_tokens": 10,
+      "new_token_cap": 1
+    },
+    {
+      "measurement": "required_qa-short-4_measured",
+      "optimized_gas": 518593305,
+      "prompt_tokens": 10,
+      "new_token_cap": 4
+    }
+  ],
+  "storage": {
+    "original_weight_bytes": 2471936,
+    "packed_weight_bytes": 6258016,
+    "table_bytes": 3080,
+    "model_runtime_bytes": 13815,
+    "hook_runtime_bytes": 4493,
+    "deployment_cost_measured": false
+  },
+  "source_hashes": {
+    "experiments/simplestories-v2/optimization/kernel8streaming/SimpleStoriesV2ModelOptimized.sol": {
+      "sha256": "cefccb427ec1045c78ce41d3f11c35f5eab8259338bddf48bb2b105ceab906ce",
+      "runtimeBytes": 13815
+    },
+    "experiments/simplestories-v2/optimization/benchmark/SimpleStoriesV2StreamingHook.sol": {
+      "sha256": "b8a00d9a780132c81543d5950df9cecbe5cac5717624dc5a371ad07c1bafbaaa",
+      "runtimeBytes": 4493
+    }
+  },
+  "limitations": [
+    "One input token is processed and one full-vocabulary prediction is computed per swap; a multi-token question is prefetched across multiple swaps.",
+    "A four-token continuation is not a complete sentence unless EOS occurs.",
+    "Fixed prompts and output caps restart repeatable generation cycles. This is a local research hook, not a public deployment.",
+    "Q12 integer arithmetic is unchanged from the prior port and approximates the downloaded FP32 checkpoint.",
+    "The same trained parameters and full vocabulary are retained; this work improves gas, not model language or question-answering quality.",
+    "Gas is actual local execution gas including cache storage and validation event data, excluding deployment fees and network calldata pricing.",
+    "Measured prefixes reach16 tokens; these finite tests are not a proof that every possible token sequence has the same gas maximum.",
+    "The streaming hook has a fixed prompt and pool-shared generation session. It is a local research prototype.",
+    "No complete question and answer or sentence in one swap is claimed.",
+    "The finite test set is not a universal worst-case gas proof; exact scalar fallback can cost more on other activation ranges."
+  ],
+  "evidence_sha256": {
+    "benchmark/streaming-benchmark.json": "d66e00eb2449e54e6024af9fef3b179f486463fcde9d15d43643789b5116c37d",
+    "benchmark/streaming-result-summary.json": "7589fca2c046f8c7d0ef0ef6d90dc689a814234e4f04ad79563398a2df290419",
+    "benchmark/result-summary-pruned.json": "adff72d0ccda9eddb25214ff01f788ca4aa36a33e925b11e88eac828e54b7889",
+    "benchmark/gas-benchmark-final.json": "ed7ce08db9a1e09e963add26987d98f6a6f8fac96151f858ef1b91b7e2123205",
+    "kernel8streaming/STREAMING_PROTOCOL.md": "1a896b8d71d2af150a9e52db90a6a01c9679dc4d0ae9734bdc3c5ed2ae74cb02",
+    "README.md": "64e7e032056cc7522ca15c082476908575202c1a4f65540e7186ca2fee244421"
+  }
+}

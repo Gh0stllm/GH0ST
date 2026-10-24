@@ -1,0 +1,69 @@
+{
+  "description": "Conservative analytic bounds for all valid token contexts using unchanged Q12 weights; includes RMS epsilon and truncation",
+  "weights_sha256": "4185c1e2ca8258bc2fdc057f8767f74dd9d8c4f74d64ecf8ed3b56dfc12f8e29",
+  "tables_sha256": "e2e330f3ceb2f661d833b16e432b35bf0725c8df053a47189d726c48a9228986",
+  "nonnegative_exponents_and_nonzero_max_score_weight_verified": true,
+  "silu_probability_bound_verified": true,
+  "normalized_l2_bound": "4096 * sqrt(136)",
+  "rounding_margin": "ceil upper bounds plus one integer unit",
+  "layers": [
+    {
+      "layer": 0,
+      "q_max": 63186,
+      "k_max": 44655,
+      "v_max": 11303,
+      "rotated_q_max": 126372,
+      "rotated_k_max": 89310,
+      "attention_output_projection_max": 12767,
+      "gate_max": 19839,
+      "up_max": 18281,
+      "silu_product_max": 76232,
+      "down_projection_max": 405466,
+      "residual_hidden_max": 416678
+    },
+    {
+      "layer": 1,
+      "q_max": 69467,
+      "k_max": 72788,
+      "v_max": 11792,
+      "rotated_q_max": 138934,
+      "rotated_k_max": 145576,
+      "attention_output_projection_max": 15505,
+      "gate_max": 20424,
+      "up_max": 18349,
+      "silu_product_max": 77129,
+      "down_projection_max": 405490,
+      "residual_hidden_max": 826146
+    },
+    {
+      "layer": 2,
+      "q_max": 95597,
+      "k_max": 82556,
+      "v_max": 12868,
+      "rotated_q_max": 191194,
+      "rotated_k_max": 165112,
+      "attention_output_projection_max": 19142,
+      "gate_max": 20726,
+      "up_max": 20489,
+      "silu_product_max": 91880,
+      "down_projection_max": 448651,
+      "residual_hidden_max": 1267214
+    },
+    {
+      "layer": 3,
+      "q_max": 91653,
+      "k_max": 69121,
+      "v_max": 16030,
+      "rotated_q_max": 183306,
+      "rotated_k_max": 138242,
+      "attention_output_projection_max": 30364,
+      "gate_max": 26366,
+      "up_max": 28085,
+      "silu_product_max": 140514,
+      "down_projection_max": 723102,
+      "residual_hidden_max": 1968214
+    }
+  ],
+  "final_logit_max": 215338,
+  "all_int32_checked_outputs_safe": true
+}

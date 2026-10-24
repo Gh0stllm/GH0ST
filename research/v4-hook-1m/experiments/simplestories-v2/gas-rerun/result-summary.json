@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "status": "COMPLETE_LOCAL_GAS_MEASUREMENT",
+  "model": "SimpleStories/SimpleStories-V2-1.25M",
+  "revision": "2f445183fbfc45753adb1f9444f81bbdddde9b84",
+  "parameters": 1235968,
+  "model_commitment": "0x4e94f870888de2fb00bc66cab543c6b1ab87745fa919425a40b4069d30a9fa6c",
+  "prior_model_commitment_matches": true,
+  "execution": "Isolated unforked localhost Anvil only; no mainnet activity",
+  "completed_at": "2026-10-24T03:41:40.065Z",
+  "gas_cases": [
+    {
+      "name": "minimal-1",
+      "prompt": "The",
+      "input_token_count": 1,
+      "requested_output_tokens": 1,
+      "actual_output_tokens": 1,
+      "v4_swap_gas": "179978646",
+      "output_ids": [
+        307
+      ],
+      "output_text": "boy",
+      "ended_eos": false,
+      "stop_reason": "token_cap",
+      "matches_integer_reference": true,
+      "matches_fp32_greedy_output": false,
+      "last_logit_hash": "0x9c0c1dd04b0a66bd538ada9dd684e89b115dfab5374cda0312890883c90ce82f",
+      "settlement_verified": true
+    },
+    {
+      "name": "minimal-4",
+      "prompt": "The",
+      "input_token_count": 1,
+      "requested_output_tokens": 4,
+      "actual_output_tokens": 4,
+      "v4_swap_gas": "1383549242",
+      "output_ids": [
+        307,
+        165,
+        381,
+        156
+      ],
+      "output_text": "boy had lost his",
+      "ended_eos": false,
+      "stop_reason": "token_cap",
+      "matches_integer_reference": true,
+      "matches_fp32_greedy_output": false,
+      "last_logit_hash": "0xb3fea29b26903fb0377e509d3b2bb45f3046ab50604c60156741cbefc5977418",
+      "settlement_verified": true
+    },
+    {
+      "name": "qa-short-1",
+      "prompt": "Question: What color is the sky? Answer:",
+      "input_token_count": 10,
+      "requested_output_tokens": 1,
+      "actual_output_tokens": 1,
+      "v4_swap_gas": "1183909569",
+      "output_ids": [
+        3
+      ],
+      "output_text": "\"",
+      "ended_eos": false,
+      "stop_reason": "token_cap",
+      "matches_integer_reference": true,
+      "matches_fp32_greedy_output": true,
+      "last_logit_hash": "0x0d20a747edeebe38d026d58927eb3427b0662bb8bd8349848146f0169241751c",
+      "settlement_verified": true
+    },
+    {
+      "name": "qa-short-4",
+      "prompt": "Question: What color is the sky? Answer:",
+      "input_token_count": 10,
+      "requested_output_tokens": 4,
+      "actual_output_tokens": 4,
+      "v4_swap_gas": "5443639879",
+      "output_ids": [
+        3,
+        40,
+        462,
+        190
+      ],
+      "output_text": "\" i am not",
+      "ended_eos": false,
+      "stop_reason": "token_cap",
+      "matches_integer_reference": true,
+      "matches_fp32_greedy_output": true,
+      "last_logit_hash": "0x58666fe3802967bae68d2dc6d7b7fcabf1615e5e37f0d97fbd08443cacf0c64a",
+      "settlement_verified": true
+    }
+  ],
+  "limits": {
+    "local_test_transaction_budget": "32000000",
+    "local_test_model_budget": "28000000",
+    "original_hook_configured_inference_ceiling": "450000000",
+    "local_only_override_inference_ceiling": "14000000000",
+    "local_measurement_transaction_ceiling": "16000000000",
+    "statement": "These are application and local harness settings, not verified Robinhood network limits."
+  },
+  "checks": {
+    "originalArtifactsVerifiedBefore": 13,
+    "totalUniqueParameterCountVerified": true,
+    "eip170EnabledAndSatisfied": true,
+    "allRuntimeDataVerified": true,
+    "fullModelIdentityVerified": true,
+    "normal32MRequiredFailuresAndOptionalSettlementVerified": true,
+    "selectedForwardReferenceFixturesVerified": [
+      "single-token",
+      "two-token-attention",
+      "qa-short"
+    ],
+    "allStandaloneGenerationOutputsVerified": true,
+    "allSuccessfulHookGenerationOutputsVerified": true,
+    "failedRequiredSpeechRollbackVerified": true,
+    "realV4SettlementAndRollbackVerified": true,
+    "originalArtifactsVerifiedAfter": 13,
+    "localNormalGasLimitRestored": true,
+    "unchanged_original_files": {
+      "contracts/SimpleStoriesV2Model.sol": true,
+      "contracts/SimpleStoriesV2V4Hook.sol": true,
+      "contracts/protocol.json": true,
+      "model/manifest.json": true,
+      "model/weights.bin": true,
+      "model/tables.bin": true,
+      "model-cache/model.safetensors": true,
+      "integer_reference.py": true,
+      "integer-reference.json": true,
+      "run-v4-benchmark.mjs": true,
+      "v4-benchmark.json": true,
+      "result-summary.json": true,
+      "README.md": true
+    },
+    "localhost_18553_has_no_listener": true,
+    "anvil_stopped_reported": true,
+    "final_local_block_gas_limit": "32000000"
+  },
+  "limitations": [
+    "No complete sentence or correct QA answer was produced by these capped one- and four-token cases.",
+    "32M is the chosen local test budget, not a claim about Robinhood mainnet limits.",
+    "The 450M ceiling belongs to the original research hook configuration. The local-only uint64/14B override permits measuring longer computations.",
+    "Weights and tables are injected with verified runtime hashes; weight deployment gas is excluded.",
+    "The complete model uses fixed-point Q12, which approximates FP32; minimal prompt output differs from FP32.",
+    "No KV cache: each new output token recomputes the full accumulated context."
+  ],
+  "reports": {
+    "raw": "gas-benchmark.json",
+    "integer_reference": "reference.json",
+    "original_artifacts": "original-artifacts.json"
+  },
+  "source_hashes": {
+    "gas-benchmark.json": "dd0298162a2220501a4e05f0db139726728e5285153e415a158c1589bca5b399",
+    "reference.json": "57842cff0ac7663e7f4c100a76e35bba5823a1700683ca5f2f25938ae205376f",
+    "original-artifacts.json": "c809d94534fb83237e46470fa1782c488904e03938df9d4231fac9d5c137c37d"
+  }
+}

@@ -1,0 +1,390 @@
+{
+  "actual_unique_model_parameters": 1235968,
+  "authentication": "none; public HTTPS only",
+  "config": {
+    "architectures": [
+      "LlamaForCausalLM"
+    ],
+    "attention_bias": false,
+    "attention_dropout": 0.0,
+    "bos_token_id": 1,
+    "eos_token_id": 2,
+    "head_dim": 32,
+    "hidden_act": "silu",
+    "hidden_size": 128,
+    "initializer_range": 0.02,
+    "intermediate_size": 341,
+    "max_position_embeddings": 2048,
+    "mlp_bias": false,
+    "model_type": "llama",
+    "num_attention_heads": 4,
+    "num_hidden_layers": 4,
+    "num_key_value_heads": 2,
+    "pretraining_tp": 1,
+    "rms_norm_eps": 1e-06,
+    "rope_scaling": null,
+    "rope_theta": 10000.0,
+    "tie_word_embeddings": true,
+    "torch_dtype": "float32",
+    "transformers_version": "4.48.3",
+    "use_cache": true,
+    "vocab_size": 4019
+  },
+  "derived_artifacts": {
+    "weight-stats.json": {
+      "bytes": 9614,
+      "sha256": "df9305ce59dc2dd47b8adf84b84663c46ae39931242646ac84cea57c933841da"
+    },
+    "weights-fp32.npz": {
+      "bytes": 4955498,
+      "sha256": "8e23fbb2fcee733dd2c7eb4ae850a90745881fd775a2e3b6797e894ee52bdaa3"
+    }
+  },
+  "downloaded_at_utc": "2026-10-24T02:31:08.596169+00:00",
+  "files": {
+    "README.md": {
+      "bytes": 2625,
+      "sha256": "507456c006cbc3ddbc4b813704c46c4ab80662d42f035bc6e3db9c0f03c94f2b",
+      "url": "https://huggingface.co/SimpleStories/SimpleStories-V2-1.25M/resolve/2f445183fbfc45753adb1f9444f81bbdddde9b84/README.md"
+    },
+    "config.json": {
+      "bytes": 668,
+      "sha256": "f8f15b893ede4dc0bd20c9e601fdf4bf815ea923bdbc34a3baf1e898e629c6bb",
+      "url": "https://huggingface.co/SimpleStories/SimpleStories-V2-1.25M/resolve/2f445183fbfc45753adb1f9444f81bbdddde9b84/config.json"
+    },
+    "generation_config.json": {
+      "bytes": 111,
+      "sha256": "6b7f2d929a9182a4eac4d2f6495e25fd908808381c531051f8202a0f7a608832",
+      "url": "https://huggingface.co/SimpleStories/SimpleStories-V2-1.25M/resolve/2f445183fbfc45753adb1f9444f81bbdddde9b84/generation_config.json"
+    },
+    "model.safetensors": {
+      "bytes": 4947920,
+      "sha256": "4d7b846d32e636c70ed3a342ec53775d10d56b404c357865a75eb2dce0b78f94",
+      "url": "https://huggingface.co/SimpleStories/SimpleStories-V2-1.25M/resolve/2f445183fbfc45753adb1f9444f81bbdddde9b84/model.safetensors"
+    },
+    "special_tokens_map.json": {
+      "bytes": 75,
+      "sha256": "f2a009c988c79b451ac4d518525849cf93f9d017fd52acf4b892652c0186b923",
+      "url": "https://huggingface.co/SimpleStories/SimpleStories-V2-1.25M/resolve/2f445183fbfc45753adb1f9444f81bbdddde9b84/special_tokens_map.json"
+    },
+    "tokenizer.json": {
+      "bytes": 86463,
+      "sha256": "01b6553da99789d461cec48eed624684a803f259a5177616a67f7391700acf51",
+      "url": "https://huggingface.co/SimpleStories/SimpleStories-V2-1.25M/resolve/2f445183fbfc45753adb1f9444f81bbdddde9b84/tokenizer.json"
+    },
+    "tokenizer_config.json": {
+      "bytes": 587,
+      "sha256": "9d32dcb8457613e2dab376656eec6495a6e19fb0408859fb3a979cf42fed85f0",
+      "url": "https://huggingface.co/SimpleStories/SimpleStories-V2-1.25M/resolve/2f445183fbfc45753adb1f9444f81bbdddde9b84/tokenizer_config.json"
+    }
+  },
+  "repository": "SimpleStories/SimpleStories-V2-1.25M",
+  "revision": "2f445183fbfc45753adb1f9444f81bbdddde9b84",
+  "source": "https://huggingface.co/SimpleStories/SimpleStories-V2-1.25M",
+  "stored_tensor_parameter_count": 1235968,
+  "tensor_count": 38,
+  "tensors": {
+    "model.embed_tokens.weight": {
+      "dtype": "F32",
+      "parameters": 514432,
+      "shape": [
+        4019,
+        128
+      ]
+    },
+    "model.layers.0.input_layernorm.weight": {
+      "dtype": "F32",
+      "parameters": 128,
+      "shape": [
+        128
+      ]
+    },
+    "model.layers.0.mlp.down_proj.weight": {
+      "dtype": "F32",
+      "parameters": 43648,
+      "shape": [
+        128,
+        341
+      ]
+    },
+    "model.layers.0.mlp.gate_proj.weight": {
+      "dtype": "F32",
+      "parameters": 43648,
+      "shape": [
+        341,
+        128
+      ]
+    },
+    "model.layers.0.mlp.up_proj.weight": {
+      "dtype": "F32",
+      "parameters": 43648,
+      "shape": [
+        341,
+        128
+      ]
+    },
+    "model.layers.0.post_attention_layernorm.weight": {
+      "dtype": "F32",
+      "parameters": 128,
+      "shape": [
+        128
+      ]
+    },
+    "model.layers.0.self_attn.k_proj.weight": {
+      "dtype": "F32",
+      "parameters": 8192,
+      "shape": [
+        64,
+        128
+      ]
+    },
+    "model.layers.0.self_attn.o_proj.weight": {
+      "dtype": "F32",
+      "parameters": 16384,
+      "shape": [
+        128,
+        128
+      ]
+    },
+    "model.layers.0.self_attn.q_proj.weight": {
+      "dtype": "F32",
+      "parameters": 16384,
+      "shape": [
+        128,
+        128
+      ]
+    },
+    "model.layers.0.self_attn.v_proj.weight": {
+      "dtype": "F32",
+      "parameters": 8192,
+      "shape": [
+        64,
+        128
+      ]
+    },
+    "model.layers.1.input_layernorm.weight": {
+      "dtype": "F32",
+      "parameters": 128,
+      "shape": [
+        128
+      ]
+    },
+    "model.layers.1.mlp.down_proj.weight": {
+      "dtype": "F32",
+      "parameters": 43648,
+      "shape": [
+        128,
+        341
+      ]
+    },
+    "model.layers.1.mlp.gate_proj.weight": {
+      "dtype": "F32",
+      "parameters": 43648,
+      "shape": [
+        341,
+        128
+      ]
+    },
+    "model.layers.1.mlp.up_proj.weight": {
+      "dtype": "F32",
+      "parameters": 43648,
+      "shape": [
+        341,
+        128
+      ]
+    },
+    "model.layers.1.post_attention_layernorm.weight": {
+      "dtype": "F32",
+      "parameters": 128,
+      "shape": [
+        128
+      ]
+    },
+    "model.layers.1.self_attn.k_proj.weight": {
+      "dtype": "F32",
+      "parameters": 8192,
+      "shape": [
+        64,
+        128
+      ]
+    },
+    "model.layers.1.self_attn.o_proj.weight": {
+      "dtype": "F32",
+      "parameters": 16384,
+      "shape": [
+        128,
+        128
+      ]
+    },
+    "model.layers.1.self_attn.q_proj.weight": {
+      "dtype": "F32",
+      "parameters": 16384,
+      "shape": [
+        128,
+        128
+      ]
+    },
+    "model.layers.1.self_attn.v_proj.weight": {
+      "dtype": "F32",
+      "parameters": 8192,
+      "shape": [
+        64,
+        128
+      ]
+    },
+    "model.layers.2.input_layernorm.weight": {
+      "dtype": "F32",
+      "parameters": 128,
+      "shape": [
+        128
+      ]
+    },
+    "model.layers.2.mlp.down_proj.weight": {
+      "dtype": "F32",
+      "parameters": 43648,
+      "shape": [
+        128,
+        341
+      ]
+    },
+    "model.layers.2.mlp.gate_proj.weight": {
+      "dtype": "F32",
+      "parameters": 43648,
+      "shape": [
+        341,
+        128
+      ]
+    },
+    "model.layers.2.mlp.up_proj.weight": {
+      "dtype": "F32",
+      "parameters": 43648,
+      "shape": [
+        341,
+        128
+      ]
+    },
+    "model.layers.2.post_attention_layernorm.weight": {
+      "dtype": "F32",
+      "parameters": 128,
+      "shape": [
+        128
+      ]
+    },
+    "model.layers.2.self_attn.k_proj.weight": {
+      "dtype": "F32",
+      "parameters": 8192,
+      "shape": [
+        64,
+        128
+      ]
+    },
+    "model.layers.2.self_attn.o_proj.weight": {
+      "dtype": "F32",
+      "parameters": 16384,
+      "shape": [
+        128,
+        128
+      ]
+    },
+    "model.layers.2.self_attn.q_proj.weight": {
+      "dtype": "F32",
+      "parameters": 16384,
+      "shape": [
+        128,
+        128
+      ]
+    },
+    "model.layers.2.self_attn.v_proj.weight": {
+      "dtype": "F32",
+      "parameters": 8192,
+      "shape": [
+        64,
+        128
+      ]
+    },
+    "model.layers.3.input_layernorm.weight": {
+      "dtype": "F32",
+      "parameters": 128,
+      "shape": [
+        128
+      ]
+    },
+    "model.layers.3.mlp.down_proj.weight": {
+      "dtype": "F32",
+      "parameters": 43648,
+      "shape": [
+        128,
+        341
+      ]
+    },
+    "model.layers.3.mlp.gate_proj.weight": {
+      "dtype": "F32",
+      "parameters": 43648,
+      "shape": [
+        341,
+        128
+      ]
+    },
+    "model.layers.3.mlp.up_proj.weight": {
+      "dtype": "F32",
+      "parameters": 43648,
+      "shape": [
+        341,
+        128
+      ]
+    },
+    "model.layers.3.post_attention_layernorm.weight": {
+      "dtype": "F32",
+      "parameters": 128,
+      "shape": [
+        128
+      ]
+    },
+    "model.layers.3.self_attn.k_proj.weight": {
+      "dtype": "F32",
+      "parameters": 8192,
+      "shape": [
+        64,
+        128
+      ]
+    },
+    "model.layers.3.self_attn.o_proj.weight": {
+      "dtype": "F32",
+      "parameters": 16384,
+      "shape": [
+        128,
+        128
+      ]
+    },
+    "model.layers.3.self_attn.q_proj.weight": {
+      "dtype": "F32",
+      "parameters": 16384,
+      "shape": [
+        128,
+        128
+      ]
+    },
+    "model.layers.3.self_attn.v_proj.weight": {
+      "dtype": "F32",
+      "parameters": 8192,
+      "shape": [
+        64,
+        128
+      ]
+    },
+    "model.norm.weight": {
+      "dtype": "F32",
+      "parameters": 128,
+      "shape": [
+        128
+      ]
+    }
+  },
+  "tokenizer_policy": {
+    "add_special_tokens": false,
+    "eos_token_id": 1,
+    "note": "Use actual tokenizer EOS1 rather than inconsistent model config EOS2; avoid automatic EOS appended to prompts.",
+    "pad_token_id": 0,
+    "prepend_bos": false
+  }
+}

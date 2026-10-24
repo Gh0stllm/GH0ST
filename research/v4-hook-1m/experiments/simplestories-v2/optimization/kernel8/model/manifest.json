@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "repository": "SimpleStories/SimpleStories-V2-1.25M",
+  "revision": "2f445183fbfc45753adb1f9444f81bbdddde9b84",
+  "checkpoint_sha256": "4d7b846d32e636c70ed3a342ec53775d10d56b404c357865a75eb2dce0b78f94",
+  "parameters": 1235968,
+  "weight_scale": 4096,
+  "clipped_weights": 0,
+  "maximum_absolute_weight_error": 0.0001220703125,
+  "per_tensor_maximum_weight_error": {
+    "model.embed_tokens.weight": 0.0001220703125,
+    "model.layers.0.input_layernorm.weight": 0.00012111663818359375,
+    "model.layers.0.self_attn.q_proj.weight": 0.00012205541133880615,
+    "model.layers.0.self_attn.k_proj.weight": 0.0001220586709678173,
+    "model.layers.0.self_attn.v_proj.weight": 0.00012206379324197769,
+    "model.layers.0.self_attn.o_proj.weight": 0.00012205820530653,
+    "model.layers.0.post_attention_layernorm.weight": 0.00012195110321044922,
+    "model.layers.0.mlp.gate_proj.weight": 0.0001220703125,
+    "model.layers.0.mlp.up_proj.weight": 0.00012206751853227615,
+    "model.layers.0.mlp.down_proj.weight": 0.00012206658720970154,
+    "model.layers.1.input_layernorm.weight": 0.00012159347534179688,
+    "model.layers.1.self_attn.q_proj.weight": 0.00012206658720970154,
+    "model.layers.1.self_attn.k_proj.weight": 0.00012205541133880615,
+    "model.layers.1.self_attn.v_proj.weight": 0.0001220703125,
+    "model.layers.1.self_attn.o_proj.weight": 0.00012206379324197769,
+    "model.layers.1.post_attention_layernorm.weight": 0.00012195110321044922,
+    "model.layers.1.mlp.gate_proj.weight": 0.00012206006795167923,
+    "model.layers.1.mlp.up_proj.weight": 0.00012206612154841423,
+    "model.layers.1.mlp.down_proj.weight": 0.0001220703125,
+    "model.layers.2.input_layernorm.weight": 0.00012111663818359375,
+    "model.layers.2.self_attn.q_proj.weight": 0.0001220703125,
+    "model.layers.2.self_attn.k_proj.weight": 0.00012205354869365692,
+    "model.layers.2.self_attn.v_proj.weight": 0.00012206658720970154,
+    "model.layers.2.self_attn.o_proj.weight": 0.00012206682004034519,
+    "model.layers.2.post_attention_layernorm.weight": 0.0001220703125,
+    "model.layers.2.mlp.gate_proj.weight": 0.00012206472456455231,
+    "model.layers.2.mlp.up_proj.weight": 0.0001220703125,
+    "model.layers.2.mlp.down_proj.weight": 0.00012206844985485077,
+    "model.layers.3.input_layernorm.weight": 0.00012171268463134766,
+    "model.layers.3.self_attn.q_proj.weight": 0.0001220703125,
+    "model.layers.3.self_attn.k_proj.weight": 0.00012205168604850769,
+    "model.layers.3.self_attn.v_proj.weight": 0.00012202188372612,
+    "model.layers.3.self_attn.o_proj.weight": 0.00012206751853227615,
+    "model.layers.3.post_attention_layernorm.weight": 0.00012135505676269531,
+    "model.layers.3.mlp.gate_proj.weight": 0.00012206565588712692,
+    "model.layers.3.mlp.up_proj.weight": 0.00012206286191940308,
+    "model.layers.3.mlp.down_proj.weight": 0.00012206658720970154,
+    "model.norm.weight": 0.00011610984802246094
+  },
+  "chunk_bytes": 24000,
+  "model_hash_domain": "GH0ST_SIMPLESTORIES_V2_Q12_SWAR8_CTX16_V1",
+  "artifacts": {
+    "weights.bin": {
+      "bytes": 6258016,
+      "sha256": "b2618006eb6695796e5d5d822852049c2ed5f31d92c972561a0fb077b6bcf02f"
+    },
+    "tables.bin": {
+      "bytes": 3080,
+      "sha256": "e2e330f3ceb2f661d833b16e432b35bf0725c8df053a47189d726c48a9228986"
+    }
+  },
+  "bounds": {
+    "maximum_context_tokens": 16,
+    "maximum_new_tokens": 4,
+    "eos_token_id": 1,
+    "vocabulary": 4019
+  },
+  "quantization": "INT16 Q12, nearest-even export; exact documented integer operations at inference",
+  "limitations": [
+    "Research port uses bounded 16-token context and up to 4 generated tokens per EVM call.",
+    "Fixed-point normalization, lookup-table nonlinearities and rounding approximate FP32.",
+    "This exports the actual pretrained transformer; no distillation or retraining is performed."
+  ],
+  "storage_format": "8 biased weights in radix-2**32 lanes per 256-bit word; signed int256 row sum after each row; raw int16 embeddings and norm vectors",
+  "source_weights_sha256": "4185c1e2ca8258bc2fdc057f8767f74dd9d8c4f74d64ecf8ed3b56dfc12f8e29",
+  "unique_model_parameters": 1235968,
+  "packed_duplicate_storage_parameters": "Storage duplication only; every numerical tensor is unchanged",
+  "packing_checks": {
+    "cases": 1792,
+    "passed": 1792,
+    "sha256": "f9fcedd0758d24b278052bd8f7ce0cb617035b4dfec908df87615e73c1ec3e52",
+    "includes": "padded lengths, signed extremes, random full-range inputs, actual EVM 256-bit multiplication truncation",
+    "swar5": {
+      "lanes": 5,
+      "radix_bits": 51,
+      "weight_bias": 32768,
+      "activation_bias": 2147483648,
+      "maximum_middle_coefficient": 1407353408389125,
+      "radix": 2251799813685248
+    },
+    "swar8": {
+      "lanes": 8,
+      "radix_bits": 32,
+      "weight_bias": 2048,
+      "activation_bias": 65536,
+      "maximum_middle_coefficient": 4293885960,
+      "radix": 4294967296
+    },
+    "actual_weight_rows_recovered_exactly": 8795,
+    "actual_rows_full_int17_random_dot_passed": 8795,
+    "maximum_actual_matrix_weight_absolute": 1674,
+    "source_weights_sha256": "4185c1e2ca8258bc2fdc057f8767f74dd9d8c4f74d64ecf8ed3b56dfc12f8e29"
+  }
+}

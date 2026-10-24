@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "model": "SimpleStories/SimpleStories-V2-1.25M",
+  "revision": "2f445183fbfc45753adb1f9444f81bbdddde9b84",
+  "parameters": 1235968,
+  "status": "LOCAL_PASS",
+  "normal_transaction_gas_limit": 32000000,
+  "local_chain": {
+    "backend": "Anvil",
+    "chainId": 31337,
+    "hardfork": "cancun",
+    "loopback": "127.0.0.1:18556",
+    "forking": false,
+    "stepsTracing": false,
+    "normalTransactionGasCeiling": "32000000",
+    "elevatedGasUsed": false,
+    "client": "anvil/v1.8.5",
+    "finalBlockGasLimit": "32000000",
+    "anvilStopped": true
+  },
+  "streaming_design": {
+    "requiredInference": true,
+    "promptPrefill": "One input token per swap; N tokens require N swaps before the first completion.",
+    "cacheScope": "Model namespace bound to hook address and pool id",
+    "resetPolicy": "Restart fixed configured prompt after EOS, context16, or configured output cap",
+    "fullHiddenInEvents": "Included for validation and in measured gas"
+  },
+  "verified_streaming_steps": 37,
+  "full_hidden_values_compared": 4736,
+  "full_vocabulary_logit_hashes_compared": 37,
+  "logits_per_hash": 4019,
+  "maximum_verified_streaming_gas": 26599994,
+  "streams": [
+    {
+      "name": "minimal",
+      "poolId": "0x99f8754fd00808bccf59514f241a3a0ea5c725204b7b97336e95eff5d2eed082",
+      "promptTokenCount": 1,
+      "swapsToFirstCompletion": 1,
+      "totalSwaps": 4,
+      "totalGas": "88390517",
+      "maximumGas": "22574982",
+      "allSwapsBelow32M": true,
+      "completionTokens": [
+        307,
+        165,
+        381,
+        156
+      ],
+      "completionText": "boy had lost his",
+      "ended": false,
+      "stopReason": "configured_output_cap"
+    },
+    {
+      "name": "qa-short",
+      "poolId": "0x9025d8ef7ccd3e10be922f9883f3278e3a788c77c807d36aa25c49f2aa05c431",
+      "promptTokenCount": 10,
+      "swapsToFirstCompletion": 10,
+      "totalSwaps": 13,
+      "totalGas": "306550395",
+      "maximumGas": "25576676",
+      "allSwapsBelow32M": true,
+      "completionTokens": [
+        3,
+        40,
+        462,
+        190
+      ],
+      "completionText": "\" i am not",
+      "ended": false,
+      "stopReason": "configured_output_cap"
+    },
+    {
+      "name": "context-16",
+      "poolId": "0xd4aa822b2bb63465fc6e202252e06c17c21aa8d93b738acd61bb912ca58be9a2",
+      "promptTokenCount": 16,
+      "swapsToFirstCompletion": 16,
+      "totalSwaps": 16,
+      "totalGas": "385446033",
+      "maximumGas": "26599994",
+      "allSwapsBelow32M": true,
+      "completionTokens": [
+        307
+      ],
+      "completionText": "boy",
+      "ended": true,
+      "stopReason": "model_or_context_end"
+    }
+  ],
+  "first_four_swap_gas": [
+    21651823,
+    21914830,
+    22248882,
+    22574982
+  ],
+  "context_16_gas": 26599994,
+  "context_17_automatic_reset_gas": 20321097,
+  "checks": {
+    "originalArtifactsVerifiedBefore": 13,
+    "totalUniqueParameterCountVerified": true,
+    "eip170EnabledAndSatisfied": true,
+    "allRuntimeDataVerified": true,
+    "fullModelIdentityVerified": true,
+    "invalidModelInputsRejected": 6,
+    "minimal_automaticResetVerified": true,
+    "qa-short_automaticResetVerified": true,
+    "context-16_automaticResetVerified": true,
+    "requiredPartialModelWritesFullyRolledBack": true,
+    "callerNamespacesIsolated": true,
+    "poolSessionsIsolated": true,
+    "directHookCallsRejected": true,
+    "allStreamingOutputsMatchIndependentReference": true,
+    "realV4SettlementAndModelInferenceRequired": true,
+    "originalArtifactsVerifiedAfter": 13,
+    "optimizedSourceUnchangedDuringRun": true,
+    "localNormalGasLimitRestored": true
+  },
+  "artifacts": {
+    "streaming-benchmark.json": "d66e00eb2449e54e6024af9fef3b179f486463fcde9d15d43643789b5116c37d",
+    "streaming-reference.json": "ba59b2fd5e100829891c7a44447bb72b7241c8376050d1c26eb10f7745bb0d15",
+    "run-streaming-benchmark.mjs": "7e95584cbf2c0f43a58efabb8ba93431f4959a539af50ac7d9b291e94361abd9",
+    "SimpleStoriesV2StreamingHook.sol": "b8a00d9a780132c81543d5950df9cecbe5cac5717624dc5a371ad07c1bafbaaa"
+  },
+  "limitations": [
+    "One input token is processed and one full-vocabulary prediction is computed per swap; a multi-token question is prefetched across multiple swaps.",
+    "A four-token continuation is not a complete sentence unless EOS occurs.",
+    "Fixed prompts and output caps restart repeatable generation cycles. This is a local research hook, not a public deployment.",
+    "Q12 integer arithmetic is unchanged from the prior port and approximates the downloaded FP32 checkpoint.",
+    "The same trained parameters and full vocabulary are retained; this work improves gas, not model language or question-answering quality.",
+    "Gas is actual local execution gas including cache storage and validation event data, excluding deployment fees and network calldata pricing.",
+    "Measured prefixes reach16 tokens; these finite tests are not a proof that every possible token sequence has the same gas maximum."
+  ]
+}

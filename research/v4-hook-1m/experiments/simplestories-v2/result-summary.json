@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "status": "FULL_PRETRAINED_TRANSFORMER_EXCEEDS_32M_SWAP_LIMIT",
+  "model": "SimpleStories/SimpleStories-V2-1.25M",
+  "revision": "2f445183fbfc45753adb1f9444f81bbdddde9b84",
+  "parameters": 1235968,
+  "execution": "CPU_QUALITY_AND_ISOLATED_LOCAL_EVM_ONLY_NO_MAINNET_ACCESS",
+  "normal_transaction_gas_limit": 32000000,
+  "measured_full_next_token_gas": "179868525",
+  "measured_full_next_token_vs_cap": 5.62089140625,
+  "measured_full_v4_one_token_gas": "179967006",
+  "above_cap_v4_success": true,
+  "normal_cap_full_v4_success": false,
+  "output": [
+    {
+      "name": "TokensSpoken",
+      "args": [
+        "0x783e4753be641ea7f003a9f11b686312b453359016e763984219560c1eb5bebc",
+        "1",
+        "0x4e94f870888de2fb00bc66cab543c6b1ab87745fa919425a40b4069d30a9fa6c",
+        [
+          "307"
+        ],
+        false,
+        "0x9c0c1dd04b0a66bd538ada9dd684e89b115dfab5374cda0312890883c90ce82f"
+      ],
+      "tokens": [
+        307
+      ],
+      "actualNewTokens": 1,
+      "text": "boy",
+      "ended": false,
+      "logitHash": "0x9c0c1dd04b0a66bd538ada9dd684e89b115dfab5374cda0312890883c90ce82f"
+    }
+  ],
+  "quantization": {
+    "scale": 4096,
+    "dtype": "INT16 Q12",
+    "clipped_weights": 0,
+    "maximum_absolute_weight_error": 0.0001220703125,
+    "integer_evm_parity": "All 128 final hidden values and all 4019 logits hashes match for one- and two-token prompts.",
+    "fp32_fixture_argmax_matches": 2,
+    "fp32_fixture_count": 3,
+    "short_greedy_fp32_agreement": [
+      {
+        "prompt": "The little bird",
+        "matches": 8,
+        "tokens": 8
+      },
+      {
+        "prompt": "A child opened",
+        "matches": 8,
+        "tokens": 8
+      },
+      {
+        "prompt": "The market",
+        "matches": 8,
+        "tokens": 8
+      },
+      {
+        "prompt": "She was afraid",
+        "matches": 8,
+        "tokens": 8
+      }
+    ]
+  },
+  "quality": {
+    "samples": 24,
+    "distinct_full_continuations": 24,
+    "token_cap": 48,
+    "all_hit_token_cap": 24,
+    "findings": [
+      "Most local clauses are readable, but plot continuity and pronoun consistency are unreliable.",
+      "All six market-prompt continuations drift into unrelated fictional plots; this run does not support use as grounded market commentary.",
+      "Distinct full continuations do not prevent repeated stock fragments across prompts.",
+      "All outputs hit48tokens, so story completeness was not assessed; the cap itself is not evidence the model cannot finish a longer story."
+    ],
+    "qa_probe_count": 3,
+    "qa_correct_answers_observed": 0
+  },
+  "checks": {
+    "allPretrainedDataRuntimeHashesVerified": true,
+    "fullPretrainedModelDimensionsVerified": true,
+    "modelHashMatchesIndependentCommitments": true,
+    "fullFourLayerModelExecuted": true,
+    "fullLogitProjectionVerified": true,
+    "integerParityOneAndTwoInputTokens": true,
+    "realV4RequiredSpeechExercised": true,
+    "normalTransactionCeilingEnforced": true,
+    "aboveCapControlsExplicitlyLabeled": true,
+    "localBlockCeilingRestored": true,
+    "noPublicNetworkUsed": true,
+    "aboveCapFullV4IntegrationVerified": true
+  },
+  "data_shards_injected": 104,
+  "data_shard_deployment_gas_measured": false,
+  "reports": {
+    "v4": "v4-benchmark.json",
+    "quality": "quality-report.json",
+    "samples": "samples.md",
+    "qa": "qa-probe.json",
+    "integer_reference": "integer-reference.json"
+  },
+  "limitations": [
+    "This is a bounded Q12 fixed-point port, not bit-exact FP32 inference.",
+    "16-token context and at most 4 newly generated tokens per EVM call; no KV cache.",
+    "Hook uses a fixed tokenized prompt; it does not condition on live swaps or implement question input.",
+    "Token IDs are emitted on-chain and decoded off-chain.",
+    "The higher-cap swap is only a local integration control, not evidence of target-cap feasibility.",
+    "Model quality probes are a small local sample, not a standardized benchmark."
+  ]
+}

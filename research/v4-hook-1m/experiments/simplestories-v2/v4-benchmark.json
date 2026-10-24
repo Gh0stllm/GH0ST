@@ -1,0 +1,927 @@
+{
+  "schemaVersion": 1,
+  "mode": "LOCAL_ONLY_FULL_PRETRAINED_MODEL",
+  "status": "COMPLETE",
+  "startedAt": "2026-10-24T02:32:47.116Z",
+  "network": {
+    "chainId": 31337,
+    "hardfork": "cancun",
+    "normalTransactionGasCeiling": "32000000",
+    "normalBlockGasLimit": "32000000",
+    "normalBlockGasLimitAtCompletion": "32000000"
+  },
+  "architecture": {
+    "layers": 4,
+    "hiddenSize": 128,
+    "intermediateSize": 341,
+    "queryHeads": 4,
+    "keyValueHeads": 2,
+    "headSize": 32,
+    "vocabulary": 4019,
+    "parameters": 1235968,
+    "tiedOutputEmbedding": true,
+    "quantization": "signed INT16 Q12",
+    "contextBound": 16
+  },
+  "limitations": [
+    "All pretrained tensor rows are exported; every forward executes all four transformer layers and the full 4019-token tied output projection.",
+    "Data-shard runtime code is injected and byte/hash verified; their deployment costs are not measured.",
+    "Integer Q12 execution and lookup-table nonlinear functions approximate FP32 and are evaluated separately from the original checkpoint quality.",
+    "The fixed-prompt research hook evaluates this model in a real v4 callback; it is not a production adaptive prompt design.",
+    "500M gas is allowed only for explicitly labelled local validity controls, never for normal v4 swaps."
+  ],
+  "artifacts": {
+    "weights.bin": {
+      "bytes": 2471936,
+      "sha256": "4185c1e2ca8258bc2fdc057f8767f74dd9d8c4f74d64ecf8ed3b56dfc12f8e29"
+    },
+    "tables.bin": {
+      "bytes": 3080,
+      "sha256": "e2e330f3ceb2f661d833b16e432b35bf0725c8df053a47189d726c48a9228986"
+    },
+    "experiments/simplestories-v2/contracts/SimpleStoriesV2Model.sol": {
+      "sha256": "f1978a9c8b7d207549b335c8e8435e3639b421944489be2ed6d66af21c2c5cb7"
+    },
+    "experiments/simplestories-v2/contracts/SimpleStoriesV2V4Hook.sol": {
+      "sha256": "5ba9fca72dfa7446b514f2e64bebd85d32dd175b6abe595b92a33c680d6bbea9"
+    }
+  },
+  "deployments": [
+    {
+      "name": "PoolManager",
+      "address": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+      "gasUsed": "3787265",
+      "elapsedMs": 11,
+      "runtimeHash": "0xa252df67508f54b4c70095da76eac91541e367f9ce707f4bfc7f4b1409429e0b"
+    },
+    {
+      "name": "SentenceV4SettlementRouter",
+      "address": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
+      "gasUsed": "952495",
+      "elapsedMs": 7,
+      "runtimeHash": "0x2387c70cb2bcb3237fc4bb38407615bbf3410a288c6392a56c82a8a264f702a4"
+    },
+    {
+      "name": "SentenceV4Create2Factory",
+      "address": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
+      "gasUsed": "126931",
+      "elapsedMs": 7,
+      "runtimeHash": "0xc7f27dd299f02bac54eb938553158ad42e7b949edafe9716abb2aa518a3a919a"
+    },
+    {
+      "name": "SentenceV4TestToken",
+      "address": "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
+      "gasUsed": "215788",
+      "elapsedMs": 7,
+      "runtimeHash": "0x27d9ba536e93f2ac3314d68d5409e44f62b324a2c8dbe1605b5c347aa682b758"
+    },
+    {
+      "name": "SentenceV4TestToken",
+      "address": "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
+      "gasUsed": "215788",
+      "elapsedMs": 6,
+      "runtimeHash": "0x27d9ba536e93f2ac3314d68d5409e44f62b324a2c8dbe1605b5c347aa682b758"
+    },
+    {
+      "name": "SimpleStoriesV2Model",
+      "address": "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
+      "gasUsed": "4512525",
+      "elapsedMs": 9,
+      "runtimeHash": "0xd6bbad51d85895a5d33a83abc95b245a1cc605506db54fb255c8d9e1f98e9338"
+    },
+    {
+      "name": "SimpleStoriesV2V4Hook",
+      "address": "0x12dc259bfC218D40E68C0c57Df8802f2e6E31040",
+      "maxNewTokens": 1,
+      "inferenceBudget": 6000000,
+      "gasUsed": "1276287"
+    },
+    {
+      "name": "SimpleStoriesV2V4Hook",
+      "address": "0x7f377116d4e6DBa3a7560E0a38F8b5d323649040",
+      "maxNewTokens": 1,
+      "inferenceBudget": 26000000,
+      "gasUsed": "1276299"
+    },
+    {
+      "name": "SimpleStoriesV2V4Hook",
+      "address": "0xf0681433700CA104B9d4B027dc0333499d0D5040",
+      "maxNewTokens": 1,
+      "inferenceBudget": 28000000,
+      "gasUsed": "1276287"
+    },
+    {
+      "name": "SimpleStoriesV2V4Hook",
+      "address": "0x3A1086226d9442D2AFA13D596a883781B1761040",
+      "maxNewTokens": 2,
+      "inferenceBudget": 28000000,
+      "gasUsed": "1276287"
+    }
+  ],
+  "dataInjection": {
+    "method": "hardhat_setCode",
+    "chunkBytes": 24000,
+    "groups": {
+      "weights": {
+        "shards": 103,
+        "payloadBytes": 2471936,
+        "runtimeCommitment": "0x6bd6007013957ea24fd676dcb4bf378ab76f57a179ff167b642a354c1420e429"
+      },
+      "tables": {
+        "shards": 1,
+        "payloadBytes": 3080,
+        "runtimeCommitment": "0x04d9658e58fb55d71bc14194549d6e1d687b1c350fb294d92dcbe9fd32169d2c"
+      }
+    },
+    "totalShards": 104
+  },
+  "probes": [
+    {
+      "kind": "full_transformer_forward",
+      "mode": "NORMAL_32M",
+      "prompt": "The",
+      "prompt_ids": [
+        85
+      ],
+      "transactionGasLimit": "32000000",
+      "status": 0,
+      "gasUsed": "32000000",
+      "elapsedMs": 1087,
+      "transactionHash": "0x2c49dbde3fef0f59716c50bd903da526ddf7f0504285de33dc6090f96a085676",
+      "revert": {
+        "message": "missing revert data",
+        "data": "0x",
+        "speechRequiredReason": null,
+        "reasonLabel": null
+      }
+    },
+    {
+      "kind": "full_transformer_completion",
+      "mode": "NORMAL_32M",
+      "prompt_ids": [
+        85
+      ],
+      "maximumNewTokens": 2,
+      "status": 0,
+      "gasUsed": "32000000",
+      "transactionGasLimit": "32000000",
+      "revert": {
+        "message": "missing revert data",
+        "data": "0x",
+        "speechRequiredReason": null,
+        "reasonLabel": null
+      }
+    },
+    {
+      "kind": "real_v4_full_transformer_required_speech",
+      "mode": "NORMAL_32M",
+      "maxNewTokens": 1,
+      "inferenceBudget": 6000000,
+      "prompt_ids": [
+        85
+      ],
+      "poolId": "0x7c0efbceeae52fd1631afaa184d3ab60c06bd58f4c160bdde627246dd3ff17cb",
+      "hook": "0x12dc259bfC218D40E68C0c57Df8802f2e6E31040",
+      "transactionGasLimit": "32000000",
+      "status": 0,
+      "gasUsed": "6100821",
+      "elapsedMs": 127,
+      "events": [],
+      "rollbackVerified": true,
+      "revert": {
+        "message": "execution reverted (unknown custom error)",
+        "data": "0x90bfb86500000000000000000000000012dc259bfc218d40e68c0c57df8802f2e6e31040b47b2fb100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000e00000000000000000000000000000000000000000000000000000000000000024760204ff0000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004a9e35b2f00000000000000000000000000000000000000000000000000000000",
+        "speechRequiredReason": 2,
+        "reasonLabel": "model_inference_failure"
+      }
+    },
+    {
+      "kind": "real_v4_full_transformer_required_speech",
+      "mode": "NORMAL_32M",
+      "maxNewTokens": 1,
+      "inferenceBudget": 26000000,
+      "prompt_ids": [
+        85
+      ],
+      "poolId": "0x9417c2e4207521cedb670e5c613316632dff8d5af3c7bcaf5aa14cb864e0efce",
+      "hook": "0x7f377116d4e6DBa3a7560E0a38F8b5d323649040",
+      "transactionGasLimit": "32000000",
+      "status": 0,
+      "gasUsed": "26100821",
+      "elapsedMs": 412,
+      "events": [],
+      "rollbackVerified": true,
+      "revert": {
+        "message": "execution reverted (unknown custom error)",
+        "data": "0x90bfb8650000000000000000000000007f377116d4e6dba3a7560e0a38f8b5d323649040b47b2fb100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000e00000000000000000000000000000000000000000000000000000000000000024760204ff0000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004a9e35b2f00000000000000000000000000000000000000000000000000000000",
+        "speechRequiredReason": 2,
+        "reasonLabel": "model_inference_failure"
+      }
+    },
+    {
+      "kind": "real_v4_full_transformer_required_speech",
+      "mode": "NORMAL_32M",
+      "maxNewTokens": 1,
+      "inferenceBudget": 28000000,
+      "prompt_ids": [
+        85
+      ],
+      "poolId": "0xa122ec37bbd1cac4fafafeb5d0c33128baeb6ebd95d99dc65adaac55ec49aa71",
+      "hook": "0xf0681433700CA104B9d4B027dc0333499d0D5040",
+      "transactionGasLimit": "32000000",
+      "status": 0,
+      "gasUsed": "28100821",
+      "elapsedMs": 551,
+      "events": [],
+      "rollbackVerified": true,
+      "revert": {
+        "message": "execution reverted (unknown custom error)",
+        "data": "0x90bfb865000000000000000000000000f0681433700ca104b9d4b027dc0333499d0d5040b47b2fb100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000e00000000000000000000000000000000000000000000000000000000000000024760204ff0000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004a9e35b2f00000000000000000000000000000000000000000000000000000000",
+        "speechRequiredReason": 2,
+        "reasonLabel": "model_inference_failure"
+      }
+    },
+    {
+      "kind": "real_v4_full_transformer_required_speech",
+      "mode": "NORMAL_32M",
+      "maxNewTokens": 2,
+      "inferenceBudget": 28000000,
+      "prompt_ids": [
+        85
+      ],
+      "poolId": "0xba48440abe1c72c0e46f6af424ff5bf7da3145f7a782559fb86e2f7e522351b4",
+      "hook": "0x3A1086226d9442D2AFA13D596a883781B1761040",
+      "transactionGasLimit": "32000000",
+      "status": 0,
+      "gasUsed": "28100821",
+      "elapsedMs": 595,
+      "events": [],
+      "rollbackVerified": true,
+      "revert": {
+        "message": "execution reverted (unknown custom error)",
+        "data": "0x90bfb8650000000000000000000000003a1086226d9442d2afa13d596a883781b1761040b47b2fb100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000e00000000000000000000000000000000000000000000000000000000000000024760204ff0000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004a9e35b2f00000000000000000000000000000000000000000000000000000000",
+        "speechRequiredReason": 2,
+        "reasonLabel": "model_inference_failure"
+      }
+    },
+    {
+      "kind": "full_transformer_one_token_measured_above_cap",
+      "mode": "LOCAL_ABOVE_CAP",
+      "prompt_ids": [
+        85
+      ],
+      "transactionGasLimit": "500000000",
+      "status": 1,
+      "gasUsed": "179868525",
+      "elapsedMs": 4720,
+      "normalCapMultiple": 5.62089140625
+    },
+    {
+      "kind": "full_transformer_integer_reference_parity",
+      "mode": "LOCAL_ABOVE_CAP_ETH_CALL",
+      "fixture": "single-token",
+      "prompt": "The",
+      "prompt_ids": [
+        85
+      ],
+      "gasLimit": "500000000",
+      "status": "PASS",
+      "nextToken": 307,
+      "tokenText": "boy",
+      "hiddenValuesMatched": 128,
+      "logitsHashMatched": 4019,
+      "logitHash": "0x9c0c1dd04b0a66bd538ada9dd684e89b115dfab5374cda0312890883c90ce82f",
+      "elapsedMs": 27085
+    },
+    {
+      "kind": "full_transformer_integer_reference_parity",
+      "mode": "LOCAL_ABOVE_CAP_ETH_CALL",
+      "fixture": "two-token-attention",
+      "prompt": "The little",
+      "prompt_ids": [
+        85,
+        611
+      ],
+      "gasLimit": "500000000",
+      "status": "PASS",
+      "nextToken": 275,
+      "tokenText": "girl",
+      "hiddenValuesMatched": 128,
+      "logitsHashMatched": 4019,
+      "logitHash": "0x9d0982830007d952a0639743d8088d8493c94186f6029c42168458d0464a6fc5",
+      "elapsedMs": 24380
+    },
+    {
+      "kind": "real_v4_full_transformer_required_speech_above_cap",
+      "mode": "LOCAL_ABOVE_CAP",
+      "run": "additional_independent_local_run",
+      "maxNewTokens": 1,
+      "inferenceBudget": 215842230,
+      "prompt_ids": [
+        85
+      ],
+      "poolId": "0x783e4753be641ea7f003a9f11b686312b453359016e763984219560c1eb5bebc",
+      "hook": "0xD14bC5B9EB0d51bd6Cd7b3c21994b2c7dD695040",
+      "transactionGasLimit": "500000000",
+      "status": 1,
+      "gasUsed": "179967006",
+      "elapsedMs": 2202,
+      "events": [
+        {
+          "name": "TokensSpoken",
+          "args": [
+            "0x783e4753be641ea7f003a9f11b686312b453359016e763984219560c1eb5bebc",
+            "1",
+            "0x4e94f870888de2fb00bc66cab543c6b1ab87745fa919425a40b4069d30a9fa6c",
+            [
+              "307"
+            ],
+            false,
+            "0x9c0c1dd04b0a66bd538ada9dd684e89b115dfab5374cda0312890883c90ce82f"
+          ],
+          "tokens": [
+            307
+          ],
+          "actualNewTokens": 1,
+          "text": "boy",
+          "ended": false,
+          "logitHash": "0x9c0c1dd04b0a66bd538ada9dd684e89b115dfab5374cda0312890883c90ce82f"
+        }
+      ],
+      "integerReferenceTokenAndLogitHashMatch": true,
+      "settlementVerified": true,
+      "sequenceVerified": true
+    }
+  ],
+  "checks": {
+    "allPretrainedDataRuntimeHashesVerified": true,
+    "fullPretrainedModelDimensionsVerified": true,
+    "modelHashMatchesIndependentCommitments": true,
+    "fullFourLayerModelExecuted": true,
+    "fullLogitProjectionVerified": true,
+    "integerParityOneAndTwoInputTokens": true,
+    "realV4RequiredSpeechExercised": true,
+    "normalTransactionCeilingEnforced": true,
+    "aboveCapControlsExplicitlyLabeled": true,
+    "localBlockCeilingRestored": true,
+    "noPublicNetworkUsed": true,
+    "aboveCapFullV4IntegrationVerified": true
+  },
+  "modelManifest": {
+    "schema_version": 1,
+    "repository": "SimpleStories/SimpleStories-V2-1.25M",
+    "revision": "2f445183fbfc45753adb1f9444f81bbdddde9b84",
+    "checkpoint_sha256": "4d7b846d32e636c70ed3a342ec53775d10d56b404c357865a75eb2dce0b78f94",
+    "parameters": 1235968,
+    "weight_scale": 4096,
+    "clipped_weights": 0,
+    "maximum_absolute_weight_error": 0.0001220703125,
+    "per_tensor_maximum_weight_error": {
+      "model.embed_tokens.weight": 0.0001220703125,
+      "model.layers.0.input_layernorm.weight": 0.00012111663818359375,
+      "model.layers.0.self_attn.q_proj.weight": 0.00012205541133880615,
+      "model.layers.0.self_attn.k_proj.weight": 0.0001220586709678173,
+      "model.layers.0.self_attn.v_proj.weight": 0.00012206379324197769,
+      "model.layers.0.self_attn.o_proj.weight": 0.00012205820530653,
+      "model.layers.0.post_attention_layernorm.weight": 0.00012195110321044922,
+      "model.layers.0.mlp.gate_proj.weight": 0.0001220703125,
+      "model.layers.0.mlp.up_proj.weight": 0.00012206751853227615,
+      "model.layers.0.mlp.down_proj.weight": 0.00012206658720970154,
+      "model.layers.1.input_layernorm.weight": 0.00012159347534179688,
+      "model.layers.1.self_attn.q_proj.weight": 0.00012206658720970154,
+      "model.layers.1.self_attn.k_proj.weight": 0.00012205541133880615,
+      "model.layers.1.self_attn.v_proj.weight": 0.0001220703125,
+      "model.layers.1.self_attn.o_proj.weight": 0.00012206379324197769,
+      "model.layers.1.post_attention_layernorm.weight": 0.00012195110321044922,
+      "model.layers.1.mlp.gate_proj.weight": 0.00012206006795167923,
+      "model.layers.1.mlp.up_proj.weight": 0.00012206612154841423,
+      "model.layers.1.mlp.down_proj.weight": 0.0001220703125,
+      "model.layers.2.input_layernorm.weight": 0.00012111663818359375,
+      "model.layers.2.self_attn.q_proj.weight": 0.0001220703125,
+      "model.layers.2.self_attn.k_proj.weight": 0.00012205354869365692,
+      "model.layers.2.self_attn.v_proj.weight": 0.00012206658720970154,
+      "model.layers.2.self_attn.o_proj.weight": 0.00012206682004034519,
+      "model.layers.2.post_attention_layernorm.weight": 0.0001220703125,
+      "model.layers.2.mlp.gate_proj.weight": 0.00012206472456455231,
+      "model.layers.2.mlp.up_proj.weight": 0.0001220703125,
+      "model.layers.2.mlp.down_proj.weight": 0.00012206844985485077,
+      "model.layers.3.input_layernorm.weight": 0.00012171268463134766,
+      "model.layers.3.self_attn.q_proj.weight": 0.0001220703125,
+      "model.layers.3.self_attn.k_proj.weight": 0.00012205168604850769,
+      "model.layers.3.self_attn.v_proj.weight": 0.00012202188372612,
+      "model.layers.3.self_attn.o_proj.weight": 0.00012206751853227615,
+      "model.layers.3.post_attention_layernorm.weight": 0.00012135505676269531,
+      "model.layers.3.mlp.gate_proj.weight": 0.00012206565588712692,
+      "model.layers.3.mlp.up_proj.weight": 0.00012206286191940308,
+      "model.layers.3.mlp.down_proj.weight": 0.00012206658720970154,
+      "model.norm.weight": 0.00011610984802246094
+    },
+    "chunk_bytes": 24000,
+    "model_hash_domain": "GH0ST_SIMPLESTORIES_V2_Q12_CTX16_V1",
+    "artifacts": {
+      "weights.bin": {
+        "bytes": 2471936,
+        "sha256": "4185c1e2ca8258bc2fdc057f8767f74dd9d8c4f74d64ecf8ed3b56dfc12f8e29"
+      },
+      "tables.bin": {
+        "bytes": 3080,
+        "sha256": "e2e330f3ceb2f661d833b16e432b35bf0725c8df053a47189d726c48a9228986"
+      }
+    },
+    "bounds": {
+      "maximum_context_tokens": 16,
+      "maximum_new_tokens": 4,
+      "eos_token_id": 1,
+      "vocabulary": 4019
+    },
+    "quantization": "INT16 Q12, nearest-even export; exact documented integer operations at inference",
+    "limitations": [
+      "Research port uses bounded 16-token context and up to 4 generated tokens per EVM call.",
+      "Fixed-point normalization, lookup-table nonlinearities and rounding approximate FP32.",
+      "This exports the actual pretrained transformer; no distillation or retraining is performed."
+    ]
+  },
+  "provenance": {
+    "actual_unique_model_parameters": 1235968,
+    "authentication": "none; public HTTPS only",
+    "config": {
+      "architectures": [
+        "LlamaForCausalLM"
+      ],
+      "attention_bias": false,
+      "attention_dropout": 0,
+      "bos_token_id": 1,
+      "eos_token_id": 2,
+      "head_dim": 32,
+      "hidden_act": "silu",
+      "hidden_size": 128,
+      "initializer_range": 0.02,
+      "intermediate_size": 341,
+      "max_position_embeddings": 2048,
+      "mlp_bias": false,
+      "model_type": "llama",
+      "num_attention_heads": 4,
+      "num_hidden_layers": 4,
+      "num_key_value_heads": 2,
+      "pretraining_tp": 1,
+      "rms_norm_eps": 0.000001,
+      "rope_scaling": null,
+      "rope_theta": 10000,
+      "tie_word_embeddings": true,
+      "torch_dtype": "float32",
+      "transformers_version": "4.48.3",
+      "use_cache": true,
+      "vocab_size": 4019
+    },
+    "derived_artifacts": {
+      "weight-stats.json": {
+        "bytes": 9614,
+        "sha256": "df9305ce59dc2dd47b8adf84b84663c46ae39931242646ac84cea57c933841da"
+      },
+      "weights-fp32.npz": {
+        "bytes": 4955498,
+        "sha256": "8e23fbb2fcee733dd2c7eb4ae850a90745881fd775a2e3b6797e894ee52bdaa3"
+      }
+    },
+    "downloaded_at_utc": "2026-10-24T02:31:08.596169+00:00",
+    "files": {
+      "README.md": {
+        "bytes": 2625,
+        "sha256": "507456c006cbc3ddbc4b813704c46c4ab80662d42f035bc6e3db9c0f03c94f2b",
+        "url": "https://huggingface.co/SimpleStories/SimpleStories-V2-1.25M/resolve/2f445183fbfc45753adb1f9444f81bbdddde9b84/README.md"
+      },
+      "config.json": {
+        "bytes": 668,
+        "sha256": "f8f15b893ede4dc0bd20c9e601fdf4bf815ea923bdbc34a3baf1e898e629c6bb",
+        "url": "https://huggingface.co/SimpleStories/SimpleStories-V2-1.25M/resolve/2f445183fbfc45753adb1f9444f81bbdddde9b84/config.json"
+      },
+      "generation_config.json": {
+        "bytes": 111,
+        "sha256": "6b7f2d929a9182a4eac4d2f6495e25fd908808381c531051f8202a0f7a608832",
+        "url": "https://huggingface.co/SimpleStories/SimpleStories-V2-1.25M/resolve/2f445183fbfc45753adb1f9444f81bbdddde9b84/generation_config.json"
+      },
+      "model.safetensors": {
+        "bytes": 4947920,
+        "sha256": "4d7b846d32e636c70ed3a342ec53775d10d56b404c357865a75eb2dce0b78f94",
+        "url": "https://huggingface.co/SimpleStories/SimpleStories-V2-1.25M/resolve/2f445183fbfc45753adb1f9444f81bbdddde9b84/model.safetensors"
+      },
+      "special_tokens_map.json": {
+        "bytes": 75,
+        "sha256": "f2a009c988c79b451ac4d518525849cf93f9d017fd52acf4b892652c0186b923",
+        "url": "https://huggingface.co/SimpleStories/SimpleStories-V2-1.25M/resolve/2f445183fbfc45753adb1f9444f81bbdddde9b84/special_tokens_map.json"
+      },
+      "tokenizer.json": {
+        "bytes": 86463,
+        "sha256": "01b6553da99789d461cec48eed624684a803f259a5177616a67f7391700acf51",
+        "url": "https://huggingface.co/SimpleStories/SimpleStories-V2-1.25M/resolve/2f445183fbfc45753adb1f9444f81bbdddde9b84/tokenizer.json"
+      },
+      "tokenizer_config.json": {
+        "bytes": 587,
+        "sha256": "9d32dcb8457613e2dab376656eec6495a6e19fb0408859fb3a979cf42fed85f0",
+        "url": "https://huggingface.co/SimpleStories/SimpleStories-V2-1.25M/resolve/2f445183fbfc45753adb1f9444f81bbdddde9b84/tokenizer_config.json"
+      }
+    },
+    "repository": "SimpleStories/SimpleStories-V2-1.25M",
+    "revision": "2f445183fbfc45753adb1f9444f81bbdddde9b84",
+    "source": "https://huggingface.co/SimpleStories/SimpleStories-V2-1.25M",
+    "stored_tensor_parameter_count": 1235968,
+    "tensor_count": 38,
+    "tensors": {
+      "model.embed_tokens.weight": {
+        "dtype": "F32",
+        "parameters": 514432,
+        "shape": [
+          4019,
+          128
+        ]
+      },
+      "model.layers.0.input_layernorm.weight": {
+        "dtype": "F32",
+        "parameters": 128,
+        "shape": [
+          128
+        ]
+      },
+      "model.layers.0.mlp.down_proj.weight": {
+        "dtype": "F32",
+        "parameters": 43648,
+        "shape": [
+          128,
+          341
+        ]
+      },
+      "model.layers.0.mlp.gate_proj.weight": {
+        "dtype": "F32",
+        "parameters": 43648,
+        "shape": [
+          341,
+          128
+        ]
+      },
+      "model.layers.0.mlp.up_proj.weight": {
+        "dtype": "F32",
+        "parameters": 43648,
+        "shape": [
+          341,
+          128
+        ]
+      },
+      "model.layers.0.post_attention_layernorm.weight": {
+        "dtype": "F32",
+        "parameters": 128,
+        "shape": [
+          128
+        ]
+      },
+      "model.layers.0.self_attn.k_proj.weight": {
+        "dtype": "F32",
+        "parameters": 8192,
+        "shape": [
+          64,
+          128
+        ]
+      },
+      "model.layers.0.self_attn.o_proj.weight": {
+        "dtype": "F32",
+        "parameters": 16384,
+        "shape": [
+          128,
+          128
+        ]
+      },
+      "model.layers.0.self_attn.q_proj.weight": {
+        "dtype": "F32",
+        "parameters": 16384,
+        "shape": [
+          128,
+          128
+        ]
+      },
+      "model.layers.0.self_attn.v_proj.weight": {
+        "dtype": "F32",
+        "parameters": 8192,
+        "shape": [
+          64,
+          128
+        ]
+      },
+      "model.layers.1.input_layernorm.weight": {
+        "dtype": "F32",
+        "parameters": 128,
+        "shape": [
+          128
+        ]
+      },
+      "model.layers.1.mlp.down_proj.weight": {
+        "dtype": "F32",
+        "parameters": 43648,
+        "shape": [
+          128,
+          341
+        ]
+      },
+      "model.layers.1.mlp.gate_proj.weight": {
+        "dtype": "F32",
+        "parameters": 43648,
+        "shape": [
+          341,
+          128
+        ]
+      },
+      "model.layers.1.mlp.up_proj.weight": {
+        "dtype": "F32",
+        "parameters": 43648,
+        "shape": [
+          341,
+          128
+        ]
+      },
+      "model.layers.1.post_attention_layernorm.weight": {
+        "dtype": "F32",
+        "parameters": 128,
+        "shape": [
+          128
+        ]
+      },
+      "model.layers.1.self_attn.k_proj.weight": {
+        "dtype": "F32",
+        "parameters": 8192,
+        "shape": [
+          64,
+          128
+        ]
+      },
+      "model.layers.1.self_attn.o_proj.weight": {
+        "dtype": "F32",
+        "parameters": 16384,
+        "shape": [
+          128,
+          128
+        ]
+      },
+      "model.layers.1.self_attn.q_proj.weight": {
+        "dtype": "F32",
+        "parameters": 16384,
+        "shape": [
+          128,
+          128
+        ]
+      },
+      "model.layers.1.self_attn.v_proj.weight": {
+        "dtype": "F32",
+        "parameters": 8192,
+        "shape": [
+          64,
+          128
+        ]
+      },
+      "model.layers.2.input_layernorm.weight": {
+        "dtype": "F32",
+        "parameters": 128,
+        "shape": [
+          128
+        ]
+      },
+      "model.layers.2.mlp.down_proj.weight": {
+        "dtype": "F32",
+        "parameters": 43648,
+        "shape": [
+          128,
+          341
+        ]
+      },
+      "model.layers.2.mlp.gate_proj.weight": {
+        "dtype": "F32",
+        "parameters": 43648,
+        "shape": [
+          341,
+          128
+        ]
+      },
+      "model.layers.2.mlp.up_proj.weight": {
+        "dtype": "F32",
+        "parameters": 43648,
+        "shape": [
+          341,
+          128
+        ]
+      },
+      "model.layers.2.post_attention_layernorm.weight": {
+        "dtype": "F32",
+        "parameters": 128,
+        "shape": [
+          128
+        ]
+      },
+      "model.layers.2.self_attn.k_proj.weight": {
+        "dtype": "F32",
+        "parameters": 8192,
+        "shape": [
+          64,
+          128
+        ]
+      },
+      "model.layers.2.self_attn.o_proj.weight": {
+        "dtype": "F32",
+        "parameters": 16384,
+        "shape": [
+          128,
+          128
+        ]
+      },
+      "model.layers.2.self_attn.q_proj.weight": {
+        "dtype": "F32",
+        "parameters": 16384,
+        "shape": [
+          128,
+          128
+        ]
+      },
+      "model.layers.2.self_attn.v_proj.weight": {
+        "dtype": "F32",
+        "parameters": 8192,
+        "shape": [
+          64,
+          128
+        ]
+      },
+      "model.layers.3.input_layernorm.weight": {
+        "dtype": "F32",
+        "parameters": 128,
+        "shape": [
+          128
+        ]
+      },
+      "model.layers.3.mlp.down_proj.weight": {
+        "dtype": "F32",
+        "parameters": 43648,
+        "shape": [
+          128,
+          341
+        ]
+      },
+      "model.layers.3.mlp.gate_proj.weight": {
+        "dtype": "F32",
+        "parameters": 43648,
+        "shape": [
+          341,
+          128
+        ]
+      },
+      "model.layers.3.mlp.up_proj.weight": {
+        "dtype": "F32",
+        "parameters": 43648,
+        "shape": [
+          341,
+          128
+        ]
+      },
+      "model.layers.3.post_attention_layernorm.weight": {
+        "dtype": "F32",
+        "parameters": 128,
+        "shape": [
+          128
+        ]
+      },
+      "model.layers.3.self_attn.k_proj.weight": {
+        "dtype": "F32",
+        "parameters": 8192,
+        "shape": [
+          64,
+          128
+        ]
+      },
+      "model.layers.3.self_attn.o_proj.weight": {
+        "dtype": "F32",
+        "parameters": 16384,
+        "shape": [
+          128,
+          128
+        ]
+      },
+      "model.layers.3.self_attn.q_proj.weight": {
+        "dtype": "F32",
+        "parameters": 16384,
+        "shape": [
+          128,
+          128
+        ]
+      },
+      "model.layers.3.self_attn.v_proj.weight": {
+        "dtype": "F32",
+        "parameters": 8192,
+        "shape": [
+          64,
+          128
+        ]
+      },
+      "model.norm.weight": {
+        "dtype": "F32",
+        "parameters": 128,
+        "shape": [
+          128
+        ]
+      }
+    },
+    "tokenizer_policy": {
+      "add_special_tokens": false,
+      "eos_token_id": 1,
+      "note": "Use actual tokenizer EOS1 rather than inconsistent model config EOS2; avoid automatic EOS appended to prompts.",
+      "pad_token_id": 0,
+      "prepend_bos": false
+    }
+  },
+  "protocolHash": "3b98363150e9847750fd3c6d6d11de3dd1ab7c5208bd54fe6592ff20dbf064dc",
+  "referenceFixtures": [
+    {
+      "name": "single-token",
+      "prompt": "The",
+      "prompt_ids": [
+        85
+      ],
+      "next_token": 307,
+      "fp32_next_token": 408
+    },
+    {
+      "name": "two-token-attention",
+      "prompt": "The little",
+      "prompt_ids": [
+        85,
+        611
+      ],
+      "next_token": 275,
+      "fp32_next_token": 275
+    },
+    {
+      "name": "market-context",
+      "prompt": "The market",
+      "prompt_ids": [
+        85,
+        2419
+      ],
+      "next_token": 15,
+      "fp32_next_token": 15
+    }
+  ],
+  "stage": "COMPLETE",
+  "modelAddress": "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
+  "modelHash": "0x4e94f870888de2fb00bc66cab543c6b1ab87745fa919425a40b4069d30a9fa6c",
+  "expectedModelHash": "0x4e94f870888de2fb00bc66cab543c6b1ab87745fa919425a40b4069d30a9fa6c",
+  "completedAt": "2026-10-24T02:34:43.731Z",
+  "normalBenchmarkCompletedAt": "2026-10-24T02:34:23.728Z",
+  "additionalIntegrationSetup": {
+    "mode": "INDEPENDENT_FRESH_LOCAL_CHAIN",
+    "startedAt": "2026-10-24T02:34:29.304Z",
+    "deployments": [
+      {
+        "name": "PoolManager",
+        "address": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+        "gasUsed": "3787265",
+        "elapsedMs": 8,
+        "runtimeHash": "0xa252df67508f54b4c70095da76eac91541e367f9ce707f4bfc7f4b1409429e0b"
+      },
+      {
+        "name": "SentenceV4SettlementRouter",
+        "address": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
+        "gasUsed": "952495",
+        "elapsedMs": 6,
+        "runtimeHash": "0x2387c70cb2bcb3237fc4bb38407615bbf3410a288c6392a56c82a8a264f702a4"
+      },
+      {
+        "name": "SentenceV4Create2Factory",
+        "address": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
+        "gasUsed": "126931",
+        "elapsedMs": 6,
+        "runtimeHash": "0xc7f27dd299f02bac54eb938553158ad42e7b949edafe9716abb2aa518a3a919a"
+      },
+      {
+        "name": "SentenceV4TestToken",
+        "address": "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
+        "gasUsed": "215788",
+        "elapsedMs": 7,
+        "runtimeHash": "0x27d9ba536e93f2ac3314d68d5409e44f62b324a2c8dbe1605b5c347aa682b758"
+      },
+      {
+        "name": "SentenceV4TestToken",
+        "address": "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
+        "gasUsed": "215788",
+        "elapsedMs": 6,
+        "runtimeHash": "0x27d9ba536e93f2ac3314d68d5409e44f62b324a2c8dbe1605b5c347aa682b758"
+      },
+      {
+        "name": "SimpleStoriesV2Model",
+        "address": "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
+        "gasUsed": "4512525",
+        "elapsedMs": 9,
+        "runtimeHash": "0xd6bbad51d85895a5d33a83abc95b245a1cc605506db54fb255c8d9e1f98e9338"
+      },
+      {
+        "name": "SimpleStoriesV2V4Hook",
+        "address": "0xD14bC5B9EB0d51bd6Cd7b3c21994b2c7dD695040",
+        "maxNewTokens": 1,
+        "inferenceBudget": 215842230,
+        "gasUsed": "1276299"
+      }
+    ]
+  }
+}

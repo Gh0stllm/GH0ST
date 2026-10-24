@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "model": "SimpleStories/SimpleStories-V2-1.25M",
+  "revision": "2f445183fbfc45753adb1f9444f81bbdddde9b84",
+  "parameters": 1235968,
+  "scope": "Isolated local Anvil, chain31337; no fork or public-chain RPC.",
+  "normal_transaction_gas_ceiling": 32000000,
+  "normal_required_speech_results": [
+    {
+      "fixture": "single-token",
+      "status": 1,
+      "gasUsed": "19725577",
+      "inferenceBudget": "29000000",
+      "spoken": true
+    },
+    {
+      "fixture": "two-token-attention",
+      "status": 0,
+      "gasUsed": "29100914",
+      "inferenceBudget": "29000000",
+      "spoken": false
+    },
+    {
+      "fixture": "qa-short",
+      "status": 0,
+      "gasUsed": "29101371",
+      "inferenceBudget": "29000000",
+      "spoken": false
+    },
+    {
+      "fixture": "minimal-4",
+      "status": 0,
+      "gasUsed": "29100857",
+      "inferenceBudget": "29000000",
+      "spoken": false
+    },
+    {
+      "fixture": "qa-short-4",
+      "status": 0,
+      "gasUsed": "29101371",
+      "inferenceBudget": "29000000",
+      "spoken": false
+    }
+  ],
+  "exact_integer_reference_parity": [
+    "single-token",
+    "two-token-attention",
+    "qa-short"
+  ],
+  "comparisons": [
+    {
+      "measurement": "forward:single-token",
+      "original_gas": 179943096,
+      "optimized_gas": 19685228,
+      "reduction_percent": 89.0603,
+      "speedup": 9.14102,
+      "prompt_tokens": 1,
+      "new_token_cap": null,
+      "generated": "boy",
+      "ended": null
+    },
+    {
+      "measurement": "forward:two-token-attention",
+      "original_gas": 288493552,
+      "optimized_gas": 29362956,
+      "reduction_percent": 89.822,
+      "speedup": 9.82509,
+      "prompt_tokens": 2,
+      "new_token_cap": null,
+      "generated": "girl",
+      "ended": null
+    },
+    {
+      "measurement": "forward:qa-short",
+      "original_gas": 1183878665,
+      "optimized_gas": 110628862,
+      "reduction_percent": 90.6554,
+      "speedup": 10.70135,
+      "prompt_tokens": 10,
+      "new_token_cap": null,
+      "generated": "\"",
+      "ended": null
+    },
+    {
+      "measurement": "generation:minimal-1",
+      "original_gas": 179854464,
+      "optimized_gas": 19601383,
+      "reduction_percent": 89.1015,
+      "speedup": 9.1756,
+      "prompt_tokens": 1,
+      "new_token_cap": 1,
+      "generated": "boy",
+      "ended": false
+    },
+    {
+      "measurement": "required_minimal-1_measured",
+      "original_gas": 179978646,
+      "optimized_gas": 19725577,
+      "reduction_percent": 89.04,
+      "speedup": 9.12413,
+      "prompt_tokens": 1,
+      "new_token_cap": 1,
+      "generated": "boy",
+      "ended": false
+    },
+    {
+      "measurement": "generation:minimal-4",
+      "original_gas": 1383423559,
+      "optimized_gas": 141133930,
+      "reduction_percent": 89.7982,
+      "speedup": 9.8022,
+      "prompt_tokens": 1,
+      "new_token_cap": 4,
+      "generated": "boy had lost his",
+      "ended": false
+    },
+    {
+      "measurement": "required_minimal-4_measured",
+      "original_gas": 1383549242,
+      "optimized_gas": 141259613,
+      "reduction_percent": 89.7901,
+      "speedup": 9.79437,
+      "prompt_tokens": 1,
+      "new_token_cap": 4,
+      "generated": "boy had lost his",
+      "ended": false
+    },
+    {
+      "measurement": "generation:qa-short-1",
+      "original_gas": 1183787488,
+      "optimized_gas": 110538307,
+      "reduction_percent": 90.6623,
+      "speedup": 10.7093,
+      "prompt_tokens": 10,
+      "new_token_cap": 1,
+      "generated": "\"",
+      "ended": false
+    },
+    {
+      "measurement": "required_qa-short-1_measured",
+      "original_gas": 1183909569,
+      "optimized_gas": 110660388,
+      "reduction_percent": 90.653,
+      "speedup": 10.69859,
+      "prompt_tokens": 10,
+      "new_token_cap": 1,
+      "generated": "\"",
+      "ended": false
+    },
+    {
+      "measurement": "generation:qa-short-4",
+      "original_gas": 5443516303,
+      "optimized_gas": 518469729,
+      "reduction_percent": 90.4755,
+      "speedup": 10.4992,
+      "prompt_tokens": 10,
+      "new_token_cap": 4,
+      "generated": "\" i am not",
+      "ended": false
+    },
+    {
+      "measurement": "required_qa-short-4_measured",
+      "original_gas": 5443639879,
+      "optimized_gas": 518593305,
+      "reduction_percent": 90.4734,
+      "speedup": 10.49693,
+      "prompt_tokens": 10,
+      "new_token_cap": 4,
+      "generated": "\" i am not",
+      "ended": false
+    }
+  ],
+  "checks": {
+    "originalArtifactsVerifiedBefore": 13,
+    "totalUniqueParameterCountVerified": true,
+    "eip170EnabledAndSatisfied": true,
+    "allRuntimeDataVerified": true,
+    "fullModelIdentityVerified": true,
+    "invalidModelInputsRejected": 6,
+    "normal32MOutcomeMeasuredWithoutAssumingSuccessOrFailure": true,
+    "selectedForwardReferenceFixturesVerified": [
+      "single-token",
+      "two-token-attention",
+      "qa-short"
+    ],
+    "allStandaloneGenerationOutputsVerified": true,
+    "allSuccessfulHookGenerationOutputsVerified": true,
+    "failedRequiredSpeechRollbackVerified": true,
+    "realV4SettlementAndRollbackVerified": true,
+    "originalArtifactsVerifiedAfter": 13,
+    "optimizedSourceUnchangedDuringRun": true,
+    "localNormalGasLimitRestored": true
+  },
+  "source_reports": {
+    "gas-rerun/gas-benchmark.json": "dd0298162a2220501a4e05f0db139726728e5285153e415a158c1589bca5b399",
+    "optimization/benchmark/gas-benchmark-final.json": "ed7ce08db9a1e09e963add26987d98f6a6f8fac96151f858ef1b91b7e2123205"
+  },
+  "limitations": [
+    "Exact matches are against the existing integer Q12 reference, not FP32.",
+    "A successful swap with one generated token is not a complete sentence or answer.",
+    "Model-storage deployment gas is excluded; all inference gas is measured in real local transactions.",
+    "No quality improvement follows from a math-preserving kernel optimization."
+  ]
+}
