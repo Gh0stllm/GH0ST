@@ -2,6 +2,8 @@
 
 **Target: 10 swaps per second, each producing a complete new neural sentence, with the same 8,175,493-parameter model. The target is not demonstrated. Nothing was deployed or submitted to a public chain.**
 
+**Active constraint: Solidity execution on Robinhood Chain only. Stylus and WASM are excluded.** `TARGET.json` records this requirement. The best tested Solidity sentence costs 183,624,960 gas for 20 words and fails the 32M transaction test. Alternative-runtime figures below are historical comparisons and do not satisfy this target.
+
 All learned Q10 weights, vocabulary, sampling rules and recurrent calculations remain unchanged. Every word and terminal punctuation comes from the neural model. A sentence is complete only when the model emits terminal punctuation; a word cap never inserts punctuation or commits a partial sentence.
 
 ## Measured EVM results
@@ -58,7 +60,9 @@ python experiments/gh0st-voice/nova-fast-market/verify-sentence.py --report expe
 
 Large receipt reports may be stored as `.json.gz`; decompress with `gzip -dk` before replay. `RESULTS.json` records the uncompressed hashes. Re-running tests replaces only their local output files.
 
-## WebAssembly follow-up
+## Historical WebAssembly comparison — excluded from the active target
+
+The user requires Solidity only. These preserved comparison results are not an approved implementation direction, a Robinhood deployment candidate, or evidence that the Solidity gas target has been met.
 
 The `stylus/` directory explores the same integer model in WebAssembly. The local prototype is separate from the EVM-tested deployment code. Its exact numerical outputs were compared with the original model, and the official Nitro runtime was then used offline to meter execution and charged code reads. This is stronger evidence than CPU timing, but still excludes the production hook, stored state and pool settlement. On-chain ABI, model identity, immutable data, activation lifecycle and transaction atomicity must be integrated and tested before treating this route as a deployable candidate. See `audit/official-stylus-meter.json` and `stylus/README.md` for the exact measurement assumptions.
 
