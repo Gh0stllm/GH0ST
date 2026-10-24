@@ -1,0 +1,50 @@
+{
+  "status": "PASS",
+  "dtype": "float64 CPU",
+  "max_forward_difference": 8.673617379884035e-18,
+  "max_final_state_difference": 1.3877787807814457e-17,
+  "gradient_maxima": {
+    "wx1": 8.326672684688674e-17,
+    "wh1": 8.673617379884035e-18,
+    "bh1": 8.881784197001252e-16,
+    "wx2": 6.938893903907228e-17,
+    "wh2": 6.5052130349130266e-18,
+    "bh2": 1.7763568394002505e-15,
+    "embedding.weight": 2.220446049250313e-16,
+    "punct_embedding.weight": 2.220446049250313e-16,
+    "domain.weight": 6.661338147750939e-16
+  },
+  "padded_objective_difference": 0.0,
+  "all_objective_gradient_maximum": 2.7755575615628914e-17,
+  "policy": "Each row has zero initial state, domain0, reset at first position only.",
+  "mps_benchmark": {
+    "status": "PASS",
+    "batch": 8,
+    "width": 128,
+    "native_gru_seconds": [
+      0.5518861669988837,
+      0.08125450000079582,
+      0.08832795799753512
+    ],
+    "unrolled_seconds": [
+      0.17921883300004993
+    ],
+    "loss_both": 9.19202995300293,
+    "scope": "Three native and one unrolled synthetic forward/backward steps; native includes packing projection."
+  },
+  "mps_actual_checkpoint_smoke": {
+    "status": "PASS",
+    "steps": 1,
+    "checkpoints_written": 2,
+    "packing_q10_max_abs_sum": 15862,
+    "elapsed_seconds": 1.0840325000026496,
+    "temporary_data_removed": true
+  },
+  "mainnet_actions": 0,
+  "source_sha256": {
+    "train.py": "a2bf6d654db5667ac9fafdc027c08b4a896ce66da380d7eee21eb08e71f38ce0",
+    "fast_model.py": "211f9afe6a319156819b2b1efbc51db1818165e7a4d40f9730745bda9b3eb377",
+    "test_fast_model.py": "389f2dd155f5a6a8212d5c71485473f4a85ab314d2f58e383faf55cb1b93e66b",
+    "benchmark.py": "89fb2031be56e0f9b4fac72b6a9db75353b33c10ded16f253e1b7043a0dc0032"
+  }
+}

@@ -1,0 +1,1268 @@
+{
+  "status": "COMPLETE_LOCAL_DEVELOPMENT",
+  "config": {
+    "data": "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v10/encoded-stage3",
+    "init_weights": "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v10/runs/short-causal-jitter-3000/checkpoint-001000",
+    "output": "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v10/runs/voice-consolidation-500",
+    "steps": 500,
+    "batch": 16,
+    "lr": 0.00015,
+    "every": 100,
+    "device": "mps",
+    "dropout": 0.05,
+    "weight_decay": 0.01,
+    "packing_limit": 15.5,
+    "no_packing_projection": false,
+    "reset_output_priors": false,
+    "sample_words": 128,
+    "temperature": 0.6,
+    "seed": 741110,
+    "threads": 2,
+    "architecture": "GRU2_H384_V8192_P5",
+    "parameters": 8175493,
+    "state_policy": "Full source document per row; reset only at start; padding targets masked.",
+    "initial_weights_sha256": "2618b45006167fa5d964421cbfb4d7b75d487764452f8ae8be5fa1b8a82fc8ae",
+    "vocabulary_sha256": "940734e6971ecba0960a5b11b4dc5f8604c0a00e4078340c7f002abbec886e9a"
+  },
+  "source_sha256": {
+    "train.py": "a2bf6d654db5667ac9fafdc027c08b4a896ce66da380d7eee21eb08e71f38ce0",
+    "fast_model.py": "211f9afe6a319156819b2b1efbc51db1818165e7a4d40f9730745bda9b3eb377"
+  },
+  "data_sha256": {
+    "train": "74ba854622e18cb6a78cc86327260b34469afc5215db83621631f747987517aa",
+    "validation": "31177b9f8974c208b2ddb4f2a75663ffd41cf410bd9a25f6ebece16cdb02909c",
+    "test": "4f6e41d64d0dae7333731564b3c4ad42173852fa5e0f88268938f4adf5782b85"
+  },
+  "dataset_counts": {
+    "train": {
+      "documents": 9000,
+      "words": 721035
+    },
+    "validation": {
+      "documents": 20,
+      "words": 1429
+    },
+    "test": {
+      "documents": 20,
+      "words": 1467
+    }
+  },
+  "projection_policy": "Post-update group L1 training regularization; export independently rechecks integer bounds.",
+  "output_priors": "Inherited unchanged from initial checkpoint.",
+  "initial_projection_rows": {
+    "wh1:0:190": 2,
+    "wh1:190:384": 2,
+    "wx2:0:190": 13,
+    "wx2:190:384": 9,
+    "wh2:0:190": 17,
+    "wh2:190:384": 23,
+    "groups.weight:0:260": 22,
+    "groups.weight:260:384": 2,
+    "words.weight:0:260": 77,
+    "words.weight:260:384": 0,
+    "punct_head.weight:0:260": 0,
+    "punct_head.weight:260:384": 1
+  },
+  "checkpoints": [
+    {
+      "step": 0,
+      "trained_words": 0,
+      "elapsed_seconds": 0.4414719590022287,
+      "validation": {
+        "word_nll": 7.645137034903327,
+        "punctuation_nll": 0.694077712660323,
+        "joint_nll": 8.33921474756365,
+        "known_words": 1390,
+        "punctuation_positions": 1429
+      },
+      "weights_sha256": "f95e0fc69ed6ae0f3063b1cf2511295bf4b6a79037cdcceac265dc215b28687e",
+      "packing_q10_max_abs_sums": {
+        "wh1:0:190": 15876,
+        "wh1:190:384": 15875,
+        "wx2:0:190": 15879,
+        "wx2:190:384": 15886,
+        "wh2:0:190": 15881,
+        "wh2:190:384": 15883,
+        "groups.weight:0:260": 15882,
+        "groups.weight:260:384": 15872,
+        "words.weight:0:260": 15885,
+        "words.weight:260:384": 15358,
+        "punct_head.weight:0:260": 15878,
+        "punct_head.weight:260:384": 15875
+      },
+      "tensor_q10_bounds": {
+        "wx1": [
+          -447,
+          423
+        ],
+        "wh1": [
+          -386,
+          373
+        ],
+        "wf": [
+          0,
+          0
+        ],
+        "bh1": [
+          -56,
+          1039
+        ],
+        "wx2": [
+          -405,
+          389
+        ],
+        "wh2": [
+          -435,
+          472
+        ],
+        "bh2": [
+          -70,
+          1090
+        ],
+        "punct_bias": [
+          -5882,
+          -20
+        ],
+        "embedding.weight": [
+          -524,
+          523
+        ],
+        "punct_embedding.weight": [
+          -346,
+          390
+        ],
+        "domain.weight": [
+          -373,
+          270
+        ],
+        "groups.weight": [
+          -503,
+          455
+        ],
+        "group_bias.weight": [
+          -12253,
+          -758
+        ],
+        "words.weight": [
+          -482,
+          539
+        ],
+        "word_bias.weight": [
+          -15624,
+          8
+        ],
+        "punct_head.weight": [
+          -357,
+          427
+        ],
+        "word_punct_bias.weight": [
+          -1044,
+          875
+        ]
+      },
+      "projection_rows": {
+        "wh1:0:190": 2,
+        "wh1:190:384": 2,
+        "wx2:0:190": 13,
+        "wx2:190:384": 9,
+        "wh2:0:190": 17,
+        "wh2:190:384": 23,
+        "groups.weight:0:260": 22,
+        "groups.weight:260:384": 2,
+        "words.weight:0:260": 77,
+        "words.weight:260:384": 0,
+        "punct_head.weight:0:260": 0,
+        "punct_head.weight:260:384": 1
+      },
+      "checkpoint": "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v10/runs/voice-consolidation-500/checkpoint-000000",
+      "quality_approved": false
+    },
+    {
+      "step": 100,
+      "trained_words": 127612,
+      "elapsed_seconds": 26.47329137500128,
+      "validation": {
+        "word_nll": 7.6128225642142535,
+        "punctuation_nll": 0.6929888074593247,
+        "joint_nll": 8.305811371673578,
+        "known_words": 1390,
+        "punctuation_positions": 1429
+      },
+      "weights_sha256": "2f39bc99f91765df2f29df60cab9002797bfdec6eef8f40bc52ca10664eeecee",
+      "packing_q10_max_abs_sums": {
+        "wh1:0:190": 15883,
+        "wh1:190:384": 15878,
+        "wx2:0:190": 15881,
+        "wx2:190:384": 15885,
+        "wh2:0:190": 15880,
+        "wh2:190:384": 15885,
+        "groups.weight:0:260": 15883,
+        "groups.weight:260:384": 15878,
+        "words.weight:0:260": 15888,
+        "words.weight:260:384": 15652,
+        "punct_head.weight:0:260": 15876,
+        "punct_head.weight:260:384": 15875
+      },
+      "tensor_q10_bounds": {
+        "wx1": [
+          -452,
+          425
+        ],
+        "wh1": [
+          -384,
+          376
+        ],
+        "wf": [
+          0,
+          0
+        ],
+        "bh1": [
+          -57,
+          1039
+        ],
+        "wx2": [
+          -407,
+          393
+        ],
+        "wh2": [
+          -436,
+          471
+        ],
+        "bh2": [
+          -70,
+          1090
+        ],
+        "punct_bias": [
+          -5895,
+          -19
+        ],
+        "embedding.weight": [
+          -524,
+          524
+        ],
+        "punct_embedding.weight": [
+          -349,
+          390
+        ],
+        "domain.weight": [
+          -374,
+          270
+        ],
+        "groups.weight": [
+          -510,
+          457
+        ],
+        "group_bias.weight": [
+          -12255,
+          -760
+        ],
+        "words.weight": [
+          -489,
+          540
+        ],
+        "word_bias.weight": [
+          -15622,
+          9
+        ],
+        "punct_head.weight": [
+          -363,
+          436
+        ],
+        "word_punct_bias.weight": [
+          -1055,
+          881
+        ]
+      },
+      "projection_rows": {
+        "wh1:0:190": 897,
+        "wh1:190:384": 772,
+        "wx2:0:190": 4820,
+        "wx2:190:384": 6887,
+        "wh2:0:190": 8709,
+        "wh2:190:384": 10855,
+        "groups.weight:0:260": 11103,
+        "groups.weight:260:384": 629,
+        "words.weight:0:260": 29399,
+        "words.weight:260:384": 0,
+        "punct_head.weight:0:260": 498,
+        "punct_head.weight:260:384": 201
+      },
+      "checkpoint": "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v10/runs/voice-consolidation-500/checkpoint-000100",
+      "quality_approved": false
+    },
+    {
+      "step": 200,
+      "trained_words": 252662,
+      "elapsed_seconds": 52.31169908400261,
+      "validation": {
+        "word_nll": 7.654755472965378,
+        "punctuation_nll": 0.7095722174460943,
+        "joint_nll": 8.364327690411471,
+        "known_words": 1390,
+        "punctuation_positions": 1429
+      },
+      "weights_sha256": "4618695a06d13f287f752a70734c052fc078818980c291d290ecfe66f464b4f8",
+      "packing_q10_max_abs_sums": {
+        "wh1:0:190": 15885,
+        "wh1:190:384": 15881,
+        "wx2:0:190": 15882,
+        "wx2:190:384": 15881,
+        "wh2:0:190": 15881,
+        "wh2:190:384": 15880,
+        "groups.weight:0:260": 15884,
+        "groups.weight:260:384": 15876,
+        "words.weight:0:260": 15882,
+        "words.weight:260:384": 15871,
+        "punct_head.weight:0:260": 15876,
+        "punct_head.weight:260:384": 15878
+      },
+      "tensor_q10_bounds": {
+        "wx1": [
+          -454,
+          426
+        ],
+        "wh1": [
+          -385,
+          378
+        ],
+        "wf": [
+          0,
+          0
+        ],
+        "bh1": [
+          -59,
+          1040
+        ],
+        "wx2": [
+          -406,
+          394
+        ],
+        "wh2": [
+          -439,
+          471
+        ],
+        "bh2": [
+          -71,
+          1090
+        ],
+        "punct_bias": [
+          -5905,
+          -16
+        ],
+        "embedding.weight": [
+          -523,
+          523
+        ],
+        "punct_embedding.weight": [
+          -350,
+          390
+        ],
+        "domain.weight": [
+          -375,
+          270
+        ],
+        "groups.weight": [
+          -517,
+          461
+        ],
+        "group_bias.weight": [
+          -12257,
+          -762
+        ],
+        "words.weight": [
+          -487,
+          538
+        ],
+        "word_bias.weight": [
+          -15620,
+          9
+        ],
+        "punct_head.weight": [
+          -368,
+          444
+        ],
+        "word_punct_bias.weight": [
+          -1063,
+          887
+        ]
+      },
+      "projection_rows": {
+        "wh1:0:190": 2260,
+        "wh1:190:384": 1866,
+        "wx2:0:190": 11287,
+        "wx2:190:384": 15172,
+        "wh2:0:190": 19309,
+        "wh2:190:384": 24207,
+        "groups.weight:0:260": 22861,
+        "groups.weight:260:384": 1436,
+        "words.weight:0:260": 65164,
+        "words.weight:260:384": 14,
+        "punct_head.weight:0:260": 998,
+        "punct_head.weight:260:384": 401
+      },
+      "checkpoint": "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v10/runs/voice-consolidation-500/checkpoint-000200",
+      "quality_approved": false
+    },
+    {
+      "step": 300,
+      "trained_words": 378634,
+      "elapsed_seconds": 81.94378787500318,
+      "validation": {
+        "word_nll": 7.667141569947168,
+        "punctuation_nll": 0.7117025536870188,
+        "joint_nll": 8.378844123634186,
+        "known_words": 1390,
+        "punctuation_positions": 1429
+      },
+      "weights_sha256": "db461102874390ae2505216756eac6c1f8f520a7513860a47f0c346b378f5174",
+      "packing_q10_max_abs_sums": {
+        "wh1:0:190": 15878,
+        "wh1:190:384": 15884,
+        "wx2:0:190": 15886,
+        "wx2:190:384": 15880,
+        "wh2:0:190": 15883,
+        "wh2:190:384": 15882,
+        "groups.weight:0:260": 15886,
+        "groups.weight:260:384": 15876,
+        "words.weight:0:260": 15888,
+        "words.weight:260:384": 15876,
+        "punct_head.weight:0:260": 15877,
+        "punct_head.weight:260:384": 15872
+      },
+      "tensor_q10_bounds": {
+        "wx1": [
+          -457,
+          427
+        ],
+        "wh1": [
+          -386,
+          380
+        ],
+        "wf": [
+          0,
+          0
+        ],
+        "bh1": [
+          -60,
+          1039
+        ],
+        "wx2": [
+          -407,
+          395
+        ],
+        "wh2": [
+          -441,
+          471
+        ],
+        "bh2": [
+          -71,
+          1089
+        ],
+        "punct_bias": [
+          -5912,
+          -15
+        ],
+        "embedding.weight": [
+          -522,
+          523
+        ],
+        "punct_embedding.weight": [
+          -350,
+          391
+        ],
+        "domain.weight": [
+          -376,
+          270
+        ],
+        "groups.weight": [
+          -519,
+          463
+        ],
+        "group_bias.weight": [
+          -12258,
+          -762
+        ],
+        "words.weight": [
+          -486,
+          537
+        ],
+        "word_bias.weight": [
+          -15619,
+          9
+        ],
+        "punct_head.weight": [
+          -371,
+          451
+        ],
+        "word_punct_bias.weight": [
+          -1068,
+          891
+        ]
+      },
+      "projection_rows": {
+        "wh1:0:190": 3523,
+        "wh1:190:384": 3088,
+        "wx2:0:190": 17568,
+        "wx2:190:384": 23595,
+        "wh2:0:190": 30916,
+        "wh2:190:384": 38680,
+        "groups.weight:0:260": 34687,
+        "groups.weight:260:384": 2336,
+        "words.weight:0:260": 103226,
+        "words.weight:260:384": 114,
+        "punct_head.weight:0:260": 1498,
+        "punct_head.weight:260:384": 601
+      },
+      "checkpoint": "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v10/runs/voice-consolidation-500/checkpoint-000300",
+      "quality_approved": false
+    },
+    {
+      "step": 400,
+      "trained_words": 504220,
+      "elapsed_seconds": 109.79586637500324,
+      "validation": {
+        "word_nll": 7.689860348049685,
+        "punctuation_nll": 0.7182896629424259,
+        "joint_nll": 8.408150010992111,
+        "known_words": 1390,
+        "punctuation_positions": 1429
+      },
+      "weights_sha256": "dae81aa1c25352b595f52a710c5933f540623c59c3b4becca2a8d90b5696ecd3",
+      "packing_q10_max_abs_sums": {
+        "wh1:0:190": 15880,
+        "wh1:190:384": 15876,
+        "wx2:0:190": 15883,
+        "wx2:190:384": 15884,
+        "wh2:0:190": 15883,
+        "wh2:190:384": 15885,
+        "groups.weight:0:260": 15883,
+        "groups.weight:260:384": 15874,
+        "words.weight:0:260": 15885,
+        "words.weight:260:384": 15875,
+        "punct_head.weight:0:260": 15873,
+        "punct_head.weight:260:384": 15872
+      },
+      "tensor_q10_bounds": {
+        "wx1": [
+          -459,
+          427
+        ],
+        "wh1": [
+          -387,
+          381
+        ],
+        "wf": [
+          0,
+          0
+        ],
+        "bh1": [
+          -61,
+          1039
+        ],
+        "wx2": [
+          -408,
+          395
+        ],
+        "wh2": [
+          -442,
+          472
+        ],
+        "bh2": [
+          -70,
+          1089
+        ],
+        "punct_bias": [
+          -5916,
+          -14
+        ],
+        "embedding.weight": [
+          -522,
+          524
+        ],
+        "punct_embedding.weight": [
+          -350,
+          390
+        ],
+        "domain.weight": [
+          -377,
+          270
+        ],
+        "groups.weight": [
+          -523,
+          465
+        ],
+        "group_bias.weight": [
+          -12259,
+          -762
+        ],
+        "words.weight": [
+          -486,
+          537
+        ],
+        "word_bias.weight": [
+          -15618,
+          9
+        ],
+        "punct_head.weight": [
+          -373,
+          455
+        ],
+        "word_punct_bias.weight": [
+          -1072,
+          894
+        ]
+      },
+      "projection_rows": {
+        "wh1:0:190": 4651,
+        "wh1:190:384": 4294,
+        "wx2:0:190": 23982,
+        "wx2:190:384": 32326,
+        "wh2:0:190": 43202,
+        "wh2:190:384": 53900,
+        "groups.weight:0:260": 46554,
+        "groups.weight:260:384": 3236,
+        "words.weight:0:260": 142005,
+        "words.weight:260:384": 214,
+        "punct_head.weight:0:260": 1998,
+        "punct_head.weight:260:384": 801
+      },
+      "checkpoint": "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v10/runs/voice-consolidation-500/checkpoint-000400",
+      "quality_approved": false
+    },
+    {
+      "step": 500,
+      "trained_words": 630374,
+      "elapsed_seconds": 135.36884783400092,
+      "validation": {
+        "word_nll": 7.700294549516637,
+        "punctuation_nll": 0.7205763136781622,
+        "joint_nll": 8.4208708631948,
+        "known_words": 1390,
+        "punctuation_positions": 1429
+      },
+      "weights_sha256": "992d4bfca93ffc7ba71e3a9a12754ebbf3c5fc41920afdfaf36595eec8dc69cc",
+      "packing_q10_max_abs_sums": {
+        "wh1:0:190": 15879,
+        "wh1:190:384": 15879,
+        "wx2:0:190": 15882,
+        "wx2:190:384": 15882,
+        "wh2:0:190": 15880,
+        "wh2:190:384": 15880,
+        "groups.weight:0:260": 15882,
+        "groups.weight:260:384": 15880,
+        "words.weight:0:260": 15885,
+        "words.weight:260:384": 15876,
+        "punct_head.weight:0:260": 15877,
+        "punct_head.weight:260:384": 15872
+      },
+      "tensor_q10_bounds": {
+        "wx1": [
+          -459,
+          428
+        ],
+        "wh1": [
+          -387,
+          382
+        ],
+        "wf": [
+          0,
+          0
+        ],
+        "bh1": [
+          -61,
+          1039
+        ],
+        "wx2": [
+          -408,
+          396
+        ],
+        "wh2": [
+          -442,
+          473
+        ],
+        "bh2": [
+          -70,
+          1090
+        ],
+        "punct_bias": [
+          -5919,
+          -13
+        ],
+        "embedding.weight": [
+          -522,
+          524
+        ],
+        "punct_embedding.weight": [
+          -351,
+          390
+        ],
+        "domain.weight": [
+          -377,
+          270
+        ],
+        "groups.weight": [
+          -525,
+          466
+        ],
+        "group_bias.weight": [
+          -12259,
+          -762
+        ],
+        "words.weight": [
+          -486,
+          536
+        ],
+        "word_bias.weight": [
+          -15617,
+          9
+        ],
+        "punct_head.weight": [
+          -374,
+          457
+        ],
+        "word_punct_bias.weight": [
+          -1074,
+          896
+        ]
+      },
+      "projection_rows": {
+        "wh1:0:190": 5959,
+        "wh1:190:384": 5490,
+        "wx2:0:190": 30793,
+        "wx2:190:384": 41144,
+        "wh2:0:190": 55766,
+        "wh2:190:384": 69748,
+        "groups.weight:0:260": 58426,
+        "groups.weight:260:384": 4136,
+        "words.weight:0:260": 181866,
+        "words.weight:260:384": 314,
+        "punct_head.weight:0:260": 2498,
+        "punct_head.weight:260:384": 1001
+      },
+      "checkpoint": "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v10/runs/voice-consolidation-500/checkpoint-000500",
+      "quality_approved": false
+    }
+  ],
+  "history": [
+    {
+      "step": 10,
+      "trained_words": 13431,
+      "loss": 0.879086971282959,
+      "gradient_norm": 0.6187118887901306,
+      "lr": 0.0001499040930065385,
+      "elapsed_seconds": 3.316984292003326
+    },
+    {
+      "step": 20,
+      "trained_words": 26518,
+      "loss": 0.7599244117736816,
+      "gradient_norm": 0.481374591588974,
+      "lr": 0.00014957295627418882,
+      "elapsed_seconds": 6.118162000002485
+    },
+    {
+      "step": 30,
+      "trained_words": 39802,
+      "loss": 0.6518744826316833,
+      "gradient_norm": 0.41346147656440735,
+      "lr": 0.00014900671229971978,
+      "elapsed_seconds": 8.721315917002357
+    },
+    {
+      "step": 40,
+      "trained_words": 52387,
+      "loss": 0.6837681531906128,
+      "gradient_norm": 0.43276023864746094,
+      "lr": 0.00014820759578940633,
+      "elapsed_seconds": 11.409482792001654
+    },
+    {
+      "step": 50,
+      "trained_words": 64730,
+      "loss": 0.5904909372329712,
+      "gradient_norm": 0.42569559812545776,
+      "lr": 0.00014717876049103314,
+      "elapsed_seconds": 13.794807584003138
+    },
+    {
+      "step": 60,
+      "trained_words": 76674,
+      "loss": 0.6923814415931702,
+      "gradient_norm": 0.389047771692276,
+      "lr": 0.00014592426674749266,
+      "elapsed_seconds": 16.015947667001456
+    },
+    {
+      "step": 70,
+      "trained_words": 88815,
+      "loss": 0.6908798813819885,
+      "gradient_norm": 0.42426660656929016,
+      "lr": 0.00014444906547246702,
+      "elapsed_seconds": 18.694351459002064
+    },
+    {
+      "step": 80,
+      "trained_words": 102489,
+      "loss": 0.6445611119270325,
+      "gradient_norm": 0.405955970287323,
+      "lr": 0.00014275897861143336,
+      "elapsed_seconds": 21.31010583399984
+    },
+    {
+      "step": 90,
+      "trained_words": 114926,
+      "loss": 0.5813158750534058,
+      "gradient_norm": 0.43265095353126526,
+      "lr": 0.000140860676165105,
+      "elapsed_seconds": 23.711198167002294
+    },
+    {
+      "step": 100,
+      "trained_words": 127612,
+      "loss": 0.5883364081382751,
+      "gradient_norm": 0.5030983090400696,
+      "lr": 0.00013876164986598562,
+      "elapsed_seconds": 26.124107000003278
+    },
+    {
+      "step": 110,
+      "trained_words": 139189,
+      "loss": 0.6376450657844543,
+      "gradient_norm": 0.44594499468803406,
+      "lr": 0.00013647018361192403,
+      "elapsed_seconds": 28.662975500003085
+    },
+    {
+      "step": 120,
+      "trained_words": 151804,
+      "loss": 0.5664423704147339,
+      "gradient_norm": 0.4250832498073578,
+      "lr": 0.0001339953207733536,
+      "elapsed_seconds": 31.18916158400316
+    },
+    {
+      "step": 130,
+      "trained_words": 164462,
+      "loss": 0.5599685311317444,
+      "gradient_norm": 0.38155871629714966,
+      "lr": 0.0001313468285032409,
+      "elapsed_seconds": 33.59860270900026
+    },
+    {
+      "step": 140,
+      "trained_words": 177053,
+      "loss": 0.5539752244949341,
+      "gradient_norm": 0.38430747389793396,
+      "lr": 0.00012853515919059505,
+      "elapsed_seconds": 36.06494041699989
+    },
+    {
+      "step": 150,
+      "trained_words": 189638,
+      "loss": 0.5284904837608337,
+      "gradient_norm": 0.3846922516822815,
+      "lr": 0.00012557140920966354,
+      "elapsed_seconds": 38.30770670900165
+    },
+    {
+      "step": 160,
+      "trained_words": 201938,
+      "loss": 0.6540433764457703,
+      "gradient_norm": 0.4573070704936981,
+      "lr": 0.00012246727512761252,
+      "elapsed_seconds": 40.68239241700212
+    },
+    {
+      "step": 170,
+      "trained_words": 214763,
+      "loss": 0.5916235446929932,
+      "gradient_norm": 0.4206768870353699,
+      "lr": 0.00011923500754351992,
+      "elapsed_seconds": 43.16499633400235
+    },
+    {
+      "step": 180,
+      "trained_words": 227537,
+      "loss": 0.5064850449562073,
+      "gradient_norm": 0.3469122350215912,
+      "lr": 0.00011588736274085754,
+      "elapsed_seconds": 45.69544400000086
+    },
+    {
+      "step": 190,
+      "trained_words": 239461,
+      "loss": 0.530998170375824,
+      "gradient_norm": 0.37503668665885925,
+      "lr": 0.000112437552344268,
+      "elapsed_seconds": 48.28812991700033
+    },
+    {
+      "step": 200,
+      "trained_words": 252662,
+      "loss": 0.5748201012611389,
+      "gradient_norm": 0.37866565585136414,
+      "lr": 0.0001088991911793183,
+      "elapsed_seconds": 51.74046504200305
+    },
+    {
+      "step": 210,
+      "trained_words": 265663,
+      "loss": 0.46384045481681824,
+      "gradient_norm": 0.3459128439426422,
+      "lr": 0.00010528624354100292,
+      "elapsed_seconds": 55.639160375001666
+    },
+    {
+      "step": 220,
+      "trained_words": 277672,
+      "loss": 0.5718176960945129,
+      "gradient_norm": 0.4511486887931824,
+      "lr": 0.0001016129680830516,
+      "elapsed_seconds": 58.64622262500052
+    },
+    {
+      "step": 230,
+      "trained_words": 289871,
+      "loss": 0.5520035028457642,
+      "gradient_norm": 0.36331936717033386,
+      "lr": 9.789386154553694e-05,
+      "elapsed_seconds": 61.61579945900303
+    },
+    {
+      "step": 240,
+      "trained_words": 301691,
+      "loss": 0.4790623188018799,
+      "gradient_norm": 0.3578859567642212,
+      "lr": 9.414360154286436e-05,
+      "elapsed_seconds": 64.39243854200322
+    },
+    {
+      "step": 250,
+      "trained_words": 313736,
+      "loss": 0.531991183757782,
+      "gradient_norm": 0.39016854763031006,
+      "lr": 9.037698863793354e-05,
+      "elapsed_seconds": 67.23499929200261
+    },
+    {
+      "step": 260,
+      "trained_words": 326957,
+      "loss": 0.49691668152809143,
+      "gradient_norm": 0.33313706517219543,
+      "lr": 8.660888793107853e-05,
+      "elapsed_seconds": 70.37116162500024
+    },
+    {
+      "step": 270,
+      "trained_words": 339350,
+      "loss": 0.49486181139945984,
+      "gradient_norm": 0.37248557806015015,
+      "lr": 8.285417039430781e-05,
+      "elapsed_seconds": 73.33200812500218
+    },
+    {
+      "step": 280,
+      "trained_words": 351855,
+      "loss": 0.5090802907943726,
+      "gradient_norm": 0.36571601033210754,
+      "lr": 7.912765418237176e-05,
+      "elapsed_seconds": 76.02805175000321
+    },
+    {
+      "step": 290,
+      "trained_words": 365247,
+      "loss": 0.49480172991752625,
+      "gradient_norm": 0.3159872889518738,
+      "lr": 7.544404615227554e-05,
+      "elapsed_seconds": 78.51222829200196
+    },
+    {
+      "step": 300,
+      "trained_words": 378634,
+      "loss": 0.519700288772583,
+      "gradient_norm": 0.3688856065273285,
+      "lr": 7.181788382203357e-05,
+      "elapsed_seconds": 81.45785325000179
+    },
+    {
+      "step": 310,
+      "trained_words": 390946,
+      "loss": 0.5781684517860413,
+      "gradient_norm": 0.42702239751815796,
+      "lr": 6.826347799772726e-05,
+      "elapsed_seconds": 84.92557945900262
+    },
+    {
+      "step": 320,
+      "trained_words": 404455,
+      "loss": 0.4664721190929413,
+      "gradient_norm": 0.35408109426498413,
+      "lr": 6.479485629529162e-05,
+      "elapsed_seconds": 88.18591158400159
+    },
+    {
+      "step": 330,
+      "trained_words": 417176,
+      "loss": 0.5298012495040894,
+      "gradient_norm": 0.3917306065559387,
+      "lr": 6.142570777992365e-05,
+      "elapsed_seconds": 91.02133654200225
+    },
+    {
+      "step": 340,
+      "trained_words": 428708,
+      "loss": 0.4584103524684906,
+      "gradient_norm": 0.3308233916759491,
+      "lr": 5.816932894159597e-05,
+      "elapsed_seconds": 93.58120762500039
+    },
+    {
+      "step": 350,
+      "trained_words": 441121,
+      "loss": 0.4869805872440338,
+      "gradient_norm": 0.3590083122253418,
+      "lr": 5.503857121988544e-05,
+      "elapsed_seconds": 96.52584112500335
+    },
+    {
+      "step": 360,
+      "trained_words": 454303,
+      "loss": 0.5176267623901367,
+      "gradient_norm": 0.3510745167732239,
+      "lr": 5.204579028521253e-05,
+      "elapsed_seconds": 99.06206375000329
+    },
+    {
+      "step": 370,
+      "trained_words": 466604,
+      "loss": 0.48429298400878906,
+      "gradient_norm": 0.32757192850112915,
+      "lr": 4.9202797276654846e-05,
+      "elapsed_seconds": 101.44350300000224
+    },
+    {
+      "step": 380,
+      "trained_words": 479286,
+      "loss": 0.4931859076023102,
+      "gradient_norm": 0.3904658555984497,
+      "lr": 4.652081218877721e-05,
+      "elapsed_seconds": 103.9394838340013
+    },
+    {
+      "step": 390,
+      "trained_words": 491526,
+      "loss": 0.45139026641845703,
+      "gradient_norm": 0.3634498715400696,
+      "lr": 4.401041959143901e-05,
+      "elapsed_seconds": 106.77936504200261
+    },
+    {
+      "step": 400,
+      "trained_words": 504220,
+      "loss": 0.5161156058311462,
+      "gradient_norm": 0.37358877062797546,
+      "lr": 4.168152685733269e-05,
+      "elapsed_seconds": 109.38767975000155
+    },
+    {
+      "step": 410,
+      "trained_words": 517087,
+      "loss": 0.5061290264129639,
+      "gradient_norm": 0.3441402316093445,
+      "lr": 3.9543325062109856e-05,
+      "elapsed_seconds": 112.25076870900011
+    },
+    {
+      "step": 420,
+      "trained_words": 529186,
+      "loss": 0.49150827527046204,
+      "gradient_norm": 0.33642658591270447,
+      "lr": 3.760425271140479e-05,
+      "elapsed_seconds": 114.52367200000299
+    },
+    {
+      "step": 430,
+      "trained_words": 542178,
+      "loss": 0.4851336181163788,
+      "gradient_norm": 0.3479591906070709,
+      "lr": 3.587196243790783e-05,
+      "elapsed_seconds": 117.07056550000198
+    },
+    {
+      "step": 440,
+      "trained_words": 554557,
+      "loss": 0.4188052713871002,
+      "gradient_norm": 0.3290906846523285,
+      "lr": 3.4353290799920325e-05,
+      "elapsed_seconds": 119.85247116700339
+    },
+    {
+      "step": 450,
+      "trained_words": 567374,
+      "loss": 0.46707385778427124,
+      "gradient_norm": 0.32991793751716614,
+      "lr": 3.305423130058232e-05,
+      "elapsed_seconds": 122.49243950000164
+    },
+    {
+      "step": 460,
+      "trained_words": 579974,
+      "loss": 0.42367100715637207,
+      "gradient_norm": 0.31123873591423035,
+      "lr": 3.19799107342539e-05,
+      "elapsed_seconds": 124.75683575000221
+    },
+    {
+      "step": 470,
+      "trained_words": 592534,
+      "loss": 0.42442160844802856,
+      "gradient_norm": 0.3405259847640991,
+      "lr": 3.113456895339996e-05,
+      "elapsed_seconds": 126.9423513340007
+    },
+    {
+      "step": 480,
+      "trained_words": 605266,
+      "loss": 0.4907786548137665,
+      "gradient_norm": 0.3270376920700073,
+      "lr": 3.0521542135829604e-05,
+      "elapsed_seconds": 129.70966691700232
+    },
+    {
+      "step": 490,
+      "trained_words": 617774,
+      "loss": 0.4486912488937378,
+      "gradient_norm": 0.3352400064468384,
+      "lr": 3.0143249618326486e-05,
+      "elapsed_seconds": 132.27080941700115
+    },
+    {
+      "step": 500,
+      "trained_words": 630374,
+      "loss": 0.503286600112915,
+      "gradient_norm": 0.36698538064956665,
+      "lr": 3.0001184348631774e-05,
+      "elapsed_seconds": 135.06885929200143
+    }
+  ],
+  "mainnet_actions": 0,
+  "quality_approved": false,
+  "best_validation_candidate": {
+    "step": 100,
+    "trained_words": 127612,
+    "elapsed_seconds": 26.47329137500128,
+    "validation": {
+      "word_nll": 7.6128225642142535,
+      "punctuation_nll": 0.6929888074593247,
+      "joint_nll": 8.305811371673578,
+      "known_words": 1390,
+      "punctuation_positions": 1429
+    },
+    "weights_sha256": "2f39bc99f91765df2f29df60cab9002797bfdec6eef8f40bc52ca10664eeecee",
+    "packing_q10_max_abs_sums": {
+      "wh1:0:190": 15883,
+      "wh1:190:384": 15878,
+      "wx2:0:190": 15881,
+      "wx2:190:384": 15885,
+      "wh2:0:190": 15880,
+      "wh2:190:384": 15885,
+      "groups.weight:0:260": 15883,
+      "groups.weight:260:384": 15878,
+      "words.weight:0:260": 15888,
+      "words.weight:260:384": 15652,
+      "punct_head.weight:0:260": 15876,
+      "punct_head.weight:260:384": 15875
+    },
+    "tensor_q10_bounds": {
+      "wx1": [
+        -452,
+        425
+      ],
+      "wh1": [
+        -384,
+        376
+      ],
+      "wf": [
+        0,
+        0
+      ],
+      "bh1": [
+        -57,
+        1039
+      ],
+      "wx2": [
+        -407,
+        393
+      ],
+      "wh2": [
+        -436,
+        471
+      ],
+      "bh2": [
+        -70,
+        1090
+      ],
+      "punct_bias": [
+        -5895,
+        -19
+      ],
+      "embedding.weight": [
+        -524,
+        524
+      ],
+      "punct_embedding.weight": [
+        -349,
+        390
+      ],
+      "domain.weight": [
+        -374,
+        270
+      ],
+      "groups.weight": [
+        -510,
+        457
+      ],
+      "group_bias.weight": [
+        -12255,
+        -760
+      ],
+      "words.weight": [
+        -489,
+        540
+      ],
+      "word_bias.weight": [
+        -15622,
+        9
+      ],
+      "punct_head.weight": [
+        -363,
+        436
+      ],
+      "word_punct_bias.weight": [
+        -1055,
+        881
+      ]
+    },
+    "projection_rows": {
+      "wh1:0:190": 897,
+      "wh1:190:384": 772,
+      "wx2:0:190": 4820,
+      "wx2:190:384": 6887,
+      "wh2:0:190": 8709,
+      "wh2:190:384": 10855,
+      "groups.weight:0:260": 11103,
+      "groups.weight:260:384": 629,
+      "words.weight:0:260": 29399,
+      "words.weight:260:384": 0,
+      "punct_head.weight:0:260": 498,
+      "punct_head.weight:260:384": 201
+    },
+    "checkpoint": "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v10/runs/voice-consolidation-500/checkpoint-000100",
+    "quality_approved": false
+  },
+  "elapsed_seconds": 135.39461012500033,
+  "steps": 500,
+  "trained_words": 630374,
+  "language_review_status": "REJECTED_REPETITION_AND_COPYING",
+  "review_note": "Final native samples remain heavily dependent on short curriculum clauses and repeat scenes; broader mixed-domain training is required."
+}

@@ -1,0 +1,419 @@
+{
+  "status": "RUNNING_LOCAL_DEVELOPMENT",
+  "config": {
+    "data": "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v10/encoded-language",
+    "init_weights": "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v10/runs/short-causal-jitter-3000/checkpoint-000500",
+    "output": "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v10/runs/broad-language-2500",
+    "steps": 2500,
+    "batch": 32,
+    "lr": 0.001,
+    "every": 500,
+    "device": "mps",
+    "dropout": 0.05,
+    "weight_decay": 0.01,
+    "packing_limit": 15.5,
+    "no_packing_projection": false,
+    "reset_output_priors": true,
+    "sample_words": 128,
+    "temperature": 0.6,
+    "seed": 741110,
+    "threads": 2,
+    "jitter": 0.0,
+    "architecture": "GRU2_H384_V8192_P5",
+    "parameters": 8175493,
+    "state_policy": "Full source document per row; reset only at start; padding targets masked.",
+    "initial_weights_sha256": "f01922cc2cc53f5d2b99af6bba7f75f534f6e6e426f8b75e4063ca754b265d3d",
+    "vocabulary_sha256": "940734e6971ecba0960a5b11b4dc5f8604c0a00e4078340c7f002abbec886e9a"
+  },
+  "source_sha256": {
+    "train_language.py": "2b5b621494abd75f6ec6f9e4505fb25562b9740beba379ea93db86e8d153ee5b",
+    "fast_model.py": "211f9afe6a319156819b2b1efbc51db1818165e7a4d40f9730745bda9b3eb377",
+    "language_model.py": "9b675c64a579d202f5f6bebf9ddbb628e0dad17479b355b5d5b4580bb75e8470"
+  },
+  "data_sha256": {
+    "train": "a4ecf34282de367b0e9673b1f37475dc6fa362e1d958f6820633da942a264df9",
+    "validation": "936cfc2db9aa26d101259bfe27f58c8329cc0ae97b7e421a3d7f6c1a340cf84e",
+    "test": "1d35c4cd1131f5dbdc85b5324e7364fbb6dc3934e17b8f4575743657984e0b35"
+  },
+  "dataset_counts": {
+    "train": {
+      "documents": 39371,
+      "words": 4578282
+    },
+    "validation": {
+      "documents": 2447,
+      "words": 393789
+    },
+    "test": {
+      "documents": 2548,
+      "words": 411320
+    }
+  },
+  "projection_policy": "Post-update group L1 training regularization; export independently rechecks integer bounds.",
+  "output_priors": "Reinitialized from new training counts plus0.25; all8192words remain available.",
+  "initial_projection_rows": {
+    "wh1:0:190": 2,
+    "wh1:190:384": 1,
+    "wx2:0:190": 7,
+    "wx2:190:384": 6,
+    "wh2:0:190": 6,
+    "wh2:190:384": 2,
+    "groups.weight:0:260": 12,
+    "groups.weight:260:384": 0,
+    "words.weight:0:260": 23,
+    "words.weight:260:384": 0,
+    "punct_head.weight:0:260": 0,
+    "punct_head.weight:260:384": 0
+  },
+  "symmetry_breaking": {
+    "seed": 741127,
+    "changes": {},
+    "before": {
+      "wx1:axis0": {
+        "equal_values": 15617,
+        "compared_values": 442368,
+        "q10_equal_fraction": 0.03530318648726852
+      },
+      "wh1:axis0": {
+        "equal_values": 16365,
+        "compared_values": 442368,
+        "q10_equal_fraction": 0.036994086371527776
+      },
+      "bh1:axis0": {
+        "equal_values": 55,
+        "compared_values": 1152,
+        "q10_equal_fraction": 0.04774305555555555
+      },
+      "wh1:axis1": {
+        "equal_values": 20239,
+        "compared_values": 442368,
+        "q10_equal_fraction": 0.04575150101273148
+      },
+      "wx2:axis1": {
+        "equal_values": 18492,
+        "compared_values": 442368,
+        "q10_equal_fraction": 0.041802300347222224
+      }
+    },
+    "after_jitter": {
+      "wx1:axis0": {
+        "equal_values": 15617,
+        "compared_values": 442368,
+        "q10_equal_fraction": 0.03530318648726852
+      },
+      "wh1:axis0": {
+        "equal_values": 16365,
+        "compared_values": 442368,
+        "q10_equal_fraction": 0.036994086371527776
+      },
+      "bh1:axis0": {
+        "equal_values": 55,
+        "compared_values": 1152,
+        "q10_equal_fraction": 0.04774305555555555
+      },
+      "wh1:axis1": {
+        "equal_values": 20239,
+        "compared_values": 442368,
+        "q10_equal_fraction": 0.04575150101273148
+      },
+      "wx2:axis1": {
+        "equal_values": 18492,
+        "compared_values": 442368,
+        "q10_equal_fraction": 0.041802300347222224
+      }
+    },
+    "after_projection": {
+      "wx1:axis0": {
+        "equal_values": 15617,
+        "compared_values": 442368,
+        "q10_equal_fraction": 0.03530318648726852
+      },
+      "wh1:axis0": {
+        "equal_values": 16365,
+        "compared_values": 442368,
+        "q10_equal_fraction": 0.036994086371527776
+      },
+      "bh1:axis0": {
+        "equal_values": 55,
+        "compared_values": 1152,
+        "q10_equal_fraction": 0.04774305555555555
+      },
+      "wh1:axis1": {
+        "equal_values": 20239,
+        "compared_values": 442368,
+        "q10_equal_fraction": 0.04575150101273148
+      },
+      "wx2:axis1": {
+        "equal_values": 18492,
+        "compared_values": 442368,
+        "q10_equal_fraction": 0.041802300347222224
+      }
+    },
+    "policy": "Training initialization change; architecture and parameter names remain unchanged."
+  },
+  "checkpoints": [
+    {
+      "step": 0,
+      "trained_words": 0,
+      "elapsed_seconds": 10.980671082998015,
+      "validation": {
+        "word_nll": 7.946860879246585,
+        "punctuation_nll": 1.1427539003106082,
+        "joint_nll": 9.089614779557193,
+        "known_words": 368031,
+        "punctuation_positions": 393789,
+        "by_kind": {
+          "grammar": {
+            "word_nll": 7.95003706900108,
+            "punctuation_nll": 1.144785345160933,
+            "joint_nll": 9.094822414162014,
+            "known_words": 366641,
+            "punctuation_positions": 392360
+          },
+          "original": {
+            "word_nll": 7.109075708183453,
+            "punctuation_nll": 0.5849808411968597,
+            "joint_nll": 7.694056549380313,
+            "known_words": 1390,
+            "punctuation_positions": 1429
+          }
+        },
+        "selection_macro_joint_nll": 8.394439481771164
+      },
+      "weights_sha256": "b71327c0cdf03bef5ea686d8a3bb5247a9be1ba14ec174539b623503a4891a03",
+      "packing_q10_max_abs_sums": {
+        "wh1:0:190": 15876,
+        "wh1:190:384": 15868,
+        "wx2:0:190": 15878,
+        "wx2:190:384": 15883,
+        "wh2:0:190": 15879,
+        "wh2:190:384": 15880,
+        "groups.weight:0:260": 15882,
+        "groups.weight:260:384": 13336,
+        "words.weight:0:260": 15884,
+        "words.weight:260:384": 12288,
+        "punct_head.weight:0:260": 15875,
+        "punct_head.weight:260:384": 15871
+      },
+      "tensor_q10_bounds": {
+        "wx1": [
+          -403,
+          364
+        ],
+        "wh1": [
+          -329,
+          327
+        ],
+        "wf": [
+          0,
+          0
+        ],
+        "bh1": [
+          -52,
+          1043
+        ],
+        "wx2": [
+          -402,
+          347
+        ],
+        "wh2": [
+          -402,
+          392
+        ],
+        "bh2": [
+          -63,
+          1091
+        ],
+        "punct_bias": [
+          -5784,
+          -35
+        ],
+        "embedding.weight": [
+          -500,
+          492
+        ],
+        "punct_embedding.weight": [
+          -346,
+          388
+        ],
+        "domain.weight": [
+          -374,
+          271
+        ],
+        "groups.weight": [
+          -387,
+          356
+        ],
+        "group_bias.weight": [
+          -8834,
+          -970
+        ],
+        "words.weight": [
+          -389,
+          453
+        ],
+        "word_bias.weight": [
+          -14454,
+          -388
+        ],
+        "punct_head.weight": [
+          -269,
+          311
+        ],
+        "word_punct_bias.weight": [
+          -834,
+          723
+        ]
+      },
+      "projection_rows": {
+        "wh1:0:190": 2,
+        "wh1:190:384": 1,
+        "wx2:0:190": 7,
+        "wx2:190:384": 6,
+        "wh2:0:190": 6,
+        "wh2:190:384": 2,
+        "groups.weight:0:260": 12,
+        "groups.weight:260:384": 0,
+        "words.weight:0:260": 23,
+        "words.weight:260:384": 0,
+        "punct_head.weight:0:260": 0,
+        "punct_head.weight:260:384": 0
+      },
+      "checkpoint": "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v10/runs/broad-language-2500/checkpoint-000000",
+      "quality_approved": false
+    }
+  ],
+  "history": [],
+  "mainnet_actions": 0,
+  "quality_approved": false,
+  "best_validation_candidate": {
+    "step": 0,
+    "trained_words": 0,
+    "elapsed_seconds": 10.980671082998015,
+    "validation": {
+      "word_nll": 7.946860879246585,
+      "punctuation_nll": 1.1427539003106082,
+      "joint_nll": 9.089614779557193,
+      "known_words": 368031,
+      "punctuation_positions": 393789,
+      "by_kind": {
+        "grammar": {
+          "word_nll": 7.95003706900108,
+          "punctuation_nll": 1.144785345160933,
+          "joint_nll": 9.094822414162014,
+          "known_words": 366641,
+          "punctuation_positions": 392360
+        },
+        "original": {
+          "word_nll": 7.109075708183453,
+          "punctuation_nll": 0.5849808411968597,
+          "joint_nll": 7.694056549380313,
+          "known_words": 1390,
+          "punctuation_positions": 1429
+        }
+      },
+      "selection_macro_joint_nll": 8.394439481771164
+    },
+    "weights_sha256": "b71327c0cdf03bef5ea686d8a3bb5247a9be1ba14ec174539b623503a4891a03",
+    "packing_q10_max_abs_sums": {
+      "wh1:0:190": 15876,
+      "wh1:190:384": 15868,
+      "wx2:0:190": 15878,
+      "wx2:190:384": 15883,
+      "wh2:0:190": 15879,
+      "wh2:190:384": 15880,
+      "groups.weight:0:260": 15882,
+      "groups.weight:260:384": 13336,
+      "words.weight:0:260": 15884,
+      "words.weight:260:384": 12288,
+      "punct_head.weight:0:260": 15875,
+      "punct_head.weight:260:384": 15871
+    },
+    "tensor_q10_bounds": {
+      "wx1": [
+        -403,
+        364
+      ],
+      "wh1": [
+        -329,
+        327
+      ],
+      "wf": [
+        0,
+        0
+      ],
+      "bh1": [
+        -52,
+        1043
+      ],
+      "wx2": [
+        -402,
+        347
+      ],
+      "wh2": [
+        -402,
+        392
+      ],
+      "bh2": [
+        -63,
+        1091
+      ],
+      "punct_bias": [
+        -5784,
+        -35
+      ],
+      "embedding.weight": [
+        -500,
+        492
+      ],
+      "punct_embedding.weight": [
+        -346,
+        388
+      ],
+      "domain.weight": [
+        -374,
+        271
+      ],
+      "groups.weight": [
+        -387,
+        356
+      ],
+      "group_bias.weight": [
+        -8834,
+        -970
+      ],
+      "words.weight": [
+        -389,
+        453
+      ],
+      "word_bias.weight": [
+        -14454,
+        -388
+      ],
+      "punct_head.weight": [
+        -269,
+        311
+      ],
+      "word_punct_bias.weight": [
+        -834,
+        723
+      ]
+    },
+    "projection_rows": {
+      "wh1:0:190": 2,
+      "wh1:190:384": 1,
+      "wx2:0:190": 7,
+      "wx2:190:384": 6,
+      "wh2:0:190": 6,
+      "wh2:190:384": 2,
+      "groups.weight:0:260": 12,
+      "groups.weight:260:384": 0,
+      "words.weight:0:260": 23,
+      "words.weight:260:384": 0,
+      "punct_head.weight:0:260": 0,
+      "punct_head.weight:260:384": 0
+    },
+    "checkpoint": "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v10/runs/broad-language-2500/checkpoint-000000",
+    "quality_approved": false
+  }
+}

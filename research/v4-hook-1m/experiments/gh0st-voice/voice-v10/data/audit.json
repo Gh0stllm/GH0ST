@@ -1,0 +1,111 @@
+{
+  "status": "PASS",
+  "audit_type": "Independent deterministic corpus integrity checks, not a grammar model rating",
+  "episodes": 100,
+  "sentences": 609,
+  "first_person_episodes": 100,
+  "first_person_sentences": 416,
+  "word_count": 9178,
+  "words_min": 86,
+  "words_max": 99,
+  "exact_duplicate_sentences": 0,
+  "exact_duplicate_episodes": 0,
+  "family_disjoint_splits": true,
+  "cross_split_fivegram_overlap": [
+    {
+      "splits": [
+        "train",
+        "validation"
+      ],
+      "max_fivegram_jaccard": 0.0056179775280898875,
+      "pair": [
+        "future-08",
+        "care-01"
+      ]
+    },
+    {
+      "splits": [
+        "train",
+        "test"
+      ],
+      "max_fivegram_jaccard": 0.011428571428571429,
+      "pair": [
+        "memory-05",
+        "silence-05"
+      ]
+    },
+    {
+      "splits": [
+        "validation",
+        "test"
+      ],
+      "max_fivegram_jaccard": 0.0,
+      "pair": [
+        "boundaries-01",
+        "silence-01"
+      ]
+    }
+  ],
+  "unique_sentence_three_word_openings": 527,
+  "most_common_sentence_three_word_openings": [
+    [
+      "i wanted to",
+      6
+    ],
+    [
+      "then i noticed",
+      5
+    ],
+    [
+      "i tried to",
+      5
+    ],
+    [
+      "a friend asked",
+      4
+    ],
+    [
+      "i kept the",
+      4
+    ],
+    [
+      "after a while",
+      4
+    ],
+    [
+      "when i returned",
+      4
+    ],
+    [
+      "i returned to",
+      3
+    ],
+    [
+      "i asked what",
+      3
+    ],
+    [
+      "i watched a",
+      3
+    ],
+    [
+      "i am trying",
+      3
+    ],
+    [
+      "i told the",
+      3
+    ]
+  ],
+  "input_sha256": {
+    "train": "e60d4afb7bf6c44a146fb3103500f278722d5d2e51ce6b2b828f89c61a90e383",
+    "validation": "22708b78a1ba6cd39cbdfb74311d30e07fba74d05778506a5f3cb739e7d42122",
+    "test": "f45c5f0e895e26a2338c1e985a7c652179466c44e23c4fb231147be58443f914"
+  },
+  "notes": [
+    "Family labels are disjoint; general concepts, first-person function words, and setting recur deliberately across families.",
+    "No exact sentence repeats; fivegram overlap thresholds only screen direct duplication, not semantic similarity.",
+    "Every episode follows one event and its consequence; it contains six or seven complete authored sentences.",
+    "Some reflective concluding structures recur; generated model text must still be evaluated for formulaic repetition."
+  ]
+}

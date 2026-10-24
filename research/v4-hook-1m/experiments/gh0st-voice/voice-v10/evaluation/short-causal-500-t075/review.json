@@ -1,0 +1,77 @@
+{
+  "status": "FAIL_LANGUAGE_GATE",
+  "raw_outputs_sha256": "2b271a177081b866bf99f92bedab3c322f998f47a5d2f870abdac645c1625f0a",
+  "rubric_0_to_4": {
+    "grammar": "3: complete readable clauses with at most one minor error; 4: consistently natural; 0: broken syntax throughout.",
+    "continuity": "3: a stable narrator, objects and causal progression; 4: sustained development; 0: unrelated fragments or contradictions.",
+    "voice": "3: concrete first-person reflection with wit or distinctive perspective; 4: sustained individual voice; 0: generic fragments.",
+    "repetition": "3: no repeated sentence or semantic loop; 4: purposeful development throughout; 0: degenerate cycling."
+  },
+  "gate": {
+    "minimum_fraction_at_least_3_in_all_categories": 0.75,
+    "severe_contradiction_or_semantic_loop_allowed": false,
+    "passing_does_not_establish_mainnet_readiness": true
+  },
+  "outputs": [
+    {
+      "id": "flat-seed-0",
+      "grammar": 1,
+      "continuity": 1,
+      "voice": 1,
+      "repetition": 3,
+      "severe_contradiction_or_loop": false,
+      "evidence": [
+        "i learned some unfinished without pretending to be.",
+        "i wrote the pool beside the original and."
+      ],
+      "review": "The opening crowd observations are readable, but several later clauses lack objects or complete verbs. The stream moves among crowd, rest, note, pool, time and plant without connecting the events."
+    },
+    {
+      "id": "flat-seed-42",
+      "grammar": 1,
+      "continuity": 1,
+      "voice": 1,
+      "repetition": 3,
+      "severe_contradiction_or_loop": false,
+      "evidence": [
+        "i made the limits and said that needed to.",
+        "i wrote plain my attention left to me them."
+      ],
+      "review": "The opening reading/rest scene changes to a growing plant, then several malformed clauses. The final drawing has no developed relationship to the original event."
+    },
+    {
+      "id": "flat-seed-1337",
+      "grammar": 3,
+      "continuity": 2,
+      "voice": 2,
+      "repetition": 2,
+      "severe_contradiction_or_loop": false,
+      "evidence": [
+        "i sent a small joke into the room.",
+        "i looked at the tree beside the path.",
+        "the honest answer was still an open question."
+      ],
+      "review": "This is the strongest higher-temperature stream locally. Most sentences are readable, but joke, tree, open question, rest and praise are assembled as unrelated lessons. It lacks a sustained causal story and a distinctive developed thought."
+    },
+    {
+      "id": "flat-seed-2026",
+      "grammar": 1,
+      "continuity": 1,
+      "voice": 1,
+      "repetition": 3,
+      "severe_contradiction_or_loop": false,
+      "evidence": [
+        "i said that i learned that neither of another.",
+        "i noticed that i had being find that attention"
+      ],
+      "review": "The six-sentence help scene is readable. It then deteriorates into malformed noun and verb constructions and changes to prediction without preserving the friend or goal."
+    }
+  ],
+  "reviewer": "Evaluation agent: all four full raw streams read",
+  "acceptable_streams": 0,
+  "total_streams": 4,
+  "minimum_required": 3,
+  "scope": "Finite fixed-seed development decoder diagnostic. Higher temperature changes sampling only; model weights and inference code are unchanged.",
+  "training_overlap_sha256": "01627739017421dad2dd80cf481092b71c1f1cd4fd4b8a9539712cf14262c16f",
+  "overlap_assessment": "Higher temperature reduces exact copying but does not restore stable grammar or causal continuity."
+}
