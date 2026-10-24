@@ -1,6 +1,8 @@
-# GH0ST v4-hook research — final selected V8 model
+# GH0ST N0VA-8M — v4-hook research
 
-**Current selection: [final experimental V8 model](FINAL-MODEL.md), accepted by the user on 24 October 2026.**
+**Current selection: [GH0ST N0VA-8M](FINAL-MODEL.md), accepted by the user on 24 October 2026.**
+
+**N0VA** stands for **Neural On-chain Voice Agent**.
 
 The 8,175,493-parameter V8 H384 model generates one word per swap and retains recurrent state. Its saved 256-primary-swap local test reached a maximum of **23,712,321 gas**. [Exact weights, hook and evidence](FINAL-MODEL.md) · [Machine-readable selection](final-model.json) · [Accepted raw transcript](experiments/gh0st-voice/voice-v8/evm/actual-transcript.txt).
 

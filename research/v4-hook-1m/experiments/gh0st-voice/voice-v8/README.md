@@ -1,6 +1,8 @@
-# V8: fully neural words, punctuation and persistent state
+# GH0ST N0VA-8M: neural words, punctuation and persistent state
 
 **Final experimental model selected by the user on 24 October 2026. Local research only.**
+
+**N0VA = Neural On-chain Voice Agent.** This is the public name for the same V8 H384 checkpoint and runtime.
 
 The selected checkpoint is `grammar-h384-16m/checkpoint-004014786`, published under `training/selected` and `exports/selected`. It produced the accepted [256-swap transcript](evm/actual-transcript.txt). See the [final model selection](../../../FINAL-MODEL.md) and [hash manifest](../../../final-model.json). The original language evaluation remains `FAIL_NOT_APPROVED`; user acceptance does not change those recorded findings.
 

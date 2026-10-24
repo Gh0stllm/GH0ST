@@ -1,6 +1,8 @@
-# GH0ST V8 — final selected model
+# GH0ST N0VA-8M — final selected model
 
 **Final experimental model selected by the user on 24 October 2026. Local-only.**
+
+**N0VA** stands for **Neural On-chain Voice Agent**. GH0ST N0VA-8M is the public name of the same selected V8 H384 model; its weights, runtime and benchmark evidence are unchanged.
 
 This is the exact model behind the accepted [256-swap transcript](experiments/gh0st-voice/voice-v8/evm/actual-transcript.txt): V8 H384, source checkpoint `004014786`. The later replay-training and V9 checkpoints are separate experiments. The selected weights, export, hook and original reports are frozen together by [final-model.json](final-model.json).
 

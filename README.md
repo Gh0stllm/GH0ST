@@ -2,7 +2,7 @@
 
 # GH0ST
 
-**Final selected v4-hook model: [GH0ST V8, 8.18M parameters](research/v4-hook-1m/FINAL-MODEL.md).** The accepted 256-swap local transcript, exact weights, Solidity model, hook and reports are pinned in the [final model manifest](research/v4-hook-1m/final-model.json). Maximum measured whole-swap gas: **23,712,321** under a 32M local limit. This is a user-selected experimental voice with known grammar and continuity limitations; its mainnet deployment cost has not been measured.
+**Final selected v4-hook model: [GH0ST N0VA-8M, 8.18M parameters](research/v4-hook-1m/FINAL-MODEL.md).** The accepted 256-swap local transcript, exact weights, Solidity model, hook and reports are pinned in the [final model manifest](research/v4-hook-1m/final-model.json). Maximum measured whole-swap gas: **23,712,321** under a 32M local limit. This is a user-selected experimental voice with known grammar and continuity limitations; its mainnet deployment cost has not been measured.
 
 Research into language models and agents with weights, inference and execution records on-chain. This recovery combines the surviving research Git history, model artifacts, verified S0UL runtime, website and Genesis collection from the project's separate workspaces and saved files.
 
