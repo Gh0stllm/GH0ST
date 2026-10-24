@@ -1,6 +1,10 @@
-# GH0ST: approximately 1M-parameter v4-hook research
+# GH0ST v4-hook research — final selected V8 model
 
-**Status: initial local model adaptation and EVM component experiments.**
+**Current selection: [final experimental V8 model](FINAL-MODEL.md), accepted by the user on 24 October 2026.**
+
+The 8,175,493-parameter V8 H384 model generates one word per swap and retains recurrent state. Its saved 256-primary-swap local test reached a maximum of **23,712,321 gas**. [Exact weights, hook and evidence](FINAL-MODEL.md) · [Machine-readable selection](final-model.json) · [Accepted raw transcript](experiments/gh0st-voice/voice-v8/evm/actual-transcript.txt).
+
+User acceptance selects the experimental voice. Historical grammar/continuity failures remain documented. This selection is local-only; static-data deployment cost is unmeasured. The earlier experiments below are retained for provenance.
 
 Branch: `research/v4-hook-1m` · Started: 23 October 2026 · Baseline: `d9d6306b8cbf0eb39e844097e7aa669afe82729e`
 
@@ -126,3 +130,4 @@ The pinned base checkpoint, trained heads, preprocessing, held-out fixtures and 
 ## Next research gate
 
 The next gates are a faithful full-model integer reference, real regularly sampled pool histories and complete PoolManager integration. Additional synthetic evaluation has not established an advantage on the primary original-generator endpoint; the regime-transition result should be tested further. Preserve both successful and negative measurements before making any full-model gas or economic claim.
+

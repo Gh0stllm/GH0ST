@@ -1,6 +1,8 @@
 # V8: fully neural words, punctuation and persistent state
 
-**Local research only. Language quality has not been approved.**
+**Final experimental model selected by the user on 24 October 2026. Local research only.**
+
+The selected checkpoint is `grammar-h384-16m/checkpoint-004014786`, published under `training/selected` and `exports/selected`. It produced the accepted [256-swap transcript](evm/actual-transcript.txt). See the [final model selection](../../../FINAL-MODEL.md) and [hash manifest](../../../final-model.json). The original language evaluation remains `FAIL_NOT_APPROVED`; user acceptance does not change those recorded findings.
 
 The user rejected a grammar engine. Every lexical word and punctuation mark in
 this experiment is therefore selected by trained neural logits. There is no
@@ -39,7 +41,11 @@ The corpus aims at a first-person reflective voice. It is not a copy of another
 agent's private training data, and no current result establishes a convincing
 Truth Terminal-like voice or reliable long-range continuity.
 
-## Technical evidence
+## Selected trained-model evidence
+
+The exact selected model completed 256 primary and 4 secondary local v4 swaps, emitting one word per primary swap. Whole-swap gas peaked at **23,712,321** under the 32M limit. All 768 state values and 197 evaluated logits matched an independent scalar reference; state persisted across sentence endings. See [trained results](evm/TRAINED-RESULTS.md) and the [machine-readable summary](evm/trained-summary.json). The recorded grammar and continuity failures remain unchanged.
+
+## Earlier technical evidence
 
 The random-weight H384 feasibility test completed four primary local Uniswap v4
 swaps and a separate-pool isolation swap. Maximum whole-swap gas was 23,239,218.
@@ -56,3 +62,4 @@ See `evm/RESULTS.md`, `evm/SIMD-REPORT.md`, the V7 independent mathematical
 audits, and the frozen trained-checkpoint reports when available. GPU throughput
 measurements are synthetic timing tests, not quality evidence. No public RPC,
 wallet signing, or mainnet transaction is needed or authorized for this work.
+

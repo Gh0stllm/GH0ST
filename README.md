@@ -2,7 +2,7 @@
 
 # GH0ST
 
-**Research branch: [approximately 1M-parameter Uniswap v4 hook](research/v4-hook-1m/README.md).** Initial model adaptation and local EVM component experiments are available, including saved weights, reproduction commands, measured limits and [next research gates](research/v4-hook-1m/STATUS.md). Full-model hook inference is not yet implemented.
+**Final selected v4-hook model: [GH0ST V8, 8.18M parameters](research/v4-hook-1m/FINAL-MODEL.md).** The accepted 256-swap local transcript, exact weights, Solidity model, hook and reports are pinned in the [final model manifest](research/v4-hook-1m/final-model.json). Maximum measured whole-swap gas: **23,712,321** under a 32M local limit. This is a user-selected experimental voice with known grammar and continuity limitations; its mainnet deployment cost has not been measured.
 
 Research into language models and agents with weights, inference and execution records on-chain. This recovery combines the surviving research Git history, model artifacts, verified S0UL runtime, website and Genesis collection from the project's separate workspaces and saved files.
 
@@ -67,3 +67,4 @@ Earlier README versions are preserved in [the recovery documents](docs/recovery/
 $GH0ST research-support token: `0x2eb2849cde7957b86d0dfd4b59e450a9f9d15559`.
 
 Falcon research uses artificial intelligence technology from the Technology Innovation Institute. [Model-specific licenses](docs/LICENSES.md) remain applicable.
+

@@ -1,0 +1,283 @@
+{
+  "schema_version": 1,
+  "model_id": "gh0st-v8-h384-grammar4m-final",
+  "status": "FINAL_USER_SELECTED_EXPERIMENTAL",
+  "selection": {
+    "date": "2026-10-24",
+    "basis": "User accepted the actual 256-swap transcript and requested this exact model as final on GitHub.",
+    "source_artifacts_commit": "1ff15a66e11797e65e9fd1b4d330af045db78598",
+    "source_checkpoint": "voice-v8/training/runs/grammar-h384-16m/checkpoint-004014786",
+    "source_checkpoint_sha256": "904e4ee0426dc62c06b5551db19d2ee40d0c0c618fdb62c4a49a39af80d390d3",
+    "later_replay_or_v9_checkpoint_selected": false
+  },
+  "architecture": {
+    "type": "two-layer GRU with learned hierarchical word and punctuation heads",
+    "source_parameters": 8175493,
+    "hidden_per_layer": 384,
+    "recurrent_state_values": 768,
+    "runtime_numeric_format": "Q10",
+    "neural_word_selection": true,
+    "neural_punctuation_selection": true,
+    "runtime_grammar_engine": false,
+    "runtime_text_repair": false
+  },
+  "paths": {
+    "weights": "research/v4-hook-1m/experiments/gh0st-voice/voice-v8/training/selected/model.safetensors.gz",
+    "runtime_export": "research/v4-hook-1m/experiments/gh0st-voice/voice-v8/exports/selected/",
+    "model_solidity": "research/v4-hook-1m/experiments/gh0st-voice/voice-v8/exports/selected/GRU2SIMDModel.sol",
+    "hook_solidity": "research/v4-hook-1m/experiments/gh0st-voice/voice-v8/exports/selected/GRU2SIMDHook.sol",
+    "transcript": "research/v4-hook-1m/experiments/gh0st-voice/voice-v8/evm/actual-transcript.txt",
+    "technical_report": "research/v4-hook-1m/experiments/gh0st-voice/voice-v8/evm/trained-summary.json",
+    "restoration_map": "research/v4-hook-1m/experiments/gh0st-voice/voice-v8/publication/restoration-map.json"
+  },
+  "local_validation": {
+    "chain_id": 31337,
+    "primary_swaps": 256,
+    "secondary_swaps": 4,
+    "every_primary_swap_emitted_new_word": true,
+    "state_persists_across_sentence_endings": true,
+    "temperature_q10": 512,
+    "seed": 42,
+    "gas": {
+      "whole_swap_min": 22845892,
+      "whole_swap_max": 23712321,
+      "whole_swap_mean": 22861459.61328125,
+      "primary_swap_ceiling": 32000000,
+      "max_headroom": 8287679,
+      "secondary_max": 23712321,
+      "boundary_direct_model_max": 21144613,
+      "initial_direct_model_probe": 20964552,
+      "model_constructor_after_data_injection": 13121298
+    },
+    "scalar_reference_parity": {
+      "all_768_state_values": true,
+      "all_197_logits": true,
+      "word_ids": true,
+      "punctuation_ids": true,
+      "primary_steps": 256,
+      "secondary_steps": 4,
+      "boundary_probes": 3
+    }
+  },
+  "quality": {
+    "user_selected_as_final": true,
+    "historical_language_quality": "FAIL_NOT_APPROVED",
+    "historical_report_unchanged": true,
+    "limitations": [
+      "Grammatical errors, repeated phrases and weak continuity remain in the raw output.",
+      "User acceptance selects the experimental voice; it does not change the prior evaluation or establish reliable question answering."
+    ]
+  },
+  "deployment": {
+    "scope": "LOCAL_ONLY",
+    "mainnet_actions_for_this_selection": 0,
+    "mainnet_deployment_authorized": false,
+    "static_model_data_bytes": 66319680,
+    "static_model_data_shards": 2766,
+    "local_data_setup": "hardhat_setCode",
+    "public_deployment_cost_measured": false
+  },
+  "artifacts": [
+    {
+      "path": "research/v4-hook-1m/experiments/gh0st-voice/voice-v8/exports/selected/GRU2SIMDHook.sol",
+      "git_blob_sha1": "36a8e33b008020ed06a98c73296ffc60899c3461",
+      "sha256": "a1b789e8ca4374690a483a8e9f86bfa81894103f32b952f3345c8983b426d64a",
+      "bytes": 9158,
+      "encoding": "identity"
+    },
+    {
+      "path": "research/v4-hook-1m/experiments/gh0st-voice/voice-v8/exports/selected/GRU2SIMDModel.sol",
+      "git_blob_sha1": "4d195a7a4ff0db655fa2e737abeaaac2542cd23a",
+      "sha256": "51362f0f199407cdb15c48bbfca4ae06795154e0db554279e6ef41a8433bad94",
+      "bytes": 14843,
+      "encoding": "identity"
+    },
+    {
+      "path": "research/v4-hook-1m/experiments/gh0st-voice/voice-v8/exports/selected/core.bin.gz",
+      "git_blob_sha1": "f4e26d78618064a44504498f36a1339c89536483",
+      "sha256": "5be25030daeebda7aeb8c429c69bf95e37f417ae345464b34d4952c9cda35032",
+      "bytes": 941654,
+      "encoding": "gzip",
+      "restored_path": "research/v4-hook-1m/experiments/gh0st-voice/voice-v8/exports/selected/core.bin",
+      "restored_sha256": "8b33740c76fe30107deccf3e28da68b6443958949b1d89c1213007be41e42a95",
+      "restored_bytes": 5435136
+    },
+    {
+      "path": "research/v4-hook-1m/experiments/gh0st-voice/voice-v8/exports/selected/exp-q32.bin.gz",
+      "git_blob_sha1": "1942b8b3c09e284ca5fb81d367f03ec3356bda84",
+      "sha256": "b7b2c169012611d301c5fadbedfd5d15230193a3fe8ee3c1b2f706f99c2c78b2",
+      "bytes": 1076,
+      "encoding": "gzip",
+      "restored_path": "research/v4-hook-1m/experiments/gh0st-voice/voice-v8/exports/selected/exp-q32.bin",
+      "restored_sha256": "011ed986091e4559b9560736f3cd21ab896a88f01bfd5cdd20b81fa6cf0b6c45",
+      "restored_bytes": 2056
+    },
+    {
+      "path": "research/v4-hook-1m/experiments/gh0st-voice/voice-v8/exports/selected/fused.bin.gz",
+      "git_blob_sha1": "c0a178442b45050a316af08fb107a6e2c05ccf42",
+      "sha256": "a25f0eb6516f564ef31e64b70ab0b13d8c734646de31c0c2e85fa52cf7ed52ae",
+      "bytes": 12836492,
+      "encoding": "gzip",
+      "restored_path": "research/v4-hook-1m/experiments/gh0st-voice/voice-v8/exports/selected/fused.bin",
+      "restored_sha256": "6dfdff8d024b93922adede2f2abedc194803ecab735c2f9a539c9232a40a950d",
+      "restored_bytes": 47191680
+    },
+    {
+      "path": "research/v4-hook-1m/experiments/gh0st-voice/voice-v8/exports/selected/groups.bin.gz",
+      "git_blob_sha1": "79c6ac70076849486a9dea865268b792353bc9b7",
+      "sha256": "e8ed397afa4c7b019502481979a903ad4851b632761042fc046124c8ac78368c",
+      "bytes": 58182,
+      "encoding": "gzip",
+      "restored_path": "research/v4-hook-1m/experiments/gh0st-voice/voice-v8/exports/selected/groups.bin",
+      "restored_sha256": "c6e247569b4db863320b64d6c945333d7843760a556af0c09d80f8ab047c94ff",
+      "restored_bytes": 204800
+    },
+    {
+      "path": "research/v4-hook-1m/experiments/gh0st-voice/voice-v8/exports/selected/manifest.json",
+      "git_blob_sha1": "3b0e9935151d77b7a50d3da8b82eb7b30fda85af",
+      "sha256": "20cf84ea9f4406d61e6f143c3c28b477e9ec3f829b96e1fd9ae0569a2437c54a",
+      "bytes": 2142,
+      "encoding": "identity"
+    },
+    {
+      "path": "research/v4-hook-1m/experiments/gh0st-voice/voice-v8/exports/selected/punctuation.bin.gz",
+      "git_blob_sha1": "566a193dad9cd8797f0acb503f18a1af8adfee75",
+      "sha256": "52a4b4d8a3c82a0657b85fa481c3fa56ce1c6420a1db737519611503a3c53a88",
+      "bytes": 66444,
+      "encoding": "gzip",
+      "restored_path": "research/v4-hook-1m/experiments/gh0st-voice/voice-v8/exports/selected/punctuation.bin",
+      "restored_sha256": "e9ebf755b52e77b0fdf0ad0e6e322564cc9f4b29373b4c29058883194d9e9af3",
+      "restored_bytes": 118720
+    },
+    {
+      "path": "research/v4-hook-1m/experiments/gh0st-voice/voice-v8/exports/selected/reference.npz.gz",
+      "git_blob_sha1": "0a75760ece672ce6b8ba1aaabf6df8c59876c84e",
+      "sha256": "71ac4d6cb5e19fa4ed15a174682552d6796ea1d16c047efb36e0022a09264aa3",
+      "bytes": 8028871,
+      "encoding": "gzip",
+      "restored_path": "research/v4-hook-1m/experiments/gh0st-voice/voice-v8/exports/selected/reference.npz",
+      "restored_sha256": "9e7cfa1b40330a69fbc1b5278fafa51a151d9fcd94e8f12273f385a50b578c0d",
+      "restored_bytes": 16355308
+    },
+    {
+      "path": "research/v4-hook-1m/experiments/gh0st-voice/voice-v8/exports/selected/sigmoid-delta.bin.gz",
+      "git_blob_sha1": "2a22ec3d6726f0304ec6620d843332e6fa480ac2",
+      "sha256": "1e98087b4fc22d3775295ef04c2478397e7506244bca6b25888ce087a464802a",
+      "bytes": 340,
+      "encoding": "gzip",
+      "restored_path": "research/v4-hook-1m/experiments/gh0st-voice/voice-v8/exports/selected/sigmoid-delta.bin",
+      "restored_sha256": "5ecfa8cc900bcb72c83a71a3068049453f64afe78017b73f830e387b1f1a9ad3",
+      "restored_bytes": 514
+    },
+    {
+      "path": "research/v4-hook-1m/experiments/gh0st-voice/voice-v8/exports/selected/vocabulary.bin.gz",
+      "git_blob_sha1": "47a62f391d56121076c666efecbfeb56811bef8d",
+      "sha256": "2e94423e8cbedd4b0a46402fca8142a615c91c432c1d883c82b7b24754650f78",
+      "bytes": 38266,
+      "encoding": "gzip",
+      "restored_path": "research/v4-hook-1m/experiments/gh0st-voice/voice-v8/exports/selected/vocabulary.bin",
+      "restored_sha256": "e157bed1b584c6ab755342ee32651d3dfcd388dec88aa383bd2b7006da46c79f",
+      "restored_bytes": 262144
+    },
+    {
+      "path": "research/v4-hook-1m/experiments/gh0st-voice/voice-v8/exports/selected/vocabulary.json",
+      "git_blob_sha1": "2b0c4658a7da7f2227340aaf9f98644cecfc1bf4",
+      "sha256": "940734e6971ecba0960a5b11b4dc5f8604c0a00e4078340c7f002abbec886e9a",
+      "bytes": 104807,
+      "encoding": "identity"
+    },
+    {
+      "path": "research/v4-hook-1m/experiments/gh0st-voice/voice-v8/exports/selected/words.bin.gz",
+      "git_blob_sha1": "be0005f0818f4f44c096c908698a66b83267eb34",
+      "sha256": "54452098837e983fd7705a61f2b0637cc1e50d3395451197cc6c9f7d326370f2",
+      "bytes": 3765877,
+      "encoding": "gzip",
+      "restored_path": "research/v4-hook-1m/experiments/gh0st-voice/voice-v8/exports/selected/words.bin",
+      "restored_sha256": "a511b383410158d204e807d0bb1e0dbfd5918ea19f9bad01348ecd93b79fd067",
+      "restored_bytes": 13107200
+    },
+    {
+      "path": "research/v4-hook-1m/experiments/gh0st-voice/voice-v8/training/selected/metadata.json",
+      "git_blob_sha1": "8d83f954149e23ff0b6fcbbdb22dc55bfe927687",
+      "sha256": "d3944457fa7f354f6fe8c1210df631c0385f0b01b236cb020ffaeed9a5438880",
+      "bytes": 1304,
+      "encoding": "identity"
+    },
+    {
+      "path": "research/v4-hook-1m/experiments/gh0st-voice/voice-v8/training/selected/model.safetensors.gz",
+      "git_blob_sha1": "5eee80e3956900b071e8821191ffbf9d1b71d653",
+      "sha256": "0112db3359bb2a3dcd3218a4bf3c66e895c642b950544ba9cb0ce28845c47e7d",
+      "bytes": 26863945,
+      "encoding": "gzip",
+      "restored_path": "research/v4-hook-1m/experiments/gh0st-voice/voice-v8/training/selected/model.safetensors",
+      "restored_sha256": "904e4ee0426dc62c06b5551db19d2ee40d0c0c618fdb62c4a49a39af80d390d3",
+      "restored_bytes": 32703340
+    },
+    {
+      "path": "research/v4-hook-1m/experiments/gh0st-voice/voice-v8/training/selected/probes.json",
+      "git_blob_sha1": "013cb557d9551af1b4b42884c4afe42efc534cf3",
+      "sha256": "74bd6ed1d6862ebfdb11abd8708c1306a715a684acfe932e75200bc3020a6d49",
+      "bytes": 20292,
+      "encoding": "identity"
+    },
+    {
+      "path": "research/v4-hook-1m/experiments/gh0st-voice/voice-v8/evm/actual-transcript.txt",
+      "git_blob_sha1": "59fc182e4223adc4d38707abfb28c30785da810d",
+      "sha256": "5ebe8093588691406c98982af7b21c04c4e28a438ea8ce12a9e0aeae7d979286",
+      "bytes": 1420,
+      "encoding": "identity"
+    },
+    {
+      "path": "research/v4-hook-1m/experiments/gh0st-voice/voice-v8/evm/trained-summary.json",
+      "git_blob_sha1": "b031f362f6dbabb801fcc9ca7ed46398fa396699",
+      "sha256": "e82468813702232346271c0bde260a7d1a54378b3d55c02d48234170ee9f18cc",
+      "bytes": 5461,
+      "encoding": "identity"
+    },
+    {
+      "path": "research/v4-hook-1m/experiments/gh0st-voice/voice-v8/evm/TRAINED-RESULTS.md",
+      "git_blob_sha1": "048fff79ed3b51cd46b5da2c4e293812782fecdd",
+      "sha256": "c43d27774a8312d16627c64f8e8376d424a7c4160737ca67638aca53ffc350ef",
+      "bytes": 3513,
+      "encoding": "identity"
+    },
+    {
+      "path": "research/v4-hook-1m/experiments/gh0st-voice/voice-v8/evm/grammar4m-final256-local.json.gz",
+      "git_blob_sha1": "407643a83f89497b3f70d455df5f85d772ec881e",
+      "sha256": "3d9793b1272d55c4e3cd740e3bcc4ddf1f5a4eb79c8c9cf45666e49288f7b14a",
+      "bytes": 580038,
+      "encoding": "gzip",
+      "restored_path": "research/v4-hook-1m/experiments/gh0st-voice/voice-v8/evm/grammar4m-final256-local.json",
+      "restored_sha256": "47c395437f9f65958cc5d8a4274451881d645634274fd5bb7e31a82be14c4280",
+      "restored_bytes": 8491248
+    },
+    {
+      "path": "research/v4-hook-1m/experiments/gh0st-voice/voice-v8/evm/grammar4m-final256-reference.json",
+      "git_blob_sha1": "63142ff6b7a07c0fc6b4ef7d901a8eb02368e5d2",
+      "sha256": "b484184eb16c9682b6959978340672321292ed174ba62f224a9c53866f4893f0",
+      "bytes": 24646,
+      "encoding": "identity"
+    },
+    {
+      "path": "research/v4-hook-1m/experiments/gh0st-voice/voice-v8/evm/run-final.mjs",
+      "git_blob_sha1": "8265afc0d5a53cd7e8fdce08bd3829837f6d42ee",
+      "sha256": "5218e91c5ac6f46cc110490061685138fc722ec898f299bb2cedd574b8488db5",
+      "bytes": 23987,
+      "encoding": "identity"
+    },
+    {
+      "path": "research/v4-hook-1m/experiments/gh0st-voice/voice-v8/publication/restore.py",
+      "git_blob_sha1": "634dbcc756002df2d9ddf7131ce556cfb00ece82",
+      "sha256": "935c9017c58b44d0c8acb25ec7d2ce0146170c34484b2d70c237794859c3cbbd",
+      "bytes": 2198,
+      "encoding": "identity"
+    },
+    {
+      "path": "research/v4-hook-1m/experiments/gh0st-voice/voice-v8/publication/restoration-map.json",
+      "git_blob_sha1": "1c911761e477daaf0f84bb0f6a044f5dcc20bc0a",
+      "sha256": "e61f10f5fe3d8e749a6dd12a11b60a32f72354f8a43c522a0d64e5fd282579e5",
+      "bytes": 22844,
+      "encoding": "identity"
+    }
+  ]
+}
