@@ -92,5 +92,18 @@ for rel in reports:
         Path(str(path) + ".gz").write_bytes(compressed)
         result["reports"][rel]["published_as"] = rel + ".gz"
         result["reports"][rel]["gzip_sha256"] = hashlib.sha256(compressed).hexdigest()
+bounded_path = ROOT / "evm32/RESULTS.json"
+if bounded_path.exists():
+    bounded = json.loads(bounded_path.read_text())
+    assert bounded["status"] == "PASS_LOCAL_SOLIDITY_32M_BOUNDED_TEXT"
+    result["status"] = "PASS_SOLIDITY_32M_BOUNDED_TEXT"
+    result["requested_output"] = result["active_target"]["output_per_successful_swap"]
+    result["bounded_text_target_met"] = True
+    result["ten_swaps_per_second_demonstrated"] = False
+    result["historical_full_sentence_word_cap"] = 32
+    result["sentence_cap"] = None
+    result["max_words_per_swap"] = 3
+    result["cap_policy"] = bounded["stopping_policy"]
+    result["bounded_text"] = bounded
 (ROOT / "RESULTS.json").write_text(json.dumps(result, indent=2) + "\n")
 print(json.dumps({"status": result["status"], "compact_security_checks": len(security["checks"]), "report_count": len(result["reports"])}))

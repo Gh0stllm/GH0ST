@@ -1,0 +1,93 @@
+{
+  "status": "PASS",
+  "scope": "Local independent security tests with a deliberately configurable mock model and real Uniswap v4 PoolManager. This does not measure actual N0VA neural inference cost.",
+  "checks_passed": 125,
+  "fault_cases": 90,
+  "fault_types": 15,
+  "word_ordinals": [
+    1,
+    2,
+    3
+  ],
+  "trade_directions": [
+    "buy",
+    "sell"
+  ],
+  "transaction_gas_ceiling": 32000000,
+  "verified_block_gas_limit": "32000000",
+  "inference_budget": 9600000,
+  "public_transactions_submitted": 0,
+  "constructor_unchanged": true,
+  "unchanged_functions": [
+    "getHookPermissions",
+    "_authorize",
+    "beforeInitialize",
+    "afterInitialize",
+    "hiddenState",
+    "_saveState",
+    "_checkWord",
+    "decodeStep",
+    "_inferBuffered",
+    "_nextStateHash",
+    "_emitBufferedWord"
+  ],
+  "only_changed_function": [
+    "afterSwap"
+  ],
+  "reserve_tests": [
+    {
+      "words": 1,
+      "terminal": false,
+      "gas": "9928846",
+      "first": "16",
+      "last": "16",
+      "text": "nova",
+      "previous": "0x9fd62f97c3962c2a9a343cbef6ab31b649c4f967d48012e3b4d884425954f3e2",
+      "stateHash": "0x9ec4e4307ede39a39a63744725df5b566a6978d1bcfa69894b69392e36a7c452"
+    },
+    {
+      "words": 2,
+      "terminal": false,
+      "gas": "19520833",
+      "first": "17",
+      "last": "18",
+      "text": "nova nova",
+      "previous": "0x9ec4e4307ede39a39a63744725df5b566a6978d1bcfa69894b69392e36a7c452",
+      "stateHash": "0x33f8e429f48fe349a6fb0ee7ba9754200e09431d0685b965b7baa6ede945df23"
+    },
+    {
+      "words": 1,
+      "terminal": false,
+      "gas": "10752318",
+      "first": "19",
+      "last": "19",
+      "text": "nova",
+      "previous": "0x33f8e429f48fe349a6fb0ee7ba9754200e09431d0685b965b7baa6ede945df23",
+      "stateHash": "0xd6bce75189f9a27119b0c7df984db59945b871712a07482e3d7d8057ccf65ebf"
+    },
+    {
+      "words": 2,
+      "terminal": false,
+      "gas": "19734962",
+      "first": "20",
+      "last": "21",
+      "text": "nova nova",
+      "previous": "0xd6bce75189f9a27119b0c7df984db59945b871712a07482e3d7d8057ccf65ebf",
+      "stateHash": "0x7a7edaa7bf754597c3bee2d4dbc6854bebd05f0a79fde3fca19fa6cb279c0641"
+    }
+  ],
+  "notes": [
+    "All failed attempted inference calls reverted the complete trade, including earlier accepted words and all emitted logs.",
+    "The one- and two-word gas-boundary cases stop before calling another inference; they do not swallow an inference failure.",
+    "The dense first-save case fills all 768 state cells, including every one of the 37 packed storage slots.",
+    "The gas numbers in these reserve tests include artificial work in a mock. They are not the actual N0VA model gas measurements.",
+    "A wallet using eth_estimateGas may choose a successful one-word path; maximizing text requires the tested explicit 32M transaction ceiling."
+  ],
+  "sha256": {
+    "evm32/NovaBoundedTextHook.sol": "d751be061f98dbf6f2809e196ac30c6e226a901f9d96ff904239b4705ebb83fb",
+    "evm32/audit/NovaBoundedMockModel.sol": "c290a5865510490d408d50787b9ea025d448ce48e63ac2ca0f607f3279e7dc72",
+    "evm32/audit/test-bounded-security.mjs": "5fb808f3b98157439c48f588be090d8204de67807d5a4ad6ae7f0e193b6138e6",
+    "evm32/audit/static-hook-diff.json": "850b3592fe05fbd33fbadbaed0bdba31ebf0e5f3bae580d476214013955af3ea",
+    "evm32/audit/security/sentence-security.json": "de04ced6396564f186b127098c5637459d670482c21de5098a70dfe8a4ebb7da"
+  }
+}

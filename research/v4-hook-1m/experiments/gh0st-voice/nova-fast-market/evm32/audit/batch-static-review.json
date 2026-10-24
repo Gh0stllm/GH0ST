@@ -1,0 +1,30 @@
+{
+  "status": "PASS",
+  "scope": "Independent static comparison; runtime validation results are recorded separately.",
+  "root_matches_tested_candidate": true,
+  "hook_sha256": "077344e15276a57ca450268b05e245ba9493e17159ed4c7f9128f5eddf904244",
+  "batch_decoder_validation_body_byte_exact": true,
+  "unchanged_helper_bodies": {
+    "getHookPermissions": true,
+    "_authorize": true,
+    "beforeInitialize": true,
+    "afterInitialize": true,
+    "hiddenState": true,
+    "_saveState": true,
+    "_checkWord": true,
+    "_nextStateHash": true
+  },
+  "gas_policy": {
+    "max_inference_budget": 26000000,
+    "two_word_budget": 18500000,
+    "one_word_budget": 10000000,
+    "decoder_limit": 2400000,
+    "callback_reserve": 3250000
+  },
+  "selection": [
+    "Choose at most three words subject to remaining uint64 sequence space.",
+    "Choose the largest pre-call batch whose full bounded allowance plus forwarding allowance plus reserve fits available callback gas.",
+    "Never retry or fall back after an attempted model batch fails.",
+    "Every used/unused field and canonical ABI is validated before raw-buffer pointers are formed."
+  ]
+}

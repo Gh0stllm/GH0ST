@@ -1,0 +1,83 @@
+{
+  "status": "PASS",
+  "scope": "Local independent mock-model security suite against real Uniswap v4 PoolManager; actual N0VA neural gas is measured separately.",
+  "checks_passed": 111,
+  "malformed_batch_cases": 76,
+  "chain_id": 31337,
+  "transaction_gas_ceiling": 32000000,
+  "public_transactions_submitted": 0,
+  "hook_sha256": "077344e15276a57ca450268b05e245ba9493e17159ed4c7f9128f5eddf904244",
+  "gas_policy": {
+    "max_inference_budget": 26000000,
+    "two_word_budget": 18500000,
+    "one_word_budget": 10000000,
+    "decoder_limit": 2400000,
+    "callback_reserve": 3250000
+  },
+  "decoder_execution_probes": [
+    {
+      "count": 1,
+      "raw_bytes": 93152,
+      "transaction_estimate": "2090295",
+      "note": "Includes intrinsic calldata gas; direct self-call minimum probed below.",
+      "transaction_minimum_call_gas": "2090625",
+      "intrinsic_gas": "394192",
+      "estimated_execution_gas": "1696433"
+    },
+    {
+      "count": 2,
+      "raw_bytes": 93184,
+      "transaction_estimate": "2295149",
+      "note": "Includes intrinsic calldata gas; direct self-call minimum probed below.",
+      "transaction_minimum_call_gas": "2295189",
+      "intrinsic_gas": "394392",
+      "estimated_execution_gas": "1900797"
+    },
+    {
+      "count": 3,
+      "raw_bytes": 93216,
+      "transaction_estimate": "2500028",
+      "note": "Includes intrinsic calldata gas; direct self-call minimum probed below.",
+      "transaction_minimum_call_gas": "2500352",
+      "intrinsic_gas": "394616",
+      "estimated_execution_gas": "2105736"
+    }
+  ],
+  "synthetic_model": {
+    "work": 24000000,
+    "transaction_estimate": "25474235",
+    "intrinsic": "268048",
+    "execution": "25206187"
+  },
+  "synthetic_complete_swap_gas": "28037759",
+  "adaptive_selection_passed": {
+    "16M_transaction": 1,
+    "25M_transaction": 2,
+    "32M_transaction": 3,
+    "contract_wallet_32M": 2
+  },
+  "pointer_abi_proof": {
+    "cases": 40,
+    "states": 92160,
+    "scores": 23640,
+    "assembly_sha256": "b169d2bc92c1cd3edabea558b257df8fba69d9de5652f564177db68f06bb499b"
+  },
+  "all_unchanged_validation_checks": true,
+  "limitations": [
+    "No public-chain transactions were sent.",
+    "This is an internal local test suite, not an external security audit.",
+    "Mock model gas and generated text do not represent actual N0VA quality or neural execution gas.",
+    "The selected gas profile is26M maximum,18.5M two-word and10M one-word; arbitrary constructor configurations are not claimed validated."
+  ],
+  "sha256": {
+    "evm32/NovaAdaptiveBatchTextHook.sol": "077344e15276a57ca450268b05e245ba9493e17159ed4c7f9128f5eddf904244",
+    "evm32/audit/NovaBatchMockModel.sol": "eaa2404a590c52375448b42f5e3c7fbb6862978612cca1454bd5cf275a7ffefa",
+    "evm32/audit/test-batch-adaptive-security.mjs": "e526786ea694c6bdd7e81d94bf1296f7103b3fca32a7a0e8742c9b8b380eb3e5",
+    "evm32/audit/batch-static-review.json": "c68776cdd7164d4ad818632eefe654ed0f8ff1bd0563d6d03b6050823ff2ed69",
+    "evm32/audit/batch-pointer-layout.json": "1fa579909bf82a6c3fe9ec697d073cf8ba9bc3dc81d0917df627aacde0bf252a",
+    "evm32/audit/BatchPointerLayoutProof.sol": "31641dbea05626abd6fc97a0eb805de94dca58af149a876c7597126254492abb",
+    "evm32/audit/test-batch-pointer-layout.mjs": "9a8909aff93986770ed8895f97d31f2b59741b55a2475674b091bf1601704a81",
+    "evm32/audit/batch-security-adaptive/sentence-security.json": "e3f6f49692ba5794b3e9036e4dde22a6aede3d8b5ace3aba9bc13c93cdf470c9",
+    "evm32/audit/batch-pointer-binding.json": "a2a5e586c586a21348036d6f8acb97636c042619ee7b16c62361d29a336e6357"
+  }
+}

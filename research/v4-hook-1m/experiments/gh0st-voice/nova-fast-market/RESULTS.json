@@ -1,7 +1,7 @@
 {
-  "status": "TEN_SENTENCES_PER_SECOND_NOT_DEMONSTRATED",
+  "status": "PASS_SOLIDITY_32M_BOUNDED_TEXT",
   "requested_swaps_per_second": 10,
-  "requested_output": "one complete neural sentence per successful swap",
+  "requested_output": "maximize validated new neural words within 32M gas; continue the same sentence and story on later swaps",
   "scope": "UNFORKED_LOCAL_ONLY",
   "mainnet_actions": 0,
   "parameters": 8175493,
@@ -177,8 +177,8 @@
     "multiple_of_saved_7m_target": 262.3213714285714
   },
   "production_wasm_pool_integration_tested": false,
-  "sentence_cap": 32,
-  "cap_policy": "Revert the entire trade if the neural model does not naturally end a sentence within the cap.",
+  "sentence_cap": null,
+  "cap_policy": "Preflight selects a bounded batch; stop earlier only for neural terminal punctuation. Every attempted batch failure reverts the whole trade.",
   "compact_sentence_security_mock": {
     "status": "PASS",
     "checks": 35,
@@ -603,15 +603,118 @@
     "wasm_allowed": false,
     "model_parameters": 8175493,
     "same_model_required": true,
-    "output_per_successful_swap": "one complete naturally terminated neural sentence",
+    "output_per_successful_swap": "maximize validated new neural words within 32M gas; continue the same sentence and story on later swaps",
     "requested_swaps_per_second": 10,
     "transaction_gas_budget": 32000000,
-    "failure_policy": "revert the entire trade if inference fails or no complete sentence is produced",
+    "failure_policy": "revert the entire trade if an attempted inference fails; a gas preflight may reduce words before inference starts",
     "preserve_security_checks": true,
     "execution_scope": "local tests only",
     "deployment_authorized": false,
-    "status": "SOLIDITY_TARGET_NOT_MET",
-    "alternative_runtime_reports": "Historical comparisons only; excluded from the active target"
+    "status": "PASS_LOCAL_BOUNDED_TEXT_UNDER_32M",
+    "alternative_runtime_reports": "Historical comparisons only; excluded from the active target",
+    "full_sentence_per_swap_required": false,
+    "partial_sentence_continuation_authorized": true,
+    "max_words_per_swap": 3,
+    "complete_sentence_per_swap": false,
+    "ten_swaps_per_second_demonstrated": false,
+    "selected_model_source": "evm32/batch/GRU2BatchCheckedModel.sol",
+    "selected_hook_source": "evm32/NovaAdaptiveBatchTextHook.sol",
+    "verification": "evm32/RESULTS.json"
   },
-  "alternative_runtime_results_eligible_for_target": false
+  "alternative_runtime_results_eligible_for_target": false,
+  "bounded_text_target_met": true,
+  "ten_swaps_per_second_demonstrated": false,
+  "bounded_text": {
+    "status": "PASS_LOCAL_SOLIDITY_32M_BOUNDED_TEXT",
+    "scope": "UNFORKED_LOCAL_ONLY",
+    "mainnet_actions": 0,
+    "model_parameters": 8175493,
+    "checkpoint_sha256": "904e4ee0426dc62c06b5551db19d2ee40d0c0c618fdb62c4a49a39af80d390d3",
+    "weights_or_precision_changed": false,
+    "stylus_or_wasm_used": false,
+    "full_sentence_per_swap_required": false,
+    "new_words_per_successful_swap": [
+      1,
+      3
+    ],
+    "stopping_policy": "Preflight selects a bounded batch; stop earlier only for neural terminal punctuation. Every attempted batch failure reverts the whole trade.",
+    "transaction_and_block_limit": 32000000,
+    "maximum_inference_call_gas": 26000000,
+    "maximum_decoder_call_gas": 2400000,
+    "callback_gas_reserve": 3250000,
+    "security_note": "Local tests and internal review, not an external audit or deployment approval.",
+    "real_swaps": {
+      "swaps": 32,
+      "total_words": 90,
+      "min_words": 1,
+      "max_words": 3,
+      "min_gas": "11740540",
+      "max_gas": "28513802",
+      "mean_gas": "26346158",
+      "completed_sentences": 7
+    },
+    "full_pool_checks": 29,
+    "adversarial_mock_pool_checks": 111,
+    "independent_replay": {
+      "status": "PASS",
+      "report_sha256": "c6ad0c9ccb4f72588f270d764a90ab9da4fdfba9d8338aabf111bd365437ec1c",
+      "swaps": 32,
+      "neural_words": 90,
+      "all_text_and_final_768_states_match": true,
+      "all_final_state_hashes_match": true,
+      "continuous_state_across_swaps": true,
+      "no_forced_punctuation_or_words": true,
+      "per_word_scores_compared_to_events": false
+    },
+    "ten_swaps_per_second_demonstrated": false,
+    "limits": [
+      "Words per swap depend on supplied gas, router call depth and natural sentence endings.",
+      "Language quality is the unchanged model's quality; saved neural context is not a guarantee of semantic coherence.",
+      "No production chain configuration was queried and nothing was deployed."
+    ],
+    "source_hashes": {
+      "NovaAdaptiveBatchTextHook.sol": "077344e15276a57ca450268b05e245ba9493e17159ed4c7f9128f5eddf904244",
+      "batch/GRU2BatchCheckedModel.sol": "2d596d9bd5273ac27abd59f4dc8c14de0002cc3265960515633152e02b98390c",
+      "test-text.mjs": "8819f0eae33783feb04d7b3f282cb876393e5a14eae9e7eab76775ab735be864",
+      "verify-text.py": "b691b9debf3a5af0471ab16b5b33c1a27bdb593391e5476df0523e0f02bd672f"
+    },
+    "reports": {
+      "final-local-test/text-results.json": {
+        "sha256": "c6ad0c9ccb4f72588f270d764a90ab9da4fdfba9d8338aabf111bd365437ec1c",
+        "bytes": 1356348,
+        "published_as": "final-local-test/text-results.json.gz",
+        "gzip_sha256": "4e860a1f554a5d44d62413066c777c97deedf42e86decd45e67fb9368afe8f2c"
+      },
+      "final-local-test/independent-reference.json": {
+        "sha256": "4615e8148c63481683743e6210a11780c4e960be9d1cbabc1016cb7e600fdc6d",
+        "bytes": 18456
+      },
+      "kernel/RESULTS.json": {
+        "sha256": "8482a3884263fd86b86c8228c295450a120aae8cf1e5c28e76c96a4742f7cc40",
+        "bytes": 1366
+      },
+      "batch/RESULTS.json": {
+        "sha256": "8915905a7105fe89901e9073a24f84e9fe9a8394d7a7c0de296006e99fc63811",
+        "bytes": 2193
+      },
+      "audit/batch-security-adaptive/sentence-security.json": {
+        "sha256": "e3f6f49692ba5794b3e9036e4dde22a6aede3d8b5ace3aba9bc13c93cdf470c9",
+        "bytes": 27543
+      },
+      "audit/BATCH-SECURITY-RESULTS.json": {
+        "sha256": "ca1c356819be1666dbc86e2d7b63abc4fe3a83ab5e6c44ab104fe061b17956ab",
+        "bytes": 3577
+      },
+      "audit/batch-pointer-layout.json": {
+        "sha256": "1fa579909bf82a6c3fe9ec697d073cf8ba9bc3dc81d0917df627aacde0bf252a",
+        "bytes": 8774
+      },
+      "audit/batch-pointer-binding.json": {
+        "sha256": "a2a5e586c586a21348036d6f8acb97636c042619ee7b16c62361d29a336e6357",
+        "bytes": 559
+      }
+    }
+  },
+  "historical_full_sentence_word_cap": 32,
+  "max_words_per_swap": 3
 }

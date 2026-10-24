@@ -1,0 +1,37 @@
+{
+  "scope": "independent static comparison only; mock integration is separate",
+  "original_sha256": "86d0806dbbb6f6f29f75966edb313d4b0b5c6b1790b30a5440e7c083dc1c55f9",
+  "candidate_sha256": "d751be061f98dbf6f2809e196ac30c6e226a901f9d96ff904239b4705ebb83fb",
+  "unchanged_functions": [
+    "getHookPermissions",
+    "_authorize",
+    "beforeInitialize",
+    "afterInitialize",
+    "hiddenState",
+    "_saveState",
+    "_checkWord",
+    "decodeStep",
+    "_inferBuffered",
+    "_nextStateHash",
+    "_emitBufferedWord"
+  ],
+  "changed_functions": [
+    "afterSwap"
+  ],
+  "only_afterSwap_changed": true,
+  "checks": {
+    "exact_pool_authorization_unchanged": true,
+    "decoder_and_canonical_validation_unchanged": true,
+    "word_validation_unchanged": true,
+    "model_identity_and_bounded_calls_unchanged": true,
+    "packed_state_load_save_unchanged": true,
+    "state_hash_unchanged": true,
+    "constant_max_three_words": true,
+    "constant_callback_2m_reserve": true,
+    "no_sentence_event": true,
+    "sentence_count_requires_terminal": true,
+    "fragment_max101_bytes": true,
+    "constructor_and_immutable_validation_unchanged": true
+  },
+  "constructor_byte_exact": true
+}

@@ -40,3 +40,9 @@ The 20-word local run reads **3,994,342 bytes across 241 host calls**. Loading a
 The observed local WASM elapsed time excludes Stylus instruction/host metering, validation/activation, sequencer limits, consensus and PoolManager execution. It cannot establish a 700,000-gas sentence or 10 swaps per second. A metered local Stylus integration is required before making either claim.
 
 The compact sentence hook removes per-word diagnostic events while retaining per-word decoding and chained state hashes. That avoids the previous diagnostic-event lower bound; it does not resolve or measure the WASM execution budget.
+
+## Subsequent offline metering and selected kernel
+
+The later official local Nitro meter results are in `../audit/official-stylus-meter.json`. The selected unroll32 variant is documented in `wasm-unroll/README.md` and `wasm-unroll/SUMMARY.json`. Under the pinned Stylus v3 / ArbOS 61 / 10,000 ink-per-gas scenario, its 20-word diagnostic uses 3,189,326 execution gas, plus separately modeled memory and cached invocation costs of 93,772 and 773 gas. The 16-seed sweep is in `../audit/official-stylus-best-seeds.json`.
+
+This supersedes the earlier absence of instruction/host metering, but it does not establish production Robinhood configuration or full-swap gas. Actual model catalogs, canonical production ABI, pool state binding and end-to-end sentence transaction semantics still require implementation and validation. The 700,000-gas complete-sentence target remains unmet.

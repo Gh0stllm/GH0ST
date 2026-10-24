@@ -1,0 +1,234 @@
+{
+  "mode": "UNFORKED_LOCAL_ONLY",
+  "publicTransactions": 0,
+  "dataInjected": true,
+  "modelWeightsUnchanged": true,
+  "vectors": [
+    {
+      "name": "zero",
+      "baselineGas": "9145713",
+      "scratchGas": "8913691",
+      "hash": "0xd692a54587115cfad4e30911228a149895dcfab575a2812822214d53f13c083a",
+      "text": "the",
+      "passed": true
+    },
+    {
+      "name": "limits",
+      "baselineGas": "9288572",
+      "scratchGas": "9056424",
+      "hash": "0xacc0412bdd5c17e71d50d6e5c0221bedb6327e27ba2d68e9a6fc37ff9653efce",
+      "text": "a",
+      "passed": true
+    },
+    {
+      "name": "mixed",
+      "baselineGas": "9323980",
+      "scratchGas": "9091003",
+      "hash": "0x06f7eb52c70550cc085bb45137db68e65a0ebb30e99777df59358f8f458df694",
+      "text": "you'd,",
+      "passed": true
+    }
+  ],
+  "batchTests": [
+    {
+      "vector": "zero",
+      "maxWords": 1,
+      "count": 1,
+      "text": "the",
+      "terminal": false,
+      "gas": "9447131",
+      "sequentialSameTransactionGas": "9584896",
+      "sequentialSeparateTransactionsGas": "9145713",
+      "returnBytes": 93152,
+      "returnHash": "0xd03c706db86549d4f94f1fa9d407dd27a0976f97182e3f1795ee89569819f61f",
+      "parity": true
+    },
+    {
+      "vector": "zero",
+      "maxWords": 2,
+      "count": 2,
+      "text": "the cost",
+      "terminal": false,
+      "gas": "17281970",
+      "sequentialSameTransactionGas": "18305746",
+      "sequentialSeparateTransactionsGas": "18438080",
+      "returnBytes": 93184,
+      "returnHash": "0x0e0464c3ebe225c302685f7befc183d144eff8c4ff4a0983156aedd186ebe830",
+      "parity": true
+    },
+    {
+      "vector": "zero",
+      "maxWords": 3,
+      "count": 3,
+      "text": "the cost cache",
+      "terminal": false,
+      "gas": "25110841",
+      "sequentialSameTransactionGas": "27035377",
+      "sequentialSeparateTransactionsGas": "27744661",
+      "returnBytes": 93216,
+      "returnHash": "0xf5f7646f98474a74c5ffab22c032fd75b95c1ba2874f6d0aeff9c4e685818161",
+      "parity": true
+    },
+    {
+      "vector": "limits",
+      "maxWords": 1,
+      "count": 1,
+      "text": "a",
+      "terminal": false,
+      "gas": "9589864",
+      "sequentialSameTransactionGas": "9727755",
+      "sequentialSeparateTransactionsGas": "9288572",
+      "returnBytes": 93152,
+      "returnHash": "0xe4427424486c9ca212a2b7703be9f2d5d95256aec0d134f382c6fb09591e25bc",
+      "parity": true
+    },
+    {
+      "vector": "limits",
+      "maxWords": 2,
+      "count": 2,
+      "text": "a second",
+      "terminal": false,
+      "gas": "17421765",
+      "sequentialSameTransactionGas": "18445451",
+      "sequentialSeparateTransactionsGas": "18586405",
+      "returnBytes": 93184,
+      "returnHash": "0xc7285c0513466dab7b31c8ff9267f09f40a051c66f30b7d01d1c0f751b608600",
+      "parity": true
+    },
+    {
+      "vector": "limits",
+      "maxWords": 3,
+      "count": 3,
+      "text": "a second test",
+      "terminal": false,
+      "gas": "25242795",
+      "sequentialSameTransactionGas": "27167010",
+      "sequentialSeparateTransactionsGas": "27883702",
+      "returnBytes": 93216,
+      "returnHash": "0x317f9979776c8e8464d7f71ca2c8394e5eda80b7b5df154533e497319e24a5d6",
+      "parity": true
+    },
+    {
+      "vector": "mixed",
+      "maxWords": 1,
+      "count": 1,
+      "text": "you'd,",
+      "terminal": false,
+      "gas": "9624443",
+      "sequentialSameTransactionGas": "9763163",
+      "sequentialSeparateTransactionsGas": "9323980",
+      "returnBytes": 93152,
+      "returnHash": "0xec5bb75a6ac645c7a8b0ff9fc0af131153eb756c2cab5abf42500c689f78aa7d",
+      "parity": true
+    },
+    {
+      "vector": "mixed",
+      "maxWords": 2,
+      "count": 2,
+      "text": "you'd, changes.",
+      "terminal": true,
+      "gas": "17469031",
+      "sequentialSameTransactionGas": "18493622",
+      "sequentialSeparateTransactionsGas": "18632046",
+      "returnBytes": 93184,
+      "returnHash": "0xc36670a8334dc6ce0ccfe545524ff204960cf75492b20a3620dbdaf6ddaecfa3",
+      "parity": true
+    },
+    {
+      "vector": "mixed",
+      "maxWords": 3,
+      "count": 2,
+      "text": "you'd, changes.",
+      "terminal": true,
+      "gas": "17469031",
+      "sequentialSameTransactionGas": "18493622",
+      "sequentialSeparateTransactionsGas": "18632046",
+      "returnBytes": 93184,
+      "returnHash": "0xc36670a8334dc6ce0ccfe545524ff204960cf75492b20a3620dbdaf6ddaecfa3",
+      "parity": true
+    }
+  ],
+  "checks": [
+    {
+      "name": "zero_limit",
+      "passed": true,
+      "gas": "394042"
+    },
+    {
+      "name": "over_limit",
+      "passed": true,
+      "gas": "394083"
+    },
+    {
+      "name": "previous",
+      "passed": true,
+      "gas": "322586"
+    },
+    {
+      "name": "punct",
+      "passed": true,
+      "gas": "322623"
+    },
+    {
+      "name": "temperature_low",
+      "passed": true,
+      "gas": "322643"
+    },
+    {
+      "name": "temperature_high",
+      "passed": true,
+      "gas": "322686"
+    },
+    {
+      "name": "word_index_overflow",
+      "passed": true,
+      "gas": "394552"
+    },
+    {
+      "name": "hidden_low",
+      "passed": true,
+      "gas": "323792"
+    },
+    {
+      "name": "hidden_high",
+      "passed": true,
+      "gas": "323432"
+    },
+    {
+      "name": "feature_low",
+      "passed": true,
+      "gas": "393866"
+    },
+    {
+      "name": "feature_high",
+      "passed": true,
+      "gas": "393506"
+    }
+  ],
+  "checkpointSha256": "904e4ee0426dc62c06b5551db19d2ee40d0c0c618fdb62c4a49a39af80d390d3",
+  "contracts": [
+    {
+      "name": "baseline",
+      "sourceSha256": "e7185cadb3feda3f8cffa01bdd1b6945ed911761603f8cae0668195c8fde0835",
+      "runtimeBytes": 17273,
+      "initcodeBytes": 19669
+    },
+    {
+      "name": "batch",
+      "sourceSha256": "2d596d9bd5273ac27abd59f4dc8c14de0002cc3265960515633152e02b98390c",
+      "runtimeBytes": 13667,
+      "initcodeBytes": 16070
+    },
+    {
+      "name": "sequential_probe",
+      "sourceSha256": "3a65bd23de94e87ed3f93219a705bc70e32c6dd044ad8daeba1f83e17e046d3d",
+      "runtimeBytes": 1829,
+      "initcodeBytes": 1855
+    }
+  ],
+  "status": "PASS_EXACT_OUTPUT_PARITY",
+  "compiler": "0.8.30+commit.73712a01.Emscripten.clang",
+  "optimizerRuns": 200,
+  "evmVersion": "cancun",
+  "note": "Gas measures direct calls, including transaction and ABI costs; real pool overhead is not included. Separate sequential transaction sums have repeated cold access and intrinsic gas, so are not same-call baselines."
+}
