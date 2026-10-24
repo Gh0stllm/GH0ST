@@ -8,7 +8,7 @@ The 8,175,493-parameter V8 H384 model generates one word per swap and retains re
 
 User acceptance selects the experimental voice. Historical grammar/continuity failures remain documented. This selection is local-only; static-data deployment cost is unmeasured. The earlier experiments below are retained for provenance.
 
-Branch: `research/v4-hook-1m` · Started: 23 October 2026 · Baseline: `d9d6306b8cbf0eb39e844097e7aa669afe82729e`
+Branch: `research/gh0st-n0va-8m` · Derived from: `research/v4-hook-1m` · Started: 23 October 2026 · Baseline: `d9d6306b8cbf0eb39e844097e7aa669afe82729e`
 
 [Status and research gates](STATUS.md) · [Latest experiment](RESULTS-002.md) · [Model selection](MODEL-SELECTION.md) · [Research protocol](RESEARCH.md) · [Model attribution](model-data/NOTICE.txt)
 

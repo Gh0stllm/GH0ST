@@ -1,5 +1,7 @@
 # GH0ST N0VA-8M — final selected model
 
+Dedicated research branch: [`research/gh0st-n0va-8m`](https://github.com/Gh0stllm/GH0ST/tree/research/gh0st-n0va-8m).
+
 **Final experimental model selected by the user on 24 October 2026. Local-only.**
 
 **N0VA** stands for **Neural On-chain Voice Agent**. GH0ST N0VA-8M is the public name of the same selected V8 H384 model; its weights, runtime and benchmark evidence are unchanged.
