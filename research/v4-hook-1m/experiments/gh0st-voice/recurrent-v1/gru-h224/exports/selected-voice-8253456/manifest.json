@@ -1,0 +1,131 @@
+{
+  "scope": "Local compact fused GRU H224; export is not language or EVM evidence",
+  "parameters": 3983967,
+  "hidden_size": 224,
+  "vocabulary_size": 8192,
+  "scale": 1024,
+  "model_domain": "GH0ST_GRU_H224_FUSED_Q10_LOCAL_V1",
+  "checkpoint_sha256": "1444fac961a8228b87c111920869d51ec09cd7a5a16786a35e07bda983765347",
+  "data_manifest_sha256": "38e047f649ad35ab2614d78668c74988943aa88f25318ac309cdefbeef02bbd7",
+  "exporter_sha256": "90f6a5e4cc4c7be896595e41389ce2028afee23077242a61867e81c2ac93f972",
+  "gate_order": [
+    "r",
+    "z",
+    "n"
+  ],
+  "recurrent_bias": false,
+  "weight_rounding": "nearest_even_no_clipping",
+  "hidden_range": [
+    -1024,
+    1024
+  ],
+  "fused_shape": [
+    8193,
+    672
+  ],
+  "fused_min": -7153455,
+  "fused_max": 7018843,
+  "fused_format": "signed40_bigendian_before_any_division",
+  "equations": "X=trunc((fused+Wf*f)/Q);R=trunc(Wh*h/Q);r=S(Xr+Rr);z=S(Xz+Rz);n=2*S(2*(Xn+trunc(r*Rn/Q)))-Q;h=trunc((z*h+(Q-z)*n)/Q)",
+  "ranges": {
+    "embedding.weight": {
+      "min": -596,
+      "max": 539,
+      "shape": [
+        8193,
+        224
+      ]
+    },
+    "wx": {
+      "min": -740,
+      "max": 726,
+      "shape": [
+        672,
+        224
+      ]
+    },
+    "wh": {
+      "min": -639,
+      "max": 632,
+      "shape": [
+        672,
+        224
+      ]
+    },
+    "wf": {
+      "min": -220,
+      "max": 94,
+      "shape": [
+        672,
+        6
+      ]
+    },
+    "bh": {
+      "min": -118,
+      "max": 1014,
+      "shape": [
+        672
+      ]
+    },
+    "nodes.weight": {
+      "min": -458,
+      "max": 542,
+      "shape": [
+        8191,
+        224
+      ]
+    },
+    "bias.weight": {
+      "min": -9239,
+      "max": 4673,
+      "shape": [
+        8191,
+        1
+      ]
+    }
+  },
+  "artifacts": {
+    "core.bin": {
+      "bytes": 309120,
+      "sha256": "8220dbcee66321fded8f21fc9084c32f4fa83e91660d124dcc1a7eef1780f2f4"
+    },
+    "nodes.bin": {
+      "bytes": 3685950,
+      "sha256": "436dbac7552dbda44f0e96b8c8df111a2759e402ade9f19db19e6809c388be6d"
+    },
+    "fused.bin": {
+      "bytes": 27528480,
+      "sha256": "6f36bed9f04502bbf5b7ef7067a226051f908b939fe383a5fea32fad3852eba4"
+    },
+    "vocabulary.bin": {
+      "bytes": 262144,
+      "sha256": "85901dd4aca08f265f33249104136b02e64f54268515e1c2e1395f99af7f1270"
+    },
+    "vocabulary.json": {
+      "bytes": 102259,
+      "sha256": "a4b1e9f6703e000e49219497d9b099d6decfc011be4d6e92b902bec5a884e1d8"
+    },
+    "sigmoid-delta.bin": {
+      "bytes": 514,
+      "sha256": "5ecfa8cc900bcb72c83a71a3068049453f64afe78017b73f830e387b1f1a9ad3"
+    }
+  },
+  "reference_only_sources": {
+    "original-embedding.bin": {
+      "bytes": 3670464,
+      "sha256": "3ca22bc774173829b8f81fa9738f0ce8069eb5c29127f7ea92441afdc20a00d4",
+      "deployment": "REFERENCE_ONLY_NOT_RESIDENT"
+    },
+    "original-wx.bin": {
+      "bytes": 301056,
+      "sha256": "2d0bc842970a487de38bbc745673fbf022e6d38af7849f8ce6a32a963c480755",
+      "deployment": "REFERENCE_ONLY_NOT_RESIDENT"
+    },
+    "original-bh.bin": {
+      "bytes": 1344,
+      "sha256": "ef7d3a8fd140740617343f9eb2f1f5cf21becaff5d89708e4e171dd884435590",
+      "deployment": "REFERENCE_ONLY_NOT_RESIDENT"
+    }
+  },
+  "resident_parameter_claim": "Compiled from3983967 learned source parameters; fused scalars are derived, not independent learned parameters."
+}

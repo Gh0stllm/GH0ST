@@ -1,0 +1,77 @@
+{
+  "status": "TRAINING_COMPLETE_LANGUAGE_NOT_APPROVED",
+  "source_parameters": 3983967,
+  "architecture": "H224 reset-after GRU without recurrent bias, learned 13-level word decoder",
+  "constraints": {
+    "local_only": true,
+    "swap_gas_ceiling": 32000000,
+    "new_text_every_successful_swap": true,
+    "silent_inference_swaps": false
+  },
+  "selected_checkpoint": "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/recurrent-v1/gru-h224/training/runs/voice-v3-1m/checkpoint-08253456",
+  "selected_weight_sha256": "1444fac961a8228b87c111920869d51ec09cd7a5a16786a35e07bda983765347",
+  "selected_supervised_words": 8253456,
+  "selection": "Lowest equal-source validation CE within the dedicated voice-v3 phase, before further voice training regressed; not a language-quality approval.",
+  "selected_validation": {
+    "per_source": {
+      "authored": {
+        "ce_nats_per_word": 5.334323883056641,
+        "perplexity": 207.3325203779355,
+        "words": 4096
+      },
+      "grammar": {
+        "ce_nats_per_word": 4.473060607910156,
+        "perplexity": 87.62449725785933,
+        "words": 4096
+      },
+      "teacher": {
+        "ce_nats_per_word": 6.053018093109131,
+        "perplexity": 425.39497620157437,
+        "words": 4096
+      }
+    },
+    "balanced_ce": 5.286800861358643,
+    "hidden_zero_fraction": 0.0,
+    "hidden_saturated_fraction": 0.026812962123325894
+  },
+  "completed_general_training_words": 20003520,
+  "completed_additional_voice_words": 1006592,
+  "total_production_training_words_computed": 21010112,
+  "new_long_original_documents": 116,
+  "new_long_original_words": 6897,
+  "all_training_local": true,
+  "mainnet_actions": 0,
+  "gas_status": "PASS_128_ACTUAL_LOCAL_V4_SWAPS_WITH_INDEPENDENT_PARITY",
+  "remaining_quality_failures": [
+    "Broken predicates and subject agreement",
+    "Drift away from earlier narrative",
+    "Repetition and lack of a reliable original first-person voice"
+  ],
+  "training_reports": [
+    "training/runs/initial-20m-gate4m/training-report.json",
+    "training/runs/continuation-20m/training-report.json",
+    "training/runs/voice-v3-1m/training-report.json"
+  ],
+  "selected_checkpoint_benchmark": {
+    "status": "LOCAL_GAS_EMISSION_AND_EXACT_PARITY_PASS",
+    "language_quality": "NOT_APPROVED_MALFORMED_AND_OFF_THEME",
+    "evm_report_sha256": "8c8f153c68fdc689217b8fe21c427a224336adc210c66ebd7ac707d0be5d3cc1",
+    "reference_report_sha256": "be62a5f562c0b29bd6fedf11e8880269afefbed3d5366a1f346c198c341b46c2",
+    "export_audit_sha256": "c46f5f881ae127cf3b35c14d4344befd9dbcc6d7d45a9caac2f9db137fe3e308",
+    "chain_id": 31337,
+    "public_transactions": 0,
+    "measurements": {
+      "swaps": 128,
+      "words": 128,
+      "everySuccessfulSwapEmitsOneWord": true,
+      "noForcedPunctuation": true,
+      "hiddenStateNeverReset": true,
+      "naturalTerminalWords": 12,
+      "minGas": "21998012",
+      "maxGas": "22280162",
+      "meanGas": "22006666"
+    },
+    "gas_headroom": 9719838,
+    "natural_terminal_transitions": 12
+  }
+}

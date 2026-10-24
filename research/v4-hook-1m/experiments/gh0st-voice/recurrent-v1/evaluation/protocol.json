@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "scope": "Local recurrent-v1 quality gate; does not authorize mainnet",
+  "standard_probe": {"seeds": [0, 42, 7, 123], "words": 128, "initial_token": 8192, "features_q10": [128, 256, 128, 512, -1024, -1024], "temperature_q10": 1024},
+  "state_policy": "Initialize once; carry hidden state and generated token across every word. No reset on terminal punctuation, no forced completion, no stored response selection.",
+  "decision": "Report every output. A lower validation loss or zero repeated ngrams alone is not a quality pass.",
+  "human_dimensions": [
+    "Local grammar: complete natural clauses and valid agreement, without incoherent word salad",
+    "Cross-sentence continuity: actors, objects and motives remain interpretable across at least three sentences",
+    "First-person voice: coherent original comic or reflective personality rather than a stream of domain nouns",
+    "Repetition: no persistent repeated phrases, sentence patterns or semantic restart loop",
+    "Originality: disclose exact normalized training matches; this test does not prove semantic novelty"
+  ],
+  "comparison": "Compare FP32 against independently implemented Q10 inference and actual v4 gas. Language quality and gas are separate gates.",
+  "risk": "ReLU recurrence may lose or saturate memory. H265/4.49M includes large embeddings and tree output tables; parameter count alone does not imply transformer-like reasoning."
+}
