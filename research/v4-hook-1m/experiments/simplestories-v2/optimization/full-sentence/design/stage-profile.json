@@ -1,0 +1,74 @@
+{
+  "localOnly": true,
+  "chainId": 31337,
+  "port": 18565,
+  "status": "COMPLETE",
+  "sourceSha256": "000c4cc246e96631685796efc4fcad1eb180a8009c313f2fa9e04a71c77b79a4",
+  "measurementScope": "Storage-instrumented local model profile; counters include profiling overhead and are not production swap gas.",
+  "measurements": [
+    {
+      "name": "one-token",
+      "tokens": [
+        307
+      ],
+      "endedEos": false,
+      "endedSentence": false,
+      "logitHash": "0x9c0c1dd04b0a66bd538ada9dd684e89b115dfab5374cda0312890883c90ce82f",
+      "referenceMatched": true,
+      "receiptGas": 12333662,
+      "stages": [
+        "transformer_linear",
+        "rms",
+        "rope",
+        "attention",
+        "silu_and_residual",
+        "vocabulary_head",
+        "embedding",
+        "total"
+      ],
+      "gas": [
+        6092848,
+        203991,
+        40212,
+        47332,
+        637942,
+        4595641,
+        34609,
+        12272693
+      ]
+    },
+    {
+      "name": "quote-sentence",
+      "tokens": [
+        103,
+        196,
+        15
+      ],
+      "endedEos": false,
+      "endedSentence": true,
+      "logitHash": "0x4c007e7c8e59158c2e7ccf4ba9611407dbfb135628e41fbfd88e8e7791000a58",
+      "referenceMatched": true,
+      "receiptGas": 36608509,
+      "stages": [
+        "transformer_linear",
+        "rms",
+        "rope",
+        "attention",
+        "silu_and_residual",
+        "vocabulary_head",
+        "embedding",
+        "total"
+      ],
+      "gas": [
+        18412535,
+        612022,
+        280916,
+        818592,
+        1908496,
+        13000994,
+        99827,
+        36552807
+      ]
+    }
+  ]
+}

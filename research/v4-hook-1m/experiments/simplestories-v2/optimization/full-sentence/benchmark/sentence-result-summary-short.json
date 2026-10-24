@@ -1,0 +1,386 @@
+{
+  "schema_version": 1,
+  "model": "SimpleStories/SimpleStories-V2-1.25M",
+  "revision": "2f445183fbfc45753adb1f9444f81bbdddde9b84",
+  "parameters": 1235968,
+  "scope": "Local Anvil only; no fork, wallet key or mainnet access.",
+  "transaction_gas_ceiling": 32000000,
+  "variant": "codeweights-v2",
+  "sentence_design": {
+    "allInferenceInOneTransaction": true,
+    "persistentAttentionCache": false,
+    "precomputedOutputs": false,
+    "nativeTerminationOnly": [
+      1,
+      2,
+      15,
+      30
+    ],
+    "wordpieceTokensNeverAppendedByHook": true
+  },
+  "normal_sentence_tests": [
+    {
+      "kind": "v4_sentence",
+      "fixture": "colon",
+      "label": "colon_normal",
+      "mode": "NORMAL_32M",
+      "transactionGasLimit": "32000000",
+      "inferenceBudget": "29000000",
+      "prompt": ":",
+      "prompt_ids": [
+        27
+      ],
+      "status": 1,
+      "gasUsed": "28368333",
+      "elapsedMs": 95,
+      "transactionHash": "0x44bc70841cb150dc8037360691023448379576cfe8df25dda814b15aefedf539",
+      "poolId": "0x82530ba5259f727609893640fc3e06c113f32deaab87801ab25fd20ef8de9e86",
+      "tokens": [
+        685,
+        490,
+        938,
+        15
+      ],
+      "text": "some are good.",
+      "endedEos": false,
+      "endedSentence": true,
+      "naturallyTerminated": true,
+      "actualNewTokens": 4,
+      "maximumNewTokens": 4,
+      "lastLogitHash": "0xb6cd31ce33be9daef8ad786ef3f229343bbdc727f71bba679a86bdef6584793b",
+      "exactTokenSequence": true,
+      "generatedTextIsStandaloneSentence": true,
+      "settlementVerified": true,
+      "sequenceVerified": true,
+      "fullSentenceRequired": true
+    },
+    {
+      "kind": "v4_sentence",
+      "fixture": "quote",
+      "label": "quote_normal",
+      "mode": "NORMAL_32M",
+      "transactionGasLimit": "32000000",
+      "inferenceBudget": "29000000",
+      "prompt": "\"",
+      "prompt_ids": [
+        3
+      ],
+      "status": 1,
+      "gasUsed": "21388483",
+      "elapsedMs": 89,
+      "transactionHash": "0x7b1357ceeed860cd1f782d083dab4630af766ba0bc8bbf4065c89f19a6140614",
+      "poolId": "0x55731a908ace0cd5b7f5cdbf48ec551decdfda87716a341d03a2523eee9a6a66",
+      "tokens": [
+        103,
+        196,
+        15
+      ],
+      "text": "he said.",
+      "endedEos": false,
+      "endedSentence": true,
+      "naturallyTerminated": true,
+      "actualNewTokens": 3,
+      "maximumNewTokens": 4,
+      "lastLogitHash": "0x4c007e7c8e59158c2e7ccf4ba9611407dbfb135628e41fbfd88e8e7791000a58",
+      "exactTokenSequence": true,
+      "generatedTextIsStandaloneSentence": true,
+      "settlementVerified": true,
+      "sequenceVerified": true,
+      "fullSentenceRequired": true
+    },
+    {
+      "kind": "v4_sentence",
+      "fixture": "because",
+      "label": "because_normal",
+      "mode": "NORMAL_32M",
+      "transactionGasLimit": "32000000",
+      "inferenceBudget": "29000000",
+      "prompt": "Because",
+      "prompt_ids": [
+        1703
+      ],
+      "status": 1,
+      "gasUsed": "28374622",
+      "elapsedMs": 94,
+      "transactionHash": "0xf250626e126056a1b6d5b3d86b4e291df27082a4a3daaeeac0105a1fcc50b6a7",
+      "poolId": "0x968b94f896c596bdf12a9bc80a937e6b9e26cf0a4f137ad58df631c6ddd360ec",
+      "tokens": [
+        550,
+        127,
+        599,
+        15
+      ],
+      "text": "everyone was happy.",
+      "endedEos": false,
+      "endedSentence": true,
+      "naturallyTerminated": true,
+      "actualNewTokens": 4,
+      "maximumNewTokens": 4,
+      "lastLogitHash": "0x5d0edbfc2d8e538f88d82cbaf970973a6697dc4705c80e127ef921e907df85ba",
+      "exactTokenSequence": true,
+      "generatedTextIsStandaloneSentence": true,
+      "settlementVerified": true,
+      "sequenceVerified": true,
+      "fullSentenceRequired": true
+    }
+  ],
+  "diagnostic_sentence_tests": [
+    {
+      "kind": "v4_sentence",
+      "fixture": "colon",
+      "label": "colon_diagnostic",
+      "mode": "LOCAL_ABOVE_CAP",
+      "transactionGasLimit": "16000000000",
+      "inferenceBudget": "14000000000",
+      "prompt": ":",
+      "prompt_ids": [
+        27
+      ],
+      "status": 1,
+      "gasUsed": "28368333",
+      "elapsedMs": 124,
+      "transactionHash": "0x7e3be20a5aec0c7cbdd2e369586ff4c28bdef41222140795e2b97238d9d97b34",
+      "poolId": "0x4101667b0628f5521ba69dfcc4ece4c6fc63a57826a55c4d23c26e12d9cb3253",
+      "tokens": [
+        685,
+        490,
+        938,
+        15
+      ],
+      "text": "some are good.",
+      "endedEos": false,
+      "endedSentence": true,
+      "naturallyTerminated": true,
+      "actualNewTokens": 4,
+      "maximumNewTokens": 4,
+      "lastLogitHash": "0xb6cd31ce33be9daef8ad786ef3f229343bbdc727f71bba679a86bdef6584793b",
+      "exactTokenSequence": true,
+      "generatedTextIsStandaloneSentence": true,
+      "settlementVerified": true,
+      "sequenceVerified": true,
+      "fullSentenceRequired": true
+    },
+    {
+      "kind": "v4_sentence",
+      "fixture": "quote",
+      "label": "quote_diagnostic",
+      "mode": "LOCAL_ABOVE_CAP",
+      "transactionGasLimit": "16000000000",
+      "inferenceBudget": "14000000000",
+      "prompt": "\"",
+      "prompt_ids": [
+        3
+      ],
+      "status": 1,
+      "gasUsed": "21388483",
+      "elapsedMs": 111,
+      "transactionHash": "0xa412480d52bae42387884a9a1bca8e1134f5cd318768a719dc7b4e31765c9863",
+      "poolId": "0x5db6b620fa77f1048e03e315f034191ce82f34947a97b4d1f385adf492528a1e",
+      "tokens": [
+        103,
+        196,
+        15
+      ],
+      "text": "he said.",
+      "endedEos": false,
+      "endedSentence": true,
+      "naturallyTerminated": true,
+      "actualNewTokens": 3,
+      "maximumNewTokens": 4,
+      "lastLogitHash": "0x4c007e7c8e59158c2e7ccf4ba9611407dbfb135628e41fbfd88e8e7791000a58",
+      "exactTokenSequence": true,
+      "generatedTextIsStandaloneSentence": true,
+      "settlementVerified": true,
+      "sequenceVerified": true,
+      "fullSentenceRequired": true
+    },
+    {
+      "kind": "v4_sentence",
+      "fixture": "because",
+      "label": "because_diagnostic",
+      "mode": "LOCAL_ABOVE_CAP",
+      "transactionGasLimit": "16000000000",
+      "inferenceBudget": "14000000000",
+      "prompt": "Because",
+      "prompt_ids": [
+        1703
+      ],
+      "status": 1,
+      "gasUsed": "28374622",
+      "elapsedMs": 95,
+      "transactionHash": "0xc510b18e0ee093b426d1b6941f8f24188958070b7ee0972b2b38da52ae085cb5",
+      "poolId": "0xf856cf94d0ac21f28ad8cfca7e603122a84724a154a92fca6e9d60319211ce7b",
+      "tokens": [
+        550,
+        127,
+        599,
+        15
+      ],
+      "text": "everyone was happy.",
+      "endedEos": false,
+      "endedSentence": true,
+      "naturallyTerminated": true,
+      "actualNewTokens": 4,
+      "maximumNewTokens": 4,
+      "lastLogitHash": "0x5d0edbfc2d8e538f88d82cbaf970973a6697dc4705c80e127ef921e907df85ba",
+      "exactTokenSequence": true,
+      "generatedTextIsStandaloneSentence": true,
+      "settlementVerified": true,
+      "sequenceVerified": true,
+      "fullSentenceRequired": true
+    }
+  ],
+  "fully_generated_sentences_fitting_32M": [
+    {
+      "kind": "v4_sentence",
+      "fixture": "colon",
+      "label": "colon_normal",
+      "mode": "NORMAL_32M",
+      "transactionGasLimit": "32000000",
+      "inferenceBudget": "29000000",
+      "prompt": ":",
+      "prompt_ids": [
+        27
+      ],
+      "status": 1,
+      "gasUsed": "28368333",
+      "elapsedMs": 95,
+      "transactionHash": "0x44bc70841cb150dc8037360691023448379576cfe8df25dda814b15aefedf539",
+      "poolId": "0x82530ba5259f727609893640fc3e06c113f32deaab87801ab25fd20ef8de9e86",
+      "tokens": [
+        685,
+        490,
+        938,
+        15
+      ],
+      "text": "some are good.",
+      "endedEos": false,
+      "endedSentence": true,
+      "naturallyTerminated": true,
+      "actualNewTokens": 4,
+      "maximumNewTokens": 4,
+      "lastLogitHash": "0xb6cd31ce33be9daef8ad786ef3f229343bbdc727f71bba679a86bdef6584793b",
+      "exactTokenSequence": true,
+      "generatedTextIsStandaloneSentence": true,
+      "settlementVerified": true,
+      "sequenceVerified": true,
+      "fullSentenceRequired": true
+    },
+    {
+      "kind": "v4_sentence",
+      "fixture": "quote",
+      "label": "quote_normal",
+      "mode": "NORMAL_32M",
+      "transactionGasLimit": "32000000",
+      "inferenceBudget": "29000000",
+      "prompt": "\"",
+      "prompt_ids": [
+        3
+      ],
+      "status": 1,
+      "gasUsed": "21388483",
+      "elapsedMs": 89,
+      "transactionHash": "0x7b1357ceeed860cd1f782d083dab4630af766ba0bc8bbf4065c89f19a6140614",
+      "poolId": "0x55731a908ace0cd5b7f5cdbf48ec551decdfda87716a341d03a2523eee9a6a66",
+      "tokens": [
+        103,
+        196,
+        15
+      ],
+      "text": "he said.",
+      "endedEos": false,
+      "endedSentence": true,
+      "naturallyTerminated": true,
+      "actualNewTokens": 3,
+      "maximumNewTokens": 4,
+      "lastLogitHash": "0x4c007e7c8e59158c2e7ccf4ba9611407dbfb135628e41fbfd88e8e7791000a58",
+      "exactTokenSequence": true,
+      "generatedTextIsStandaloneSentence": true,
+      "settlementVerified": true,
+      "sequenceVerified": true,
+      "fullSentenceRequired": true
+    },
+    {
+      "kind": "v4_sentence",
+      "fixture": "because",
+      "label": "because_normal",
+      "mode": "NORMAL_32M",
+      "transactionGasLimit": "32000000",
+      "inferenceBudget": "29000000",
+      "prompt": "Because",
+      "prompt_ids": [
+        1703
+      ],
+      "status": 1,
+      "gasUsed": "28374622",
+      "elapsedMs": 94,
+      "transactionHash": "0xf250626e126056a1b6d5b3d86b4e291df27082a4a3daaeeac0105a1fcc50b6a7",
+      "poolId": "0x968b94f896c596bdf12a9bc80a937e6b9e26cf0a4f137ad58df631c6ddd360ec",
+      "tokens": [
+        550,
+        127,
+        599,
+        15
+      ],
+      "text": "everyone was happy.",
+      "endedEos": false,
+      "endedSentence": true,
+      "naturallyTerminated": true,
+      "actualNewTokens": 4,
+      "maximumNewTokens": 4,
+      "lastLogitHash": "0x5d0edbfc2d8e538f88d82cbaf970973a6697dc4705c80e127ef921e907df85ba",
+      "exactTokenSequence": true,
+      "generatedTextIsStandaloneSentence": true,
+      "settlementVerified": true,
+      "sequenceVerified": true,
+      "fullSentenceRequired": true
+    }
+  ],
+  "exact_prefix_parity_cases": 11,
+  "checks": {
+    "originalArtifactsVerifiedBefore": 13,
+    "totalUniqueParameterCountVerified": true,
+    "eip170EnabledAndSatisfied": true,
+    "allRuntimeDataVerified": true,
+    "fullModelIdentityVerified": true,
+    "invalidModelInputsRejected": 6,
+    "allSuccessfulSwapsRequireNaturalSentence": true,
+    "fullPrefixParityCases": 11,
+    "allFailedSwapsRollback": true,
+    "originalArtifactsVerifiedAfter": 13,
+    "modelSourceUnchanged": true,
+    "localNormalGasLimitRestored": true
+  },
+  "data_storage": {
+    "method": "anvil_setCode",
+    "chunkBytes": 24000,
+    "groups": {
+      "weights": {
+        "shards": 261,
+        "payloadBytes": 6258016,
+        "commitment": "0x39cbe626c4d73462be6de195674cdd209984295166afe41f183810b838e4f4e1"
+      },
+      "tables": {
+        "shards": 1,
+        "payloadBytes": 3080,
+        "commitment": "0x04d9658e58fb55d71bc14194549d6e1d687b1c350fb294d92dcbe9fd32169d2c"
+      },
+      "tiles": {
+        "count": 282,
+        "payloadBytes": 6413507,
+        "commitment": "0x12677213f35fafa47dd7ba36ada796d0cff9f67a3a3dd58a2330348da10295ed",
+        "executable": true,
+        "stopPrefixAdded": false
+      }
+    },
+    "totalShards": 262
+  },
+  "artifact_sha256": "de51e189e12ab255e1a4dcdaab2f8c5a1ed75bbaf3e5679eaa33fadabc5ef2c2",
+  "limitations": [
+    "A normal pass requires a complete naturally terminated output and actual v4 settlement in one 32M-capped transaction.",
+    "Higher-limit controls quantify failed normal tests; their success is not a 32M pass.",
+    "Outputs are unchanged Q12 greedy predictions from the pretrained model, not inserted sentences.",
+    "The finite tested prompts do not establish a gas bound for every possible generated sentence.",
+    "Injected data and executable-weight deployment costs are excluded."
+  ]
+}

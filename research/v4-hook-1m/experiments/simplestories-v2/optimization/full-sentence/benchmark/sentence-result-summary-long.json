@@ -1,0 +1,200 @@
+{
+  "schema_version": 1,
+  "model": "SimpleStories/SimpleStories-V2-1.25M",
+  "revision": "2f445183fbfc45753adb1f9444f81bbdddde9b84",
+  "parameters": 1235968,
+  "scope": "Local Anvil only; no fork, wallet key or mainnet access.",
+  "transaction_gas_ceiling": 32000000,
+  "variant": "codeweights-v2",
+  "sentence_design": {
+    "allInferenceInOneTransaction": true,
+    "persistentAttentionCache": false,
+    "precomputedOutputs": false,
+    "nativeTerminationOnly": [
+      1,
+      2,
+      15,
+      30
+    ],
+    "wordpieceTokensNeverAppendedByHook": true
+  },
+  "normal_sentence_tests": [
+    {
+      "kind": "v4_sentence",
+      "fixture": "eos-start",
+      "label": "eos-start_normal",
+      "mode": "NORMAL_32M",
+      "transactionGasLimit": "32000000",
+      "inferenceBudget": "29000000",
+      "prompt": "[EOS]",
+      "prompt_ids": [
+        1
+      ],
+      "status": 0,
+      "gasUsed": "29099894",
+      "elapsedMs": 91,
+      "transactionHash": "0xdb0e78c9e5cb13a9ee58b627c031334612f574b38ea91978d17e895933ad3e1d",
+      "poolId": "0x1d34d3e72b515d630a92987ff9af2174bf8ff819e874632ac9f95d63a789db65",
+      "rollbackVerified": true,
+      "failure": {
+        "data": "0x90bfb865000000000000000000000000ba7050cc6d45cd95d772145de34e11c0bb6c5040b47b2fb100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000c0000000000000000000000000000000000000000000000000000000000000000415ac02e7000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004a9e35b2f00000000000000000000000000000000000000000000000000000000",
+        "speechRequiredReason": null,
+        "message": "execution reverted (unknown custom error)"
+      }
+    },
+    {
+      "kind": "v4_sentence",
+      "fixture": "but",
+      "label": "but_normal",
+      "mode": "NORMAL_32M",
+      "transactionGasLimit": "32000000",
+      "inferenceBudget": "29000000",
+      "prompt": "But",
+      "prompt_ids": [
+        141
+      ],
+      "status": 0,
+      "gasUsed": "29099894",
+      "elapsedMs": 121,
+      "transactionHash": "0x68a4da279e010d11134758d5f41c7652eff55925288e727e695b8edb892d118b",
+      "poolId": "0xc367ad6e8e5dda896230dee5381f6a892617b2ab7d9205581c4c82dfcbef532e",
+      "rollbackVerified": true,
+      "failure": {
+        "data": "0x90bfb8650000000000000000000000001e8f5341ded0063de350bbc3741e45061e4c9040b47b2fb100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000c0000000000000000000000000000000000000000000000000000000000000000415ac02e7000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004a9e35b2f00000000000000000000000000000000000000000000000000000000",
+        "speechRequiredReason": null,
+        "message": "execution reverted (unknown custom error)"
+      }
+    }
+  ],
+  "diagnostic_sentence_tests": [
+    {
+      "kind": "v4_sentence",
+      "fixture": "eos-start",
+      "label": "eos-start_diagnostic",
+      "mode": "LOCAL_ABOVE_CAP",
+      "transactionGasLimit": "16000000000",
+      "inferenceBudget": "14000000000",
+      "prompt": "[EOS]",
+      "prompt_ids": [
+        1
+      ],
+      "status": 1,
+      "gasUsed": "81696751",
+      "elapsedMs": 165,
+      "transactionHash": "0x32c2b533036de6887ffd3a0c03d213f5886f4c4da836626521b934e852286946",
+      "poolId": "0x30cc047c17bd439a9792151aed35cd96dcd027b67fc641456fe4f9b3db8d3a85",
+      "tokens": [
+        32,
+        289,
+        365,
+        1162,
+        540,
+        85,
+        658,
+        115,
+        1602,
+        1971,
+        15
+      ],
+      "text": "a bright sun shone over the city of green hills.",
+      "endedEos": false,
+      "endedSentence": true,
+      "naturallyTerminated": true,
+      "actualNewTokens": 11,
+      "maximumNewTokens": 16,
+      "lastLogitHash": "0x6145949e0733cea7049c60f8205c0a17e34e99b2d4067c4f2f27d4030e8e0649",
+      "exactTokenSequence": true,
+      "generatedTextIsStandaloneSentence": true,
+      "settlementVerified": true,
+      "sequenceVerified": true,
+      "fullSentenceRequired": true
+    },
+    {
+      "kind": "v4_sentence",
+      "fixture": "but",
+      "label": "but_diagnostic",
+      "mode": "LOCAL_ABOVE_CAP",
+      "transactionGasLimit": "16000000000",
+      "inferenceBudget": "14000000000",
+      "prompt": "But",
+      "prompt_ids": [
+        141
+      ],
+      "status": 1,
+      "gasUsed": "58288496",
+      "elapsedMs": 150,
+      "transactionHash": "0xeac0e05058daaa60c4fe9346ea225867ed7e6890413482a280d8bb069b672765",
+      "poolId": "0x698d40880607afc340bf0fc0251976cf6c1cde81e3841f49320f026733cc7582",
+      "tokens": [
+        85,
+        307,
+        157,
+        32,
+        478,
+        115,
+        533,
+        15
+      ],
+      "text": "the boy felt a spark of hope.",
+      "endedEos": false,
+      "endedSentence": true,
+      "naturallyTerminated": true,
+      "actualNewTokens": 8,
+      "maximumNewTokens": 16,
+      "lastLogitHash": "0x7207be7299d24bd38fdad3149ca0668023e021692bdbf086d24f277eccc8c65d",
+      "exactTokenSequence": true,
+      "generatedTextIsStandaloneSentence": true,
+      "settlementVerified": true,
+      "sequenceVerified": true,
+      "fullSentenceRequired": true
+    }
+  ],
+  "fully_generated_sentences_fitting_32M": [],
+  "exact_prefix_parity_cases": 19,
+  "checks": {
+    "originalArtifactsVerifiedBefore": 13,
+    "totalUniqueParameterCountVerified": true,
+    "eip170EnabledAndSatisfied": true,
+    "allRuntimeDataVerified": true,
+    "fullModelIdentityVerified": true,
+    "invalidModelInputsRejected": 6,
+    "allSuccessfulSwapsRequireNaturalSentence": true,
+    "fullPrefixParityCases": 19,
+    "allFailedSwapsRollback": true,
+    "originalArtifactsVerifiedAfter": 13,
+    "modelSourceUnchanged": true,
+    "localNormalGasLimitRestored": true
+  },
+  "data_storage": {
+    "method": "anvil_setCode",
+    "chunkBytes": 24000,
+    "groups": {
+      "weights": {
+        "shards": 261,
+        "payloadBytes": 6258016,
+        "commitment": "0x39cbe626c4d73462be6de195674cdd209984295166afe41f183810b838e4f4e1"
+      },
+      "tables": {
+        "shards": 1,
+        "payloadBytes": 3080,
+        "commitment": "0x04d9658e58fb55d71bc14194549d6e1d687b1c350fb294d92dcbe9fd32169d2c"
+      },
+      "tiles": {
+        "count": 282,
+        "payloadBytes": 6413507,
+        "commitment": "0x12677213f35fafa47dd7ba36ada796d0cff9f67a3a3dd58a2330348da10295ed",
+        "executable": true,
+        "stopPrefixAdded": false
+      }
+    },
+    "totalShards": 262
+  },
+  "artifact_sha256": "1624f98057260d41d696b5b2d724e569bee660906ca6a47577fc3fc0874cf6ab",
+  "limitations": [
+    "A normal pass requires a complete naturally terminated output and actual v4 settlement in one 32M-capped transaction.",
+    "Higher-limit controls quantify failed normal tests; their success is not a 32M pass.",
+    "Outputs are unchanged Q12 greedy predictions from the pretrained model, not inserted sentences.",
+    "The finite tested prompts do not establish a gas bound for every possible generated sentence.",
+    "Injected data and executable-weight deployment costs are excluded."
+  ]
+}

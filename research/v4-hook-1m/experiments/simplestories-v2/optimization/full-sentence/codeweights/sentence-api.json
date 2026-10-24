@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "legacy_generate_maximum_new_tokens": 4,
+  "generate_sentence_maximum_new_tokens": 16,
+  "maximum_context_positions": 16,
+  "valid_capacity": "prompt.length + maximumNewTokens - 1 <= 16",
+  "signature": "generateSentence(uint16[] prompt,uint8 maximumNewTokens) returns(uint16[] tokens,bool endedEos,bool endedSentence,bytes32 lastLogitHash)",
+  "native_sentence_terminator_ids": [15, 2, 30],
+  "native_sentence_terminators": [".", "!", "?"],
+  "eos_token_id": 1,
+  "stopping": "Stop only after the model predicts a native terminator or EOS; reaching the token cap reports both ending flags false.",
+  "limitations": "Punctuation is a stopping condition, not a grammar or factual-quality guarantee. All generated tokens and the final full-vocabulary hash must be checked against the independent model reference."
+}

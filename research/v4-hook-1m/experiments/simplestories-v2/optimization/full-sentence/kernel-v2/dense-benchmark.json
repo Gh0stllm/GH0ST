@@ -1,0 +1,43 @@
+{
+  "status": "PASS",
+  "chainId": 31337,
+  "loopback": "127.0.0.1:18554",
+  "cases": [
+    {
+      "name": "model.layers.0.self_attn.q_proj.weight",
+      "rows": 128,
+      "columns": 128,
+      "parity": true,
+      "baselineGas": "997947",
+      "optimizedGas": "943854",
+      "reductionPercent": 5.420428138969302
+    },
+    {
+      "name": "model.layers.0.mlp.gate_proj.weight",
+      "rows": 341,
+      "columns": 128,
+      "parity": true,
+      "baselineGas": "2525778",
+      "optimizedGas": "2381373",
+      "reductionPercent": 5.717248309233824
+    },
+    {
+      "name": "model.layers.0.mlp.down_proj.weight",
+      "rows": 128,
+      "columns": 341,
+      "parity": true,
+      "baselineGas": "2543506",
+      "optimizedGas": "2391382",
+      "reductionPercent": 5.98087836238641
+    },
+    {
+      "name": "model.embed_tokens.weight",
+      "rows": 341,
+      "columns": 128,
+      "parity": true,
+      "baselineGas": "2528094",
+      "optimizedGas": "2383689",
+      "reductionPercent": 5.712010708462579
+    }
+  ]
+}
