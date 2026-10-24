@@ -1,0 +1,81 @@
+{
+  "status": "QUALITY_NOT_APPROVED",
+  "source": {
+    "hidden_width": 384,
+    "checkpoint": "experiments/gh0st-voice/voice-v8/training/runs/focused-original-h384-2m/checkpoint-002002242",
+    "weights_sha256": "9df5f83efcdb755d1ab3f0c4ea536aa1a4695f1e46f6ac7af49c84d25025698f",
+    "vocabulary_sha256": "940734e6971ecba0960a5b11b4dc5f8604c0a00e4078340c7f002abbec886e9a",
+    "parser_sha256": "61cbae7aa862559488c50465d214dd96b836b02289d70b1a07150a3766aab620"
+  },
+  "reviewed_raw_streams": 4,
+  "passes": 0,
+  "grammar_pairs": {
+    "native": {
+      "preferred": 11,
+      "supported": 16
+    },
+    "calibrated": {
+      "preferred": 11,
+      "supported": 16
+    }
+  },
+  "outputs": [
+    {
+      "variant": "v8-focused2m-native",
+      "seed": 0,
+      "scores": {
+        "grammar": 1,
+        "continuity": 0,
+        "voice": 1,
+        "repetition": 3
+      },
+      "passes": false,
+      "reason": "Malformed verb phrases, prepositions and arbitrary entity links persist across the full passage.",
+      "raw_path": "experiments/gh0st-voice/voice-v7/evaluation/v8-focused2m-native/raw-outputs.json",
+      "raw_sha256": "4a36dc28faa49e0d580ab2c6e9e0139dc5082d9874a444e751678d6511e13c69"
+    },
+    {
+      "variant": "v8-focused2m-native",
+      "seed": 42,
+      "scores": {
+        "grammar": 1,
+        "continuity": 0,
+        "voice": 1,
+        "repetition": 3
+      },
+      "passes": false,
+      "reason": "Malformed verb phrases, prepositions and arbitrary entity links persist across the full passage.",
+      "raw_path": "experiments/gh0st-voice/voice-v7/evaluation/v8-focused2m-native/raw-outputs.json",
+      "raw_sha256": "4a36dc28faa49e0d580ab2c6e9e0139dc5082d9874a444e751678d6511e13c69"
+    },
+    {
+      "variant": "v8-focused2m-calibrated",
+      "seed": 0,
+      "scores": {
+        "grammar": 1,
+        "continuity": 0,
+        "voice": 1,
+        "repetition": 3
+      },
+      "passes": false,
+      "reason": "Malformed verb phrases, prepositions and arbitrary entity links persist across the full passage.",
+      "raw_path": "experiments/gh0st-voice/voice-v7/evaluation/v8-focused2m-calibrated/raw-outputs.json",
+      "raw_sha256": "b68217193dc69eb50dca0a2e28d3c7b658c6e75dc8c9a60e48418eb3173dd7c3"
+    },
+    {
+      "variant": "v8-focused2m-calibrated",
+      "seed": 42,
+      "scores": {
+        "grammar": 1,
+        "continuity": 0,
+        "voice": 1,
+        "repetition": 3
+      },
+      "passes": false,
+      "reason": "Malformed verb phrases, prepositions and arbitrary entity links persist across the full passage.",
+      "raw_path": "experiments/gh0st-voice/voice-v7/evaluation/v8-focused2m-calibrated/raw-outputs.json",
+      "raw_sha256": "b68217193dc69eb50dca0a2e28d3c7b658c6e75dc8c9a60e48418eb3173dd7c3"
+    }
+  ],
+  "decision": "Two million original-only adaptation words did not fix free-running grammar or continuity; local pair likelihood is not a release gate."
+}

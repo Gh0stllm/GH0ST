@@ -1,0 +1,58 @@
+{
+  "status": "TRAINING_REVIEW_PASS_BULK_GENERATION_REQUIRES_GUARDS_AND_QUALITY_GATE",
+  "scope": "Independent read-only source review and CPU tokenizer audit; no training, GPU, network, chain or owner-source edits",
+  "training_findings": [
+    "The exact selected set contains 749 training originals (42,290 whitespace words), 86 validation originals and 84 test originals.",
+    "No selected group, normalized full document or 12-word span crosses splits. This is evidence for the present snapshot, not a generic guarantee for future input paths.",
+    "Maximum BPE length with both real EOS tokens is 119 for train and 89 for validation/test. Default 256 truncates no selected document.",
+    "Causal language-model shifting is performed by the native GPT-2 model. Masking by attention_mask, rather than token ID, correctly retains real EOS targets even when EOS is used for padding.",
+    "Top-four-block adaptation leaves tied embedding/output weights and lower eight blocks frozen, while training final normalization and the last four blocks.",
+    "Validation contains no training rows; the best checkpoint is saved only after a validation improvement. The test set is read for group checks/provenance, not loss or optimizer updates.",
+    "Two epochs expose only about 97,344 BPE input tokens. This is a bounded voice adaptation of a pretrained teacher, not training a 124M model from scratch.",
+    "The CPU six-token smoke and a valid training objective do not establish prose quality. Its sample already changed a brass key into a silver key."
+  ],
+  "before_bulk_generation": [
+    {
+      "priority": "required",
+      "finding": "The current natural-ending filter scans prompt plus continuation and can accept the prompt alone.",
+      "evidence": "audit.json includes a 48-word prompt plus three unfinished generated words that passes the length filter unchanged.",
+      "recommendation": "Require at least one natural ending occurring after the prompt boundary and a minimum amount of retained generated prose; preserve raw text and rejection counts."
+    },
+    {
+      "priority": "required",
+      "finding": "Prompt token length is unchecked and generation has no explicit native-context guard.",
+      "recommendation": "Before generation, assert each BOS-plus-prompt token count plus max_new does not exceed the model's native context size. Do not silently truncate factual prompt setup."
+    },
+    {
+      "priority": "required",
+      "finding": "Checkpoint and prompt paths appear in the generation report, but immutable contents and prompt ancestry are not bound.",
+      "recommendation": "Record model/tokenizer/config/prompt SHA256 and source group IDs. Use only training-derived or new generation prompts for student data. Keep all siblings from a prompt/group together; keep evaluation prefixes and their outputs entirely excluded."
+    },
+    {
+      "priority": "recommended",
+      "finding": "Training begins each document with EOS/BOS while sampling currently tokenizes only the prose prompt.",
+      "recommendation": "Use the same single native EOS/BOS initialization for both the base and adapted teacher comparison and for accepted bulk generation. This changes conditioning, not generated prose."
+    },
+    {
+      "priority": "recommended",
+      "finding": "Positive batch/budget arguments are not all checked and final candidate count may overshoot by up to batch-1.",
+      "recommendation": "Reject nonpositive batch, target_tokens, max_candidates, eval_every and learning rate; clip the last candidate batch to its remaining limit."
+    }
+  ],
+  "evaluation": {
+    "gate_file": "teacher-validation-gate.json",
+    "gate_sha256": "4cbfad070e7d2cbbfd50eb1a2b174debaa116afff1eec13d68551eaf4ec9a94e",
+    "prompt_file": "teacher-validation-prompts.jsonl",
+    "streams_per_model": 16,
+    "compare": "original pretrained teacher versus validation-best adaptation, same prompts, decoding, seed order and batch size",
+    "quality_approval": false,
+    "bulk_step": "Only after manual raw-prose and training-copy review; accepted-length filters alone are insufficient",
+    "final_test": "Use untouched test-group prefixes only after teacher selection; never turn their continuations into student training material"
+  },
+  "limitations": [
+    "The source set is small and stylistically repetitive; adapting the top four blocks may overfit it.",
+    "Independent document EOS supervision is appropriate for a paragraph teacher; it does not make the future stateful student continuous. Student training must still carry history and be tested without silent resets.",
+    "Teacher no-repeat and repetition-penalty settings are disclosed offline decoding choices. They are not part of the eventual on-chain student's neural runtime.",
+    "Absence of long exact training overlap does not prove originality or semantic novelty."
+  ]
+}

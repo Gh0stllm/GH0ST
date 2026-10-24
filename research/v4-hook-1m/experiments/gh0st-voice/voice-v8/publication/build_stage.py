@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Stage V7/V8 research locally; never contacts GitHub or another service."""
+"""Stage V7/V8/V9 research locally; never contacts GitHub or another service."""
 from __future__ import annotations
 
 import argparse
@@ -12,10 +12,13 @@ import re
 import shutil
 
 RESEARCH_PREFIX=PurePosixPath('research/v4-hook-1m/experiments/gh0st-voice')
+VERSIONS=('voice-v7','voice-v8','voice-v9')
 MAX_BLOB=90_000_000
 RUNNING={'RUNNING','TRAINING','IN_PROGRESS','STARTING','QUEUED'}
 BAD_PARTS={'__pycache__','node_modules','.git','.venv','venv','cache','caches',
-           'encoded-base-before-number-fix','raw','downloads','revisions'}
+           'encoded-base-before-number-fix','raw','downloads','revisions',
+           'qwen-cache','download-cache','model-cache','teacher-cache'}
+TEACHER_WEIGHT_DIRS={'checkpoint-best','checkpoint-last'}
 SECRET_PATTERNS={
     'github_token':rb'(?:gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,})',
     'netlify_token':rb'nfp_[A-Za-z0-9]{20,}',
@@ -65,8 +68,8 @@ def safe_relative(name):
     if p.is_absolute()or'..'in p.parts:raise ValueError('Unsafe relative repository path')
     if p.parts[:len(RESEARCH_PREFIX.parts)]!=RESEARCH_PREFIX.parts:
         raise ValueError(f'Outside allowed research prefix: {name}')
-    if p.parts[len(RESEARCH_PREFIX.parts)]not in ('voice-v7','voice-v8'):
-        raise ValueError(f'Outside V7/V8 prefix: {name}')
+    if p.parts[len(RESEARCH_PREFIX.parts)]not in VERSIONS:
+        raise ValueError(f'Outside V7/V8/V9 prefix: {name}')
     return p
 
 
@@ -79,12 +82,12 @@ def status(path):
 
 def inactive_paths(voice_root):
     prefixes=[]
-    for version in ('voice-v7','voice-v8'):
-        runs=voice_root/version/'training/runs'
-        if runs.exists():
-            for folder in runs.iterdir():
-                if folder.is_dir()and any(status(p)in RUNNING for p in folder.glob('*.json')):
-                    prefixes.append(folder.resolve())
+    for version in VERSIONS:
+        root=voice_root/version
+        if root.exists():
+            for report in root.rglob('report.json'):
+                if any(part in BAD_PARTS for part in report.relative_to(root).parts):continue
+                if status(report)in RUNNING:prefixes.append(report.parent.resolve())
     return prefixes
 
 
@@ -167,6 +170,7 @@ def main():
     p.add_argument('--stage',type=Path,default=Path(__file__).resolve().parent/'stage')
     p.add_argument('--checkpoint',type=Path)
     p.add_argument('--export',type=Path,dest='export_dir')
+    p.add_argument('--v9-checkpoint',type=Path,help='One selected stopped V9 checkpoint; no optimizer or other V9 weights')
     a=p.parse_args();voice_root=a.voice_root.resolve();stage=a.stage.resolve()
     if stage.exists():p.error('Stage already exists; use a new --stage path')
     if stage.is_relative_to(voice_root):p.error('Stage must be outside the source tree')
@@ -184,15 +188,17 @@ def main():
             raise ValueError('Duplicate staged path: '+stored)
         entries[stored]={'source':source,'original_repo':repo,'compress':compress}
 
-    for version in ('voice-v7','voice-v8'):
+    for version in VERSIONS:
         root=voice_root/version
         for source in sorted(root.rglob('*')):
             if not source.is_file():continue
             rel=source.relative_to(root);parts=rel.parts;reason=None
             if source.is_symlink():reason='symlink'
             elif any(part in BAD_PARTS or part.startswith('fixture')for part in parts):reason='cache/raw/fixture/old revision'
+            elif 'teacher-notes'in parts and any(part in TEACHER_WEIGHT_DIRS for part in parts):reason='teacher weight checkpoint directory'
             elif any(source.resolve().is_relative_to(folder)for folder in running):reason='active training run'
             elif source.suffix in ('.pyc','.pyo','.safetensors','.pt','.pth','.ckpt','.npz'):reason='cache or unselected weights/reference arrays'
+            elif version=='voice-v9'and any(part.startswith('checkpoint')for part in parts[:-1])and source.name not in ('training-metadata.json','metadata.json','samples.json','probes.json','quantization-audit.json')and source.suffix!='.md':reason='unselected V9 checkpoint auxiliary file'
             elif parts[0]=='evm'and source.suffix=='.bin':reason='reproducible microbenchmark/random data; generators and reports retained'
             elif parts[0]=='exports'and source.suffix=='.bin':reason='unselected model export binary'
             elif source.suffix=='.json'and status(source)in RUNNING:reason='unfinished report'
@@ -206,6 +212,10 @@ def main():
         checkpoint,export=a.checkpoint.resolve(),a.export_dir.resolve()
         if not checkpoint.is_relative_to(voice_root/'voice-v8'):raise ValueError('Selected checkpoint must be inside voice-v8')
         if not export.is_relative_to(voice_root/'voice-v8'):raise ValueError('Selected export must be inside voice-v8')
+        if 'teacher-notes'in checkpoint.relative_to(voice_root).parts:
+            raise ValueError('Teacher checkpoints cannot be selected for student publication')
+        if any(part in BAD_PARTS for source in (checkpoint,export)for part in source.relative_to(voice_root).parts):
+            raise ValueError('Downloaded/cache trees cannot be explicitly selected for publication')
         if any(checkpoint.is_relative_to(folder)for folder in running):raise ValueError('Selected run is still active')
         weights=checkpoint/'model.safetensors';manifest=json.loads((export/'manifest.json').read_text())
         weight_sha=sha(weights)
@@ -235,6 +245,37 @@ def main():
         selection={'checkpoint':str(checkpoint),'checkpoint_sha256':weight_sha,'export':str(export),
                    'export_manifest_sha256':sha(export/'manifest.json'),'language_approval':'No approval inferred from selection'}
 
+    v9_selection=None
+    if a.v9_checkpoint:
+        checkpoint=a.v9_checkpoint.resolve();v9_root=voice_root/'voice-v9'
+        if not checkpoint.is_relative_to(v9_root):raise ValueError('Selected V9 checkpoint must be inside voice-v9')
+        relative=checkpoint.relative_to(v9_root)
+        if 'teacher-notes'in relative.parts or any(part in BAD_PARTS for part in relative.parts):
+            raise ValueError('Teacher/cache paths cannot be selected as V9 student checkpoints')
+        if any(checkpoint.is_relative_to(folder)for folder in running):raise ValueError('Selected V9 training run is still active')
+        run_report=next((folder/'report.json'for folder in checkpoint.parents
+                         if folder.is_relative_to(v9_root)and(folder/'report.json').is_file()),None)
+        if run_report is None or status(run_report)in RUNNING or not status(run_report):
+            raise ValueError('Selected V9 checkpoint requires a stopped run report')
+        metadata_file=checkpoint/'training-metadata.json'
+        if not metadata_file.is_file():raise ValueError('Selected V9 checkpoint needs training-metadata.json')
+        metadata=json.loads(metadata_file.read_text());weight_file=checkpoint/'model.safetensors';weight_sha=sha(weight_file)
+        if metadata.get('step',0)<=0 or sum(metadata.get('source_targets',{}).values())<=0:
+            raise ValueError('Selected V9 checkpoint has no recorded training')
+        if metadata.get('weight_sha256')!=weight_sha:raise ValueError('Selected V9 checkpoint hash mismatch')
+        allowed={'model.safetensors','config.json','generation_config.json','tokenizer.json','tokenizer_config.json',
+                 'special_tokens_map.json','added_tokens.json','vocab.json','merges.txt','tokenizer.model'}
+        selected_names=[]
+        for source in sorted(checkpoint.iterdir()):
+            if source.is_file()and source.name in allowed:
+                add(source,RESEARCH_PREFIX/'voice-v9/training/selected'/source.name,selected=True)
+                selected_names.append(source.name)
+        if not {'model.safetensors','config.json','tokenizer.json'}<=set(selected_names):
+            raise ValueError('Selected V9 checkpoint must include model, config, and tokenizer JSON')
+        v9_selection={'checkpoint':str(checkpoint),'checkpoint_sha256':weight_sha,
+            'training_metadata_sha256':sha(metadata_file),'stopped_run_report_sha256':sha(run_report),
+            'files':selected_names,'language_approval':'No approval inferred from selection'}
+
     stage.mkdir(parents=True);files_root=stage/'files';files_root.mkdir();manifest_entries=[];restorations=[];findings=[]
     for stored,item in sorted(entries.items()):
         source=item['source'];findings+=scan_file(source,str(item['original_repo']))
@@ -255,10 +296,10 @@ def main():
     generated={
         str(publication/'restore.py'):RESTORE_SCRIPT,
         str(publication/'restoration-map.json'):json.dumps({'schema_version':1,'encoding':'gzip; mtime0; empty filename','artifacts':restorations},indent=2)+'\n',
-        str(publication/'README.md'):'''# V7/V8 local research publication snapshot
+        str(publication/'README.md'):'''# V7/V8/V9 local research publication snapshot
 
 This snapshot contains source, curriculum, encoded training data, and completed
-reports for the V7/V8 experiments. V7 failures are retained as evidence; none of
+reports for the V7/V8/V9 experiments. V7 failures are retained as evidence; none of
 the data counts, conversions, training losses, or gas reports alone establishes
 usable language quality. The offline compositional curriculum is synthetic
 training material. The runtime remains neural word and punctuation generation.
@@ -268,6 +309,9 @@ optimizers, old number-parser revisions, and all unselected checkpoint weights
 are excluded. No files are deleted from the repository by this snapshot.
 Selected float/runtime weights are included only when explicitly passed as a
 matching checkpoint/export pair. Selection does not imply language approval.
+One separately selected V9 student checkpoint may include its float model,
+configuration and tokenizer after the run has stopped. Teacher weights and
+download caches are always excluded.
 
 JSONL files and selected large fused binaries are stored as deterministic gzip.
 From the repository root, restore them with:
@@ -299,7 +343,7 @@ hashes, and compression information are recorded in the external stage manifest.
     result={'schema_version':1,'status':'PASS'if not findings else'SECRET_SCAN_FAILED',
         'created_at_utc':datetime.now(timezone.utc).isoformat(),'source_root':str(voice_root),
         'stage':str(stage),'repository_prefix':str(RESEARCH_PREFIX),'network_actions':0,
-        'selection':selection,'file_count':len(manifest_entries),'staged_bytes':sum(e['bytes']for e in manifest_entries),
+        'selection':selection,'v9_selection':v9_selection,'file_count':len(manifest_entries),'staged_bytes':sum(e['bytes']for e in manifest_entries),
         'max_blob_bytes':max(e['bytes']for e in manifest_entries),'blob_limit_bytes':MAX_BLOB,
         'gzip_restorations_verified':len(restorations),'secret_scan':{'status':'PASS'if not findings else'FAIL','patterns':list(PATTERNS),'findings':findings},
         'active_run_folders_excluded':[str(p)for p in running],'excluded_files':excluded,'deletions':[],
@@ -307,7 +351,7 @@ hashes, and compression information are recorded in the external stage manifest.
     (stage/'manifest.json').write_text(json.dumps(result,indent=2)+'\n')
     (stage/'files.tsv').write_text('repository_path\tbytes\tgit_blob_sha1\tsha256\tencoding\n'+
         ''.join(f"{e['repository_path']}\t{e['bytes']}\t{e['git_blob_sha1']}\t{e['sha256']}\t{e['encoding']}\n"for e in result['files']))
-    print(json.dumps({k:result[k]for k in ('status','file_count','staged_bytes','max_blob_bytes','gzip_restorations_verified','active_run_folders_excluded','selection')},indent=2))
+    print(json.dumps({k:result[k]for k in ('status','file_count','staged_bytes','max_blob_bytes','gzip_restorations_verified','active_run_folders_excluded','selection','v9_selection')},indent=2))
     print('manifest_sha256='+sha(stage/'manifest.json'))
     if findings:raise SystemExit('Secret scan failed; see redacted finding locations in local manifest. Do not publish.')
 

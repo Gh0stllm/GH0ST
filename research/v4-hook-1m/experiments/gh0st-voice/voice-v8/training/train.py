@@ -18,6 +18,7 @@ def main():
     p.add_argument('--hidden',type=int,default=512);p.add_argument('--device',choices=['mps','cpu'],default='mps');p.add_argument('--batch',type=int,default=128);p.add_argument('--width',type=int,default=128)
     p.add_argument('--words',type=int,default=20000000);p.add_argument('--stop',type=int,default=0);p.add_argument('--every',type=int,default=2000000)
     p.add_argument('--curriculum-weight',type=float,default=.75);p.add_argument('--adult-weight',type=float,default=.05)
+    p.add_argument('--teacher-weight',type=float,default=0.)
     p.add_argument('--lr',type=float,default=.001);p.add_argument('--dropout',type=float,default=.1);p.add_argument('--seed',type=int,default=741003)
     p.add_argument('--grammar-pairs',type=Path);p.add_argument('--grammar-weight',type=float,default=0.);p.add_argument('--grammar-margin',type=float,default=2.)
     p.add_argument('--init-weights',type=Path);p.add_argument('--warm-source',type=Path);p.add_argument('--warm-vocabulary',type=Path)
@@ -27,8 +28,11 @@ def main():
     a.output.mkdir(parents=True);torch.set_num_threads(2);torch.manual_seed(a.seed)
     assert a.grammar_weight>=0 and (not a.grammar_weight or a.grammar_pairs)
     data=Corpus(a.data,grammar_pairs=a.grammar_pairs);rng=np.random.default_rng(a.seed+1)
-    mix={'curriculum':a.curriculum_weight,'original':1-a.curriculum_weight-a.adult_weight,'adult':a.adult_weight};assert min(mix.values())>=0
-    if 'curriculum' not in data.rows['train']:mix={'original':1-a.adult_weight,'adult':a.adult_weight}
+    mix={'curriculum':a.curriculum_weight,'original':1-a.curriculum_weight-a.adult_weight-a.teacher_weight,'adult':a.adult_weight}
+    if 'curriculum' not in data.rows['train']:mix={'original':1-a.adult_weight-a.teacher_weight,'adult':a.adult_weight}
+    if a.teacher_weight:
+        assert 'teacher' in data.rows['train'];mix['teacher']=a.teacher_weight
+    assert min(mix.values())>=0
     counts=sum(np.asarray(data.counts[k],dtype=float)*value/max(1,sum(data.counts[k])) for k,value in mix.items())
     model=VoiceModel(counts,hidden=a.hidden);model.dropout=a.dropout
     expected_parameters=12*a.hidden*a.hidden+16554*a.hidden+49285

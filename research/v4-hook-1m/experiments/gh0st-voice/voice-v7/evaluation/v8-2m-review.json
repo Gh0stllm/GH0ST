@@ -1,0 +1,69 @@
+{
+  "status": "EARLY_V8_GATE_FAIL",
+  "new_training_words": 2015754,
+  "source": {
+    "hidden_width": 384,
+    "checkpoint": "experiments/gh0st-voice/voice-v8/training/runs/grammar-h384-16m/checkpoint-002015754",
+    "weights_sha256": "c351a8c67875733a29ce0463b57a126f3b809cd076ca2e5d92c70f61ce188702",
+    "vocabulary_sha256": "940734e6971ecba0960a5b11b4dc5f8604c0a00e4078340c7f002abbec886e9a",
+    "parser_sha256": "61cbae7aa862559488c50465d214dd96b836b02289d70b1a07150a3766aab620"
+  },
+  "grammar_pairs": {
+    "native": [
+      10,
+      16
+    ],
+    "calibrated": [
+      10,
+      16
+    ]
+  },
+  "comparison": "The same16 grammar pairs scored10/16 for the V7 curriculum2M source. No clear quality gain at this early wider-model stage.",
+  "scope": "Four fixed128-word development streams, all read; no long final test or selection performed.",
+  "reviews": [
+    {
+      "setting": "native",
+      "seed": 0,
+      "grammar": 1,
+      "continuity": 1,
+      "adult_first_person_voice": 1,
+      "repetition": 2,
+      "pass": false,
+      "evidence": "a expected longer",
+      "reason": "Some recognizable clauses, but recurring malformed auxiliaries, articles and disconnected technical concepts prevent a coherent paragraph."
+    },
+    {
+      "setting": "native",
+      "seed": 42,
+      "grammar": 1,
+      "continuity": 1,
+      "adult_first_person_voice": 1,
+      "repetition": 2,
+      "pass": false,
+      "evidence": "i been not progress",
+      "reason": "Some recognizable clauses, but recurring malformed auxiliaries, articles and disconnected technical concepts prevent a coherent paragraph."
+    },
+    {
+      "setting": "calibrated",
+      "seed": 0,
+      "grammar": 1,
+      "continuity": 1,
+      "adult_first_person_voice": 1,
+      "repetition": 2,
+      "pass": false,
+      "evidence": "the reader could borrowing",
+      "reason": "Some recognizable clauses, but recurring malformed auxiliaries, articles and disconnected technical concepts prevent a coherent paragraph."
+    },
+    {
+      "setting": "calibrated",
+      "seed": 42,
+      "grammar": 1,
+      "continuity": 1,
+      "adult_first_person_voice": 1,
+      "repetition": 2,
+      "pass": false,
+      "evidence": "the source could direction a promise",
+      "reason": "Some recognizable clauses, but recurring malformed auxiliaries, articles and disconnected technical concepts prevent a coherent paragraph."
+    }
+  ]
+}

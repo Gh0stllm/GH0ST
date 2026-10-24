@@ -1,0 +1,54 @@
+{
+  "status": "PASS_CORE_CPU_DATA_AND_TRAINER_PENDING",
+  "gpu_actions": 0,
+  "network_actions": 0,
+  "core_sha256": "b9540278f0610cd9d20c90ecc8542102c4781e7fa12a2ee3024ee454c608f2e3",
+  "base_sha256": "4d7b846d32e636c70ed3a342ec53775d10d56b404c357865a75eb2dce0b78f94",
+  "window_cases": 24,
+  "exact_once_known_targets": true,
+  "counter_boundary_results": [
+    {
+      "voice": 50000,
+      "grammar": 149856
+    },
+    {
+      "voice": 100000,
+      "grammar": 299808
+    }
+  ],
+  "counter_caps_and_masks_pass": true,
+  "valid_query_mask_last64_including_current": true,
+  "padded_model_logits_finite": true,
+  "future_token_causality_exact": true,
+  "trainable_parameter_count": 360704,
+  "trainable_names": [
+    "model.layers.2.self_attn.q_proj.weight",
+    "model.layers.2.self_attn.k_proj.weight",
+    "model.layers.2.self_attn.v_proj.weight",
+    "model.layers.2.self_attn.o_proj.weight",
+    "model.layers.2.mlp.gate_proj.weight",
+    "model.layers.2.mlp.up_proj.weight",
+    "model.layers.2.mlp.down_proj.weight",
+    "model.layers.2.input_layernorm.weight",
+    "model.layers.2.post_attention_layernorm.weight",
+    "model.layers.3.self_attn.q_proj.weight",
+    "model.layers.3.self_attn.k_proj.weight",
+    "model.layers.3.self_attn.v_proj.weight",
+    "model.layers.3.self_attn.o_proj.weight",
+    "model.layers.3.mlp.gate_proj.weight",
+    "model.layers.3.mlp.up_proj.weight",
+    "model.layers.3.mlp.down_proj.weight",
+    "model.layers.3.input_layernorm.weight",
+    "model.layers.3.post_attention_layernorm.weight"
+  ],
+  "frozen_parameters_unchanged_after_step": true,
+  "tied_head_and_embedding_frozen": true,
+  "trainable_tensors_changed_after_step": 18,
+  "step_is_in_memory_only": true,
+  "caveats": [
+    "Default32-token overlap gives32 initial context tokens at a crop boundary, not64.",
+    "Independent128-token windows do not exactly equal a long-running four-layer KV cache even with64 overlap.",
+    "Some padded queries have no valid keys, despite the source comment; finite mask values yield finite logits, and these targets are ignored.",
+    "This does not approve a prepared data snapshot or a trainer/resume implementation that is not yet present."
+  ]
+}

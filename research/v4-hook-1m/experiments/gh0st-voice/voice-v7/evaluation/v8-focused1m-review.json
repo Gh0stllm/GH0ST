@@ -1,0 +1,72 @@
+{
+  "status": "QUALITY_NOT_APPROVED",
+  "source": {
+    "hidden_width": 384,
+    "checkpoint": "experiments/gh0st-voice/voice-v8/training/runs/focused-original-h384-2m/checkpoint-001001153",
+    "weights_sha256": "4a09f36d142dcd09fb20eb8d22155feae89236d2622cb1190036790b99a8ff37",
+    "vocabulary_sha256": "940734e6971ecba0960a5b11b4dc5f8604c0a00e4078340c7f002abbec886e9a",
+    "parser_sha256": "61cbae7aa862559488c50465d214dd96b836b02289d70b1a07150a3766aab620"
+  },
+  "reviewed_raw_streams": 4,
+  "passes": 0,
+  "comparability": "Same fixed seeds0/42,128words, native1/1/1 and calibrated1/.5/.7 as prior V8 comparisons; independent CPU FP32, no constraints or punctuation repair.",
+  "outputs": [
+    {
+      "variant": "v8-focused1m-native",
+      "seed": 0,
+      "scores": {
+        "grammar": 1,
+        "continuity": 0,
+        "voice": 1,
+        "repetition": 3
+      },
+      "passes": false,
+      "reason": "Frequent malformed verb phrases and impossible noun links prevent a coherent paragraph; first-person tokens alone do not establish a stable narrator.",
+      "raw_path": "experiments/gh0st-voice/voice-v7/evaluation/v8-focused1m-native/raw-outputs.json",
+      "raw_sha256": "73f0878527c3993964890f78392fa6943887a3a3047b79644d9cbef400db6462"
+    },
+    {
+      "variant": "v8-focused1m-native",
+      "seed": 42,
+      "scores": {
+        "grammar": 0,
+        "continuity": 0,
+        "voice": 1,
+        "repetition": 3
+      },
+      "passes": false,
+      "reason": "Frequent malformed verb phrases and impossible noun links prevent a coherent paragraph; first-person tokens alone do not establish a stable narrator.",
+      "raw_path": "experiments/gh0st-voice/voice-v7/evaluation/v8-focused1m-native/raw-outputs.json",
+      "raw_sha256": "73f0878527c3993964890f78392fa6943887a3a3047b79644d9cbef400db6462"
+    },
+    {
+      "variant": "v8-focused1m-calibrated",
+      "seed": 0,
+      "scores": {
+        "grammar": 1,
+        "continuity": 0,
+        "voice": 1,
+        "repetition": 2
+      },
+      "passes": false,
+      "reason": "Frequent malformed verb phrases and impossible noun links prevent a coherent paragraph; first-person tokens alone do not establish a stable narrator.",
+      "raw_path": "experiments/gh0st-voice/voice-v7/evaluation/v8-focused1m-calibrated/raw-outputs.json",
+      "raw_sha256": "3072eed2c643926925000a9e173fe88ddf1895d52095838070243af2ff08f3be"
+    },
+    {
+      "variant": "v8-focused1m-calibrated",
+      "seed": 42,
+      "scores": {
+        "grammar": 1,
+        "continuity": 0,
+        "voice": 1,
+        "repetition": 3
+      },
+      "passes": false,
+      "reason": "Frequent malformed verb phrases and impossible noun links prevent a coherent paragraph; first-person tokens alone do not establish a stable narrator.",
+      "raw_path": "experiments/gh0st-voice/voice-v7/evaluation/v8-focused1m-calibrated/raw-outputs.json",
+      "raw_sha256": "3072eed2c643926925000a9e173fe88ddf1895d52095838070243af2ff08f3be"
+    }
+  ],
+  "decision": "The original-only1M continuation does not repair grammar or continuity; no quality improvement is established by these outputs."
+}

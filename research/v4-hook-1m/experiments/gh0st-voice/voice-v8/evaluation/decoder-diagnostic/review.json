@@ -1,0 +1,371 @@
+{
+  "status": "DEVELOPMENT_DECODER_DIAGNOSTIC_LANGUAGE_FAILURE",
+  "checkpoint": {
+    "hidden_width": 384,
+    "checkpoint": "experiments/gh0st-voice/voice-v8/training/runs/grammar-h384-16m/checkpoint-004014786",
+    "weights_sha256": "904e4ee0426dc62c06b5551db19d2ee40d0c0c618fdb62c4a49a39af80d390d3",
+    "vocabulary_sha256": "940734e6971ecba0960a5b11b4dc5f8604c0a00e4078340c7f002abbec886e9a",
+    "parser_sha256": "61cbae7aa862559488c50465d214dd96b836b02289d70b1a07150a3766aab620"
+  },
+  "configuration": {
+    "temperatures": [
+      0.25,
+      0.35
+    ],
+    "heads": "same temperature for group,word,punctuation",
+    "seeds": [
+      0,
+      42
+    ],
+    "words_per_output": 128,
+    "outputs": 4,
+    "prompt": "empty/BOS",
+    "device": "CPU numpy",
+    "runtime_changes": false,
+    "gpu_calls": 0,
+    "network_calls": 0,
+    "heldout_evaluation_prompts_used": false
+  },
+  "method": "Read all4 complete saved outputs. Local independent FP32 sampler with Keccak stage draws, exp probabilities roundedQ32; not the quantized on-chain sampler.",
+  "conclusion": "Neither lower temperature rescues coherent grammar or sustained causal meaning. No repeated four-grams in these512words is insufficient to establish good text: repeated semantic motifs and malformed clauses persist. T0.35 increases lexical variety but all4 streams fail language review.",
+  "fully_acceptable_outputs": 0,
+  "outputs": [
+    {
+      "temperature": 0.25,
+      "seed": 0,
+      "assessment": "FAIL_GRAMMAR_AND_CONTINUITY",
+      "generated_words": 128,
+      "state_resets": 0,
+      "forced_punctuation": false,
+      "metrics": {
+        "words": 128,
+        "unique_normalized_words": 72,
+        "natural_sentence_ends": 10,
+        "trailing_fragment": true,
+        "first_person_tokens": 6,
+        "repeated_4gram_occurrences": 0,
+        "repeated_4gram_fraction": 0.0,
+        "most_frequent_normalized_words": [
+          [
+            "the",
+            21
+          ],
+          [
+            "i",
+            6
+          ],
+          [
+            "a",
+            5
+          ],
+          [
+            "had",
+            4
+          ],
+          [
+            "reason",
+            4
+          ],
+          [
+            "to",
+            4
+          ],
+          [
+            "decision",
+            3
+          ],
+          [
+            "and",
+            3
+          ],
+          [
+            "system",
+            2
+          ],
+          [
+            "with",
+            2
+          ],
+          [
+            "could",
+            2
+          ],
+          [
+            "first",
+            2
+          ]
+        ],
+        "repeated_4grams": [],
+        "hidden": {
+          "mean_saturated_fraction": 0.11240641276041667,
+          "final_min": -0.9999950528144836,
+          "final_max": 0.9999988675117493
+        }
+      },
+      "review": {
+        "grammar": "Malformed clause joins and infinitives remain frequent. Some locally grammatical sentences occur, but they do not make the surrounding sequence coherent.",
+        "continuity": "The sequence shifts from a timer to a page, duplicate, decision, repair, numbers, unit, and deadline without a stable event.",
+        "evidence": [
+          "i followed the test timer in the shared system had a reason with a decision.",
+          "the system had been working enough to asking that the repair had stopped them."
+        ]
+      },
+      "full_output_file": "t025/raw-outputs.json"
+    },
+    {
+      "temperature": 0.25,
+      "seed": 42,
+      "assessment": "FAIL_GRAMMAR_AND_CONTINUITY",
+      "generated_words": 128,
+      "state_resets": 0,
+      "forced_punctuation": false,
+      "metrics": {
+        "words": 128,
+        "unique_normalized_words": 57,
+        "natural_sentence_ends": 9,
+        "trailing_fragment": true,
+        "first_person_tokens": 8,
+        "repeated_4gram_occurrences": 0,
+        "repeated_4gram_fraction": 0.0,
+        "most_frequent_normalized_words": [
+          [
+            "the",
+            20
+          ],
+          [
+            "a",
+            9
+          ],
+          [
+            "and",
+            9
+          ],
+          [
+            "i",
+            7
+          ],
+          [
+            "question",
+            6
+          ],
+          [
+            "had",
+            6
+          ],
+          [
+            "to",
+            5
+          ],
+          [
+            "it",
+            4
+          ],
+          [
+            "found",
+            3
+          ],
+          [
+            "room",
+            3
+          ],
+          [
+            "for",
+            2
+          ],
+          [
+            "screen",
+            2
+          ]
+        ],
+        "repeated_4grams": [],
+        "hidden": {
+          "mean_saturated_fraction": 0.0908203125,
+          "final_min": -1.0,
+          "final_max": 0.9999993443489075
+        }
+      },
+      "review": {
+        "grammar": "Agreement/auxiliary patterns and verb forms remain broken; the long first sentence loses its referents.",
+        "continuity": "A claim, person, box, question, light, lamp, room, and world replace one another without a causal link. Repeated question/room motifs are semantic perseveration despite no repeated four-gram.",
+        "evidence": [
+          "the room had never look to the empty step of the question.",
+          "i am a smaller question but the machine had been name."
+        ]
+      },
+      "full_output_file": "t025/raw-outputs.json"
+    },
+    {
+      "temperature": 0.35,
+      "seed": 0,
+      "assessment": "FAIL_GRAMMAR_AND_CONTINUITY",
+      "generated_words": 128,
+      "state_resets": 0,
+      "forced_punctuation": false,
+      "metrics": {
+        "words": 128,
+        "unique_normalized_words": 85,
+        "natural_sentence_ends": 9,
+        "trailing_fragment": true,
+        "first_person_tokens": 7,
+        "repeated_4gram_occurrences": 0,
+        "repeated_4gram_fraction": 0.0,
+        "most_frequent_normalized_words": [
+          [
+            "the",
+            19
+          ],
+          [
+            "i",
+            7
+          ],
+          [
+            "a",
+            5
+          ],
+          [
+            "and",
+            4
+          ],
+          [
+            "in",
+            3
+          ],
+          [
+            "kept",
+            3
+          ],
+          [
+            "stopped",
+            2
+          ],
+          [
+            "source",
+            2
+          ],
+          [
+            "that",
+            2
+          ],
+          [
+            "had",
+            2
+          ],
+          [
+            "clear",
+            2
+          ],
+          [
+            "of",
+            2
+          ]
+        ],
+        "repeated_4grams": [],
+        "hidden": {
+          "mean_saturated_fraction": 0.11668904622395831,
+          "final_min": -0.9999998211860657,
+          "final_max": 0.9999999403953552
+        }
+      },
+      "review": {
+        "grammar": "Higher lexical variety does not repair clause structure or participles; the last clause is cut off by the fixed128-word budget.",
+        "continuity": "Image, choices, surfaces, readings, fault, wording, unit, quote, and source time drift between different training-like tasks.",
+        "evidence": [
+          "the missing readings had been follow without developing a whole place.",
+          "i wiped away the extra step before the wording was a false."
+        ]
+      },
+      "full_output_file": "t035/raw-outputs.json"
+    },
+    {
+      "temperature": 0.35,
+      "seed": 42,
+      "assessment": "FAIL_GRAMMAR_AND_CONTINUITY",
+      "generated_words": 128,
+      "state_resets": 0,
+      "forced_punctuation": false,
+      "metrics": {
+        "words": 128,
+        "unique_normalized_words": 81,
+        "natural_sentence_ends": 11,
+        "trailing_fragment": true,
+        "first_person_tokens": 6,
+        "repeated_4gram_occurrences": 0,
+        "repeated_4gram_fraction": 0.0,
+        "most_frequent_normalized_words": [
+          [
+            "the",
+            23
+          ],
+          [
+            "i",
+            6
+          ],
+          [
+            "a",
+            4
+          ],
+          [
+            "test",
+            3
+          ],
+          [
+            "had",
+            3
+          ],
+          [
+            "but",
+            3
+          ],
+          [
+            "to",
+            3
+          ],
+          [
+            "result",
+            3
+          ],
+          [
+            "in",
+            2
+          ],
+          [
+            "with",
+            2
+          ],
+          [
+            "less",
+            2
+          ],
+          [
+            "now",
+            2
+          ]
+        ],
+        "repeated_4grams": [],
+        "hidden": {
+          "mean_saturated_fraction": 0.11908976236979166,
+          "final_min": -0.9999982118606567,
+          "final_max": 0.9999999403953552
+        }
+      },
+      "review": {
+        "grammar": "Missing or wrong verbs, malformed comparative phrases, and infinitives remain.",
+        "continuity": "Battery, page, chart, decision, reply, order, date, amounts, heat, and schedule are blended without a consistent object or goal.",
+        "evidence": [
+          "the system could now express like more real object to erased the answer.",
+          "the reply now the second action worked for a clean summary."
+        ]
+      },
+      "full_output_file": "t035/raw-outputs.json"
+    }
+  ],
+  "raw_files_sha256": {
+    "t025/raw-outputs.json": "07fae415534229819a50054abfff6cb48ded89dbb91e107838ea107d86577ad5",
+    "t035/raw-outputs.json": "a31ed4bc26565ccefa0229b7a3bb78cbce0cc94be0d945fb0dd89f5ef6fa23d0"
+  },
+  "limitations": [
+    "Only2seeds at each setting and128words per stream. This diagnostic is not a held-out pass or a broad performance estimate.",
+    "Fixed length truncates all4 final sentences; this alone is not counted as the reason for language failure.",
+    "No manual curation, sentence substitution, runtime grammar mask, training change, or gas benchmark was performed."
+  ]
+}

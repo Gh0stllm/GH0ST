@@ -1,0 +1,69 @@
+{
+  "status": "QUALITY_NOT_APPROVED",
+  "source": {
+    "hidden_width": 384,
+    "checkpoint": "experiments/gh0st-voice/voice-v8/training/runs/grammar-h384-16m/checkpoint-004014786",
+    "weights_sha256": "904e4ee0426dc62c06b5551db19d2ee40d0c0c618fdb62c4a49a39af80d390d3",
+    "vocabulary_sha256": "940734e6971ecba0960a5b11b4dc5f8604c0a00e4078340c7f002abbec886e9a",
+    "parser_sha256": "61cbae7aa862559488c50465d214dd96b836b02289d70b1a07150a3766aab620"
+  },
+  "new_phase_training_words": 4014786,
+  "grammar_pairs": {
+    "native_preferred": 10,
+    "calibrated_preferred": 10,
+    "total": 16
+  },
+  "reviews": [
+    {
+      "setting": "native",
+      "seed": 0,
+      "grammar": 1,
+      "continuity": 1,
+      "adult_first_person_voice": 1,
+      "repetition": 2,
+      "pass": false,
+      "evidence": "the speaker had began",
+      "reason": "Readable local clauses appear, but recurring malformed auxiliaries and unrelated technical objects prevent fluent, connected prose."
+    },
+    {
+      "setting": "native",
+      "seed": 42,
+      "grammar": 1,
+      "continuity": 1,
+      "adult_first_person_voice": 1,
+      "repetition": 2,
+      "pass": false,
+      "evidence": "now had give the decision",
+      "reason": "Readable local clauses appear, but recurring malformed auxiliaries and unrelated technical objects prevent fluent, connected prose."
+    },
+    {
+      "setting": "calibrated",
+      "seed": 0,
+      "grammar": 2,
+      "continuity": 1,
+      "adult_first_person_voice": 1,
+      "repetition": 2,
+      "pass": false,
+      "evidence": "the system did earned",
+      "reason": "Readable local clauses appear, but recurring malformed auxiliaries and unrelated technical objects prevent fluent, connected prose."
+    },
+    {
+      "setting": "calibrated",
+      "seed": 42,
+      "grammar": 2,
+      "continuity": 1,
+      "adult_first_person_voice": 1,
+      "repetition": 2,
+      "pass": false,
+      "evidence": "the light could earned",
+      "reason": "Readable local clauses appear, but recurring malformed auxiliaries and unrelated technical objects prevent fluent, connected prose."
+    }
+  ],
+  "decision": "No model-quality breakthrough at the4M gate; lower adult loss is not evidence of a coherent first-person narrator.",
+  "scope": "Development gate only. The new frozen final prompts and heldout final test have not been opened for this model.",
+  "source_files_sha256": {
+    "v8-4m-native/raw-outputs.json": "58a14e1620cc8053aef846ba3e0cf37e0bcb7aeb365911c0bc98a62917e62952",
+    "v8-4m-calibrated/raw-outputs.json": "090699ffbf7df53114b4f5bd74e9c1040d3296fa5be5f94e550925ad8c1b33bf",
+    "v8-4m-grammar.json": "456895b818c24f9cd8ccfa7ff335e9cb3b03f99a31955e02c05039ca9e07f31d"
+  }
+}

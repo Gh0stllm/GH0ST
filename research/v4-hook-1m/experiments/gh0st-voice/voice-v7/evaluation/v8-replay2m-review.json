@@ -1,0 +1,77 @@
+{
+  "status": "QUALITY_NOT_APPROVED_AT_2M",
+  "source": {
+    "hidden_width": 384,
+    "checkpoint": "experiments/gh0st-voice/voice-v8/training/runs/replay-language-20m/checkpoint-002003200",
+    "weights_sha256": "db9b112a568da276691742bddf987b6205a13c88588979c1fd0b069799d4a7b1",
+    "vocabulary_sha256": "940734e6971ecba0960a5b11b4dc5f8604c0a00e4078340c7f002abbec886e9a",
+    "parser_sha256": "61cbae7aa862559488c50465d214dd96b836b02289d70b1a07150a3766aab620"
+  },
+  "streams": 4,
+  "passes": 0,
+  "outputs": [
+    {
+      "variant": "native",
+      "seed": 0,
+      "passes": false,
+      "scores": {
+        "grammar": 1,
+        "continuity": 0,
+        "voice": 1,
+        "repetition": 3
+      },
+      "reason": "Frequent malformed clauses and unrelated noun/verb transitions prevent coherent whole-paragraph reading.",
+      "raw_sha256": "cd899c9b4666afa9bc02a7ac9de00c33ba857d40e6ff827ff8e3df753e87d63e",
+      "raw_path": "experiments/gh0st-voice/voice-v7/evaluation/v8-replay2m-native/raw-outputs.json"
+    },
+    {
+      "variant": "native",
+      "seed": 42,
+      "passes": false,
+      "scores": {
+        "grammar": 0,
+        "continuity": 0,
+        "voice": 1,
+        "repetition": 3
+      },
+      "reason": "Frequent malformed clauses and unrelated noun/verb transitions prevent coherent whole-paragraph reading.",
+      "raw_sha256": "cd899c9b4666afa9bc02a7ac9de00c33ba857d40e6ff827ff8e3df753e87d63e",
+      "raw_path": "experiments/gh0st-voice/voice-v7/evaluation/v8-replay2m-native/raw-outputs.json"
+    },
+    {
+      "variant": "calibrated",
+      "seed": 0,
+      "passes": false,
+      "scores": {
+        "grammar": 1,
+        "continuity": 0,
+        "voice": 1,
+        "repetition": 3
+      },
+      "reason": "Frequent malformed clauses and unrelated noun/verb transitions prevent coherent whole-paragraph reading.",
+      "raw_sha256": "754e7aa1ba8cf831d517aa8f7addc01b27f4ae551eb6827ff42b843076507092",
+      "raw_path": "experiments/gh0st-voice/voice-v7/evaluation/v8-replay2m-calibrated/raw-outputs.json"
+    },
+    {
+      "variant": "calibrated",
+      "seed": 42,
+      "passes": false,
+      "scores": {
+        "grammar": 1,
+        "continuity": 0,
+        "voice": 0,
+        "repetition": 3
+      },
+      "reason": "Frequent malformed clauses and unrelated noun/verb transitions prevent coherent whole-paragraph reading.",
+      "raw_sha256": "754e7aa1ba8cf831d517aa8f7addc01b27f4ae551eb6827ff42b843076507092",
+      "raw_path": "experiments/gh0st-voice/voice-v7/evaluation/v8-replay2m-calibrated/raw-outputs.json"
+    }
+  ],
+  "grammar_pairs": {
+    "native": 12,
+    "calibrated": 12,
+    "total": 16
+  },
+  "scope": "Same fixed seeds 0/42 and 128 words per stream; no grammar masks or text repair; CPU FP32 only.",
+  "decision": "Loss and local grammar probabilities improve, but the requested coherent first-person output is not achieved. Preserve the 6M gate before a final decision."
+}

@@ -1,0 +1,240 @@
+{
+  "status": "FROZEN_STATIC_REPLAY_COMPARISON",
+  "vocabulary": 8192,
+  "bos": 8192,
+  "input_only_unk": 8193,
+  "punctuation": [
+    "",
+    ",",
+    ".",
+    "!",
+    "?"
+  ],
+  "all_punctuation_targets_retained": true,
+  "word_and_punctuation_factorization": "P(word|h)*P(punctuation|h,word)",
+  "word_mask": "Only unknown word targets masked; their punctuation and complete context remain.",
+  "numeric_policy": "Preserve digit and decimal spans as unknown word positions; do not fit them to the alphabetical output vocabulary.",
+  "statistics": {
+    "train": {
+      "adult": {
+        "documents": 2748,
+        "words": 793027,
+        "unknown_words": 50781,
+        "terminal_targets": 36097,
+        "punctuation_targets": 793027
+      },
+      "original": {
+        "documents": 767,
+        "words": 47511,
+        "unknown_words": 748,
+        "terminal_targets": 4363,
+        "punctuation_targets": 47511
+      },
+      "curriculum": {
+        "documents": 20160,
+        "words": 2159760,
+        "unknown_words": 0,
+        "terminal_targets": 161280,
+        "punctuation_targets": 2159760
+      },
+      "teacher": {
+        "documents": 20045,
+        "words": 3252200,
+        "unknown_words": 209524,
+        "terminal_targets": 341273,
+        "punctuation_targets": 3252200
+      }
+    },
+    "validation": {
+      "adult": {
+        "documents": 276,
+        "words": 85669,
+        "unknown_words": 5952,
+        "terminal_targets": 4218,
+        "punctuation_targets": 85669
+      },
+      "original": {
+        "documents": 89,
+        "words": 4936,
+        "unknown_words": 78,
+        "terminal_targets": 468,
+        "punctuation_targets": 4936
+      },
+      "curriculum": {
+        "documents": 2800,
+        "words": 299632,
+        "unknown_words": 3173,
+        "terminal_targets": 22400,
+        "punctuation_targets": 299632
+      },
+      "teacher": {
+        "documents": 2427,
+        "words": 392360,
+        "unknown_words": 25719,
+        "terminal_targets": 41261,
+        "punctuation_targets": 392360
+      }
+    },
+    "test": {
+      "adult": {
+        "documents": 239,
+        "words": 73857,
+        "unknown_words": 5638,
+        "terminal_targets": 3658,
+        "punctuation_targets": 73857
+      },
+      "original": {
+        "documents": 87,
+        "words": 4926,
+        "unknown_words": 62,
+        "terminal_targets": 453,
+        "punctuation_targets": 4926
+      },
+      "curriculum": {
+        "documents": 2800,
+        "words": 295917,
+        "unknown_words": 7228,
+        "terminal_targets": 22400,
+        "punctuation_targets": 295917
+      },
+      "teacher": {
+        "documents": 2528,
+        "words": 409853,
+        "unknown_words": 26269,
+        "terminal_targets": 42897,
+        "punctuation_targets": 409853
+      }
+    }
+  },
+  "source_sha256": {
+    "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v7/training/encoded-curriculum/train.jsonl": "c085dc16438bf9b224cbfd0e08c5a891b701861af8029dfa26184c1945f34aa4",
+    "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v7/training/encoded-curriculum/validation.jsonl": "a95243607a41b4ba2c9226d9a4376e0a167956615c941ce781876de7f2e36ac4",
+    "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v7/training/encoded-curriculum/test.jsonl": "8c9256ecd8109543d5e2294e4aecaabaa7f65ed711968c3e2bdead108831d33e",
+    "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/large-v3/recovery-v5/grammar-replay/train.jsonl": "c55d491b50b3cf9812d091c2f5ddb08b387530dbd096bad07686bbf42ac5909a",
+    "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/large-v3/recovery-v5/grammar-replay/validation.jsonl": "ccf36086f38e4dcf4eb4172279011cd47513feb2ed72eda71095e5963e8a8718",
+    "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/large-v3/recovery-v5/grammar-replay/test.jsonl": "ca9c8b334a33a903ead887608d765648b43c778e780eede60b72f131babb11e1",
+    "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v8/data/authored-continuity/style/train.jsonl": "8bb12e671e16be57a799c9921b270ebd2b31ee37790ab34e7ad73576ac871377",
+    "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v8/data/authored-continuity/style/validation.jsonl": "572c792d3d480023a84b51de2bd3d9f800a93199e7242dbffb6ccab5d5592e42",
+    "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v8/data/authored-continuity/style/test.jsonl": "cee2cf670f6cce6d6b67a863d61f4aab76ed37c01b4e64095c96e9c974976ee9",
+    "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v7/training/encoded-curriculum/manifest.json": "0f1d4fbc843563b168100e588b8f278196285e22ca5ed59a18c073d27d78e4d9",
+    "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v7/training/encoded-curriculum/counts.json": "8cc52ad70790a55edf49b3f59ba591d292e35f73a92f0ae2ce0c46a3838159e6",
+    "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v7/training/encoded-curriculum/vocabulary.json": "940734e6971ecba0960a5b11b4dc5f8604c0a00e4078340c7f002abbec886e9a",
+    "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v7/training/encoded-curriculum/vocabulary.bin": "e157bed1b584c6ab755342ee32651d3dfcd388dec88aa383bd2b7006da46c79f",
+    "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/large-v3/recovery-v5/grammar-replay/manifest.json": "a46d7870a353bfc80ee53d7320a24f2fc0ae5d679691f54bdf5bf34d49ed2087",
+    "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/large-v3/recovery-v5/grammar-replay/source-license.json": "e67fa1a3bce9066b4a53153bebc6e5821bdd75cae86882eb5f77795751d79b19",
+    "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v8/data/authored-continuity/style/manifest.json": "1bed0c2d022010a6d9a9f92be7699080bd6627dc0ab8252eafbe35f28d158832"
+  },
+  "artifacts": {
+    "train.jsonl": {
+      "sha256": "033cf0b495ba72abba867524e7b05abadb6ad2b99e9cc748dd9d7d904a4dc4ea",
+      "bytes": 120123726
+    },
+    "validation.jsonl": {
+      "sha256": "b6157df6f7edad03e8bcc7b8cec5436a5d77cbd728950b9734c6bd7ae8c9686b",
+      "bytes": 15089108
+    },
+    "test.jsonl": {
+      "sha256": "77bbd235ddf0807570b7adf65c2c8ac76dd58eff44297bfda7b5397ce47c5f2b",
+      "bytes": 15061391
+    }
+  },
+  "vocabulary_sha256": "940734e6971ecba0960a5b11b4dc5f8604c0a00e4078340c7f002abbec886e9a",
+  "cross_split_group_overlap": 0,
+  "cross_split_lexical_duplicates": 0,
+  "parser_sha256": "61cbae7aa862559488c50465d214dd96b836b02289d70b1a07150a3766aab620",
+  "base_corpus_byte_prefixes": {
+    "train.jsonl": {
+      "sha256": "c085dc16438bf9b224cbfd0e08c5a891b701861af8029dfa26184c1945f34aa4",
+      "bytes": 52719445,
+      "unchanged": true
+    },
+    "validation.jsonl": {
+      "sha256": "a95243607a41b4ba2c9226d9a4376e0a167956615c941ce781876de7f2e36ac4",
+      "bytes": 6929090,
+      "unchanged": true
+    },
+    "test.jsonl": {
+      "sha256": "8c9256ecd8109543d5e2294e4aecaabaa7f65ed711968c3e2bdead108831d33e",
+      "bytes": 6561952,
+      "unchanged": true
+    }
+  },
+  "reused_vocabulary_sha256": "940734e6971ecba0960a5b11b4dc5f8604c0a00e4078340c7f002abbec886e9a",
+  "appended_source_statistics": {
+    "licensed_static_replay": {
+      "train": {
+        "documents": 20045,
+        "words": 3252200,
+        "unknown_words": 209524,
+        "documents_with_unknown_words": 19967,
+        "terminal_targets": 341273,
+        "punctuation_targets": 3252200,
+        "unknown_fraction": 0.06442531209642703
+      },
+      "validation": {
+        "documents": 2427,
+        "words": 392360,
+        "unknown_words": 25719,
+        "documents_with_unknown_words": 2418,
+        "terminal_targets": 41261,
+        "punctuation_targets": 392360,
+        "unknown_fraction": 0.0655494953614028
+      },
+      "test": {
+        "documents": 2528,
+        "words": 409853,
+        "unknown_words": 26269,
+        "documents_with_unknown_words": 2521,
+        "terminal_targets": 42897,
+        "punctuation_targets": 409853,
+        "unknown_fraction": 0.06409371164783471
+      }
+    },
+    "assistant_authored_continuity": {
+      "train": {
+        "documents": 18,
+        "words": 5211,
+        "unknown_words": 135,
+        "documents_with_unknown_words": 18,
+        "terminal_targets": 432,
+        "punctuation_targets": 5211,
+        "unknown_fraction": 0.025906735751295335
+      },
+      "validation": {
+        "documents": 3,
+        "words": 916,
+        "unknown_words": 28,
+        "documents_with_unknown_words": 3,
+        "terminal_targets": 71,
+        "punctuation_targets": 916,
+        "unknown_fraction": 0.03056768558951965
+      },
+      "test": {
+        "documents": 3,
+        "words": 1020,
+        "unknown_words": 21,
+        "documents_with_unknown_words": 3,
+        "terminal_targets": 72,
+        "punctuation_targets": 1020,
+        "unknown_fraction": 0.020588235294117647
+      }
+    }
+  },
+  "within_split_normalized_duplicates_preserved": {},
+  "all_source_documents_retained": true,
+  "oov_policy": "Retain every document and every word position. Unknown lexical targets masked; unknown inputs and all punctuation remain.",
+  "replay_kind_domain": {
+    "kind": "teacher",
+    "domain": 0
+  },
+  "authored_kind_domain": {
+    "kind": "original",
+    "domain": 0
+  },
+  "teacher_name_note": "The generic trainer kind teacher denotes frozen licensed grammar replay here, not newly generated GPT2/Qwen labels.",
+  "comparison_note": "This source was used in earlier one-layer experiments. This dataset supports a distinct two-layer H384 replay comparison; no new model-quality claim follows from preparation.",
+  "preparer_sha256": "96bcfc1324d772cc67f2f7708e76d7222707e156d6c0f659f98ae0080dd02a65",
+  "gpu_calls": 0,
+  "network_calls": 0,
+  "training_started": false
+}

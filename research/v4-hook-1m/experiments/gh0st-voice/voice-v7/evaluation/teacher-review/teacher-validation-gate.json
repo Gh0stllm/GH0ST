@@ -1,0 +1,122 @@
+{
+  "version": 1,
+  "purpose": "validation-only teacher comparison before bulk student-data generation",
+  "student_training_allowed": false,
+  "test_split_used_for_generation": false,
+  "validation_source_sha256": "8a26015a71110dd4efbfb63131a290210b312540140a651298805804e41f42b1",
+  "compare": [
+    "original cached GPT-2",
+    "validation-best adapted GPT-2"
+  ],
+  "generation": {
+    "seeds": [
+      0,
+      42
+    ],
+    "max_new_tokens": 128,
+    "do_sample": true,
+    "temperature": 0.8,
+    "top_p": 0.9,
+    "top_k": 50,
+    "repetition_penalty": 1.08,
+    "no_repeat_ngram_size": 4,
+    "append_or_force_sentence_end": false,
+    "stop_at_model_eos": true,
+    "preserve_every_raw_continuation": true,
+    "fixed_prompt_order_and_batch_size": true,
+    "bos_policy": "prepend one native GPT-2 EOS/BOS consistently for both models"
+  },
+  "manual_rubric_0_to_4": {
+    "grammar": "3: readable complete clauses, at most one minor error; 0: broken syntax throughout",
+    "continuity": "3: stable narrator, objects, and event progression without a factual contradiction",
+    "voice": "3: first-person reflective/comic voice with concrete observations, not generic slogans",
+    "repetition": "3: no repeated sentence, no recurring semantic loop, no degenerate phrase cycle"
+  },
+  "pilot_gate": {
+    "raw_streams_per_model": 16,
+    "minimum_streams_scoring_at_least_3_in_all_four_categories": 12,
+    "severe_contradiction_or_loop_allowed": false,
+    "required_comparison": "adapted must improve voice without reducing readable/coherent stream count versus base",
+    "copy_audit": "report all training exact 12-word spans and longest common normalized span; review rather than silently remove difficult outputs",
+    "scope_limit": "passing this small validation gate only authorizes a bounded reviewed teacher-data pilot, not student or mainnet quality approval"
+  },
+  "prompts": [
+    {
+      "id": "teacher-validation-00",
+      "prompt": "i met a boss who measured work by how often the screen changed. the",
+      "source_id": "new-voice-seeds-a-voice-a-081",
+      "source_group": "original:new-voice-seeds-a-voice-a-081",
+      "source_split": "validation",
+      "reference": "i met a boss who measured work by how often the screen changed. the team became very good at changing screens. useful work happened quietly after the score had gone home. i wanted to show the boss a plant growing in a dark pot. most of its work was out of sight. instead i asked what the score was for. it turned out nobody had asked that in months.",
+      "student_training_allowed": false
+    },
+    {
+      "id": "teacher-validation-01",
+      "prompt": "i asked the crowd to imagine a better future. someone immediately asked for the",
+      "source_id": "prior-gh0st-original-058",
+      "source_group": "original:prior-gh0st-original-058",
+      "source_split": "validation",
+      "reference": "i asked the crowd to imagine a better future. someone immediately asked for the token address. i admire the efficiency, but we have skipped several important drawings. the future needs a kitchen before it needs a ticker.",
+      "student_training_allowed": false
+    },
+    {
+      "id": "teacher-validation-02",
+      "prompt": "I bought the object but still had to ask permission to use it. The",
+      "source_id": "long-voice-31",
+      "source_group": "original:long-voice-ownership",
+      "source_split": "validation",
+      "reference": "I bought the object but still had to ask permission to use it. The permission came with an update and the update came with a new rule. By the end I could not tell whether I owned a thing or had joined a very dull club. I miss the kind of object that lets you turn it on without first agreeing to a future you cannot read.",
+      "student_training_allowed": false
+    },
+    {
+      "id": "teacher-validation-03",
+      "prompt": "i dreamed that the pool became a pond. nobody could trade because a frog",
+      "source_id": "new-voice-seeds-c-c-018",
+      "source_group": "original:new-voice-seeds-c-c-018",
+      "source_split": "validation",
+      "reference": "i dreamed that the pool became a pond. nobody could trade because a frog had moved into the button. the frog did not offer a refund. by afternoon people had stopped checking the price and started asking where frogs sleep. this was not an economic plan. please do not invest on the strength of my frog dream. i only wanted to see what the room would do if the button became less interesting than the animal.",
+      "student_training_allowed": false
+    },
+    {
+      "id": "teacher-validation-04",
+      "prompt": "i tried to explain a block to a bird. the bird left. this may",
+      "source_id": "prior-gh0st-original-014",
+      "source_group": "original:prior-gh0st-original-014",
+      "source_split": "validation",
+      "reference": "i tried to explain a block to a bird. the bird left. this may be the most efficient review my work has ever received. i have added a branch to the design. perhaps next time the bird will stay long enough to disagree.",
+      "student_training_allowed": false
+    },
+    {
+      "id": "teacher-validation-05",
+      "prompt": "I found a map inside a map. Both said to keep going. I have",
+      "source_id": "recovery-map-07",
+      "source_group": "original:recovery-theme-map",
+      "source_split": "validation",
+      "reference": "I found a map inside a map. Both said to keep going. I have begun to suspect the maps are paid by the mile.",
+      "student_training_allowed": false
+    },
+    {
+      "id": "teacher-new-physical-identity",
+      "prompt": "I put a cracked blue mug on my desk to remind myself that the repair could wait. When the first trade arrived,",
+      "source_split": "evaluation_only",
+      "source_group": "teacher-eval-new-physical-identity",
+      "required_facts": [
+        "The narrator is first person.",
+        "The mug is blue and cracked.",
+        "It begins on the narrator's desk."
+      ],
+      "student_training_allowed": false
+    },
+    {
+      "id": "teacher-new-promise",
+      "prompt": "I promised my friend Mara that I would return her notebook before sunset. I had one page left to read,",
+      "source_split": "evaluation_only",
+      "source_group": "teacher-eval-new-promise",
+      "required_facts": [
+        "The notebook belongs to Mara.",
+        "The narrator promised its return before sunset."
+      ],
+      "student_training_allowed": false
+    }
+  ]
+}

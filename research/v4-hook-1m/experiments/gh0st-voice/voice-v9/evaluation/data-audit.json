@@ -1,0 +1,89 @@
+{
+  "status": "PASS_COMPLETE_RETOKENIZATION_SPLIT_AND_WINDOW_AUDIT",
+  "manifest_sha256": "241434ff8e49d6fc463b951abda39589ae41f5a771ac0efa4b8879f7e03495c4",
+  "prepared_sha256": {
+    "train.jsonl": "b27b0f3b58ac751e4ba2f6e3cb78cdf39fb4c023a68048678c79d90501d59c7c",
+    "validation.jsonl": "16c95f68aab264c61d81938859b2a79dd6fe1904b920a351c6203358fd41d612",
+    "test.jsonl": "b8340210dd055866ce29d0cbea64ecf9ae656e0348adea34ca5ebf209ad7cdce"
+  },
+  "tokenizer_sha256": "01b6553da99789d461cec48eed624684a803f259a5177616a67f7391700acf51",
+  "core_sha256": "b9540278f0610cd9d20c90ecc8542102c4781e7fa12a2ee3024ee454c608f2e3",
+  "statistics": {
+    "train": {
+      "voice": {
+        "documents": 767,
+        "tokens": 66070,
+        "unknown_tokens": 0,
+        "known_targets": 65303,
+        "windows": 979
+      },
+      "grammar": {
+        "documents": 20045,
+        "tokens": 4129829,
+        "unknown_tokens": 0,
+        "known_targets": 4109784,
+        "windows": 54477
+      }
+    },
+    "validation": {
+      "voice": {
+        "documents": 89,
+        "tokens": 6575,
+        "unknown_tokens": 0,
+        "known_targets": 6486,
+        "windows": 106
+      },
+      "grammar": {
+        "documents": 2427,
+        "tokens": 498515,
+        "unknown_tokens": 0,
+        "known_targets": 496088,
+        "windows": 6561
+      }
+    },
+    "test": {
+      "voice": {
+        "documents": 87,
+        "tokens": 6428,
+        "unknown_tokens": 0,
+        "known_targets": 6341,
+        "windows": 105
+      },
+      "grammar": {
+        "documents": 2528,
+        "tokens": 520312,
+        "unknown_tokens": 0,
+        "known_targets": 517784,
+        "windows": 6879
+      }
+    }
+  },
+  "cross_split_overlap": {
+    "train/validation": {
+      "groups": 0,
+      "normalized_texts": 0
+    },
+    "train/test": {
+      "groups": 0,
+      "normalized_texts": 0
+    },
+    "validation/test": {
+      "groups": 0,
+      "normalized_texts": 0
+    }
+  },
+  "source_files_all_match_manifest": true,
+  "all_token_ids_exact": true,
+  "every_known_position_scored_once": true,
+  "document_concatenation": false,
+  "warmup_positions": 64,
+  "window_width": 128,
+  "independent_unknown_masking_checked": true,
+  "caveats": [
+    "No exact-text or group overlap is not a semantic deduplication proof.",
+    "The vocabulary is unchanged pretrained WordPiece; no held-out data was used to fit a new vocabulary.",
+    "Crops preserve coherent document order but are not full running-cache state equivalence."
+  ],
+  "gpu_actions": 0,
+  "network_actions": 0
+}

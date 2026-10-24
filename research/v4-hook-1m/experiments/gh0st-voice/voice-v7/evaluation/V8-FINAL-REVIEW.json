@@ -1,0 +1,152 @@
+{
+  "status": "V8_LANGUAGE_QUALITY_NOT_APPROVED",
+  "architecture": {
+    "layers": 2,
+    "hidden_per_layer": 384,
+    "parameters": 8175493,
+    "word_vocabulary": 8192,
+    "punctuation_head": 5,
+    "generation": "Neural word and punctuation heads; no runtime grammar masks, templates, sentence bank or text repair."
+  },
+  "runs": [
+    {
+      "name": "grammar-h384-16m",
+      "status": "REVIEW_GATE",
+      "trained_target_words": 4014786,
+      "steps": 251,
+      "report_sha256": "ab97333906707fb605fafcd7aed389e8ff16e326026c7532ee149d197bc87928",
+      "snapshots": [
+        {
+          "words": 0,
+          "weights_sha256": "cbab0a32a031f5d653ccda1ad967e1f4c76181cc0e8025034fde2bbe17f308a4",
+          "macro_joint_nll": 5.889842739566736,
+          "per_source_joint_nll": {
+            "adult": 6.554261208928532,
+            "original": 5.894692797508328,
+            "curriculum": 5.220574212263347
+          }
+        },
+        {
+          "words": 2015754,
+          "weights_sha256": "c351a8c67875733a29ce0463b57a126f3b809cd076ca2e5d92c70f61ce188702",
+          "macro_joint_nll": 5.8484179275441965,
+          "per_source_joint_nll": {
+            "adult": 6.138200463454352,
+            "original": 5.8967758160494075,
+            "curriculum": 5.5102775031288305
+          }
+        },
+        {
+          "words": 4014786,
+          "weights_sha256": "904e4ee0426dc62c06b5551db19d2ee40d0c0c618fdb62c4a49a39af80d390d3",
+          "macro_joint_nll": 5.9008527365002665,
+          "per_source_joint_nll": {
+            "adult": 6.01111921583019,
+            "original": 5.837480123340209,
+            "curriculum": 5.853958870330403
+          }
+        }
+      ]
+    },
+    {
+      "name": "focused-original-h384-2m",
+      "status": "COMPLETE",
+      "trained_target_words": 2002242,
+      "steps": 124,
+      "report_sha256": "c9eac50974cc4f96286636df96231d5a670a6bd5d0e9f66713bd8deb7b5b52b6",
+      "snapshots": [
+        {
+          "words": 0,
+          "weights_sha256": "904e4ee0426dc62c06b5551db19d2ee40d0c0c618fdb62c4a49a39af80d390d3",
+          "macro_joint_nll": 5.87349929746843,
+          "per_source_joint_nll": {
+            "adult": 5.978958590964613,
+            "original": 5.795224100542075,
+            "curriculum": 5.8463152008986015
+          }
+        },
+        {
+          "words": 1001153,
+          "weights_sha256": "4a09f36d142dcd09fb20eb8d22155feae89236d2622cb1190036790b99a8ff37",
+          "macro_joint_nll": 5.732109179647863,
+          "per_source_joint_nll": {
+            "adult": 6.122319922537986,
+            "original": 5.526289583995132,
+            "curriculum": 5.547718032410471
+          }
+        },
+        {
+          "words": 2002242,
+          "weights_sha256": "9df5f83efcdb755d1ab3f0c4ea536aa1a4695f1e46f6ac7af49c84d25025698f",
+          "macro_joint_nll": 5.740931611296282,
+          "per_source_joint_nll": {
+            "adult": 6.157331501478598,
+            "original": 5.509516820336348,
+            "curriculum": 5.555946512073899
+          }
+        }
+      ]
+    }
+  ],
+  "fixed_streams": {
+    "protocol": "Each checkpoint: seeds0/42,128words; native1/1/1 and calibrated1/.5/.7 group/word/punctuation temperatures; no reset within each stream.",
+    "reviewed": 16,
+    "passes": 0,
+    "raw_artifacts": [
+      {
+        "path": "experiments/gh0st-voice/voice-v7/evaluation/v8-2m-native/raw-outputs.json",
+        "sha256": "def05f82782d788865613ef8192312aede8578905f3837ecbd7abf0a894754db",
+        "streams": 2
+      },
+      {
+        "path": "experiments/gh0st-voice/voice-v7/evaluation/v8-2m-calibrated/raw-outputs.json",
+        "sha256": "84c33a7b2ee318a120faf2f79f6b0d38e5e9abe640c8335ff79a3e4e5f1f9ef7",
+        "streams": 2
+      },
+      {
+        "path": "experiments/gh0st-voice/voice-v7/evaluation/v8-4m-native/raw-outputs.json",
+        "sha256": "58a14e1620cc8053aef846ba3e0cf37e0bcb7aeb365911c0bc98a62917e62952",
+        "streams": 2
+      },
+      {
+        "path": "experiments/gh0st-voice/voice-v7/evaluation/v8-4m-calibrated/raw-outputs.json",
+        "sha256": "090699ffbf7df53114b4f5bd74e9c1040d3296fa5be5f94e550925ad8c1b33bf",
+        "streams": 2
+      },
+      {
+        "path": "experiments/gh0st-voice/voice-v7/evaluation/v8-focused1m-native/raw-outputs.json",
+        "sha256": "73f0878527c3993964890f78392fa6943887a3a3047b79644d9cbef400db6462",
+        "streams": 2
+      },
+      {
+        "path": "experiments/gh0st-voice/voice-v7/evaluation/v8-focused1m-calibrated/raw-outputs.json",
+        "sha256": "3072eed2c643926925000a9e173fe88ddf1895d52095838070243af2ff08f3be",
+        "streams": 2
+      },
+      {
+        "path": "experiments/gh0st-voice/voice-v7/evaluation/v8-focused2m-native/raw-outputs.json",
+        "sha256": "4a36dc28faa49e0d580ab2c6e9e0139dc5082d9874a444e751678d6511e13c69",
+        "streams": 2
+      },
+      {
+        "path": "experiments/gh0st-voice/voice-v7/evaluation/v8-focused2m-calibrated/raw-outputs.json",
+        "sha256": "b68217193dc69eb50dca0a2e28d3c7b658c6e75dc8c9a60e48418eb3173dd7c3",
+        "streams": 2
+      }
+    ]
+  },
+  "local_grammar_diagnostic": {
+    "mixed4m_native": 10,
+    "mixed4m_calibrated": 10,
+    "focused2m_native": 11,
+    "focused2m_calibrated": 11,
+    "pairs": 16,
+    "limitation": "Teacher-forced minimal pairs do not establish free-running paragraph grammar."
+  },
+  "runtime_status": {
+    "trained_final_evm_benchmark_complete": false,
+    "trained_final_swap_gas": null,
+    "note": "Architecture/microbenchmark evidence is separate. No exact selected trained-checkpoint gas or parity claim is made by this evaluation."
+  },
+  "decision": "Do not deploy or describe V8 as a coherent first-person writer. Original-only data improves loss on that domain but does not repair free-running language. V9 pretrained-transformer control is a separate experiment."
+}

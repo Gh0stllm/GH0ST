@@ -1,0 +1,331 @@
+{
+  "status": "REVIEW_GATE",
+  "configuration": {
+    "data": "experiments/gh0st-voice/voice-v8/training/encoded-replay",
+    "output": "experiments/gh0st-voice/voice-v8/training/runs/replay-language-20m",
+    "hidden": 384,
+    "device": "mps",
+    "batch": 128,
+    "width": 128,
+    "words": 20000000,
+    "stop": 6000000,
+    "every": 2000000,
+    "curriculum_weight": 0.0,
+    "adult_weight": 0.0,
+    "teacher_weight": 0.9,
+    "lr": 0.0007,
+    "dropout": 0.15,
+    "seed": 741028,
+    "grammar_pairs": null,
+    "grammar_weight": 0.0,
+    "grammar_margin": 2.0,
+    "init_weights": "experiments/gh0st-voice/voice-v8/training/runs/grammar-h384-16m/checkpoint-004014786",
+    "warm_source": null,
+    "warm_vocabulary": null,
+    "resume": null,
+    "max_steps": 10000000
+  },
+  "architecture": {
+    "layers": 2,
+    "hidden_per_layer": 384,
+    "vocabulary": 8192,
+    "punctuation_classes": 5,
+    "parameters": 8175493
+  },
+  "data_manifest_sha256": "07b8616d396d2eedf7f38c086b0c3f8174dbe23fd769883904615efdaf2057f6",
+  "code_sha256": {
+    "model.py": "3b0e0fdccf1e749a0f583ec2235a59ac89ec0103e37e565508abaafc1a97f276",
+    "engine.py": "8f97d042f36a4ff9bc3a999fbfb2c1c17df01eba76c4fecbe9e0af46305de8d4",
+    "prepare.py": "61cbae7aa862559488c50465d214dd96b836b02289d70b1a07150a3766aab620",
+    "train.py": "2e9532a7f1538493c6ea0083806b0421447bab300924d8c6abb6809abc3dc3c3"
+  },
+  "initialization": {
+    "type": "weights_only_new_phase",
+    "source_sha256": "904e4ee0426dc62c06b5551db19d2ee40d0c0c618fdb62c4a49a39af80d390d3",
+    "source": "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v8/training/runs/grammar-h384-16m/checkpoint-004014786"
+  },
+  "sampling_mixture_target_words": {
+    "curriculum": 0.0,
+    "original": 0.09999999999999998,
+    "adult": 0.0,
+    "teacher": 0.9
+  },
+  "state_policy": "Carry both detached layer states across consecutive chunks; reset only at actual source document boundaries. Previous word and punctuation are shifted together.",
+  "punctuation_policy": "Supervise all punctuation, including unknown lexical targets. No forced periods or runtime grammar templates.",
+  "features": "Market feature projection frozen at zero; language training uses no random market noise.",
+  "grammar_training": {
+    "sidecar_sha256": null,
+    "weight": 0.0,
+    "margin": 2.0,
+    "policy": "Prefix-invalid training labels only; no inference rules, masks, or grammar engine."
+  },
+  "quality_approved": false,
+  "mainnet_actions": 0,
+  "snapshots": [
+    {
+      "words": 0,
+      "steps": 0,
+      "elapsed_seconds": 0.8598973750013101,
+      "training_seconds": 0.0,
+      "new_words_per_second": 0.0,
+      "validation": {
+        "kinds": {
+          "adult": {
+            "word_nll": 5.556704364588311,
+            "punctuation_nll": 0.4293549273165916,
+            "known_words": 14647,
+            "all_punctuation_positions": 15764,
+            "joint_nll": 5.986059291904903
+          },
+          "original": {
+            "word_nll": 5.559174858344781,
+            "punctuation_nll": 0.33430755395683454,
+            "known_words": 2730,
+            "all_punctuation_positions": 2780,
+            "joint_nll": 5.893482412301616
+          },
+          "curriculum": {
+            "word_nll": 5.497242421829053,
+            "punctuation_nll": 0.3010108556313529,
+            "known_words": 5101,
+            "all_punctuation_positions": 5165,
+            "joint_nll": 5.7982532774604065
+          },
+          "teacher": {
+            "word_nll": 6.3758194224543585,
+            "punctuation_nll": 0.6538229587867745,
+            "known_words": 7066,
+            "all_punctuation_positions": 7512,
+            "joint_nll": 7.029642381241133
+          }
+        },
+        "macro_joint_nll": 6.176859340727014
+      },
+      "weights_sha256": "904e4ee0426dc62c06b5551db19d2ee40d0c0c618fdb62c4a49a39af80d390d3",
+      "checkpoint": "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v8/training/runs/replay-language-20m/checkpoint-000000000",
+      "new_words_by_kind": {}
+    },
+    {
+      "words": 2003200,
+      "steps": 130,
+      "elapsed_seconds": 69.6383121660001,
+      "training_seconds": 67.17556021298151,
+      "new_words_per_second": 29820.369099249976,
+      "validation": {
+        "kinds": {
+          "adult": {
+            "word_nll": 6.326148539376664,
+            "punctuation_nll": 0.4992171517183139,
+            "known_words": 14647,
+            "all_punctuation_positions": 15764,
+            "joint_nll": 6.825365691094978
+          },
+          "original": {
+            "word_nll": 5.282173262934982,
+            "punctuation_nll": 0.30953407562036306,
+            "known_words": 2730,
+            "all_punctuation_positions": 2780,
+            "joint_nll": 5.591707338555345
+          },
+          "curriculum": {
+            "word_nll": 5.22704762240247,
+            "punctuation_nll": 0.2663256635047344,
+            "known_words": 5101,
+            "all_punctuation_positions": 5165,
+            "joint_nll": 5.493373285907204
+          },
+          "teacher": {
+            "word_nll": 4.401154765116402,
+            "punctuation_nll": 0.42767537109895,
+            "known_words": 7066,
+            "all_punctuation_positions": 7512,
+            "joint_nll": 4.828830136215352
+          }
+        },
+        "macro_joint_nll": 5.68481911294322
+      },
+      "weights_sha256": "db9b112a568da276691742bddf987b6205a13c88588979c1fd0b069799d4a7b1",
+      "checkpoint": "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v8/training/runs/replay-language-20m/checkpoint-002003200",
+      "new_words_by_kind": {
+        "teacher": 1787814,
+        "original": 215386
+      }
+    },
+    {
+      "words": 4006354,
+      "steps": 260,
+      "elapsed_seconds": 138.75078833299995,
+      "training_seconds": 134.6334577170055,
+      "new_words_per_second": 29757.491695869583,
+      "validation": {
+        "kinds": {
+          "adult": {
+            "word_nll": 6.4014091249487945,
+            "punctuation_nll": 0.49841553291915125,
+            "known_words": 14647,
+            "all_punctuation_positions": 15764,
+            "joint_nll": 6.899824657867946
+          },
+          "original": {
+            "word_nll": 5.164155863667583,
+            "punctuation_nll": 0.3024320533807329,
+            "known_words": 2730,
+            "all_punctuation_positions": 2780,
+            "joint_nll": 5.466587917048316
+          },
+          "curriculum": {
+            "word_nll": 5.185347771882964,
+            "punctuation_nll": 0.2564933547899776,
+            "known_words": 5101,
+            "all_punctuation_positions": 5165,
+            "joint_nll": 5.441841126672942
+          },
+          "teacher": {
+            "word_nll": 4.132445701687659,
+            "punctuation_nll": 0.3962122680534062,
+            "known_words": 7066,
+            "all_punctuation_positions": 7512,
+            "joint_nll": 4.528657969741065
+          }
+        },
+        "macro_joint_nll": 5.584227917832567
+      },
+      "weights_sha256": "50f4212b68da7aa23eb998dc79fa505401aee1e4cd2effb92d52c524ddecb0b2",
+      "checkpoint": "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v8/training/runs/replay-language-20m/checkpoint-004006354",
+      "new_words_by_kind": {
+        "teacher": 3583388,
+        "original": 422966
+      }
+    },
+    {
+      "words": 6010296,
+      "steps": 390,
+      "elapsed_seconds": 207.65697712499968,
+      "training_seconds": 201.9831546810019,
+      "new_words_per_second": 29756.422061494395,
+      "validation": {
+        "kinds": {
+          "adult": {
+            "word_nll": 6.394248022205913,
+            "punctuation_nll": 0.48778731591264113,
+            "known_words": 14647,
+            "all_punctuation_positions": 15764,
+            "joint_nll": 6.882035338118554
+          },
+          "original": {
+            "word_nll": 5.1210014594780215,
+            "punctuation_nll": 0.29169798926483814,
+            "known_words": 2730,
+            "all_punctuation_positions": 2780,
+            "joint_nll": 5.41269944874286
+          },
+          "curriculum": {
+            "word_nll": 5.161090694532935,
+            "punctuation_nll": 0.25857918546368286,
+            "known_words": 5101,
+            "all_punctuation_positions": 5165,
+            "joint_nll": 5.419669879996618
+          },
+          "teacher": {
+            "word_nll": 3.9876477144070197,
+            "punctuation_nll": 0.3802622834714457,
+            "known_words": 7066,
+            "all_punctuation_positions": 7512,
+            "joint_nll": 4.367909997878465
+          }
+        },
+        "macro_joint_nll": 5.520578666184123
+      },
+      "weights_sha256": "7564cb54fb211e34faff1305f52a493e077e8bc6f878e6e2ba15ae74af617fd9",
+      "checkpoint": "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v8/training/runs/replay-language-20m/checkpoint-006010296",
+      "new_words_by_kind": {
+        "teacher": 5373366,
+        "original": 636930
+      }
+    }
+  ],
+  "history": [
+    {
+      "words": 1540792,
+      "steps": 100,
+      "joint_loss": 5.042172908782959,
+      "word_nll": 4.600347518920898,
+      "punctuation_nll": 0.4418254494667053,
+      "grammar_loss": -0.0,
+      "grammar_pairs": 0,
+      "lr": 0.0006915001795166916,
+      "gradient_norm": 0.43209728598594666
+    },
+    {
+      "words": 3082163,
+      "steps": 200,
+      "joint_loss": 4.719777584075928,
+      "word_nll": 4.313751697540283,
+      "punctuation_nll": 0.40602582693099976,
+      "grammar_loss": -0.0,
+      "grammar_pairs": 0,
+      "lr": 0.0006661444317760667,
+      "gradient_norm": 0.3093430697917938
+    },
+    {
+      "words": 4622651,
+      "steps": 300,
+      "joint_loss": 4.548889636993408,
+      "word_nll": 4.168655872344971,
+      "punctuation_nll": 0.38023385405540466,
+      "grammar_loss": -0.0,
+      "grammar_pairs": 0,
+      "lr": 0.000625434804599393,
+      "gradient_norm": 0.2412317991256714
+    }
+  ],
+  "best": {
+    "words": 6010296,
+    "steps": 390,
+    "elapsed_seconds": 207.65697712499968,
+    "training_seconds": 201.9831546810019,
+    "new_words_per_second": 29756.422061494395,
+    "validation": {
+      "kinds": {
+        "adult": {
+          "word_nll": 6.394248022205913,
+          "punctuation_nll": 0.48778731591264113,
+          "known_words": 14647,
+          "all_punctuation_positions": 15764,
+          "joint_nll": 6.882035338118554
+        },
+        "original": {
+          "word_nll": 5.1210014594780215,
+          "punctuation_nll": 0.29169798926483814,
+          "known_words": 2730,
+          "all_punctuation_positions": 2780,
+          "joint_nll": 5.41269944874286
+        },
+        "curriculum": {
+          "word_nll": 5.161090694532935,
+          "punctuation_nll": 0.25857918546368286,
+          "known_words": 5101,
+          "all_punctuation_positions": 5165,
+          "joint_nll": 5.419669879996618
+        },
+        "teacher": {
+          "word_nll": 3.9876477144070197,
+          "punctuation_nll": 0.3802622834714457,
+          "known_words": 7066,
+          "all_punctuation_positions": 7512,
+          "joint_nll": 4.367909997878465
+        }
+      },
+      "macro_joint_nll": 5.520578666184123
+    },
+    "weights_sha256": "7564cb54fb211e34faff1305f52a493e077e8bc6f878e6e2ba15ae74af617fd9",
+    "checkpoint": "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v8/training/runs/replay-language-20m/checkpoint-006010296",
+    "new_words_by_kind": {
+      "teacher": 5373366,
+      "original": 636930
+    }
+  },
+  "words": 6010296,
+  "steps": 390,
+  "elapsed_seconds": 207.67441270799827
+}

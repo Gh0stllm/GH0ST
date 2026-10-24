@@ -1,7 +1,7 @@
-# V7/V8 local research publication snapshot
+# V7/V8/V9 local research publication snapshot
 
 This snapshot contains source, curriculum, encoded training data, and completed
-reports for the V7/V8 experiments. V7 failures are retained as evidence; none of
+reports for the V7/V8/V9 experiments. V7 failures are retained as evidence; none of
 the data counts, conversions, training losses, or gas reports alone establishes
 usable language quality. The offline compositional curriculum is synthetic
 training material. The runtime remains neural word and punctuation generation.
@@ -11,6 +11,9 @@ optimizers, old number-parser revisions, and all unselected checkpoint weights
 are excluded. No files are deleted from the repository by this snapshot.
 Selected float/runtime weights are included only when explicitly passed as a
 matching checkpoint/export pair. Selection does not imply language approval.
+One separately selected V9 student checkpoint may include its float model,
+configuration and tokenizer after the run has stopped. Teacher weights and
+download caches are always excluded.
 
 JSONL files and selected large fused binaries are stored as deterministic gzip.
 From the repository root, restore them with:
@@ -30,3 +33,9 @@ records. This stage does not republish raw upstream books or models.
 All work represented here is local research. There are no mainnet actions or
 GitHub mutations in the staging script. Exact source selection, exclusions,
 hashes, and compression information are recorded in the external stage manifest.
+
+This transport-compacted snapshot preserves the earlier stage content. All
+selected V8 runtime binaries and reference arrays are gzip-compressed. Selected
+float weights use gzip only when measured savings are at least10%; large JSON
+reports are also compressed. Run the same restore tool before using those files.
+No model tensor, data row, or report content is changed by compression.

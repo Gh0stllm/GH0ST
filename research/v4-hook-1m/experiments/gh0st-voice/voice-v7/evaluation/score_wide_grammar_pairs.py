@@ -17,7 +17,7 @@ def score(model,text,temperatures):
     words,punct=model.parse(text)
     unknown=[w for w in words if w not in model.index]
     if unknown:return {'status':'UNSUPPORTED','unknown_words':unknown}
-    state=(np.zeros(128,np.float32),np.zeros(128,np.float32));previous=8192;pp=0
+    state=(np.zeros(model.hidden,np.float32),np.zeros(model.hidden,np.float32));previous=8192;pp=0
     word_logp=punct_logp=0.;w=model.weights;gt,wt,pt=temperatures
     for word,pm in zip(words,punct):
         state=model.step(previous,pp,state);h=state[1];token=model.index[word];g=token//64;start=g*64

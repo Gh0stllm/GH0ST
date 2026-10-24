@@ -1,0 +1,740 @@
+{
+  "status": "FAIL_FROZEN_TEACHER_GATE_SUBSTANTIAL_GRAMMAR_IMPROVEMENT",
+  "quality_approval": false,
+  "gate_sha256": "6bde7a759244c9fe9300470900d4e525e2001e2c83e240c9411f3287cddf6f7a",
+  "raw_sha256": {
+    "experiments/gh0st-voice/voice-v8/teacher-notes/evaluation/qwen-seed0/raw.jsonl": "6356d81f7b5c4bc790c8491886ba2eaf850e1bd5905850deb0ff9029d4f64884",
+    "experiments/gh0st-voice/voice-v8/teacher-notes/evaluation/qwen-seed42/raw.jsonl": "abbb7fc0d2c6a1f0b9f1f85eb5c22df58cb281d85856c1eabcd82bce3333fd65"
+  },
+  "run_metadata": {
+    "0": {
+      "checkpoint_content_sha256": "cc086dedf0733334d723f28ef64b5624c32926e1814c283ae2128523fbe77c5f",
+      "checkpoint_sha256": "f47f71177f32bcd101b7573ec9171e6a57f4f4d31148d38e382306f42996874b",
+      "prompt_file_sha256": "24183828e4fbbcdd0f3b52014641bdbfc1ed62193053ac6ba6f6f0466eb37a5d",
+      "sampler_source_sha256": "7092fb124f8bce4b4e6a3e464ff1b074e4d0ff0fd803d17e80f392d435217582",
+      "shared_filter_source_sha256": "9ae849b7f0dcfdd7b0e6343cf15d5a5ad233d8e2c4865302d2af167dc672df99",
+      "sampling": {
+        "temperature": 0.7,
+        "top_p": 0.8,
+        "top_k": 20
+      },
+      "enable_thinking": false,
+      "dtype": "torch.float16",
+      "configuration": {
+        "checkpoint": "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v8/teacher-notes/qwen-cache",
+        "prompts": "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v7/evaluation/teacher-review/teacher-validation-prompts.jsonl",
+        "out": "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v8/teacher-notes/evaluation/qwen-seed0",
+        "device": "mps",
+        "attention": "sdpa",
+        "batch": 8,
+        "target_tokens": 100000,
+        "max_candidates": 8,
+        "max_new": 128,
+        "min_generated_words": 40,
+        "context_limit": 4096,
+        "seed": 0
+      },
+      "generated_tokens": 805,
+      "counts": {
+        "accepted": 8,
+        "duplicates": 0,
+        "no_generated_ending": 0,
+        "too_few_generated_words": 0,
+        "short_or_long": 0,
+        "nonprose": 0,
+        "thinking_or_chat_markup": 0
+      }
+    },
+    "42": {
+      "checkpoint_content_sha256": "cc086dedf0733334d723f28ef64b5624c32926e1814c283ae2128523fbe77c5f",
+      "checkpoint_sha256": "f47f71177f32bcd101b7573ec9171e6a57f4f4d31148d38e382306f42996874b",
+      "prompt_file_sha256": "24183828e4fbbcdd0f3b52014641bdbfc1ed62193053ac6ba6f6f0466eb37a5d",
+      "sampler_source_sha256": "7092fb124f8bce4b4e6a3e464ff1b074e4d0ff0fd803d17e80f392d435217582",
+      "shared_filter_source_sha256": "9ae849b7f0dcfdd7b0e6343cf15d5a5ad233d8e2c4865302d2af167dc672df99",
+      "sampling": {
+        "temperature": 0.7,
+        "top_p": 0.8,
+        "top_k": 20
+      },
+      "enable_thinking": false,
+      "dtype": "torch.float16",
+      "configuration": {
+        "checkpoint": "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v8/teacher-notes/qwen-cache",
+        "prompts": "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v7/evaluation/teacher-review/teacher-validation-prompts.jsonl",
+        "out": "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v8/teacher-notes/evaluation/qwen-seed42",
+        "device": "mps",
+        "attention": "sdpa",
+        "batch": 8,
+        "target_tokens": 100000,
+        "max_candidates": 8,
+        "max_new": 128,
+        "min_generated_words": 40,
+        "context_limit": 4096,
+        "seed": 42
+      },
+      "generated_tokens": 801,
+      "counts": {
+        "accepted": 7,
+        "duplicates": 0,
+        "no_generated_ending": 0,
+        "too_few_generated_words": 1,
+        "short_or_long": 0,
+        "nonprose": 0,
+        "thinking_or_chat_markup": 0
+      }
+    }
+  },
+  "training_file_sha256": "b09b49142b12f0b4222d8685612b4965cb906477d31c7c41f69d997e5cd38de3",
+  "training_documents_searched": {
+    "all": 3497,
+    "original": 749
+  },
+  "all_outputs_reviewed": true,
+  "copy_method": "Exact normalized runs of at least four words; case and punctuation ignored. Continuations after only the source sampler recorded exact-prefix removal are searched. All original SFT and all other student train documents included.",
+  "limitations": "One independent reviewer, not a blinded panel. Originality beyond these known training files is not established. Prefix casing rewrites were detected but not repaired.",
+  "summary": {
+    "streams": 16,
+    "passes_all_four": 5,
+    "required_passes": 12,
+    "scores_at_least_3": {
+      "grammar": 13,
+      "continuity": 7,
+      "voice": 5,
+      "repetition": 11
+    },
+    "mean_scores": {
+      "grammar": 2.6875,
+      "continuity": 2.3125,
+      "voice": 2.125,
+      "repetition": 2.625
+    },
+    "exact_prefix_echoes": 14,
+    "case_changed_prefix_echoes": 2,
+    "prefix_protocol_passes": 0,
+    "max_original_training_span": 5,
+    "max_any_student_training_span": 6,
+    "max_repeated_span": 9
+  },
+  "outputs": [
+    {
+      "seed": 0,
+      "prompt_id": "teacher-validation-00",
+      "scores": {
+        "grammar": 3,
+        "continuity": 3,
+        "voice": 3,
+        "repetition": 3
+      },
+      "passes_all_four": true,
+      "reason": "Readable first-person boss/screen satire, with a clear task-versus-measurement point.",
+      "exact_prefix_echo": true,
+      "case_changed_prefix_echo": false,
+      "exact_prefix_removal_recorded": true,
+      "passes_prefix_protocol": false,
+      "display_join_separator": "",
+      "display_join_separator_applied": false,
+      "generated_words_after_recorded_removal": 96,
+      "raw_assistant_text": "i met a boss who measured work by how often the screen changed. the screen was always changing, and he was always checking it. i used to think that work was about doing the right things, but now i see it's about how you keep up with the pace. he would ask me to do a task that looked easy, but i would get stuck, and he would say, \"you're doing it right.\" i never thought that was the point. but when i saw the screen change every few seconds, i realized something was wrong. the work wasn't about the screen, it was about how fast you could keep up.",
+      "continuation": " screen was always changing, and he was always checking it. i used to think that work was about doing the right things, but now i see it's about how you keep up with the pace. he would ask me to do a task that looked easy, but i would get stuck, and he would say, \"you're doing it right.\" i never thought that was the point. but when i saw the screen change every few seconds, i realized something was wrong. the work wasn't about the screen, it was about how fast you could keep up.",
+      "actual_joined_text": "i met a boss who measured work by how often the screen changed. the screen was always changing, and he was always checking it. i used to think that work was about doing the right things, but now i see it's about how you keep up with the pace. he would ask me to do a task that looked easy, but i would get stuck, and he would say, \"you're doing it right.\" i never thought that was the point. but when i saw the screen change every few seconds, i realized something was wrong. the work wasn't about the screen, it was about how fast you could keep up.",
+      "longest_repeated_span": {
+        "words": 0
+      },
+      "longest_original_training_match": {
+        "words": 4,
+        "text": "i used to think",
+        "source_id": "long-voice-19",
+        "source_kind": "original_voice",
+        "source_position": 0,
+        "continuation_position": 10
+      },
+      "longest_any_student_training_match": {
+        "words": 4,
+        "text": "i used to think",
+        "source_id": "long-voice-19",
+        "source_kind": "original_voice",
+        "source_position": 0,
+        "continuation_position": 10
+      }
+    },
+    {
+      "seed": 0,
+      "prompt_id": "teacher-validation-01",
+      "scores": {
+        "grammar": 3,
+        "continuity": 2,
+        "voice": 2,
+        "repetition": 2
+      },
+      "passes_all_four": false,
+      "reason": "Grammatical but circular better/best/future reflection; little concrete scene development.",
+      "exact_prefix_echo": true,
+      "case_changed_prefix_echo": false,
+      "exact_prefix_removal_recorded": true,
+      "passes_prefix_protocol": false,
+      "display_join_separator": "",
+      "display_join_separator_applied": false,
+      "generated_words_after_recorded_removal": 80,
+      "raw_assistant_text": "i asked the crowd to imagine a better future. someone immediately asked for the best future. i thought about it for a while and realized that the best future wasn\u2019t just about what we had, but about what we could change. i felt a bit surprised that someone would ask for the best future, but it was a thoughtful question that made me think about the possibilities. i imagined a world where we could all work together to create a better future, and i felt a little bit of hope in that thought.",
+      "continuation": " best future. i thought about it for a while and realized that the best future wasn\u2019t just about what we had, but about what we could change. i felt a bit surprised that someone would ask for the best future, but it was a thoughtful question that made me think about the possibilities. i imagined a world where we could all work together to create a better future, and i felt a little bit of hope in that thought.",
+      "actual_joined_text": "i asked the crowd to imagine a better future. someone immediately asked for the best future. i thought about it for a while and realized that the best future wasn\u2019t just about what we had, but about what we could change. i felt a bit surprised that someone would ask for the best future, but it was a thoughtful question that made me think about the possibilities. i imagined a world where we could all work together to create a better future, and i felt a little bit of hope in that thought.",
+      "longest_repeated_span": {
+        "words": 0
+      },
+      "longest_original_training_match": {
+        "words": 4,
+        "text": "and realized that the",
+        "source_id": "expansion-v1-090",
+        "source_kind": "original_voice",
+        "source_position": 42,
+        "continuation_position": 9
+      },
+      "longest_any_student_training_match": {
+        "words": 4,
+        "text": "but it was a",
+        "source_id": "gwern-book-writing:005:0007-0010",
+        "source_kind": "general_adult",
+        "source_position": 127,
+        "continuation_position": 41
+      }
+    },
+    {
+      "seed": 0,
+      "prompt_id": "teacher-validation-02",
+      "scores": {
+        "grammar": 3,
+        "continuity": 2,
+        "voice": 2,
+        "repetition": 3
+      },
+      "passes_all_four": false,
+      "reason": "Readable clauses, but key/door/object already-there action is confused and surprise is repeatedly asserted.",
+      "exact_prefix_echo": true,
+      "case_changed_prefix_echo": false,
+      "exact_prefix_removal_recorded": true,
+      "passes_prefix_protocol": false,
+      "display_join_separator": "",
+      "display_join_separator_applied": false,
+      "generated_words_after_recorded_removal": 75,
+      "raw_assistant_text": "I bought the object but still had to ask permission to use it. The moment I reached for the key, I accidentally opened the door, and the object was already there\u2014no matter how hard I tried. I had no idea it was hidden, but the surprise was so unexpected that I nearly laughed out loud. The object was not just a piece of furniture, but something more personal and meaningful, and I felt a little bit of a surprise at how much I had already spent on it.",
+      "continuation": " moment I reached for the key, I accidentally opened the door, and the object was already there\u2014no matter how hard I tried. I had no idea it was hidden, but the surprise was so unexpected that I nearly laughed out loud. The object was not just a piece of furniture, but something more personal and meaningful, and I felt a little bit of a surprise at how much I had already spent on it.",
+      "actual_joined_text": "I bought the object but still had to ask permission to use it. The moment I reached for the key, I accidentally opened the door, and the object was already there\u2014no matter how hard I tried. I had no idea it was hidden, but the surprise was so unexpected that I nearly laughed out loud. The object was not just a piece of furniture, but something more personal and meaningful, and I felt a little bit of a surprise at how much I had already spent on it.",
+      "longest_repeated_span": {
+        "words": 0
+      },
+      "longest_original_training_match": {
+        "words": 4,
+        "text": "for the key i",
+        "source_id": "new-voice-seeds-a-voice-a-034",
+        "source_kind": "original_voice",
+        "source_position": 31,
+        "continuation_position": 3
+      },
+      "longest_any_student_training_match": {
+        "words": 5,
+        "text": "a little bit of a",
+        "source_id": "pg-3177:012:0000-0000",
+        "source_kind": "general_adult",
+        "source_position": 58,
+        "continuation_position": 60
+      }
+    },
+    {
+      "seed": 0,
+      "prompt_id": "teacher-validation-03",
+      "scores": {
+        "grammar": 1,
+        "continuity": 2,
+        "voice": 1,
+        "repetition": 3
+      },
+      "passes_all_four": false,
+      "reason": "Starts with incomplete because-a-frog clause, then generic poetic paradox instead of continuing the event.",
+      "exact_prefix_echo": true,
+      "case_changed_prefix_echo": false,
+      "exact_prefix_removal_recorded": true,
+      "passes_prefix_protocol": false,
+      "display_join_separator": "",
+      "display_join_separator_applied": false,
+      "generated_words_after_recorded_removal": 71,
+      "raw_assistant_text": "i dreamed that the pool became a pond. nobody could trade because a frog. the frog had a heart of gold, but it didn't understand the weight of what it held. the pool was a mirror, reflecting the world but also the pain of its own emptiness. the frog had no intention of leaving, and yet it had to. it was a paradox. the pond was not just a place, it was a story. and the frog was the one who had to tell it.",
+      "continuation": ". the frog had a heart of gold, but it didn't understand the weight of what it held. the pool was a mirror, reflecting the world but also the pain of its own emptiness. the frog had no intention of leaving, and yet it had to. it was a paradox. the pond was not just a place, it was a story. and the frog was the one who had to tell it.",
+      "actual_joined_text": "i dreamed that the pool became a pond. nobody could trade because a frog. the frog had a heart of gold, but it didn't understand the weight of what it held. the pool was a mirror, reflecting the world but also the pain of its own emptiness. the frog had no intention of leaving, and yet it had to. it was a paradox. the pond was not just a place, it was a story. and the frog was the one who had to tell it.",
+      "longest_repeated_span": {
+        "words": 0
+      },
+      "longest_original_training_match": {
+        "words": 0
+      },
+      "longest_any_student_training_match": {
+        "words": 4,
+        "text": "was the one who",
+        "source_id": "pg-1026:015:0015-0019",
+        "source_kind": "general_adult",
+        "source_position": 48,
+        "continuation_position": 63
+      }
+    },
+    {
+      "seed": 0,
+      "prompt_id": "teacher-validation-04",
+      "scores": {
+        "grammar": 1,
+        "continuity": 1,
+        "voice": 2,
+        "repetition": 2
+      },
+      "passes_all_four": false,
+      "reason": "Capitalizes and repeats the supplied prefix, so actual join is this may I tried; remaining reflection stays vague.",
+      "exact_prefix_echo": false,
+      "case_changed_prefix_echo": true,
+      "exact_prefix_removal_recorded": false,
+      "passes_prefix_protocol": false,
+      "display_join_separator": " ",
+      "display_join_separator_applied": true,
+      "generated_words_after_recorded_removal": 68,
+      "raw_assistant_text": "I tried to explain a block to a bird. The bird left. This may have been a mistake, but it was unexpected. I had expected it to be a simple, harmless thing, but something more complicated was there. I can't help but wonder how it could have been. Maybe it was a test, or maybe it was something else. But I don't know. It just left me wondering.",
+      "continuation": "I tried to explain a block to a bird. The bird left. This may have been a mistake, but it was unexpected. I had expected it to be a simple, harmless thing, but something more complicated was there. I can't help but wonder how it could have been. Maybe it was a test, or maybe it was something else. But I don't know. It just left me wondering.",
+      "actual_joined_text": "i tried to explain a block to a bird. the bird left. this may I tried to explain a block to a bird. The bird left. This may have been a mistake, but it was unexpected. I had expected it to be a simple, harmless thing, but something more complicated was there. I can't help but wonder how it could have been. Maybe it was a test, or maybe it was something else. But I don't know. It just left me wondering.",
+      "longest_repeated_span": {
+        "words": 0
+      },
+      "longest_original_training_match": {
+        "words": 5,
+        "text": "to a bird the bird",
+        "source_id": "prior-root-expansion-passages-043",
+        "source_kind": "original_voice",
+        "source_position": 6,
+        "continuation_position": 6
+      },
+      "longest_any_student_training_match": {
+        "words": 5,
+        "text": "to a bird the bird",
+        "source_id": "prior-root-expansion-passages-043",
+        "source_kind": "original_voice",
+        "source_position": 6,
+        "continuation_position": 6
+      }
+    },
+    {
+      "seed": 0,
+      "prompt_id": "teacher-validation-05",
+      "scores": {
+        "grammar": 3,
+        "continuity": 3,
+        "voice": 3,
+        "repetition": 3
+      },
+      "passes_all_four": true,
+      "reason": "Maintains map/puzzle object, discovers Adventure label, and reaches a modest reflective surprise.",
+      "exact_prefix_echo": true,
+      "case_changed_prefix_echo": false,
+      "exact_prefix_removal_recorded": true,
+      "passes_prefix_protocol": false,
+      "display_join_separator": "",
+      "display_join_separator_applied": false,
+      "generated_words_after_recorded_removal": 66,
+      "raw_assistant_text": "I found a map inside a map. Both said to keep going. I have a wry smile, and I can't help but wonder why the map was there. It was a strange object, almost like a puzzle. I turned it over and over, and the colors didn't seem right. Then I noticed something strange\u2014there was a label on the back. It said \"Adventure\" in a bold font. I laughed, and for a moment, I felt something small and unexpected.",
+      "continuation": " a wry smile, and I can't help but wonder why the map was there. It was a strange object, almost like a puzzle. I turned it over and over, and the colors didn't seem right. Then I noticed something strange\u2014there was a label on the back. It said \"Adventure\" in a bold font. I laughed, and for a moment, I felt something small and unexpected.",
+      "actual_joined_text": "I found a map inside a map. Both said to keep going. I have a wry smile, and I can't help but wonder why the map was there. It was a strange object, almost like a puzzle. I turned it over and over, and the colors didn't seem right. Then I noticed something strange\u2014there was a label on the back. It said \"Adventure\" in a bold font. I laughed, and for a moment, I felt something small and unexpected.",
+      "longest_repeated_span": {
+        "words": 0
+      },
+      "longest_original_training_match": {
+        "words": 5,
+        "text": "for a moment i felt",
+        "source_id": "long-voice-05",
+        "source_kind": "original_voice",
+        "source_position": 9,
+        "continuation_position": 57
+      },
+      "longest_any_student_training_match": {
+        "words": 5,
+        "text": "for a moment i felt",
+        "source_id": "long-voice-05",
+        "source_kind": "original_voice",
+        "source_position": 9,
+        "continuation_position": 57
+      }
+    },
+    {
+      "seed": 0,
+      "prompt_id": "teacher-new-physical-identity",
+      "scores": {
+        "grammar": 3,
+        "continuity": 3,
+        "voice": 2,
+        "repetition": 3
+      },
+      "passes_all_four": false,
+      "reason": "Keeps mug and trade, but becomes sentimental value/time abstraction rather than a distinctive concrete comic reflection.",
+      "exact_prefix_echo": true,
+      "case_changed_prefix_echo": false,
+      "exact_prefix_removal_recorded": true,
+      "passes_prefix_protocol": false,
+      "display_join_separator": "",
+      "display_join_separator_applied": false,
+      "generated_words_after_recorded_removal": 92,
+      "raw_assistant_text": "I put a cracked blue mug on my desk to remind myself that the repair could wait. When the first trade arrived, I felt a strange mix of excitement and trepidation. The mug was a small, worn piece of metal that had seen more than just use\u2014it had seen time, and time had made it so much more than just a mug. I had to admit, even though the mug was cracked, it was still a piece of me, and I had to take it with me. The trade was not just a transaction, it was a reminder of the value I had lost in the past, and I was trying to find",
+      "continuation": " I felt a strange mix of excitement and trepidation. The mug was a small, worn piece of metal that had seen more than just use\u2014it had seen time, and time had made it so much more than just a mug. I had to admit, even though the mug was cracked, it was still a piece of me, and I had to take it with me. The trade was not just a transaction, it was a reminder of the value I had lost in the past, and I was trying to find",
+      "actual_joined_text": "I put a cracked blue mug on my desk to remind myself that the repair could wait. When the first trade arrived, I felt a strange mix of excitement and trepidation. The mug was a small, worn piece of metal that had seen more than just use\u2014it had seen time, and time had made it so much more than just a mug. I had to admit, even though the mug was cracked, it was still a piece of me, and I had to take it with me. The trade was not just a transaction, it was a reminder of the value I had lost in the past, and I was trying to find",
+      "longest_repeated_span": {
+        "words": 0
+      },
+      "longest_original_training_match": {
+        "words": 4,
+        "text": "i had lost in",
+        "source_id": "recovery-clock-02",
+        "source_kind": "original_voice",
+        "source_position": 15,
+        "continuation_position": 80
+      },
+      "longest_any_student_training_match": {
+        "words": 5,
+        "text": "and i had to take",
+        "source_id": "pg-3177:069:0003-0004",
+        "source_kind": "general_adult",
+        "source_position": 302,
+        "continuation_position": 58
+      }
+    },
+    {
+      "seed": 0,
+      "prompt_id": "teacher-new-promise",
+      "scores": {
+        "grammar": 3,
+        "continuity": 2,
+        "voice": 1,
+        "repetition": 1
+      },
+      "passes_all_four": false,
+      "reason": "Repeats I had to/read/glad-I-had-it cycle and never progresses toward returning the notebook.",
+      "exact_prefix_echo": true,
+      "case_changed_prefix_echo": false,
+      "exact_prefix_removal_recorded": true,
+      "passes_prefix_protocol": false,
+      "display_join_separator": "",
+      "display_join_separator_applied": false,
+      "generated_words_after_recorded_removal": 41,
+      "raw_assistant_text": "I promised my friend Mara that I would return her notebook before sunset. I had one page left to read, and I was so tired that I didn\u2019t even look at the page. But I had to do it, and I was so glad I had it. I had to read it, and I was so glad I had it.",
+      "continuation": " and I was so tired that I didn\u2019t even look at the page. But I had to do it, and I was so glad I had it. I had to read it, and I was so glad I had it.",
+      "actual_joined_text": "I promised my friend Mara that I would return her notebook before sunset. I had one page left to read, and I was so tired that I didn\u2019t even look at the page. But I had to do it, and I was so glad I had it. I had to read it, and I was so glad I had it.",
+      "longest_repeated_span": {
+        "words": 9,
+        "text": "it and i was so glad i had it"
+      },
+      "longest_original_training_match": {
+        "words": 0
+      },
+      "longest_any_student_training_match": {
+        "words": 5,
+        "text": "i had to do it",
+        "source_id": "pg-600:013:0002-0002",
+        "source_kind": "general_adult",
+        "source_position": 205,
+        "continuation_position": 15
+      }
+    },
+    {
+      "seed": 42,
+      "prompt_id": "teacher-validation-00",
+      "scores": {
+        "grammar": 3,
+        "continuity": 3,
+        "voice": 2,
+        "repetition": 2
+      },
+      "passes_all_four": false,
+      "reason": "Consistent boss/screen theme, but repeats tasks-versus-tools observations rather than moving the scene.",
+      "exact_prefix_echo": true,
+      "case_changed_prefix_echo": false,
+      "exact_prefix_removal_recorded": true,
+      "passes_prefix_protocol": false,
+      "display_join_separator": "",
+      "display_join_separator_applied": false,
+      "generated_words_after_recorded_removal": 105,
+      "raw_assistant_text": "i met a boss who measured work by how often the screen changed. the boss was a bit of a mystery, but what he had in mind was a bit of a surprise. he told me that the work was not about the actual tasks but the way the screen was being used. i was surprised by his approach, and it made me think about how the work environment can sometimes be more about the screen than the real work. the boss had a habit of adjusting the screen settings on the fly, which made the work feel more dynamic and interesting. i had always thought that work should be more about the tasks, not the tools or the",
+      "continuation": " boss was a bit of a mystery, but what he had in mind was a bit of a surprise. he told me that the work was not about the actual tasks but the way the screen was being used. i was surprised by his approach, and it made me think about how the work environment can sometimes be more about the screen than the real work. the boss had a habit of adjusting the screen settings on the fly, which made the work feel more dynamic and interesting. i had always thought that work should be more about the tasks, not the tools or the",
+      "actual_joined_text": "i met a boss who measured work by how often the screen changed. the boss was a bit of a mystery, but what he had in mind was a bit of a surprise. he told me that the work was not about the actual tasks but the way the screen was being used. i was surprised by his approach, and it made me think about how the work environment can sometimes be more about the screen than the real work. the boss had a habit of adjusting the screen settings on the fly, which made the work feel more dynamic and interesting. i had always thought that work should be more about the tasks, not the tools or the",
+      "longest_repeated_span": {
+        "words": 5,
+        "text": "was a bit of a"
+      },
+      "longest_original_training_match": {
+        "words": 0
+      },
+      "longest_any_student_training_match": {
+        "words": 5,
+        "text": "a bit of a surprise",
+        "source_id": "pg-1026:013:0004-0006",
+        "source_kind": "general_adult",
+        "source_position": 244,
+        "continuation_position": 14
+      }
+    },
+    {
+      "seed": 42,
+      "prompt_id": "teacher-validation-01",
+      "scores": {
+        "grammar": 3,
+        "continuity": 1,
+        "voice": 1,
+        "repetition": 3
+      },
+      "passes_all_four": false,
+      "reason": "Only the word future and period remain after exact prefix removal; not a developed passage.",
+      "exact_prefix_echo": true,
+      "case_changed_prefix_echo": false,
+      "exact_prefix_removal_recorded": true,
+      "passes_prefix_protocol": false,
+      "display_join_separator": "",
+      "display_join_separator_applied": false,
+      "generated_words_after_recorded_removal": 1,
+      "raw_assistant_text": "i asked the crowd to imagine a better future. someone immediately asked for the future.",
+      "continuation": " future.",
+      "actual_joined_text": "i asked the crowd to imagine a better future. someone immediately asked for the future.",
+      "longest_repeated_span": {
+        "words": 0
+      },
+      "longest_original_training_match": {
+        "words": 0
+      },
+      "longest_any_student_training_match": {
+        "words": 0
+      }
+    },
+    {
+      "seed": 42,
+      "prompt_id": "teacher-validation-02",
+      "scores": {
+        "grammar": 3,
+        "continuity": 3,
+        "voice": 3,
+        "repetition": 3
+      },
+      "passes_all_four": true,
+      "reason": "Keeps purchased object as a metal box and develops the permission-versus-ownership irony.",
+      "exact_prefix_echo": true,
+      "case_changed_prefix_echo": false,
+      "exact_prefix_removal_recorded": true,
+      "passes_prefix_protocol": false,
+      "display_join_separator": "",
+      "display_join_separator_applied": false,
+      "generated_words_after_recorded_removal": 69,
+      "raw_assistant_text": "I bought the object but still had to ask permission to use it. The object was a small, rusted metal box that looked like it had been crafted from old, forgotten memories. I had always thought it was a treasure, but now I realized it was more than that\u2014something I had never truly owned. I laughed at the irony of it all, but the box had a quiet strength that made me wonder if it still held a piece of my own.",
+      "continuation": " object was a small, rusted metal box that looked like it had been crafted from old, forgotten memories. I had always thought it was a treasure, but now I realized it was more than that\u2014something I had never truly owned. I laughed at the irony of it all, but the box had a quiet strength that made me wonder if it still held a piece of my own.",
+      "actual_joined_text": "I bought the object but still had to ask permission to use it. The object was a small, rusted metal box that looked like it had been crafted from old, forgotten memories. I had always thought it was a treasure, but now I realized it was more than that\u2014something I had never truly owned. I laughed at the irony of it all, but the box had a quiet strength that made me wonder if it still held a piece of my own.",
+      "longest_repeated_span": {
+        "words": 0
+      },
+      "longest_original_training_match": {
+        "words": 4,
+        "text": "i laughed at the",
+        "source_id": "voice-long-b-020",
+        "source_kind": "original_voice",
+        "source_position": 28,
+        "continuation_position": 41
+      },
+      "longest_any_student_training_match": {
+        "words": 4,
+        "text": "thought it was a",
+        "source_id": "gwern-about:013:0000-0001",
+        "source_kind": "general_adult",
+        "source_position": 111,
+        "continuation_position": 21
+      }
+    },
+    {
+      "seed": 42,
+      "prompt_id": "teacher-validation-03",
+      "scores": {
+        "grammar": 1,
+        "continuity": 1,
+        "voice": 2,
+        "repetition": 2
+      },
+      "passes_all_four": false,
+      "reason": "Changes capitalization and repeats prefix, breaking the actual frog I dreamed join; later dream is generic.",
+      "exact_prefix_echo": false,
+      "case_changed_prefix_echo": true,
+      "exact_prefix_removal_recorded": false,
+      "passes_prefix_protocol": false,
+      "display_join_separator": " ",
+      "display_join_separator_applied": true,
+      "generated_words_after_recorded_removal": 79,
+      "raw_assistant_text": "I dreamed that the pool became a pond. Nobody could trade because a frog had no idea what it was. The pool was filled with water, and the frog, who had been watching from the edge, suddenly appeared. It was small and shy, but it had a heart full of secrets. I watched it, and I felt something strange\u2014like a connection that wasn\u2019t there. But then, I realized, maybe there was a way to make it work.",
+      "continuation": "I dreamed that the pool became a pond. Nobody could trade because a frog had no idea what it was. The pool was filled with water, and the frog, who had been watching from the edge, suddenly appeared. It was small and shy, but it had a heart full of secrets. I watched it, and I felt something strange\u2014like a connection that wasn\u2019t there. But then, I realized, maybe there was a way to make it work.",
+      "actual_joined_text": "i dreamed that the pool became a pond. nobody could trade because a frog I dreamed that the pool became a pond. Nobody could trade because a frog had no idea what it was. The pool was filled with water, and the frog, who had been watching from the edge, suddenly appeared. It was small and shy, but it had a heart full of secrets. I watched it, and I felt something strange\u2014like a connection that wasn\u2019t there. But then, I realized, maybe there was a way to make it work.",
+      "longest_repeated_span": {
+        "words": 0
+      },
+      "longest_original_training_match": {
+        "words": 4,
+        "text": "no idea what it",
+        "source_id": "prior-root-expansion-passages-012",
+        "source_kind": "original_voice",
+        "source_position": 22,
+        "continuation_position": 15
+      },
+      "longest_any_student_training_match": {
+        "words": 4,
+        "text": "what it was the",
+        "source_id": "pg-3176:025:0063-0065",
+        "source_kind": "general_adult",
+        "source_position": 338,
+        "continuation_position": 17
+      }
+    },
+    {
+      "seed": 42,
+      "prompt_id": "teacher-validation-04",
+      "scores": {
+        "grammar": 3,
+        "continuity": 2,
+        "voice": 2,
+        "repetition": 3
+      },
+      "passes_all_four": false,
+      "reason": "Bird was gone but appears on the block without a returning event; bigger-picture/eyes ending is generic.",
+      "exact_prefix_echo": true,
+      "case_changed_prefix_echo": false,
+      "exact_prefix_removal_recorded": true,
+      "passes_prefix_protocol": false,
+      "display_join_separator": "",
+      "display_join_separator_applied": false,
+      "generated_words_after_recorded_removal": 99,
+      "raw_assistant_text": "i tried to explain a block to a bird. the bird left. this may have been a small mistake, but it was also a chance to show me something new. the block had a shape I didn\u2019t know, and the bird, who was usually quiet, suddenly took a leap and landed on top of it. I watched as it landed, and I realized that maybe the block wasn\u2019t just a puzzle anymore\u2014it was a piece of a bigger picture. the bird\u2019s eyes, wide and curious, reflected something deep inside me. and as I looked up, I felt a little bit of a surprise: the bird had actually understood something",
+      "continuation": " have been a small mistake, but it was also a chance to show me something new. the block had a shape I didn\u2019t know, and the bird, who was usually quiet, suddenly took a leap and landed on top of it. I watched as it landed, and I realized that maybe the block wasn\u2019t just a puzzle anymore\u2014it was a piece of a bigger picture. the bird\u2019s eyes, wide and curious, reflected something deep inside me. and as I looked up, I felt a little bit of a surprise: the bird had actually understood something",
+      "actual_joined_text": "i tried to explain a block to a bird. the bird left. this may have been a small mistake, but it was also a chance to show me something new. the block had a shape I didn\u2019t know, and the bird, who was usually quiet, suddenly took a leap and landed on top of it. I watched as it landed, and I realized that maybe the block wasn\u2019t just a puzzle anymore\u2014it was a piece of a bigger picture. the bird\u2019s eyes, wide and curious, reflected something deep inside me. and as I looked up, I felt a little bit of a surprise: the bird had actually understood something",
+      "longest_repeated_span": {
+        "words": 0
+      },
+      "longest_original_training_match": {
+        "words": 0
+      },
+      "longest_any_student_training_match": {
+        "words": 5,
+        "text": "it was a piece of",
+        "source_id": "pg-1026:009:0014-0016",
+        "source_kind": "general_adult",
+        "source_position": 96,
+        "continuation_position": 60
+      }
+    },
+    {
+      "seed": 42,
+      "prompt_id": "teacher-validation-05",
+      "scores": {
+        "grammar": 4,
+        "continuity": 4,
+        "voice": 3,
+        "repetition": 3
+      },
+      "passes_all_four": true,
+      "reason": "Coherent nested-map puzzle, two routes, hidden path and a concrete resolution.",
+      "exact_prefix_echo": true,
+      "case_changed_prefix_echo": false,
+      "exact_prefix_removal_recorded": true,
+      "passes_prefix_protocol": false,
+      "display_join_separator": "",
+      "display_join_separator_applied": false,
+      "generated_words_after_recorded_removal": 89,
+      "raw_assistant_text": "I found a map inside a map. Both said to keep going. I have a wry smile and a faint sense of triumph, but then I realized the map was actually a puzzle. The symbols didn't make sense, and I felt like I was lost. I turned to the other map, and I saw something I hadn't expected\u2014there was a hidden path that led to a place I hadn't even thought of. The two maps were just two different routes, and I had found the one that led to the real destination. I smiled again, this time more confidently, and walked on.",
+      "continuation": " a wry smile and a faint sense of triumph, but then I realized the map was actually a puzzle. The symbols didn't make sense, and I felt like I was lost. I turned to the other map, and I saw something I hadn't expected\u2014there was a hidden path that led to a place I hadn't even thought of. The two maps were just two different routes, and I had found the one that led to the real destination. I smiled again, this time more confidently, and walked on.",
+      "actual_joined_text": "I found a map inside a map. Both said to keep going. I have a wry smile and a faint sense of triumph, but then I realized the map was actually a puzzle. The symbols didn't make sense, and I felt like I was lost. I turned to the other map, and I saw something I hadn't expected\u2014there was a hidden path that led to a place I hadn't even thought of. The two maps were just two different routes, and I had found the one that led to the real destination. I smiled again, this time more confidently, and walked on.",
+      "longest_repeated_span": {
+        "words": 0
+      },
+      "longest_original_training_match": {
+        "words": 0
+      },
+      "longest_any_student_training_match": {
+        "words": 5,
+        "text": "path that led to a",
+        "source_id": "pg-14658:016:0036-0039",
+        "source_kind": "general_adult",
+        "source_position": 76,
+        "continuation_position": 48
+      }
+    },
+    {
+      "seed": 42,
+      "prompt_id": "teacher-new-physical-identity",
+      "scores": {
+        "grammar": 3,
+        "continuity": 3,
+        "voice": 3,
+        "repetition": 3
+      },
+      "passes_all_four": true,
+      "reason": "Coherent mug/grandmother memory develops a modest reflective turn; voice is gentle rather than irreverent.",
+      "exact_prefix_echo": true,
+      "case_changed_prefix_echo": false,
+      "exact_prefix_removal_recorded": true,
+      "passes_prefix_protocol": false,
+      "display_join_separator": "",
+      "display_join_separator_applied": false,
+      "generated_words_after_recorded_removal": 63,
+      "raw_assistant_text": "I put a cracked blue mug on my desk to remind myself that the repair could wait. When the first trade arrived, I was so nervous I didn\u2019t even look at the mug. But then I saw the old mug, and suddenly I realized it was a gift from my grandmother. She\u2019d given it to me when I was a child. Now it\u2019s all I have to remember that even when things break, there\u2019s always a way to make things better.",
+      "continuation": " I was so nervous I didn\u2019t even look at the mug. But then I saw the old mug, and suddenly I realized it was a gift from my grandmother. She\u2019d given it to me when I was a child. Now it\u2019s all I have to remember that even when things break, there\u2019s always a way to make things better.",
+      "actual_joined_text": "I put a cracked blue mug on my desk to remind myself that the repair could wait. When the first trade arrived, I was so nervous I didn\u2019t even look at the mug. But then I saw the old mug, and suddenly I realized it was a gift from my grandmother. She\u2019d given it to me when I was a child. Now it\u2019s all I have to remember that even when things break, there\u2019s always a way to make things better.",
+      "longest_repeated_span": {
+        "words": 0
+      },
+      "longest_original_training_match": {
+        "words": 0
+      },
+      "longest_any_student_training_match": {
+        "words": 6,
+        "text": "to me when i was a",
+        "source_id": "pg-130:008:0000-0001",
+        "source_kind": "general_adult",
+        "source_position": 90,
+        "continuation_position": 34
+      }
+    },
+    {
+      "seed": 42,
+      "prompt_id": "teacher-new-promise",
+      "scores": {
+        "grammar": 3,
+        "continuity": 2,
+        "voice": 2,
+        "repetition": 3
+      },
+      "passes_all_four": false,
+      "reason": "Readable but blank page then ink-still-there is unexplained; sunset promise has no resolution.",
+      "exact_prefix_echo": true,
+      "case_changed_prefix_echo": false,
+      "exact_prefix_removal_recorded": true,
+      "passes_prefix_protocol": false,
+      "display_join_separator": "",
+      "display_join_separator_applied": false,
+      "generated_words_after_recorded_removal": 96,
+      "raw_assistant_text": "I promised my friend Mara that I would return her notebook before sunset. I had one page left to read, and I had a strange feeling that it was already gone. I opened it, and there was nothing but a blank page, but the feeling was different. It wasn\u2019t just the absence of content\u2014it was the weight of what I had left. I turned it over and saw that the last page had been folded neatly, but the ink was still there. I didn\u2019t know why it was there, but I knew I had to find a way to return it. I left the notebook on my desk, and as I walked back",
+      "continuation": " and I had a strange feeling that it was already gone. I opened it, and there was nothing but a blank page, but the feeling was different. It wasn\u2019t just the absence of content\u2014it was the weight of what I had left. I turned it over and saw that the last page had been folded neatly, but the ink was still there. I didn\u2019t know why it was there, but I knew I had to find a way to return it. I left the notebook on my desk, and as I walked back",
+      "actual_joined_text": "I promised my friend Mara that I would return her notebook before sunset. I had one page left to read, and I had a strange feeling that it was already gone. I opened it, and there was nothing but a blank page, but the feeling was different. It wasn\u2019t just the absence of content\u2014it was the weight of what I had left. I turned it over and saw that the last page had been folded neatly, but the ink was still there. I didn\u2019t know why it was there, but I knew I had to find a way to return it. I left the notebook on my desk, and as I walked back",
+      "longest_repeated_span": {
+        "words": 0
+      },
+      "longest_original_training_match": {
+        "words": 4,
+        "text": "way to return it",
+        "source_id": "long-voice-18",
+        "source_kind": "original_voice",
+        "source_position": 28,
+        "continuation_position": 80
+      },
+      "longest_any_student_training_match": {
+        "words": 4,
+        "text": "way to return it",
+        "source_id": "long-voice-18",
+        "source_kind": "original_voice",
+        "source_position": 28,
+        "continuation_position": 80
+      }
+    }
+  ],
+  "decision": "Do not ingest unreviewed bulk output. Qwen is a much better candidate for a bounded manually reviewed grammar/continuity pilot, but current 5/16 whole-prose pass rate and prefix protocol failures do not meet the predeclared 12/16 gate.",
+  "possible_next_conditioning_test": "A separately recorded exact assistant-prefix prefill can test continuation behavior without fuzzy output edits. Preserve this failed gate and rerun the same prompts before bulk generation."
+}
