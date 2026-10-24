@@ -105,5 +105,13 @@ if bounded_path.exists():
     result["max_words_per_swap"] = 3
     result["cap_policy"] = bounded["stopping_policy"]
     result["bounded_text"] = bounded
+round2_path = ROOT / "evm32-round2/RESULTS.json"
+if round2_path.exists():
+    round2 = json.loads(round2_path.read_text())
+    assert round2["status"] == "PASS_LOCAL_SOLIDITY_32M_SECOND_OPTIMIZATION"
+    result["previous_bounded_text"] = result["bounded_text"]
+    result["bounded_text"] = round2
+    result["status"] = round2["status"]
+    result["cap_policy"] = round2["stopping_policy"]
 (ROOT / "RESULTS.json").write_text(json.dumps(result, indent=2) + "\n")
 print(json.dumps({"status": result["status"], "compact_security_checks": len(security["checks"]), "report_count": len(result["reports"])}))

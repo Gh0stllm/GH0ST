@@ -1,8 +1,8 @@
 # N0VA fast-market research: Solidity text under 32M gas
 
-**Active result: 32 local swaps generated 90 neural words under 32M gas per swap, with the same 8,175,493-parameter model. Words continue the saved story state across swaps. Nothing was deployed or submitted to a public chain.**
+**Active result: 32 local swaps generated 90 neural words at 22.31M average gas, 15.33% below the previous implementation, with the same 8,175,493-parameter model. Words continue the saved story state across swaps. Nothing was deployed or submitted to a public chain.**
 
-**Active constraint: Solidity execution on Robinhood Chain only. Stylus and WASM are excluded.** The user approved partial sentences across swaps to maximize new text within 32M. `TARGET.json` records the requirement. The selected [bounded-text implementation and tests](evm32/README.md) produced 1–3 words per swap; the maximum measured full-swap cost was 28,513,802 gas, with a mean of 26,346,158 gas. Seven sentences ended naturally across the 32-swap workload. Ten swaps per second remains unproven and is not claimed.
+**Active constraint: Solidity execution on Robinhood Chain only. Stylus and WASM are excluded.** The user approved partial sentences across swaps to maximize new text within 32M. `TARGET.json` records the requirement. The selected [second optimization and tests](evm32-round2/README.md) produced 1–3 words per swap; the maximum measured full-swap cost was 23,806,866 gas, with a mean of 22,307,148.75 gas. Seven sentences ended naturally across the 32-swap workload. The [previous bounded-text implementation](evm32/README.md) remains as the comparison. Ten swaps per second remains unproven and is not claimed.
 
 All learned Q10 weights, vocabulary, sampling rules and recurrent calculations remain unchanged. Every word and terminal punctuation comes from the neural model. A sentence is complete only when the model emits terminal punctuation. A nonterminal fragment can commit and continue on the next swap, but it is explicitly labelled incomplete; no punctuation is inserted.
 

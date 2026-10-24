@@ -1,0 +1,72 @@
+{
+  "status": "PASS_EXACT_COMPLETE_ABI_PARITY",
+  "scope": "UNFORKED_LOCAL_ONLY",
+  "publicTransactions": 0,
+  "candidate": "signed-combined-initial.sol",
+  "candidateSha256": "71c9919762e24881912ac3ea18e9bfe612f92a8c7fcd3d12f71738d00176f06c",
+  "baselineSha256": "2d596d9bd5273ac27abd59f4dc8c14de0002cc3265960515633152e02b98390c",
+  "modelParameters": 8175493,
+  "checkpointSha256": "904e4ee0426dc62c06b5551db19d2ee40d0c0c618fdb62c4a49a39af80d390d3",
+  "weightsChanged": false,
+  "precisionChanged": false,
+  "dataRepresentation": "Exact signed packed matrices with 18-row core shard alignment; regenerate using ../profile scripts",
+  "exportDirectory": "../profile/signed",
+  "directCases": 18,
+  "invalidCases": 11,
+  "allOutputsCompared": [
+    "tokens",
+    "punctuation",
+    "all hidden states",
+    "all197scores",
+    "text",
+    "count",
+    "terminal",
+    "unused return slots"
+  ],
+  "steadyThreeWord": {
+    "vector": "ongoing",
+    "maxWords": 3,
+    "count": 3,
+    "text": "in the demo",
+    "baselineGas": "25247142",
+    "candidateGas": "23174767",
+    "saved": "2072375",
+    "returnHash": "0x424b76efabe2685153795193430011323415a0aaef78a5465453e3b094749284",
+    "parity": true
+  },
+  "initialThreeWord": {
+    "vector": "zero",
+    "maxWords": 3,
+    "count": 3,
+    "text": "the cost cache",
+    "baselineGas": "25110841",
+    "candidateGas": "19253498",
+    "saved": "5857343",
+    "returnHash": "0xf5f7646f98474a74c5ffab22c032fd75b95c1ba2874f6d0aeff9c4e685818161",
+    "parity": true
+  },
+  "runtimeBytes": 13799,
+  "initcodeBytes": 16216,
+  "buildCommands": [
+    "python3 build.py",
+    "python3 build-signed.py",
+    "node benchmark.mjs signed-combined-initial.sol --data=../profile/signed"
+  ],
+  "changes": [
+    "Precompute unchanged six-feature contribution once per batch in exact int40 scratch values",
+    "Reuse first scratch shard slot for output heads with mandatory cache-tag reset on catalog transitions",
+    "Unroll head vector packing without changing its signed representation",
+    "Use exact signed packed matrices and core shard alignment from sibling profile work",
+    "Detect completely zero initial recurrent vectors once per batch; preserve full path for all later steps"
+  ],
+  "limitations": [
+    "These are direct model transaction costs, not PoolManager swap costs.",
+    "The 10 swaps per second target is not met by these tests.",
+    "Startup zero-state savings must not be quoted as steady-state throughput."
+  ],
+  "reportSha256": "89d37476a0d826e5751c06c9feab2c936502fdc941e72a4d665bac53d7aec9d4",
+  "independentZeroMaskBitCases": 6,
+  "extraReport": "signed-combined-initial-half-zero-results.json",
+  "extraReportSha256": "fe5e97585eb49fe35c6844b33911a8145cdc0141a86fbcc4acee5eae6d1e2923",
+  "unchangedCriticalFunctionChecks": 6
+}

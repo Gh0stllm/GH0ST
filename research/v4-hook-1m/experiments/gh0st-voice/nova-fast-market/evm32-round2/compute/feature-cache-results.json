@@ -1,0 +1,107 @@
+{
+  "mode": "UNFORKED_LOCAL_ONLY",
+  "publicTransactions": 0,
+  "dataInjected": true,
+  "modelWeightsUnchanged": true,
+  "candidate": "feature-cache.sol",
+  "tests": [
+    {
+      "vector": "zero",
+      "maxWords": 1,
+      "count": 1,
+      "text": "the",
+      "baselineGas": "9447131",
+      "candidateGas": "9421654",
+      "saved": "25477",
+      "returnHash": "0xd03c706db86549d4f94f1fa9d407dd27a0976f97182e3f1795ee89569819f61f",
+      "parity": true
+    },
+    {
+      "vector": "zero",
+      "maxWords": 2,
+      "count": 2,
+      "text": "the cost",
+      "baselineGas": "17281970",
+      "candidateGas": "16914191",
+      "saved": "367779",
+      "returnHash": "0x0e0464c3ebe225c302685f7befc183d144eff8c4ff4a0983156aedd186ebe830",
+      "parity": true
+    },
+    {
+      "vector": "zero",
+      "maxWords": 3,
+      "count": 3,
+      "text": "the cost cache",
+      "baselineGas": "25110841",
+      "candidateGas": "24400759",
+      "saved": "710082",
+      "returnHash": "0xf5f7646f98474a74c5ffab22c032fd75b95c1ba2874f6d0aeff9c4e685818161",
+      "parity": true
+    }
+  ],
+  "checks": [
+    {
+      "name": "zero_limit",
+      "passed": true
+    },
+    {
+      "name": "over_limit",
+      "passed": true
+    },
+    {
+      "name": "previous",
+      "passed": true
+    },
+    {
+      "name": "punct",
+      "passed": true
+    },
+    {
+      "name": "temperature_low",
+      "passed": true
+    },
+    {
+      "name": "temperature_high",
+      "passed": true
+    },
+    {
+      "name": "word_index_overflow",
+      "passed": true
+    },
+    {
+      "name": "hidden_low",
+      "passed": true
+    },
+    {
+      "name": "hidden_high",
+      "passed": true
+    },
+    {
+      "name": "feature_low",
+      "passed": true
+    },
+    {
+      "name": "feature_high",
+      "passed": true
+    }
+  ],
+  "checkpointSha256": "904e4ee0426dc62c06b5551db19d2ee40d0c0c618fdb62c4a49a39af80d390d3",
+  "contracts": [
+    {
+      "name": "baseline",
+      "sourceSha256": "2d596d9bd5273ac27abd59f4dc8c14de0002cc3265960515633152e02b98390c",
+      "runtimeBytes": 13667,
+      "initcodeBytes": 16070
+    },
+    {
+      "name": "candidate",
+      "sourceSha256": "cc68fa9f473d32f0649e91527af06fa17c241683b30e3f500670e453f80669f1",
+      "runtimeBytes": 13880,
+      "initcodeBytes": 16283
+    }
+  ],
+  "status": "PASS_EXACT_COMPLETE_ABI_PARITY",
+  "compiler": "0.8.30+commit.73712a01.Emscripten.clang",
+  "optimizerRuns": 200,
+  "evmVersion": "cancun"
+}

@@ -1,0 +1,141 @@
+{
+  "mode": "UNFORKED_LOCAL_ONLY",
+  "publicTransactions": 0,
+  "dataInjected": true,
+  "modelWeightsUnchanged": true,
+  "candidate": "signed-combined-initial.sol",
+  "tests": [
+    {
+      "vector": "first_half_zero",
+      "maxWords": 1,
+      "count": 1,
+      "text": "i",
+      "baselineGas": "9514290",
+      "candidateGas": "7008364",
+      "saved": "2505926",
+      "returnHash": "0x92fe2cf2e9f7c2255e9812173e983a6dc5528deca34ffb85dbba0aa05e9c0b19",
+      "parity": true
+    },
+    {
+      "vector": "first_half_zero",
+      "maxWords": 2,
+      "count": 2,
+      "text": "i read",
+      "baselineGas": "17346523",
+      "candidateGas": "14192005",
+      "saved": "3154518",
+      "returnHash": "0x02bee74d8c473e231e9849c76820b2baf611736de04c6b1e92389a6251aa78f5",
+      "parity": true
+    },
+    {
+      "vector": "first_half_zero",
+      "maxWords": 3,
+      "count": 3,
+      "text": "i read the",
+      "baselineGas": "25168642",
+      "candidateGas": "21202823",
+      "saved": "3965819",
+      "returnHash": "0x0e8d7c4791ab33b0da97363732ee9724982040e75439db8d3a78b3d8ee921ce8",
+      "parity": true
+    },
+    {
+      "vector": "second_half_zero",
+      "maxWords": 1,
+      "count": 1,
+      "text": "a",
+      "baselineGas": "9516038",
+      "candidateGas": "7012032",
+      "saved": "2504006",
+      "returnHash": "0xb69467b453a50b87fbd8fd90e5798f898965e863b687ecf8c68384c70a8a7d07",
+      "parity": true
+    },
+    {
+      "vector": "second_half_zero",
+      "maxWords": 2,
+      "count": 2,
+      "text": "a second",
+      "baselineGas": "17348499",
+      "candidateGas": "14195901",
+      "saved": "3152598",
+      "returnHash": "0x62d4dec631528cb08592e247c13d758adab34bd1d2c05ddc7e0d0103d4e23901",
+      "parity": true
+    },
+    {
+      "vector": "second_half_zero",
+      "maxWords": 3,
+      "count": 3,
+      "text": "a second test",
+      "baselineGas": "25169039",
+      "candidateGas": "21205140",
+      "saved": "3963899",
+      "returnHash": "0x9eeea012fae3738188b997d06aa20a28e0b38db6a7a70b354d45efebb16be32b",
+      "parity": true
+    }
+  ],
+  "checks": [
+    {
+      "name": "zero_limit",
+      "passed": true
+    },
+    {
+      "name": "over_limit",
+      "passed": true
+    },
+    {
+      "name": "previous",
+      "passed": true
+    },
+    {
+      "name": "punct",
+      "passed": true
+    },
+    {
+      "name": "temperature_low",
+      "passed": true
+    },
+    {
+      "name": "temperature_high",
+      "passed": true
+    },
+    {
+      "name": "word_index_overflow",
+      "passed": true
+    },
+    {
+      "name": "hidden_low",
+      "passed": true
+    },
+    {
+      "name": "hidden_high",
+      "passed": true
+    },
+    {
+      "name": "feature_low",
+      "passed": true
+    },
+    {
+      "name": "feature_high",
+      "passed": true
+    }
+  ],
+  "candidateDataDir": "../profile/signed",
+  "checkpointSha256": "904e4ee0426dc62c06b5551db19d2ee40d0c0c618fdb62c4a49a39af80d390d3",
+  "contracts": [
+    {
+      "name": "baseline",
+      "sourceSha256": "2d596d9bd5273ac27abd59f4dc8c14de0002cc3265960515633152e02b98390c",
+      "runtimeBytes": 13667,
+      "initcodeBytes": 16070
+    },
+    {
+      "name": "candidate",
+      "sourceSha256": "71c9919762e24881912ac3ea18e9bfe612f92a8c7fcd3d12f71738d00176f06c",
+      "runtimeBytes": 13799,
+      "initcodeBytes": 16216
+    }
+  ],
+  "status": "PASS_EXACT_COMPLETE_ABI_PARITY",
+  "compiler": "0.8.30+commit.73712a01.Emscripten.clang",
+  "optimizerRuns": 200,
+  "evmVersion": "cancun"
+}

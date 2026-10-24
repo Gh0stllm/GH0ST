@@ -74,6 +74,9 @@ async function deploy(a,args=[],name='contract'){
 }
 async function model(){
  const manifest=JSON.parse(fs.readFileSync(path.join(modelDir,'manifest.json')));report.source_checkpoint_sha256=manifest.checkpoint_sha256;
+ const domain=fs.readFileSync(modelSource,'utf8').match(/modelHash\s*=\s*keccak256\(abi.encode\("([^"]+)"/);
+ assert(domain,'Model identity domain must be present in the source');
+ assert.equal(manifest.model_domain,domain[1],'Manifest domain must match the compiled model before installing fixtures');
  const groups=['core','groups','words','vocabulary','fused','punctuation'],catalogs={},commitments=[];
  let fixtureAddress=0x100000n;report.model_data_injected=true;
  const blob=async(code,kind)=>{const length=(code.length-2)/2;assert(length<=24576);const address=ethers.getAddress(hex(fixtureAddress++,20));await rpc('hardhat_setCode',[address,code]);report.model_deployments.push({kind,address,bytes:length,injected:true});return address;};
