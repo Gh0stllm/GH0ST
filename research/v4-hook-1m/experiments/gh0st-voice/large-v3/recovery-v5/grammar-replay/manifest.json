@@ -1,0 +1,56 @@
+{
+  "status": "COMPLETE",
+  "dataset": "SimpleStories/SimpleStories",
+  "source_commit": "e63b8adc3b1a1bdc7cac5b500d150b71346b0628",
+  "source_split": "train",
+  "source_shard": "data/train-00000-of-00007.parquet",
+  "source_shard_bytes": 238015938,
+  "source_shard_sha256": "ca33531b99f3bebb4125e82f56017c223a4900331b55bcf7cde1b0f750d88fd4",
+  "raw_total_shard_rows": 302243,
+  "rows_read": 37693,
+  "accepted_stories": 25000,
+  "counts": {
+    "train": 20045,
+    "validation": 2427,
+    "test": 2528
+  },
+  "lexical_word_counts": {
+    "train": 3252149,
+    "validation": 392351,
+    "test": 409846
+  },
+  "group_counts": {
+    "train": 18816,
+    "validation": 2284,
+    "test": 2372
+  },
+  "group_overlap": 0,
+  "duplicate_story_overlap": 0,
+  "rejected": {
+    "word_length": 12693
+  },
+  "word_bounds": [
+    35,
+    260
+  ],
+  "split_rule": "Strip terminal -storynumber from generation_id; SHA256(gh0st-grammar-v1:+source_commit/completion_group) modulo10000:80/10/10",
+  "model_generated": true,
+  "license": "MIT per pinned dataset card",
+  "license_card_sha256": "353d76519cce9881d95c64822e5afe647611596660bb850acfa5612324ed241e",
+  "extractor_sha256": "77952a419bf8d387b75fb909defa4785765ca0d226398da39bdaf43dfd606549",
+  "outputs": {
+    "train": {
+      "sha256": "c55d491b50b3cf9812d091c2f5ddb08b387530dbd096bad07686bbf42ac5909a",
+      "bytes": 36063706
+    },
+    "validation": {
+      "sha256": "ccf36086f38e4dcf4eb4172279011cd47513feb2ed72eda71095e5963e8a8718",
+      "bytes": 4371639
+    },
+    "test": {
+      "sha256": "ca9c8b334a33a903ead887608d765648b43c778e780eede60b72f131babb11e1",
+      "bytes": 4545144
+    }
+  },
+  "limit_notes": "Bounded prefix of one upstream training shard, not a uniform sample of the complete dataset. Output splits are local generation-group splits; they are not upstream official test data."
+}

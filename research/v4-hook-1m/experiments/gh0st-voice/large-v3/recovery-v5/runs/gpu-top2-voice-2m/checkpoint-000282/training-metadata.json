@@ -1,0 +1,65 @@
+{
+  "step": 282,
+  "trained_target_tokens": 2003433,
+  "validation": {
+    "loss": 3.4499962450523043,
+    "perplexity": 31.50027402664449,
+    "target_tokens": 7074
+  },
+  "cache_fingerprint": "1ae78093214a83e641b9bd65a1f6a841bc656426bd928b4ead252c08adc25638",
+  "source_token_mix": {
+    "licensed_teacher": 903402,
+    "authored": 1000155,
+    "compositional": 99876
+  },
+  "source_window_mix": {
+    "licensed_teacher": 16294,
+    "authored": 18010,
+    "compositional": 1792
+  },
+  "configuration": {
+    "cache": "experiments/gh0st-voice/large-v3/recovery-v5/cache/grammar-bpe",
+    "output": "experiments/gh0st-voice/large-v3/recovery-v5/runs/gpu-top2-voice-2m",
+    "checkpoint": "experiments/simplestories-v2/model-cache",
+    "target_tokens": 2000000,
+    "max_steps": 10000,
+    "batch_size": 128,
+    "block_size": 64,
+    "context_warmup": 16,
+    "source_weights": {
+      "authored": 0.5,
+      "compositional": 0.05,
+      "licensed_teacher": 0.45
+    },
+    "quote_fraction": 0.5,
+    "learning_rate": 1e-05,
+    "weight_decay": 0.01,
+    "warmup_fraction": 0.03,
+    "validation_blocks": 128,
+    "eval_every": 50,
+    "snapshot_every": 100,
+    "log_every": 50,
+    "probe_tokens": 256,
+    "seed": 20261024,
+    "device": "mps",
+    "trainable": "top2",
+    "threads": 2,
+    "stop_after_degenerate": 0,
+    "min_training_tokens": 2000000,
+    "unlikelihood_alpha": 0.0,
+    "unlikelihood_window": 32
+  },
+  "weight_file_sha256": "5601eb5f19797811279933b70e26f03bb80d7513800c7efbc3a9d6f73f945808",
+  "probe_passes_basic_guards": true,
+  "manual_quality_review_required": true,
+  "training_loss_components": {
+    "ce_sum": 7049189.93359375,
+    "unlikelihood_sum": 0.0,
+    "negative_candidates": 0,
+    "positions_with_negatives": 0
+  },
+  "projected_parameter_values": {
+    "matrix": 0,
+    "norm": 0
+  }
+}
