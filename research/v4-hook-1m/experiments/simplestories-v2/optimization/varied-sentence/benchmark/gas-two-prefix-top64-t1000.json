@@ -1,0 +1,2972 @@
+{
+  "schemaVersion": 1,
+  "status": "COMPLETE_RESEARCH",
+  "label": "two-prefix-top64-t1000",
+  "startedAt": "2026-10-24T05:08:21.838Z",
+  "network": {
+    "backend": "Anvil",
+    "chainId": 31337,
+    "forked": false,
+    "transactionCap": "32000000"
+  },
+  "configuration": {
+    "prompt": [
+      3
+    ],
+    "topK": 64,
+    "temperatureMilli": 1000,
+    "maxNewTokens": 5,
+    "inferenceBudget": "29250000",
+    "count": 36
+  },
+  "sourceSha256": {
+    "experiments/simplestories-v2/optimization/varied-sentence/kernel/SimpleStoriesV2TwoPrefixCachedModel.sol": "675a50eb0730a8bad06a23a76e3f56d197af64bd74703e997af56d34eb7b8efb",
+    "experiments/simplestories-v2/optimization/varied-sentence/benchmark/CachedSampledSentenceHook.sol": "13b5f868a5c0c11cdb123910a6f24818ecfd36a81371d967d773899ba0172e2d",
+    "experiments/simplestories-v2/optimization/varied-sentence/benchmark/run-two-prefix-local.mjs": "ce12353c84c35d896f6a3b7ec10bf44ed07e7cf1e653d7af2a3ed833b07c9599"
+  },
+  "deployment": [
+    {
+      "name": "SimpleStoriesV2TwoPrefixCachedModel",
+      "address": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+      "gasUsed": "28689218"
+    },
+    {
+      "name": "CachedGenerationProbe",
+      "address": "0x5081a39b8A5f0E35a8D959395a630b68B74Dd30f",
+      "gasUsed": "195244"
+    },
+    {
+      "name": "PoolManager",
+      "address": "0x1fA02b2d6A771842690194Cf62D91bdd92BfE28d",
+      "gasUsed": "3787265"
+    },
+    {
+      "name": "SentenceV4SettlementRouter",
+      "address": "0xdbC43Ba45381e02825b14322cDdd15eC4B3164E6",
+      "gasUsed": "952495"
+    },
+    {
+      "name": "SentenceV4Create2Factory",
+      "address": "0x04C89607413713Ec9775E14b954286519d836FEf",
+      "gasUsed": "126931"
+    },
+    {
+      "name": "SentenceV4TestToken",
+      "address": "0x4C4a2f8c81640e47606d3fd77B353E87Ba015584",
+      "gasUsed": "215788"
+    },
+    {
+      "name": "SentenceV4TestToken",
+      "address": "0x21dF544947ba3E8b3c32561399E88B52Dc8b2823",
+      "gasUsed": "215788"
+    }
+  ],
+  "cases": [
+    {
+      "index": 0,
+      "seed": "0x0000000000000000000000000000000000000000000000000000000000000000",
+      "nonce": "0x0000000000000000000000000000000000000000000000000000000000000000",
+      "sequenceBefore": "0",
+      "fixtureKind": "incomplete-control",
+      "expectedText": null,
+      "rawTransaction": {
+        "status": 1,
+        "gasUsed": "27762821",
+        "gasLimit": "32000000"
+      },
+      "raw": {
+        "tokens": [
+          40,
+          946,
+          441,
+          1244,
+          8
+        ],
+        "text": "i trust my father '",
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0x169af535bca0533960958fdf5119c3d8dc55d8fa7587aeceffef99261994081a",
+        "naturallyTerminated": false,
+        "completeByHookPolicy": false
+      },
+      "preview": {
+        "success": true,
+        "tokens": [
+          40,
+          946,
+          441,
+          1244,
+          8
+        ],
+        "text": "i trust my father '",
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0x169af535bca0533960958fdf5119c3d8dc55d8fa7587aeceffef99261994081a",
+        "naturallyTerminated": false,
+        "completeByHookPolicy": false,
+        "complete": false
+      },
+      "swap": {
+        "status": 0,
+        "gasUsed": "27831486",
+        "gasLimit": "32000000",
+        "inferenceBudget": "29250000",
+        "atomicRollbackVerified": true,
+        "failure": {
+          "message": "execution reverted (unknown custom error)",
+          "data": "0x90bfb8650000000000000000000000004745b2a590bb20994df443d233b33cee8a665040b47b2fb100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000000000004570d9017000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004a9e35b2f00000000000000000000000000000000000000000000000000000000"
+        }
+      }
+    },
+    {
+      "index": 1,
+      "seed": "0x0000000000000000000000000000000000000000000000000000000000000001",
+      "nonce": "0x0000000000000000000000000000000000000000000000000000000000000001",
+      "sequenceBefore": "0",
+      "fixtureKind": "incomplete-control",
+      "expectedText": null,
+      "rawTransaction": {
+        "status": 1,
+        "gasUsed": "27785093",
+        "gasLimit": "32000000"
+      },
+      "raw": {
+        "tokens": [
+          164,
+          490,
+          1300,
+          13,
+          3
+        ],
+        "text": "you are right, \"",
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0x7000db61b93e8525150232bbd980d1c0f226ff0ef3a06fa2bb1ca3fc49d70bcb",
+        "naturallyTerminated": false,
+        "completeByHookPolicy": false
+      },
+      "preview": {
+        "success": true,
+        "tokens": [
+          164,
+          490,
+          1300,
+          13,
+          3
+        ],
+        "text": "you are right, \"",
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0x7000db61b93e8525150232bbd980d1c0f226ff0ef3a06fa2bb1ca3fc49d70bcb",
+        "naturallyTerminated": false,
+        "completeByHookPolicy": false,
+        "complete": false
+      },
+      "swap": {
+        "status": 0,
+        "gasUsed": "27847974",
+        "gasLimit": "32000000",
+        "inferenceBudget": "29250000",
+        "atomicRollbackVerified": true,
+        "failure": {
+          "message": "execution reverted (unknown custom error)",
+          "data": "0x90bfb8650000000000000000000000004745b2a590bb20994df443d233b33cee8a665040b47b2fb100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000000000004570d9017000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004a9e35b2f00000000000000000000000000000000000000000000000000000000"
+        }
+      }
+    },
+    {
+      "index": 2,
+      "seed": "0x000000000000000000000000000000000000000000000000000000000000007b",
+      "nonce": "0x000000000000000000000000000000000000000000000000000000000000007b",
+      "sequenceBefore": "0",
+      "fixtureKind": "incomplete-control",
+      "expectedText": null,
+      "rawTransaction": {
+        "status": 1,
+        "gasUsed": "27752387",
+        "gasLimit": "32000000"
+      },
+      "raw": {
+        "tokens": [
+          308,
+          13,
+          882,
+          538,
+          301
+        ],
+        "text": "mia, looking away from",
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0xc79758a50b043ffc3684003d8018c99b5789ea858afbb4232ae31e5f7bd97777",
+        "naturallyTerminated": false,
+        "completeByHookPolicy": false
+      },
+      "preview": {
+        "success": true,
+        "tokens": [
+          308,
+          13,
+          882,
+          538,
+          301
+        ],
+        "text": "mia, looking away from",
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0xc79758a50b043ffc3684003d8018c99b5789ea858afbb4232ae31e5f7bd97777",
+        "naturallyTerminated": false,
+        "completeByHookPolicy": false,
+        "complete": false
+      },
+      "swap": {
+        "status": 0,
+        "gasUsed": "27821052",
+        "gasLimit": "32000000",
+        "inferenceBudget": "29250000",
+        "atomicRollbackVerified": true,
+        "failure": {
+          "message": "execution reverted (unknown custom error)",
+          "data": "0x90bfb8650000000000000000000000004745b2a590bb20994df443d233b33cee8a665040b47b2fb100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000000000004570d9017000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004a9e35b2f00000000000000000000000000000000000000000000000000000000"
+        }
+      }
+    },
+    {
+      "index": 3,
+      "seed": "0x0000000000000000000000000000000000000000000000000000000000000016",
+      "nonce": "0x0000000000000000000000000000000000000000000000000000000000000016",
+      "sequenceBefore": "0",
+      "fixtureKind": "complete-five-token",
+      "expectedText": "what is a way?",
+      "rawTransaction": {
+        "status": 1,
+        "gasUsed": "27822999",
+        "gasLimit": "32000000"
+      },
+      "raw": {
+        "tokens": [
+          251,
+          242,
+          32,
+          565,
+          30
+        ],
+        "text": "what is a way?",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0x18bb89f32ec59cc23f840b18c2a3c8ce9e979dea885a7017394b837a536cda94",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true
+      },
+      "preview": {
+        "success": true,
+        "tokens": [
+          251,
+          242,
+          32,
+          565,
+          30
+        ],
+        "text": "what is a way?",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0x18bb89f32ec59cc23f840b18c2a3c8ce9e979dea885a7017394b837a536cda94",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true,
+        "complete": true
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "27936071",
+        "gasLimit": "32000000",
+        "inferenceBudget": "29250000",
+        "sentence": {
+          "tokens": [
+            251,
+            242,
+            32,
+            565,
+            30
+          ],
+          "text": "what is a way?",
+          "endedEos": false,
+          "endedSentence": true,
+          "lastLogitHash": "0x18bb89f32ec59cc23f840b18c2a3c8ce9e979dea885a7017394b837a536cda94",
+          "naturallyTerminated": true,
+          "completeByHookPolicy": true
+        },
+        "matchesRawProbe": true,
+        "matchesPreflight": true,
+        "settlementVerified": true
+      }
+    },
+    {
+      "index": 4,
+      "seed": "0x0000000000000000000000000000000000000000000000000000000000000019",
+      "nonce": "0x0000000000000000000000000000000000000000000000000000000000000019",
+      "sequenceBefore": "1",
+      "fixtureKind": "complete-five-token",
+      "expectedText": "i want to play!",
+      "rawTransaction": {
+        "status": 1,
+        "gasUsed": "27803274",
+        "gasLimit": "32000000"
+      },
+      "raw": {
+        "tokens": [
+          40,
+          714,
+          93,
+          388,
+          2
+        ],
+        "text": "i want to play!",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0xa6078773ade23bf13d86c84684e3183403167ca39e67453a1ce6f46db8802b5f",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true
+      },
+      "preview": {
+        "success": true,
+        "tokens": [
+          40,
+          714,
+          93,
+          388,
+          2
+        ],
+        "text": "i want to play!",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0xa6078773ade23bf13d86c84684e3183403167ca39e67453a1ce6f46db8802b5f",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true,
+        "complete": true
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "27922097",
+        "gasLimit": "32000000",
+        "inferenceBudget": "29250000",
+        "sentence": {
+          "tokens": [
+            40,
+            714,
+            93,
+            388,
+            2
+          ],
+          "text": "i want to play!",
+          "endedEos": false,
+          "endedSentence": true,
+          "lastLogitHash": "0xa6078773ade23bf13d86c84684e3183403167ca39e67453a1ce6f46db8802b5f",
+          "naturallyTerminated": true,
+          "completeByHookPolicy": true
+        },
+        "matchesRawProbe": true,
+        "matchesPreflight": true,
+        "settlementVerified": true
+      }
+    },
+    {
+      "index": 5,
+      "seed": "0x0000000000000000000000000000000000000000000000000000000000000024",
+      "nonce": "0x0000000000000000000000000000000000000000000000000000000000000024",
+      "sequenceBefore": "2",
+      "fixtureKind": "complete-five-token",
+      "expectedText": "where is these flowers?",
+      "rawTransaction": {
+        "status": 1,
+        "gasUsed": "27708921",
+        "gasLimit": "32000000"
+      },
+      "raw": {
+        "tokens": [
+          511,
+          242,
+          1483,
+          541,
+          30
+        ],
+        "text": "where is these flowers?",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0x217a2fd9a4ba6a637ce589816a01a11a552fc96467d428cbadd5ed824ef1fbb6",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true
+      },
+      "preview": {
+        "success": true,
+        "tokens": [
+          511,
+          242,
+          1483,
+          541,
+          30
+        ],
+        "text": "where is these flowers?",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0x217a2fd9a4ba6a637ce589816a01a11a552fc96467d428cbadd5ed824ef1fbb6",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true,
+        "complete": true
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "27804893",
+        "gasLimit": "32000000",
+        "inferenceBudget": "29250000",
+        "sentence": {
+          "tokens": [
+            511,
+            242,
+            1483,
+            541,
+            30
+          ],
+          "text": "where is these flowers?",
+          "endedEos": false,
+          "endedSentence": true,
+          "lastLogitHash": "0x217a2fd9a4ba6a637ce589816a01a11a552fc96467d428cbadd5ed824ef1fbb6",
+          "naturallyTerminated": true,
+          "completeByHookPolicy": true
+        },
+        "matchesRawProbe": true,
+        "matchesPreflight": true,
+        "settlementVerified": true
+      }
+    },
+    {
+      "index": 6,
+      "seed": "0x0000000000000000000000000000000000000000000000000000000000000025",
+      "nonce": "0x0000000000000000000000000000000000000000000000000000000000000025",
+      "sequenceBefore": "3",
+      "fixtureKind": "complete-five-token",
+      "expectedText": "the traveler asked closely.",
+      "rawTransaction": {
+        "status": 1,
+        "gasUsed": "27775322",
+        "gasLimit": "32000000"
+      },
+      "raw": {
+        "tokens": [
+          85,
+          2047,
+          367,
+          1530,
+          15
+        ],
+        "text": "the traveler asked closely.",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0xeaf7b5ce4e8aa91f4c3be0ce4f68ab271a0405a93647862e6936d6e4c1c0cacc",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true
+      },
+      "preview": {
+        "success": true,
+        "tokens": [
+          85,
+          2047,
+          367,
+          1530,
+          15
+        ],
+        "text": "the traveler asked closely.",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0xeaf7b5ce4e8aa91f4c3be0ce4f68ab271a0405a93647862e6936d6e4c1c0cacc",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true,
+        "complete": true
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "27877094",
+        "gasLimit": "32000000",
+        "inferenceBudget": "29250000",
+        "sentence": {
+          "tokens": [
+            85,
+            2047,
+            367,
+            1530,
+            15
+          ],
+          "text": "the traveler asked closely.",
+          "endedEos": false,
+          "endedSentence": true,
+          "lastLogitHash": "0xeaf7b5ce4e8aa91f4c3be0ce4f68ab271a0405a93647862e6936d6e4c1c0cacc",
+          "naturallyTerminated": true,
+          "completeByHookPolicy": true
+        },
+        "matchesRawProbe": true,
+        "matchesPreflight": true,
+        "settlementVerified": true
+      }
+    },
+    {
+      "index": 7,
+      "seed": "0x000000000000000000000000000000000000000000000000000000000000003b",
+      "nonce": "0x000000000000000000000000000000000000000000000000000000000000003b",
+      "sequenceBefore": "4",
+      "fixtureKind": "complete-five-token",
+      "expectedText": "we can find it!",
+      "rawTransaction": {
+        "status": 1,
+        "gasUsed": "27882764",
+        "gasLimit": "32000000"
+      },
+      "raw": {
+        "tokens": [
+          263,
+          269,
+          320,
+          120,
+          2
+        ],
+        "text": "we can find it!",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0x61f43cddb573ab07e1fcda3f3aae806c4c265e4da4bb707ed0eb6ad83ec2c6dc",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true
+      },
+      "preview": {
+        "success": true,
+        "tokens": [
+          263,
+          269,
+          320,
+          120,
+          2
+        ],
+        "text": "we can find it!",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0x61f43cddb573ab07e1fcda3f3aae806c4c265e4da4bb707ed0eb6ad83ec2c6dc",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true,
+        "complete": true
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "27978639",
+        "gasLimit": "32000000",
+        "inferenceBudget": "29250000",
+        "sentence": {
+          "tokens": [
+            263,
+            269,
+            320,
+            120,
+            2
+          ],
+          "text": "we can find it!",
+          "endedEos": false,
+          "endedSentence": true,
+          "lastLogitHash": "0x61f43cddb573ab07e1fcda3f3aae806c4c265e4da4bb707ed0eb6ad83ec2c6dc",
+          "naturallyTerminated": true,
+          "completeByHookPolicy": true
+        },
+        "matchesRawProbe": true,
+        "matchesPreflight": true,
+        "settlementVerified": true
+      }
+    },
+    {
+      "index": 8,
+      "seed": "0x000000000000000000000000000000000000000000000000000000000000004d",
+      "nonce": "0x000000000000000000000000000000000000000000000000000000000000004d",
+      "sequenceBefore": "5",
+      "fixtureKind": "complete-five-token",
+      "expectedText": "i will help you!",
+      "rawTransaction": {
+        "status": 1,
+        "gasUsed": "27837353",
+        "gasLimit": "32000000"
+      },
+      "raw": {
+        "tokens": [
+          40,
+          439,
+          302,
+          164,
+          2
+        ],
+        "text": "i will help you!",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0xbc1cb797e2061062e24339c8c91664c31cc24b68ce833ef136c8b7c2cbdbb810",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true
+      },
+      "preview": {
+        "success": true,
+        "tokens": [
+          40,
+          439,
+          302,
+          164,
+          2
+        ],
+        "text": "i will help you!",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0xbc1cb797e2061062e24339c8c91664c31cc24b68ce833ef136c8b7c2cbdbb810",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true,
+        "complete": true
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "27939076",
+        "gasLimit": "32000000",
+        "inferenceBudget": "29250000",
+        "sentence": {
+          "tokens": [
+            40,
+            439,
+            302,
+            164,
+            2
+          ],
+          "text": "i will help you!",
+          "endedEos": false,
+          "endedSentence": true,
+          "lastLogitHash": "0xbc1cb797e2061062e24339c8c91664c31cc24b68ce833ef136c8b7c2cbdbb810",
+          "naturallyTerminated": true,
+          "completeByHookPolicy": true
+        },
+        "matchesRawProbe": true,
+        "matchesPreflight": true,
+        "settlementVerified": true
+      }
+    },
+    {
+      "index": 9,
+      "seed": "0x0000000000000000000000000000000000000000000000000000000000000055",
+      "nonce": "0x0000000000000000000000000000000000000000000000000000000000000055",
+      "sequenceBefore": "6",
+      "fixtureKind": "complete-five-token",
+      "expectedText": "i can find it!",
+      "rawTransaction": {
+        "status": 1,
+        "gasUsed": "27817835",
+        "gasLimit": "32000000"
+      },
+      "raw": {
+        "tokens": [
+          40,
+          269,
+          320,
+          120,
+          2
+        ],
+        "text": "i can find it!",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0x38b0f050b5ddd2dc794a6874f88e76fdb4f21a841a7677613ccc58dfbd29fed6",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true
+      },
+      "preview": {
+        "success": true,
+        "tokens": [
+          40,
+          269,
+          320,
+          120,
+          2
+        ],
+        "text": "i can find it!",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0x38b0f050b5ddd2dc794a6874f88e76fdb4f21a841a7677613ccc58dfbd29fed6",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true,
+        "complete": true
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "27913710",
+        "gasLimit": "32000000",
+        "inferenceBudget": "29250000",
+        "sentence": {
+          "tokens": [
+            40,
+            269,
+            320,
+            120,
+            2
+          ],
+          "text": "i can find it!",
+          "endedEos": false,
+          "endedSentence": true,
+          "lastLogitHash": "0x38b0f050b5ddd2dc794a6874f88e76fdb4f21a841a7677613ccc58dfbd29fed6",
+          "naturallyTerminated": true,
+          "completeByHookPolicy": true
+        },
+        "matchesRawProbe": true,
+        "matchesPreflight": true,
+        "settlementVerified": true
+      }
+    },
+    {
+      "index": 10,
+      "seed": "0x000000000000000000000000000000000000000000000000000000000000005c",
+      "nonce": "0x000000000000000000000000000000000000000000000000000000000000005c",
+      "sequenceBefore": "7",
+      "fixtureKind": "complete-five-token",
+      "expectedText": "leo stood beside him.",
+      "rawTransaction": {
+        "status": 1,
+        "gasUsed": "27740552",
+        "gasLimit": "32000000"
+      },
+      "raw": {
+        "tokens": [
+          317,
+          578,
+          1513,
+          200,
+          15
+        ],
+        "text": "leo stood beside him.",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0x4a789f1e02ab285b99adeed1876771d4d5db5efd91342bcc24695ae30a273f1a",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true
+      },
+      "preview": {
+        "success": true,
+        "tokens": [
+          317,
+          578,
+          1513,
+          200,
+          15
+        ],
+        "text": "leo stood beside him.",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0x4a789f1e02ab285b99adeed1876771d4d5db5efd91342bcc24695ae30a273f1a",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true,
+        "complete": true
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "27842324",
+        "gasLimit": "32000000",
+        "inferenceBudget": "29250000",
+        "sentence": {
+          "tokens": [
+            317,
+            578,
+            1513,
+            200,
+            15
+          ],
+          "text": "leo stood beside him.",
+          "endedEos": false,
+          "endedSentence": true,
+          "lastLogitHash": "0x4a789f1e02ab285b99adeed1876771d4d5db5efd91342bcc24695ae30a273f1a",
+          "naturallyTerminated": true,
+          "completeByHookPolicy": true
+        },
+        "matchesRawProbe": true,
+        "matchesPreflight": true,
+        "settlementVerified": true
+      }
+    },
+    {
+      "index": 11,
+      "seed": "0x0000000000000000000000000000000000000000000000000000000000000060",
+      "nonce": "0x0000000000000000000000000000000000000000000000000000000000000060",
+      "sequenceBefore": "8",
+      "fixtureKind": "complete-five-token",
+      "expectedText": "where is this place?",
+      "rawTransaction": {
+        "status": 1,
+        "gasUsed": "27630233",
+        "gasLimit": "32000000"
+      },
+      "raw": {
+        "tokens": [
+          511,
+          242,
+          259,
+          604,
+          30
+        ],
+        "text": "where is this place?",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0xe4a9fc71d0ef044f2d3e6062d700f7990c742b8f9b8fb676bfd49f6d40778728",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true
+      },
+      "preview": {
+        "success": true,
+        "tokens": [
+          511,
+          242,
+          259,
+          604,
+          30
+        ],
+        "text": "where is this place?",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0xe4a9fc71d0ef044f2d3e6062d700f7990c742b8f9b8fb676bfd49f6d40778728",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true,
+        "complete": true
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "27726205",
+        "gasLimit": "32000000",
+        "inferenceBudget": "29250000",
+        "sentence": {
+          "tokens": [
+            511,
+            242,
+            259,
+            604,
+            30
+          ],
+          "text": "where is this place?",
+          "endedEos": false,
+          "endedSentence": true,
+          "lastLogitHash": "0xe4a9fc71d0ef044f2d3e6062d700f7990c742b8f9b8fb676bfd49f6d40778728",
+          "naturallyTerminated": true,
+          "completeByHookPolicy": true
+        },
+        "matchesRawProbe": true,
+        "matchesPreflight": true,
+        "settlementVerified": true
+      }
+    },
+    {
+      "index": 12,
+      "seed": "0x0000000000000000000000000000000000000000000000000000000000000061",
+      "nonce": "0x0000000000000000000000000000000000000000000000000000000000000061",
+      "sequenceBefore": "9",
+      "fixtureKind": "complete-five-token",
+      "expectedText": "this is his sister!",
+      "rawTransaction": {
+        "status": 1,
+        "gasUsed": "27737901",
+        "gasLimit": "32000000"
+      },
+      "raw": {
+        "tokens": [
+          259,
+          242,
+          156,
+          1548,
+          2
+        ],
+        "text": "this is his sister!",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0xb1a1d6585b52d1cae3c8817d66ef966c31236831993933ea96bd38b91cc157d0",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true
+      },
+      "preview": {
+        "success": true,
+        "tokens": [
+          259,
+          242,
+          156,
+          1548,
+          2
+        ],
+        "text": "this is his sister!",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0xb1a1d6585b52d1cae3c8817d66ef966c31236831993933ea96bd38b91cc157d0",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true,
+        "complete": true
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "27839624",
+        "gasLimit": "32000000",
+        "inferenceBudget": "29250000",
+        "sentence": {
+          "tokens": [
+            259,
+            242,
+            156,
+            1548,
+            2
+          ],
+          "text": "this is his sister!",
+          "endedEos": false,
+          "endedSentence": true,
+          "lastLogitHash": "0xb1a1d6585b52d1cae3c8817d66ef966c31236831993933ea96bd38b91cc157d0",
+          "naturallyTerminated": true,
+          "completeByHookPolicy": true
+        },
+        "matchesRawProbe": true,
+        "matchesPreflight": true,
+        "settlementVerified": true
+      }
+    },
+    {
+      "index": 13,
+      "seed": "0x000000000000000000000000000000000000000000000000000000000000006d",
+      "nonce": "0x000000000000000000000000000000000000000000000000000000000000006d",
+      "sequenceBefore": "10",
+      "fixtureKind": "complete-five-token",
+      "expectedText": "what must i find?",
+      "rawTransaction": {
+        "status": 1,
+        "gasUsed": "27813703",
+        "gasLimit": "32000000"
+      },
+      "raw": {
+        "tokens": [
+          251,
+          709,
+          40,
+          320,
+          30
+        ],
+        "text": "what must i find?",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0x904f2c74dd1c998eedb1cde18631d4e466cd387a8140693a7270cb42f99c040a",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true
+      },
+      "preview": {
+        "success": true,
+        "tokens": [
+          251,
+          709,
+          40,
+          320,
+          30
+        ],
+        "text": "what must i find?",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0x904f2c74dd1c998eedb1cde18631d4e466cd387a8140693a7270cb42f99c040a",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true,
+        "complete": true
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "27909675",
+        "gasLimit": "32000000",
+        "inferenceBudget": "29250000",
+        "sentence": {
+          "tokens": [
+            251,
+            709,
+            40,
+            320,
+            30
+          ],
+          "text": "what must i find?",
+          "endedEos": false,
+          "endedSentence": true,
+          "lastLogitHash": "0x904f2c74dd1c998eedb1cde18631d4e466cd387a8140693a7270cb42f99c040a",
+          "naturallyTerminated": true,
+          "completeByHookPolicy": true
+        },
+        "matchesRawProbe": true,
+        "matchesPreflight": true,
+        "settlementVerified": true
+      }
+    },
+    {
+      "index": 14,
+      "seed": "0x00000000000000000000000000000000000000000000000000000000000000d5",
+      "nonce": "0x00000000000000000000000000000000000000000000000000000000000000d5",
+      "sequenceBefore": "11",
+      "fixtureKind": "complete-five-token",
+      "expectedText": "what do you want?",
+      "rawTransaction": {
+        "status": 1,
+        "gasUsed": "27846666",
+        "gasLimit": "32000000"
+      },
+      "raw": {
+        "tokens": [
+          251,
+          280,
+          164,
+          714,
+          30
+        ],
+        "text": "what do you want?",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0xffa920e96d2792690d369e409365fa724adb93dbc51e6ccdb0b864e7cc55cd6e",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true
+      },
+      "preview": {
+        "success": true,
+        "tokens": [
+          251,
+          280,
+          164,
+          714,
+          30
+        ],
+        "text": "what do you want?",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0xffa920e96d2792690d369e409365fa724adb93dbc51e6ccdb0b864e7cc55cd6e",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true,
+        "complete": true
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "27948486",
+        "gasLimit": "32000000",
+        "inferenceBudget": "29250000",
+        "sentence": {
+          "tokens": [
+            251,
+            280,
+            164,
+            714,
+            30
+          ],
+          "text": "what do you want?",
+          "endedEos": false,
+          "endedSentence": true,
+          "lastLogitHash": "0xffa920e96d2792690d369e409365fa724adb93dbc51e6ccdb0b864e7cc55cd6e",
+          "naturallyTerminated": true,
+          "completeByHookPolicy": true
+        },
+        "matchesRawProbe": true,
+        "matchesPreflight": true,
+        "settlementVerified": true
+      }
+    },
+    {
+      "index": 15,
+      "seed": "0x00000000000000000000000000000000000000000000000000000000000000e9",
+      "nonce": "0x00000000000000000000000000000000000000000000000000000000000000e9",
+      "sequenceBefore": "12",
+      "fixtureKind": "complete-five-token",
+      "expectedText": "what is the price?",
+      "rawTransaction": {
+        "status": 1,
+        "gasUsed": "27806159",
+        "gasLimit": "32000000"
+      },
+      "raw": {
+        "tokens": [
+          251,
+          242,
+          85,
+          3445,
+          30
+        ],
+        "text": "what is the price?",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0x1525094fbc1e4ebf034f143958b32a853a7c234712c2fd2def777bd40b37bea3",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true
+      },
+      "preview": {
+        "success": true,
+        "tokens": [
+          251,
+          242,
+          85,
+          3445,
+          30
+        ],
+        "text": "what is the price?",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0x1525094fbc1e4ebf034f143958b32a853a7c234712c2fd2def777bd40b37bea3",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true,
+        "complete": true
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "27902131",
+        "gasLimit": "32000000",
+        "inferenceBudget": "29250000",
+        "sentence": {
+          "tokens": [
+            251,
+            242,
+            85,
+            3445,
+            30
+          ],
+          "text": "what is the price?",
+          "endedEos": false,
+          "endedSentence": true,
+          "lastLogitHash": "0x1525094fbc1e4ebf034f143958b32a853a7c234712c2fd2def777bd40b37bea3",
+          "naturallyTerminated": true,
+          "completeByHookPolicy": true
+        },
+        "matchesRawProbe": true,
+        "matchesPreflight": true,
+        "settlementVerified": true
+      }
+    },
+    {
+      "index": 16,
+      "seed": "0x00000000000000000000000000000000000000000000000000000000000000f1",
+      "nonce": "0x00000000000000000000000000000000000000000000000000000000000000f1",
+      "sequenceBefore": "13",
+      "fixtureKind": "complete-five-token",
+      "expectedText": "i can run faster.",
+      "rawTransaction": {
+        "status": 1,
+        "gasUsed": "27717465",
+        "gasLimit": "32000000"
+      },
+      "raw": {
+        "tokens": [
+          40,
+          269,
+          1070,
+          2222,
+          15
+        ],
+        "text": "i can run faster.",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0x60eef8ca886cccf2418e5d38fac39a7dad43a283c47c6b92cee29421b2785b52",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true
+      },
+      "preview": {
+        "success": true,
+        "tokens": [
+          40,
+          269,
+          1070,
+          2222,
+          15
+        ],
+        "text": "i can run faster.",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0x60eef8ca886cccf2418e5d38fac39a7dad43a283c47c6b92cee29421b2785b52",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true,
+        "complete": true
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "27819237",
+        "gasLimit": "32000000",
+        "inferenceBudget": "29250000",
+        "sentence": {
+          "tokens": [
+            40,
+            269,
+            1070,
+            2222,
+            15
+          ],
+          "text": "i can run faster.",
+          "endedEos": false,
+          "endedSentence": true,
+          "lastLogitHash": "0x60eef8ca886cccf2418e5d38fac39a7dad43a283c47c6b92cee29421b2785b52",
+          "naturallyTerminated": true,
+          "completeByHookPolicy": true
+        },
+        "matchesRawProbe": true,
+        "matchesPreflight": true,
+        "settlementVerified": true
+      }
+    },
+    {
+      "index": 17,
+      "seed": "0x000000000000000000000000000000000000000000000000000000000000010b",
+      "nonce": "0x000000000000000000000000000000000000000000000000000000000000010b",
+      "sequenceBefore": "14",
+      "fixtureKind": "complete-five-token",
+      "expectedText": "but you have power.",
+      "rawTransaction": {
+        "status": 1,
+        "gasUsed": "27690966",
+        "gasLimit": "32000000"
+      },
+      "raw": {
+        "tokens": [
+          141,
+          164,
+          583,
+          738,
+          15
+        ],
+        "text": "but you have power.",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0xe50878222107966ffcb00757053899fc3f24fddf9d471e85d626bde9dbef4843",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true
+      },
+      "preview": {
+        "success": true,
+        "tokens": [
+          141,
+          164,
+          583,
+          738,
+          15
+        ],
+        "text": "but you have power.",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0xe50878222107966ffcb00757053899fc3f24fddf9d471e85d626bde9dbef4843",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true,
+        "complete": true
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "27786890",
+        "gasLimit": "32000000",
+        "inferenceBudget": "29250000",
+        "sentence": {
+          "tokens": [
+            141,
+            164,
+            583,
+            738,
+            15
+          ],
+          "text": "but you have power.",
+          "endedEos": false,
+          "endedSentence": true,
+          "lastLogitHash": "0xe50878222107966ffcb00757053899fc3f24fddf9d471e85d626bde9dbef4843",
+          "naturallyTerminated": true,
+          "completeByHookPolicy": true
+        },
+        "matchesRawProbe": true,
+        "matchesPreflight": true,
+        "settlementVerified": true
+      }
+    },
+    {
+      "index": 18,
+      "seed": "0x0000000000000000000000000000000000000000000000000000000000000126",
+      "nonce": "0x0000000000000000000000000000000000000000000000000000000000000126",
+      "sequenceBefore": "15",
+      "fixtureKind": "complete-five-token",
+      "expectedText": "the young boy nodded.",
+      "rawTransaction": {
+        "status": 1,
+        "gasUsed": "28013261",
+        "gasLimit": "32000000"
+      },
+      "raw": {
+        "tokens": [
+          85,
+          797,
+          307,
+          775,
+          15
+        ],
+        "text": "the young boy nodded.",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0x8851b0b7847954b15731144f15c40241ad3c19d062cb4d087c23307404102c91",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true
+      },
+      "preview": {
+        "success": true,
+        "tokens": [
+          85,
+          797,
+          307,
+          775,
+          15
+        ],
+        "text": "the young boy nodded.",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0x8851b0b7847954b15731144f15c40241ad3c19d062cb4d087c23307404102c91",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true,
+        "complete": true
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "28115033",
+        "gasLimit": "32000000",
+        "inferenceBudget": "29250000",
+        "sentence": {
+          "tokens": [
+            85,
+            797,
+            307,
+            775,
+            15
+          ],
+          "text": "the young boy nodded.",
+          "endedEos": false,
+          "endedSentence": true,
+          "lastLogitHash": "0x8851b0b7847954b15731144f15c40241ad3c19d062cb4d087c23307404102c91",
+          "naturallyTerminated": true,
+          "completeByHookPolicy": true
+        },
+        "matchesRawProbe": true,
+        "matchesPreflight": true,
+        "settlementVerified": true
+      }
+    },
+    {
+      "index": 19,
+      "seed": "0x000000000000000000000000000000000000000000000000000000000000012f",
+      "nonce": "0x000000000000000000000000000000000000000000000000000000000000012f",
+      "sequenceBefore": "16",
+      "fixtureKind": "complete-five-token",
+      "expectedText": "she shook it off.",
+      "rawTransaction": {
+        "status": 1,
+        "gasUsed": "27671269",
+        "gasLimit": "32000000"
+      },
+      "raw": {
+        "tokens": [
+          106,
+          1397,
+          120,
+          734,
+          15
+        ],
+        "text": "she shook it off.",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0xa66dc71f5bca4436c9bceb3d56ca312f28afa23b5bf20ea321a787d6a1045625",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true
+      },
+      "preview": {
+        "success": true,
+        "tokens": [
+          106,
+          1397,
+          120,
+          734,
+          15
+        ],
+        "text": "she shook it off.",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0xa66dc71f5bca4436c9bceb3d56ca312f28afa23b5bf20ea321a787d6a1045625",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true,
+        "complete": true
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "27767193",
+        "gasLimit": "32000000",
+        "inferenceBudget": "29250000",
+        "sentence": {
+          "tokens": [
+            106,
+            1397,
+            120,
+            734,
+            15
+          ],
+          "text": "she shook it off.",
+          "endedEos": false,
+          "endedSentence": true,
+          "lastLogitHash": "0xa66dc71f5bca4436c9bceb3d56ca312f28afa23b5bf20ea321a787d6a1045625",
+          "naturallyTerminated": true,
+          "completeByHookPolicy": true
+        },
+        "matchesRawProbe": true,
+        "matchesPreflight": true,
+        "settlementVerified": true
+      }
+    },
+    {
+      "index": 20,
+      "seed": "0x0000000000000000000000000000000000000000000000000000000000000133",
+      "nonce": "0x0000000000000000000000000000000000000000000000000000000000000133",
+      "sequenceBefore": "17",
+      "fixtureKind": "complete-five-token",
+      "expectedText": "i can help you!",
+      "rawTransaction": {
+        "status": 1,
+        "gasUsed": "27789006",
+        "gasLimit": "32000000"
+      },
+      "raw": {
+        "tokens": [
+          40,
+          269,
+          302,
+          164,
+          2
+        ],
+        "text": "i can help you!",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0x05d6722494ca71c8a171b54cc4e084cc5ed48cde2cdae570bf30568821261938",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true
+      },
+      "preview": {
+        "success": true,
+        "tokens": [
+          40,
+          269,
+          302,
+          164,
+          2
+        ],
+        "text": "i can help you!",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0x05d6722494ca71c8a171b54cc4e084cc5ed48cde2cdae570bf30568821261938",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true,
+        "complete": true
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "27890729",
+        "gasLimit": "32000000",
+        "inferenceBudget": "29250000",
+        "sentence": {
+          "tokens": [
+            40,
+            269,
+            302,
+            164,
+            2
+          ],
+          "text": "i can help you!",
+          "endedEos": false,
+          "endedSentence": true,
+          "lastLogitHash": "0x05d6722494ca71c8a171b54cc4e084cc5ed48cde2cdae570bf30568821261938",
+          "naturallyTerminated": true,
+          "completeByHookPolicy": true
+        },
+        "matchesRawProbe": true,
+        "matchesPreflight": true,
+        "settlementVerified": true
+      }
+    },
+    {
+      "index": 21,
+      "seed": "0x000000000000000000000000000000000000000000000000000000000000013f",
+      "nonce": "0x000000000000000000000000000000000000000000000000000000000000013f",
+      "sequenceBefore": "18",
+      "fixtureKind": "complete-five-token",
+      "expectedText": "the old man smiled.",
+      "rawTransaction": {
+        "status": 1,
+        "gasUsed": "28007358",
+        "gasLimit": "32000000"
+      },
+      "raw": {
+        "tokens": [
+          85,
+          342,
+          383,
+          355,
+          15
+        ],
+        "text": "the old man smiled.",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0x5f2311f0d2677081e0684f9b7734547bf28546d08d14b92001e8f1fbb21b062b",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true
+      },
+      "preview": {
+        "success": true,
+        "tokens": [
+          85,
+          342,
+          383,
+          355,
+          15
+        ],
+        "text": "the old man smiled.",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0x5f2311f0d2677081e0684f9b7734547bf28546d08d14b92001e8f1fbb21b062b",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true,
+        "complete": true
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "28103282",
+        "gasLimit": "32000000",
+        "inferenceBudget": "29250000",
+        "sentence": {
+          "tokens": [
+            85,
+            342,
+            383,
+            355,
+            15
+          ],
+          "text": "the old man smiled.",
+          "endedEos": false,
+          "endedSentence": true,
+          "lastLogitHash": "0x5f2311f0d2677081e0684f9b7734547bf28546d08d14b92001e8f1fbb21b062b",
+          "naturallyTerminated": true,
+          "completeByHookPolicy": true
+        },
+        "matchesRawProbe": true,
+        "matchesPreflight": true,
+        "settlementVerified": true
+      }
+    },
+    {
+      "index": 22,
+      "seed": "0x0000000000000000000000000000000000000000000000000000000000000140",
+      "nonce": "0x0000000000000000000000000000000000000000000000000000000000000140",
+      "sequenceBefore": "19",
+      "fixtureKind": "complete-five-token",
+      "expectedText": "what if i fail?",
+      "rawTransaction": {
+        "status": 1,
+        "gasUsed": "27671106",
+        "gasLimit": "32000000"
+      },
+      "raw": {
+        "tokens": [
+          251,
+          379,
+          40,
+          1902,
+          30
+        ],
+        "text": "what if i fail?",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0x4fc98bd9f23990d7f217e91c78d3f697007eb81c47839659941234249f57800b",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true
+      },
+      "preview": {
+        "success": true,
+        "tokens": [
+          251,
+          379,
+          40,
+          1902,
+          30
+        ],
+        "text": "what if i fail?",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0x4fc98bd9f23990d7f217e91c78d3f697007eb81c47839659941234249f57800b",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true,
+        "complete": true
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "27772926",
+        "gasLimit": "32000000",
+        "inferenceBudget": "29250000",
+        "sentence": {
+          "tokens": [
+            251,
+            379,
+            40,
+            1902,
+            30
+          ],
+          "text": "what if i fail?",
+          "endedEos": false,
+          "endedSentence": true,
+          "lastLogitHash": "0x4fc98bd9f23990d7f217e91c78d3f697007eb81c47839659941234249f57800b",
+          "naturallyTerminated": true,
+          "completeByHookPolicy": true
+        },
+        "matchesRawProbe": true,
+        "matchesPreflight": true,
+        "settlementVerified": true
+      }
+    },
+    {
+      "index": 23,
+      "seed": "0x0000000000000000000000000000000000000000000000000000000000000145",
+      "nonce": "0x0000000000000000000000000000000000000000000000000000000000000145",
+      "sequenceBefore": "20",
+      "fixtureKind": "complete-five-token",
+      "expectedText": "this is my happiness!",
+      "rawTransaction": {
+        "status": 1,
+        "gasUsed": "27781319",
+        "gasLimit": "32000000"
+      },
+      "raw": {
+        "tokens": [
+          259,
+          242,
+          441,
+          953,
+          2
+        ],
+        "text": "this is my happiness!",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0x5e1bf2ab80f786d3527db7252e8b5109344f65ca0346944b93dc107976094bc6",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true
+      },
+      "preview": {
+        "success": true,
+        "tokens": [
+          259,
+          242,
+          441,
+          953,
+          2
+        ],
+        "text": "this is my happiness!",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0x5e1bf2ab80f786d3527db7252e8b5109344f65ca0346944b93dc107976094bc6",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true,
+        "complete": true
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "27877194",
+        "gasLimit": "32000000",
+        "inferenceBudget": "29250000",
+        "sentence": {
+          "tokens": [
+            259,
+            242,
+            441,
+            953,
+            2
+          ],
+          "text": "this is my happiness!",
+          "endedEos": false,
+          "endedSentence": true,
+          "lastLogitHash": "0x5e1bf2ab80f786d3527db7252e8b5109344f65ca0346944b93dc107976094bc6",
+          "naturallyTerminated": true,
+          "completeByHookPolicy": true
+        },
+        "matchesRawProbe": true,
+        "matchesPreflight": true,
+        "settlementVerified": true
+      }
+    },
+    {
+      "index": 24,
+      "seed": "0x0000000000000000000000000000000000000000000000000000000000000156",
+      "nonce": "0x0000000000000000000000000000000000000000000000000000000000000156",
+      "sequenceBefore": "21",
+      "fixtureKind": "complete-five-token",
+      "expectedText": "the old man asked.",
+      "rawTransaction": {
+        "status": 1,
+        "gasUsed": "27962849",
+        "gasLimit": "32000000"
+      },
+      "raw": {
+        "tokens": [
+          85,
+          342,
+          383,
+          367,
+          15
+        ],
+        "text": "the old man asked.",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0xc6990e2dc8dca8ee93bb8905f973ee282cba21c744cd4b62564717459b359fd6",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true
+      },
+      "preview": {
+        "success": true,
+        "tokens": [
+          85,
+          342,
+          383,
+          367,
+          15
+        ],
+        "text": "the old man asked.",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0xc6990e2dc8dca8ee93bb8905f973ee282cba21c744cd4b62564717459b359fd6",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true,
+        "complete": true
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "28064621",
+        "gasLimit": "32000000",
+        "inferenceBudget": "29250000",
+        "sentence": {
+          "tokens": [
+            85,
+            342,
+            383,
+            367,
+            15
+          ],
+          "text": "the old man asked.",
+          "endedEos": false,
+          "endedSentence": true,
+          "lastLogitHash": "0xc6990e2dc8dca8ee93bb8905f973ee282cba21c744cd4b62564717459b359fd6",
+          "naturallyTerminated": true,
+          "completeByHookPolicy": true
+        },
+        "matchesRawProbe": true,
+        "matchesPreflight": true,
+        "settlementVerified": true
+      }
+    },
+    {
+      "index": 25,
+      "seed": "0x0000000000000000000000000000000000000000000000000000000000000159",
+      "nonce": "0x0000000000000000000000000000000000000000000000000000000000000159",
+      "sequenceBefore": "22",
+      "fixtureKind": "complete-five-token",
+      "expectedText": "you can stay calm.",
+      "rawTransaction": {
+        "status": 1,
+        "gasUsed": "27740770",
+        "gasLimit": "32000000"
+      },
+      "raw": {
+        "tokens": [
+          164,
+          269,
+          1142,
+          1645,
+          15
+        ],
+        "text": "you can stay calm.",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0x8de2ef866bddd2a1e65dbb31eea60d7e21016c2ff507f36cddb89288cb30b6a6",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true
+      },
+      "preview": {
+        "success": true,
+        "tokens": [
+          164,
+          269,
+          1142,
+          1645,
+          15
+        ],
+        "text": "you can stay calm.",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0x8de2ef866bddd2a1e65dbb31eea60d7e21016c2ff507f36cddb89288cb30b6a6",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true,
+        "complete": true
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "27836694",
+        "gasLimit": "32000000",
+        "inferenceBudget": "29250000",
+        "sentence": {
+          "tokens": [
+            164,
+            269,
+            1142,
+            1645,
+            15
+          ],
+          "text": "you can stay calm.",
+          "endedEos": false,
+          "endedSentence": true,
+          "lastLogitHash": "0x8de2ef866bddd2a1e65dbb31eea60d7e21016c2ff507f36cddb89288cb30b6a6",
+          "naturallyTerminated": true,
+          "completeByHookPolicy": true
+        },
+        "matchesRawProbe": true,
+        "matchesPreflight": true,
+        "settlementVerified": true
+      }
+    },
+    {
+      "index": 26,
+      "seed": "0x0000000000000000000000000000000000000000000000000000000000000160",
+      "nonce": "0x0000000000000000000000000000000000000000000000000000000000000160",
+      "sequenceBefore": "23",
+      "fixtureKind": "complete-five-token",
+      "expectedText": "i want to change.",
+      "rawTransaction": {
+        "status": 1,
+        "gasUsed": "27792227",
+        "gasLimit": "32000000"
+      },
+      "raw": {
+        "tokens": [
+          40,
+          714,
+          93,
+          877,
+          15
+        ],
+        "text": "i want to change.",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0x3423582de45538834b529795fa6506971dd9209f949fa594ac273847211e70c7",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true
+      },
+      "preview": {
+        "success": true,
+        "tokens": [
+          40,
+          714,
+          93,
+          877,
+          15
+        ],
+        "text": "i want to change.",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0x3423582de45538834b529795fa6506971dd9209f949fa594ac273847211e70c7",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true,
+        "complete": true
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "27893999",
+        "gasLimit": "32000000",
+        "inferenceBudget": "29250000",
+        "sentence": {
+          "tokens": [
+            40,
+            714,
+            93,
+            877,
+            15
+          ],
+          "text": "i want to change.",
+          "endedEos": false,
+          "endedSentence": true,
+          "lastLogitHash": "0x3423582de45538834b529795fa6506971dd9209f949fa594ac273847211e70c7",
+          "naturallyTerminated": true,
+          "completeByHookPolicy": true
+        },
+        "matchesRawProbe": true,
+        "matchesPreflight": true,
+        "settlementVerified": true
+      }
+    },
+    {
+      "index": 27,
+      "seed": "0x0000000000000000000000000000000000000000000000000000000000000164",
+      "nonce": "0x0000000000000000000000000000000000000000000000000000000000000164",
+      "sequenceBefore": "24",
+      "fixtureKind": "complete-five-token",
+      "expectedText": "come join us now!",
+      "rawTransaction": {
+        "status": 1,
+        "gasUsed": "27501477",
+        "gasLimit": "32000000"
+      },
+      "raw": {
+        "tokens": [
+          689,
+          730,
+          826,
+          535,
+          2
+        ],
+        "text": "come join us now!",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0x543c56247c9273b85fa092225de181ef120f9fb2ef7866196668fe7a8a925762",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true
+      },
+      "preview": {
+        "success": true,
+        "tokens": [
+          689,
+          730,
+          826,
+          535,
+          2
+        ],
+        "text": "come join us now!",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0x543c56247c9273b85fa092225de181ef120f9fb2ef7866196668fe7a8a925762",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true,
+        "complete": true
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "27597352",
+        "gasLimit": "32000000",
+        "inferenceBudget": "29250000",
+        "sentence": {
+          "tokens": [
+            689,
+            730,
+            826,
+            535,
+            2
+          ],
+          "text": "come join us now!",
+          "endedEos": false,
+          "endedSentence": true,
+          "lastLogitHash": "0x543c56247c9273b85fa092225de181ef120f9fb2ef7866196668fe7a8a925762",
+          "naturallyTerminated": true,
+          "completeByHookPolicy": true
+        },
+        "matchesRawProbe": true,
+        "matchesPreflight": true,
+        "settlementVerified": true
+      }
+    },
+    {
+      "index": 28,
+      "seed": "0x000000000000000000000000000000000000000000000000000000000000016a",
+      "nonce": "0x000000000000000000000000000000000000000000000000000000000000016a",
+      "sequenceBefore": "25",
+      "fixtureKind": "complete-five-token",
+      "expectedText": "mia felt nervous now.",
+      "rawTransaction": {
+        "status": 1,
+        "gasUsed": "27768957",
+        "gasLimit": "32000000"
+      },
+      "raw": {
+        "tokens": [
+          308,
+          157,
+          1579,
+          535,
+          15
+        ],
+        "text": "mia felt nervous now.",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0xbe35be2f133445b7d70fe78c590eac8814651a185b7cd19b713265993c7c88cf",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true
+      },
+      "preview": {
+        "success": true,
+        "tokens": [
+          308,
+          157,
+          1579,
+          535,
+          15
+        ],
+        "text": "mia felt nervous now.",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0xbe35be2f133445b7d70fe78c590eac8814651a185b7cd19b713265993c7c88cf",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true,
+        "complete": true
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "27870729",
+        "gasLimit": "32000000",
+        "inferenceBudget": "29250000",
+        "sentence": {
+          "tokens": [
+            308,
+            157,
+            1579,
+            535,
+            15
+          ],
+          "text": "mia felt nervous now.",
+          "endedEos": false,
+          "endedSentence": true,
+          "lastLogitHash": "0xbe35be2f133445b7d70fe78c590eac8814651a185b7cd19b713265993c7c88cf",
+          "naturallyTerminated": true,
+          "completeByHookPolicy": true
+        },
+        "matchesRawProbe": true,
+        "matchesPreflight": true,
+        "settlementVerified": true
+      }
+    },
+    {
+      "index": 29,
+      "seed": "0x0000000000000000000000000000000000000000000000000000000000000173",
+      "nonce": "0x0000000000000000000000000000000000000000000000000000000000000173",
+      "sequenceBefore": "26",
+      "fixtureKind": "complete-five-token",
+      "expectedText": "help me make music!",
+      "rawTransaction": {
+        "status": 1,
+        "gasUsed": "27650136",
+        "gasLimit": "32000000"
+      },
+      "raw": {
+        "tokens": [
+          302,
+          476,
+          637,
+          1106,
+          2
+        ],
+        "text": "help me make music!",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0x8244fdd8149c7f4ed9f6d1b0d9eefbaa9b6e55d8f13700d4fcb11088524f06e6",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true
+      },
+      "preview": {
+        "success": true,
+        "tokens": [
+          302,
+          476,
+          637,
+          1106,
+          2
+        ],
+        "text": "help me make music!",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0x8244fdd8149c7f4ed9f6d1b0d9eefbaa9b6e55d8f13700d4fcb11088524f06e6",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true,
+        "complete": true
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "27746011",
+        "gasLimit": "32000000",
+        "inferenceBudget": "29250000",
+        "sentence": {
+          "tokens": [
+            302,
+            476,
+            637,
+            1106,
+            2
+          ],
+          "text": "help me make music!",
+          "endedEos": false,
+          "endedSentence": true,
+          "lastLogitHash": "0x8244fdd8149c7f4ed9f6d1b0d9eefbaa9b6e55d8f13700d4fcb11088524f06e6",
+          "naturallyTerminated": true,
+          "completeByHookPolicy": true
+        },
+        "matchesRawProbe": true,
+        "matchesPreflight": true,
+        "settlementVerified": true
+      }
+    },
+    {
+      "index": 30,
+      "seed": "0x000000000000000000000000000000000000000000000000000000000000017a",
+      "nonce": "0x000000000000000000000000000000000000000000000000000000000000017a",
+      "sequenceBefore": "27",
+      "fixtureKind": "complete-five-token",
+      "expectedText": "he shouted with joy.",
+      "rawTransaction": {
+        "status": 1,
+        "gasUsed": "27826862",
+        "gasLimit": "32000000"
+      },
+      "raw": {
+        "tokens": [
+          103,
+          602,
+          130,
+          297,
+          15
+        ],
+        "text": "he shouted with joy.",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0xb21bfc871db0ea29f4fe0b9d63590895079c625c01c0872fccfdcfac22e1e00c",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true
+      },
+      "preview": {
+        "success": true,
+        "tokens": [
+          103,
+          602,
+          130,
+          297,
+          15
+        ],
+        "text": "he shouted with joy.",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0xb21bfc871db0ea29f4fe0b9d63590895079c625c01c0872fccfdcfac22e1e00c",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true,
+        "complete": true
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "27928634",
+        "gasLimit": "32000000",
+        "inferenceBudget": "29250000",
+        "sentence": {
+          "tokens": [
+            103,
+            602,
+            130,
+            297,
+            15
+          ],
+          "text": "he shouted with joy.",
+          "endedEos": false,
+          "endedSentence": true,
+          "lastLogitHash": "0xb21bfc871db0ea29f4fe0b9d63590895079c625c01c0872fccfdcfac22e1e00c",
+          "naturallyTerminated": true,
+          "completeByHookPolicy": true
+        },
+        "matchesRawProbe": true,
+        "matchesPreflight": true,
+        "settlementVerified": true
+      }
+    },
+    {
+      "index": 31,
+      "seed": "0x000000000000000000000000000000000000000000000000000000000000018f",
+      "nonce": "0x000000000000000000000000000000000000000000000000000000000000018f",
+      "sequenceBefore": "28",
+      "fixtureKind": "complete-five-token",
+      "expectedText": "i said without thinking.",
+      "rawTransaction": {
+        "status": 1,
+        "gasUsed": "27749717",
+        "gasLimit": "32000000"
+      },
+      "raw": {
+        "tokens": [
+          40,
+          196,
+          1151,
+          989,
+          15
+        ],
+        "text": "i said without thinking.",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0x59c4f4c7d29a0af41028f43a1f77c48473cff463a1f175b3200bf01e00968661",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true
+      },
+      "preview": {
+        "success": true,
+        "tokens": [
+          40,
+          196,
+          1151,
+          989,
+          15
+        ],
+        "text": "i said without thinking.",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0x59c4f4c7d29a0af41028f43a1f77c48473cff463a1f175b3200bf01e00968661",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true,
+        "complete": true
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "27845641",
+        "gasLimit": "32000000",
+        "inferenceBudget": "29250000",
+        "sentence": {
+          "tokens": [
+            40,
+            196,
+            1151,
+            989,
+            15
+          ],
+          "text": "i said without thinking.",
+          "endedEos": false,
+          "endedSentence": true,
+          "lastLogitHash": "0x59c4f4c7d29a0af41028f43a1f77c48473cff463a1f175b3200bf01e00968661",
+          "naturallyTerminated": true,
+          "completeByHookPolicy": true
+        },
+        "matchesRawProbe": true,
+        "matchesPreflight": true,
+        "settlementVerified": true
+      }
+    },
+    {
+      "index": 32,
+      "seed": "0x00000000000000000000000000000000000000000000000000000000000001a3",
+      "nonce": "0x00000000000000000000000000000000000000000000000000000000000001a3",
+      "sequenceBefore": "29",
+      "fixtureKind": "complete-five-token",
+      "expectedText": "you have to think?",
+      "rawTransaction": {
+        "status": 1,
+        "gasUsed": "27936892",
+        "gasLimit": "32000000"
+      },
+      "raw": {
+        "tokens": [
+          164,
+          583,
+          93,
+          1034,
+          30
+        ],
+        "text": "you have to think?",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0x5f1e683679641e7bc233dabe458ff8537ba2c2c5a3adc5f12509d2a0112140b1",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true
+      },
+      "preview": {
+        "success": true,
+        "tokens": [
+          164,
+          583,
+          93,
+          1034,
+          30
+        ],
+        "text": "you have to think?",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0x5f1e683679641e7bc233dabe458ff8537ba2c2c5a3adc5f12509d2a0112140b1",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true,
+        "complete": true
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "28038712",
+        "gasLimit": "32000000",
+        "inferenceBudget": "29250000",
+        "sentence": {
+          "tokens": [
+            164,
+            583,
+            93,
+            1034,
+            30
+          ],
+          "text": "you have to think?",
+          "endedEos": false,
+          "endedSentence": true,
+          "lastLogitHash": "0x5f1e683679641e7bc233dabe458ff8537ba2c2c5a3adc5f12509d2a0112140b1",
+          "naturallyTerminated": true,
+          "completeByHookPolicy": true
+        },
+        "matchesRawProbe": true,
+        "matchesPreflight": true,
+        "settlementVerified": true
+      }
+    },
+    {
+      "index": 33,
+      "seed": "0x00000000000000000000000000000000000000000000000000000000000001b6",
+      "nonce": "0x00000000000000000000000000000000000000000000000000000000000001b6",
+      "sequenceBefore": "30",
+      "fixtureKind": "complete-five-token",
+      "expectedText": "where is the treasure?",
+      "rawTransaction": {
+        "status": 1,
+        "gasUsed": "27767364",
+        "gasLimit": "32000000"
+      },
+      "raw": {
+        "tokens": [
+          511,
+          242,
+          85,
+          393,
+          30
+        ],
+        "text": "where is the treasure?",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0x081989937adee2fa8fa9975bd7704138ee8fc15229a4b61af6934872f9265519",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true
+      },
+      "preview": {
+        "success": true,
+        "tokens": [
+          511,
+          242,
+          85,
+          393,
+          30
+        ],
+        "text": "where is the treasure?",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0x081989937adee2fa8fa9975bd7704138ee8fc15229a4b61af6934872f9265519",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true,
+        "complete": true
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "27863336",
+        "gasLimit": "32000000",
+        "inferenceBudget": "29250000",
+        "sentence": {
+          "tokens": [
+            511,
+            242,
+            85,
+            393,
+            30
+          ],
+          "text": "where is the treasure?",
+          "endedEos": false,
+          "endedSentence": true,
+          "lastLogitHash": "0x081989937adee2fa8fa9975bd7704138ee8fc15229a4b61af6934872f9265519",
+          "naturallyTerminated": true,
+          "completeByHookPolicy": true
+        },
+        "matchesRawProbe": true,
+        "matchesPreflight": true,
+        "settlementVerified": true
+      }
+    },
+    {
+      "index": 34,
+      "seed": "0x00000000000000000000000000000000000000000000000000000000000001c8",
+      "nonce": "0x00000000000000000000000000000000000000000000000000000000000001c8",
+      "sequenceBefore": "31",
+      "fixtureKind": "complete-five-token",
+      "expectedText": "this will be great!",
+      "rawTransaction": {
+        "status": 1,
+        "gasUsed": "27745711",
+        "gasLimit": "32000000"
+      },
+      "raw": {
+        "tokens": [
+          259,
+          439,
+          151,
+          744,
+          2
+        ],
+        "text": "this will be great!",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0xb1ad051a82fdc21b1b81dec48b4db5a519b1fb8f1dec0b1468d4468c2cec7575",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true
+      },
+      "preview": {
+        "success": true,
+        "tokens": [
+          259,
+          439,
+          151,
+          744,
+          2
+        ],
+        "text": "this will be great!",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0xb1ad051a82fdc21b1b81dec48b4db5a519b1fb8f1dec0b1468d4468c2cec7575",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true,
+        "complete": true
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "27847434",
+        "gasLimit": "32000000",
+        "inferenceBudget": "29250000",
+        "sentence": {
+          "tokens": [
+            259,
+            439,
+            151,
+            744,
+            2
+          ],
+          "text": "this will be great!",
+          "endedEos": false,
+          "endedSentence": true,
+          "lastLogitHash": "0xb1ad051a82fdc21b1b81dec48b4db5a519b1fb8f1dec0b1468d4468c2cec7575",
+          "naturallyTerminated": true,
+          "completeByHookPolicy": true
+        },
+        "matchesRawProbe": true,
+        "matchesPreflight": true,
+        "settlementVerified": true
+      }
+    },
+    {
+      "index": 35,
+      "seed": "0x0000000000000000000000000000000000000000000000000000000000000016",
+      "nonce": "0x0000000000000000000000000000000000000000000000000000000000000016",
+      "sequenceBefore": "32",
+      "fixtureKind": "repeat-complete-seed",
+      "expectedText": "what is a way?",
+      "rawTransaction": {
+        "status": 1,
+        "gasUsed": "27822999",
+        "gasLimit": "32000000"
+      },
+      "raw": {
+        "tokens": [
+          251,
+          242,
+          32,
+          565,
+          30
+        ],
+        "text": "what is a way?",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0x18bb89f32ec59cc23f840b18c2a3c8ce9e979dea885a7017394b837a536cda94",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true
+      },
+      "preview": {
+        "success": true,
+        "tokens": [
+          251,
+          242,
+          32,
+          565,
+          30
+        ],
+        "text": "what is a way?",
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0x18bb89f32ec59cc23f840b18c2a3c8ce9e979dea885a7017394b837a536cda94",
+        "naturallyTerminated": true,
+        "completeByHookPolicy": true,
+        "complete": true
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "27918971",
+        "gasLimit": "32000000",
+        "inferenceBudget": "29250000",
+        "sentence": {
+          "tokens": [
+            251,
+            242,
+            32,
+            565,
+            30
+          ],
+          "text": "what is a way?",
+          "endedEos": false,
+          "endedSentence": true,
+          "lastLogitHash": "0x18bb89f32ec59cc23f840b18c2a3c8ce9e979dea885a7017394b837a536cda94",
+          "naturallyTerminated": true,
+          "completeByHookPolicy": true
+        },
+        "matchesRawProbe": true,
+        "matchesPreflight": true,
+        "settlementVerified": true
+      }
+    }
+  ],
+  "checks": {
+    "verifiedInjectedRuntimes": 544,
+    "allNonterminalRootCandidatesPrepared": true,
+    "modelSourceRuntimeBytes": 16569,
+    "malformedSeedLengthsRejectedAtomically": true,
+    "requiredPolicyNeverAcceptsCapOnlyOutput": true,
+    "everyFailedSwapRolledBack": true,
+    "exactCallerChosenSeedUsed": true,
+    "previewUnchangedAfterSequenceAdvances": true,
+    "independentFiveTokenLogitsAndTokensMatch": true,
+    "independentEveryCaseLogitsAndTokensMatch": true
+  },
+  "publicTransactionsSubmitted": 0,
+  "limitations": [
+    "Unforked local EVM with actual PoolManager; this is not a mainnet gas or readiness claim.",
+    "Injected weight/code shards have exact manifest hashes; their deployment gas is not measured.",
+    "Raw model continuations that hit the cap are fragments, not complete sentences.",
+    "Matching raw probe and hook is repeatability evidence, not an independent numerical reference.",
+    "Seed inputs are manipulable and provide variety only. No guarantee of unique text per swap."
+  ],
+  "branchPreparations": [
+    {
+      "token": 103,
+      "cache": "0xe5d16daE8204Ec934d02683672a07ff2e0eBA9FE",
+      "gasUsed": "13527636",
+      "hash": "0x341437a1905b8791c38927de0b40d368df4c0c63d8d75920387cc8a8bbd3926e"
+    },
+    {
+      "token": 40,
+      "cache": "0xbA82e72E13e626e010bF0C5E5a6825663d169E16",
+      "gasUsed": "13527152",
+      "hash": "0x228530cedf668efee886ee9d7eceefed541ef7ed5dcd06159288239b46db0548"
+    },
+    {
+      "token": 85,
+      "cache": "0xe59Ad4c936bdD0D980e49Cfb613E444307393f7a",
+      "gasUsed": "13529285",
+      "hash": "0xac484595597a702acee45afa9f423bc8a52a60bc56db2b4ca17d1a6b6a79035e"
+    },
+    {
+      "token": 106,
+      "cache": "0xE83ce90C668D7dB4b5305887CaB7F3F3c87A8a19",
+      "gasUsed": "13528046",
+      "hash": "0x96d6d4465170de03c04638507818fbeacd4174c92961ae5137906a7d9bbf6db2"
+    },
+    {
+      "token": 251,
+      "cache": "0x00882eE2f0bF4AE1bB1A4349674da0a4A2809C15",
+      "gasUsed": "13524159",
+      "hash": "0xd42b807547e0cb8183aab5db9858d2b969358b25b7f981509ea8433da6fc2c8e"
+    },
+    {
+      "token": 111,
+      "cache": "0x766523a15Dfd8EB2a09aD252d7B2416c9fc9e8d7",
+      "gasUsed": "13527574",
+      "hash": "0xa8ccd55d7858548d1ef1af2684d1fb00069398b2af490b46fc2156191483aec0"
+    },
+    {
+      "token": 164,
+      "cache": "0x6EfEA45F2EC6f41117a033C836eDba1376607753",
+      "gasUsed": "13526458",
+      "hash": "0xe7a9be6c005efebd76e54c6e8e62cab6291095fdc4c91011d18928f9a64cc811"
+    },
+    {
+      "token": 120,
+      "cache": "0xf79B4930e8f0e9c648354E2405c38108847c1BCF",
+      "gasUsed": "13527636",
+      "hash": "0x4a398aab35a1406c24afaf3cca8ef2b78c9ff5cc3c100c25547d27cd13b64902"
+    },
+    {
+      "token": 141,
+      "cache": "0x8CE365eBb543E804F0E177061F7D3D7120799ea7",
+      "gasUsed": "13527305",
+      "hash": "0x11b07e92902b09d2da3da84fe5ad1281bd2bcffdbd6b063e931523259847a5d9"
+    },
+    {
+      "token": 263,
+      "cache": "0x3702B5C61cAEf05864895C2c6484176dA0a15eab",
+      "gasUsed": "13526027",
+      "hash": "0xa680015e36aab00dbf92cafdfaf106345fe056a2f941ce8bdd40ea64901f4a10"
+    },
+    {
+      "token": 259,
+      "cache": "0x9f5CBE2c23f4E50D642408e95D6BB811B7E9d034",
+      "gasUsed": "13525033",
+      "hash": "0x586c8752bcdd9c47f12953f6bbaef37b5077755a281a4d140a8728f3479f3e44"
+    },
+    {
+      "token": 308,
+      "cache": "0xB228188742a2FE48ebbBE2e51c97F7850B21C63b",
+      "gasUsed": "13526131",
+      "hash": "0x607aa4c7eaa3ba2866135133918cb55767bdbff4f33ae8aef0203dea4d4b27ff"
+    },
+    {
+      "token": 3,
+      "cache": "0xde2A983aF0b5F5d18c6625d77877502e73C4990B",
+      "gasUsed": "13528565",
+      "hash": "0x0a1e1a6bf59d6a18ac1eb4c2673333423b7833d972aa8026638da93b38975782"
+    },
+    {
+      "token": 32,
+      "cache": "0xE0d0B994962F68175B2B3F96cCDaB609d242F740",
+      "gasUsed": "13527512",
+      "hash": "0x3515fe865ef1b774b172401ee2edc76b550899ed4b06476a4e8148e0b9cd1e0c"
+    },
+    {
+      "token": 302,
+      "cache": "0x1D9489D9b693b95D3e7Fc5fabE41a781Fcd53B66",
+      "gasUsed": "13522543",
+      "hash": "0xcff4ece18bfb29633dc1c4b428fc01845665596a5b3897707b08e4f65e2674c6"
+    },
+    {
+      "token": 587,
+      "cache": "0x98d9992665E22dB71bF9338D2825384bc6AD30C8",
+      "gasUsed": "13526082",
+      "hash": "0xc138e10ba25b517219514d2610220951a12cbd2f55098b0b041f4d1a11a16a42"
+    },
+    {
+      "token": 384,
+      "cache": "0x01F463892f588bf2a8F9FaFe8DAAb18668dC6b3d",
+      "gasUsed": "13523952",
+      "hash": "0x3ca80ef88304255697b2bb3fb570ff63e0e7bf1de16e6f9c935224d612f5c687"
+    },
+    {
+      "token": 317,
+      "cache": "0x822D6C605cBC63fd7381Aac8aED1DCdCB3CE510c",
+      "gasUsed": "13525467",
+      "hash": "0xf9e03aa4e33b2d775eda5449ea5ff593c2ef43837e49c4f595052016bbfe117c"
+    },
+    {
+      "token": 427,
+      "cache": "0x234e749Df5fdE59EBeA17460a977c5B5818E6a7d",
+      "gasUsed": "13525844",
+      "hash": "0x83413b432681fd0b140fe85b8adaa45dbfc7a7887c91212897ad9fdd1464d03f"
+    },
+    {
+      "token": 149,
+      "cache": "0x4dfEb0124Ed40892C3b7E4758F7379C2D39150Fa",
+      "gasUsed": "13526455",
+      "hash": "0x512c0328a952d418ba1b66d73229b10917a52d5bd9c3d8a61e0bfa23cc9b0991"
+    },
+    {
+      "token": 1172,
+      "cache": "0x9DB3E1f935A7Ea560EFa2dA74e340B845d3F0b3A",
+      "gasUsed": "13521104",
+      "hash": "0x4e3a60ebc693b25b5522d1fd51d2be72e0d9eb3d5b43a8f28e439838a3913409"
+    },
+    {
+      "token": 372,
+      "cache": "0x04441e1Fe667af47d02Fb23c71a05E9391d23d6B",
+      "gasUsed": "13526090",
+      "hash": "0x2f70e0247586b2cab2a12e4c71922b8709f314adb1ebd4557506194fe09a6635"
+    },
+    {
+      "token": 737,
+      "cache": "0x561990C997EF512410022e49ABB4c1a73a6F47f9",
+      "gasUsed": "13525667",
+      "hash": "0x470899c38e30839855aeb88bdd0cdf36d71430559865788afe468b27011d0365"
+    },
+    {
+      "token": 907,
+      "cache": "0x24aC6977615da9F502A9a2D03f2d111Cb84e2895",
+      "gasUsed": "13524628",
+      "hash": "0xf390720847dd16c2e9d6169873c84dd2852be6afd2a08eb275c8cb13c3bb6994"
+    },
+    {
+      "token": 115,
+      "cache": "0x38E8074B517f3907F18f51431a46831a4339d7c5",
+      "gasUsed": "13525895",
+      "hash": "0x4bf0a8b5e452cdfd040b11788201048687e4f5cc3b01234ff2e776aba713bba7"
+    },
+    {
+      "token": 570,
+      "cache": "0x534b13DbE7CF3f868515E5fb3090D3a34F63d078",
+      "gasUsed": "13525754",
+      "hash": "0x3dafc4124d9fa2481b5f15e61dfa691db28407c3b42f0eaac7e159e6b53a4575"
+    },
+    {
+      "token": 1828,
+      "cache": "0xD5e7d07A159563d230AD1b2883302248b2dC5034",
+      "gasUsed": "13522876",
+      "hash": "0x458405c7606ec669ae4fdb8b9e107ec61d84ca53dd6591d0d64483153570dab7"
+    },
+    {
+      "token": 645,
+      "cache": "0xBa25064ee2B47218d9f548E771706563AaFAe580",
+      "gasUsed": "13523211",
+      "hash": "0xa176b43befac421b837e163a58ac2838e6f4a29dcca414c7ab8cff0e55af2266"
+    },
+    {
+      "token": 357,
+      "cache": "0x3E0d1ECc01De020d55F5F3ae59bCD432958dE49D",
+      "gasUsed": "13524019",
+      "hash": "0xdb9e1a3d585437b2eaa04003aec7c230108935ee8c90170da135e8a48ca474bd"
+    },
+    {
+      "token": 511,
+      "cache": "0xF5474027F85D29beb11895aa4E92fAE40BD026FE",
+      "gasUsed": "13524592",
+      "hash": "0x862009859d3a482baea1c15f6afc3cd1848c0b7e52c176a7cd2307cf40c62876"
+    },
+    {
+      "token": 413,
+      "cache": "0xEF61128b6e7C2F6E5C3879DE0fFcaDD4f9950321",
+      "gasUsed": "13525967",
+      "hash": "0x1527879be50b8e2d4fc56e2b33a053a2adf4f00f9da9678b11281e68f9a05bea"
+    },
+    {
+      "token": 1179,
+      "cache": "0xb0e7d9D777b1A772C85d43bd39Dc4DfD04Cad44E",
+      "gasUsed": "13522487",
+      "hash": "0x2d83a03792f4796ab304136821addb7d54692a82393e08fadf94b3980554544c"
+    },
+    {
+      "token": 379,
+      "cache": "0xb54264D55E16973C6Fc0aBFdB02A037dFAe68AB3",
+      "gasUsed": "13525385",
+      "hash": "0xa649b672ec975d792e38901195d638f5d5f9795482a0d3523ce4d7c3b013db49"
+    },
+    {
+      "token": 94,
+      "cache": "0xE1EE4bb053db7776b8890587a7651345cdED9B11",
+      "gasUsed": "13527340",
+      "hash": "0x28882807f33ece2fa91d02bbd6bca7f89bdca19348762e6d2a313d9e389bb523"
+    },
+    {
+      "token": 752,
+      "cache": "0xc865480fe62140FD3e97428205716E7a1a5a7DB9",
+      "gasUsed": "13525139",
+      "hash": "0xa3ad83a79ceb8d92f23b1f49aa26572a2c5bfe93866b99f6d084836bd0203a18"
+    },
+    {
+      "token": 475,
+      "cache": "0x57E0F04C23F120793c22F3976dAcd20d7ef25498",
+      "gasUsed": "13523769",
+      "hash": "0x9bcdfae73505bd47443736581af358a6efa4121ac21dbab5e53e3c8ba0d23474"
+    },
+    {
+      "token": 439,
+      "cache": "0x159A51A0F67147eD511cf38817Cfe5Ca71e340C0",
+      "gasUsed": "13525590",
+      "hash": "0xef974cacca1229fc685b5e509e5ce8b7d5e956351cf0a4250024b12f9f52fb48"
+    },
+    {
+      "token": 977,
+      "cache": "0xAadd58Ae1C8BA930670505D8720CA34F75bB2D91",
+      "gasUsed": "13522859",
+      "hash": "0x8cf227ca7713407e51908346c9cf19d3ee010d0547649052f5121cff3e3e9832"
+    },
+    {
+      "token": 217,
+      "cache": "0xf130055C463Fb355E42877aB3C5ebC841917513c",
+      "gasUsed": "13524937",
+      "hash": "0x492134a8482db470d13faca433e0c447713fc24990f6b22add1fe65feeddf304"
+    },
+    {
+      "token": 693,
+      "cache": "0x759B5E098D066985d4d844492Ee5D7F8afdE9671",
+      "gasUsed": "13525549",
+      "hash": "0x8cecdc5ecbb688db5adec454564be8f3c6474c4c367295606355f919eff76410"
+    },
+    {
+      "token": 425,
+      "cache": "0x41527d262A21251B19E3641aaEa7f54B458adF72",
+      "gasUsed": "13526253",
+      "hash": "0x7835053ef44c2819560df65a44d9dc2616cd89eea74de3b6d1126853ebf8d5c7"
+    },
+    {
+      "token": 208,
+      "cache": "0x169B00fdd585b5E514535e991d01Cf293109C1B1",
+      "gasUsed": "13525975",
+      "hash": "0xf874bfa793cd9de5a184e7f20ed2c34381c751426a42de0e1492bf611fb2426f"
+    },
+    {
+      "token": 242,
+      "cache": "0xE7dDD783688cea148882a293e9aE5f51F6c8C16E",
+      "gasUsed": "13524782",
+      "hash": "0x2e0974efffe6ed13457ab945950b1726dc2067ba35e3ebdb1e09cc777e42da1f"
+    },
+    {
+      "token": 515,
+      "cache": "0x944bdE2647960D0ec4eAdF16e107c6749fe1e17a",
+      "gasUsed": "13522482",
+      "hash": "0xb15a703da71f7f1a6a09504dd447b6ee5c1d19b077b508725eef81acb84f321c"
+    },
+    {
+      "token": 367,
+      "cache": "0xFa72f184B89AcC7F115FfCdC08921B6ea11cfedb",
+      "gasUsed": "13523581",
+      "hash": "0x28fc8cf6ab238985f6d5745d169614995726e03d06fbc84251ae04a2f2cfc449"
+    },
+    {
+      "token": 550,
+      "cache": "0x4Ff842BA798dD26d5316fB9b3A54320cB6123e4f",
+      "gasUsed": "13523163",
+      "hash": "0x6cf72107677d5c99aec262298383db99637dfbfa59cf1eb9384a025e6204aa43"
+    },
+    {
+      "token": 2510,
+      "cache": "0xC5A1FCAa07b441314F3fca6A9afb57A6961feDE4",
+      "gasUsed": "13523355",
+      "hash": "0xb9d1fafad31267e686266e5d13ebd3a8e199bfa3fcb0b6a194bd9270c83d370e"
+    },
+    {
+      "token": 1083,
+      "cache": "0x83aA5D7f2e0CFF9d3DA5c041508c5e48f18Ca0bc",
+      "gasUsed": "13524396",
+      "hash": "0x534765328f6011b59ec474d0ab085743b6c6722a1629aeb97f344c3012c51159"
+    },
+    {
+      "token": 689,
+      "cache": "0x1604009d0EDBBfe2422F170246699Cd9A89CcadC",
+      "gasUsed": "13523416",
+      "hash": "0xba996e3d9d75e5a60c34be4eef85e3d2d46336d1e4735272236189b632e8f782"
+    },
+    {
+      "token": 441,
+      "cache": "0xE66E22F56581CEE2536Cc633454A1F73d98B6E34",
+      "gasUsed": "13524174",
+      "hash": "0x1fcb9a55db5cd5a0c46171dacbff7f6656e9d44f3baac36e17549592f093c4bf"
+    },
+    {
+      "token": 747,
+      "cache": "0x6E6EFB05E8177773123Df1110C8f47E1d84552f9",
+      "gasUsed": "13522694",
+      "hash": "0x89e075872c03d0a05e3c16680171418a388c5df99857d06473e3aad6a1e3328e"
+    },
+    {
+      "token": 529,
+      "cache": "0xfe84Da749F0061E933A3c1400D698768CDE7b427",
+      "gasUsed": "13524110",
+      "hash": "0x0c95d47b08f40f15ce0fa70a6bd48908f79862795072dbf2f9702e5c89820fc2"
+    },
+    {
+      "token": 130,
+      "cache": "0xC6c4303CD57ad496461F9FE54BB720D5a56ab66a",
+      "gasUsed": "13526889",
+      "hash": "0xe645075bcf85cf5279b530c40001d93f1a5d508622766fa3c640d68d779c295f"
+    },
+    {
+      "token": 280,
+      "cache": "0x1db7DB369dd0C7181E0843B4878cd61FB9a84BDB",
+      "gasUsed": "13525989",
+      "hash": "0x75df6a7da824dd7d33b6c2dd903f771d4cc65e88b5172bdf1d30af4d75ecbc1f"
+    },
+    {
+      "token": 1240,
+      "cache": "0x4D309d875A43CD6D8Cf40A8fAD79699AD87825E9",
+      "gasUsed": "13523922",
+      "hash": "0xf9f0248dc93eefed74dabc000de0b7f54900966402840a3ed38093da0dd4d991"
+    },
+    {
+      "token": 707,
+      "cache": "0x4E0a866994D34F00DB494974Ab2086503c84F979",
+      "gasUsed": "13525090",
+      "hash": "0x4639f7a670acda61ecc48537c32913b18879fdab037bc08342d56854cc978ed3"
+    },
+    {
+      "token": 108,
+      "cache": "0x08D8891E4e24C1614FE362F8cED7FcE81932A797",
+      "gasUsed": "13526568",
+      "hash": "0x3fdf1d5b7978dd0fb5a35c34f5fdbd14b7fba7ca9cec513b51af35ccbad7a7d7"
+    },
+    {
+      "token": 301,
+      "cache": "0xD73EC450Dcff6309F660a90255002e418797Ed85",
+      "gasUsed": "13524406",
+      "hash": "0x538e39eedeadf1291aad6c8178f3745147b6de7dea1dbb09490144326213591a"
+    },
+    {
+      "token": 488,
+      "cache": "0xCa4A18bc04B489fc2a8787aD33feb2859029FC88",
+      "gasUsed": "13524963",
+      "hash": "0xce1f582f00ff26c7ea85a8b018b5f68a11e5ca264bdcc48bd0fda1161372e2ac"
+    },
+    {
+      "token": 245,
+      "cache": "0x8bCa55365d76536388b42E8910FbB419E7f3917d",
+      "gasUsed": "13523516",
+      "hash": "0x4ec9372d76639a7b38680192755a1da89393fef002acec8865eefd7e55de3bd1"
+    },
+    {
+      "token": 806,
+      "cache": "0x8B662507af417742189bDe37487Baa4d06Ee0Cec",
+      "gasUsed": "13525426",
+      "hash": "0x0015765dff53e2895af779ea068777f0a0dd9c51a14c6f8a2dde136cd2cf6138"
+    },
+    {
+      "token": 334,
+      "cache": "0x2e8A5296f89769696c8E723A63dE34c26d147780",
+      "gasUsed": "13525201",
+      "hash": "0x4edf91efe702ee1ef9a20cb5b0f21b4d3a9b65d67e629b792e30ad5d89c240ac"
+    },
+    {
+      "token": 2008,
+      "cache": "0xfECe19ecb3f02ece1d1FD6bC15DDe43424612B94",
+      "gasUsed": "13523128",
+      "hash": "0xb989c37e204e5ce58303e520afaa91c7a8e5121bdf93ec109ec32df1d49f877f"
+    },
+    {
+      "token": 269,
+      "cache": "0xABAF6367fA27B358EeBC184A98bEc87b36e466dE",
+      "gasUsed": "13525340",
+      "hash": "0xe8e0d448bbb7e6041a5d702295058276a49fd35d9e99c83a331e0b70ccb01fbb"
+    }
+  ],
+  "promptCache": {
+    "address": "0xa16E02E87b7454126E5E10d957A927A7F5B5d2be",
+    "hash": "0xd5e7252c2ba3ee6de9bbe4aeb1855bcf601a4a8dd1e95f20f5ad2c9c6e7d9ce7",
+    "bytes": 18124,
+    "computedByConstructor": true
+  },
+  "modelHash": "0xf9ed622931f393e006a50105d6b1c876cc2fbabd93c15ea345fa500fd89bf88f",
+  "pool": {
+    "key": {
+      "currency0": "0x21dF544947ba3E8b3c32561399E88B52Dc8b2823",
+      "currency1": "0x4C4a2f8c81640e47606d3fd77B353E87Ba015584",
+      "fee": 3000,
+      "tickSpacing": 60,
+      "hooks": "0x4745B2A590Bb20994Df443D233B33cee8a665040"
+    },
+    "id": "0x2d11222f840fb151bc6a96f1cb94559ef5727b77362c2d6758b1ff248d43ae80"
+  },
+  "fixtureSourceSha256": "892a5a808ab9b11859d27e4920be7d6b983cd66d3dc56c6e73b7f2d363686377",
+  "summary": {
+    "attempts": 36,
+    "successfulSentenceSwaps": 33,
+    "revertedSwaps": 3,
+    "rawIncomplete": 3,
+    "rawModelFailures": 0,
+    "uniqueCompleteTexts": 32,
+    "uniqueRawTexts": 35,
+    "maximumSuccessfulSwapGas": "28115033",
+    "independentReferenceVerified": true,
+    "independentReferenceCases": 36,
+    "independentReferenceDistinctSeeds": 35,
+    "minimumSuccessfulSwapGas": "27597352"
+  },
+  "completedAt": "2026-10-24T05:08:58.238Z",
+  "independentReference": {
+    "file": "../quality/cached-v4-independent-reference.json",
+    "sha256": "3b2eb2c08236e84942336a5a7e2eeab790bb513398e5dd98a56bddb214eb478a",
+    "verifiedCases": 36,
+    "distinctSeeds": 35,
+    "fields": [
+      "tokens",
+      "endedEos",
+      "endedSentence",
+      "lastLogitHash",
+      "text",
+      "completeness"
+    ],
+    "scope": "Everyfixtureincludingallthreeincompletecontrolsandtheexactrepeat."
+  },
+  "fixtureSelection": "32preselectednaturallyterminatedfive-tokenoutputs,3incompletecontrols,and1repeatedseed.Thisisnotarandomcompletionrateestimate.",
+  "cachePreparation": {
+    "branches": 64,
+    "totalGas": "865610539",
+    "maximumTransactionGas": "13529285",
+    "onchainLocalNumericCache": true
+  }
+}

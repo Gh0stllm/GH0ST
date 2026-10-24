@@ -1,0 +1,55 @@
+{
+  "status": "PASS",
+  "scope": "New local-only portable smoke tests; original measured scripts and reports unchanged.",
+  "runtimeFixtureSha256": "4da548bab2f65831013e9b673ca65033ed8ca1fbf885ca8b8756cf453cf5f547",
+  "catalog": {
+    "checked": 1,
+    "passed": 1,
+    "modelCallGasLimit": "29250000",
+    "branchesPrepared": 64,
+    "report": "../benchmark/portable-smoke-evm.json"
+  },
+  "relativeModel": {
+    "turns": 51,
+    "processedPositions": 64,
+    "allTurnsExactReference": true,
+    "maximumModelOnlyGas": "28082643",
+    "checks": {
+      "exactReferenceParity": true,
+      "staleContextRejected": true,
+      "callerStateIsolated": true,
+      "modifiedActiveChunkRejected": true,
+      "beyond2048And65535WithoutReset": true
+    },
+    "counterRelocationProbe": {
+      "syntheticLocalOnly": true,
+      "delta": "65536",
+      "processedBefore": "64",
+      "processedAfter": "65601",
+      "sameTokens": true,
+      "sameFullLogitHash": true,
+      "gasUsed": "28115703"
+    },
+    "report": "../continuity/model-relative64-portable-local.json"
+  },
+  "fileSha256": {
+    "portable/local-runtime-fixtures.json": "4da548bab2f65831013e9b673ca65033ed8ca1fbf885ca8b8756cf453cf5f547",
+    "portable/runtime-fixtures.mjs": "4dd9a840a964ff6f5ad2a7c63e00f05fa05793e91d64e4cbf4acc2ecaf2c039e",
+    "portable/runtime-fixtures.test.mjs": "d2d4ac16cce9fabd87c5ff06b3088c033eb47cc688964267fa40a7c4e282110a",
+    "portable/runtime-fixture-parity.json": "0762679ea3d49f24d782e9e06f7c2fdb2000b358cd329287b5cfb40b61e8dc4e",
+    "portable/runners-provenance.json": "029986925b196036e998b4c89754a09d0f771580d918241aa173cfbb377a2573",
+    "portable/README.md": "bec8df13f204278861142892f9249d0cd33db94f19ef8cb556dcf2a7daa033f6",
+    "benchmark/verify-catalog-portable.mjs": "1c0ae8dbfa433c9dcce684d74f0717c4b637bcc58618e2d256b438b62b174e2e",
+    "benchmark/portable-smoke-evm.json": "8c3e5b78c1da5f62b7e273318a594294f8a70596adcd524f5a36751c3ae215e4",
+    "benchmark/portable-smoke-evm.jsonl": "2846714de0ed9f0f07137822153900522d07ecf6829aa0d8195462d65a3a5e49",
+    "continuity/test-relative64-portable.mjs": "ba8035352188b0660e8e69f08c9204bcd6ad424cdad59e3a7b4b8592f8b3154d",
+    "continuity/model-relative64-portable-local.json": "72efa9f2541cf26d7609fb9c8f128d135613039259e3813b9b092d5f50473425"
+  },
+  "publicTransactionsSubmitted": 0,
+  "limitations": [
+    "Catalog smoke checks one entry, not a rerun of all10000.",
+    "Relative64 smoke runs64sequentialpositions plus a synthetic counter-relocation probe, not2060swaps.",
+    "Model-only gas excludesPoolManager and hook overhead.",
+    "Data/tiles installed by guarded local anvil_setCode; actualdata deployment costs excluded."
+  ]
+}

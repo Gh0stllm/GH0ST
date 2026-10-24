@@ -1,0 +1,39 @@
+{
+  "scope": "Conservative heuristic post-screen of unchanged model emissions; not a grammar guarantee.",
+  "source_file": "experiments/simplestories-v2/optimization/varied-sentence/quality/exact-k64-t1000-cap5-quote-unique.json",
+  "source_sha256": "03ef25a646105be5fb85097abe57f2717a6a462259c7cbf19a8f96add3bcc253",
+  "screen_sha256": "ded7e4a961b4616d1562bf5de1d44e1fedcdf39f5b67395477d08c6546c32b94",
+  "uses_visible_prompt": false,
+  "natural_unique_inputs": 7759,
+  "accepted_exact_strings": 4241,
+  "accepted_distinct_word_sequences": 3922,
+  "accepted_unique": 3922,
+  "rejected": 3518,
+  "rejection_reasons": {
+    "unrecognized_subject_or_command": 632,
+    "word_count": 65,
+    "wordpiece_or_special_fragment": 191,
+    "interior_punctuation_or_nonword": 715,
+    "unrecognized_finite_verb": 686,
+    "dangling_function_word": 376,
+    "missing_object": 52,
+    "unclear_wh_complement": 68,
+    "missing_modal_main_verb": 110,
+    "unclear_wh_clause": 398,
+    "missing_clause_after_connector": 18,
+    "short_wh_fragment": 28,
+    "unfinished_let_command": 26,
+    "repeated_adjacent_word": 22,
+    "unclear_inverted_question": 68,
+    "unclear_subject_noun": 14,
+    "unfinished_subject_noun_phrase": 30,
+    "subject_verb_disagreement": 10,
+    "bare_verb_with_singular_subject": 4,
+    "dangling_nominative_pronoun": 5
+  },
+  "limitations": [
+    "Finite verb and subject recognition are approximate word-level rules.",
+    "This changes no generated text and forces no model token.",
+    "Human random-sample review is required; false accepts and false rejects remain possible."
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "scope": "Independent offline relative-key Q12 continuity evidence; no mainnet actions.",
+  "status": "PASS",
+  "final_reference": "relative64-policy26-2060turn-reference.json",
+  "policy": "two tokens iff processed<=26, otherwise one; stop a chunk on nativeEOS or .!?",
+  "turn_count": 2060,
+  "processed_token_count": 2073,
+  "every_step_full_logit_hash_count": 2073,
+  "full_prefix_checks": 15,
+  "late_checked_positions": [
+    2047,
+    2048,
+    2049,
+    2050
+  ],
+  "native_eos_count": 6,
+  "counter_shift_checks": [
+    {
+      "absolute_counter_offset": "2048",
+      "steps": 150,
+      "all_logits_and_hidden_identical": true
+    },
+    {
+      "absolute_counter_offset": "65536",
+      "steps": 150,
+      "all_logits_and_hidden_identical": true
+    },
+    {
+      "absolute_counter_offset": "4294967296",
+      "steps": 150,
+      "all_logits_and_hidden_identical": true
+    },
+    {
+      "absolute_counter_offset": "18446744073709551104",
+      "steps": 150,
+      "all_logits_and_hidden_identical": true
+    }
+  ],
+  "fp32_same_input_argmax_matches": 9,
+  "fp32_prefix_count": 9,
+  "file_sha256": {
+    "build_reference.py": "77846dbc4545fc7dc15c2869bc685eedeafdf30fae21a6c9de29a692381b38cf",
+    "regroup_policy26.py": "c54de6c3b942882191e6a04dd06ea4440ef6f5c71ed92381c63f43df98c7f626",
+    "compare_variants.py": "e4473c8257431fe28aee0b4bea7167840e371a5d5a6c5b34785dfc513dfcef19",
+    "relative64-policy26-2060turn-reference.json": "2ca84e37b8eaf7e59edd94001e3d277208d6a95076bfb3acf67d62a3ef9efda1",
+    "relative64-policy26-140turn-reference.json": "e709e5233968a2153cfabe4dbb944b44189b4da2a7fe78f6d74601a83f225619",
+    "relative64-2060turn-reference.json": "bbeb4a9c44abcff1bf6104f3f056501931faba943324a938f7e19f0ef83949c3",
+    "tables-relative64.bin": "414c3e8bb8647dd829c688dfaf2ddfc82debf4cc4309bba54834bf9ff1e6bcea",
+    "variant-comparison.json": "3bbbcc5d81de8894304c3265b6cf9b447a8582326b7561e1c01dd6f6fa1f0045",
+    "source-review.json": "f8ac2fcd629b7e31ec09d7f0a9123b19cc77c3cf6ec1460cb6e89458deaa004a",
+    "README.md": "8d9cda64112ac475f4232e04a86082cea258ab65fac233c9553acc828d132530"
+  },
+  "limitations": [
+    "No gas claim from this offline evidence.",
+    "Relative-key Q12 is a distinct arithmetic variant from absolute-Q12 RoPE.",
+    "Continuity state does not guarantee an indefinitely coherent plot or permanent memory.",
+    "Prior independent10000-sentence catalog does not establish diversity or grammar for this continuousstream."
+  ]
+}

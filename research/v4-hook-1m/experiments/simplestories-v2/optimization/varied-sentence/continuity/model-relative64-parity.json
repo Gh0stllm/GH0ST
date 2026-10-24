@@ -1,0 +1,68 @@
+{
+  "status": "PASS",
+  "localOnly": true,
+  "publicTransactionsSubmitted": 0,
+  "sourceSha256": "e11808d3b4ebb1828ec2bd09be84738f688ee30081bb1e62ce6fe548d68143df",
+  "localReportSha256": "4d9f88a2c44a03e7f59673a3f9195c94d3c9af2da959d4659c075e9207f02ebd",
+  "referenceSha256": "bbeb4a9c44abcff1bf6104f3f056501931faba943324a938f7e19f0ef83949c3",
+  "tableSha256": "414c3e8bb8647dd829c688dfaf2ddfc82debf4cc4309bba54834bf9ff1e6bcea",
+  "turnsCompared": 135,
+  "processedPositions": 150,
+  "everyGeneratedTokenMatches": true,
+  "everyTurnFull4019LogitHashMatches": true,
+  "allStateCountersAndNativeStopsMatch": true,
+  "noRefreshOrReset": true,
+  "maximumMeasuredGas": "29940099",
+  "counterRelocationProbe": {
+    "syntheticLocalOnly": true,
+    "delta": "65536",
+    "processedBefore": "150",
+    "processedAfter": "65687",
+    "sameTokens": true,
+    "sameFullLogitHash": true,
+    "gasUsed": "28293307"
+  },
+  "earlyTwoTokenBudgetViolation": [
+    {
+      "turn": 17,
+      "maxNew": 2,
+      "tokens": [
+        714,
+        93
+      ],
+      "processed": "32",
+      "generated": "32",
+      "pending": "93",
+      "epoch": "0",
+      "contextHash": "0xbcaa1e661c24c170c67cac11dd1ec4f9ebd2b8a123d52d9613eecff9eb52033d",
+      "gasUsed": "29940099",
+      "chunk": "0xB1cB742B61bE83B8dc6abDe2A244e7Baf9815d0b",
+      "chunkRuntimeBytes": 4107,
+      "exactReference": false,
+      "logitHash": "0xef45ae3dca30ba14ef88bcbf86b15ce1b07e3d47ef649b1ea801770195dc13c7",
+      "endedEos": false,
+      "endedSentence": false,
+      "refreshed": false
+    }
+  ],
+  "recommendedHookPolicy": "Two output tokens while processed<=26; one thereafter.",
+  "sustainedWindowGas": {
+    "minimum": 28046104,
+    "maximum": 28294210
+  },
+  "checks": {
+    "independentReferenceComparisonPending": false,
+    "staleContextRejected": true,
+    "callerStateIsolated": true,
+    "modifiedActiveChunkRejected": true,
+    "expiredChunkNotRead": true,
+    "beyond2048And65535WithoutReset": true,
+    "independentReferenceComparisonPassed": true
+  },
+  "limits": [
+    "Fixed quote prompt and one seed42 stream tested for model parity.",
+    "Sliding64 attention keeps cached historical context but is different from full unbounded attention.",
+    "One or two tokens per swap; a full sentence generally spans multiple swaps.",
+    "Position-independent relative-RoPE Q12 arithmetic differs from absolute-Q12; model weights unchanged. No fixed-position table limit or reset."
+  ]
+}

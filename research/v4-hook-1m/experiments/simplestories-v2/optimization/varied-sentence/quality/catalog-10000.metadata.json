@@ -1,0 +1,89 @@
+{
+  "scope": "Offline natural model generations passing a conservative word-level grammar heuristic. No phrase templates, forced punctuation, or output repair.",
+  "status": "TARGET_MET_OFFLINE",
+  "target": 10000,
+  "unique_natural_exact_strings": 25777,
+  "grammar_screened_distinct_word_sequences": 11749,
+  "sources": [
+    {
+      "file": "exact-k64-t1000-cap5-quote-262k-unique.json",
+      "sha256": "ca06cb35dc06ce8d00aeb7e1f72cfca89b31d8d7500a620c26999f44edadad1b",
+      "distinct_exact_strings": 21843
+    },
+    {
+      "file": "extension-262144-331776-frozen-unique.json",
+      "sha256": "8339a0536247edf465d552cb351587fdb58bd3985813480443331d07ee2475fa",
+      "distinct_exact_strings": 8263
+    }
+  ],
+  "weights_sha256": "4185c1e2ca8258bc2fdc057f8767f74dd9d8c4f74d64ecf8ed3b56dfc12f8e29",
+  "grammar_screen_sha256": "b6d87c410ea06e700e393964fb5cda7c585cf57223e689716336c5d4c22dd40a",
+  "deduplication": "casefold; normalize whitespace; remove final .!?; compare complete word sequence",
+  "prompt_ids": [
+    3
+  ],
+  "top_k": 64,
+  "temperature_milli": 1000,
+  "max_new_tokens": 5,
+  "sampler": "Q12 logits; stable top-k excluding UNK0; original integer exponential lookup; Keccak ABI GH0ST_SAMPLE_STEP_V1/seed/step.",
+  "rejection_reasons": {
+    "unrecognized_subject_or_command": 2122,
+    "word_count": 82,
+    "unrecognized_finite_verb": 2515,
+    "wordpiece_or_special_fragment": 802,
+    "interior_punctuation_or_nonword": 2237,
+    "inverted_subject_verb_disagreement": 75,
+    "dangling_function_word": 1423,
+    "missing_object": 173,
+    "unclear_wh_complement": 220,
+    "missing_modal_main_verb": 446,
+    "unclear_wh_clause": 1193,
+    "question_without_question_mark": 359,
+    "dangling_wh_word": 40,
+    "short_wh_fragment": 51,
+    "unfinished_let_command": 75,
+    "repeated_adjacent_word": 106,
+    "unclear_inverted_question": 279,
+    "unclear_subject_noun": 88,
+    "missing_coordinated_verb_object": 10,
+    "unfinished_subject_noun_phrase": 122,
+    "subject_verb_disagreement": 36,
+    "missing_clause_after_connector": 37,
+    "bare_verb_with_singular_subject": 43,
+    "unfinished_collective_complement": 4,
+    "dangling_nominative_pronoun": 18,
+    "inverted_noun_number_disagreement": 7,
+    "missing_connector_after_object": 14,
+    "extra_nominative_after_adjective": 3,
+    "unfinished_object_noun_phrase": 6,
+    "said_at_person": 1,
+    "affirmative_anymore": 8,
+    "bare_verb_after_have_auxiliary": 3,
+    "inflected_verb_after_do_auxiliary": 3,
+    "broken_preposition": 2,
+    "missing_copula_complement": 1
+  },
+  "limitations": [
+    "Heuristic acceptance is not a proof of grammatical correctness; independently review the fresh random sample.",
+    "This catalog is evidence of model capacity, not a runtime output lookup table.",
+    "Different arbitrary seeds may repeat, produce incomplete text or poor language; no all-seed uniqueness guarantee.",
+    "Gas and EVM token parity must be checked separately using the selected cached model."
+  ],
+  "catalog_file": "catalog-10000.json",
+  "catalog_sha256": "455243bbadfba92f65c52168ce8fdd71a082c88855cef44ebbee9a15a73f3819",
+  "seed_inputs_tested": 331776,
+  "seed_ranges": [
+    {
+      "start_inclusive": 0,
+      "end_exclusive": 262144
+    },
+    {
+      "start_inclusive": 262144,
+      "end_exclusive": 331776
+    }
+  ],
+  "natural_ending_samples": 123181,
+  "sampled_token_draws": 1511004,
+  "sample_review_file": "catalog-10000-review.json",
+  "sample_review_sha256": "a1ce9e71a1935992364c74e868a89691f19fab8b3d314b534f6308e00b6c106f"
+}

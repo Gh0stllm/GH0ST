@@ -1,0 +1,14 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import solc from 'solc';
+import assert from 'node:assert/strict';
+import {createHash} from 'node:crypto';
+const source='experiments/simplestories-v2/optimization/varied-sentence/continuity/kernel/SimpleStoriesV2Rolling64Model.sol';
+const settings={optimizer:{enabled:true,runs:200},viaIR:true,evmVersion:'cancun',outputSelection:{'*':{'*':['abi','evm.bytecode.object','evm.deployedBytecode.object']}}};
+const content=fs.readFileSync(source,'utf8');
+const output=JSON.parse(solc.compile(JSON.stringify({language:'Solidity',sources:{[source]:{content}},settings})));
+const errors=(output.errors??[]).filter(x=>x.severity==='error'); assert.deepEqual(errors,[],errors.map(x=>x.formattedMessage).join('\n'));
+const artifact=output.contracts[source].SimpleStoriesV2Rolling64Model;
+Object.assign(artifact,{compiler:solc.version(),settings,sourceSha256:createHash('sha256').update(content).digest('hex')});
+fs.writeFileSync(source.replace('.sol','.compiled.json'),JSON.stringify(artifact,null,2)+'\n');
+console.log(JSON.stringify({sourceSha256:artifact.sourceSha256,creationBytes:artifact.evm.bytecode.object.length/2,runtimeBytes:artifact.evm.deployedBytecode.object.length/2,warnings:output.errors?.map(x=>x.formattedMessage)}));

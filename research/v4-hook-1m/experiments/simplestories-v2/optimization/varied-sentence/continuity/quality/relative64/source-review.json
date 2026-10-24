@@ -1,0 +1,12 @@
+{
+  "scope": "Read-only inspection of relative attention and append-only chunk loading source; runtime verification remains separate.",
+  "source": "experiments/simplestories-v2/optimization/varied-sentence/continuity/kernel/SimpleStoriesV2Relative64Model.sol",
+  "source_sha256": "e11808d3b4ebb1828ec2bd09be84738f688ee30081bb1e62ce6fe548d68143df",
+  "findings": [
+    "Stored keys are raw pre-RoPE projections. Queries remain raw. Relative key rotation uses age0..63 and signed truncating division before the dot product.",
+    "The loader walks backward only until its64-position suffix is complete, authenticates every loaded code hash and enforces consecutive uint64 chunk headers.",
+    "Position-base arithmetic is separate from table indexing; table indices derive from relative age.",
+    "Processed/generated counters and encoded chunk starts use uint64. Checked arithmetic reverts on overflow; this is finite lifetime rather than an unbounded integer counter.",
+    "Native EOS ends a chunk but does not delete cached context or insert a new prompt."
+  ]
+}

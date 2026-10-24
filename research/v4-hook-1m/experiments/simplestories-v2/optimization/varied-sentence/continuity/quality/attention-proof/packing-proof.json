@@ -1,0 +1,56 @@
+{
+  "scope": "Offline pure arithmetic proposal proof; no model or Solidity changes and no gas claims.",
+  "status": "PASS",
+  "random_seed": 20261024,
+  "score_bias": "536870912",
+  "score_random_cases": 10000,
+  "score_boundary_cases": 147,
+  "weighted_random_cases": 20000,
+  "weighted_boundary_cases": 112,
+  "score_input_interval": [
+    "-2^29",
+    "2^29-1"
+  ],
+  "probability_interval": [
+    "0",
+    "2^20"
+  ],
+  "weighted_value_intervals": [
+    [
+      "-2^29",
+      "2^29-1"
+    ],
+    [
+      "-2^31",
+      "2^31-1"
+    ]
+  ],
+  "operations_verified": [
+    "four-lane64-bit packing",
+    "modulo2^256 multiplication before coefficient extraction",
+    "reverse-lane coefficient3 extraction",
+    "exact signed bias correction",
+    "signed division truncation towardzero"
+  ],
+  "bounds": {
+    "score_coefficient_max": "4611686009837453316",
+    "score_coefficient_below_bits": 62,
+    "weighted_bias29_coefficient_max": "4503599623176192",
+    "weighted_bias29_below_bits": 52,
+    "weighted_bias31_coefficient_max": "18014398505287680",
+    "weighted_bias31_below_bits": 54
+  },
+  "formulas": {
+    "score": "high64(pack(q+B)*reversePack(k+B) mod2^256) - B*(sum(q)+sum(k)) - 4*B^2",
+    "weighted": "high64(pack(p)*reversePack(v+B) mod2^256) - B*sum(p)"
+  },
+  "notes": [
+    "The attention exponential table is Q20 with maximum1,048,576, not Q16.",
+    "Score fastpath must guard both query and key values outside[-2^29,2^29-1].",
+    "Weighted-value packing with bias2^31 covers the complete signed-int32 range without a fallback.",
+    "Final partial groups must pad signed inputs withzero before applying their biases.",
+    "Zero total probability still requires the existing division-by-zero behavior.",
+    "Arithmetic equality does not establish that a Solidity implementation is faster; packing and memory access costs must be benchmarked."
+  ],
+  "source_sha256": "0a21c22fc116dec7dee259dfd85b2f78ec484e214e002fa00d3989c29b989c47"
+}
