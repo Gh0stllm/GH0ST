@@ -1,0 +1,54 @@
+{
+  "status": "PASS_EXACT_INTEGER_IDENTITY",
+  "cases": {
+    "exhaustive_endpoint_quadruples": 256,
+    "random_quadruples": 100000,
+    "full128_rows_with_bias_and_Q10_truncation": 1000
+  },
+  "invalid_bound_cases_rejected": 4,
+  "bounds": {
+    "x_h_plus1024": [
+      0,
+      2048
+    ],
+    "y_w_plus32768": [
+      0,
+      65535
+    ],
+    "max_polynomial_coefficient": 536862720,
+    "coefficient_less_than_bits": 29,
+    "lane_bits": 64,
+    "max_abs128_dot_before_bias": 4294967296,
+    "max_abs128_accumulator_with_bias": 4328521728
+  },
+  "proof": [
+    "A(t)=sum_i(h_i+1024)t^i; B(t)=sum_i(w_(3-i)+32768)t^i, t=2^64.",
+    "Every coefficient has at most4 nonnegative terms and is at most536862720<2^29<2^64, hence no base-2^64 carry.",
+    "Coefficient3 equals sum_i(h_i+1024)(w_i+32768).",
+    "Taking product mod2^256 discards only coefficients4..6; shifting right192 returns coefficient3 exactly.",
+    "Subtract32768*sum_i(h_i+1024) and1024*sum_i(w_i), in signed arithmetic, leaving sum_i(h_i*w_i).",
+    "Summing32 corrected quadruples gives an exact128-term dot product. Add bias*1024 and truncate once toward zero to preserve Q10 semantics."
+  ],
+  "requirements": [
+    "Both packed operand vectors must satisfy the recorded ranges.",
+    "Use signed accumulator/corrections; checked unsigned subtraction can revert for negative products.",
+    "Do not truncate each quadruple independently; accumulate all products before the one prescribed Q10 division.",
+    "Packing implementation must reverse exactly one operand and preserve signed decoding before bias addition."
+  ],
+  "not_proven": "This is mathematical/Python evidence, not a Solidity assembly implementation proof or gas benchmark.",
+  "row_examples": [
+    {
+      "accumulator": 48326559,
+      "q10": 47193
+    },
+    {
+      "accumulator": -138734500,
+      "q10": -135482
+    },
+    {
+      "accumulator": 65957284,
+      "q10": 64411
+    }
+  ],
+  "script_sha256": "22b8368cd2edc5537f666f916c787fd1afd8e37e5b71f951fbaf76c68644f927"
+}

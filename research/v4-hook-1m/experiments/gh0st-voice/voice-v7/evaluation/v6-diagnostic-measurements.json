@@ -1,0 +1,78 @@
+{
+  "status": "MEASURED_LOCAL_NO_TRAINING",
+  "training_sha256": "58e03f85328d75e1c1d7e83f5e48ca2115719940513a14734128b8b3bcd82395",
+  "vocabulary_sha256": "c98af7d927c766d5d56d7bc8f0080ba6348fed6d402f33627546bba8cbe2d961",
+  "vocabulary": {
+    "entries": 8192,
+    "distinct_bare_stems": 7164,
+    "terminal_attached_entries": 1062,
+    "duplicate_stem_slots": 1028,
+    "bare_stem_entries": 7130,
+    "stems_with_bare_and_period": 983,
+    "stems_with_bare_but_no_period": 6147,
+    "group0_terminal_entries": 0,
+    "global_terminal_fraction": 0.129638671875
+  },
+  "domain_documents": {
+    "0": {
+      "documents": 749,
+      "normalized_words": 42300,
+      "min": 21,
+      "median": 57,
+      "max": 105,
+      "documents_128_or_shorter": 749,
+      "terminal_positions": 3931,
+      "terminal_known": 2823,
+      "terminal_masked": 1108
+    },
+    "1": {
+      "documents": 2748,
+      "normalized_words": 791912,
+      "min": 40,
+      "median": 299,
+      "max": 1834,
+      "documents_128_or_shorter": 484,
+      "terminal_positions": 35652,
+      "terminal_known": 19322,
+      "terminal_masked": 16330
+    }
+  },
+  "batch_reset_measurement": [
+    {
+      "voice_block_probability": 0.1,
+      "positions": 131072,
+      "resets": 1216,
+      "positions_per_reset": 107.78947368421052,
+      "median_uninterrupted_segment": 128.0,
+      "max_uninterrupted_segment": 128,
+      "known_supervised_positions": 102887,
+      "masked_positions": 28185
+    },
+    {
+      "voice_block_probability": 0.5,
+      "positions": 131072,
+      "resets": 1763,
+      "positions_per_reset": 74.34600113442995,
+      "median_uninterrupted_segment": 69.0,
+      "max_uninterrupted_segment": 128,
+      "known_supervised_positions": 111172,
+      "masked_positions": 19900
+    },
+    {
+      "voice_block_probability": 1.0,
+      "positions": 131072,
+      "resets": 2499,
+      "positions_per_reset": 52.44977991196479,
+      "median_uninterrupted_segment": 53.0,
+      "max_uninterrupted_segment": 105,
+      "known_supervised_positions": 122955,
+      "masked_positions": 8117
+    }
+  ],
+  "notes": [
+    "No sentence boundary marker exists apart from punctuation attached to individual word tokens.",
+    "UNK is input-only; unknown targets are masked, not removed from state context.",
+    "Every training batch resets at128 positions or sooner; runtime never automatically resets after sentence or paragraph endings.",
+    "Counts show exposure mismatch, not causal proof that this alone causes broken grammar."
+  ]
+}

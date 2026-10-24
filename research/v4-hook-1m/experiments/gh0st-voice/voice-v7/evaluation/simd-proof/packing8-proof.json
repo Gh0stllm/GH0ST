@@ -1,0 +1,48 @@
+{
+  "status": "PASS_EXACT_INTEGER_IDENTITY",
+  "cases": {
+    "exhaustive_endpoint_octuples": 65536,
+    "random_octuples": 100000,
+    "full128_rows_bias_and_final_Q10_truncation": 1000
+  },
+  "invalid_bound_cases_rejected": 4,
+  "bounds": {
+    "h": [
+      -1024,
+      1024
+    ],
+    "w": [
+      -32768,
+      32767
+    ],
+    "biased_h": [
+      0,
+      2048
+    ],
+    "biased_w": [
+      0,
+      65535
+    ],
+    "max_polynomial_coefficient": 1073725440,
+    "coefficient_less_than_bits": 30,
+    "lane_bits": 32,
+    "center_start_bit": 224,
+    "center_highest_possible_bit": 253
+  },
+  "proof": [
+    "For t=2^32, A=sum_i(h_i+1024)t^i and B=sum_i(w_(7-i)+32768)t^i.",
+    "Every coefficient has at most8 terms and is at most1073725440<2^30<2^32; hence no inter-lane carry.",
+    "Coefficient7 is sum_i(h_i+1024)(w_i+32768). It fits entirely in bits224..253.",
+    "Reduction modulo2^256 discards only coefficients8..14. Shifting right224 extracts coefficient7 exactly.",
+    "Signed subtraction of32768*sum_i(h_i+1024) and1024*sum_i(w_i) leaves sum_i(h_i*w_i).",
+    "Sixteen corrected groups cover128 products. Add Q10-scaled bias and divide once toward zero after complete accumulation."
+  ],
+  "requirements": [
+    "Enforce both input ranges.",
+    "Reverse exactly one packed operand.",
+    "Use signed corrections.",
+    "Apply Q10 truncation only once after the whole row."
+  ],
+  "not_proven": "No EVM bytecode, runtime-load or gas result is inferred from this Python/math proof.",
+  "script_sha256": "8c96a7f529ad26b4b6703d4026d66f302fe99e93785eaf8cece90d95c44f15e2"
+}

@@ -1,0 +1,138 @@
+{
+  "status": "RAW_FP32_REQUIRES_HUMAN_REVIEW",
+  "source": {
+    "hidden_width": 512,
+    "checkpoint": "experiments/gh0st-voice/voice-v8/training/converter-smoke-h512-source2m",
+    "weights_sha256": "e5aef91cfb8ae89a566fc07d748f52abaacb600cb32c81ea5eba95a32f0ecc0f",
+    "vocabulary_sha256": "665fd7b242c6ab1fca998782df32a76e3884f3fafd6b0feeef1886d4767f27b0",
+    "parser_sha256": "61cbae7aa862559488c50465d214dd96b836b02289d70b1a07150a3766aab620"
+  },
+  "script_sha256": "e214488c77e77301cff226ccd47d623ae2706dc08c1b15e144d8af3ca997114c",
+  "decoder": "Three independent Keccak(seed,index,stage) draws for group,word,punctuation; float exp roundedQ32, not the integer logits/LUT. Domain0 fixed.",
+  "outputs": [
+    {
+      "status": "GENERATED",
+      "seed": 0,
+      "prompt": "",
+      "group_temperature": 1.0,
+      "word_temperature": 1.0,
+      "punctuation_temperature": 1.0,
+      "word_ids": [
+        101,
+        6,
+        90,
+        784
+      ],
+      "punctuation": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "text": "made in every price",
+      "state_sha256_each_step": [
+        "71b1cb554a81e48fd695ff5ade52a1202e313dace89f64f1a41697021aa9dd80",
+        "b583a47efe1d25c50f96c20324e2d9ce58506e7aef372545a8257d9dc59eed6b",
+        "02409e69d24ac3eaf8ba6c75731aa21bbabb268bb3fa43c0dba99e5858679d08",
+        "1cfc7a898d4bc47e556f764c9e63f738fc875ef069dbd8e430437df819b69d26"
+      ],
+      "metrics": {
+        "words": 4,
+        "unique_normalized_words": 4,
+        "natural_sentence_ends": 0,
+        "trailing_fragment": true,
+        "first_person_tokens": 0,
+        "repeated_4gram_occurrences": 0,
+        "repeated_4gram_fraction": 0.0,
+        "most_frequent_normalized_words": [
+          [
+            "made",
+            1
+          ],
+          [
+            "in",
+            1
+          ],
+          [
+            "every",
+            1
+          ],
+          [
+            "price",
+            1
+          ]
+        ],
+        "repeated_4grams": [],
+        "hidden": {
+          "mean_saturated_fraction": 0.0,
+          "final_min": -0.9940645098686218,
+          "final_max": 0.9795836806297302
+        }
+      },
+      "state_resets": 0,
+      "forced_punctuation": false
+    },
+    {
+      "status": "GENERATED",
+      "seed": 42,
+      "prompt": "",
+      "group_temperature": 1.0,
+      "word_temperature": 1.0,
+      "punctuation_temperature": 1.0,
+      "word_ids": [
+        111,
+        198,
+        279,
+        5
+      ],
+      "punctuation": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "text": "am seen until i",
+      "state_sha256_each_step": [
+        "71b1cb554a81e48fd695ff5ade52a1202e313dace89f64f1a41697021aa9dd80",
+        "f71c53016bc692154a3f6d3410848cbf8be5aa87324f153a1efbf4849fabec6e",
+        "9f88c836a4af03111a5b1bdd80bda5cb9d762df084ff3e0a632d33b6245bf107",
+        "b59183c799aab452a6f30b3738b49557297fa7b6fd451463f92b45a8216ef187"
+      ],
+      "metrics": {
+        "words": 4,
+        "unique_normalized_words": 4,
+        "natural_sentence_ends": 0,
+        "trailing_fragment": true,
+        "first_person_tokens": 1,
+        "repeated_4gram_occurrences": 0,
+        "repeated_4gram_fraction": 0.0,
+        "most_frequent_normalized_words": [
+          [
+            "am",
+            1
+          ],
+          [
+            "seen",
+            1
+          ],
+          [
+            "until",
+            1
+          ],
+          [
+            "i",
+            1
+          ]
+        ],
+        "repeated_4grams": [],
+        "hidden": {
+          "mean_saturated_fraction": 0.0,
+          "final_min": -0.9921573996543884,
+          "final_max": 0.9918315410614014
+        }
+      },
+      "state_resets": 0,
+      "forced_punctuation": false
+    }
+  ]
+}

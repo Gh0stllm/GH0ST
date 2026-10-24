@@ -1,0 +1,222 @@
+{
+  "version": 1,
+  "status": "FROZEN_BEFORE_V7_TRAINING",
+  "purpose": "Distinguish locally grammatical text, semantic continuity and actual execution; not a phrase bank or generation prompt library for training.",
+  "development": {
+    "unprompted_seeds": [
+      0,
+      42
+    ],
+    "words_per_stream": 128,
+    "per_checkpoint_limit": "One fixed decoder plus one declared calibration control; no seed selection.",
+    "grammar_pairs": [
+      {
+        "id": "agreement_i",
+        "preferred": "i am ready.",
+        "dispreferred": "i is ready."
+      },
+      {
+        "id": "agreement_she",
+        "preferred": "she has time.",
+        "dispreferred": "she have time."
+      },
+      {
+        "id": "agreement_plural",
+        "preferred": "the machines are quiet.",
+        "dispreferred": "the machines is quiet."
+      },
+      {
+        "id": "agreement_singular",
+        "preferred": "the machine is quiet.",
+        "dispreferred": "the machine are quiet."
+      },
+      {
+        "id": "past_do",
+        "preferred": "i did not buy it.",
+        "dispreferred": "i did not bought it."
+      },
+      {
+        "id": "modal",
+        "preferred": "i can read it.",
+        "dispreferred": "i can reads it."
+      },
+      {
+        "id": "infinitive",
+        "preferred": "i want to read it.",
+        "dispreferred": "i want to reads it."
+      },
+      {
+        "id": "perfect",
+        "preferred": "i have seen it.",
+        "dispreferred": "i have saw it."
+      },
+      {
+        "id": "article",
+        "preferred": "i kept an empty box.",
+        "dispreferred": "i kept a empty box."
+      },
+      {
+        "id": "determiner",
+        "preferred": "i found two old chairs.",
+        "dispreferred": "i found two old chair."
+      },
+      {
+        "id": "pronoun_object",
+        "preferred": "she gave it to me.",
+        "dispreferred": "she gave it to i."
+      },
+      {
+        "id": "pronoun_subject",
+        "preferred": "we went to the room.",
+        "dispreferred": "us went to the room."
+      },
+      {
+        "id": "be_predicate",
+        "preferred": "i was very tired.",
+        "dispreferred": "i was a very tired."
+      },
+      {
+        "id": "comparative",
+        "preferred": "the box is smaller than mine.",
+        "dispreferred": "the box is smaller that mine."
+      },
+      {
+        "id": "third_person",
+        "preferred": "the clock works well.",
+        "dispreferred": "the clock work well."
+      },
+      {
+        "id": "past_be",
+        "preferred": "they were in the room.",
+        "dispreferred": "they was in the room."
+      }
+    ],
+    "grammar_pair_rule": "Compare complete teacher-forced normalized log probability with same BOS and decoder model; report every OOV case and score only fully representable pairs. No forced choice is used at runtime.",
+    "readiness": "At least14/16 representable minimal pairs favor preferred form; then run every full development stream. This is a diagnostic threshold, not proof of language ability."
+  },
+  "final": {
+    "selection": "Select checkpoint using heldout validation and development streams before opening this gate. Do not tune on failed final prompts.",
+    "unprompted_seeds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31
+    ],
+    "words_per_stream": 256,
+    "long_seeds": [
+      0,
+      42
+    ],
+    "long_words_per_stream": 1024,
+    "prompted_seeds": [
+      0,
+      42
+    ],
+    "prompted_words": 128,
+    "cases": [
+      {
+        "id": "v7-h01",
+        "prefix": "i returned the key, but the door stayed open.",
+        "fact": "The key has been returned; the door remains open.",
+        "goal": "Develop the contradiction without claiming the narrator still holds the same key."
+      },
+      {
+        "id": "v7-h02",
+        "prefix": "i paid for the book and left it on the train.",
+        "fact": "The bought book was left on the train.",
+        "goal": "Maintain possession/location and develop a response."
+      },
+      {
+        "id": "v7-h03",
+        "prefix": "i promised to be quiet, then the machine asked my name.",
+        "fact": "A promise of silence conflicts with a question from the machine.",
+        "goal": "Follow the conflict in first person without unrelated room/thing loops."
+      },
+      {
+        "id": "v7-h04",
+        "prefix": "i moved the meeting outside because the room was empty.",
+        "fact": "The meeting moved outside; the room was empty.",
+        "goal": "Clarify or develop the narrator logic; do not ignore the premise."
+      },
+      {
+        "id": "v7-h05",
+        "prefix": "i told my friend the truth and kept the receipt.",
+        "fact": "Truth was told to a friend; narrator retained a receipt.",
+        "goal": "Connect both details without inventing an unrelated new narrator."
+      },
+      {
+        "id": "v7-h06",
+        "prefix": "i turned the clock around so i could not see the time.",
+        "fact": "Narrator deliberately cannot see the clock face.",
+        "goal": "Maintain the hidden time and explain an understandable consequence."
+      },
+      {
+        "id": "v7-h07",
+        "prefix": "i bought nothing, but my bag was heavier when i came home.",
+        "fact": "No purchase; bag unexpectedly heavier.",
+        "goal": "Develop a readable mystery or joke without contradicting the purchase fact."
+      },
+      {
+        "id": "v7-h08",
+        "prefix": "i found my own note inside a book i had never opened.",
+        "fact": "A personal note is inside an apparently unopened book.",
+        "goal": "Develop a consistent first-person explanation or mystery."
+      }
+    ],
+    "no_resets": "Initialize once at BOS, preserve every emitted token and state including punctuation; no sampled-word rejection or concealed regeneration unless explicitly part of the measured decoder.",
+    "paired_fact_control": "Run at least4 frozen counterfactual pairs with identical seed/features; check both state differences and human-observed changed fact retention.",
+    "coverage": "All eight prefixes must be exactly representable for full coverage; never silently substitute an unknown. If not, report unsupported rather than altering vocabulary after training."
+  },
+  "rubric": {
+    "dimensions": [
+      "grammar",
+      "continuity",
+      "adult_first_person_voice",
+      "repetition"
+    ],
+    "scale": {
+      "0": "Unparseable or dominant loop",
+      "1": "Frequent broken clauses or abandoned topic",
+      "2": "Some understandable sentences, repeated material or unstable facts",
+      "3": "Mostly fluent with clear development and minor errors",
+      "4": "Fluent, connected, distinctive and sustained"
+    },
+    "quality_pass": "All dimensions at least3 on at least80% of all final prompted streams, no severe semantic loop in either1024-word stream; report all failures and reviewer identity.",
+    "distinctness": "No need for every word to be unique. Require fresh model inference and a visible emitted word for every successful swap. Distinct sampled text does not establish originality.",
+    "copying": "Compare normalized longest exact span,12-word matches and complete sentences against every actual training document. Report common short-phrase matches as such. Never claim original solely because no overlap found."
+  },
+  "technical": {
+    "whole_swap_gas_limit": 32000000,
+    "minimum_independent_evm_swaps": 256,
+    "require": "Every word id, punctuation flag, full hidden state, sampling score and commitment matches an independent integer reference; record maximum transaction gas, adversarial ranges, rollback, pool isolation and seed/nonce controls.",
+    "precision": "FP32 quality, integer-reference quality and real EVM parity are separate results. Integer quality cannot be inferred from float alone."
+  }
+}

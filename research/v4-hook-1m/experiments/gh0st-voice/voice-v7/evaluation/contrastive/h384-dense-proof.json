@@ -1,0 +1,50 @@
+{
+  "status": "PASS",
+  "hidden": 384,
+  "scenarios": [
+    {
+      "name": "empty",
+      "pairs": 0,
+      "loss_absolute_error": 0.0,
+      "parameter_gradient_max_error": 0.0,
+      "hidden_gradient_max_error": 0.0
+    },
+    {
+      "name": "same_group",
+      "pairs": 1,
+      "loss_absolute_error": 0.0,
+      "parameter_gradient_max_error": 2.7755575615628914e-17,
+      "hidden_gradient_max_error": 4.163336342344337e-17,
+      "group_head_gradient_max": 0.0
+    },
+    {
+      "name": "different_group",
+      "pairs": 1,
+      "loss_absolute_error": 0.0,
+      "parameter_gradient_max_error": 8.673617379884035e-19,
+      "hidden_gradient_max_error": 2.168404344971009e-19
+    },
+    {
+      "name": "multiple_shared_and_repeated",
+      "pairs": 6,
+      "loss_absolute_error": 0.0,
+      "parameter_gradient_max_error": 2.7755575615628914e-17,
+      "hidden_gradient_max_error": 1.214306433183765e-17
+    }
+  ],
+  "whole_objective": {
+    "loss_absolute_error": 3.552713678800501e-15,
+    "all_parameter_gradient_max_error": 4.440892098500626e-16,
+    "lexical_positions": 6.0,
+    "punctuation_positions": 7.0,
+    "sparse_pair_count": 4
+  },
+  "source_sha256": {
+    "model.py": "3b0e0fdccf1e749a0f583ec2235a59ac89ec0103e37e565508abaafc1a97f276",
+    "engine.py": "e526dfd0c161799907d9f63979f932ee226f7faa02ace794e2c45bc784357a35"
+  },
+  "checkpoint_sha256": "d9dcf011161aa5ac2496207debbd54ca7a5a974625d827d05b3a1105beac1b53",
+  "script_sha256": "5d13db2b0e8c635a89900888588f966867fd7a54c40c4405593325d689beadc4",
+  "input_contract": "Sparse labels must already be validated known-word training positions; Corpus rejects unknown targets/invalid IDs, Stream carries their gold positions across chunks.",
+  "scope": "Double precision, dropout disabled. Oracle evaluates all8192 word probabilities; compared to sparse implementation including all parameter gradients. No runtime grammar restrictions introduced."
+}

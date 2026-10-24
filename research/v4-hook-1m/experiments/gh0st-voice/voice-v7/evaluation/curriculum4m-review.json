@@ -1,0 +1,80 @@
+{
+  "status": "EARLY_CURRICULUM_GATE_FAIL",
+  "source": {
+    "checkpoint": "experiments/gh0st-voice/voice-v7/training/runs/curriculum-20m/checkpoint-004006407",
+    "weights_sha256": "78b2adf89afce5d1ce245d9a5bf1a7986ff93f7f4e27da53648db31de622e79e",
+    "vocabulary_sha256": "940734e6971ecba0960a5b11b4dc5f8604c0a00e4078340c7f002abbec886e9a",
+    "parser_sha256": "61cbae7aa862559488c50465d214dd96b836b02289d70b1a07150a3766aab620"
+  },
+  "scope": "All4 fixed unprompted128-word streams read; no final heldout prompt tuned or selected. This is an early checkpoint gate, not a final model-quality result.",
+  "grammar_pairs": {
+    "native": {
+      "preferred": 8,
+      "total": 16
+    },
+    "calibrated": {
+      "preferred": 9,
+      "total": 16
+    }
+  },
+  "heldout_curriculum_joint_nll": {
+    "2M": 5.257175099832838,
+    "4M": 5.464631199661825
+  },
+  "interpretation": "4M does not establish a grammar or continuity improvement. Heldout curriculum loss worsens while adult/original losses improve; merely extending the same mixture is unsupported by this gate.",
+  "reviews": [
+    {
+      "setting": "native",
+      "seed": 0,
+      "grammar": 1,
+      "continuity": 1,
+      "adult_first_person_voice": 1,
+      "repetition": 2,
+      "pass": false,
+      "evidence": "i placed an reference as greater",
+      "reason": "Articles/verb forms and causal relations remain broken; a technical scene is suggested but does not develop."
+    },
+    {
+      "setting": "native",
+      "seed": 42,
+      "grammar": 1,
+      "continuity": 0,
+      "adult_first_person_voice": 1,
+      "repetition": 2,
+      "pass": false,
+      "evidence": "the thought would not built a less chart",
+      "reason": "Frequent malformed verb phrases and disconnected images."
+    },
+    {
+      "setting": "calibrated",
+      "seed": 0,
+      "grammar": 2,
+      "continuity": 1,
+      "adult_first_person_voice": 1,
+      "repetition": 2,
+      "pass": false,
+      "evidence": "the song had travel with the older action",
+      "reason": "Some correct short clauses, including a checked line and saved record, but tense and relation errors prevent a coherent whole paragraph."
+    },
+    {
+      "setting": "calibrated",
+      "seed": 42,
+      "grammar": 1,
+      "continuity": 1,
+      "adult_first_person_voice": 1,
+      "repetition": 2,
+      "pass": false,
+      "evidence": "the lower test cause could expired",
+      "reason": "Broken modals and unrelated technical nouns; no consistent goal or consequence."
+    }
+  ],
+  "exact_training_overlap_words_max": 7,
+  "overlap_caveat": "Short overlap does not prove originality. The visible failures are syntax/meaning rather than a copied full paragraph.",
+  "files_sha256": {
+    "curriculum4m-native/raw-outputs.json": "6d3f128344c2896d8dfb9ce3cb24a9b19fda5a1103e9cf3a42c38caf194302d6",
+    "curriculum4m-calibrated/raw-outputs.json": "f2b83a27f288833a0320734c4882276f5c2d4dcbe2dd181554c551d83a6d0648",
+    "curriculum4m-native/novelty.json": "2abf8f66697abf99cff7601f404cd1dcbdffbf67b104e76f5bcc75388e057b08",
+    "curriculum4m-calibrated/novelty.json": "3f818c354af1e5eebf0e1b4b02a3174e3ee73f730da1199e44402b0b4c68e9be",
+    "curriculum4m-grammar.json": "f352b1a89acb7c1a26ffb9882aff909363016eb257469ddc9491b3d848c30fb0"
+  }
+}

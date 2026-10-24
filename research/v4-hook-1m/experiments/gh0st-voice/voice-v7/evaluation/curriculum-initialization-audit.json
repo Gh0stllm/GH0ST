@@ -1,0 +1,86 @@
+{
+  "status": "PASS",
+  "checks": {
+    "body_and_punctuation_exact": true,
+    "bos_and_unk_exact": true,
+    "all_matched_word_tensors_exact": true,
+    "group_head_is_fresh": true,
+    "encoding_words_exact": true,
+    "encoding_punctuation_exact": true,
+    "split_groups_disjoint": true,
+    "vocabulary_reproduces_from_train_only": true,
+    "word_bias_reinitialized_from_new_train_counts": true
+  },
+  "matched_lexical_rows": 8020,
+  "new_lexical_rows": 172,
+  "statistics": {
+    "train": {
+      "adult": {
+        "documents": 2748,
+        "words": 793027,
+        "unknown_words": 50781,
+        "punctuation_positions": 793027
+      },
+      "original": {
+        "documents": 749,
+        "words": 42300,
+        "unknown_words": 613,
+        "punctuation_positions": 42300
+      },
+      "curriculum": {
+        "documents": 20160,
+        "words": 2159760,
+        "unknown_words": 0,
+        "punctuation_positions": 2159760
+      }
+    },
+    "validation": {
+      "adult": {
+        "documents": 276,
+        "words": 85669,
+        "unknown_words": 5952,
+        "punctuation_positions": 85669
+      },
+      "original": {
+        "documents": 86,
+        "words": 4020,
+        "unknown_words": 50,
+        "punctuation_positions": 4020
+      },
+      "curriculum": {
+        "documents": 2800,
+        "words": 299632,
+        "unknown_words": 3173,
+        "punctuation_positions": 299632
+      }
+    },
+    "test": {
+      "adult": {
+        "documents": 239,
+        "words": 73857,
+        "unknown_words": 5638,
+        "punctuation_positions": 73857
+      },
+      "original": {
+        "documents": 84,
+        "words": 3906,
+        "unknown_words": 41,
+        "punctuation_positions": 3906
+      },
+      "curriculum": {
+        "documents": 2800,
+        "words": 295917,
+        "unknown_words": 7228,
+        "punctuation_positions": 295917
+      }
+    }
+  },
+  "source_sha256": {
+    "training/encoded-curriculum/manifest.json": "0f1d4fbc843563b168100e588b8f278196285e22ca5ed59a18c073d27d78e4d9",
+    "training/encoded-curriculum/vocabulary.json": "940734e6971ecba0960a5b11b4dc5f8604c0a00e4078340c7f002abbec886e9a",
+    "training/runs/curriculum-20m/checkpoint-000000000/model.safetensors": "164256e1a20ab221ae86e02f681ae016a8b4b6a93a5b8d26637c137b6c776928",
+    "training/train.py": "e74cf065f2886f9094f3a82332ff989b2e37eb23219ff11931753aa2bee5fd69",
+    "training/prepare.py": "61cbae7aa862559488c50465d214dd96b836b02289d70b1a07150a3766aab620"
+  },
+  "note": "Validation/test were inspected only for tokenization and split integrity, not used to choose vocabulary, weights or quality."
+}

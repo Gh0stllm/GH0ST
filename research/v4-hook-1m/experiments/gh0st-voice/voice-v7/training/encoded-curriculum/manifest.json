@@ -1,0 +1,115 @@
+{
+  "status": "FROZEN",
+  "vocabulary": 8192,
+  "bos": 8192,
+  "input_only_unk": 8193,
+  "punctuation": [
+    "",
+    ",",
+    ".",
+    "!",
+    "?"
+  ],
+  "all_punctuation_targets_retained": true,
+  "word_and_punctuation_factorization": "P(word|h)*P(punctuation|h,word)",
+  "word_mask": "Only unknown word targets masked; their punctuation and complete context remain.",
+  "numeric_policy": "Preserve digit and decimal spans as unknown word positions; do not fit them to the alphabetical output vocabulary.",
+  "statistics": {
+    "train": {
+      "adult": {
+        "documents": 2748,
+        "words": 793027,
+        "unknown_words": 50781,
+        "terminal_targets": 36097,
+        "punctuation_targets": 793027
+      },
+      "original": {
+        "documents": 749,
+        "words": 42300,
+        "unknown_words": 613,
+        "terminal_targets": 3931,
+        "punctuation_targets": 42300
+      },
+      "curriculum": {
+        "documents": 20160,
+        "words": 2159760,
+        "unknown_words": 0,
+        "terminal_targets": 161280,
+        "punctuation_targets": 2159760
+      }
+    },
+    "validation": {
+      "adult": {
+        "documents": 276,
+        "words": 85669,
+        "unknown_words": 5952,
+        "terminal_targets": 4218,
+        "punctuation_targets": 85669
+      },
+      "original": {
+        "documents": 86,
+        "words": 4020,
+        "unknown_words": 50,
+        "terminal_targets": 397,
+        "punctuation_targets": 4020
+      },
+      "curriculum": {
+        "documents": 2800,
+        "words": 299632,
+        "unknown_words": 3173,
+        "terminal_targets": 22400,
+        "punctuation_targets": 299632
+      }
+    },
+    "test": {
+      "adult": {
+        "documents": 239,
+        "words": 73857,
+        "unknown_words": 5638,
+        "terminal_targets": 3658,
+        "punctuation_targets": 73857
+      },
+      "original": {
+        "documents": 84,
+        "words": 3906,
+        "unknown_words": 41,
+        "terminal_targets": 381,
+        "punctuation_targets": 3906
+      },
+      "curriculum": {
+        "documents": 2800,
+        "words": 295917,
+        "unknown_words": 7228,
+        "terminal_targets": 22400,
+        "punctuation_targets": 295917
+      }
+    }
+  },
+  "source_sha256": {
+    "recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v6/data/train.jsonl": "d01a8c66b9c689f27eb1e4c115fc233f8695d7323b77ee0f0ff695cf1ffc15df",
+    "recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v6/data/validation.jsonl": "0b46f683e46ed71ded20651ed0b4293592012ad7e3ea593e430be8adfe0ba207",
+    "recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v6/data/test.jsonl": "4c1f402ffd645d728814e784611cb86dcff0eceb6d73559aa1e8c2573908d87f",
+    "recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v6/data/expansion-v1/train.jsonl": "fea11c530657579f3a593357501b6c999c1b0bb43e479e8b9582e3b8d1ea0a79",
+    "recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v7/data/curriculum/train.jsonl": "61fb1016083b942c77b24abfdba27d14079f1637541adadf04762b14641784f9",
+    "recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v7/data/curriculum/validation.jsonl": "748135fecde9fd7c72aa79b2eb821da24aca1aca5dcb60c3a8a6cea0714c8c66",
+    "recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v7/data/curriculum/test.jsonl": "f20c5dd77327ca268aeb7400c70da2d5354f6d345e30a2308226c08cb1dfa720"
+  },
+  "artifacts": {
+    "train.jsonl": {
+      "sha256": "c085dc16438bf9b224cbfd0e08c5a891b701861af8029dfa26184c1945f34aa4",
+      "bytes": 52719445
+    },
+    "validation.jsonl": {
+      "sha256": "a95243607a41b4ba2c9226d9a4376e0a167956615c941ce781876de7f2e36ac4",
+      "bytes": 6929090
+    },
+    "test.jsonl": {
+      "sha256": "8c9256ecd8109543d5e2294e4aecaabaa7f65ed711968c3e2bdead108831d33e",
+      "bytes": 6561952
+    }
+  },
+  "vocabulary_sha256": "940734e6971ecba0960a5b11b4dc5f8604c0a00e4078340c7f002abbec886e9a",
+  "cross_split_group_overlap": 0,
+  "cross_split_lexical_duplicates": 0,
+  "parser_sha256": "61cbae7aa862559488c50465d214dd96b836b02289d70b1a07150a3766aab620"
+}

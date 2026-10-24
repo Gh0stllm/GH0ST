@@ -1,0 +1,47 @@
+{
+  "status": "PASS",
+  "checks": {
+    "dense_packed_loss": true,
+    "dense_packed_all_gradients": true,
+    "independent_recurrence": true,
+    "chunked_state_matches_whole": true,
+    "single_step_matches_whole": true,
+    "unknown_target_punctuation_gradient_nonzero": true,
+    "unknown_word_specific_punctuation_bias_gradient_zero": true,
+    "unknown_embedding_context_gradient_nonzero": true,
+    "lane_word_targets": true,
+    "lane_previous_words": true,
+    "lane_previous_punctuation": true,
+    "lane_resets_only_true_boundaries": true,
+    "parser_basic_shift": true,
+    "parser_unknown_keeps_punctuation": true
+  },
+  "loss_absolute_error": 0.0,
+  "max_parameter_gradient_error": 1.1102230246251565e-16,
+  "chunk_state_max_error": 0.0,
+  "step_state_max_error": 0.0,
+  "lexical_loss_positions": 8.0,
+  "punctuation_loss_positions": 11.0,
+  "unknown_punctuation_gradient_l1": 204.3108808759506,
+  "parser_decimal_probe": [
+    [
+      "i",
+      "paid",
+      "3.14",
+      "coins"
+    ],
+    [
+      0,
+      0,
+      0,
+      2
+    ]
+  ],
+  "source_sha256": {
+    "model.py": "ad2d976f949c846ad58758af2bed9991e084045ba88a848422fa77a1ce0c5aa0",
+    "engine.py": "f4fc04110cc75ebbd18daf5f52df2c7487e2859414d44bdebad6b906efab0a50",
+    "prepare.py": "61cbae7aa862559488c50465d214dd96b836b02289d70b1a07150a3766aab620",
+    "train.py": "6cc809b27081f42164b823c9ce1ddf03b08f443b5c96348f3f42c0cbfb3d106b"
+  },
+  "limitations": "Fixed float64 toy cases with dropout disabled; proves checked objective/state identities, not stochastic training quality or integer-EVM parity."
+}

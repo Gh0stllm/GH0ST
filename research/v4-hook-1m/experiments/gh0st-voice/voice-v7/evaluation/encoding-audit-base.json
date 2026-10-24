@@ -1,0 +1,115 @@
+{
+  "status": "PASS",
+  "checks": {
+    "vocabulary_unique": true,
+    "encoded_ids_exact": true,
+    "punctuation_exact": true,
+    "all_positions_retained": true,
+    "no_bos_targets": true,
+    "group_disjoint": true
+  },
+  "statistics": {
+    "train": {
+      "adult": {
+        "documents": 2748,
+        "words": 793027,
+        "lexical_unknown": 49997,
+        "punctuation_positions": 793027,
+        "terminals": 36097,
+        "unknown_word_terminal_positions_still_supervised": 4598
+      },
+      "original": {
+        "documents": 749,
+        "words": 42300,
+        "lexical_unknown": 648,
+        "punctuation_positions": 42300,
+        "terminals": 3931,
+        "unknown_word_terminal_positions_still_supervised": 140
+      }
+    },
+    "validation": {
+      "adult": {
+        "documents": 276,
+        "words": 85669,
+        "lexical_unknown": 5886,
+        "punctuation_positions": 85669,
+        "terminals": 4218,
+        "unknown_word_terminal_positions_still_supervised": 630
+      },
+      "original": {
+        "documents": 86,
+        "words": 4020,
+        "lexical_unknown": 60,
+        "punctuation_positions": 4020,
+        "terminals": 397,
+        "unknown_word_terminal_positions_still_supervised": 17
+      }
+    },
+    "test": {
+      "adult": {
+        "documents": 239,
+        "words": 73857,
+        "lexical_unknown": 5598,
+        "punctuation_positions": 73857,
+        "terminals": 3658,
+        "unknown_word_terminal_positions_still_supervised": 580
+      },
+      "original": {
+        "documents": 84,
+        "words": 3906,
+        "lexical_unknown": 46,
+        "punctuation_positions": 3906,
+        "terminals": 381,
+        "unknown_word_terminal_positions_still_supervised": 10
+      }
+    }
+  },
+  "final_prefix_coverage": [
+    {
+      "id": "v7-h01",
+      "unknown_words": [],
+      "representable": true
+    },
+    {
+      "id": "v7-h02",
+      "unknown_words": [],
+      "representable": true
+    },
+    {
+      "id": "v7-h03",
+      "unknown_words": [],
+      "representable": true
+    },
+    {
+      "id": "v7-h04",
+      "unknown_words": [],
+      "representable": true
+    },
+    {
+      "id": "v7-h05",
+      "unknown_words": [],
+      "representable": true
+    },
+    {
+      "id": "v7-h06",
+      "unknown_words": [],
+      "representable": true
+    },
+    {
+      "id": "v7-h07",
+      "unknown_words": [
+        "heavier"
+      ],
+      "representable": false
+    },
+    {
+      "id": "v7-h08",
+      "unknown_words": [],
+      "representable": true
+    }
+  ],
+  "frozen_vocab_sha256": "665fd7b242c6ab1fca998782df32a76e3884f3fafd6b0feeef1886d4767f27b0",
+  "source_manifest_sha256": "9e4ed2a3e937331d3de066dc6cf97676fb98bc73c86f020c3f0b7de519656145",
+  "parser_sha256": "61cbae7aa862559488c50465d214dd96b836b02289d70b1a07150a3766aab620",
+  "interpretation": "Every real punctuation position is retained independently of lexical UNK; no training/loss run performed by this audit."
+}

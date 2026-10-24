@@ -1,0 +1,198 @@
+{
+  "status": "FLOAT_EXACT_CLONE_AUDITS_PASS",
+  "execution": "CPU offline conversion only; no training/network/chain calls",
+  "source_file": "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v7/training/runs/curriculum-20m/checkpoint-002003195/model.safetensors",
+  "source_sha256": "7c708c6ecedd91e03af5644574a3a17e443b169108acdf058bbc33800e5d7f79",
+  "source_dimensions": {
+    "hidden_width": 128,
+    "vocabulary": 8192,
+    "input_vocabulary": 8194,
+    "punctuation": 5,
+    "groups": 128,
+    "words_per_group": 64,
+    "domains": 2,
+    "features": 6,
+    "layers": 2
+  },
+  "target_hidden_width": 384,
+  "integer_factor": 3,
+  "mapping": "target channel j maps to source j//factor; gate order r,z,n retained",
+  "source_float_parameter_values": 2364805,
+  "output_float_parameter_values": 8175493,
+  "stored_wf_note": "wf rows retained and replicated without scaling; training may keep this tensor frozen",
+  "vocabulary": {
+    "source": "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v7/training/encoded-curriculum/vocabulary.json",
+    "sha256": "940734e6971ecba0960a5b11b4dc5f8604c0a00e4078340c7f002abbec886e9a",
+    "output": "vocabulary.json",
+    "words": 8192,
+    "transformation": "none"
+  },
+  "exact_tensor_mapping_audit": {
+    "status": "PASS",
+    "output_values_checked": 8175493,
+    "tensors": {
+      "bh1": {
+        "pass_exact": true,
+        "values": 1152,
+        "shape": [
+          1152
+        ]
+      },
+      "bh2": {
+        "pass_exact": true,
+        "values": 1152,
+        "shape": [
+          1152
+        ]
+      },
+      "domain.weight": {
+        "pass_exact": true,
+        "values": 2304,
+        "shape": [
+          2,
+          1152
+        ]
+      },
+      "embedding.weight": {
+        "pass_exact": true,
+        "values": 3146496,
+        "shape": [
+          8194,
+          384
+        ]
+      },
+      "group_bias.weight": {
+        "pass_exact": true,
+        "values": 128,
+        "shape": [
+          128,
+          1
+        ]
+      },
+      "groups.weight": {
+        "pass_exact": true,
+        "values": 49152,
+        "shape": [
+          128,
+          384
+        ]
+      },
+      "punct_bias": {
+        "pass_exact": true,
+        "values": 5,
+        "shape": [
+          5
+        ]
+      },
+      "punct_embedding.weight": {
+        "pass_exact": true,
+        "values": 1920,
+        "shape": [
+          5,
+          384
+        ]
+      },
+      "punct_head.weight": {
+        "pass_exact": true,
+        "values": 1920,
+        "shape": [
+          5,
+          384
+        ]
+      },
+      "wf": {
+        "pass_exact": true,
+        "values": 6912,
+        "shape": [
+          1152,
+          6
+        ]
+      },
+      "wh1": {
+        "pass_exact": true,
+        "values": 442368,
+        "shape": [
+          1152,
+          384
+        ]
+      },
+      "wh2": {
+        "pass_exact": true,
+        "values": 442368,
+        "shape": [
+          1152,
+          384
+        ]
+      },
+      "word_bias.weight": {
+        "pass_exact": true,
+        "values": 8192,
+        "shape": [
+          8192,
+          1
+        ]
+      },
+      "word_punct_bias.weight": {
+        "pass_exact": true,
+        "values": 40960,
+        "shape": [
+          8192,
+          5
+        ]
+      },
+      "words.weight": {
+        "pass_exact": true,
+        "values": 3145728,
+        "shape": [
+          8192,
+          384
+        ]
+      },
+      "wx1": {
+        "pass_exact": true,
+        "values": 442368,
+        "shape": [
+          1152,
+          384
+        ]
+      },
+      "wx2": {
+        "pass_exact": true,
+        "values": 442368,
+        "shape": [
+          1152,
+          384
+        ]
+      }
+    }
+  },
+  "float_function_audit": {
+    "status": "PASS",
+    "steps": 16,
+    "batch": 3,
+    "seed": 73519,
+    "features": "bounded deterministic nonzero diagnostics; conversion also preserves wf",
+    "states": "nonzero initial states, adjacent replicated channels",
+    "all_output_heads": "every group and lexical logit; all punctuation classes",
+    "tolerance_atol": 2e-05,
+    "tolerance_rtol": 2e-05,
+    "max_absolute_error": {
+      "layer1": 1.0281801223754883e-06,
+      "layer2": 4.470348358154297e-06,
+      "group_logits": 2.86102294921875e-05,
+      "all_word_logits": 2.384185791015625e-05,
+      "punctuation_logits": 1.3113021850585938e-06
+    },
+    "caveat": "Float accumulation order differs; this is not quantized/EVM parity."
+  },
+  "jitter": {
+    "enabled": false
+  },
+  "optimizer": "not copied; any later training must explicitly create a new optimizer",
+  "output": {
+    "file": "model.safetensors",
+    "sha256": "d9dcf011161aa5ac2496207debbd54ca7a5a974625d827d05b3a1105beac1b53",
+    "bytes": 32703564
+  },
+  "converter_sha256": "b037a157a27c8125ef637231c173ebbae3c9269a694a6dab47c513fdc12f3667"
+}

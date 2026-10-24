@@ -1,0 +1,41 @@
+{
+  "status": "PASS",
+  "source_width": 128,
+  "target_width": 512,
+  "factor": 4,
+  "all_tensor_mapping_checks": {
+    "wx1": true,
+    "wh1": true,
+    "wx2": true,
+    "wh2": true,
+    "embedding.weight": true,
+    "punct_embedding.weight": true,
+    "groups.weight": true,
+    "words.weight": true,
+    "punct_head.weight": true,
+    "bh1": true,
+    "bh2": true,
+    "wf": true,
+    "domain.weight": true,
+    "group_bias.weight": true,
+    "word_bias.weight": true,
+    "punct_bias": true,
+    "word_punct_bias.weight": true
+  },
+  "steps": 64,
+  "state_init": "Fixed random nonzero state, repeated adjacent channels",
+  "domains": "Both0/1",
+  "inputs": "All previous punctuation values plus real first/last/BOS/UNK input rows; deterministic random remaining words",
+  "float64_forward_max_error": {
+    "layer1": 3.3306690738754696e-16,
+    "layer2": 8.604228440844963e-16,
+    "group_logits": 1.7763568394002505e-15,
+    "all8192_word_logits": 1.7763568394002505e-15,
+    "punctuation_logits": 1.7763568394002505e-15
+  },
+  "precision_scope": "Independent float64 arithmetic on exact stored float32 tensors. Confirms algebra; not a claim of FP32 bit identity or Q10 preservation.",
+  "source_sha256": "482e321b6602a91733190a663c01f7103bf6191c6775a6d728c532769dfeab66",
+  "target_sha256": "e5aef91cfb8ae89a566fc07d748f52abaacb600cb32c81ea5eba95a32f0ecc0f",
+  "converter_sha256": "b037a157a27c8125ef637231c173ebbae3c9269a694a6dab47c513fdc12f3667",
+  "script_sha256": "bbd70d57bd2157327dffc6f8328d8138f61e2c073ef55bc64df9a1b157b0e6f5"
+}

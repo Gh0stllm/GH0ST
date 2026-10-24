@@ -1,0 +1,238 @@
+{
+  "schema": 1,
+  "scope": "Local only, export is not language approval",
+  "parameters": 2364805,
+  "checkpoint_sha256": "78b2adf89afce5d1ce245d9a5bf1a7986ff93f7f4e27da53648db31de622e79e",
+  "data_manifest_sha256": "0f1d4fbc843563b168100e588b8f278196285e22ca5ed59a18c073d27d78e4d9",
+  "source_sha256": "1a6256f08baa89f56ac695d927c7db3c22ebc7fc2124343a10f0178aa19257bb",
+  "model_domain": "GH0ST_GRU2_H128_WORD_PUNCT_Q10_LOCAL_V1",
+  "runtime_embedding_rows": 8193,
+  "training_only_unk_parameters": 128,
+  "fixed_runtime_domain": 0,
+  "punctuation_classes": [
+    "none",
+    ",",
+    ".",
+    "!",
+    "?"
+  ],
+  "state_order": "h1[0:128],h2[128:256]",
+  "fused_min": -3509307,
+  "fused_max": 3171657,
+  "ranges": {
+    "embedding.weight": {
+      "shape": [
+        8194,
+        128
+      ],
+      "min": -436,
+      "max": 439
+    },
+    "punct_embedding.weight": {
+      "shape": [
+        5,
+        128
+      ],
+      "min": -275,
+      "max": 278
+    },
+    "wx1": {
+      "shape": [
+        384,
+        128
+      ],
+      "min": -460,
+      "max": 478
+    },
+    "wh1": {
+      "shape": [
+        384,
+        128
+      ],
+      "min": -511,
+      "max": 514
+    },
+    "wf": {
+      "shape": [
+        384,
+        6
+      ],
+      "min": 0,
+      "max": 0
+    },
+    "bh1": {
+      "shape": [
+        384
+      ],
+      "min": -52,
+      "max": 1082
+    },
+    "wx2": {
+      "shape": [
+        384,
+        128
+      ],
+      "min": -542,
+      "max": 525
+    },
+    "wh2": {
+      "shape": [
+        384,
+        128
+      ],
+      "min": -576,
+      "max": 510
+    },
+    "bh2": {
+      "shape": [
+        384
+      ],
+      "min": -65,
+      "max": 1106
+    },
+    "domain.weight": {
+      "shape": [
+        2,
+        384
+      ],
+      "min": -324,
+      "max": 276
+    },
+    "groups.weight": {
+      "shape": [
+        128,
+        128
+      ],
+      "min": -226,
+      "max": 235
+    },
+    "group_bias.weight": {
+      "shape": [
+        128,
+        1
+      ],
+      "min": -9914,
+      "max": -666
+    },
+    "words.weight": {
+      "shape": [
+        8192,
+        128
+      ],
+      "min": -360,
+      "max": 355
+    },
+    "word_bias.weight": {
+      "shape": [
+        8192,
+        1
+      ],
+      "min": -7563,
+      "max": -1220
+    },
+    "punct_head.weight": {
+      "shape": [
+        5,
+        128
+      ],
+      "min": -264,
+      "max": 287
+    },
+    "punct_bias": {
+      "shape": [
+        5
+      ],
+      "min": -5600,
+      "max": -49
+    },
+    "word_punct_bias.weight": {
+      "shape": [
+        8192,
+        5
+      ],
+      "min": -367,
+      "max": 343
+    }
+  },
+  "clipped_weights": 0,
+  "artifacts": {
+    "core.bin": {
+      "bytes": 300288,
+      "sha256": "91371c4fddfde07ddc2b8c7a1280aa454b174d1c401e387e8c9daf2e0c6bd315"
+    },
+    "groups.bin": {
+      "bytes": 33024,
+      "sha256": "844c9f414dd3d566156cde86c639ad57e2b1373b4a86750a4dbdae95d6048936"
+    },
+    "words.bin": {
+      "bytes": 2113536,
+      "sha256": "c4abad5424dfe712368a1733815e9eb833aaf0c6ce3a8722ffb8f7eb8350c955"
+    },
+    "punctuation.bin": {
+      "bytes": 92810,
+      "sha256": "e28ad0ec2ee2f2a91e7a707eef50bf6222aa970306e0e52cf7237186d9f10174"
+    },
+    "fused.bin": {
+      "bytes": 15730560,
+      "sha256": "d98043ad6f253bb0eee63f3a372fc8e62d6d5ab28ce3caa65108778a6f1057bc"
+    },
+    "vocabulary.bin": {
+      "bytes": 262144,
+      "sha256": "e157bed1b584c6ab755342ee32651d3dfcd388dec88aa383bd2b7006da46c79f"
+    },
+    "vocabulary.json": {
+      "bytes": 104807,
+      "sha256": "940734e6971ecba0960a5b11b4dc5f8604c0a00e4078340c7f002abbec886e9a"
+    },
+    "sigmoid-delta.bin": {
+      "bytes": 514,
+      "sha256": "5ecfa8cc900bcb72c83a71a3068049453f64afe78017b73f830e387b1f1a9ad3"
+    },
+    "exp-q32.bin": {
+      "bytes": 2056,
+      "sha256": "011ed986091e4559b9560736f3cd21ab896a88f01bfd5cdd20b81fa6cf0b6c45"
+    }
+  },
+  "reference_only_sources": {
+    "original-embedding-weight.bin": {
+      "bytes": 2097408,
+      "sha256": "d71c6e481861e6ea1abce7df55dc9d0e4b0712d6f06852e8aab114613d145501",
+      "shape": [
+        8193,
+        128
+      ]
+    },
+    "original-punct_embedding-weight.bin": {
+      "bytes": 1280,
+      "sha256": "22f3a9667ee105e3aa040c20985a1a1bd2d4028e19de6d1edf21beeb3f8ecac4",
+      "shape": [
+        5,
+        128
+      ]
+    },
+    "original-wx1.bin": {
+      "bytes": 98304,
+      "sha256": "4776143256310ab25aa3a86730b6afb6119d7f7180a0b3878b1e7dfa376ecfc6",
+      "shape": [
+        384,
+        128
+      ]
+    },
+    "original-bh1.bin": {
+      "bytes": 768,
+      "sha256": "00fc310748b22f7d476cc64f0dc57d72430c03168b3acf4afb3034fc395f6066",
+      "shape": [
+        384
+      ]
+    },
+    "original-domain-weight.bin": {
+      "bytes": 1536,
+      "sha256": "5ac2e901c7ec5bafaebdbaf4a867db264e37fefbc85f76fa8f6aa5e515f515b4",
+      "shape": [
+        2,
+        384
+      ]
+    }
+  },
+  "math": "Layer1 folded word+domain+bh1 plus folded previous punctuation plus Wf features; Layer2 Wx2 new h1+bh2 and Wh2 old h2. Reset-after GRU. Three independent Keccak stages for group,word,punctuation."
+}

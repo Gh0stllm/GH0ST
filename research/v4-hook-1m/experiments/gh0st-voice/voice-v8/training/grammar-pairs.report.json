@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "training_only": true,
+  "status": "FROZEN_TRAINING_LABEL_SIDECAR",
+  "source_train": "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v7/training/encoded-curriculum/train.jsonl",
+  "source_train_sha256": "c085dc16438bf9b224cbfd0e08c5a891b701861af8029dfa26184c1945f34aa4",
+  "vocabulary_source": "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v7/training/encoded-curriculum/vocabulary.json",
+  "vocabulary_sha256": "940734e6971ecba0960a5b11b4dc5f8604c0a00e4078340c7f002abbec886e9a",
+  "position_semantics": "Zero-based target word positions in complete original documents, not shifted x positions",
+  "alignment_check": "Every raw text reparsed with V8 prepare.parse; all encoded IDs and punctuation exactly matched",
+  "allowed_rules": [
+    "first_person_auxiliary",
+    "plural_auxiliary",
+    "modal_base_verb"
+  ],
+  "excluded_rules": [
+    "article_sound",
+    "perfect_participle"
+  ],
+  "exclusion_reason": "Article/perfect rules use future-word evidence; only prefix-invalid alternatives are valid for the causal next-token contrastive loss.",
+  "generator_sha256": "55ca771dac297cdf14089ea93a6ea9ebceee633c693767cb6a121164279be026",
+  "rules_sha256": "73b307e91b12d8865cf5489fa71a7c521dcd45ae0fa0f6b27299d28ec659701b",
+  "parser_sha256": "61cbae7aa862559488c50465d214dd96b836b02289d70b1a07150a3766aab620",
+  "counts": {
+    "source_documents": 23657,
+    "documents_with_pairs": 4847,
+    "word_positions": 2995087,
+    "negative_pairs": 25228,
+    "by_rule": {
+      "first_person_auxiliary": 7164,
+      "modal_base_verb": 15344,
+      "plural_auxiliary": 2720
+    },
+    "by_kind": {
+      "adult": 17775,
+      "original": 864,
+      "curriculum": 6589
+    },
+    "excluded_by_rule": {
+      "article_sound": 99633,
+      "perfect_participle": 2764
+    }
+  },
+  "sidecar": {
+    "path": "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v8/training/grammar-pairs.json",
+    "sha256": "5f89d0bc004ac1df5e088783f86a0607ef8442e8fd257d509ee7e1048ea4741f",
+    "bytes": 399788
+  }
+}

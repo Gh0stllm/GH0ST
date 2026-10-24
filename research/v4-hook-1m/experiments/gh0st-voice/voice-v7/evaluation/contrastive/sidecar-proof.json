@@ -1,0 +1,66 @@
+{
+  "status": "PASS",
+  "checks": {
+    "labels_rebased_exactly_across_chunks_and_new_document": true,
+    "reject_wrong_source_hash": true,
+    "reject_wrong_vocab_hash": true,
+    "reject_non_training_scope": true,
+    "reject_future_conditioned_rule": true,
+    "reject_unknown_document": true,
+    "reject_out_of_range_position": true,
+    "reject_unknown_good_target": true,
+    "reject_unknown_bad_target": true,
+    "reject_same_good_and_bad": true,
+    "reject_duplicate_pair": true
+  },
+  "observed_chunk_labels": [
+    {
+      "grammar_positions": [
+        1,
+        2,
+        2
+      ],
+      "grammar_good_tokens": [
+        11,
+        12,
+        12
+      ],
+      "grammar_bad_tokens": [
+        80,
+        81,
+        82
+      ]
+    },
+    {
+      "grammar_positions": [
+        0
+      ],
+      "grammar_good_tokens": [
+        13
+      ],
+      "grammar_bad_tokens": [
+        83
+      ]
+    },
+    {
+      "grammar_positions": [
+        0,
+        2
+      ],
+      "grammar_good_tokens": [
+        16,
+        11
+      ],
+      "grammar_bad_tokens": [
+        84,
+        80
+      ]
+    }
+  ],
+  "source_sha256": {
+    "model.py": "3b0e0fdccf1e749a0f583ec2235a59ac89ec0103e37e565508abaafc1a97f276",
+    "engine.py": "8f97d042f36a4ff9bc3a999fbfb2c1c17df01eba76c4fecbe9e0af46305de8d4"
+  },
+  "script_sha256": "e1d6674501099acfe26406e4cd0243da825ec915f59546350c34e385b15c2928",
+  "scope": "Synthetic temporary training fixture only; no user datasets modified or model trained. Label grammar validity is a separate semantic audit."
+}

@@ -1,0 +1,91 @@
+{
+  "status": "FROZEN",
+  "vocabulary": 8192,
+  "bos": 8192,
+  "input_only_unk": 8193,
+  "punctuation": [
+    "",
+    ",",
+    ".",
+    "!",
+    "?"
+  ],
+  "all_punctuation_targets_retained": true,
+  "word_and_punctuation_factorization": "P(word|h)*P(punctuation|h,word)",
+  "word_mask": "Only unknown word targets masked; their punctuation and complete context remain.",
+  "numeric_policy": "Preserve digit and decimal spans as unknown word positions; do not fit them to the alphabetical output vocabulary.",
+  "statistics": {
+    "train": {
+      "adult": {
+        "documents": 2748,
+        "words": 793027,
+        "unknown_words": 49997,
+        "terminal_targets": 36097,
+        "punctuation_targets": 793027
+      },
+      "original": {
+        "documents": 749,
+        "words": 42300,
+        "unknown_words": 648,
+        "terminal_targets": 3931,
+        "punctuation_targets": 42300
+      }
+    },
+    "validation": {
+      "adult": {
+        "documents": 276,
+        "words": 85669,
+        "unknown_words": 5886,
+        "terminal_targets": 4218,
+        "punctuation_targets": 85669
+      },
+      "original": {
+        "documents": 86,
+        "words": 4020,
+        "unknown_words": 60,
+        "terminal_targets": 397,
+        "punctuation_targets": 4020
+      }
+    },
+    "test": {
+      "adult": {
+        "documents": 239,
+        "words": 73857,
+        "unknown_words": 5598,
+        "terminal_targets": 3658,
+        "punctuation_targets": 73857
+      },
+      "original": {
+        "documents": 84,
+        "words": 3906,
+        "unknown_words": 46,
+        "terminal_targets": 381,
+        "punctuation_targets": 3906
+      }
+    }
+  },
+  "source_sha256": {
+    "recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v6/data/train.jsonl": "d01a8c66b9c689f27eb1e4c115fc233f8695d7323b77ee0f0ff695cf1ffc15df",
+    "recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v6/data/validation.jsonl": "0b46f683e46ed71ded20651ed0b4293592012ad7e3ea593e430be8adfe0ba207",
+    "recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v6/data/test.jsonl": "4c1f402ffd645d728814e784611cb86dcff0eceb6d73559aa1e8c2573908d87f",
+    "recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v6/data/expansion-v1/train.jsonl": "fea11c530657579f3a593357501b6c999c1b0bb43e479e8b9582e3b8d1ea0a79"
+  },
+  "artifacts": {
+    "train.jsonl": {
+      "sha256": "b09b49142b12f0b4222d8685612b4965cb906477d31c7c41f69d997e5cd38de3",
+      "bytes": 12999727
+    },
+    "validation.jsonl": {
+      "sha256": "8a26015a71110dd4efbfb63131a290210b312540140a651298805804e41f42b1",
+      "bytes": 1392338
+    },
+    "test.jsonl": {
+      "sha256": "de3d5689dbf1ad849a97e9296e108812ee42e3baa0dc879b369d226df4cc0a04",
+      "bytes": 1208242
+    }
+  },
+  "vocabulary_sha256": "665fd7b242c6ab1fca998782df32a76e3884f3fafd6b0feeef1886d4767f27b0",
+  "cross_split_group_overlap": 0,
+  "cross_split_lexical_duplicates": 0,
+  "parser_sha256": "61cbae7aa862559488c50465d214dd96b836b02289d70b1a07150a3766aab620"
+}

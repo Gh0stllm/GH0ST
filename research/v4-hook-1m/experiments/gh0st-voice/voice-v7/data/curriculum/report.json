@@ -1,0 +1,1020 @@
+{
+  "status": "PASS_STRUCTURAL_CHECKS_NOT_A_MODEL_RESULT",
+  "purpose": "Synthetic original typed grammar curriculum used only as training examples. No templates or sentence bank execute at inference.",
+  "episode_construction": "Four consecutive two-sentence stages: observe one problem, complete a matching adjustment, verify its expected effect, reflect on that same result.",
+  "authored_semantic_families": 40,
+  "authored_paired_stage_patterns": 320,
+  "authored_sentence_patterns": 640,
+  "typed_objects_per_family": 7,
+  "valid_contexts_per_family": 10,
+  "stage_paths_per_binding": 10,
+  "counts": {
+    "train_episodes": 20160,
+    "train_words": 2159760,
+    "test_combinations_episodes": 2240,
+    "test_combinations_words": 239829,
+    "test_episodes": 2800,
+    "test_words": 295917,
+    "validation_episodes": 2800,
+    "validation_words": 299632
+  },
+  "total_episodes": 28000,
+  "total_paired_mini_scenes": 112000,
+  "total_words": 2995138,
+  "episode_words": {
+    "min": 100,
+    "max": 118,
+    "mean": 106.96921428571429
+  },
+  "exact_normalized_episode_duplicates": 0,
+  "cross_split_family_overlap": 0,
+  "heldout_combination_overlap": 0,
+  "family_split_method": "Hash-ranked32train/4validation/4test semantic families before generation. Within training families, one of10contexts per object is reserved exclusively for test_combinations; all individual objects and contexts remain present in training.",
+  "test_combinations_policy": "Separate compositional diagnostic only. It deliberately shares semantic families and sentence constructions with training but uses unseen object/context pairs. Never mix it into train/validation/test.",
+  "family_stats": {
+    "dust_fan": {
+      "family_split": "train",
+      "episodes": {
+        "train": 630,
+        "test_combinations": 70
+      },
+      "context_class": "physical",
+      "action": "remove blocking dust",
+      "expected_result": "airflow returns and heat falls"
+    },
+    "loose_cable": {
+      "family_split": "test",
+      "episodes": {
+        "test": 700
+      },
+      "context_class": "physical",
+      "action": "seat loose connector",
+      "expected_result": "signal remains stable"
+    },
+    "dirty_lens": {
+      "family_split": "test",
+      "episodes": {
+        "test": 700
+      },
+      "context_class": "physical",
+      "action": "clean a dirty lens",
+      "expected_result": "image becomes sharp"
+    },
+    "dim_lamp": {
+      "family_split": "train",
+      "episodes": {
+        "train": 630,
+        "test_combinations": 70
+      },
+      "context_class": "physical",
+      "action": "aim light at the work",
+      "expected_result": "small text becomes visible"
+    },
+    "dry_hinge": {
+      "family_split": "train",
+      "episodes": {
+        "test_combinations": 70,
+        "train": 630
+      },
+      "context_class": "physical",
+      "action": "lubricate a dry hinge",
+      "expected_result": "joint moves quietly"
+    },
+    "stuck_switch": {
+      "family_split": "validation",
+      "episodes": {
+        "validation": 700
+      },
+      "context_class": "physical",
+      "action": "remove dirt from a sticking switch",
+      "expected_result": "switch changes state reliably"
+    },
+    "low_battery": {
+      "family_split": "train",
+      "episodes": {
+        "train": 630,
+        "test_combinations": 70
+      },
+      "context_class": "physical",
+      "action": "replace a depleted battery",
+      "expected_result": "device runs through full test"
+    },
+    "sensor_offset": {
+      "family_split": "train",
+      "episodes": {
+        "test_combinations": 70,
+        "train": 630
+      },
+      "context_class": "physical",
+      "action": "correct a measured offset against a reference",
+      "expected_result": "reference and sensor agree"
+    },
+    "wrong_label": {
+      "family_split": "test",
+      "episodes": {
+        "test": 700
+      },
+      "context_class": "physical",
+      "action": "replace a misleading label",
+      "expected_result": "label identifies the right object"
+    },
+    "broken_link": {
+      "family_split": "train",
+      "episodes": {
+        "train": 630,
+        "test_combinations": 70
+      },
+      "context_class": "doc",
+      "action": "replace a broken destination",
+      "expected_result": "reader reaches intended source"
+    },
+    "stale_chart": {
+      "family_split": "train",
+      "episodes": {
+        "train": 630,
+        "test_combinations": 70
+      },
+      "context_class": "doc",
+      "action": "refresh stale plotted data",
+      "expected_result": "chart shows current interval"
+    },
+    "wrong_unit": {
+      "family_split": "train",
+      "episodes": {
+        "train": 630,
+        "test_combinations": 70
+      },
+      "context_class": "doc",
+      "action": "state and convert the correct unit",
+      "expected_result": "readers compare like quantities"
+    },
+    "unclear_pronoun": {
+      "family_split": "train",
+      "episodes": {
+        "train": 630,
+        "test_combinations": 70
+      },
+      "context_class": "doc",
+      "action": "replace an ambiguous pronoun with the named object",
+      "expected_result": "reader identifies the subject"
+    },
+    "missing_step": {
+      "family_split": "train",
+      "episodes": {
+        "train": 630,
+        "test_combinations": 70
+      },
+      "context_class": "doc",
+      "action": "insert an omitted prerequisite step",
+      "expected_result": "procedure completes in order"
+    },
+    "wrong_date": {
+      "family_split": "test",
+      "episodes": {
+        "test": 700
+      },
+      "context_class": "doc",
+      "action": "replace an outdated scheduled date",
+      "expected_result": "all copies show the current date"
+    },
+    "vague_warning": {
+      "family_split": "validation",
+      "episodes": {
+        "validation": 700
+      },
+      "context_class": "doc",
+      "action": "name the observed condition and useful next check",
+      "expected_result": "warning directs a concrete action"
+    },
+    "unsupported_claim": {
+      "family_split": "train",
+      "episodes": {
+        "train": 630,
+        "test_combinations": 70
+      },
+      "context_class": "doc",
+      "action": "narrow a claim to what the source shows",
+      "expected_result": "claim and evidence agree"
+    },
+    "queue_order": {
+      "family_split": "train",
+      "episodes": {
+        "train": 630,
+        "test_combinations": 70
+      },
+      "context_class": "system",
+      "action": "rank by urgency and age with explicit reason",
+      "expected_result": "urgent work is handled first"
+    },
+    "duplicate_job": {
+      "family_split": "train",
+      "episodes": {
+        "train": 630,
+        "test_combinations": 70
+      },
+      "context_class": "system",
+      "action": "remove a duplicate after confirming identical input",
+      "expected_result": "one intended job runs"
+    },
+    "stale_cache": {
+      "family_split": "train",
+      "episodes": {
+        "train": 630,
+        "test_combinations": 70
+      },
+      "context_class": "system",
+      "action": "expire stale data and fetch current source",
+      "expected_result": "display agrees with current source"
+    },
+    "clock_offset": {
+      "family_split": "validation",
+      "episodes": {
+        "validation": 700
+      },
+      "context_class": "system",
+      "action": "synchronize against a checked time source",
+      "expected_result": "event order becomes consistent"
+    },
+    "backup_restore": {
+      "family_split": "train",
+      "episodes": {
+        "train": 630,
+        "test_combinations": 70
+      },
+      "context_class": "system",
+      "action": "restore a copied file in isolation",
+      "expected_result": "restored data matches the saved source"
+    },
+    "noisy_log": {
+      "family_split": "train",
+      "episodes": {
+        "train": 630,
+        "test_combinations": 70
+      },
+      "context_class": "system",
+      "action": "reduce repeated informational entries but retain faults",
+      "expected_result": "real faults remain visible"
+    },
+    "expired_permission": {
+      "family_split": "train",
+      "episodes": {
+        "train": 630,
+        "test_combinations": 70
+      },
+      "context_class": "system",
+      "action": "renew a checked expired permission",
+      "expected_result": "authorized action works and unrelated access stays closed"
+    },
+    "short_timeout": {
+      "family_split": "train",
+      "episodes": {
+        "train": 630,
+        "test_combinations": 70
+      },
+      "context_class": "system",
+      "action": "set a measured finite timeout",
+      "expected_result": "normal task completes and stalled task still stops"
+    },
+    "file_checksum": {
+      "family_split": "train",
+      "episodes": {
+        "train": 630,
+        "test_combinations": 70
+      },
+      "context_class": "system",
+      "action": "copy data and compare full contents",
+      "expected_result": "copied bytes match source"
+    },
+    "false_status": {
+      "family_split": "train",
+      "episodes": {
+        "train": 630,
+        "test_combinations": 70
+      },
+      "context_class": "system",
+      "action": "connect status to measured health",
+      "expected_result": "indicator follows failure and recovery"
+    },
+    "trade_size": {
+      "family_split": "train",
+      "episodes": {
+        "train": 630,
+        "test_combinations": 70
+      },
+      "context_class": "market",
+      "action": "reduce an order and compare quoted price impact",
+      "expected_result": "smaller amount moves quoted price less"
+    },
+    "quote_unit": {
+      "family_split": "train",
+      "episodes": {
+        "train": 630,
+        "test_combinations": 70
+      },
+      "context_class": "market",
+      "action": "display input and output units clearly",
+      "expected_result": "reader distinguishes amount sent from amount received"
+    },
+    "hidden_fee": {
+      "family_split": "train",
+      "episodes": {
+        "train": 630,
+        "test_combinations": 70
+      },
+      "context_class": "market",
+      "action": "separate stated fee from quoted outcome",
+      "expected_result": "reader sees fee and net amount separately"
+    },
+    "old_balance": {
+      "family_split": "train",
+      "episodes": {
+        "train": 630,
+        "test_combinations": 70
+      },
+      "context_class": "market",
+      "action": "refresh a dated displayed balance",
+      "expected_result": "display matches current checked state"
+    },
+    "repeated_order": {
+      "family_split": "train",
+      "episodes": {
+        "train": 630,
+        "test_combinations": 70
+      },
+      "context_class": "market",
+      "action": "block a confirmed duplicate before submission",
+      "expected_result": "one intended action remains"
+    },
+    "quote_context": {
+      "family_split": "train",
+      "episodes": {
+        "train": 630,
+        "test_combinations": 70
+      },
+      "context_class": "social",
+      "action": "restore the question and qualification to a quoted answer",
+      "expected_result": "reader sees original meaning and scope"
+    },
+    "cropped_image": {
+      "family_split": "train",
+      "episodes": {
+        "train": 630,
+        "test_combinations": 70
+      },
+      "context_class": "social",
+      "action": "restore cropped context with clear caption",
+      "expected_result": "image supports a narrower interpretation"
+    },
+    "constant_alert": {
+      "family_split": "train",
+      "episodes": {
+        "train": 630,
+        "test_combinations": 70
+      },
+      "context_class": "social",
+      "action": "batch routine interruptions while keeping urgent route",
+      "expected_result": "work continues and urgent test still arrives"
+    },
+    "unclear_poll": {
+      "family_split": "train",
+      "episodes": {
+        "train": 630,
+        "test_combinations": 70
+      },
+      "context_class": "social",
+      "action": "ask one explicit question with distinct choices",
+      "expected_result": "responses answer the intended decision"
+    },
+    "empty_badge": {
+      "family_split": "train",
+      "episodes": {
+        "train": 630,
+        "test_combinations": 70
+      },
+      "context_class": "social",
+      "action": "state the evidence and limit behind a badge",
+      "expected_result": "reader distinguishes narrow check from broad authority"
+    },
+    "profile_label": {
+      "family_split": "validation",
+      "episodes": {
+        "validation": 700
+      },
+      "context_class": "social",
+      "action": "correct label against confirmed owner information",
+      "expected_result": "display names the right participant"
+    },
+    "vague_agenda": {
+      "family_split": "train",
+      "episodes": {
+        "train": 630,
+        "test_combinations": 70
+      },
+      "context_class": "doc",
+      "action": "state a concrete decision and needed evidence",
+      "expected_result": "meeting produces the intended next action"
+    },
+    "false_deadline": {
+      "family_split": "train",
+      "episodes": {
+        "train": 630,
+        "test_combinations": 70
+      },
+      "context_class": "doc",
+      "action": "align a deadline with the actual dependency",
+      "expected_result": "schedule reflects a real need and owner"
+    }
+  },
+  "existing_vocabulary_coverage": {
+    "vocabulary_path": "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v7/training/encoded-base/vocabulary.json",
+    "vocabulary_sha256": "665fd7b242c6ab1fca998782df32a76e3884f3fafd6b0feeef1886d4767f27b0",
+    "splits": {
+      "train": {
+        "words": 2159760,
+        "unknown_words": 87368,
+        "known_fraction": 0.9595473571137534,
+        "most_frequent_unknown": [
+          [
+            "matched",
+            3446
+          ],
+          [
+            "confirming",
+            1905
+          ],
+          [
+            "expired",
+            1582
+          ],
+          [
+            "duplicate",
+            1576
+          ],
+          [
+            "cache",
+            1576
+          ],
+          [
+            "identifiers",
+            1564
+          ],
+          [
+            "readings",
+            1551
+          ],
+          [
+            "demo",
+            1370
+          ],
+          [
+            "asset",
+            1353
+          ],
+          [
+            "byte",
+            1279
+          ],
+          [
+            "poll",
+            1269
+          ],
+          [
+            "timer",
+            1265
+          ],
+          [
+            "priority",
+            1263
+          ],
+          [
+            "expiry",
+            1262
+          ],
+          [
+            "stalled",
+            1260
+          ],
+          [
+            "input",
+            1255
+          ],
+          [
+            "agenda",
+            976
+          ],
+          [
+            "quotes",
+            969
+          ],
+          [
+            "units",
+            968
+          ],
+          [
+            "impact",
+            962
+          ],
+          [
+            "updated",
+            961
+          ],
+          [
+            "dependency",
+            959
+          ],
+          [
+            "values",
+            956
+          ],
+          [
+            "devices",
+            944
+          ],
+          [
+            "matching",
+            942
+          ],
+          [
+            "procedure",
+            941
+          ],
+          [
+            "output",
+            936
+          ],
+          [
+            "caption",
+            930
+          ],
+          [
+            "guessing",
+            917
+          ],
+          [
+            "setup",
+            670
+          ],
+          [
+            "pronoun",
+            657
+          ],
+          [
+            "listed",
+            657
+          ],
+          [
+            "indicator",
+            644
+          ],
+          [
+            "surfaces",
+            641
+          ],
+          [
+            "unrelated",
+            639
+          ],
+          [
+            "digests",
+            639
+          ],
+          [
+            "periodic",
+            638
+          ],
+          [
+            "faults",
+            638
+          ],
+          [
+            "outcome",
+            636
+          ],
+          [
+            "identical",
+            633
+          ]
+        ]
+      },
+      "test_combinations": {
+        "words": 239829,
+        "unknown_words": 9718,
+        "known_fraction": 0.9594794624503292,
+        "most_frequent_unknown": [
+          [
+            "matched",
+            368
+          ],
+          [
+            "confirming",
+            210
+          ],
+          [
+            "duplicate",
+            180
+          ],
+          [
+            "cache",
+            179
+          ],
+          [
+            "identifiers",
+            172
+          ],
+          [
+            "expired",
+            171
+          ],
+          [
+            "readings",
+            169
+          ],
+          [
+            "demo",
+            160
+          ],
+          [
+            "expiry",
+            147
+          ],
+          [
+            "asset",
+            147
+          ],
+          [
+            "stalled",
+            147
+          ],
+          [
+            "poll",
+            147
+          ],
+          [
+            "priority",
+            144
+          ],
+          [
+            "timer",
+            143
+          ],
+          [
+            "byte",
+            140
+          ],
+          [
+            "input",
+            139
+          ],
+          [
+            "quotes",
+            114
+          ],
+          [
+            "procedure",
+            113
+          ],
+          [
+            "agenda",
+            113
+          ],
+          [
+            "updated",
+            108
+          ],
+          [
+            "values",
+            107
+          ],
+          [
+            "impact",
+            106
+          ],
+          [
+            "devices",
+            106
+          ],
+          [
+            "caption",
+            105
+          ],
+          [
+            "output",
+            103
+          ],
+          [
+            "dependency",
+            103
+          ],
+          [
+            "units",
+            101
+          ],
+          [
+            "guessing",
+            97
+          ],
+          [
+            "matching",
+            94
+          ],
+          [
+            "differed",
+            80
+          ],
+          [
+            "rewrote",
+            74
+          ],
+          [
+            "unrelated",
+            74
+          ],
+          [
+            "outcome",
+            74
+          ],
+          [
+            "hum",
+            73
+          ],
+          [
+            "identical",
+            72
+          ],
+          [
+            "relying",
+            71
+          ],
+          [
+            "adjusted",
+            71
+          ],
+          [
+            "faults",
+            71
+          ],
+          [
+            "pronoun",
+            71
+          ],
+          [
+            "interruptions",
+            70
+          ]
+        ]
+      },
+      "test": {
+        "words": 295917,
+        "unknown_words": 10350,
+        "known_fraction": 0.9650239763176837,
+        "most_frequent_unknown": [
+          [
+            "lens",
+            1056
+          ],
+          [
+            "loop",
+            700
+          ],
+          [
+            "matching",
+            700
+          ],
+          [
+            "blur",
+            681
+          ],
+          [
+            "blurred",
+            368
+          ],
+          [
+            "detour",
+            361
+          ],
+          [
+            "switching",
+            356
+          ],
+          [
+            "grease",
+            356
+          ],
+          [
+            "polish",
+            356
+          ],
+          [
+            "discarded",
+            355
+          ],
+          [
+            "differed",
+            355
+          ],
+          [
+            "competing",
+            352
+          ],
+          [
+            "confirming",
+            352
+          ],
+          [
+            "updated",
+            352
+          ],
+          [
+            "greasy",
+            351
+          ],
+          [
+            "restarting",
+            350
+          ],
+          [
+            "outdated",
+            348
+          ],
+          [
+            "preserving",
+            348
+          ],
+          [
+            "yesterday's",
+            348
+          ],
+          [
+            "blamed",
+            345
+          ],
+          [
+            "versions",
+            345
+          ],
+          [
+            "compete",
+            344
+          ],
+          [
+            "smarter",
+            339
+          ],
+          [
+            "scan",
+            332
+          ],
+          [
+            "scanner",
+            100
+          ],
+          [
+            "audio",
+            100
+          ]
+        ]
+      },
+      "validation": {
+        "words": 299632,
+        "unknown_words": 10918,
+        "known_fraction": 0.9635619693490682,
+        "most_frequent_unknown": [
+          [
+            "participant",
+            1065
+          ],
+          [
+            "offset",
+            1041
+          ],
+          [
+            "indicator",
+            715
+          ],
+          [
+            "identifier",
+            709
+          ],
+          [
+            "profile",
+            449
+          ],
+          [
+            "concrete",
+            367
+          ],
+          [
+            "calmer",
+            367
+          ],
+          [
+            "ensure",
+            359
+          ],
+          [
+            "clarity",
+            359
+          ],
+          [
+            "owner's",
+            358
+          ],
+          [
+            "confirming",
+            356
+          ],
+          [
+            "updated",
+            356
+          ],
+          [
+            "synchronized",
+            354
+          ],
+          [
+            "adjustment",
+            354
+          ],
+          [
+            "matched",
+            351
+          ],
+          [
+            "separately",
+            349
+          ],
+          [
+            "cached",
+            349
+          ],
+          [
+            "traceable",
+            347
+          ],
+          [
+            "explainable",
+            346
+          ],
+          [
+            "satisfying",
+            341
+          ],
+          [
+            "inventing",
+            341
+          ],
+          [
+            "underlying",
+            339
+          ],
+          [
+            "rewrote",
+            333
+          ],
+          [
+            "urgency",
+            333
+          ],
+          [
+            "demo",
+            140
+          ],
+          [
+            "setup",
+            70
+          ],
+          [
+            "inbox",
+            70
+          ]
+        ]
+      }
+    }
+  },
+  "known_limitations": [
+    "Instantiated episode counts are not counts of independently authored plots. The source has40 causal families and640 authored sentence patterns.",
+    "The curriculum is intentionally narrow and repetition-rich, for syntax/causal consistency. It should complement independent original prose and cannot establish general language ability.",
+    "No human has individually reviewed every instantiation; structural typing and sampled review reduce but cannot eliminate awkward phrasing.",
+    "No V7 held-out evaluation prompts, no GPT2 outputs, no V6 data mutations and no network or chain actions were used."
+  ],
+  "files": {
+    "train.jsonl": {
+      "sha256": "61fb1016083b942c77b24abfdba27d14079f1637541adadf04762b14641784f9",
+      "bytes": 22105549
+    },
+    "validation.jsonl": {
+      "sha256": "748135fecde9fd7c72aa79b2eb821da24aca1aca5dcb60c3a8a6cea0714c8c66",
+      "bytes": 3083091
+    },
+    "test.jsonl": {
+      "sha256": "f20c5dd77327ca268aeb7400c70da2d5354f6d345e30a2308226c08cb1dfa720",
+      "bytes": 2919472
+    },
+    "test_combinations.jsonl": {
+      "sha256": "9b699c1c85722319ecf8a303cca1cbbae8f9b6465b89b9ec6f41d853a1b57cb9",
+      "bytes": 2483170
+    }
+  },
+  "generator_sha256": "3169442dfa775867039bd9ea4a0ad5587eacb9ce18f84d18303cab5f52d42fa4",
+  "frames_sha256": "8ab834715f72f68976886ad5fdf501f1585d357ef877a7c07bb213ca3d7b8361"
+}
