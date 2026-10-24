@@ -1,0 +1,54 @@
+{
+  "step": 3126,
+  "trained_target_tokens": 4001124,
+  "validation": {
+    "loss": 4.5444046562329525,
+    "perplexity": 94.10438606949208,
+    "target_tokens": 20164
+  },
+  "cache_fingerprint": "59e61c5857ed74fe8b70183e79ac0bb5dd19f5950a7463729763eea7eb3af52f",
+  "source_token_mix": {
+    "licensed_teacher": 2396168,
+    "public_domain": 600102,
+    "compositional": 611591,
+    "authored": 393263
+  },
+  "source_window_mix": {
+    "licensed_teacher": 29951,
+    "public_domain": 7524,
+    "compositional": 7610,
+    "authored": 4931
+  },
+  "configuration": {
+    "cache": "experiments/gh0st-voice/large-v3/cache/teacher-v4-final",
+    "output": "experiments/gh0st-voice/large-v3/runs/teacher-v4-final-4m",
+    "checkpoint": "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/simplestories-v2/model-cache",
+    "target_tokens": 4000000,
+    "max_steps": 10000,
+    "batch_size": 16,
+    "block_size": 128,
+    "context_warmup": 64,
+    "source_weights": {
+      "authored": 0.1,
+      "compositional": 0.15,
+      "public_domain": 0.15,
+      "licensed_teacher": 0.6
+    },
+    "quote_fraction": 0.25,
+    "learning_rate": 1e-05,
+    "weight_decay": 0.01,
+    "warmup_fraction": 0.03,
+    "validation_blocks": 256,
+    "eval_every": 250,
+    "snapshot_every": 500,
+    "log_every": 100,
+    "probe_tokens": 512,
+    "seed": 20261024,
+    "threads": 2,
+    "stop_after_degenerate": 0,
+    "min_training_tokens": 2000000
+  },
+  "weight_file_sha256": "c24d7fe2c13b14a3bf49924723580578a27666668fd9f92638f1fc29a386fa57",
+  "probe_passes_basic_guards": true,
+  "manual_quality_review_required": true
+}

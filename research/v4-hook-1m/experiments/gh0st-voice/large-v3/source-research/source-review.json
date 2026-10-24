@@ -1,0 +1,76 @@
+{
+  "scope": "Primary-source dataset/license review only. No downloaded content was added to training.",
+  "recommendation": "Review the downloaded Opus-Candid assistant text as a small diverse prose supplement; use whole-conversation splits. It is candid everyday dialogue, not a Truth Terminal clone. The closest Backrooms/WorldSim sources lack a verified upstream reuse grant.",
+  "candidates": [
+    {
+      "name": "Verdugie/opus-candid-training-data",
+      "primary_url": "https://huggingface.co/datasets/Verdugie/opus-candid-training-data",
+      "publisher_license": "Apache-2.0, confirmed in pinned README and API cardData",
+      "publisher_provenance": "Claude Opus4.6 multi-turn personality distillation; reported by publisher, not independently verified",
+      "downloaded": "raw/opus-candid-v3-complete.json",
+      "size": "1558 complete conversations;7468 assistant turns;7325 unique normalized assistant responses;342536 assistant words",
+      "useful_example_paraphrases": [
+        "Creativity depends on attention and emotional range rather than requiring suffering.",
+        "Distinctive voice and perspective may matter more when generic content becomes cheap."
+      ],
+      "fit": "Best inspected prose candidate, but predominantly second-person everyday advice; only9 philosophy,12 identity,6 creative-writing conversation labels.",
+      "status": "PUBLISHER_LICENSE_VERIFIED_REVIEW_TEXT_BEFORE_TRAINING"
+    },
+    {
+      "name": "NousResearch/Hermes-3-Dataset",
+      "primary_url": "https://huggingface.co/datasets/NousResearch/Hermes-3-Dataset",
+      "publisher_license": "Apache-2.0, official NousResearch repository metadata and pinned README",
+      "downloaded": "raw/hermes3-prefix.jsonl",
+      "size": "Bounded8MiB request retained8387968bytes/5178 complete JSONL records,14899 assistant paragraphs20pluswords before filtering; source file1695003419bytes",
+      "fit": "Large semantic diversity but first inspected subset includes code,math,book summaries,roleplay and mixed prose; requires filtering, not direct wholesale use",
+      "status": "PUBLISHER_LICENSE_VERIFIED_BOUNDED_SAMPLE_ONLY"
+    },
+    {
+      "name": "Infinite Backrooms official archive",
+      "primary_url": "https://www.infinitebackrooms.com/",
+      "publisher_provenance": "Official page says two Claude3Opus instances converse through a simulated terminal",
+      "publisher_license": "No explicit dataset-reuse license found on official archive pages inspected",
+      "fit": "Closest style but no verified reuse grant; HF mirrors are not a substitute for upstream permission",
+      "status": "DO_NOT_INGEST_UNTIL_PERMISSION_VERIFIED"
+    },
+    {
+      "name": "VatsaDev/Worldsim",
+      "primary_url": "https://huggingface.co/datasets/VatsaDev/Worldsim/tree/main",
+      "publisher_license": "Uploader declaresMIT;173byte README and39.2MB worldsim.txt",
+      "fit": "Potential style match, but no demonstrated authorization from Nous/WorldSim content creators; official Nous release page identifies simulator/prompt only",
+      "status": "UPSTREAM_LICENSE_UNRESOLVED"
+    },
+    {
+      "name": "HuggingFaceTB/smoltalk",
+      "primary_url": "https://huggingface.co/datasets/HuggingFaceTB/smoltalk",
+      "publisher_license": "Official card explicitly grantsApache2.0 to new Smol-Magpie-Ultra,Smol-constraints,Smol-rewrite,Smol-summarize subsets; mixed-in datasets retain their own licenses",
+      "size": "1M total;new subsets400K,36K,50K,100K respectively as reported by card",
+      "fit": "Useful instruction/prose foundation, not memetic monologue; shorter subset recommended by publisher for135M/360M models",
+      "status": "LICENSE_VERIFIED_FOR_NAMED_NEW_SUBSETS_ONLY"
+    },
+    {
+      "name": "HuggingFaceTB/cosmopedia",
+      "primary_url": "https://huggingface.co/datasets/HuggingFaceTB/cosmopedia",
+      "publisher_license": "Apache-2.0 on official card",
+      "publisher_provenance": "Mixtral8x7B generated textbooks,blogposts,stories,posts;over30Mfiles/25Btokens, with source/format/audience fields",
+      "fit": "Diverse prose foundation rather than desired voice; retain metadata and inspect seed-derived content",
+      "status": "PUBLISHER_LICENSE_VERIFIED_NOT_DOWNLOADED"
+    },
+    {
+      "name": "PleIAs/SYNTH",
+      "primary_url": "https://huggingface.co/datasets/PleIAs/SYNTH",
+      "publisher_license": "CardCC-BY-4.0;per-rowseed_license commonlyCC-BY-SA4.0",
+      "publisher_provenance": "Wikipedia/Wikibooks grounded synthetic texts with query_seed_url and seed_license fields;card claims79.65Msamples,viewerestimate68.03M",
+      "fit": "Strong explicit source-license metadata; generalknowledge/writing foundation, not TruthTerminalstyle; preserve source attribution/seed licensing distinctions",
+      "status": "REVIEW_ROW_LEVEL_LICENSE_OBLIGATIONS_BEFORE_INGESTION"
+    },
+    {
+      "name": "Gryphe/Opus-WritingPrompts",
+      "primary_url": "https://huggingface.co/datasets/Gryphe/Opus-WritingPrompts/tree/main",
+      "publisher_license": "Unknown on dataset card",
+      "size": "84.2MB repository as shown by filetree",
+      "fit": "Creative writing but no verified open grant",
+      "status": "DO_NOT_INGEST_UNTIL_PERMISSION_VERIFIED"
+    }
+  ]
+}

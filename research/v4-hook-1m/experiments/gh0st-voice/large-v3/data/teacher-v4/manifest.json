@@ -1,0 +1,182 @@
+{
+  "schema_version": 1,
+  "status": "BUILT_SEPARATE_NOT_TRAINED_OR_MERGED",
+  "source_kind": "licensed_teacher",
+  "sources": [
+    {
+      "repository": "NousResearch/Hermes-3-Dataset",
+      "revision": "b1fddbdcae4e6714889365d1e6ce266a45289cc9",
+      "declared_license": "apache-2.0",
+      "metadata_url": "https://huggingface.co/api/datasets/NousResearch/Hermes-3-Dataset",
+      "readme_url": "https://huggingface.co/datasets/NousResearch/Hermes-3-Dataset/resolve/b1fddbdcae4e6714889365d1e6ce266a45289cc9/README.md",
+      "source_url": "https://huggingface.co/datasets/NousResearch/Hermes-3-Dataset/resolve/b1fddbdcae4e6714889365d1e6ce266a45289cc9/hermes-3-dataset.jsonl",
+      "raw_path": "raw/hermes3-prefix.jsonl",
+      "raw_bytes": 8387968,
+      "raw_sha256": "06c1e3b5542b8adf1b3f1dff1fc483e37dd8ec89faf697f61fe1c8ea67e2fd6c",
+      "prefix_only": true,
+      "download_truncated_at_bound": true,
+      "response_headers": {
+        "Content-Length": "1695003419",
+        "ETag": "\"1aa8b134980afe963f96f780734059011c979c7eba3e25fea211c70c3a8bd03e\"",
+        "Last-Modified": null
+      },
+      "records_in_download": 5178,
+      "assistant_paragraphs_20plus_words": 14899,
+      "theme_matched_paragraphs": 472,
+      "sample_count": 10,
+      "sample_selection": "First ten theme-matched assistant paragraphs, otherwise first ten assistant paragraphs; no generative rewrite",
+      "readme_sha256": "6398f05fee9c6dc3780866326445ed75bbbc9f123a04515f0d587f455f5c5fe0"
+    },
+    {
+      "repository": "Verdugie/opus-candid-training-data",
+      "revision": "59a614a5cac6730c81dc489cd91cc2ab05934f5b",
+      "declared_license": "apache-2.0",
+      "metadata_url": "https://huggingface.co/api/datasets/Verdugie/opus-candid-training-data",
+      "readme_url": "https://huggingface.co/datasets/Verdugie/opus-candid-training-data/resolve/59a614a5cac6730c81dc489cd91cc2ab05934f5b/README.md",
+      "source_url": "https://huggingface.co/datasets/Verdugie/opus-candid-training-data/resolve/59a614a5cac6730c81dc489cd91cc2ab05934f5b/v3_train_1558conv.json",
+      "raw_path": "raw/opus-candid-v3-complete.json",
+      "raw_bytes": 4108865,
+      "raw_sha256": "803fd914fbfea83ec2a45d7422c42656f6110fcfe5fbac5d14a6519462bf19bf",
+      "prefix_only": false,
+      "download_truncated_at_bound": false,
+      "response_headers": {
+        "Content-Length": "4108865",
+        "ETag": "\"a5c990c000e2be94d50936b9a66b1875b5db7e04c62675894c4458db3e9f9c16\"",
+        "Last-Modified": null
+      },
+      "records_in_download": 1558,
+      "assistant_paragraphs_20plus_words": 6807,
+      "theme_matched_paragraphs": 420,
+      "sample_count": 10,
+      "sample_selection": "First ten theme-matched assistant paragraphs, otherwise first ten assistant paragraphs; no generative rewrite",
+      "readme_sha256": "6c91170b8bd7f41d4d922b514d68b5e2c9b25965b2a33a91cac9e545539add0f"
+    }
+  ],
+  "source_record_counts": {
+    "hermes3": 5178,
+    "opus-candid-v3": 1558
+  },
+  "license": "Apache-2.0 as declared by source publishers; original cards retained",
+  "attribution_files": [
+    "SOURCE-hermes3-README.md",
+    "SOURCE-opus-candid-v3-README.md",
+    "LICENSE-2.0.txt",
+    "NOTICE.txt"
+  ],
+  "normalizations": [
+    "HTML entity decoding",
+    "curly quotes to ASCII quotes",
+    "dashes to ASCII hyphen",
+    "ellipsis to three ASCII periods",
+    "NFKD accent decomposition with combining marks removed",
+    "plain inline Markdown emphasis removal",
+    "whitespace collapse"
+  ],
+  "no_generated_rewrites_or_permutations": true,
+  "builder_sha256": "c93da0ca67e2ab5dda30b419ad87abcf6ba18992ca0eb8f87e7dcbc90bfb3865",
+  "selection": "Assistant/gpt message paragraphs only;20-180words;readable ASCII prose;credential/contact/code/list/identity exclusions;exact normalized deduplication",
+  "paragraphs": 13428,
+  "words": 604806,
+  "tokens": 1085338,
+  "first_person_paragraphs": 3990,
+  "first_person_singular_paragraphs": 2089,
+  "priority_counts": {
+    "regularization": 11243,
+    "focus": 1772,
+    "first_person_focus": 413
+  },
+  "topic_tag_counts": {
+    "broader_english": 9178,
+    "science": 528,
+    "reflection": 784,
+    "markets": 874,
+    "relationships": 1308,
+    "culture": 689,
+    "identity": 378,
+    "machine": 555
+  },
+  "per_source_counts": {
+    "hermes3": {
+      "candidate_paragraphs": 31385,
+      "accepted": 7140,
+      "reject_code_or_structured_syntax": 7027,
+      "reject_word_count_outside_20_180": 10304,
+      "reject_link_or_contact": 536,
+      "reject_unknown_token": 274,
+      "reject_nonprose_shape": 1286,
+      "reject_list_or_heading": 3797,
+      "reject_numeric_heavy": 49,
+      "reject_unrepresentable_unicode": 602,
+      "reject_credential_like": 66,
+      "reject_low_letter_ratio": 31,
+      "reject_duplicate_normalized_text": 271,
+      "reject_model_identity_boilerplate": 2
+    },
+    "opus-candid-v3": {
+      "candidate_paragraphs": 8367,
+      "accepted": 6288,
+      "reject_word_count_outside_20_180": 1531,
+      "reject_nonprose_shape": 130,
+      "reject_numeric_heavy": 18,
+      "reject_unrepresentable_unicode": 127,
+      "reject_duplicate_normalized_text": 85,
+      "reject_list_or_heading": 99,
+      "reject_link_or_contact": 23,
+      "reject_unknown_token": 53,
+      "reject_code_or_structured_syntax": 11,
+      "reject_low_letter_ratio": 1,
+      "reject_model_identity_boilerplate": 1
+    }
+  },
+  "rejections": {
+    "code_or_structured_syntax": 7038,
+    "word_count_outside_20_180": 11835,
+    "link_or_contact": 559,
+    "unknown_token": 327,
+    "nonprose_shape": 1416,
+    "list_or_heading": 3896,
+    "numeric_heavy": 67,
+    "unrepresentable_unicode": 729,
+    "credential_like": 66,
+    "low_letter_ratio": 32,
+    "duplicate_normalized_text": 356,
+    "model_identity_boilerplate": 3
+  },
+  "unknown_tokens": 0,
+  "split": {
+    "salt": "GH0ST_LICENSED_TEACHER_V4_CONVERSATION_SPLIT_20261024",
+    "method": "SHA256 source+revision+conversation_index bucket modulo100;80train/10validation/10test",
+    "conversation_groups": 4147,
+    "leaking_groups": 0
+  },
+  "files": {
+    "train.jsonl": {
+      "rows": 10616,
+      "bytes": 14921418,
+      "sha256": "606c4a0b8e82385774a2f9be8d7e54dac624df6429e8516e528a460c6c112aeb",
+      "words": 480518,
+      "tokens": 864954
+    },
+    "validation.jsonl": {
+      "rows": 1455,
+      "bytes": 2049165,
+      "sha256": "8a84657c2498b8e792ecd281affec8cfc3520db3f870216cace4011ca33504a9",
+      "words": 65782,
+      "tokens": 117211
+    },
+    "test.jsonl": {
+      "rows": 1357,
+      "bytes": 1888976,
+      "sha256": "a4dccebc1b58577b76e11cce75c053ebcc0487e95b1eaa7a9efe1912a7fb3746",
+      "words": 58506,
+      "tokens": 103173
+    }
+  },
+  "limitations": [
+    "Source labels and model-generation provenance are publisher reports, not independent verification.",
+    "Paragraph filters and topic/first-person tags are heuristics, not manual quality labels.",
+    "Hermes sample is only the first bounded8MiB download, not the entire source dataset.",
+    "Exact deduplication does not detect all semantic duplicates.",
+    "No promise that these teacher paragraphs fit a1.24M model's learning capacity."
+  ]
+}

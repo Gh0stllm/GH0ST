@@ -1,0 +1,4666 @@
+{
+  "status": "PASS",
+  "startedAt": "2026-10-24T06:00:55.180Z",
+  "scope": "Tuned GH0ST voice: unforked local PoolManager research only; no public transactions.",
+  "network": {
+    "chainId": 31337,
+    "forked": false,
+    "transactionGasLimit": "32000000",
+    "feePolicy": "Artificial zero-fee local blocks. Gas figures are execution units, not network fee estimates."
+  },
+  "policy": {
+    "prompt": [
+      3
+    ],
+    "seed": "0x000000000000000000000000000000000000000000000000000000000000002a",
+    "topK": 8,
+    "temperatureMilli": 800,
+    "inferenceBudget": "29250000",
+    "maximumNewTokens": 2,
+    "requestedTokens": "Two while the absolute processed position is at most26; one thereafter.",
+    "termination": "Emits genuine model tokens. A swap may stop mid-sentence; punctuation and EOS do not reset context.",
+    "overflow": "Attention uses the newest64 numerical KV positions and relative rotary distances. No fixed RoPE table lifetime limit or automatic prompt reset. Monotonic counters are uint64.",
+    "positionIndependent": true,
+    "attentionWindow": 64
+  },
+  "configuration": {
+    "requestedTurns": 80,
+    "exportDir": "experiments/gh0st-voice/export/selected",
+    "checkpointSha256": "261c45b1813f3a49c2cbaf0f09c1e710e97e53b4cdd06d0e74975a29b0941df3",
+    "weightsSha256": "13c5d37746678ff2664ff4e7bb658b9e1cf37b75daa0936041298e5ebb8aa297"
+  },
+  "sources": {
+    "model": "experiments/gh0st-voice/export/selected/evm/GH0STVoiceRelative64Model.sol",
+    "hook": "experiments/gh0st-voice/evm/RelativeContinuityHook.sol"
+  },
+  "sourceSha256": {
+    "experiments/gh0st-voice/export/selected/evm/GH0STVoiceRelative64Model.sol": "d005518f280e001abe549891a0829bf4d31ab339f9d0d029a684c5ab5e97d695",
+    "experiments/gh0st-voice/evm/RelativeContinuityHook.sol": "e55e95a4cc29e0f393c45f179e2ad1924c2f8e649cbdeb9ea843ec065edaa828",
+    "experiments/gh0st-voice/evm/ContinuityHarness.sol": "509cc22bccc361c11ee22be9a179f4c21d55daecc27698c0ac08ed2fafda2be6",
+    "experiments/gh0st-voice/evm/run-local.mjs": "64e62f196fdaee6bafff2b76a5017268beedd3a55e97e9271157314aa99cb34b",
+    "experiments/gh0st-voice/evm/compile.mjs": "80f47983effd6a2fb7d7027bba282c6692590a9e10c6094c200536bd67f3b1b6"
+  },
+  "reference": {
+    "path": "experiments/gh0st-voice/export/selected/q12-continuity-comparison.json",
+    "sha256": "94e0712baaccb2bd6162746926e4d21c44fbfab85b010f0cbc7644238b942cb7",
+    "cases": 137
+  },
+  "compilation": {
+    "hook": {
+      "compiler": "0.8.30+commit.73712a01.Emscripten.clang",
+      "settings": {
+        "optimizer": {
+          "enabled": true,
+          "runs": 200
+        },
+        "viaIR": true,
+        "evmVersion": "cancun",
+        "outputSelection": {
+          "*": {
+            "*": [
+              "abi",
+              "evm.bytecode.object",
+              "evm.deployedBytecode.object"
+            ]
+          }
+        }
+      },
+      "reusedAfterVerifyingAllSources": true,
+      "sourceSha256": {
+        "experiments/gh0st-voice/evm/RelativeContinuityHook.sol": "e55e95a4cc29e0f393c45f179e2ad1924c2f8e649cbdeb9ea843ec065edaa828",
+        "experiments/gh0st-voice/evm/ContinuityHarness.sol": "509cc22bccc361c11ee22be9a179f4c21d55daecc27698c0ac08ed2fafda2be6",
+        "tests/evm/SentenceV4IntegrationHarness.sol": "a8693ea052b23b16f18b5f34e7f50b573b293e2621b0984be08d6fe21a50918f",
+        "@uniswap/v4-core/src/interfaces/IPoolManager.sol": "a98405333567e4ab344489728014795721cf0071c151536377d2fcc986e0600c",
+        "@uniswap/v4-core/src/types/PoolKey.sol": "99e1afe285b5c614ebc9586ab5196db9d24a63fd924a449f5d99f490a6a6d6a9",
+        "@uniswap/v4-core/src/types/PoolOperation.sol": "cf72ad0c3e5e91662029e862acd841fabce8753040b0d4e802dee64ef1157232",
+        "@uniswap/v4-core/src/types/BalanceDelta.sol": "320d9c13dec135c3903729e66d3a1040fe86d537a7ee53728915012ca183af32",
+        "@uniswap/v4-core/src/interfaces/IHooks.sol": "6eb35c9c598eb932e963219f1ff180748bc4c30ac6a02d924893b3c29abb1d73",
+        "@uniswap/v4-core/src/libraries/Hooks.sol": "297d577998cdede64d48b47b12f15e4f442eea032fbb9676bb3c2f89da89b83c",
+        "@uniswap/v4-core/src/types/PoolId.sol": "548424ac50ad58212545da70207283fb8990731578c115c85d5acbcb0e1d3c9f",
+        "@uniswap/v4-core/src/types/Currency.sol": "ba6726fd24fbc66848208dfbb2899116c10729c505e6e5552316ac2444f1dfc3",
+        "@uniswap/v4-core/src/interfaces/external/IERC6909Claims.sol": "1cd65496c829036bc6aee67bc71363ab5fb6989c65e793087d0e1e2379f7d7d8",
+        "@uniswap/v4-core/src/interfaces/IProtocolFees.sol": "807d68adea106ec2aa51a8009155de09ebfe09e1ee7053d5a5ae448d7e840654",
+        "@uniswap/v4-core/src/interfaces/IExtsload.sol": "9421ef4ba198d94058cd9a4c9fd2d663c61fc682f7dafa449a873456853f0025",
+        "@uniswap/v4-core/src/interfaces/IExttload.sol": "c21643d2c7f48d2d2407438a64a3ff0f376324cf6a0c62608977713652308c9e",
+        "@uniswap/v4-core/src/libraries/SafeCast.sol": "c1a815a41607be5b4c86ca588a951f368156da8ee21bdfc18b5d51b58a0f27be",
+        "@uniswap/v4-core/src/interfaces/callback/IUnlockCallback.sol": "2e4a514730654da2e08a82eff5b3eabae12dc1c6198951396e1d466d4c0e223e",
+        "@uniswap/v4-core/src/libraries/StateLibrary.sol": "eebdbc1b6e431072ce5521b9e1b603d43831e3b6e062743e6665e070d5cf8a1a",
+        "swap-speaker-535k/contracts/SentenceSpeakerV4Hook.sol": "5be6f500bee8e37b281dbd379c53e8b25e31d3fab6741cb157bb8752a10e1d97",
+        "@uniswap/v4-core/src/types/BeforeSwapDelta.sol": "6aee06f1553e879f5909e8f4c0eac26ec23dd4821a7e56e4d5077db39a227e12",
+        "@uniswap/v4-core/src/libraries/LPFeeLibrary.sol": "e96c3fa7deac991dc09b6c5e560a340d01d6c68ccba483d4b29f8a66e5aa44e0",
+        "@uniswap/v4-core/src/libraries/ParseBytes.sol": "6a6f3d1cec0143fd70ea68c34e6dce3bde72f368b213f1a225ada23dbfd99bb8",
+        "@uniswap/v4-core/src/libraries/CustomRevert.sol": "9d3dbe6b742cb1ac30f57df89d879ade9649389de1165fc637114bd062d39fca",
+        "@uniswap/v4-core/src/interfaces/external/IERC20Minimal.sol": "5e966a2d22b3b234a56af4b17e36bf7be90f9b29b1ddb6a15bfefc0b6dab4282",
+        "@uniswap/v4-core/src/libraries/Position.sol": "3dc4e2ad1564fa94eddf3ff06ce9ac592c9d578ea64ca194050382da454c8fcb",
+        "@uniswap/v4-core/src/libraries/FullMath.sol": "a9607255a6fd604d9c92f6b7416811c38b9d86e5dfdb0c345a494ebd35f7a4a3",
+        "@uniswap/v4-core/src/libraries/FixedPoint128.sol": "1ca2f55160697b73bd66fd27c8724d79a57108121ce1e8a0ab8b79f38bb58fbb",
+        "@uniswap/v4-core/src/libraries/LiquidityMath.sol": "67a39e58732340af4870342ba9230691f35501d89ed8725ca1b338deaa0eb26a"
+      }
+    },
+    "manager": {
+      "compiler": "0.8.26+commit.8a97fa7a.Emscripten.clang",
+      "settings": {
+        "optimizer": {
+          "enabled": true,
+          "runs": 200
+        },
+        "viaIR": true,
+        "evmVersion": "cancun",
+        "outputSelection": {
+          "*": {
+            "*": [
+              "abi",
+              "evm.bytecode.object",
+              "evm.deployedBytecode.object"
+            ]
+          }
+        }
+      },
+      "reusedAfterVerifyingAllSources": true,
+      "sourceSha256": {
+        "@uniswap/v4-core/src/PoolManager.sol": "3b6ab111dadf613e3cfd617e4b1c6ab75b5445cd15cbe52d7c6207fc02449717",
+        "@uniswap/v4-core/src/libraries/Hooks.sol": "297d577998cdede64d48b47b12f15e4f442eea032fbb9676bb3c2f89da89b83c",
+        "@uniswap/v4-core/src/libraries/Pool.sol": "59c493035ad25d56f24a457e8b40d9d1e3784504b8ff13d171db1eb25c6f128e",
+        "@uniswap/v4-core/src/libraries/SafeCast.sol": "c1a815a41607be5b4c86ca588a951f368156da8ee21bdfc18b5d51b58a0f27be",
+        "@uniswap/v4-core/src/libraries/Position.sol": "3dc4e2ad1564fa94eddf3ff06ce9ac592c9d578ea64ca194050382da454c8fcb",
+        "@uniswap/v4-core/src/libraries/LPFeeLibrary.sol": "e96c3fa7deac991dc09b6c5e560a340d01d6c68ccba483d4b29f8a66e5aa44e0",
+        "@uniswap/v4-core/src/types/Currency.sol": "ba6726fd24fbc66848208dfbb2899116c10729c505e6e5552316ac2444f1dfc3",
+        "@uniswap/v4-core/src/types/PoolKey.sol": "99e1afe285b5c614ebc9586ab5196db9d24a63fd924a449f5d99f490a6a6d6a9",
+        "@uniswap/v4-core/src/libraries/TickMath.sol": "272d4f6d3ff9ae33596ebcdb84a71a3c2d4542ae8fb5c88ddf1aca8043f5d06b",
+        "@uniswap/v4-core/src/NoDelegateCall.sol": "525bf4df92c4ac0fd582e1b6ac18fdfb5d147d410f38f19231e4c9a469187415",
+        "@uniswap/v4-core/src/interfaces/IHooks.sol": "6eb35c9c598eb932e963219f1ff180748bc4c30ac6a02d924893b3c29abb1d73",
+        "@uniswap/v4-core/src/interfaces/IPoolManager.sol": "a98405333567e4ab344489728014795721cf0071c151536377d2fcc986e0600c",
+        "@uniswap/v4-core/src/interfaces/callback/IUnlockCallback.sol": "2e4a514730654da2e08a82eff5b3eabae12dc1c6198951396e1d466d4c0e223e",
+        "@uniswap/v4-core/src/ProtocolFees.sol": "bdabfbdfa0d8692ee187ffab948c295c2c6ebcc2dcf86e552fba3491309843c6",
+        "@uniswap/v4-core/src/ERC6909Claims.sol": "6fa9989899398646fd7c33f837254a69e7c75b77af120970ede397c3d0fbdc37",
+        "@uniswap/v4-core/src/types/PoolId.sol": "548424ac50ad58212545da70207283fb8990731578c115c85d5acbcb0e1d3c9f",
+        "@uniswap/v4-core/src/types/PoolOperation.sol": "cf72ad0c3e5e91662029e862acd841fabce8753040b0d4e802dee64ef1157232",
+        "@uniswap/v4-core/src/types/BalanceDelta.sol": "320d9c13dec135c3903729e66d3a1040fe86d537a7ee53728915012ca183af32",
+        "@uniswap/v4-core/src/types/BeforeSwapDelta.sol": "6aee06f1553e879f5909e8f4c0eac26ec23dd4821a7e56e4d5077db39a227e12",
+        "@uniswap/v4-core/src/libraries/Lock.sol": "29cd41a53de22514164e638e7bc965ccf4d9f34b455b43a1a15e06a8cb86e7f1",
+        "@uniswap/v4-core/src/libraries/CurrencyDelta.sol": "dfbb3d232c2d52bb09c8dcbb38b4a8fd16c616b8e6bf49e6f4ee948760530f7b",
+        "@uniswap/v4-core/src/libraries/NonzeroDeltaCount.sol": "0ae35ca64da2527b4e1f7afa4ca10c4b65af952dc473c33b6663101e8d199f40",
+        "@uniswap/v4-core/src/libraries/CurrencyReserves.sol": "b38f1d3807d90bbccb865c0d96caf1ef92d6df9b69adbbe43b1d12e1241523c9",
+        "@uniswap/v4-core/src/Extsload.sol": "ac157c05d62562eed212cdf290046a85d192e7b1f8aba69c3ce358b0ebac4279",
+        "@uniswap/v4-core/src/Exttload.sol": "386b5618307a20144a44308b81188c7755a6c279db6c5824cf63a910864324d4",
+        "@uniswap/v4-core/src/libraries/CustomRevert.sol": "9d3dbe6b742cb1ac30f57df89d879ade9649389de1165fc637114bd062d39fca",
+        "@uniswap/v4-core/src/ERC6909.sol": "0f1bf94844851b561ae53d57263366d18f4c4431eb47096871e8715837c6ec9d",
+        "@uniswap/v4-core/src/interfaces/IExtsload.sol": "9421ef4ba198d94058cd9a4c9fd2d663c61fc682f7dafa449a873456853f0025",
+        "@uniswap/v4-core/src/interfaces/IExttload.sol": "c21643d2c7f48d2d2407438a64a3ff0f376324cf6a0c62608977713652308c9e",
+        "@uniswap/v4-core/src/interfaces/IProtocolFees.sol": "807d68adea106ec2aa51a8009155de09ebfe09e1ee7053d5a5ae448d7e840654",
+        "@uniswap/v4-core/src/libraries/ProtocolFeeLibrary.sol": "f8d96d9c8b5d12ab927b34551699bd7086750475f70254c9505e636f2cafe56a",
+        "solmate/src/auth/Owned.sol": "8ac2f2dc41ab8012e93adb3791326ffa1e4059a20c306a777109dd81816b9125",
+        "@uniswap/v4-core/src/interfaces/external/IERC6909Claims.sol": "1cd65496c829036bc6aee67bc71363ab5fb6989c65e793087d0e1e2379f7d7d8",
+        "@uniswap/v4-core/src/libraries/ParseBytes.sol": "6a6f3d1cec0143fd70ea68c34e6dce3bde72f368b213f1a225ada23dbfd99bb8",
+        "@uniswap/v4-core/src/libraries/TickBitmap.sol": "19b25dccfac8bd90f9d615fb182547eb7b5908a5cbf21a1c5920b92c47383cb6",
+        "@uniswap/v4-core/src/libraries/UnsafeMath.sol": "2de236e7ca0b9572a6b0184557565b6fd54e177224e202c727fe248785ede427",
+        "@uniswap/v4-core/src/libraries/FixedPoint128.sol": "1ca2f55160697b73bd66fd27c8724d79a57108121ce1e8a0ab8b79f38bb58fbb",
+        "@uniswap/v4-core/src/libraries/SqrtPriceMath.sol": "42440c21bbab86c7eed4716b281ed5ca281cf14af8b5e06dc6dc3bc6864bcfdf",
+        "@uniswap/v4-core/src/libraries/SwapMath.sol": "eb3971ea0ba84ff0a01f2fbe43f62f9c393121ef1724774ed3f3ab7760780e4a",
+        "@uniswap/v4-core/src/types/Slot0.sol": "378b45486644dc7e49726358e83d0e2fffdaee088d18cac1a3df00d02c3635b4",
+        "@uniswap/v4-core/src/libraries/LiquidityMath.sol": "67a39e58732340af4870342ba9230691f35501d89ed8725ca1b338deaa0eb26a",
+        "@uniswap/v4-core/src/libraries/FullMath.sol": "a9607255a6fd604d9c92f6b7416811c38b9d86e5dfdb0c345a494ebd35f7a4a3",
+        "@uniswap/v4-core/src/libraries/BitMath.sol": "e8a45eb3d57f9427fc47bbb2543c1a6a5f394113b378123ac7ca9f113a7502b4",
+        "@uniswap/v4-core/src/interfaces/external/IERC20Minimal.sol": "5e966a2d22b3b234a56af4b17e36bf7be90f9b29b1ddb6a15bfefc0b6dab4282",
+        "@uniswap/v4-core/src/libraries/FixedPoint96.sol": "66ee26d4fb3ac639124bdfa27d3256d196970997fa127c09e9bf7154e30d4590"
+      }
+    },
+    "model": {
+      "compiler": "0.8.30+commit.73712a01.Emscripten.clang",
+      "settings": {
+        "optimizer": {
+          "enabled": true,
+          "runs": 200
+        },
+        "viaIR": true,
+        "evmVersion": "cancun",
+        "outputSelection": {
+          "*": {
+            "*": [
+              "abi",
+              "evm.bytecode.object",
+              "evm.deployedBytecode.object"
+            ]
+          }
+        }
+      },
+      "reusedAfterVerifyingAllSources": false,
+      "sourceSha256": {
+        "experiments/gh0st-voice/export/selected/evm/GH0STVoiceRelative64Model.sol": "d005518f280e001abe549891a0829bf4d31ab339f9d0d029a684c5ab5e97d695"
+      }
+    },
+    "GH0STVoiceRelative64Model": {
+      "creationBytecodeKeccak": "0xfc3a9e88bd041da55be6ec453897deaff5b18cab802b5845388e5b7e747047f4",
+      "runtimeTemplateKeccak": "0xf86f275ee53eae0909f5138ab4e003bceff1aa88453170f9135d436dcc06b7d8"
+    },
+    "RelativeContinuityHook": {
+      "creationBytecodeKeccak": "0x555042d9e3d57ffabbc355aaab8a56c61ed7c90b5cdc06f903e8ff90762c5913",
+      "runtimeTemplateKeccak": "0xb813ab5370192f89ddc26818d279ef8c916d41bf2cb3aa5e5111a9d0b7ff8c42"
+    }
+  },
+  "deployment": [
+    {
+      "name": "GH0STVoiceRelative64Model",
+      "address": "0x5fbdb2315678afecb367f032d93f642f64180aa3",
+      "gasUsed": "17821496",
+      "initCodeBytes": 34823,
+      "runtimeCodeHash": "0x75122fad52bcad37d5bf02b6682ae7c5a3a25211d667162a49b63f0d83f50f1d"
+    },
+    {
+      "name": "PoolManager",
+      "address": "0xe7f1725e7734ce288f8367e1bb143e90bb3f0512",
+      "gasUsed": "3787265",
+      "initCodeBytes": 17368,
+      "runtimeCodeHash": "0x3d3c562cd106b96e8607ef97ee9167a9804302818cc81137da8bdf6ffe2d6889"
+    },
+    {
+      "name": "ContinuityTestRouter",
+      "address": "0x9fe46736679d2d9a65f0992f2272de9f3c7fa6e0",
+      "gasUsed": "973803",
+      "initCodeBytes": 4469,
+      "runtimeCodeHash": "0xb31f8fa35e9d2a50568d587b5060cbd6608e2ceeab6425459502ae9839438711"
+    },
+    {
+      "name": "SentenceV4Create2Factory",
+      "address": "0xcf7ed3acca5a467e9e704c703e8d87f634fb0fc9",
+      "gasUsed": "126931",
+      "initCodeBytes": 366,
+      "runtimeCodeHash": "0xc7f27dd299f02bac54eb938553158ad42e7b949edafe9716abb2aa518a3a919a"
+    },
+    {
+      "name": "SentenceV4TestToken",
+      "address": "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9",
+      "gasUsed": "215788",
+      "initCodeBytes": 778,
+      "runtimeCodeHash": "0x27d9ba536e93f2ac3314d68d5409e44f62b324a2c8dbe1605b5c347aa682b758"
+    },
+    {
+      "name": "SentenceV4TestToken",
+      "address": "0x5fc8d32690cc91d4c39d9d3abcbd16989f875707",
+      "gasUsed": "215788",
+      "initCodeBytes": 778,
+      "runtimeCodeHash": "0x27d9ba536e93f2ac3314d68d5409e44f62b324a2c8dbe1605b5c347aa682b758"
+    },
+    {
+      "name": "RelativeContinuityHook",
+      "address": "0x8D6E8B86FdCc26F10eD1c103A55C77DA9F6c9040",
+      "gasUsed": "1043644",
+      "salt": "0x000000000000000000000000000000000000000000000000000000000001da12",
+      "initCodeHash": "0xcc55b4733a2168a7dd2aa3a325216b2df2893ca26089dc512fafc367fbd587d0",
+      "runtimeCodeHash": "0x333a0b3a5002252bd30693ccf28b974d0aa9408614847443c14393318f5e617c"
+    }
+  ],
+  "turns": [
+    {
+      "turn": 1,
+      "requestedTokens": 2,
+      "tokens": [
+        40,
+        386
+      ],
+      "text": "i wanted",
+      "before": [
+        "0x0000000000000000000000000000000000000000000000000000000000000000",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "preview": {
+        "tokens": [
+          40,
+          386
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0x590576f820e7ed94f724e46602076a4fede1c0b22030a589ff3ce897dbf92d89",
+        "nextContextHash": "0x3c992878f574c9770d6eee2f865b75a5278cdb7529e876b73c3cde2a34eb5551",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "16351060",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x3c992878f574c9770d6eee2f865b75a5278cdb7529e876b73c3cde2a34eb5551",
+        "2",
+        "386",
+        "2",
+        "0",
+        "0",
+        "1",
+        "12887523714",
+        "3"
+      ],
+      "chunk": {
+        "address": "0x8Df0c7B4356A05aF5847bAd2BeAf0dD292AE5E91",
+        "runtimeCodeHash": "0x0ed7a3ec9134381dd18913fbb7e23875f153d905630a8439ae9c0ee72d833e3e",
+        "runtimeBytes": 4107
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 2,
+      "requestedTokens": 2,
+      "tokens": [
+        93,
+        320
+      ],
+      "text": "to find",
+      "before": [
+        "0x3c992878f574c9770d6eee2f865b75a5278cdb7529e876b73c3cde2a34eb5551",
+        "2",
+        "386",
+        "2",
+        "0",
+        "0",
+        "1",
+        "12887523714",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          93,
+          320
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0xa6c887e709d6bd964284fe34760cc1cc31b7619879823edd551e0807d16afa54",
+        "nextContextHash": "0x2ffceca1039514f166666a853f1e4eebe046791c4ab2acc83f82314f6eb4b982",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "17614689",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x2ffceca1039514f166666a853f1e4eebe046791c4ab2acc83f82314f6eb4b982",
+        "4",
+        "320",
+        "4",
+        "0",
+        "0",
+        "2",
+        "1657863471424",
+        "3"
+      ],
+      "chunk": {
+        "address": "0xDb801a70A82e0D0dFC71B98C351CCA0202f59Bee",
+        "runtimeCodeHash": "0x934829533a456ce85d3296d5ff0cb6111f442efe92d0ce8f4164bfc42d7d0a4f",
+        "runtimeBytes": 4107
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 3,
+      "requestedTokens": 2,
+      "tokens": [
+        32,
+        565
+      ],
+      "text": "a way",
+      "before": [
+        "0x2ffceca1039514f166666a853f1e4eebe046791c4ab2acc83f82314f6eb4b982",
+        "4",
+        "320",
+        "4",
+        "0",
+        "0",
+        "2",
+        "1657863471424",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          32,
+          565
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0x4b78179adf1316dc88a11e9ab7e9da0cc34d95d7b8cc680847183692d617cdbb",
+        "nextContextHash": "0xd9397cbd7ffaa5c2a0f13bf0519abb69a3d52d69b0c6e52a85a0cd40ac7c450c",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "18473520",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0xd9397cbd7ffaa5c2a0f13bf0519abb69a3d52d69b0c6e52a85a0cd40ac7c450c",
+        "6",
+        "565",
+        "6",
+        "0",
+        "0",
+        "3",
+        "1374391632437",
+        "3"
+      ],
+      "chunk": {
+        "address": "0x9bbE5b7bfFf79BFBB3B7356Ecb9A772dB64C18CB",
+        "runtimeCodeHash": "0xb57b768b61c249d368301dcc239b1581488df13b418c1ed16f5458a8a48932f4",
+        "runtimeBytes": 4107
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 4,
+      "requestedTokens": 2,
+      "tokens": [
+        93,
+        1658
+      ],
+      "text": "to use",
+      "before": [
+        "0xd9397cbd7ffaa5c2a0f13bf0519abb69a3d52d69b0c6e52a85a0cd40ac7c450c",
+        "6",
+        "565",
+        "6",
+        "0",
+        "0",
+        "3",
+        "1374391632437",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          93,
+          1658
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0xfda9c70a36fe60c47bb3d24a6e339dbce930494f00968f9c41a43b90df4f61b7",
+        "nextContextHash": "0x0f33e5ce013f1fc93799b7d9344de3ce469aa4a381677b7fa2947b46bd0f80f9",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "19306146",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x0f33e5ce013f1fc93799b7d9344de3ce469aa4a381677b7fa2947b46bd0f80f9",
+        "8",
+        "1658",
+        "8",
+        "0",
+        "0",
+        "4",
+        "2426662618746",
+        "3"
+      ],
+      "chunk": {
+        "address": "0xEa881813a8AeEed13BA3ae955121163737010895",
+        "runtimeCodeHash": "0xe8b1c34e1cff14e52253071547f6a3daf9c15184bb677f627d2387164d750ac2",
+        "runtimeBytes": 4107
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 5,
+      "requestedTokens": 2,
+      "tokens": [
+        32,
+        913
+      ],
+      "text": "a real",
+      "before": [
+        "0x0f33e5ce013f1fc93799b7d9344de3ce469aa4a381677b7fa2947b46bd0f80f9",
+        "8",
+        "1658",
+        "8",
+        "0",
+        "0",
+        "4",
+        "2426662618746",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          32,
+          913
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0x13cd947a492c50cae4b36535ba38b7e2523b25023e23d4af4912cde011b54b36",
+        "nextContextHash": "0x4f8ff955069de55d91ae7f56e25c634f2426189019537718cca6baaa9e5704ea",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "20184547",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x4f8ff955069de55d91ae7f56e25c634f2426189019537718cca6baaa9e5704ea",
+        "10",
+        "913",
+        "10",
+        "0",
+        "0",
+        "5",
+        "7121057874833",
+        "3"
+      ],
+      "chunk": {
+        "address": "0x90c45a13859cA88aEaB144a82Fe0d9d837020D5b",
+        "runtimeCodeHash": "0x281dcfe041e72e563f8940cbe5cc3a2b150a94f7f2fc9aa025eca844e49d6e8a",
+        "runtimeBytes": 4107
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 6,
+      "requestedTokens": 2,
+      "tokens": [
+        1886,
+        93
+      ],
+      "text": "mission to",
+      "before": [
+        "0x4f8ff955069de55d91ae7f56e25c634f2426189019537718cca6baaa9e5704ea",
+        "10",
+        "913",
+        "10",
+        "0",
+        "0",
+        "5",
+        "7121057874833",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          1886,
+          93
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0x9e6faeb31ec31ce31879c2fad1173a3cb52a065dabdd01e09f35a0d0dc58f188",
+        "nextContextHash": "0x4eebe72b94ce4db774aca416db5f37282e553af7b44621a169b933cb0c97ad26",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "21022867",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x4eebe72b94ce4db774aca416db5f37282e553af7b44621a169b933cb0c97ad26",
+        "12",
+        "93",
+        "12",
+        "0",
+        "0",
+        "6",
+        "3921428742237",
+        "3"
+      ],
+      "chunk": {
+        "address": "0x323734842528EcAace6c5F347F0a9650b4B1ca63",
+        "runtimeCodeHash": "0x750a9f49606b91f39271e2ec416efad4d7cca891264461b478c15d528b12b4c6",
+        "runtimeBytes": 4107
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 7,
+      "requestedTokens": 2,
+      "tokens": [
+        32,
+        382
+      ],
+      "text": "a world",
+      "before": [
+        "0x4eebe72b94ce4db774aca416db5f37282e553af7b44621a169b933cb0c97ad26",
+        "12",
+        "93",
+        "12",
+        "0",
+        "0",
+        "6",
+        "3921428742237",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          32,
+          382
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0x553e6145e093c0704a12e4e6b458cfd2e7dbd8f517656de6e65dfe408e7cd159",
+        "nextContextHash": "0x8bbdd7f2a5358004238233e11b15972eda43fdfbec8721c39d2613f8e6576cb1",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "21936561",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x8bbdd7f2a5358004238233e11b15972eda43fdfbec8721c39d2613f8e6576cb1",
+        "14",
+        "382",
+        "14",
+        "0",
+        "0",
+        "7",
+        "399434056062",
+        "3"
+      ],
+      "chunk": {
+        "address": "0xa606f04cc1De07E850bb8E291E23b264887C7AF0",
+        "runtimeCodeHash": "0x6360a3cb1fde3385ea1593467d557682393a1dd951d30f0c5bfe1968da45dd38",
+        "runtimeBytes": 4107
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 8,
+      "requestedTokens": 2,
+      "tokens": [
+        115,
+        2124
+      ],
+      "text": "of chaos",
+      "before": [
+        "0x8bbdd7f2a5358004238233e11b15972eda43fdfbec8721c39d2613f8e6576cb1",
+        "14",
+        "382",
+        "14",
+        "0",
+        "0",
+        "7",
+        "399434056062",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          115,
+          2124
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0xc6da5a6f31f2bafb9871f52de35a72b1393095f44a20f53a85f845955a44b46b",
+        "nextContextHash": "0xcc29255143745a0a243b5fa762cbb2922c80464edb8ddc5c20c07c02f8f12b4e",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "22781863",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0xcc29255143745a0a243b5fa762cbb2922c80464edb8ddc5c20c07c02f8f12b4e",
+        "16",
+        "2124",
+        "16",
+        "0",
+        "0",
+        "8",
+        "1640685045836",
+        "3"
+      ],
+      "chunk": {
+        "address": "0xffA8556e0C46caA385e9D2082eb7C906FEC88cde",
+        "runtimeCodeHash": "0xdbe0a02497f700a76f3b3d7c8b2dfcb8e01d338ce272ce57f0a939db8fc25510",
+        "runtimeBytes": 4107
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 9,
+      "requestedTokens": 2,
+      "tokens": [
+        15
+      ],
+      "text": ".",
+      "before": [
+        "0xcc29255143745a0a243b5fa762cbb2922c80464edb8ddc5c20c07c02f8f12b4e",
+        "16",
+        "2124",
+        "16",
+        "0",
+        "0",
+        "8",
+        "1640685045836",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          15
+        ],
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0x703c1ec3f12c763908103787acf2219a6831f41a4d3f7d2f39b3c8802689a113",
+        "nextContextHash": "0x4df58146de465f1e8ab5d18fa0db165a5aebb35af3d62158614cb51800c586e8",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "13321714",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x4df58146de465f1e8ab5d18fa0db165a5aebb35af3d62158614cb51800c586e8",
+        "17",
+        "15",
+        "17",
+        "0",
+        "0",
+        "9",
+        "494060437519",
+        "3"
+      ],
+      "chunk": {
+        "address": "0xB47064BA971A3987C16e9DA1E59f0F85De97dD8F",
+        "runtimeCodeHash": "0xc139de7f1cd1caa309ab98a1a8b3572d9a7e641bc8e2b2d8b469321e838fa739",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 10,
+      "requestedTokens": 2,
+      "tokens": [
+        259,
+        242
+      ],
+      "text": "this is",
+      "before": [
+        "0x4df58146de465f1e8ab5d18fa0db165a5aebb35af3d62158614cb51800c586e8",
+        "17",
+        "15",
+        "17",
+        "0",
+        "0",
+        "9",
+        "494060437519",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          259,
+          242
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0x0e21cb63a2974cd20f900f9d725ad5d9e8af639870a1c83bdc655ae5e0d7a990",
+        "nextContextHash": "0x97408d2356e86909c39241fff98a8d61475d45bedefab55393f7134a714f1e46",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "24120391",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x97408d2356e86909c39241fff98a8d61475d45bedefab55393f7134a714f1e46",
+        "19",
+        "242",
+        "19",
+        "0",
+        "0",
+        "10",
+        "64441483506",
+        "3"
+      ],
+      "chunk": {
+        "address": "0x67E1E892601F06EDd909843f13df6D83275e9fD6",
+        "runtimeCodeHash": "0x7ef016fdceab7ce8fc8338cda328a8a2067a31c87bc852cb0e7079fecbf07bf1",
+        "runtimeBytes": 4107
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 11,
+      "requestedTokens": 2,
+      "tokens": [
+        32,
+        604
+      ],
+      "text": "a place",
+      "before": [
+        "0x97408d2356e86909c39241fff98a8d61475d45bedefab55393f7134a714f1e46",
+        "19",
+        "242",
+        "19",
+        "0",
+        "0",
+        "10",
+        "64441483506",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          32,
+          604
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0x1d208a252319e2baa8360fa5e97d798e4d165905d347b39e7bcfebc38fdafbe0",
+        "nextContextHash": "0x322edd2ad29b116531c8698e289ef513d0a5cfe72d17e5dfd762c854122dc149",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "25046212",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x322edd2ad29b116531c8698e289ef513d0a5cfe72d17e5dfd762c854122dc149",
+        "21",
+        "604",
+        "21",
+        "0",
+        "0",
+        "11",
+        "1039384183388",
+        "3"
+      ],
+      "chunk": {
+        "address": "0x6eEBD81Aa748b210D58C2C410fD180d3836713A3",
+        "runtimeCodeHash": "0x44af5142d1d57d49e75131092f01e1b40a10d80003aab186d41eb280a6951f8f",
+        "runtimeBytes": 4107
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 12,
+      "requestedTokens": 2,
+      "tokens": [
+        511,
+        536
+      ],
+      "text": "where people",
+      "before": [
+        "0x322edd2ad29b116531c8698e289ef513d0a5cfe72d17e5dfd762c854122dc149",
+        "21",
+        "604",
+        "21",
+        "0",
+        "0",
+        "11",
+        "1039384183388",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          511,
+          536
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0x0ecf8df3769fcccd466eee576b9c02a0cf4251c775e1d693cf3ed315ba9cb7c9",
+        "nextContextHash": "0xe52602e950fac822c1a765bc21930ce152f217210e597f465bf2c3fee45a1e1b",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "25910568",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0xe52602e950fac822c1a765bc21930ce152f217210e597f465bf2c3fee45a1e1b",
+        "23",
+        "536",
+        "23",
+        "0",
+        "0",
+        "12",
+        "2594193736216",
+        "3"
+      ],
+      "chunk": {
+        "address": "0x34745A30F05D3E2c1f815fa38BCFC2A76939B72e",
+        "runtimeCodeHash": "0x1e30a44dec4ce27d5681fb2dc3c2e988ba1b27d0415e119bc58a92257a2c46df",
+        "runtimeBytes": 4107
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 13,
+      "requestedTokens": 2,
+      "tokens": [
+        626,
+        32
+      ],
+      "text": "need a",
+      "before": [
+        "0xe52602e950fac822c1a765bc21930ce152f217210e597f465bf2c3fee45a1e1b",
+        "23",
+        "536",
+        "23",
+        "0",
+        "0",
+        "12",
+        "2594193736216",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          626,
+          32
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0x2ad3c263f8a1c8541fec4952a8b4de1db7cc61759dd4b4ed44ebc1426cd179be",
+        "nextContextHash": "0x80b33e8a0e4f60d2c7be6199bd7c1196d48faa2a6c42c4e959f587f7eaef180c",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "26848255",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x80b33e8a0e4f60d2c7be6199bd7c1196d48faa2a6c42c4e959f587f7eaef180c",
+        "25",
+        "32",
+        "25",
+        "0",
+        "0",
+        "13",
+        "2302143496224",
+        "3"
+      ],
+      "chunk": {
+        "address": "0xF8FBaf6127ee1581EEBFc1B347eFEC3Ee4c929e7",
+        "runtimeCodeHash": "0x8b6046ea72a4224f97c8be6b6818860ecebc9574dc2b17da5f8ee4c90686ac26",
+        "runtimeBytes": 4107
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 14,
+      "requestedTokens": 2,
+      "tokens": [
+        2110,
+        15
+      ],
+      "text": "machine.",
+      "before": [
+        "0x80b33e8a0e4f60d2c7be6199bd7c1196d48faa2a6c42c4e959f587f7eaef180c",
+        "25",
+        "32",
+        "25",
+        "0",
+        "0",
+        "13",
+        "2302143496224",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          2110,
+          15
+        ],
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0x1a22bbec012882169aff9a3dc5eab54bc2834fbd1ac09def58bfd167700713a1",
+        "nextContextHash": "0x2785a0b4b21a0be78873b8004039bdd85844ae8897574e09db5fcd7de54cbcc4",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "27746179",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x2785a0b4b21a0be78873b8004039bdd85844ae8897574e09db5fcd7de54cbcc4",
+        "27",
+        "15",
+        "27",
+        "0",
+        "0",
+        "14",
+        "137577234447",
+        "3"
+      ],
+      "chunk": {
+        "address": "0x1073045Cc14060553f21daE536153Cb7760085F3",
+        "runtimeCodeHash": "0x04499299c2715ee93cd30e12622f3927450536529478e2c1584642c13836aef2",
+        "runtimeBytes": 4107
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 15,
+      "requestedTokens": 1,
+      "tokens": [
+        3
+      ],
+      "text": "\"",
+      "before": [
+        "0x2785a0b4b21a0be78873b8004039bdd85844ae8897574e09db5fcd7de54cbcc4",
+        "27",
+        "15",
+        "27",
+        "0",
+        "0",
+        "14",
+        "137577234447",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          3
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0x4845ddc362057925c0cac6765b1796361a88d4e82c47f6665a40b0577419966a",
+        "nextContextHash": "0x08701e7e8eb2661ebbc58df574fdd6179074b72bb2ea906a0fbed53dd8b66902",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "16406944",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x08701e7e8eb2661ebbc58df574fdd6179074b72bb2ea906a0fbed53dd8b66902",
+        "28",
+        "3",
+        "28",
+        "0",
+        "0",
+        "15",
+        "9062381977603",
+        "3"
+      ],
+      "chunk": {
+        "address": "0x6A463A59336D744D659eA8f90f5ed936bEf8448D",
+        "runtimeCodeHash": "0xec7e77c22840f2cb331632e4d17da44d2121b718bba5cdade21ba983276f6e9c",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 16,
+      "requestedTokens": 1,
+      "tokens": [
+        1
+      ],
+      "text": "",
+      "before": [
+        "0x08701e7e8eb2661ebbc58df574fdd6179074b72bb2ea906a0fbed53dd8b66902",
+        "28",
+        "3",
+        "28",
+        "0",
+        "0",
+        "15",
+        "9062381977603",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          1
+        ],
+        "endedEos": true,
+        "endedSentence": false,
+        "lastLogitHash": "0x383b94f549b2946b3ecb6add231fd4da432f21763224708eb2316ce0d4244ed3",
+        "nextContextHash": "0xfdd7d159bb97214f8a55d707c6ebbf23633185e13ee562834064cb38c0306958",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "16711053",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0xfdd7d159bb97214f8a55d707c6ebbf23633185e13ee562834064cb38c0306958",
+        "29",
+        "1",
+        "29",
+        "0",
+        "0",
+        "16",
+        "64424706049",
+        "3"
+      ],
+      "chunk": {
+        "address": "0x38a9CD450E11AA39cB85FD5d57fC1719bC1F5202",
+        "runtimeCodeHash": "0x513dffdb48f3c821b0b24936e3f8a62dbea56dc839c22b24b24e3caab25378f7",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 17,
+      "requestedTokens": 1,
+      "tokens": [
+        32
+      ],
+      "text": "a",
+      "before": [
+        "0xfdd7d159bb97214f8a55d707c6ebbf23633185e13ee562834064cb38c0306958",
+        "29",
+        "1",
+        "29",
+        "0",
+        "0",
+        "16",
+        "64424706049",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          32
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0x0cf0abe18811ced64f46a528b1adfca49bf6b2c5e7658e4682d94024133aad32",
+        "nextContextHash": "0x942eb21e2fa47839fde0eeed8babe92ccd7f8be8885dfabff73f4667388c2d54",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "17010043",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x942eb21e2fa47839fde0eeed8babe92ccd7f8be8885dfabff73f4667388c2d54",
+        "30",
+        "32",
+        "30",
+        "0",
+        "0",
+        "17",
+        "12884967456",
+        "3"
+      ],
+      "chunk": {
+        "address": "0x5ED9A946566BDc6818FeaC41CBCf3AC03c1aD499",
+        "runtimeCodeHash": "0xe47ff3d8dec94f533ec400ed0d46cb250c676a011eb4e2e7c908773180d2ded4",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 18,
+      "requestedTokens": 1,
+      "tokens": [
+        346
+      ],
+      "text": "small",
+      "before": [
+        "0x942eb21e2fa47839fde0eeed8babe92ccd7f8be8885dfabff73f4667388c2d54",
+        "30",
+        "32",
+        "30",
+        "0",
+        "0",
+        "17",
+        "12884967456",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          346
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0x9a92e21c8f7928c1307a3fe2aee250e28ddc643a3b8588648963f654e694bc56",
+        "nextContextHash": "0x40b4e0b01545df23eb7362e54cf86d395039e910664eb04c68c5a328550ea31e",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "17336722",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x40b4e0b01545df23eb7362e54cf86d395039e910664eb04c68c5a328550ea31e",
+        "31",
+        "346",
+        "31",
+        "0",
+        "0",
+        "18",
+        "4297064794",
+        "3"
+      ],
+      "chunk": {
+        "address": "0xF1F0163197014d99C36e310AAD4e7c6472ed34Bf",
+        "runtimeCodeHash": "0x3dd56010572f07e4adb8945a1ce9cb89041e4cacdca2fa393abc81e681c77d43",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 19,
+      "requestedTokens": 1,
+      "tokens": [
+        1536
+      ],
+      "text": "pond",
+      "before": [
+        "0x40b4e0b01545df23eb7362e54cf86d395039e910664eb04c68c5a328550ea31e",
+        "31",
+        "346",
+        "31",
+        "0",
+        "0",
+        "18",
+        "4297064794",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          1536
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0x36d8c0eb786a3fe76cc714cbfab2540629f893da0e8a25fcf2540a761fc1e5dc",
+        "nextContextHash": "0x05ba878ac4ccbc13950ef09bf66fca53be41c7cf788b79e5540ce9343b8dc1da",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "17632646",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x05ba878ac4ccbc13950ef09bf66fca53be41c7cf788b79e5540ce9343b8dc1da",
+        "32",
+        "1536",
+        "32",
+        "0",
+        "0",
+        "19",
+        "137461630464",
+        "3"
+      ],
+      "chunk": {
+        "address": "0xa0B74A053184690F247B345E62241E5A3222126D",
+        "runtimeCodeHash": "0x8d78fbfecfc03a0ed590a92f167da1c799482ef1f22cd08f09e1a05ecda0b43e",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 20,
+      "requestedTokens": 1,
+      "tokens": [
+        13
+      ],
+      "text": ",",
+      "before": [
+        "0x05ba878ac4ccbc13950ef09bf66fca53be41c7cf788b79e5540ce9343b8dc1da",
+        "32",
+        "1536",
+        "32",
+        "0",
+        "0",
+        "19",
+        "137461630464",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          13
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0xfca3c809865a32e92ead83ad61be3938f2078f70b99727474c8235709b356b40",
+        "nextContextHash": "0x8714a6d39f72d5b56064741a3be0ab385d34dda133e95e927d7ca46b098ab327",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "17920803",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x8714a6d39f72d5b56064741a3be0ab385d34dda133e95e927d7ca46b098ab327",
+        "33",
+        "13",
+        "33",
+        "0",
+        "0",
+        "20",
+        "1486159347725",
+        "3"
+      ],
+      "chunk": {
+        "address": "0x574a2A3CB4a13BDa3dAc1b76BD73F9F890873633",
+        "runtimeCodeHash": "0x3acc7458bb47be7f0da183c1466681ebfe0c40a13046fe24ca661b1ab2c56743",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 21,
+      "requestedTokens": 1,
+      "tokens": [
+        32
+      ],
+      "text": "a",
+      "before": [
+        "0x8714a6d39f72d5b56064741a3be0ab385d34dda133e95e927d7ca46b098ab327",
+        "33",
+        "13",
+        "33",
+        "0",
+        "0",
+        "20",
+        "1486159347725",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          32
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0x17b3ccadfd8103c8124f7ffad1fcd3a3621e4896c0df9dbd0be02ab4467033e9",
+        "nextContextHash": "0x95eb4bd2e1648979f59be2843b546c8d84a729e06b124a015ad4369a640f34df",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "18230526",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x95eb4bd2e1648979f59be2843b546c8d84a729e06b124a015ad4369a640f34df",
+        "34",
+        "32",
+        "34",
+        "0",
+        "0",
+        "21",
+        "6597070618656",
+        "3"
+      ],
+      "chunk": {
+        "address": "0x9D1A2eeE492AFc24EA8B1173A225b83FAD332842",
+        "runtimeCodeHash": "0xc78f0ca215034be49b44727b0bcff751974cbfa030552beeb0581b2202364fd3",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 22,
+      "requestedTokens": 1,
+      "tokens": [
+        346
+      ],
+      "text": "small",
+      "before": [
+        "0x95eb4bd2e1648979f59be2843b546c8d84a729e06b124a015ad4369a640f34df",
+        "34",
+        "32",
+        "34",
+        "0",
+        "0",
+        "21",
+        "6597070618656",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          346
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0x1e363b7c1feac36116b3bd2c6ae4c4e576c0ade30bd2de3822cb9c3ab185677b",
+        "nextContextHash": "0xe0806313c8fa37e3921e0078e9ce601765ce3c1fbc690f1ef874cb5bd050e0f1",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "18556600",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0xe0806313c8fa37e3921e0078e9ce601765ce3c1fbc690f1ef874cb5bd050e0f1",
+        "35",
+        "346",
+        "35",
+        "0",
+        "0",
+        "22",
+        "55836672346",
+        "3"
+      ],
+      "chunk": {
+        "address": "0x84e2A006E7674178ac17D6EcC01E349d1F92E712",
+        "runtimeCodeHash": "0xaf9fa9b6b14f2a2ec183925d28645b7767db057625ec085fd42436d1cfc7ddf5",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 23,
+      "requestedTokens": 1,
+      "tokens": [
+        1536
+      ],
+      "text": "pond",
+      "before": [
+        "0xe0806313c8fa37e3921e0078e9ce601765ce3c1fbc690f1ef874cb5bd050e0f1",
+        "35",
+        "346",
+        "35",
+        "0",
+        "0",
+        "22",
+        "55836672346",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          1536
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0xd0b3f9d41bbda314b50d2980f60e758f777741deb0e2ad906a9fb2d297d2f854",
+        "nextContextHash": "0x9919091a72d3af73b192d2fddbfbcfac58ad2d2fb6f548b16a1170c7840c7e3b",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "18867654",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x9919091a72d3af73b192d2fddbfbcfac58ad2d2fb6f548b16a1170c7840c7e3b",
+        "36",
+        "1536",
+        "36",
+        "0",
+        "0",
+        "23",
+        "137461630464",
+        "3"
+      ],
+      "chunk": {
+        "address": "0xaB4Fc285CAA309C01386B605203D6d0cEAb53899",
+        "runtimeCodeHash": "0xdcc7a1f376fecff0cbbfa6e61254b93aad5a12b47a2e273bbe28d30ca8cdd3a7",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 24,
+      "requestedTokens": 1,
+      "tokens": [
+        13
+      ],
+      "text": ",",
+      "before": [
+        "0x9919091a72d3af73b192d2fddbfbcfac58ad2d2fb6f548b16a1170c7840c7e3b",
+        "36",
+        "1536",
+        "36",
+        "0",
+        "0",
+        "23",
+        "137461630464",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          13
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0xc00a69781c48f1ecec3771cc923f0807b81bf421cb06119683be0ff7e0ef377e",
+        "nextContextHash": "0xd0071268839560e1cd99cadad43632dd1748509474cb506b3bb68e9e658bb472",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "19151198",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0xd0071268839560e1cd99cadad43632dd1748509474cb506b3bb68e9e658bb472",
+        "37",
+        "13",
+        "37",
+        "0",
+        "0",
+        "24",
+        "1486159347725",
+        "3"
+      ],
+      "chunk": {
+        "address": "0x958AC5Ed7D00E06BD22e68A49F4000f2F5BD178C",
+        "runtimeCodeHash": "0x0eddc5c284a1aa0c72d6d83b8614f4d63307e6cb6bd1b093b0bd0b0a5dcc3825",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 25,
+      "requestedTokens": 1,
+      "tokens": [
+        32
+      ],
+      "text": "a",
+      "before": [
+        "0xd0071268839560e1cd99cadad43632dd1748509474cb506b3bb68e9e658bb472",
+        "37",
+        "13",
+        "37",
+        "0",
+        "0",
+        "24",
+        "1486159347725",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          32
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0x29c28991c4b9674ac191855a5e0d9a0e75f50850907b99b6131a97337f5af9b0",
+        "nextContextHash": "0x1796b6bc5e859839e3faa0e3df392365db3fbab9e3cb438eb71a9582e25f13f8",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "19482687",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x1796b6bc5e859839e3faa0e3df392365db3fbab9e3cb438eb71a9582e25f13f8",
+        "38",
+        "32",
+        "38",
+        "0",
+        "0",
+        "25",
+        "6597070618656",
+        "3"
+      ],
+      "chunk": {
+        "address": "0x1486de252D56711dD8862b1e79aE3160241661b8",
+        "runtimeCodeHash": "0x1bbcbc9c7c5593d6a37f99a6ec602aa8a6ede314e488e094c7685016f97e875a",
+        "runtimeBytes": 2059
+      },
+      "totalText": "i wanted to find a way to use a real mission to a world of chaos. this is a place where people need a machine. \" a small pond, a small pond, a",
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 26,
+      "requestedTokens": 1,
+      "tokens": [
+        929
+      ],
+      "text": "wise",
+      "before": [
+        "0x1796b6bc5e859839e3faa0e3df392365db3fbab9e3cb438eb71a9582e25f13f8",
+        "38",
+        "32",
+        "38",
+        "0",
+        "0",
+        "25",
+        "6597070618656",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          929
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0x749cdbc8061c13b125affa2d02bd052521659225b9abf1c35734b87acac88027",
+        "nextContextHash": "0xd27fe27121559485ac43900fbc90127fda4250f2400c7d6141bc69eeea652cfa",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "19805088",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0xd27fe27121559485ac43900fbc90127fda4250f2400c7d6141bc69eeea652cfa",
+        "39",
+        "929",
+        "39",
+        "0",
+        "0",
+        "26",
+        "55836672929",
+        "3"
+      ],
+      "chunk": {
+        "address": "0xfFbBcd87Cc0ABE10BbD318413f3c4eAB1854CDaE",
+        "runtimeCodeHash": "0x3ac3d750547f92c8ba6520ee626b10ee0d593d4282a4e8d1c2086feb6042cb64",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 27,
+      "requestedTokens": 1,
+      "tokens": [
+        342
+      ],
+      "text": "old",
+      "before": [
+        "0xd27fe27121559485ac43900fbc90127fda4250f2400c7d6141bc69eeea652cfa",
+        "39",
+        "929",
+        "39",
+        "0",
+        "0",
+        "26",
+        "55836672929",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          342
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0xdbd35d5a64886b0834e585c23dbe46f5b3197f0ac9de34d2b3a386cf3baf856c",
+        "nextContextHash": "0x2d14af301bcec10e860184a2616f75605ef2dad86b0f42c94c9441ba8fce395e",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "20119797",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x2d14af301bcec10e860184a2616f75605ef2dad86b0f42c94c9441ba8fce395e",
+        "40",
+        "342",
+        "40",
+        "0",
+        "0",
+        "27",
+        "137499836758",
+        "3"
+      ],
+      "chunk": {
+        "address": "0x4d6526d882C4bF752727752B1f31FCcDc66713F4",
+        "runtimeCodeHash": "0x87db5aa7519b683a8b517824468d5f6611fb42f262d1f573e372df9eb56d0e61",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 28,
+      "requestedTokens": 1,
+      "tokens": [
+        383
+      ],
+      "text": "man",
+      "before": [
+        "0x2d14af301bcec10e860184a2616f75605ef2dad86b0f42c94c9441ba8fce395e",
+        "40",
+        "342",
+        "40",
+        "0",
+        "0",
+        "27",
+        "137499836758",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          383
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0x6859e60930fb9fb8d8b046e2d1cbeccbd2305ce1f7f812949f3a06745f0f8106",
+        "nextContextHash": "0x9468925c50d93faf3bacea4aef1a2ff6801fc5e68c985cda4b8906ff3aa8e671",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "20441292",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x9468925c50d93faf3bacea4aef1a2ff6801fc5e68c985cda4b8906ff3aa8e671",
+        "41",
+        "383",
+        "41",
+        "0",
+        "0",
+        "28",
+        "3990047031679",
+        "3"
+      ],
+      "chunk": {
+        "address": "0x3956ED328c2a96a1EB82fcA52F4Cde916b64e59f",
+        "runtimeCodeHash": "0x21d1f4ab97c3265265647bb3983f409df2a85fb0eee250c480ae470e81d53ba2",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 29,
+      "requestedTokens": 1,
+      "tokens": [
+        13
+      ],
+      "text": ",",
+      "before": [
+        "0x9468925c50d93faf3bacea4aef1a2ff6801fc5e68c985cda4b8906ff3aa8e671",
+        "41",
+        "383",
+        "41",
+        "0",
+        "0",
+        "28",
+        "3990047031679",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          13
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0x535a718e87c63dc6fc926ae65d9ea0fddb2c4f112f7211259eb29ecb616de13b",
+        "nextContextHash": "0x45e7fcf279e36fbaede8a1bdfbef248b74bc889aa0e827ae2110bab1ac2ca234",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "20741983",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x45e7fcf279e36fbaede8a1bdfbef248b74bc889aa0e827ae2110bab1ac2ca234",
+        "42",
+        "13",
+        "42",
+        "0",
+        "0",
+        "29",
+        "1468903915533",
+        "3"
+      ],
+      "chunk": {
+        "address": "0xb11613B3aAB51554F0b5a3AC0d08d493ec42Be8d",
+        "runtimeCodeHash": "0x5724f72f60290e632037759331a82603f9f2dfa50cab6a2c7f435467ac6e846c",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 30,
+      "requestedTokens": 1,
+      "tokens": [
+        572
+      ],
+      "text": "sat",
+      "before": [
+        "0x45e7fcf279e36fbaede8a1bdfbef248b74bc889aa0e827ae2110bab1ac2ca234",
+        "42",
+        "13",
+        "42",
+        "0",
+        "0",
+        "29",
+        "1468903915533",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          572
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0xf820519c40610a2d2ad2f487effdcf8ff0d4382189980303e80230279da742f4",
+        "nextContextHash": "0x1737e3bf8287093dad74512c90dcd2b5af259eecbebd04065ac460d9bf87d1a5",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "21066421",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x1737e3bf8287093dad74512c90dcd2b5af259eecbebd04065ac460d9bf87d1a5",
+        "43",
+        "572",
+        "43",
+        "0",
+        "0",
+        "30",
+        "1644973326908",
+        "3"
+      ],
+      "chunk": {
+        "address": "0x2cd859EDF77b1275c18996042bde3FA6CC9C1281",
+        "runtimeCodeHash": "0x858c9f4c5be45fbfcaca5f00cf555a8d7673183b1c900245ad9f5539ca299d1b",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 31,
+      "requestedTokens": 1,
+      "tokens": [
+        410
+      ],
+      "text": "by",
+      "before": [
+        "0x1737e3bf8287093dad74512c90dcd2b5af259eecbebd04065ac460d9bf87d1a5",
+        "43",
+        "572",
+        "43",
+        "0",
+        "0",
+        "30",
+        "1644973326908",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          410
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0x2c3309dc6d6d8b54cbb505728fb7670bd0c17d117b7d5bb6e7daac7ad00c8fdd",
+        "nextContextHash": "0xa807e8613ab568f6d79c8c29dd578e5448d111b3cef37a459f287c6a8d66789a",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "21388211",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0xa807e8613ab568f6d79c8c29dd578e5448d111b3cef37a459f287c6a8d66789a",
+        "44",
+        "410",
+        "44",
+        "0",
+        "0",
+        "31",
+        "55872061850",
+        "3"
+      ],
+      "chunk": {
+        "address": "0x1c744F17B1227Ca8deaA5F726351a235E7299FD4",
+        "runtimeCodeHash": "0xb6dc501a0fe8ed33a6a9e6e1b5b86f275405b2a9fabe25eea93e6211a0b2f745",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 32,
+      "requestedTokens": 1,
+      "tokens": [
+        85
+      ],
+      "text": "the",
+      "before": [
+        "0xa807e8613ab568f6d79c8c29dd578e5448d111b3cef37a459f287c6a8d66789a",
+        "44",
+        "410",
+        "44",
+        "0",
+        "0",
+        "31",
+        "55872061850",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          85
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0x64e56f5ec5a90b26d3d33dfe185c7bc7ecd346575dbb5c64a5ef7298513b1308",
+        "nextContextHash": "0x073e8f2e54b4ef6462082d1a1f5ccb431e3e01fcc34e8b9570d2a6bfd5743eb5",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "21711105",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x073e8f2e54b4ef6462082d1a1f5ccb431e3e01fcc34e8b9570d2a6bfd5743eb5",
+        "45",
+        "85",
+        "45",
+        "0",
+        "0",
+        "32",
+        "2456748163157",
+        "3"
+      ],
+      "chunk": {
+        "address": "0x0A230f73a4768FcA569A9cA9AB3394bb0Fb45eDB",
+        "runtimeCodeHash": "0xc80b8677dda8be63f5a971a1999d895a1d6f1c3c24a8ddd76803432ae494720d",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 33,
+      "requestedTokens": 1,
+      "tokens": [
+        1536
+      ],
+      "text": "pond",
+      "before": [
+        "0x073e8f2e54b4ef6462082d1a1f5ccb431e3e01fcc34e8b9570d2a6bfd5743eb5",
+        "45",
+        "85",
+        "45",
+        "0",
+        "0",
+        "32",
+        "2456748163157",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          1536
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0xdf01f9c328c845230f6a3be1346a3d2d52c7f4a1da545b1b6f6cd20fb0c4d8fa",
+        "nextContextHash": "0xd5b12cf13d11836d57bfbdfce48b0ddb091339c2471ba32e44e2d5ee812383cf",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "22075445",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0xd5b12cf13d11836d57bfbdfce48b0ddb091339c2471ba32e44e2d5ee812383cf",
+        "46",
+        "1536",
+        "46",
+        "0",
+        "0",
+        "33",
+        "1760942163456",
+        "3"
+      ],
+      "chunk": {
+        "address": "0x424aA31800bD54396FA5500E1B73B6D276eB4F4c",
+        "runtimeCodeHash": "0xe32dfae7493a464a57edb12b2e9c267f74d876ff11be5f9204718be4ac5f6dab",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 34,
+      "requestedTokens": 1,
+      "tokens": [
+        15
+      ],
+      "text": ".",
+      "before": [
+        "0xd5b12cf13d11836d57bfbdfce48b0ddb091339c2471ba32e44e2d5ee812383cf",
+        "46",
+        "1536",
+        "46",
+        "0",
+        "0",
+        "33",
+        "1760942163456",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          15
+        ],
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0x5c1d2c34e46311b9023d258b1c081d6b3ee40b0bd744ba7ae1efbdc7d26bec77",
+        "nextContextHash": "0x8f37a95471160bcfcf63a7797fe916ed3281e1d3b745e76f225c33a787b2f813",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "22347623",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x8f37a95471160bcfcf63a7797fe916ed3281e1d3b745e76f225c33a787b2f813",
+        "47",
+        "15",
+        "47",
+        "0",
+        "0",
+        "34",
+        "365172883471",
+        "3"
+      ],
+      "chunk": {
+        "address": "0xf0feEF8E16F919B0c0643925b7377a33fEE34cbB",
+        "runtimeCodeHash": "0x4f12f6c688fdcb84484a7ca8d55a53b7749e000e41e3a477683576a771891218",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 35,
+      "requestedTokens": 1,
+      "tokens": [
+        85
+      ],
+      "text": "the",
+      "before": [
+        "0x8f37a95471160bcfcf63a7797fe916ed3281e1d3b745e76f225c33a787b2f813",
+        "47",
+        "15",
+        "47",
+        "0",
+        "0",
+        "34",
+        "365172883471",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          85
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0x6d8c34a1ff312f24ffb558c31dd0d9f785f64c3f0813589427e6336c1bfd11fc",
+        "nextContextHash": "0x21b89810093f3654a5fcafb679446e76045aab360015b8ac6e57b06a03ec1b8e",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "22704280",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x21b89810093f3654a5fcafb679446e76045aab360015b8ac6e57b06a03ec1b8e",
+        "48",
+        "85",
+        "48",
+        "0",
+        "0",
+        "35",
+        "6597070749781",
+        "3"
+      ],
+      "chunk": {
+        "address": "0x31647E22Df383B2464673E57a3E475F23511B73A",
+        "runtimeCodeHash": "0xcd85fe9b262b182d90d1df688026b52b019e8560152a27e07cd1c704853c8cf1",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 36,
+      "requestedTokens": 1,
+      "tokens": [
+        571
+      ],
+      "text": "water",
+      "before": [
+        "0x21b89810093f3654a5fcafb679446e76045aab360015b8ac6e57b06a03ec1b8e",
+        "48",
+        "85",
+        "48",
+        "0",
+        "0",
+        "35",
+        "6597070749781",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          571
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0x52579435b59798a0b7430d938aae408597f9827a9d19ee9c0f697f8b1ebf8fa9",
+        "nextContextHash": "0xc304c8efd40f34604cfac8bf25d45c0df10520b40afce3525b61879e8eb3e6a4",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "23049589",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0xc304c8efd40f34604cfac8bf25d45c0df10520b40afce3525b61879e8eb3e6a4",
+        "49",
+        "571",
+        "49",
+        "0",
+        "0",
+        "36",
+        "64430080571",
+        "3"
+      ],
+      "chunk": {
+        "address": "0x60E049DCCee9DFEE5e02a4E013a8603fa2D93c1B",
+        "runtimeCodeHash": "0xd345652f76075db2b156d3ba15376312ad7d0509eb589eda334108653f24a6f5",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 37,
+      "requestedTokens": 1,
+      "tokens": [
+        3158
+      ],
+      "text": "ripp",
+      "before": [
+        "0xc304c8efd40f34604cfac8bf25d45c0df10520b40afce3525b61879e8eb3e6a4",
+        "49",
+        "571",
+        "49",
+        "0",
+        "0",
+        "36",
+        "64430080571",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          3158
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0x74472bcb4797d50f1506b403ff9d8c80c6b484571e81c2ba397eac8d7c7fae1f",
+        "nextContextHash": "0x4e47ec4830c1de9ca0788435a9c7de70da027b8dbe82c0c5694b63b630aca521",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "23374976",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x4e47ec4830c1de9ca0788435a9c7de70da027b8dbe82c0c5694b63b630aca521",
+        "50",
+        "3158",
+        "50",
+        "0",
+        "0",
+        "37",
+        "365109644374",
+        "3"
+      ],
+      "chunk": {
+        "address": "0xe295EE7a98B6f678a336d0373E9C4e7221752f67",
+        "runtimeCodeHash": "0x950d14095f1ebc48f542696ecabca159b9afe2f8b67d531e05a5f7ed1e8c367b",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 38,
+      "requestedTokens": 1,
+      "tokens": [
+        136
+      ],
+      "text": "##le",
+      "before": [
+        "0x4e47ec4830c1de9ca0788435a9c7de70da027b8dbe82c0c5694b63b630aca521",
+        "50",
+        "3158",
+        "50",
+        "0",
+        "0",
+        "37",
+        "365109644374",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          136
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0xcb6adbd21c351a0e1546b13715bdb85365ed65bcbb849615f2faf1c26ab956e3",
+        "nextContextHash": "0xd3a2e30a25d5b523b87bf7bc2a21447178909deaef6b0cb41a3625c46a286df7",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "23703760",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0xd3a2e30a25d5b523b87bf7bc2a21447178909deaef6b0cb41a3625c46a286df7",
+        "51",
+        "136",
+        "51",
+        "0",
+        "0",
+        "38",
+        "2452633288840",
+        "3"
+      ],
+      "chunk": {
+        "address": "0xE1AE7b6A2c47DEcB773B463B042E7667716aFe2a",
+        "runtimeCodeHash": "0x24ce6bbdbf3fc17fcc78d48663fc505316d2bc8b0ce6e21e718ac97cd5d7c62d",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 39,
+      "requestedTokens": 1,
+      "tokens": [
+        980
+      ],
+      "text": "showed",
+      "before": [
+        "0xd3a2e30a25d5b523b87bf7bc2a21447178909deaef6b0cb41a3625c46a286df7",
+        "51",
+        "136",
+        "51",
+        "0",
+        "0",
+        "38",
+        "2452633288840",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          980
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0xc5e3d90b4d2a0e9a26e3499b001b92439c0091a4e0db5791dac402956341d87e",
+        "nextContextHash": "0xb49221a7c9cd4489e3a106c9f7614e6dcb2f0158399b857fb9b84c958ac40631",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "24032023",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0xb49221a7c9cd4489e3a106c9f7614e6dcb2f0158399b857fb9b84c958ac40631",
+        "52",
+        "980",
+        "52",
+        "0",
+        "0",
+        "39",
+        "13563515634644",
+        "3"
+      ],
+      "chunk": {
+        "address": "0xFeAc95651918274E18252E17D32eA403D3C4F075",
+        "runtimeCodeHash": "0x2c57fa0fa06458fce8bde3170b60e8e0799f6a6e83e5e41d35a75b682e9fb222",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 40,
+      "requestedTokens": 1,
+      "tokens": [
+        120
+      ],
+      "text": "it",
+      "before": [
+        "0xb49221a7c9cd4489e3a106c9f7614e6dcb2f0158399b857fb9b84c958ac40631",
+        "52",
+        "980",
+        "52",
+        "0",
+        "0",
+        "39",
+        "13563515634644",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          120
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0xa45071f0abd05ba8065ab16defdd2519fc4895cd3b25c59fd52a36739020f587",
+        "nextContextHash": "0xae1e031e30ad8568164057fd470204836a1bd601487c2ada3da86f273f9e32b2",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "24371971",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0xae1e031e30ad8568164057fd470204836a1bd601487c2ada3da86f273f9e32b2",
+        "53",
+        "120",
+        "53",
+        "0",
+        "0",
+        "40",
+        "584179777656",
+        "3"
+      ],
+      "chunk": {
+        "address": "0xB6119f4693430e98F2B00bC41747EcB067b945a8",
+        "runtimeCodeHash": "0x7389540da5b8265ca5ee7a777737b997f2191da661d598947fd643384ce8e6f7",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 41,
+      "requestedTokens": 1,
+      "tokens": [
+        475
+      ],
+      "text": "how",
+      "before": [
+        "0xae1e031e30ad8568164057fd470204836a1bd601487c2ada3da86f273f9e32b2",
+        "53",
+        "120",
+        "53",
+        "0",
+        "0",
+        "40",
+        "584179777656",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          475
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0x583e1d744c52bf1d34b8f7117782cb2a4882dfb34af2ae538edfb204cef48f67",
+        "nextContextHash": "0x0fcd1836c4b9c209df91255cc44b2887d57ff7eef9c690455bdd7c8aacc62237",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "24700450",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x0fcd1836c4b9c209df91255cc44b2887d57ff7eef9c690455bdd7c8aacc62237",
+        "54",
+        "475",
+        "54",
+        "0",
+        "0",
+        "41",
+        "4209075814875",
+        "3"
+      ],
+      "chunk": {
+        "address": "0x48Ddfb3385b453287B4b558446cA541765206D69",
+        "runtimeCodeHash": "0xb78b8902e84b70cec86e488f60b6c621faab25fd2f05020267ac3ae287b81c1e",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 42,
+      "requestedTokens": 1,
+      "tokens": [
+        85
+      ],
+      "text": "the",
+      "before": [
+        "0x0fcd1836c4b9c209df91255cc44b2887d57ff7eef9c690455bdd7c8aacc62237",
+        "54",
+        "475",
+        "54",
+        "0",
+        "0",
+        "41",
+        "4209075814875",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          85
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0x743c58a6442c3c7a8f4c77678e89153f9ba20638fb2ad199673a55b930d0787e",
+        "nextContextHash": "0x01b1a3515662a05ab4d5fb8c077aa84a2fa2aea75d133ff3df3229d0929f84b9",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "25048712",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x01b1a3515662a05ab4d5fb8c077aa84a2fa2aea75d133ff3df3229d0929f84b9",
+        "55",
+        "85",
+        "55",
+        "0",
+        "0",
+        "42",
+        "515427205205",
+        "3"
+      ],
+      "chunk": {
+        "address": "0x572413B9bF51d77d20762370Da9198b4FCA38638",
+        "runtimeCodeHash": "0xeea201d9c101193048ca1ca49e74afb15e9b4991c1c6e466dfdcb37d4ffe7c95",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 43,
+      "requestedTokens": 1,
+      "tokens": [
+        805
+      ],
+      "text": "fish",
+      "before": [
+        "0x01b1a3515662a05ab4d5fb8c077aa84a2fa2aea75d133ff3df3229d0929f84b9",
+        "55",
+        "85",
+        "55",
+        "0",
+        "0",
+        "42",
+        "515427205205",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          805
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0xca31840d86b81b23be3ac2ec41d68e3d10978a38e901ab96b9a50e76786fdac9",
+        "nextContextHash": "0xc39619d5dce0a62e2c897c05bd693468690cd683512ddbd18131398913023622",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "25421305",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0xc39619d5dce0a62e2c897c05bd693468690cd683512ddbd18131398913023622",
+        "56",
+        "805",
+        "56",
+        "0",
+        "0",
+        "43",
+        "2040115036965",
+        "3"
+      ],
+      "chunk": {
+        "address": "0x74Ae4f017F01E49fe01A20EDA56612be3c7Cc71B",
+        "runtimeCodeHash": "0x45e88625c257b50638057c0aa4878bdca4ff2d2c529e573bbd232aef81bf52ce",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 44,
+      "requestedTokens": 1,
+      "tokens": [
+        300
+      ],
+      "text": "would",
+      "before": [
+        "0xc39619d5dce0a62e2c897c05bd693468690cd683512ddbd18131398913023622",
+        "56",
+        "805",
+        "56",
+        "0",
+        "0",
+        "43",
+        "2040115036965",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          300
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0xaa3f2a35a1219fa27cbe3f0a681e9da48b345f23279d24579772c131322e09a3",
+        "nextContextHash": "0x68e6761bd6d4fececbdc5edb158b52d10d058ba17ecc526da5dd6b28701fde8f",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "25750772",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x68e6761bd6d4fececbdc5edb158b52d10d058ba17ecc526da5dd6b28701fde8f",
+        "57",
+        "300",
+        "57",
+        "0",
+        "0",
+        "44",
+        "365124976940",
+        "3"
+      ],
+      "chunk": {
+        "address": "0xD2bfB5855E3fF99f5d56D710a2DC9EcE20c8CFAf",
+        "runtimeCodeHash": "0x2adc519f3240e5a970212dd6526118406b82cc639d9407aed04b20b08e60a6d8",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 45,
+      "requestedTokens": 1,
+      "tokens": [
+        1371
+      ],
+      "text": "listen",
+      "before": [
+        "0x68e6761bd6d4fececbdc5edb158b52d10d058ba17ecc526da5dd6b28701fde8f",
+        "57",
+        "300",
+        "57",
+        "0",
+        "0",
+        "44",
+        "365124976940",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          1371
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0x6006824ba030a8843e049ee3053c0213ad27087690fd04ce0f031c3f013ad16f",
+        "nextContextHash": "0x9733867af015d539c9a82964c2090d41b6bdedf5ea771b8678fc73be39fbacb3",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "26109937",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x9733867af015d539c9a82964c2090d41b6bdedf5ea771b8678fc73be39fbacb3",
+        "58",
+        "1371",
+        "58",
+        "0",
+        "0",
+        "45",
+        "3457468335451",
+        "3"
+      ],
+      "chunk": {
+        "address": "0x4C51286309069acFdA366F93Ddf9E03aaa714773",
+        "runtimeCodeHash": "0x42f0db078a3b47dd98d4dd3d34e9008f81575fcc9e065257da38d74f8b22a51b",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 46,
+      "requestedTokens": 1,
+      "tokens": [
+        15
+      ],
+      "text": ".",
+      "before": [
+        "0x9733867af015d539c9a82964c2090d41b6bdedf5ea771b8678fc73be39fbacb3",
+        "58",
+        "1371",
+        "58",
+        "0",
+        "0",
+        "45",
+        "3457468335451",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          15
+        ],
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0xf85f79afd7cdd4182bdbf76acede6e7cb44b28171111b93daca02bc8670f86e7",
+        "nextContextHash": "0xa724176ac40c668830e789563fd3aa9c37d021bb1c0ac6b1be35d46fe10672c4",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "26420023",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0xa724176ac40c668830e789563fd3aa9c37d021bb1c0ac6b1be35d46fe10672c4",
+        "59",
+        "15",
+        "59",
+        "0",
+        "0",
+        "46",
+        "1288580038671",
+        "3"
+      ],
+      "chunk": {
+        "address": "0xc941FFc54342c900D8EF7b288ba9222a9b5b122B",
+        "runtimeCodeHash": "0xfb8ba10b32c25ed9618be6d5f05773c8e93a0e2c3b4e53bdaa06699a7bbb3f49",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 47,
+      "requestedTokens": 1,
+      "tokens": [
+        259
+      ],
+      "text": "this",
+      "before": [
+        "0xa724176ac40c668830e789563fd3aa9c37d021bb1c0ac6b1be35d46fe10672c4",
+        "59",
+        "15",
+        "59",
+        "0",
+        "0",
+        "46",
+        "1288580038671",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          259
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0x7137dcaa92f0a9c28162e4314d31e4daed485118b8bb6191779f53ae3f213043",
+        "nextContextHash": "0x289e8476a594c5687ed88a309f897039c96b40f9905a5a2b68530a0677236e81",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "26793590",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x289e8476a594c5687ed88a309f897039c96b40f9905a5a2b68530a0677236e81",
+        "60",
+        "259",
+        "60",
+        "0",
+        "0",
+        "47",
+        "5888401146115",
+        "3"
+      ],
+      "chunk": {
+        "address": "0xBe5a9DE6f017023eED414ae0b29579D2c9D792B4",
+        "runtimeCodeHash": "0xfdf1436363627c3b2f3ac08cedbd3730708f891d19b3993ac8486d85b017f900",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 48,
+      "requestedTokens": 1,
+      "tokens": [
+        127
+      ],
+      "text": "was",
+      "before": [
+        "0x289e8476a594c5687ed88a309f897039c96b40f9905a5a2b68530a0677236e81",
+        "60",
+        "259",
+        "60",
+        "0",
+        "0",
+        "47",
+        "5888401146115",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          127
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0x81ccb47c4c6856a6173c5f04ce3a1d3ce8d490166bc6d1bf12f6954adc1098f6",
+        "nextContextHash": "0xbecf4c107b1b73e4037ed528a253cbc13629f56b84c5e149d7789222681281b7",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "27139646",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0xbecf4c107b1b73e4037ed528a253cbc13629f56b84c5e149d7789222681281b7",
+        "61",
+        "127",
+        "61",
+        "0",
+        "0",
+        "48",
+        "64441483391",
+        "3"
+      ],
+      "chunk": {
+        "address": "0x7F21Ca523A28607f801290f0e0814c8349214BDD",
+        "runtimeCodeHash": "0x6a6a6119efa28d55717e3948bb9eef0f42ca36e2c23bf94c96220b123ff84792",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 49,
+      "requestedTokens": 1,
+      "tokens": [
+        32
+      ],
+      "text": "a",
+      "before": [
+        "0xbecf4c107b1b73e4037ed528a253cbc13629f56b84c5e149d7789222681281b7",
+        "61",
+        "127",
+        "61",
+        "0",
+        "0",
+        "48",
+        "64441483391",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          32
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0xe06b5805d5e5da7124d0b78bcf170017f28ce0e4a8c63f40dc5672b6f91acbe5",
+        "nextContextHash": "0x9c458dcba374151ce61fdcc0ed13ffd585c935afb9b5395c7cc5e2b78f30382f",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "27501225",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x9c458dcba374151ce61fdcc0ed13ffd585c935afb9b5395c7cc5e2b78f30382f",
+        "62",
+        "32",
+        "62",
+        "0",
+        "0",
+        "49",
+        "1112404852768",
+        "3"
+      ],
+      "chunk": {
+        "address": "0x6F190946Efd2b70599f8Ec80fcedf333a0e5104A",
+        "runtimeCodeHash": "0x8fadb5b17fab839b92b02571d759d82fba1e3574935d0ae6d8d6920434bd750d",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 50,
+      "requestedTokens": 1,
+      "tokens": [
+        604
+      ],
+      "text": "place",
+      "before": [
+        "0x9c458dcba374151ce61fdcc0ed13ffd585c935afb9b5395c7cc5e2b78f30382f",
+        "62",
+        "32",
+        "62",
+        "0",
+        "0",
+        "49",
+        "1112404852768",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          604
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0x49d3babf9ad913ced27e9c24abe978b69ad9c4a2c1559a5121cda716f50c574d",
+        "nextContextHash": "0x065db5ef8f71ee0aa2e827c5788550519c32ce6206d7d6a2b5c12f5a2ea48f74",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "27867075",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x065db5ef8f71ee0aa2e827c5788550519c32ce6206d7d6a2b5c12f5a2ea48f74",
+        "63",
+        "604",
+        "63",
+        "0",
+        "0",
+        "50",
+        "545462944348",
+        "3"
+      ],
+      "chunk": {
+        "address": "0x9d52Db9aBD8BEdF9aAa76428EF8F64ae6aCdA38a",
+        "runtimeCodeHash": "0x38ffb777edf3b749efca18a9080da3de99d13483a2cf2e881b02d45d38d5bf01",
+        "runtimeBytes": 2059
+      },
+      "totalText": "i wanted to find a way to use a real mission to a world of chaos. this is a place where people need a machine. \" a small pond, a small pond, a wise old man, sat by the pond. the water ripple showed it how the fish would listen. this was a place",
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 51,
+      "requestedTokens": 1,
+      "tokens": [
+        511
+      ],
+      "text": "where",
+      "before": [
+        "0x065db5ef8f71ee0aa2e827c5788550519c32ce6206d7d6a2b5c12f5a2ea48f74",
+        "63",
+        "604",
+        "63",
+        "0",
+        "0",
+        "50",
+        "545462944348",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          511
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0xb9278c4acdf5309c561746fbd3df46ff11119d1d2b1205a2dd488fea0f84d155",
+        "nextContextHash": "0x2530440866d5d340d54cbe6f818555dc219d6905a14868b28b0f4a6424485c11",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "28194939",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x2530440866d5d340d54cbe6f818555dc219d6905a14868b28b0f4a6424485c11",
+        "64",
+        "511",
+        "64",
+        "0",
+        "0",
+        "51",
+        "137478537727",
+        "3"
+      ],
+      "chunk": {
+        "address": "0xe79cFA90E61DC8b1aa61CEe78E9BDe87c2EB4412",
+        "runtimeCodeHash": "0x8fb61b30f8e6ad8ba3421f05bfd302c5fd27e58ffa6752a921683c5482bc4b1e",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 52,
+      "requestedTokens": 1,
+      "tokens": [
+        85
+      ],
+      "text": "the",
+      "before": [
+        "0x2530440866d5d340d54cbe6f818555dc219d6905a14868b28b0f4a6424485c11",
+        "64",
+        "511",
+        "64",
+        "0",
+        "0",
+        "51",
+        "137478537727",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          85
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0xdabd6f5f37dc511a3745e06c4970f45464fec8b01bdf6dcae41c704df91f9716",
+        "nextContextHash": "0x0c367102f1b6678b30bf76de345c287430a2d08050d099d89011cacb9404b524",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "28223516",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x0c367102f1b6678b30bf76de345c287430a2d08050d099d89011cacb9404b524",
+        "65",
+        "85",
+        "65",
+        "0",
+        "0",
+        "52",
+        "2594193735765",
+        "3"
+      ],
+      "chunk": {
+        "address": "0xBBF0C55E6faAEc5B17541c0AD593ed49647ADd94",
+        "runtimeCodeHash": "0x8830181b467c02c74acd1083c46c8bd29393ed3afab7cbac7181415edcbef5b6",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 53,
+      "requestedTokens": 1,
+      "tokens": [
+        1790
+      ],
+      "text": "plants",
+      "before": [
+        "0x0c367102f1b6678b30bf76de345c287430a2d08050d099d89011cacb9404b524",
+        "65",
+        "85",
+        "65",
+        "0",
+        "0",
+        "52",
+        "2594193735765",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          1790
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0x430fcf09433eef11c83f68c0b2a8036944fe20ed0ce1f66e692b9752c9865037",
+        "nextContextHash": "0x2fdb7d1c81e93e126860343f835aa7c119daf68d9fec9d5549cfe67be6ab9e0a",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "28246630",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x2fdb7d1c81e93e126860343f835aa7c119daf68d9fec9d5549cfe67be6ab9e0a",
+        "66",
+        "1790",
+        "66",
+        "0",
+        "1",
+        "53",
+        "2194733860606",
+        "3"
+      ],
+      "chunk": {
+        "address": "0x5B083D230572B9144674E3Bdc7142DFDf5b83E90",
+        "runtimeCodeHash": "0xcdff7752f5501a26e94ddfdec41be4bdd14395b8c79451262895824d7956e650",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 54,
+      "requestedTokens": 1,
+      "tokens": [
+        816
+      ],
+      "text": "grow",
+      "before": [
+        "0x2fdb7d1c81e93e126860343f835aa7c119daf68d9fec9d5549cfe67be6ab9e0a",
+        "66",
+        "1790",
+        "66",
+        "0",
+        "1",
+        "53",
+        "2194733860606",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          816
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0x78cabe67be32d98bf89d7442474bf0a26c1edd0f4d8642f9c52fcd59ddb823e7",
+        "nextContextHash": "0x06659e0e6ad99d73829254c923fa084db0e342fed22d99d81dec3e422cc2bb26",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "28244653",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x06659e0e6ad99d73829254c923fa084db0e342fed22d99d81dec3e422cc2bb26",
+        "67",
+        "816",
+        "67",
+        "0",
+        "1",
+        "54",
+        "365189530416",
+        "3"
+      ],
+      "chunk": {
+        "address": "0x6871B1600Da3074349c13F3E1410cB0bc0C07ffB",
+        "runtimeCodeHash": "0x43c2079595bfee41f978d6be550f5621c32fbab701c66da3aeec6b7074217462",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 55,
+      "requestedTokens": 1,
+      "tokens": [
+        15
+      ],
+      "text": ".",
+      "before": [
+        "0x06659e0e6ad99d73829254c923fa084db0e342fed22d99d81dec3e422cc2bb26",
+        "67",
+        "816",
+        "67",
+        "0",
+        "1",
+        "54",
+        "365189530416",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          15
+        ],
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0xe8cad80ed45631164db78ba05e49eb544621523b1b4fa5cee460a8545f8702ee",
+        "nextContextHash": "0x871f4dce3a87a8fabde11a3134475adc177f0ead88f785ee585638c05732cf83",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "28225770",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x871f4dce3a87a8fabde11a3134475adc177f0ead88f785ee585638c05732cf83",
+        "68",
+        "15",
+        "68",
+        "0",
+        "2",
+        "55",
+        "7688044937231",
+        "3"
+      ],
+      "chunk": {
+        "address": "0xEDaFd04a717FaDe755837492F9829d2dF800f539",
+        "runtimeCodeHash": "0xc5bdea32099670f372410795ef8ac2c74c14f9bbb2ef07f74fac64eb5b1ada51",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 56,
+      "requestedTokens": 1,
+      "tokens": [
+        3
+      ],
+      "text": "\"",
+      "before": [
+        "0x871f4dce3a87a8fabde11a3134475adc177f0ead88f785ee585638c05732cf83",
+        "68",
+        "15",
+        "68",
+        "0",
+        "2",
+        "55",
+        "7688044937231",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          3
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0x00ca001f304d611dbcb55448ec56ba5319299ed93ce38317fb4b6ec7923df11c",
+        "nextContextHash": "0x84dbf506cec1b1b30b64cbb39aa7968b89b6c5bdce58693a505d05eb7c7e1c12",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "28260051",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x84dbf506cec1b1b30b64cbb39aa7968b89b6c5bdce58693a505d05eb7c7e1c12",
+        "69",
+        "3",
+        "69",
+        "0",
+        "2",
+        "56",
+        "3504694296579",
+        "3"
+      ],
+      "chunk": {
+        "address": "0x813c3168130b52C6F7B9f78766059d76963f4827",
+        "runtimeCodeHash": "0x2c3702eafa4fc0e1f2e8c533d582c1235aaa48730d00d091f031bc2e94690d29",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 57,
+      "requestedTokens": 1,
+      "tokens": [
+        1
+      ],
+      "text": "",
+      "before": [
+        "0x84dbf506cec1b1b30b64cbb39aa7968b89b6c5bdce58693a505d05eb7c7e1c12",
+        "69",
+        "3",
+        "69",
+        "0",
+        "2",
+        "56",
+        "3504694296579",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          1
+        ],
+        "endedEos": true,
+        "endedSentence": false,
+        "lastLogitHash": "0x5c30ee1e05df9eecf79c9810a16764f194477ea85a7a2ad09feec19eb2e7aef1",
+        "nextContextHash": "0xe3fb3ef81cbb011cd9c258a3d94bd41d0b9d35e667bf7daad85922b1cda425f5",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "28255696",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0xe3fb3ef81cbb011cd9c258a3d94bd41d0b9d35e667bf7daad85922b1cda425f5",
+        "70",
+        "1",
+        "70",
+        "0",
+        "3",
+        "57",
+        "64424706049",
+        "3"
+      ],
+      "chunk": {
+        "address": "0x197bEA93F2495E08293b735aB21189c725418456",
+        "runtimeCodeHash": "0x10be64a39dbacad8ab7e38024112c54f3c13223df55a269c6d2bbb8171c45370",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 58,
+      "requestedTokens": 1,
+      "tokens": [
+        1592
+      ],
+      "text": "quietly",
+      "before": [
+        "0xe3fb3ef81cbb011cd9c258a3d94bd41d0b9d35e667bf7daad85922b1cda425f5",
+        "70",
+        "1",
+        "70",
+        "0",
+        "3",
+        "57",
+        "64424706049",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          1592
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0xd6bde3e951787a86da12f9517e545ded25d9cf497dd36e614d761e7212b3c325",
+        "nextContextHash": "0x66cddf5ef7d306f277226895e21f9747f80e6b727845826b61a4602c0d8ead9c",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "28269739",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x66cddf5ef7d306f277226895e21f9747f80e6b727845826b61a4602c0d8ead9c",
+        "71",
+        "1592",
+        "71",
+        "0",
+        "3",
+        "58",
+        "12884969016",
+        "3"
+      ],
+      "chunk": {
+        "address": "0xbdc772b446083124f59Bb46105544C0445E60325",
+        "runtimeCodeHash": "0xecaeef7b85af89fef8ea757633c37558824ee263f5a697429525912e4eb12f8d",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 59,
+      "requestedTokens": 1,
+      "tokens": [
+        13
+      ],
+      "text": ",",
+      "before": [
+        "0x66cddf5ef7d306f277226895e21f9747f80e6b727845826b61a4602c0d8ead9c",
+        "71",
+        "1592",
+        "71",
+        "0",
+        "3",
+        "58",
+        "12884969016",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          13
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0xf371b0f5f989489fde66f407ca12c35ce6e41705a47312a7454fb24eed5f24cb",
+        "nextContextHash": "0xedbbfefa8ad4a456981e4a791c9bf3c11e32119d4a680e30e1088987a9adf71d",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "28247623",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0xedbbfefa8ad4a456981e4a791c9bf3c11e32119d4a680e30e1088987a9adf71d",
+        "72",
+        "13",
+        "72",
+        "0",
+        "4",
+        "59",
+        "4399300621",
+        "3"
+      ],
+      "chunk": {
+        "address": "0x384C72adF7AF1692056AbBccf6140E13963D5F46",
+        "runtimeCodeHash": "0x3e97ed6cb7bfad33b90b563725ea5bc2f11dae8fd801115d7ebb5e795e01cf78",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 60,
+      "requestedTokens": 1,
+      "tokens": [
+        32
+      ],
+      "text": "a",
+      "before": [
+        "0xedbbfefa8ad4a456981e4a791c9bf3c11e32119d4a680e30e1088987a9adf71d",
+        "72",
+        "13",
+        "72",
+        "0",
+        "4",
+        "59",
+        "4399300621",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          32
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0x1c0b626bc0511c7d1c9e3cc6c2622c82c908cfa2fbbf2d7f574206c41566f355",
+        "nextContextHash": "0x2d586788fa48865150fd0fc34931954dfbf2e27859fca0c542212971bb26dc4d",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "28284355",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x2d586788fa48865150fd0fc34931954dfbf2e27859fca0c542212971bb26dc4d",
+        "73",
+        "32",
+        "73",
+        "0",
+        "4",
+        "60",
+        "6837588787232",
+        "3"
+      ],
+      "chunk": {
+        "address": "0x8c9c10739A0Ed8F808a3EAf9BEa33f4A0f9176CA",
+        "runtimeCodeHash": "0x5aa6876631f11319da7f57b051cd02ce313e996245051ec5b7fb16e656735c16",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 61,
+      "requestedTokens": 1,
+      "tokens": [
+        797
+      ],
+      "text": "young",
+      "before": [
+        "0x2d586788fa48865150fd0fc34931954dfbf2e27859fca0c542212971bb26dc4d",
+        "73",
+        "32",
+        "73",
+        "0",
+        "4",
+        "60",
+        "6837588787232",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          797
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0xd26384e0de51bebbd91849126f5557e6856d76a61fdacc65e732b84b5b4efbeb",
+        "nextContextHash": "0x556c810e395b7d1a5897efae8957b42b92cf121d4a19c7f6b90154ddcfd6e6c9",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "28301140",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x556c810e395b7d1a5897efae8957b42b92cf121d4a19c7f6b90154ddcfd6e6c9",
+        "74",
+        "797",
+        "74",
+        "0",
+        "5",
+        "61",
+        "55836672797",
+        "3"
+      ],
+      "chunk": {
+        "address": "0xF68a51a99236A6D58Bae29495A05cE7bd28F70Af",
+        "runtimeCodeHash": "0xd34ca8e29a3546fec5302b3604beb4acc7f86d5bf8153b7c93234a6e942781e6",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 62,
+      "requestedTokens": 1,
+      "tokens": [
+        275
+      ],
+      "text": "girl",
+      "before": [
+        "0x556c810e395b7d1a5897efae8957b42b92cf121d4a19c7f6b90154ddcfd6e6c9",
+        "74",
+        "797",
+        "74",
+        "0",
+        "5",
+        "61",
+        "55836672797",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          275
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0x5294ba4b7b936552a356845e7a29fdb7d03915210b61b492775fc696b6395fef",
+        "nextContextHash": "0x3f67c6d37d1e62e4272ef385d99c914e2edc65aece16c3dbe2e50cf430e4e5a5",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "28311537",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x3f67c6d37d1e62e4272ef385d99c914e2edc65aece16c3dbe2e50cf430e4e5a5",
+        "75",
+        "275",
+        "75",
+        "0",
+        "5",
+        "62",
+        "137491185939",
+        "3"
+      ],
+      "chunk": {
+        "address": "0x02FC34520bb78e4D756a080f149080Bd49aDD0cD",
+        "runtimeCodeHash": "0xd239bd1f620a7b27679487a546e23a2d930b0aa2331a60f6e330ae092152829b",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 63,
+      "requestedTokens": 1,
+      "tokens": [
+        385
+      ],
+      "text": "named",
+      "before": [
+        "0x3f67c6d37d1e62e4272ef385d99c914e2edc65aece16c3dbe2e50cf430e4e5a5",
+        "75",
+        "275",
+        "75",
+        "0",
+        "5",
+        "62",
+        "137491185939",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          385
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0x6c92b18732acf8821bd3b50a5ec24a3cf8a40d4e8e0dfdc76da740cc7fccaf4d",
+        "nextContextHash": "0x9e8e58c87b5d6d95004a2702bef279bd1fc2b2ac1fcd3babbef95fdbae3c1359",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "28303387",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x9e8e58c87b5d6d95004a2702bef279bd1fc2b2ac1fcd3babbef95fdbae3c1359",
+        "76",
+        "385",
+        "76",
+        "0",
+        "6",
+        "63",
+        "3423106957697",
+        "3"
+      ],
+      "chunk": {
+        "address": "0x92D535998dC09fAbfc1BA463EBeF2F9895F3BB7c",
+        "runtimeCodeHash": "0xd24c40cf7a25e747b408e6f94daafe981ca493f182f6fa8c0b3cf395926f176f",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 64,
+      "requestedTokens": 1,
+      "tokens": [
+        308
+      ],
+      "text": "mia",
+      "before": [
+        "0x9e8e58c87b5d6d95004a2702bef279bd1fc2b2ac1fcd3babbef95fdbae3c1359",
+        "76",
+        "385",
+        "76",
+        "0",
+        "6",
+        "63",
+        "3423106957697",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          308
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0xd960666bfe2cde6be9537dbb50ab3934cad87dfdf89458d45a05ddf2ae1d8d64",
+        "nextContextHash": "0x7efeb158c17134ed3064e36b1eb00f7f9eaef555172cc4b23620ed45a7d30237",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "28313881",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x7efeb158c17134ed3064e36b1eb00f7f9eaef555172cc4b23620ed45a7d30237",
+        "77",
+        "308",
+        "77",
+        "0",
+        "6",
+        "64",
+        "1181141238068",
+        "3"
+      ],
+      "chunk": {
+        "address": "0xFa70d71B017DE51Ba41285f1cb2Be1bB186F8448",
+        "runtimeCodeHash": "0xf53f143d5271112b438e518b9faaffecb21d3089cf42719389607df511e7884e",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 65,
+      "requestedTokens": 1,
+      "tokens": [
+        572
+      ],
+      "text": "sat",
+      "before": [
+        "0x7efeb158c17134ed3064e36b1eb00f7f9eaef555172cc4b23620ed45a7d30237",
+        "77",
+        "308",
+        "77",
+        "0",
+        "6",
+        "64",
+        "1181141238068",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          572
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0x23bda9beaa01ac651a97dc72b6215012a87c0507db4a828455c0039fd9f0394f",
+        "nextContextHash": "0x26f1e08b1010e42a60f27c41d2af2c5b778607c8db22771b83fd7a771ede0102",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "28316164",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x26f1e08b1010e42a60f27c41d2af2c5b778607c8db22771b83fd7a771ede0102",
+        "78",
+        "572",
+        "78",
+        "0",
+        "7",
+        "65",
+        "1653582594620",
+        "3"
+      ],
+      "chunk": {
+        "address": "0x06A0964E9bA1254CA872Eda87e4e0035E679C904",
+        "runtimeCodeHash": "0xc69b4419a68f2417f68d4d9ac3ae25639e43640fba6245a83771e8c728915897",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 66,
+      "requestedTokens": 1,
+      "tokens": [
+        108
+      ],
+      "text": "in",
+      "before": [
+        "0x26f1e08b1010e42a60f27c41d2af2c5b778607c8db22771b83fd7a771ede0102",
+        "78",
+        "572",
+        "78",
+        "0",
+        "7",
+        "65",
+        "1653582594620",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          108
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0xf88868507095fe651a2b3554cf4940da260d818ccc7dacabfea232a77ce8f8ff",
+        "nextContextHash": "0xa515d621fa268773a6229e7a4d05b336a8c0c7450a885b3f39aa84526361dc16",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "28322697",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0xa515d621fa268773a6229e7a4d05b336a8c0c7450a885b3f39aa84526361dc16",
+        "79",
+        "108",
+        "79",
+        "0",
+        "7",
+        "66",
+        "1322887413868",
+        "3"
+      ],
+      "chunk": {
+        "address": "0xa171Ac368d34BF328287E723b6FBc1B302532599",
+        "runtimeCodeHash": "0x6f36f09f0b3cc85e2b6592cbc55b9d2a9adc089520d870500d25b4a481d28e12",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 67,
+      "requestedTokens": 1,
+      "tokens": [
+        120
+      ],
+      "text": "it",
+      "before": [
+        "0xa515d621fa268773a6229e7a4d05b336a8c0c7450a885b3f39aa84526361dc16",
+        "79",
+        "108",
+        "79",
+        "0",
+        "7",
+        "66",
+        "1322887413868",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          120
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0x7a332c9cc84f7324a6436211227417dc5c6b652fb002a5043427bb293132db59",
+        "nextContextHash": "0x9a74966b1d83e21115686315fcfb75dc96e6c213321caebb837ed4344349fa4d",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "28329706",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x9a74966b1d83e21115686315fcfb75dc96e6c213321caebb837ed4344349fa4d",
+        "80",
+        "120",
+        "80",
+        "0",
+        "8",
+        "67",
+        "2456728371320",
+        "3"
+      ],
+      "chunk": {
+        "address": "0x90804072591De4B544F9A152bF3B246294c2c9aD",
+        "runtimeCodeHash": "0xfcdb96a98ebfabb38526a7c9b1d1279d0b88e5132ea19f88a15d443f20aece0a",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 68,
+      "requestedTokens": 1,
+      "tokens": [
+        15
+      ],
+      "text": ".",
+      "before": [
+        "0x9a74966b1d83e21115686315fcfb75dc96e6c213321caebb837ed4344349fa4d",
+        "80",
+        "120",
+        "80",
+        "0",
+        "8",
+        "67",
+        "2456728371320",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          15
+        ],
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0x71aef86a1a15080ce336d3009031dadc5241ffb1c173b2e8378df7cb86105efb",
+        "nextContextHash": "0x51a864e53cc580ce2cf450041f9290d89c92dd73028a1e9f232455368c2157e1",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "28297327",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x51a864e53cc580ce2cf450041f9290d89c92dd73028a1e9f232455368c2157e1",
+        "81",
+        "15",
+        "81",
+        "0",
+        "9",
+        "68",
+        "463864332303",
+        "3"
+      ],
+      "chunk": {
+        "address": "0xE8Bc322093551a75A2AB8e9FAe8Be0a58AAB66F8",
+        "runtimeCodeHash": "0x785a62c25d6c0ac81cbb1ff53b8681281b15e588c6243e1d854937213c6aaf47",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 69,
+      "requestedTokens": 1,
+      "tokens": [
+        106
+      ],
+      "text": "she",
+      "before": [
+        "0x51a864e53cc580ce2cf450041f9290d89c92dd73028a1e9f232455368c2157e1",
+        "81",
+        "15",
+        "81",
+        "0",
+        "9",
+        "68",
+        "463864332303",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          106
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0x1f77150401af992720a009dc7fcba0816a7a3d51c9faa0f4cc6f1f9c1e6687a0",
+        "nextContextHash": "0xb9a39d00db1d89eff070790e915bd826560abb3d7ca8051a7f41d1c8a9e4dea6",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "28347711",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0xb9a39d00db1d89eff070790e915bd826560abb3d7ca8051a7f41d1c8a9e4dea6",
+        "82",
+        "106",
+        "82",
+        "0",
+        "9",
+        "69",
+        "515397058666",
+        "3"
+      ],
+      "chunk": {
+        "address": "0xA617CB5AF35E5Ce017530aD2A3139BDAFac51C7c",
+        "runtimeCodeHash": "0x284546701979a8caedde1af184dff5cabc81963102e8298e2c110c66562972d7",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 70,
+      "requestedTokens": 1,
+      "tokens": [
+        609
+      ],
+      "text": "loved",
+      "before": [
+        "0xb9a39d00db1d89eff070790e915bd826560abb3d7ca8051a7f41d1c8a9e4dea6",
+        "82",
+        "106",
+        "82",
+        "0",
+        "9",
+        "69",
+        "515397058666",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          609
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0x0c1e2c23c3a499dde495b0866b535b53ad634e761cf3c2006cf54c2fddc94499",
+        "nextContextHash": "0x35e4d2538aa2552ec414680a143a5ceec28dc214e6e9a96feb870935fae5eb2e",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "28329824",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x35e4d2538aa2552ec414680a143a5ceec28dc214e6e9a96feb870935fae5eb2e",
+        "83",
+        "609",
+        "83",
+        "0",
+        "10",
+        "70",
+        "64431456865",
+        "3"
+      ],
+      "chunk": {
+        "address": "0x8f668798A9B132e6bb3371B44DB2E7AfC3c1bfA6",
+        "runtimeCodeHash": "0xba5eb34c7f7619a5a1cfccf053b67e1c2ffc3f073f736c69f124f94db5bf592b",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 71,
+      "requestedTokens": 1,
+      "tokens": [
+        93
+      ],
+      "text": "to",
+      "before": [
+        "0x35e4d2538aa2552ec414680a143a5ceec28dc214e6e9a96feb870935fae5eb2e",
+        "83",
+        "609",
+        "83",
+        "0",
+        "10",
+        "70",
+        "64431456865",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          93
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0x83ccdbdb489ccf385fd6c6c143355076310ff957c391a3a6a41b7487f62c3170",
+        "nextContextHash": "0xe0ca01f8dbbbb008f0f6d139362a571153cae50725dd4208ab3b0f05d3d3e4df",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "28369166",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0xe0ca01f8dbbbb008f0f6d139362a571153cae50725dd4208ab3b0f05d3d3e4df",
+        "84",
+        "93",
+        "84",
+        "0",
+        "10",
+        "71",
+        "455306444893",
+        "3"
+      ],
+      "chunk": {
+        "address": "0xf9bACfD36D79dDe090D5E73A666ea86436319405",
+        "runtimeCodeHash": "0x99676faa6f2cfd851611fc2c38efd2eeaf98b53f30f2fc0e46d210d9bc7a52c0",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 72,
+      "requestedTokens": 1,
+      "tokens": [
+        544
+      ],
+      "text": "read",
+      "before": [
+        "0xe0ca01f8dbbbb008f0f6d139362a571153cae50725dd4208ab3b0f05d3d3e4df",
+        "84",
+        "93",
+        "84",
+        "0",
+        "10",
+        "71",
+        "455306444893",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          544
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0xf12aed6918d9b224788847a6cb0946de35557ccd07a3afeed017ae77beb9ce6e",
+        "nextContextHash": "0xefe5f22e54f0d6d9bd63679a6b1d5193879463b07f66eadfe8e77199a6e3cd3c",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "28367741",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0xefe5f22e54f0d6d9bd63679a6b1d5193879463b07f66eadfe8e77199a6e3cd3c",
+        "85",
+        "544",
+        "85",
+        "0",
+        "11",
+        "72",
+        "2615641178656",
+        "3"
+      ],
+      "chunk": {
+        "address": "0x58217219e21D7d6Fc0E7570b601E05aC375CD23B",
+        "runtimeCodeHash": "0x580d682baa43a3812adeb5168b1716456132a1e4096058137c56f2f61a836a10",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 73,
+      "requestedTokens": 1,
+      "tokens": [
+        120
+      ],
+      "text": "it",
+      "before": [
+        "0xefe5f22e54f0d6d9bd63679a6b1d5193879463b07f66eadfe8e77199a6e3cd3c",
+        "85",
+        "544",
+        "85",
+        "0",
+        "11",
+        "72",
+        "2615641178656",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          120
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0x014f73f8290678ffcdaa34027ccfb9efcef671f76767e106c2c17ff297a5e265",
+        "nextContextHash": "0xdc121b41c2a72a314ad28e2861a5b571c95f2e84e5fb90c0cbbc548713498bd4",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "28367636",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0xdc121b41c2a72a314ad28e2861a5b571c95f2e84e5fb90c0cbbc548713498bd4",
+        "86",
+        "120",
+        "86",
+        "0",
+        "11",
+        "73",
+        "399467610232",
+        "3"
+      ],
+      "chunk": {
+        "address": "0xAa0b41387DC36DEd3E4DcF37f6CC605654d5Ee32",
+        "runtimeCodeHash": "0x167a5478dfb81db2d8a4a4db4e1ece1ad120e2a01c2819da9347ff697447f6c2",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 74,
+      "requestedTokens": 1,
+      "tokens": [
+        94
+      ],
+      "text": "and",
+      "before": [
+        "0xdc121b41c2a72a314ad28e2861a5b571c95f2e84e5fb90c0cbbc548713498bd4",
+        "86",
+        "120",
+        "86",
+        "0",
+        "11",
+        "73",
+        "399467610232",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          94
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0xf0c4ce2306d6d1f669cfe50d2a529ef596c8e015e51528fe32e6aeafa44b4f72",
+        "nextContextHash": "0x359acf5cad21a26d0bb133f2d21f6bedf35052e247f630297c7a3debd2a11529",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "28340809",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x359acf5cad21a26d0bb133f2d21f6bedf35052e247f630297c7a3debd2a11529",
+        "87",
+        "94",
+        "87",
+        "0",
+        "12",
+        "74",
+        "2336470073438",
+        "3"
+      ],
+      "chunk": {
+        "address": "0x04B23D7bfA5784D37D3EA4f852409426f7b63a31",
+        "runtimeCodeHash": "0x48dcd7d297481d93c0ff5870bb26317fb34ee93291cc4e4178acfbe9020ba325",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 75,
+      "requestedTokens": 1,
+      "tokens": [
+        157
+      ],
+      "text": "felt",
+      "before": [
+        "0x359acf5cad21a26d0bb133f2d21f6bedf35052e247f630297c7a3debd2a11529",
+        "87",
+        "94",
+        "87",
+        "0",
+        "12",
+        "74",
+        "2336470073438",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          157
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0x053a741ed63453591e9fbce31e1f26c3f2332dc0a1c68a0411d276725614225c",
+        "nextContextHash": "0x8d41f4f896a7e49e4e86043bf2480407dedb8c342df795cbd82df14e896559f3",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "28395986",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x8d41f4f896a7e49e4e86043bf2480407dedb8c342df795cbd82df14e896559f3",
+        "88",
+        "157",
+        "88",
+        "0",
+        "12",
+        "75",
+        "515402236061",
+        "3"
+      ],
+      "chunk": {
+        "address": "0x6bB7265E38EcAe5814BD1Ec483d41C44AfefdEEd",
+        "runtimeCodeHash": "0xa8d16f64559f8ef5e88ecf2b41147118a1fbff97fcb2a41f1d92ab0dbbabaf05",
+        "runtimeBytes": 2059
+      },
+      "totalText": "i wanted to find a way to use a real mission to a world of chaos. this is a place where people need a machine. \" a small pond, a small pond, a wise old man, sat by the pond. the water ripple showed it how the fish would listen. this was a place where the plants grow. \" quietly, a young girl named mia sat in it. she loved to read it and felt",
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 76,
+      "requestedTokens": 1,
+      "tokens": [
+        32
+      ],
+      "text": "a",
+      "before": [
+        "0x8d41f4f896a7e49e4e86043bf2480407dedb8c342df795cbd82df14e896559f3",
+        "88",
+        "157",
+        "88",
+        "0",
+        "12",
+        "75",
+        "515402236061",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          32
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0xb0441b026713f07d4f9e9a5c36fb3017e7fe472ef363154128a1a21ca8e408c5",
+        "nextContextHash": "0x69a1b930ffd562c05210e219b1e40d94b13112d2fb40f499f422ed5b5188aa14",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "28376080",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x69a1b930ffd562c05210e219b1e40d94b13112d2fb40f499f422ed5b5188aa14",
+        "89",
+        "32",
+        "89",
+        "0",
+        "13",
+        "76",
+        "403737215008",
+        "3"
+      ],
+      "chunk": {
+        "address": "0x7fFDb4c060a2A57cAC1D9d798603ac533f86738C",
+        "runtimeCodeHash": "0xe42cfb5b59febcc9251693f5f2a4b310e0e27c841b03619a50365baa594529fa",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 77,
+      "requestedTokens": 1,
+      "tokens": [
+        451
+      ],
+      "text": "deep",
+      "before": [
+        "0x69a1b930ffd562c05210e219b1e40d94b13112d2fb40f499f422ed5b5188aa14",
+        "89",
+        "32",
+        "89",
+        "0",
+        "13",
+        "76",
+        "403737215008",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          451
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0x684e014ebb43f05c7f51270b9763bc1a67b0028b04157795070049d8d32b1a5e",
+        "nextContextHash": "0xea0c41a78d24d9a01b0220eeacc3d3e0f428678bd1a7776be569c672c830e256",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "28427411",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0xea0c41a78d24d9a01b0220eeacc3d3e0f428678bd1a7776be569c672c830e256",
+        "90",
+        "451",
+        "90",
+        "0",
+        "13",
+        "77",
+        "674311963075",
+        "3"
+      ],
+      "chunk": {
+        "address": "0xb02aB207c14290557EAc83111BDBd2986062A108",
+        "runtimeCodeHash": "0x4b1dc8a2d6be218b70d132836cf5e579c253c915ece2f225ae488f2ec422d73b",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 78,
+      "requestedTokens": 1,
+      "tokens": [
+        3030
+      ],
+      "text": "emptiness",
+      "before": [
+        "0xea0c41a78d24d9a01b0220eeacc3d3e0f428678bd1a7776be569c672c830e256",
+        "90",
+        "451",
+        "90",
+        "0",
+        "13",
+        "77",
+        "674311963075",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          3030
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0x61c7040f1dfcc0bb0b216127685d53b20d1bea3d5d455b9de27b15abec9863db",
+        "nextContextHash": "0x59b8111a8cb92b042fd58d1de36a10b683ed73b05324729f629cbc590d5ffb33",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "28405090",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x59b8111a8cb92b042fd58d1de36a10b683ed73b05324729f629cbc590d5ffb33",
+        "91",
+        "3030",
+        "91",
+        "0",
+        "14",
+        "78",
+        "137468513238",
+        "3"
+      ],
+      "chunk": {
+        "address": "0xc162767FbA1312e360C467dB50b8d1FA385ae497",
+        "runtimeCodeHash": "0x32c3988d14b43523d9324d89ca719a2355e39eaffdc090f9ba6b4c3f5656da10",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 79,
+      "requestedTokens": 1,
+      "tokens": [
+        15
+      ],
+      "text": ".",
+      "before": [
+        "0x59b8111a8cb92b042fd58d1de36a10b683ed73b05324729f629cbc590d5ffb33",
+        "91",
+        "3030",
+        "91",
+        "0",
+        "14",
+        "78",
+        "137468513238",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          15
+        ],
+        "endedEos": false,
+        "endedSentence": true,
+        "lastLogitHash": "0xe1f251097f933f1df35e5e2b95e9894abc8f0c6a86df66e120cf054166b40676",
+        "nextContextHash": "0x7833e5c0d964be0e930f228d823f0e921dbe3e4bd5e63593801256068145edda",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "28378582",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x7833e5c0d964be0e930f228d823f0e921dbe3e4bd5e63593801256068145edda",
+        "92",
+        "15",
+        "92",
+        "0",
+        "15",
+        "79",
+        "1937228824591",
+        "3"
+      ],
+      "chunk": {
+        "address": "0x80Ae90aa139E4C4f4Ad13B57Fa8c4855CF953acd",
+        "runtimeCodeHash": "0x7af4e332ae32373828717d38f561003548b148e432a1d25b5ddfc3872fabfd69",
+        "runtimeBytes": 2059
+      },
+      "independentReferenceVerified": true
+    },
+    {
+      "turn": 80,
+      "requestedTokens": 1,
+      "tokens": [
+        85
+      ],
+      "text": "the",
+      "before": [
+        "0x7833e5c0d964be0e930f228d823f0e921dbe3e4bd5e63593801256068145edda",
+        "92",
+        "15",
+        "92",
+        "0",
+        "15",
+        "79",
+        "1937228824591",
+        "3"
+      ],
+      "preview": {
+        "tokens": [
+          85
+        ],
+        "endedEos": false,
+        "endedSentence": false,
+        "lastLogitHash": "0x03855c14acb794172e3f5f286f7118a2703724ac677bb6274acf52c39b358209",
+        "nextContextHash": "0x7f5f26dce81aa8a0330652f61ad561ff6b6821cc52471a8c6fee77ad1a723ec0",
+        "refreshed": false
+      },
+      "swap": {
+        "status": 1,
+        "gasUsed": "28390171",
+        "gasLimit": "32000000",
+        "previewAndExecutionMatch": true,
+        "settlementVerified": true
+      },
+      "after": [
+        "0x7f5f26dce81aa8a0330652f61ad561ff6b6821cc52471a8c6fee77ad1a723ec0",
+        "93",
+        "85",
+        "93",
+        "0",
+        "16",
+        "80",
+        "13013751890005",
+        "3"
+      ],
+      "chunk": {
+        "address": "0xb939180CD80039C33b64C172B84f7aB9506232f6",
+        "runtimeCodeHash": "0xbd3710ad265fd4142f07200c6c26e8ed1405b5d755662efe4f1da8c8445ee0e1",
+        "runtimeBytes": 2059
+      },
+      "totalText": "i wanted to find a way to use a real mission to a world of chaos. this is a place where people need a machine. \" a small pond, a small pond, a wise old man, sat by the pond. the water ripple showed it how the fish would listen. this was a place where the plants grow. \" quietly, a young girl named mia sat in it. she loved to read it and felt a deep emptiness. the",
+      "independentReferenceVerified": true
+    }
+  ],
+  "checks": {
+    "verifiedInjectedRuntimes": 544,
+    "poolStartsWithEmptyModelContext": true,
+    "unauthorizedCallbacksRejected": true,
+    "previewRejectsChangedModelRuntime": true,
+    "malformedHookDataRejectedAtomically": true,
+    "lowGasRejectedWithoutStateAdvance": true,
+    "forcedRollbackAfterInference": {
+      "status": 0,
+      "gasUsed": "16349147"
+    },
+    "staleRevisionAndContextRejected": true,
+    "forgedContextHashRejected": true,
+    "staleRevisionRejected": true,
+    "modifiedActiveHistoryChunkRejected": true,
+    "untrustedCallerCannotAdvanceHookNamespace": true,
+    "poolStoriesIsolated": {
+      "secondPoolId": "0x66cc258c11d73100fd21ace3b7086eac4f1fdcfe12586a6bbfad0b8dcab96e0c",
+      "secondPoolFirstTokens": [
+        40,
+        386
+      ],
+      "gasUsed": "16351060"
+    },
+    "allSuccessfulSwapPreviewsMatchExecution": true,
+    "modelGeneratedEveryPersistedContext": true,
+    "globalSamplingStepAndPendingTokenPreserved": true,
+    "sameCallerSeedContinuesInsteadOfResetting": true
+  },
+  "publicTransactionsSubmitted": 0,
+  "limitations": [
+    "Execution uses actual local Uniswap v4 PoolManager and settlement, not the live Robinhood contracts.",
+    "Weight/tile/table runtimes are injected after hash validation to save setup time. Their deployment cost is excluded.",
+    "Stored context comes only from the model after successful local swaps; no story KV state is injected.",
+    "A fixed repeatable seed tests continuity. It does not prove a minimum number of unique stories or good prose.",
+    "Concurrent swaps can make a quote stale; clients must re-read the revision and context hash then preview again."
+  ],
+  "tables": {
+    "sha256": "414c3e8bb8647dd829c688dfaf2ddfc82debf4cc4309bba54834bf9ff1e6bcea",
+    "bytes": 6152,
+    "runtimeCodeHashes": [
+      "0x0980e611959962a96ef9b2385dee4a85e6886b5d9698667a1073c4b593ac9dc6"
+    ]
+  },
+  "weightArtifacts": {
+    "packedSha256": "c4a45e16e0cd2f0f81d4840101b8588351e36b23cc045c8f04a3efea45e93679",
+    "packedBytes": 6258016,
+    "tiles": 282,
+    "tileManifestSha256": "2871053438c34c986511bfbd2998504c1896f665a25428555ae30051ba6deb21",
+    "tileCommitment": "0xb267dd5d992df99017756cb1dd03539fa4844121deca437496a28491a9ffac00",
+    "exportManifestSha256": "fa670b5147ac72a38922f4687470ee163ad6ea1bc2f861499b23c4b7f70616ab"
+  },
+  "modelHash": "0xc58e21f5d3ac0db66c96ea41cda261cf095b8fee61acb8a13959052fa6d74a86",
+  "pool": {
+    "key": {
+      "currency0": "0x5fc8d32690cc91d4c39d9d3abcbd16989f875707",
+      "currency1": "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9",
+      "fee": 3000,
+      "tickSpacing": 60,
+      "hooks": "0x8D6E8B86FdCc26F10eD1c103A55C77DA9F6c9040"
+    },
+    "id": "0xba9479b675cae077b9b643d88eb5709e609cb5dd8203e292f0dc3968048f3abd"
+  },
+  "summary": {
+    "attemptedSwaps": 80,
+    "successfulSwaps": 80,
+    "generatedTokens": 93,
+    "independentReferenceMatches": 80,
+    "minSwapGas": "13321714",
+    "maxSwapGas": "28427411",
+    "maximumProcessedPosition": 93,
+    "attentionWindow": 64,
+    "refreshes": 0,
+    "epochs": 0,
+    "oneTokenTurns": 67,
+    "twoTokenTurns": 13,
+    "reachedContextMilestones": [
+      {
+        "size": 16,
+        "reached": true,
+        "turn": 8,
+        "processedPosition": "16",
+        "gasUsed": "22781863"
+      },
+      {
+        "size": 32,
+        "reached": true,
+        "turn": 19,
+        "processedPosition": "32",
+        "gasUsed": "17632646"
+      },
+      {
+        "size": 64,
+        "reached": true,
+        "turn": 51,
+        "processedPosition": "64",
+        "gasUsed": "28194939"
+      },
+      {
+        "size": 128,
+        "reached": false,
+        "turn": null,
+        "processedPosition": null,
+        "gasUsed": null
+      },
+      {
+        "size": 2047,
+        "reached": false,
+        "turn": null,
+        "processedPosition": null,
+        "gasUsed": null
+      },
+      {
+        "size": 2048,
+        "reached": false,
+        "turn": null,
+        "processedPosition": null,
+        "gasUsed": null
+      },
+      {
+        "size": 2049,
+        "reached": false,
+        "turn": null,
+        "processedPosition": null,
+        "gasUsed": null
+      },
+      {
+        "size": 2050,
+        "reached": false,
+        "turn": null,
+        "processedPosition": null,
+        "gasUsed": null
+      }
+    ],
+    "transcript": "i wanted to find a way to use a real mission to a world of chaos. this is a place where people need a machine. \" a small pond, a small pond, a wise old man, sat by the pond. the water ripple showed it how the fish would listen. this was a place where the plants grow. \" quietly, a young girl named mia sat in it. she loved to read it and felt a deep emptiness. the",
+    "meanSwapGas": "24263784",
+    "saturatedWindowSwaps": 30,
+    "saturatedWindowMinGas": "28194939",
+    "saturatedWindowMaxGas": "28427411"
+  },
+  "completedAt": "2026-10-24T06:01:10.555Z"
+}
