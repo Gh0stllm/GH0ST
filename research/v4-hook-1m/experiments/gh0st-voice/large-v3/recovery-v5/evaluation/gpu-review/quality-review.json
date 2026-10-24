@@ -1,0 +1,22 @@
+{
+  "status": "COMPLETE_QUALITY_FAIL",
+  "selected_for_technical_comparison_only": "gpu-top2-voice-2m",
+  "models": [
+    {
+      "name": "gpu-top2-voice-2m",
+      "weights_sha256": "5601eb5f19797811279933b70e26f03bb80d7513800c7efbc3a9d6f73f945808"
+    },
+    {
+      "name": "gpu-body-voice-2m",
+      "weights_sha256": "4a39a594906f2bd32aa27badf3d18254ae134ab15f9f41572150462a78d66cd3"
+    }
+  ],
+  "outputs_reviewed": 10,
+  "tokens_per_output": 128,
+  "conclusion": "Top2 is less malformed than the body run, but neither reliably produces coherent original first-person comic paragraphs. No decoder variant passes the requested quality gate.",
+  "genre_only": "Avoiding a few fantasy nouns changes some nouns, not the underlying story drift. Seed42 was unchanged; seed0 still drifted into hope, magic and a plant loop.",
+  "genre_and_history_controls": "Top2 avoids some repeated nouns but still has weak causal continuity. Body can become grammatical by switching to third-person story prose, defeating first-person voice.",
+  "copy_overlap": "No exact12-token overlap in any of10outputs with any supplied training source (within document boundaries); does not cover undisclosed pretraining or prove general originality.",
+  "mainnet_actions": 0,
+  "further_training_in_this_review": false
+}
