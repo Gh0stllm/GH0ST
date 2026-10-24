@@ -2,6 +2,8 @@
 
 **Local test candidate. Nothing has been deployed to mainnet.**
 
+The newer [exact-model optimization](../nova-optimization/README.md) demonstrates two swaps per 32M local block and 36.98% lower average gas, using this pool's original security contracts unchanged. The measurements below remain the frozen baseline for comparison.
+
 This adds a fixed-supply N0VA token, permanent liquidity vault, exact-pool inference hook and bounded native-ETH swap router around the selected 8,175,493-parameter model. The selected model weights are unchanged. This is a tested candidate, not an externally audited deployment release.
 
 ## Token and custody
