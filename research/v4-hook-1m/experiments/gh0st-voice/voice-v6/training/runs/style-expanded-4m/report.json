@@ -1,0 +1,251 @@
+{
+  "status": "COMPLETE",
+  "configuration": {
+    "data": "recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v6/training/encoded-expanded",
+    "output": "recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v6/training/runs/style-expanded-4m",
+    "device": "mps",
+    "batch": 128,
+    "width": 128,
+    "warmup": 32,
+    "words": 4000000,
+    "stop": 0,
+    "every": 1000000,
+    "voice_weight": 0.5,
+    "lr": 0.0003,
+    "weight_decay": 0.01,
+    "dropout": 0.1,
+    "seed": 641001,
+    "resume": null,
+    "init_weights": "recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v6/training/runs/foundation-40m/checkpoint-012008587",
+    "warm_source": null,
+    "warm_vocab": null,
+    "max_steps": 10000000,
+    "probe_words": 128
+  },
+  "architecture": {
+    "hidden": 224,
+    "vocabulary": 8192,
+    "groups": 128,
+    "words_per_group": 64,
+    "parameters": 4014560,
+    "input_only_unk": 8193,
+    "domains": 2
+  },
+  "data_manifest_sha256": "4d1b3caae41308366a4c3d4da6ba9c7a8522aa9b67ac56eaba18d8a21022b3c9",
+  "vocabulary_sha256": "c98af7d927c766d5d56d7bc8f0080ba6348fed6d402f33627546bba8cbe2d961",
+  "code_sha256": {
+    "train.py": "1ee0d13e4a9574a5548d0578526700360786a56bc2e63bcd3ed1b5cf42bd9680",
+    "engine.py": "83420009cc8ab4425a83a6a9acc74b4ea680b90350b494a67301a35f97ba5bcb",
+    "model.py": "7ea8d5ed21188b65128a0720f4ad1d40fae9086d7b02d305edc08268abba8af1"
+  },
+  "initialization": {
+    "mode": "adaptive_weights_only_new_training_phase",
+    "source_sha256": "3173f387c394f536cb2b277e7d740f87153439dc9c15532d81065307761f7d76",
+    "source_checkpoint": "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v6/training/runs/foundation-40m/checkpoint-012008587",
+    "word_counter": "This new phase only; prior training is documented at source."
+  },
+  "loss": "group CE + conditional-word CE, known targets only; unknown inputs retained",
+  "continuity": "128-word windows,32-word masked burn-in for mid-paragraph starts; reset only at new source paragraph",
+  "snapshots": [
+    {
+      "words": 0,
+      "steps": 0,
+      "elapsed": 0.2400302499991085,
+      "training_seconds": 0.0,
+      "new_words_per_second": 0.0,
+      "validation": {
+        "domains": {
+          "0": {
+            "nll_known_target": 5.00825348765134,
+            "words": 7764,
+            "perplexity": 149.6431541708094
+          },
+          "1": {
+            "nll_known_target": 5.146153043617623,
+            "words": 7507,
+            "perplexity": 171.76942817324357
+          }
+        },
+        "balanced_nll": 5.077203265634481,
+        "saturation_fraction": 0.02450507027762277
+      },
+      "checkpoint": "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v6/training/runs/style-expanded-4m/checkpoint-000000000",
+      "weight_sha256": "3173f387c394f536cb2b277e7d740f87153439dc9c15532d81065307761f7d76",
+      "clipped_parameters": 0,
+      "new_domain_words": {}
+    },
+    {
+      "words": 1006452,
+      "steps": 72,
+      "elapsed": 20.856946542000514,
+      "training_seconds": 20.451136669991683,
+      "new_words_per_second": 49212.521349817434,
+      "validation": {
+        "domains": {
+          "0": {
+            "nll_known_target": 4.965703839435214,
+            "words": 7764,
+            "perplexity": 143.40945198756697
+          },
+          "1": {
+            "nll_known_target": 5.156315823980951,
+            "words": 7507,
+            "perplexity": 173.52398362459067
+          }
+        },
+        "balanced_nll": 5.061009831708082,
+        "saturation_fraction": 0.02408327375139509
+      },
+      "checkpoint": "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v6/training/runs/style-expanded-4m/checkpoint-001006452",
+      "weight_sha256": "703be567704c8c899c3fe4d7cb5e3ab206c8f6ed83dde65dfd4208e4adbeec76",
+      "clipped_parameters": 0,
+      "new_domain_words": {
+        "0": 557806,
+        "1": 448646
+      }
+    },
+    {
+      "words": 2001477,
+      "steps": 143,
+      "elapsed": 41.12451658399732,
+      "training_seconds": 40.55536137200761,
+      "new_words_per_second": 49351.72397160472,
+      "validation": {
+        "domains": {
+          "0": {
+            "nll_known_target": 4.9644701808829215,
+            "words": 7764,
+            "perplexity": 143.23264277416604
+          },
+          "1": {
+            "nll_known_target": 5.167119672680498,
+            "words": 7507,
+            "perplexity": 175.40887419150266
+          }
+        },
+        "balanced_nll": 5.0657949267817095,
+        "saturation_fraction": 0.024628775460379466
+      },
+      "checkpoint": "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v6/training/runs/style-expanded-4m/checkpoint-002001477",
+      "weight_sha256": "117a50d3d116d13e6a05b924447d9c9cb5230fc1cd6443a0708791a095095326",
+      "clipped_parameters": 0,
+      "new_domain_words": {
+        "0": 1117263,
+        "1": 884214
+      }
+    },
+    {
+      "words": 3003974,
+      "steps": 215,
+      "elapsed": 61.49475804199756,
+      "training_seconds": 60.759546125998895,
+      "new_words_per_second": 49440.36273362821,
+      "validation": {
+        "domains": {
+          "0": {
+            "nll_known_target": 4.962690004548236,
+            "words": 7764,
+            "perplexity": 142.97789023264428
+          },
+          "1": {
+            "nll_known_target": 5.173292166894232,
+            "words": 7507,
+            "perplexity": 176.49493284967335
+          }
+        },
+        "balanced_nll": 5.067991085721234,
+        "saturation_fraction": 0.025432586669921875
+      },
+      "checkpoint": "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v6/training/runs/style-expanded-4m/checkpoint-003003974",
+      "weight_sha256": "65268ead7ab4f3314e5d981675cbe4fff15fce6ded9646c4a44dd53339b15df8",
+      "clipped_parameters": 0,
+      "new_domain_words": {
+        "0": 1664869,
+        "1": 1339105
+      }
+    },
+    {
+      "words": 4006225,
+      "steps": 287,
+      "elapsed": 83.23480704199756,
+      "training_seconds": 82.30542987499939,
+      "new_words_per_second": 48675.09963904468,
+      "validation": {
+        "domains": {
+          "0": {
+            "nll_known_target": 4.962376936018805,
+            "words": 7764,
+            "perplexity": 142.93313536084446
+          },
+          "1": {
+            "nll_known_target": 5.175691880286732,
+            "words": 7507,
+            "perplexity": 176.91897869449417
+          }
+        },
+        "balanced_nll": 5.069034408152769,
+        "saturation_fraction": 0.02546991620744978
+      },
+      "checkpoint": "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v6/training/runs/style-expanded-4m/checkpoint-004006225",
+      "weight_sha256": "4ace012498954f7b49fb545c72da5763be751c58353e8fe8c510e1b414f989c3",
+      "clipped_parameters": 0,
+      "new_domain_words": {
+        "0": 2213381,
+        "1": 1792844
+      }
+    }
+  ],
+  "history": [
+    {
+      "words": 1399082,
+      "steps": 100,
+      "nll": 4.328314304351807,
+      "lr": 0.00023172377422250607,
+      "gradient_norm": 0.16135172545909882,
+      "elapsed": 29.12104366699714
+    },
+    {
+      "words": 2795304,
+      "steps": 200,
+      "nll": 4.337162494659424,
+      "lr": 9.906890082188344e-05,
+      "gradient_norm": 0.16648975014686584,
+      "elapsed": 56.79278254199744
+    }
+  ],
+  "quality_approval": false,
+  "mainnet_actions": 0,
+  "best": {
+    "words": 1006452,
+    "steps": 72,
+    "elapsed": 20.856946542000514,
+    "training_seconds": 20.451136669991683,
+    "new_words_per_second": 49212.521349817434,
+    "validation": {
+      "domains": {
+        "0": {
+          "nll_known_target": 4.965703839435214,
+          "words": 7764,
+          "perplexity": 143.40945198756697
+        },
+        "1": {
+          "nll_known_target": 5.156315823980951,
+          "words": 7507,
+          "perplexity": 173.52398362459067
+        }
+      },
+      "balanced_nll": 5.061009831708082,
+      "saturation_fraction": 0.02408327375139509
+    },
+    "checkpoint": "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v6/training/runs/style-expanded-4m/checkpoint-001006452",
+    "weight_sha256": "703be567704c8c899c3fe4d7cb5e3ab206c8f6ed83dde65dfd4208e4adbeec76",
+    "clipped_parameters": 0,
+    "new_domain_words": {
+      "0": 557806,
+      "1": 448646
+    }
+  },
+  "words": 4006225,
+  "steps": 287,
+  "elapsed": 83.24350845899971
+}

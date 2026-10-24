@@ -22,6 +22,7 @@ def main():
     p.add_argument('--voice-weight',type=float,default=.10);p.add_argument('--lr',type=float,default=.001)
     p.add_argument('--weight-decay',type=float,default=.01);p.add_argument('--dropout',type=float,default=.1)
     p.add_argument('--seed',type=int,default=641001);p.add_argument('--resume',type=Path)
+    p.add_argument('--init-weights',type=Path,help='Initialize all adaptive weights, reset optimizer and phase word count')
     p.add_argument('--warm-source',type=Path);p.add_argument('--warm-vocab',type=Path)
     p.add_argument('--max-steps',type=int,default=10000000);p.add_argument('--probe-words',type=int,default=128)
     a=p.parse_args();assert not a.output.exists();assert 0<=a.voice_weight<=1 and 0<=a.warmup<a.width
@@ -40,6 +41,11 @@ def main():
             model.embedding.weight[UNK].copy_(old['embedding.weight'].mean(0))
         warm={'mode':'mapped_embeddings_and_recurrent_body_only','matched_words':matched,'source_sha256':sha(a.warm_source/'model.safetensors'),'output_head':'fresh'}
     if a.resume:model.load_state_dict(load_file(a.resume/'model.safetensors'))
+    if a.init_weights:
+        assert not a.resume and not a.warm_source
+        model.load_state_dict(load_file(a.init_weights/'model.safetensors'))
+        warm={'mode':'adaptive_weights_only_new_training_phase','source_sha256':sha(a.init_weights/'model.safetensors'),
+              'source_checkpoint':str(a.init_weights.resolve()),'word_counter':'This new phase only; prior training is documented at source.'}
     device=torch.device(a.device);model.to(device)
     opt=torch.optim.AdamW(model.parameters(),lr=a.lr,weight_decay=a.weight_decay,foreach=False)
     seen=steps=0

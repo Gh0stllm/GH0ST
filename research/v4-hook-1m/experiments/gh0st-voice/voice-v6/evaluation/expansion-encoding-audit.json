@@ -1,0 +1,33 @@
+{
+  "status": "PASS",
+  "checks": {
+    "vocabulary_unchanged": true,
+    "vocabulary_bin_unchanged": true,
+    "validation_unchanged": true,
+    "test_unchanged": true,
+    "old_train_rows_unchanged": true,
+    "exactly_120_new_rows": true,
+    "new_all_train_voice": true,
+    "new_ids_unique": true,
+    "all_new_encoding_exact": true,
+    "no_bos_target": true,
+    "no_new_group_in_holdout": true
+  },
+  "new_documents": 120,
+  "new_words": 11915,
+  "new_unknown_targets": 1322,
+  "sha256": {
+    "training/encoded/manifest.json": "fd0488c8970fd31f40f3bb589ae14f1f5700ab1b6fff0ecdcea47cc17ed62d88",
+    "training/encoded-expanded/manifest.json": "4d1b3caae41308366a4c3d4da6ba9c7a8522aa9b67ac56eaba18d8a21022b3c9",
+    "training/encoded-expanded/train.jsonl": "58e03f85328d75e1c1d7e83f5e48ca2115719940513a14734128b8b3bcd82395",
+    "training/encoded-expanded/validation.jsonl": "81b2c2adb1a1942ca7e29adec1c221cb42ab9d4a2a5ed30f967b57ebeb5777ba",
+    "training/encoded-expanded/test.jsonl": "f3866b4e12e4dfd7965d0c2d716240347d1f433f77d789aee3c1b66e28834962",
+    "training/encoded-expanded/vocabulary.json": "c98af7d927c766d5d56d7bc8f0080ba6348fed6d402f33627546bba8cbe2d961",
+    "training/prepare.py": "48ed1db71cda4818ef343aa518d4ca7b2e15ff4d62d9a5d982ff0cd43476a9e6"
+  },
+  "limitations": [
+    "Dataset leakage and encoding audit only; no heldout test likelihood or generated test quality evaluated.",
+    "Input-only UNK retains all unknown context positions, but runtime never emits those unknown words.",
+    "New known-target coverage is 88.91%; a large count of prose words alone does not demonstrate learned grammar."
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "status": "QUALITY_FAIL",
+  "source": {
+    "checkpoint": "experiments/gh0st-voice/voice-v6/training/runs/foundation-40m/checkpoint-012008587",
+    "weights_sha256": "3173f387c394f536cb2b277e7d740f87153439dc9c15532d81065307761f7d76",
+    "vocabulary_sha256": "c98af7d927c766d5d56d7bc8f0080ba6348fed6d402f33627546bba8cbe2d961",
+    "normalizer_sha256": "48ed1db71cda4818ef343aa518d4ca7b2e15ff4d62d9a5d982ff0cd43476a9e6"
+  },
+  "raw_outputs_sha256": "24e0bc6ff4e0fe9c64c19845bc73fb55a5456d925c2cb775d608b64a386ac0ea",
+  "scope": "All4 fixed unprompted BOS streams,2seeds x128words,T512/T1024. This is an FP32 diagnostic; no final test evaluated.",
+  "reviews": [
+    {
+      "seed": 0,
+      "temperature_q10": 512,
+      "grammar": 1,
+      "continuity": 1,
+      "voice": 1,
+      "repetition": 2,
+      "pass": false,
+      "reason": "Malformed object/complement syntax, e.g. \"put the table a small place\" and \"a small space of the waiting\". Repeated small/story/thing replaces connected events."
+    },
+    {
+      "seed": 42,
+      "temperature_q10": 512,
+      "grammar": 1,
+      "continuity": 1,
+      "voice": 1,
+      "repetition": 2,
+      "pass": false,
+      "reason": "Long subordinate run-on with lost referents, e.g. \"make a wish it was\" and \"i am not the most note\"."
+    },
+    {
+      "seed": 0,
+      "temperature_q10": 1024,
+      "grammar": 1,
+      "continuity": 1,
+      "voice": 1,
+      "repetition": 2,
+      "pass": false,
+      "reason": "Article/agreement/tense errors, e.g. \"i finally trying\", \"did you can\", \"coin are\"; disconnected images."
+    },
+    {
+      "seed": 42,
+      "temperature_q10": 1024,
+      "grammar": 1,
+      "continuity": 1,
+      "voice": 1,
+      "repetition": 2,
+      "pass": false,
+      "reason": "Missing predicates and agreement, e.g. \"i respect for a note\" and \"the room however win\"; no stable idea."
+    }
+  ],
+  "conclusion": "Best-foundation validation snapshot is not fluent. Style adaptation must be judged by raw grammar rather than assuming the baseline is already coherent."
+}

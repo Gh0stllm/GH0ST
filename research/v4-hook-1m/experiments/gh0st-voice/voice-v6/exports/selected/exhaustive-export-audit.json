@@ -1,0 +1,463 @@
+{
+  "status": "PASS",
+  "auditor_sha256": "f089c49f0b0406d0427d63be40120c9f39e2fa2b10bfa1798272d7cd328835a5",
+  "scope": "Exhaustive offline checkpoint-to-export numeric, packing and vocabulary audit. No EVM, network, mainnet, or language-quality claim.",
+  "checkpoint": "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v6/training/runs/style-expanded-4m/checkpoint-001006452",
+  "export": "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v6/exports/style-selected-1m",
+  "quantization": "Manual floor/fraction nearest-even Q10 on every source float; crosschecked against numpy.rint. No clipping.",
+  "source_parameter_count": 4014560,
+  "source_tensors_quantized": 10,
+  "source_values_quantized": 4014560,
+  "direct_export_tensor_values_compared": 4014336,
+  "fused_values_compared": 5505696,
+  "fusion": "For every row0..8192 and column0..671, decode signed40 and compare int64 embeddingQ10 @ wxQ10.T + (bhQ10 + domain0Q10)*1024. No division occurs before packing.",
+  "fused_range": {
+    "min": -6601285,
+    "max": 7353091,
+    "width_bits": 40,
+    "wrong_domain1_mismatches": 5497503
+  },
+  "source_tensor_ranges": {
+    "bh": {
+      "shape": [
+        672
+      ],
+      "values": 672,
+      "float_min": -0.08061522245407104,
+      "float_max": 1.0752359628677368,
+      "q10_min": -83,
+      "q10_max": 1101,
+      "half_integer_ties_checked": 0,
+      "nearest_even_matches_numpy_crosscheck": true
+    },
+    "domain.weight": {
+      "shape": [
+        2,
+        672
+      ],
+      "values": 1344,
+      "float_min": -0.9479478001594543,
+      "float_max": 0.5870554447174072,
+      "q10_min": -971,
+      "q10_max": 601,
+      "half_integer_ties_checked": 0,
+      "nearest_even_matches_numpy_crosscheck": true
+    },
+    "embedding.weight": {
+      "shape": [
+        8194,
+        224
+      ],
+      "values": 1835456,
+      "float_min": -0.5316939353942871,
+      "float_max": 0.552237868309021,
+      "q10_min": -544,
+      "q10_max": 565,
+      "half_integer_ties_checked": 13,
+      "nearest_even_matches_numpy_crosscheck": true
+    },
+    "group_bias.weight": {
+      "shape": [
+        128,
+        1
+      ],
+      "values": 128,
+      "float_min": -7.629766464233398,
+      "float_max": -0.6793199181556702,
+      "q10_min": -7813,
+      "q10_max": -696,
+      "half_integer_ties_checked": 0,
+      "nearest_even_matches_numpy_crosscheck": true
+    },
+    "groups.weight": {
+      "shape": [
+        128,
+        224
+      ],
+      "values": 28672,
+      "float_min": -0.299685537815094,
+      "float_max": 0.25599247217178345,
+      "q10_min": -307,
+      "q10_max": 262,
+      "half_integer_ties_checked": 0,
+      "nearest_even_matches_numpy_crosscheck": true
+    },
+    "wf": {
+      "shape": [
+        672,
+        6
+      ],
+      "values": 4032,
+      "float_min": -0.2652590870857239,
+      "float_max": 0.09192545711994171,
+      "q10_min": -272,
+      "q10_max": 94,
+      "half_integer_ties_checked": 0,
+      "nearest_even_matches_numpy_crosscheck": true
+    },
+    "wh": {
+      "shape": [
+        672,
+        224
+      ],
+      "values": 150528,
+      "float_min": -0.5376715064048767,
+      "float_max": 0.5511037707328796,
+      "q10_min": -551,
+      "q10_max": 564,
+      "half_integer_ties_checked": 2,
+      "nearest_even_matches_numpy_crosscheck": true
+    },
+    "word_bias.weight": {
+      "shape": [
+        8192,
+        1
+      ],
+      "values": 8192,
+      "float_min": -5.497196674346924,
+      "float_max": -2.0300352573394775,
+      "q10_min": -5629,
+      "q10_max": -2079,
+      "half_integer_ties_checked": 2,
+      "nearest_even_matches_numpy_crosscheck": true
+    },
+    "words.weight": {
+      "shape": [
+        8192,
+        224
+      ],
+      "values": 1835008,
+      "float_min": -0.47729891538619995,
+      "float_max": 0.49626609683036804,
+      "q10_min": -489,
+      "q10_max": 508,
+      "half_integer_ties_checked": 10,
+      "nearest_even_matches_numpy_crosscheck": true
+    },
+    "wx": {
+      "shape": [
+        672,
+        224
+      ],
+      "values": 150528,
+      "float_min": -0.8023437857627869,
+      "float_max": 0.7375954985618591,
+      "q10_min": -822,
+      "q10_max": 755,
+      "half_integer_ties_checked": 1,
+      "nearest_even_matches_numpy_crosscheck": true
+    }
+  },
+  "checks": {
+    "all_runtime_embedding_rows": {
+      "pass": true,
+      "actual_shape": [
+        8193,
+        224
+      ],
+      "expected_shape": [
+        8193,
+        224
+      ],
+      "values_compared": 1835232,
+      "mismatched_values": 0,
+      "actual_min": -544,
+      "actual_max": 565
+    },
+    "all_input_projection_weights": {
+      "pass": true,
+      "actual_shape": [
+        672,
+        224
+      ],
+      "expected_shape": [
+        672,
+        224
+      ],
+      "values_compared": 150528,
+      "mismatched_values": 0,
+      "actual_min": -822,
+      "actual_max": 755
+    },
+    "all_input_biases": {
+      "pass": true,
+      "actual_shape": [
+        672
+      ],
+      "expected_shape": [
+        672
+      ],
+      "values_compared": 672,
+      "mismatched_values": 0,
+      "actual_min": -83,
+      "actual_max": 1101
+    },
+    "both_domain_rows_reference": {
+      "pass": true,
+      "actual_shape": [
+        2,
+        672
+      ],
+      "expected_shape": [
+        2,
+        672
+      ],
+      "values_compared": 1344,
+      "mismatched_values": 0,
+      "actual_min": -971,
+      "actual_max": 601
+    },
+    "all_core_recurrent_weights": {
+      "pass": true,
+      "actual_shape": [
+        672,
+        224
+      ],
+      "expected_shape": [
+        672,
+        224
+      ],
+      "values_compared": 150528,
+      "mismatched_values": 0,
+      "actual_min": -551,
+      "actual_max": 564
+    },
+    "all_core_feature_weights": {
+      "pass": true,
+      "actual_shape": [
+        672,
+        6
+      ],
+      "expected_shape": [
+        672,
+        6
+      ],
+      "values_compared": 4032,
+      "mismatched_values": 0,
+      "actual_min": -272,
+      "actual_max": 94
+    },
+    "all_group_weights": {
+      "pass": true,
+      "actual_shape": [
+        128,
+        224
+      ],
+      "expected_shape": [
+        128,
+        224
+      ],
+      "values_compared": 28672,
+      "mismatched_values": 0,
+      "actual_min": -307,
+      "actual_max": 262
+    },
+    "all_group_biases": {
+      "pass": true,
+      "actual_shape": [
+        128,
+        1
+      ],
+      "expected_shape": [
+        128,
+        1
+      ],
+      "values_compared": 128,
+      "mismatched_values": 0,
+      "actual_min": -7813,
+      "actual_max": -696
+    },
+    "all_word_weights": {
+      "pass": true,
+      "actual_shape": [
+        8192,
+        224
+      ],
+      "expected_shape": [
+        8192,
+        224
+      ],
+      "values_compared": 1835008,
+      "mismatched_values": 0,
+      "actual_min": -489,
+      "actual_max": 508
+    },
+    "all_word_biases": {
+      "pass": true,
+      "actual_shape": [
+        8192,
+        1
+      ],
+      "expected_shape": [
+        8192,
+        1
+      ],
+      "values_compared": 8192,
+      "mismatched_values": 0,
+      "actual_min": -5629,
+      "actual_max": -2079
+    },
+    "all_fused_signed40_values": {
+      "pass": true,
+      "actual_shape": [
+        8193,
+        672
+      ],
+      "expected_shape": [
+        8193,
+        672
+      ],
+      "values_compared": 5505696,
+      "mismatched_values": 0,
+      "actual_min": -6601285,
+      "actual_max": 7353091
+    },
+    "all_sigmoid_table_entries": {
+      "pass": true,
+      "actual_shape": [
+        257
+      ],
+      "expected_shape": [
+        257
+      ],
+      "values_compared": 257,
+      "mismatched_values": 0,
+      "actual_min": 0,
+      "actual_max": 32768
+    },
+    "all_exponential_table_entries": {
+      "pass": true,
+      "actual_shape": [
+        257
+      ],
+      "expected_shape": [
+        257
+      ],
+      "values_compared": 257,
+      "mismatched_values": 0,
+      "actual_min": 483,
+      "actual_max": 4294967296
+    }
+  },
+  "training_only_unknown": {
+    "source_embedding_rows": 8194,
+    "runtime_embedding_rows": 8193,
+    "runtime_output_rows": 8192,
+    "BOS_input_id": 8192,
+    "UNK_training_input_id": 8193,
+    "UNK_row_values_excluded": 224,
+    "original_embedding_bytes": 3670464,
+    "fused_rows": 8193,
+    "pass": true
+  },
+  "vocabulary": {
+    "pass": true,
+    "all_rows_compared": 8192,
+    "unique_words": 8192,
+    "nonempty_ascii_words": true,
+    "max_word_bytes": 15,
+    "padding_bytes_verified": 207757,
+    "BOS_or_UNK_output_slots": 0,
+    "matches_encoded_expanded_vocabulary": true
+  },
+  "lookup_tables": {
+    "sigmoid_entries": 257,
+    "sigmoid_bytes": 514,
+    "sigmoid_nondecreasing": true,
+    "sigmoid_endpoints": [
+      0,
+      32768
+    ],
+    "exp_entries": 257,
+    "exp_bytes": 2056,
+    "exp_strictly_decreasing": true,
+    "exp_positive_tail": true,
+    "exp_endpoints": [
+      4294967296,
+      483
+    ],
+    "matches_contract_constants": true,
+    "generation": "60-digit Decimal exponential; nearest-even integer rounding, every entry compared."
+  },
+  "input_hashes": {
+    "exports/style-selected-1m/manifest.json": {
+      "bytes": 4018,
+      "sha256": "fbbfbc9bedbfbffa742e0e78d3451c4557743ed1e99c4612ff3d27524f99c8b0"
+    },
+    "training/runs/style-expanded-4m/checkpoint-001006452/model.safetensors": {
+      "bytes": 16059024,
+      "sha256": "703be567704c8c899c3fe4d7cb5e3ab206c8f6ed83dde65dfd4208e4adbeec76"
+    },
+    "training/runs/style-expanded-4m/checkpoint-001006452/metadata.json": {
+      "bytes": 914,
+      "sha256": "f18d37e1bd6f692dadc4cf23a853cfe47e293c77eafb150a36440020bc0a5ca0"
+    },
+    "exports/style-selected-1m/original-embedding.bin": {
+      "bytes": 3670464,
+      "sha256": "90235cf86f48706fdcfefaf47b571728f48adefb89b761e464c03e9552895ce7"
+    },
+    "exports/style-selected-1m/original-wx.bin": {
+      "bytes": 301056,
+      "sha256": "22e6ddea382dc17b618dce8acc6487148074fc245381f4264c81feeaf0becb5c"
+    },
+    "exports/style-selected-1m/original-bh.bin": {
+      "bytes": 1344,
+      "sha256": "d156925fe5b7fc8608cc2a6bde90a479d907356db2047277bd6d2d92aa745c67"
+    },
+    "exports/style-selected-1m/original-domain.bin": {
+      "bytes": 2688,
+      "sha256": "cbc943e5dc8a255c65acc30e9994e306be2ffe4a58306baf24e8b9ad48cbb869"
+    },
+    "exports/style-selected-1m/core.bin": {
+      "bytes": 309120,
+      "sha256": "f08387ae78d964ad3d0f873bfd789ff84f53e569e0879483bce61c025e66dacd"
+    },
+    "exports/style-selected-1m/groups.bin": {
+      "bytes": 57600,
+      "sha256": "1cb48953216bf954d7dd71cb70976dc7df00a30ce57e4f2913a107097f3e1a78"
+    },
+    "exports/style-selected-1m/words.bin": {
+      "bytes": 3686400,
+      "sha256": "f212d12fdb2037e8d98a76ab7b67c9c2a7288411693964216e395f2b302173de"
+    },
+    "exports/style-selected-1m/fused.bin": {
+      "bytes": 27528480,
+      "sha256": "1fd0bc6ad949b441de21bbae9019b2f0bb1db1e7c9f948b527f16ac49a52e4ee"
+    },
+    "exports/style-selected-1m/vocabulary.json": {
+      "bytes": 103542,
+      "sha256": "c98af7d927c766d5d56d7bc8f0080ba6348fed6d402f33627546bba8cbe2d961"
+    },
+    "training/encoded-expanded/vocabulary.json": {
+      "bytes": 103542,
+      "sha256": "c98af7d927c766d5d56d7bc8f0080ba6348fed6d402f33627546bba8cbe2d961"
+    },
+    "training/encoded-expanded/manifest.json": {
+      "bytes": 3227,
+      "sha256": "4d1b3caae41308366a4c3d4da6ba9c7a8522aa9b67ac56eaba18d8a21022b3c9"
+    },
+    "exports/style-selected-1m/vocabulary.bin": {
+      "bytes": 262144,
+      "sha256": "cfb7ae280c0fb4d3f16686cdff268a2352837881254ca9c02616ebcc8167e658"
+    },
+    "training/encoded-expanded/vocabulary.bin": {
+      "bytes": 262144,
+      "sha256": "cfb7ae280c0fb4d3f16686cdff268a2352837881254ca9c02616ebcc8167e658"
+    },
+    "exports/style-selected-1m/sigmoid-delta.bin": {
+      "bytes": 514,
+      "sha256": "5ecfa8cc900bcb72c83a71a3068049453f64afe78017b73f830e387b1f1a9ad3"
+    },
+    "exports/style-selected-1m/exp-q32.bin": {
+      "bytes": 2056,
+      "sha256": "011ed986091e4559b9560736f3cd21ab896a88f01bfd5cdd20b81fa6cf0b6c45"
+    },
+    "exports/style-selected-1m/AdaptiveGRUWordModel.sol": {
+      "bytes": 13724,
+      "sha256": "3799ae798ecb22047d26164af567b0a516af8049c8143a1e0f1f69bc63a47e25"
+    }
+  },
+  "input_files_unchanged_after_audit": true,
+  "errors": [],
+  "seconds": 1.1900182499994116
+}

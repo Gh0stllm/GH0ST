@@ -1,0 +1,83 @@
+{
+  "status": "LOCAL_EXECUTION_PASS_LANGUAGE_QUALITY_FAIL",
+  "mainnet_actions": 0,
+  "quality_approved": false,
+  "corpus": {
+    "canonical_words": 1001411,
+    "documents": 4182,
+    "original_voice_words": 50226,
+    "original_voice_documents": 919,
+    "new_long_monologues": 120,
+    "training_words": 834212,
+    "validation_words": 89597,
+    "test_words": 77602,
+    "test_and_vocabulary_unchanged_during_adaptation": true
+  },
+  "architecture": {
+    "type": "autoregressive_word_GRU",
+    "parameters": 4014560,
+    "hidden": 224,
+    "word_vocabulary": 8192,
+    "head_groups": 128,
+    "words_per_group": 64,
+    "quantization": "Q10",
+    "runtime_voice_domain": 0,
+    "model_runs_onchain_in_local_EVM": true,
+    "runtime_phrase_bank": false
+  },
+  "training": {
+    "device": "Apple MPS GPU",
+    "total_known_target_words_across_trials": 26597917,
+    "selected_cumulative_known_target_words": 13015039,
+    "selected_foundation_words": 12008587,
+    "selected_style_phase_words": 1006452,
+    "foundation_stop": "Stopped after two validation regressions; raw trainer interruption retained with controlled-stop explanation.",
+    "selected_weights_sha256": "703be567704c8c899c3fe4d7cb5e3ab206c8f6ed83dde65dfd4208e4adbeec76",
+    "selection": "Lowest full-validation macro NLL; experimental keeper only. Final test was opened after selection."
+  },
+  "gas": {
+    "local_chain_id": 31337,
+    "primary_swaps": 256,
+    "secondary_swaps": 4,
+    "callers": 2,
+    "max_complete_swap": 27901073,
+    "mean_primary_swap": 27629976,
+    "limit": 32000000,
+    "headroom": 4098927,
+    "each_successful_swap_appends_one_word": true,
+    "repeated_words_possible": true,
+    "mainnet_gas_guarantee": false
+  },
+  "validation": {
+    "all_224_hidden_and_192_logits_match": true,
+    "fused_values_exhaustively_checked": 5505696,
+    "vocabulary_rows_checked": 8192,
+    "reference_stress_words": 10240,
+    "reference_stress_streams": 34,
+    "quality_generated_cases": 24,
+    "quality_passing_cases": 0,
+    "unsupported_prompt_cases": 2,
+    "representable_retention_pairs": 3,
+    "retention_passing_pairs": 0,
+    "longest_exact_training_match_in_stress_words": 7,
+    "distinct_streams_do_not_prove_originality": true
+  },
+  "reports": {
+    "gas": {
+      "path": "evm/adaptive/style-selected-final-256-summary.json",
+      "sha256": "adfd32be256c15e8a1765c55985db8630e68b12c3df20eb39e70d60d4d89313f"
+    },
+    "quality": {
+      "path": "evaluation/FINAL-QUALITY-REVIEW.json",
+      "sha256": "79fb28f1a7a00e8c7ed97ceba345d795c617d70adaef9e24cdd1cca7ddc422a9"
+    },
+    "export": {
+      "path": "exports/style-selected-1m/exhaustive-export-audit.json",
+      "sha256": "7ca0007c420d90df4ed71d9cf057f28bee4f69b383054ec6cf993c7d3417070a"
+    },
+    "stress": {
+      "path": "exports/style-selected-1m/stress-t512/summary.json",
+      "sha256": "45906f8213a217b8b64757aba0b7fd5009b8be4159b0a636a5e6b67f1c550846"
+    }
+  }
+}

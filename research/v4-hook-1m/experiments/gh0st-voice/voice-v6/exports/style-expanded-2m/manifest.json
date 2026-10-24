@@ -1,0 +1,157 @@
+{
+  "scope": "Local adaptiveGRU export, no EVM or quality claim",
+  "parameters": 4014560,
+  "runtime_embedding_rows": 8193,
+  "output_vocabulary": 8192,
+  "training_only_unk_row": true,
+  "training_only_unk_parameters": 224,
+  "fixed_runtime_domain": 0,
+  "domain_parameters": 1344,
+  "domain_folding": "(nearest_even_Q10(bh)+nearest_even_Q10(domain0))*1024 folded before any division",
+  "model_domain": "GH0ST_GRU_H224_ADAPTIVE_Q10_LOCAL_V1",
+  "checkpoint_sha256": "117a50d3d116d13e6a05b924447d9c9cb5230fc1cd6443a0708791a095095326",
+  "data_manifest_sha256": "4d1b3caae41308366a4c3d4da6ba9c7a8522aa9b67ac56eaba18d8a21022b3c9",
+  "source_sha256": "3799ae798ecb22047d26164af567b0a516af8049c8143a1e0f1f69bc63a47e25",
+  "ranges": {
+    "bh": {
+      "shape": [
+        672
+      ],
+      "min": -84,
+      "max": 1100
+    },
+    "domain.weight": {
+      "shape": [
+        2,
+        672
+      ],
+      "min": -980,
+      "max": 608
+    },
+    "embedding.weight": {
+      "shape": [
+        8194,
+        224
+      ],
+      "min": -548,
+      "max": 568
+    },
+    "group_bias.weight": {
+      "shape": [
+        128,
+        1
+      ],
+      "min": -7811,
+      "max": -696
+    },
+    "groups.weight": {
+      "shape": [
+        128,
+        224
+      ],
+      "min": -305,
+      "max": 270
+    },
+    "wf": {
+      "shape": [
+        672,
+        6
+      ],
+      "min": -273,
+      "max": 97
+    },
+    "wh": {
+      "shape": [
+        672,
+        224
+      ],
+      "min": -550,
+      "max": 565
+    },
+    "word_bias.weight": {
+      "shape": [
+        8192,
+        1
+      ],
+      "min": -5629,
+      "max": -2076
+    },
+    "words.weight": {
+      "shape": [
+        8192,
+        224
+      ],
+      "min": -491,
+      "max": 514
+    },
+    "wx": {
+      "shape": [
+        672,
+        224
+      ],
+      "min": -834,
+      "max": 758
+    }
+  },
+  "fused_min": -6606245,
+  "fused_max": 7407388,
+  "clipped_weights": 0,
+  "artifacts": {
+    "core.bin": {
+      "bytes": 309120,
+      "sha256": "ffd38db565989097635bc7d461633c50d12364219bbc1e40aeab86f3106586a4"
+    },
+    "groups.bin": {
+      "bytes": 57600,
+      "sha256": "fa41c9245fec4d7292da7a52dd67e55ab59278674042359c8507a3247f24520b"
+    },
+    "words.bin": {
+      "bytes": 3686400,
+      "sha256": "9a95b50d8d5e38be60489d0eb0cde58cb849ee16feed738ca18f13277122a0b6"
+    },
+    "fused.bin": {
+      "bytes": 27528480,
+      "sha256": "d628bf7221961a1ce5def990a28eecc7644749faa706cf3c941168baab72c110"
+    },
+    "vocabulary.bin": {
+      "bytes": 262144,
+      "sha256": "cfb7ae280c0fb4d3f16686cdff268a2352837881254ca9c02616ebcc8167e658"
+    },
+    "vocabulary.json": {
+      "bytes": 103542,
+      "sha256": "c98af7d927c766d5d56d7bc8f0080ba6348fed6d402f33627546bba8cbe2d961"
+    },
+    "sigmoid-delta.bin": {
+      "bytes": 514,
+      "sha256": "5ecfa8cc900bcb72c83a71a3068049453f64afe78017b73f830e387b1f1a9ad3"
+    },
+    "exp-q32.bin": {
+      "bytes": 2056,
+      "sha256": "011ed986091e4559b9560736f3cd21ab896a88f01bfd5cdd20b81fa6cf0b6c45"
+    }
+  },
+  "reference_only_sources": {
+    "original-embedding.bin": {
+      "bytes": 3670464,
+      "sha256": "3067c02a585d23bcfb056f16c23850836e0ae0f847a33e6d7f43b0cc698329a3",
+      "deployment": "OFFCHAIN_REFERENCE_ONLY"
+    },
+    "original-wx.bin": {
+      "bytes": 301056,
+      "sha256": "d28b3579c700605cb8b74866ae3a971efc31300d3a6efa9a47c32649e0c720fe",
+      "deployment": "OFFCHAIN_REFERENCE_ONLY"
+    },
+    "original-bh.bin": {
+      "bytes": 1344,
+      "sha256": "dfcb2ad2d20c6e6729de7fc2d94473a787a7b60d7e0e5cb58f414a96f85eea18",
+      "deployment": "OFFCHAIN_REFERENCE_ONLY"
+    },
+    "original-domain.bin": {
+      "bytes": 2688,
+      "sha256": "794041bbecdf82ac90d289839149628d9e054e237abb38c81a79f6a400df107f",
+      "deployment": "OFFCHAIN_REFERENCE_ONLY"
+    }
+  },
+  "input_only_unk": "Row8193 is training-only and cannot be a runtime input or output token.",
+  "head_math": "128group softmax then64selectedword softmax; token=group*64+within; domain0fixed; no phrase bank"
+}

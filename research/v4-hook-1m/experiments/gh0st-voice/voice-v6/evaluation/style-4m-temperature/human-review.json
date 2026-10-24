@@ -1,0 +1,55 @@
+{
+  "status": "QUALITY_FAIL",
+  "source": {
+    "checkpoint": "experiments/gh0st-voice/voice-v6/training/runs/style-expanded-4m/checkpoint-004006225",
+    "weights_sha256": "4ace012498954f7b49fb545c72da5763be751c58353e8fe8c510e1b414f989c3",
+    "vocabulary_sha256": "c98af7d927c766d5d56d7bc8f0080ba6348fed6d402f33627546bba8cbe2d961",
+    "normalizer_sha256": "48ed1db71cda4818ef343aa518d4ca7b2e15ff4d62d9a5d982ff0cd43476a9e6"
+  },
+  "raw_outputs_sha256": "0263aff894ad1c1d8c9540c8f7e1f934b0f7b84712cd54a4cdca2c57922e4e33",
+  "scope": "All4 fixed unprompted BOS streams,2seeds x128words,T512/T1024. FP32 diagnostic, no final test evaluated.",
+  "reviews": [
+    {
+      "seed": 0,
+      "temperature_q10": 512,
+      "grammar": 1,
+      "continuity": 1,
+      "voice": 1,
+      "repetition": 2,
+      "pass": false,
+      "reason": "Missing complements and incongruent entities: \"room had a point about the wrong\", \"a stranger who would have a good\", \"risk the hat is not become a feature\". No sustained argument."
+    },
+    {
+      "seed": 42,
+      "temperature_q10": 512,
+      "grammar": 1,
+      "continuity": 1,
+      "voice": 1,
+      "repetition": 2,
+      "pass": false,
+      "reason": "Malformed opening \"a short more efficient the wrong house\" and missing objects \"who had no other\"; time/thing/person loops replace a coherent narrative."
+    },
+    {
+      "seed": 0,
+      "temperature_q10": 1024,
+      "grammar": 1,
+      "continuity": 1,
+      "voice": 1,
+      "repetition": 2,
+      "pass": false,
+      "reason": "Ungrammatical verb combinations \"freedom decided applied\", \"my lesson do\", and \"underside evidence of were\". Higher temperature does not restore coherence."
+    },
+    {
+      "seed": 42,
+      "temperature_q10": 1024,
+      "grammar": 1,
+      "continuity": 1,
+      "voice": 1,
+      "repetition": 2,
+      "pass": false,
+      "reason": "Subject/object fusion and agreement errors \"eleven small empty wall\", \"nobody used keeping\", \"i also my moon\"; unrelated images do not form a connected thought."
+    }
+  ],
+  "copy_check": "No normalized12-word training overlap or full5+-word training sentence matches found in these4 streams. This small negative test does not establish originality or absence of memorization.",
+  "conclusion": "Full4M adaptation is not quality approved. Voice likelihood improved but grammar/coherence remain broken. Style1M is the best full-validation macro snapshot of this adaptation sequence."
+}

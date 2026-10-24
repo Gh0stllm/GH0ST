@@ -1,0 +1,149 @@
+{
+  "status": "REVIEW_GATE",
+  "configuration": {
+    "data": "recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v6/training/encoded",
+    "output": "recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v6/training/runs/fresh-foundation",
+    "device": "mps",
+    "batch": 128,
+    "width": 128,
+    "warmup": 32,
+    "words": 40000000,
+    "stop": 2000000,
+    "every": 2000000,
+    "voice_weight": 0.1,
+    "lr": 0.001,
+    "weight_decay": 0.01,
+    "dropout": 0.1,
+    "seed": 641001,
+    "resume": null,
+    "warm_source": null,
+    "warm_vocab": null,
+    "max_steps": 10000000,
+    "probe_words": 96
+  },
+  "architecture": {
+    "hidden": 224,
+    "vocabulary": 8192,
+    "groups": 128,
+    "words_per_group": 64,
+    "parameters": 4014560,
+    "input_only_unk": 8193,
+    "domains": 2
+  },
+  "data_manifest_sha256": "fd0488c8970fd31f40f3bb589ae14f1f5700ab1b6fff0ecdcea47cc17ed62d88",
+  "vocabulary_sha256": "c98af7d927c766d5d56d7bc8f0080ba6348fed6d402f33627546bba8cbe2d961",
+  "code_sha256": {
+    "train.py": "5e12dc4c3f03e5a4df83197ed1d0ff0a4085dbb6a79fdaa10fb1ee08e12141a2",
+    "engine.py": "83420009cc8ab4425a83a6a9acc74b4ea680b90350b494a67301a35f97ba5bcb",
+    "model.py": "7ea8d5ed21188b65128a0720f4ad1d40fae9086d7b02d305edc08268abba8af1"
+  },
+  "initialization": {
+    "mode": "fresh"
+  },
+  "loss": "group CE + conditional-word CE, known targets only; unknown inputs retained",
+  "continuity": "128-word windows,32-word masked burn-in for mid-paragraph starts; reset only at new source paragraph",
+  "snapshots": [
+    {
+      "words": 0,
+      "steps": 0,
+      "elapsed": 0.23091233400191413,
+      "training_seconds": 0.0,
+      "new_words_per_second": 0.0,
+      "validation": {
+        "domains": {
+          "0": {
+            "nll_known_target": 6.603834605229263,
+            "words": 7764,
+            "perplexity": 737.9194005056406
+          },
+          "1": {
+            "nll_known_target": 6.346990595236113,
+            "words": 7507,
+            "perplexity": 570.7724365242932
+          }
+        },
+        "balanced_nll": 6.475412600232688,
+        "saturation_fraction": 0.0
+      },
+      "checkpoint": "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v6/training/runs/fresh-foundation/checkpoint-000000000",
+      "weight_sha256": "19fd85dc108e4195f2e9402cc9b3e6987c8e13369334f31854cb0817ac1aca68",
+      "clipped_parameters": 0,
+      "new_domain_words": {}
+    },
+    {
+      "words": 2007738,
+      "steps": 156,
+      "elapsed": 42.10098412500156,
+      "training_seconds": 41.697519713987276,
+      "new_words_per_second": 48150.05817543896,
+      "validation": {
+        "domains": {
+          "0": {
+            "nll_known_target": 5.306456104496716,
+            "words": 7764,
+            "perplexity": 201.63438950197576
+          },
+          "1": {
+            "nll_known_target": 5.479598208338884,
+            "words": 7507,
+            "perplexity": 239.7503583247047
+          }
+        },
+        "balanced_nll": 5.3930271564178,
+        "saturation_fraction": 0.00028446742466517856
+      },
+      "checkpoint": "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v6/training/runs/fresh-foundation/checkpoint-002007738",
+      "weight_sha256": "3575be2c2b51fbadfdcae977e4744112fbe14f6bf57a8e5ddce0a00fb2d114c3",
+      "clipped_parameters": 0,
+      "new_domain_words": {
+        "1": 1758619,
+        "0": 249119
+      }
+    }
+  ],
+  "history": [
+    {
+      "words": 1287477,
+      "steps": 100,
+      "nll": 5.648899555206299,
+      "lr": 0.000997872654579453,
+      "gradient_norm": 0.1278461217880249,
+      "elapsed": 27.105086792002112
+    }
+  ],
+  "quality_approval": false,
+  "mainnet_actions": 0,
+  "best": {
+    "words": 2007738,
+    "steps": 156,
+    "elapsed": 42.10098412500156,
+    "training_seconds": 41.697519713987276,
+    "new_words_per_second": 48150.05817543896,
+    "validation": {
+      "domains": {
+        "0": {
+          "nll_known_target": 5.306456104496716,
+          "words": 7764,
+          "perplexity": 201.63438950197576
+        },
+        "1": {
+          "nll_known_target": 5.479598208338884,
+          "words": 7507,
+          "perplexity": 239.7503583247047
+        }
+      },
+      "balanced_nll": 5.3930271564178,
+      "saturation_fraction": 0.00028446742466517856
+    },
+    "checkpoint": "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v6/training/runs/fresh-foundation/checkpoint-002007738",
+    "weight_sha256": "3575be2c2b51fbadfdcae977e4744112fbe14f6bf57a8e5ddce0a00fb2d114c3",
+    "clipped_parameters": 0,
+    "new_domain_words": {
+      "1": 1758619,
+      "0": 249119
+    }
+  },
+  "words": 2007738,
+  "steps": 156,
+  "elapsed": 42.10919245900004
+}

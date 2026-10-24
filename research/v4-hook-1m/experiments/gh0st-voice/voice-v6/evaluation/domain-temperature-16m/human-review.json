@@ -1,0 +1,146 @@
+{
+  "status": "NO_QUALITY_PASS",
+  "raw_sha256": "7e6dddfb83f546801ed91d7d5854cf1d1270c8af974336a1c8f95215d5a10d08",
+  "reviewed": 8,
+  "passes": 0,
+  "assessment": "Both domains remain syntactically broken and semantically unstable at both tested temperatures. Domain1 is not a fluent hidden baseline; domain0 is not the sole failure source. Domain0 has higher near-saturation, but that alone does not prove it causes the language errors.",
+  "rows": [
+    {
+      "domain": 0,
+      "seed": 0,
+      "temperature": 512,
+      "scores": {
+        "grammar": 1,
+        "continuity": 1,
+        "voice": 1
+      },
+      "passes": false,
+      "group0_share": 0.5078125,
+      "hidden": {
+        "mean_saturated_fraction": 0.05740792410714285,
+        "final_min": -0.9999991059303284,
+        "final_max": 0.9999509453773499
+      }
+    },
+    {
+      "domain": 0,
+      "seed": 42,
+      "temperature": 512,
+      "scores": {
+        "grammar": 1,
+        "continuity": 1,
+        "voice": 1
+      },
+      "passes": false,
+      "group0_share": 0.5546875,
+      "hidden": {
+        "mean_saturated_fraction": 0.05695452008928571,
+        "final_min": -0.9999927282333374,
+        "final_max": 0.9999681115150452
+      }
+    },
+    {
+      "domain": 0,
+      "seed": 0,
+      "temperature": 1024,
+      "scores": {
+        "grammar": 1,
+        "continuity": 1,
+        "voice": 1
+      },
+      "passes": false,
+      "group0_share": 0.421875,
+      "hidden": {
+        "mean_saturated_fraction": 0.04924665178571428,
+        "final_min": -0.9999122619628906,
+        "final_max": 0.9999996423721313
+      }
+    },
+    {
+      "domain": 0,
+      "seed": 42,
+      "temperature": 1024,
+      "scores": {
+        "grammar": 1,
+        "continuity": 1,
+        "voice": 1
+      },
+      "passes": false,
+      "group0_share": 0.4140625,
+      "hidden": {
+        "mean_saturated_fraction": 0.054582868303571425,
+        "final_min": -0.9999778270721436,
+        "final_max": 0.9999986290931702
+      }
+    },
+    {
+      "domain": 1,
+      "seed": 0,
+      "temperature": 512,
+      "scores": {
+        "grammar": 1,
+        "continuity": 1,
+        "voice": 1
+      },
+      "passes": false,
+      "group0_share": 0.640625,
+      "hidden": {
+        "mean_saturated_fraction": 0.017403738839285712,
+        "final_min": -0.9984078407287598,
+        "final_max": 0.9992040395736694
+      }
+    },
+    {
+      "domain": 1,
+      "seed": 42,
+      "temperature": 512,
+      "scores": {
+        "grammar": 1,
+        "continuity": 1,
+        "voice": 1
+      },
+      "passes": false,
+      "group0_share": 0.6328125,
+      "hidden": {
+        "mean_saturated_fraction": 0.013288225446428572,
+        "final_min": -0.9995765089988708,
+        "final_max": 0.9999875426292419
+      }
+    },
+    {
+      "domain": 1,
+      "seed": 0,
+      "temperature": 1024,
+      "scores": {
+        "grammar": 1,
+        "continuity": 1,
+        "voice": 1
+      },
+      "passes": false,
+      "group0_share": 0.4921875,
+      "hidden": {
+        "mean_saturated_fraction": 0.013462611607142858,
+        "final_min": -0.9990699887275696,
+        "final_max": 0.998483419418335
+      }
+    },
+    {
+      "domain": 1,
+      "seed": 42,
+      "temperature": 1024,
+      "scores": {
+        "grammar": 1,
+        "continuity": 1,
+        "voice": 1
+      },
+      "passes": false,
+      "group0_share": 0.5078125,
+      "hidden": {
+        "mean_saturated_fraction": 0.012241908482142856,
+        "final_min": -0.9948329329490662,
+        "final_max": 0.9935609102249146
+      }
+    }
+  ],
+  "recommendation": "If20M repeats validation regression, stop this foundation run and evaluate a bounded style trial from the best checkpoint. Do not claim that style-only changes repair core grammar."
+}
