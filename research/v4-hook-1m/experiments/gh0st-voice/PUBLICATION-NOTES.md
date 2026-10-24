@@ -28,3 +28,7 @@ their reports preserve the measured hashes and outcomes. To reproduce a fresh
 included checkpoint, run the exporter with its included checkpoint path and a
 new output directory, then run the local adapter against that output. No
 public-chain transactions were performed by staging.
+
+## Subsequent completed local results
+
+The following commit adds the final corrected-teacher integer/gas benchmark and the bounded two-start tone experiment. Teacher-final reached 28,406,679 maximum gas across 128 successful local swaps with full token/logit parity. Language remains insufficient. The two tone checkpoints are included for reproducing failed writing experiments; they have no EVM benchmark. Intermediate tone weight snapshots are omitted, while all completed JSON probes and source/split reports are preserved. The original frozen-artifacts index describes the full local run including those omitted intermediate weights.
