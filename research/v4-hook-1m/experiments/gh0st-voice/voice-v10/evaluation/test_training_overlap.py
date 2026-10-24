@@ -1,6 +1,7 @@
 """Independent small-case checks of overlap boundaries and denominator semantics."""
 import json
 from pathlib import Path
+import random
 import tempfile
 import unittest
 
@@ -19,6 +20,19 @@ class TrainingOverlapTest(unittest.TestCase):
             {'token': t, 'punct': p, 'text': vocabulary[t]+['', ',', '.', '!', '?'][p]}
             for t, p in zip(tokens, punct)]}
         return audit_stream(stream, documents, positions, grams, sentences, threshold, vocabulary)
+
+    def compare_indexes(self, rows, tokens, punct=None):
+        vocabulary = [f'w{i}' for i in range(8192)]
+        punct = punct or [0]*(len(tokens)-1)+[2]
+        stream = {'id': 'test', 'words': [
+            {'token': t, 'punct': p, 'text': vocabulary[t]+['', ',', '.', '!', '?'][p]}
+            for t, p in zip(tokens, punct)]}
+        with tempfile.TemporaryDirectory() as temporary:
+            path = Path(temporary)/'train.jsonl'
+            path.write_text(''.join(json.dumps(row)+'\n' for row in rows))
+            slow = audit_stream(stream, *load_training(path), 8, vocabulary)
+            fast = audit_stream(stream, *load_training(path, [stream]), 8, vocabulary)
+        self.assertEqual(fast, slow)
 
     def test_document_boundaries_cannot_make_false_long_match(self):
         rows = [{'id':'a', 'token_ids':list(range(10)), 'punctuation':[0]*9+[2]},
@@ -50,6 +64,27 @@ class TrainingOverlapTest(unittest.TestCase):
         result = self.run_audit(rows, list(range(9)))
         self.assertEqual(result['longest_contiguous_word_match']['words'], 6)
         self.assertEqual(result['matching_8gram_occurrences'], 0)
+
+    def test_prefix_extension_and_short_fallback_match_reference(self):
+        rows = [{'id':'early', 'token_ids':[0,1,2,99], 'punctuation':[0]*3+[2]},
+                {'id':'long', 'token_ids':list(range(12)), 'punctuation':[0]*11+[2]},
+                {'id':'tie', 'token_ids':list(range(12)), 'punctuation':[0]*11+[2]}]
+        self.compare_indexes(rows, list(range(12)))
+        self.compare_indexes(rows, [0,1,2,50,99,0,1])
+
+    def test_randomized_prefix_results_match_every_reference_field(self):
+        rng = random.Random(924710)
+        for trial in range(100):
+            rows = []
+            for i in range(8):
+                tokens = [rng.randrange(10) for _ in range(rng.randrange(3, 45))]
+                punct = [rng.randrange(5) if rng.random() < .2 else 0 for _ in tokens]
+                punct[-1] = 2
+                rows.append({'id':str(i), 'token_ids':tokens, 'punctuation':punct})
+            selected = rng.choice(rows)
+            start = rng.randrange(len(selected['token_ids']))
+            tokens = selected['token_ids'][start:start+20]+[rng.randrange(10) for _ in range(10)]
+            self.compare_indexes(rows, tokens)
 
 
 if __name__ == '__main__':

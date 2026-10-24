@@ -11,8 +11,38 @@ def sha(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
-def load_training(path):
-    documents, positions, grams, sentences = [], collections.defaultdict(list), {}, {}
+class PrefixIndex:
+    """All four-word candidates; earliest-only shorter fallbacks."""
+    def __init__(self, streams):
+        self.queries = {n: set() for n in range(1, 5)}
+        self.four, self.short = collections.defaultdict(list), {}
+        self.gram_queries, self.sentence_queries = set(), set()
+        for stream in streams:
+            tokens = [w['token'] for w in stream['words']]
+            punctuation = [w['punct'] for w in stream['words']]
+            for n in range(1, 5):
+                self.queries[n].update(tuple(tokens[i:i+n]) for i in range(len(tokens)-n+1))
+            self.gram_queries.update(tuple(tokens[i:i+8]) for i in range(len(tokens)-7))
+            start = 0
+            for i, p in enumerate(punctuation):
+                if p >= 2:
+                    self.sentence_queries.add(tuple(zip(tokens[start:i+1], punctuation[start:i+1])))
+                    start = i+1
+
+    def candidates(self, tokens, start):
+        for n in range(min(4, len(tokens)-start), 0, -1):
+            key = tuple(tokens[start:start+n])
+            if n == 4:
+                if key in self.four:
+                    return n, self.four[key]
+            elif key in self.short:
+                return n, [self.short[key]]
+        return 0, []
+
+
+def load_training(path, query_streams=None):
+    fast = query_streams is not None
+    documents, positions, grams, sentences = [], PrefixIndex(query_streams) if fast else collections.defaultdict(list), {}, {}
     ids = set()
     with path.open() as f:
         for line in f:
@@ -22,19 +52,40 @@ def load_training(path):
             assert all(isinstance(t, int) and 0 <= t <= 8193 for t in tokens)
             assert all(isinstance(p, int) and 0 <= p <= 4 for p in punctuation)
             ids.add(ident)
-            doc = {'id': ident, 'tokens': tokens, 'punctuation': punctuation}
+            doc = {'id': ident, 'tokens': tokens, 'punctuation': punctuation, 'word_count': len(tokens)}
             d = len(documents)
             documents.append(doc)
+            needs_tokens = False
             for i, token in enumerate(tokens):
-                positions[token].append((d, i))
+                if fast:
+                    for n in range(1, min(4, len(tokens)-i)+1):
+                        key = tuple(tokens[i:i+n])
+                        if key in positions.queries[n]:
+                            if n == 4:
+                                positions.four[key].append((d, i))
+                                needs_tokens = True
+                            else:
+                                positions.short.setdefault(key, (d, i))
+                else:
+                    positions[token].append((d, i))
                 if i + 8 <= len(tokens):
-                    grams.setdefault(tuple(tokens[i:i+8]), (d, i))
+                    key = tuple(tokens[i:i+8])
+                    if not fast or key in positions.gram_queries:
+                        grams.setdefault(key, (d, i))
             start = 0
             for i, punct in enumerate(punctuation):
                 if punct >= 2:
                     key = tuple(zip(tokens[start:i+1], punctuation[start:i+1]))
-                    sentences.setdefault(key, []).append((d, start))
+                    if not fast or key in positions.sentence_queries:
+                        sentences.setdefault(key, []).append((d, start))
                     start = i + 1
+            if fast:
+                # Only four-word candidates can need extension into the source
+                # document. Shorter fallbacks are already maximal by absence of
+                # the next longer key. Retain IDs and counts for every row.
+                if not needs_tokens:
+                    doc['tokens'] = []
+                doc['punctuation'] = []
     return documents, positions, grams, sentences
 
 
@@ -50,9 +101,14 @@ def audit_stream(stream, documents, positions, grams, sentences, long_threshold,
     long_spans = []
     for i, token in enumerate(tokens):
         best = (0, None, None)
-        for d, at in positions.get(token, []):
+        prefix, candidates = positions.candidates(tokens, i) if isinstance(positions, PrefixIndex) else (1, positions.get(token, []))
+        for d, at in candidates:
+            if prefix < 4 and isinstance(positions, PrefixIndex):
+                if prefix > best[0]:
+                    best = prefix, d, at
+                continue
             reference = documents[d]['tokens']
-            n, limit = 1, min(len(tokens)-i, len(reference)-at)
+            n, limit = prefix, min(len(tokens)-i, len(reference)-at)
             while n < limit and tokens[i+n] == reference[at+n]:
                 n += 1
             if n > best[0]:
@@ -117,6 +173,7 @@ def main():
     parser.add_argument('--vocabulary', type=Path, required=True)
     parser.add_argument('--out', type=Path, required=True)
     parser.add_argument('--long-threshold', type=int, default=20)
+    parser.add_argument('--prefix-index', action='store_true', help='Exact output-aware four-token candidate index with 3/2/1 fallback; lower time and memory.')
     args = parser.parse_args()
     assert args.long_threshold >= 8 and not args.out.exists()
     vocabulary = json.loads(args.vocabulary.read_text())
@@ -129,7 +186,7 @@ def main():
         assert meta['vocabulary_sha256'] == sha(args.vocabulary)
         if args.train.name in meta.get('artifacts', {}):
             assert meta['artifacts'][args.train.name]['sha256'] == sha(args.train)
-    documents, positions, grams, sentences = load_training(args.train)
+    documents, positions, grams, sentences = load_training(args.train, raw['outputs'] if args.prefix_index else None)
     outputs = [audit_stream(stream, documents, positions, grams, sentences,
                             args.long_threshold, vocabulary) for stream in raw['outputs']]
     result = {
@@ -138,7 +195,8 @@ def main():
         'train_manifest_sha256': sha(metadata) if metadata.exists() else None,
         'train_hash_declared_in_manifest': metadata.exists() and args.train.name in meta.get('artifacts', {}),
         'vocabulary_sha256': sha(args.vocabulary), 'script_sha256': sha(__file__),
-        'training_documents': len(documents), 'training_word_positions': sum(len(d['tokens']) for d in documents),
+        'training_documents': len(documents), 'training_word_positions': sum(d['word_count'] for d in documents),
+        'index_method': 'exact_output_prefix_4_with_3_2_1_fallback' if args.prefix_index else 'all_first_token_positions',
         'streams': len(outputs), 'streams_with_long_matches': sum(o['has_match_at_or_above_long_threshold'] for o in outputs),
         'maximum_contiguous_word_match': max(o['longest_contiguous_word_match']['words'] for o in outputs),
         'total_exact_sentence_overlaps': sum(o['exact_sentence_overlap_count'] for o in outputs),

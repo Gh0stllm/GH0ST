@@ -1,19 +1,34 @@
 {
-  "status": "BROAD_LANGUAGE_GPU_TRAINING_IN_PROGRESS",
+  "status": "COMPLETE_RESEARCH_NO_PASSING_REPLACEMENT",
   "mainnet_actions": 0,
   "deployments": 0,
   "replacement_model_selected": false,
   "architecture_parameters": 8175493,
   "required_gas_ceiling": 32000000,
-  "new_weights_gas_tested": false,
+  "new_weights_gas_tested": true,
   "language_gate_passed": false,
   "completed_findings": [
     "Authored-only fine tuning failed and was stopped after checkpoint500 review.",
     "Short causal curriculum improves local syntax but largely copies training clauses and loses continuity.",
     "Higher sampling temperatures reduce copying at the cost of grammar.",
-    "Voice consolidation still repeats scenes; not selected."
+    "Voice consolidation still repeats scenes; not selected.",
+    "The broad-language-1000 exporter smoke passed 29 integration checks, eight real local swaps, and exact independent replay; maximum gas 23844631. This candidate still fails the language gate.",
+    "Narrative warm-start checkpoint1000 failed all four distinct 128-word exact-Q10 language streams; training stopped after step1340.",
+    "Fresh H384 initialization checkpoint1000 also failed all four distinct 128-word exact-Q10 streams; the short control stopped after step1030. This does not establish that longer from-scratch training cannot help."
   ],
-  "active_run": "runs/broad-language-2500",
+  "active_run": null,
   "source_model_and_hook": "../nova-fast-market/evm32-round2",
-  "note": "Research snapshots and source are not a deployment candidate. Published final model remains unchanged."
+  "note": "The fast comparison is complete. No candidate met grammar/continuity requirements; the published selected model was not replaced. No deployment or public-chain action occurred.",
+  "active_runs": [],
+  "current_research_commit": "1c3c779604a1c2dd27e12a71d699efdbb66d4e54",
+  "fresh_run_last_complete_checkpoint": 1000,
+  "fresh_run_stopped_after_step": 1030,
+  "gas_test": {
+    "candidate": "broad-language-1000",
+    "swaps": 8,
+    "neural_words": 22,
+    "maximum_gas": 23844631,
+    "checks_passed": 29,
+    "independent_replay": "PASS"
+  }
 }

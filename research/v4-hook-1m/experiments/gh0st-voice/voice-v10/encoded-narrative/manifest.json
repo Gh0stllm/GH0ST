@@ -1,0 +1,112 @@
+{
+  "scope": "LOCAL_ONLY_FIRST_PERSON_NARRATIVE_TRAINING",
+  "sources": {
+    "201": {
+      "title": "Flatland",
+      "catalog": "https://www.gutenberg.org/ebooks/201",
+      "url": "https://www.gutenberg.org/cache/epub/201/pg201.txt",
+      "sha256": "03dd4508636e44ab9b37efda856745545f22ea5ace95e2eb16c3ef50307cd9f7",
+      "bytes": 227452,
+      "rights": "Project Gutenberg catalog: public domain in the USA. Original license retained in source file."
+    },
+    "1260": {
+      "title": "Jane Eyre",
+      "catalog": "https://www.gutenberg.org/ebooks/1260",
+      "url": "https://www.gutenberg.org/cache/epub/1260/pg1260.txt",
+      "sha256": "13414dee2951c3ee731d76d2ffd822016b2479c892162760c5d0eb2aa5fa7631",
+      "bytes": 1084803,
+      "rights": "Project Gutenberg catalog: public domain in the USA. Original license retained in source file."
+    },
+    "600": {
+      "title": "Notes from the Underground",
+      "catalog": "https://www.gutenberg.org/ebooks/600",
+      "url": "https://www.gutenberg.org/cache/epub/600/pg600.txt",
+      "sha256": "6ce7d6ff7288263f1fd07d7ecfc07e419735cbbb4dff5107964af1afd8b2079e",
+      "bytes": 266972,
+      "rights": "Project Gutenberg catalog: public domain in the USA. Original license retained in source file."
+    },
+    "1952": {
+      "title": "The Yellow Wallpaper",
+      "catalog": "https://www.gutenberg.org/ebooks/1952",
+      "url": "https://www.gutenberg.org/cache/epub/1952/pg1952.txt",
+      "sha256": "20c7788eeae2fe3a0efd51a1f08b6723366a4be0778d65db219149a3522651d4",
+      "bytes": 52571,
+      "rights": "Project Gutenberg catalog: public domain in the USA. Original license retained in source file."
+    }
+  },
+  "artifacts": {
+    "train.jsonl": {
+      "sha256": "e5b5549fc5a1975b049408d6e6993eb9e67f7217af8521414fcb93a70f4f9144",
+      "bytes": 174702568
+    },
+    "validation.jsonl": {
+      "sha256": "f4d63b49fce1086ac636d96705244bea6323aecb5e267251c6f14eba8dba9bf0",
+      "bytes": 345744
+    },
+    "test.jsonl": {
+      "sha256": "1a481ed7e233ca86bc3557623ff20a73d8ad669b72b879e740b39a9b71069cec",
+      "bytes": 335244
+    }
+  },
+  "vocabulary_sha256": "940734e6971ecba0960a5b11b4dc5f8604c0a00e4078340c7f002abbec886e9a",
+  "statistics": {
+    "train": {
+      "narrative": {
+        "documents": 31260,
+        "words": 5499976,
+        "known_words": 5071178
+      },
+      "original": {
+        "documents": 28023,
+        "words": 2066565,
+        "known_words": 2028529
+      },
+      "grammar": {
+        "documents": 20045,
+        "words": 3252200,
+        "known_words": 3042676
+      }
+    },
+    "validation": {
+      "narrative": {
+        "documents": 130,
+        "words": 22693,
+        "known_words": 20967
+      },
+      "original": {
+        "documents": 20,
+        "words": 1429,
+        "known_words": 1390
+      }
+    },
+    "test": {
+      "narrative": {
+        "documents": 123,
+        "words": 21834,
+        "known_words": 20125
+      },
+      "original": {
+        "documents": 20,
+        "words": 1467,
+        "known_words": 1442
+      }
+    }
+  },
+  "skipped": {
+    "paragraph_over_256_words": 85,
+    "short_or_not_first_person": 152
+  },
+  "source_narrative_documents": {
+    "train": 951,
+    "validation": 130,
+    "test": 123
+  },
+  "training_known_target_mix": {
+    "narrative": 0.5,
+    "grammar": 0.3,
+    "original": 0.2
+  },
+  "overlap_policy": "Disjoint contiguous groups of eight source paragraphs; no source paragraph crosses splits.",
+  "limits": "Same books occur across splits; this tests held-out passages, not unseen authors. Repeated training rows are frequency weights.",
+  "mainnet_actions": 0
+}

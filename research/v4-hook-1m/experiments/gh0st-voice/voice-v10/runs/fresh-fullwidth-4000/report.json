@@ -1,0 +1,1379 @@
+{
+  "status": "STOPPED_FAILED_FIRST_CHECKPOINT_REVIEW",
+  "config": {
+    "data": "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v10/encoded-narrative",
+    "init_weights": "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v10/initialization/fresh-h384",
+    "output": "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v10/runs/fresh-fullwidth-4000",
+    "steps": 4000,
+    "batch": 32,
+    "lr": 0.001,
+    "every": 1000,
+    "device": "mps",
+    "dropout": 0.05,
+    "weight_decay": 0.01,
+    "packing_limit": 15.5,
+    "no_packing_projection": false,
+    "reset_output_priors": false,
+    "sample_words": 128,
+    "temperature": 0.6,
+    "seed": 741110,
+    "threads": 2,
+    "jitter": 0.0,
+    "architecture": "GRU2_H384_V8192_P5",
+    "parameters": 8175493,
+    "state_policy": "Full source document per row; reset only at start; padding targets masked.",
+    "initial_weights_sha256": "cc11f5ff8c877097f0a285f9c11a1110fbf8408783bd873a111165de7b3b70a1",
+    "vocabulary_sha256": "940734e6971ecba0960a5b11b4dc5f8604c0a00e4078340c7f002abbec886e9a"
+  },
+  "source_sha256": {
+    "train_language.py": "2b5b621494abd75f6ec6f9e4505fb25562b9740beba379ea93db86e8d153ee5b",
+    "fast_model.py": "211f9afe6a319156819b2b1efbc51db1818165e7a4d40f9730745bda9b3eb377",
+    "language_model.py": "9b675c64a579d202f5f6bebf9ddbb628e0dad17479b355b5d5b4580bb75e8470"
+  },
+  "data_sha256": {
+    "train": "e5b5549fc5a1975b049408d6e6993eb9e67f7217af8521414fcb93a70f4f9144",
+    "validation": "f4d63b49fce1086ac636d96705244bea6323aecb5e267251c6f14eba8dba9bf0",
+    "test": "1a481ed7e233ca86bc3557623ff20a73d8ad669b72b879e740b39a9b71069cec"
+  },
+  "dataset_counts": {
+    "train": {
+      "documents": 79328,
+      "words": 10818741
+    },
+    "validation": {
+      "documents": 150,
+      "words": 24122
+    },
+    "test": {
+      "documents": 143,
+      "words": 23301
+    }
+  },
+  "projection_policy": "Post-update group L1 training regularization; export independently rechecks integer bounds.",
+  "output_priors": "Inherited unchanged from initial checkpoint.",
+  "initial_projection_rows": {
+    "wh1:0:190": 0,
+    "wh1:190:384": 0,
+    "wx2:0:190": 0,
+    "wx2:190:384": 0,
+    "wh2:0:190": 0,
+    "wh2:190:384": 0,
+    "groups.weight:0:260": 0,
+    "groups.weight:260:384": 0,
+    "words.weight:0:260": 0,
+    "words.weight:260:384": 0,
+    "punct_head.weight:0:260": 0,
+    "punct_head.weight:260:384": 0
+  },
+  "symmetry_breaking": {
+    "seed": 741127,
+    "changes": {},
+    "before": {
+      "wx1:axis0": {
+        "equal_values": 3359,
+        "compared_values": 442368,
+        "q10_equal_fraction": 0.007593225549768518
+      },
+      "wh1:axis0": {
+        "equal_values": 2614,
+        "compared_values": 442368,
+        "q10_equal_fraction": 0.005909107349537037
+      },
+      "bh1:axis0": {
+        "equal_values": 1152,
+        "compared_values": 1152,
+        "q10_equal_fraction": 1.0
+      },
+      "wh1:axis1": {
+        "equal_values": 2610,
+        "compared_values": 442368,
+        "q10_equal_fraction": 0.005900065104166667
+      },
+      "wx2:axis1": {
+        "equal_values": 3557,
+        "compared_values": 442368,
+        "q10_equal_fraction": 0.008040816695601851
+      }
+    },
+    "after_jitter": {
+      "wx1:axis0": {
+        "equal_values": 3359,
+        "compared_values": 442368,
+        "q10_equal_fraction": 0.007593225549768518
+      },
+      "wh1:axis0": {
+        "equal_values": 2614,
+        "compared_values": 442368,
+        "q10_equal_fraction": 0.005909107349537037
+      },
+      "bh1:axis0": {
+        "equal_values": 1152,
+        "compared_values": 1152,
+        "q10_equal_fraction": 1.0
+      },
+      "wh1:axis1": {
+        "equal_values": 2610,
+        "compared_values": 442368,
+        "q10_equal_fraction": 0.005900065104166667
+      },
+      "wx2:axis1": {
+        "equal_values": 3557,
+        "compared_values": 442368,
+        "q10_equal_fraction": 0.008040816695601851
+      }
+    },
+    "after_projection": {
+      "wx1:axis0": {
+        "equal_values": 3359,
+        "compared_values": 442368,
+        "q10_equal_fraction": 0.007593225549768518
+      },
+      "wh1:axis0": {
+        "equal_values": 2614,
+        "compared_values": 442368,
+        "q10_equal_fraction": 0.005909107349537037
+      },
+      "bh1:axis0": {
+        "equal_values": 1152,
+        "compared_values": 1152,
+        "q10_equal_fraction": 1.0
+      },
+      "wh1:axis1": {
+        "equal_values": 2610,
+        "compared_values": 442368,
+        "q10_equal_fraction": 0.005900065104166667
+      },
+      "wx2:axis1": {
+        "equal_values": 3557,
+        "compared_values": 442368,
+        "q10_equal_fraction": 0.008040816695601851
+      }
+    },
+    "policy": "Training initialization change; architecture and parameter names remain unchanged."
+  },
+  "checkpoints": [
+    {
+      "step": 0,
+      "trained_words": 0,
+      "elapsed_seconds": 2.041336959002365,
+      "validation": {
+        "word_nll": 6.402891807864987,
+        "punctuation_nll": 0.5816327857196296,
+        "joint_nll": 6.9845245935846165,
+        "known_words": 22357,
+        "punctuation_positions": 24122,
+        "by_kind": {
+          "narrative": {
+            "word_nll": 6.396363230388825,
+            "punctuation_nll": 0.5924468040676434,
+            "joint_nll": 6.988810034456469,
+            "known_words": 20967,
+            "punctuation_positions": 22693
+          },
+          "original": {
+            "word_nll": 6.501369997751799,
+            "punctuation_nll": 0.4099025419327327,
+            "joint_nll": 6.911272539684532,
+            "known_words": 1390,
+            "punctuation_positions": 1429
+          }
+        },
+        "selection_macro_joint_nll": 6.9500412870705
+      },
+      "weights_sha256": "cc11f5ff8c877097f0a285f9c11a1110fbf8408783bd873a111165de7b3b70a1",
+      "packing_q10_max_abs_sums": {
+        "wh1:0:190": 8157,
+        "wh1:190:384": 8213,
+        "wx2:0:190": 6816,
+        "wx2:190:384": 6984,
+        "wh2:0:190": 8046,
+        "wh2:190:384": 8232,
+        "groups.weight:0:260": 7041,
+        "groups.weight:260:384": 3608,
+        "words.weight:0:260": 7508,
+        "words.weight:260:384": 3949,
+        "punct_head.weight:0:260": 7038,
+        "punct_head.weight:260:384": 3363
+      },
+      "tensor_q10_bounds": {
+        "wx1": [
+          -64,
+          64
+        ],
+        "wh1": [
+          -218,
+          198
+        ],
+        "wf": [
+          0,
+          0
+        ],
+        "bh1": [
+          0,
+          1024
+        ],
+        "wx2": [
+          -64,
+          64
+        ],
+        "wh2": [
+          -219,
+          198
+        ],
+        "bh2": [
+          0,
+          1024
+        ],
+        "punct_bias": [
+          -5425,
+          -179
+        ],
+        "embedding.weight": [
+          -334,
+          300
+        ],
+        "punct_embedding.weight": [
+          -134,
+          130
+        ],
+        "domain.weight": [
+          0,
+          0
+        ],
+        "groups.weight": [
+          -132,
+          131
+        ],
+        "group_bias.weight": [
+          -8476,
+          -912
+        ],
+        "words.weight": [
+          -161,
+          148
+        ],
+        "word_bias.weight": [
+          -14754,
+          -532
+        ],
+        "punct_head.weight": [
+          -52,
+          52
+        ],
+        "word_punct_bias.weight": [
+          0,
+          0
+        ]
+      },
+      "projection_rows": {
+        "wh1:0:190": 0,
+        "wh1:190:384": 0,
+        "wx2:0:190": 0,
+        "wx2:190:384": 0,
+        "wh2:0:190": 0,
+        "wh2:190:384": 0,
+        "groups.weight:0:260": 0,
+        "groups.weight:260:384": 0,
+        "words.weight:0:260": 0,
+        "words.weight:260:384": 0,
+        "punct_head.weight:0:260": 0,
+        "punct_head.weight:260:384": 0
+      },
+      "checkpoint": "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v10/runs/fresh-fullwidth-4000/checkpoint-000000",
+      "quality_approved": false
+    },
+    {
+      "step": 1000,
+      "trained_words": 4096777,
+      "elapsed_seconds": 314.93136283400236,
+      "validation": {
+        "word_nll": 5.486668013041917,
+        "punctuation_nll": 0.4721726971907695,
+        "joint_nll": 5.958840710232686,
+        "known_words": 22357,
+        "punctuation_positions": 24122,
+        "by_kind": {
+          "narrative": {
+            "word_nll": 5.4477740155102365,
+            "punctuation_nll": 0.4751682791678171,
+            "joint_nll": 5.922942294678053,
+            "known_words": 20967,
+            "punctuation_positions": 22693
+          },
+          "original": {
+            "word_nll": 6.073351787320144,
+            "punctuation_nll": 0.4246018491815737,
+            "joint_nll": 6.497953636501718,
+            "known_words": 1390,
+            "punctuation_positions": 1429
+          }
+        },
+        "selection_macro_joint_nll": 6.210447965589886
+      },
+      "weights_sha256": "2fcfa7f2a239afe6c862f0e726720f88a6cbc9b86f898d6fdb9d7085e43d0170",
+      "packing_q10_max_abs_sums": {
+        "wh1:0:190": 15882,
+        "wh1:190:384": 15882,
+        "wx2:0:190": 15884,
+        "wx2:190:384": 15882,
+        "wh2:0:190": 15883,
+        "wh2:190:384": 15880,
+        "groups.weight:0:260": 15885,
+        "groups.weight:260:384": 9417,
+        "words.weight:0:260": 15886,
+        "words.weight:260:384": 12073,
+        "punct_head.weight:0:260": 15504,
+        "punct_head.weight:260:384": 7240
+      },
+      "tensor_q10_bounds": {
+        "wx1": [
+          -600,
+          613
+        ],
+        "wh1": [
+          -468,
+          488
+        ],
+        "wf": [
+          0,
+          0
+        ],
+        "bh1": [
+          -45,
+          1070
+        ],
+        "wx2": [
+          -437,
+          470
+        ],
+        "wh2": [
+          -487,
+          421
+        ],
+        "bh2": [
+          -46,
+          1113
+        ],
+        "punct_bias": [
+          -5493,
+          -101
+        ],
+        "embedding.weight": [
+          -488,
+          478
+        ],
+        "punct_embedding.weight": [
+          -376,
+          425
+        ],
+        "domain.weight": [
+          -842,
+          430
+        ],
+        "groups.weight": [
+          -341,
+          324
+        ],
+        "group_bias.weight": [
+          -8448,
+          -890
+        ],
+        "words.weight": [
+          -394,
+          469
+        ],
+        "word_bias.weight": [
+          -14737,
+          -530
+        ],
+        "punct_head.weight": [
+          -267,
+          620
+        ],
+        "word_punct_bias.weight": [
+          -859,
+          773
+        ]
+      },
+      "projection_rows": {
+        "wh1:0:190": 72732,
+        "wh1:190:384": 87804,
+        "wx2:0:190": 36387,
+        "wx2:190:384": 40859,
+        "wh2:0:190": 13307,
+        "wh2:190:384": 18157,
+        "groups.weight:0:260": 5214,
+        "groups.weight:260:384": 0,
+        "words.weight:0:260": 58782,
+        "words.weight:260:384": 0,
+        "punct_head.weight:0:260": 0,
+        "punct_head.weight:260:384": 0
+      },
+      "checkpoint": "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v10/runs/fresh-fullwidth-4000/checkpoint-001000",
+      "quality_approved": false
+    }
+  ],
+  "history": [
+    {
+      "step": 10,
+      "trained_words": 39969,
+      "loss": 6.95368766784668,
+      "gradient_norm": 0.09256809949874878,
+      "lr": 0.0009999900070671518,
+      "elapsed_seconds": 6.853698667000572
+    },
+    {
+      "step": 20,
+      "trained_words": 79702,
+      "loss": 6.852032661437988,
+      "gradient_norm": 0.2323627471923828,
+      "lr": 0.0009999554642365956,
+      "elapsed_seconds": 11.06558679200316
+    },
+    {
+      "step": 30,
+      "trained_words": 120784,
+      "loss": 6.822784900665283,
+      "gradient_norm": 0.2491329461336136,
+      "lr": 0.0009998962502690467,
+      "elapsed_seconds": 14.829283334001957
+    },
+    {
+      "step": 40,
+      "trained_words": 162200,
+      "loss": 6.707079887390137,
+      "gradient_norm": 0.23511764407157898,
+      "lr": 0.0009998123688171015,
+      "elapsed_seconds": 18.844623959001183
+    },
+    {
+      "step": 50,
+      "trained_words": 201175,
+      "loss": 6.492231845855713,
+      "gradient_norm": 0.5137515068054199,
+      "lr": 0.0009997038250549636,
+      "elapsed_seconds": 23.765256834001775
+    },
+    {
+      "step": 60,
+      "trained_words": 242471,
+      "loss": 6.466648101806641,
+      "gradient_norm": 0.32962363958358765,
+      "lr": 0.0009995706256781228,
+      "elapsed_seconds": 28.490190459000587
+    },
+    {
+      "step": 70,
+      "trained_words": 282997,
+      "loss": 6.240861892700195,
+      "gradient_norm": 0.3666772246360779,
+      "lr": 0.0009994127789029446,
+      "elapsed_seconds": 33.28075912500208
+    },
+    {
+      "step": 80,
+      "trained_words": 323920,
+      "loss": 6.140207290649414,
+      "gradient_norm": 0.49764493107795715,
+      "lr": 0.0009992302944661613,
+      "elapsed_seconds": 38.00963070900252
+    },
+    {
+      "step": 90,
+      "trained_words": 364953,
+      "loss": 6.026364326477051,
+      "gradient_norm": 0.41028904914855957,
+      "lr": 0.000999023183624273,
+      "elapsed_seconds": 42.52161716700357
+    },
+    {
+      "step": 100,
+      "trained_words": 406283,
+      "loss": 5.864442825317383,
+      "gradient_norm": 0.48367077112197876,
+      "lr": 0.0009987914591528518,
+      "elapsed_seconds": 47.13119070900211
+    },
+    {
+      "step": 110,
+      "trained_words": 448605,
+      "loss": 5.8635430335998535,
+      "gradient_norm": 0.3426147997379303,
+      "lr": 0.0009985351353457544,
+      "elapsed_seconds": 51.90972970900111
+    },
+    {
+      "step": 120,
+      "trained_words": 488493,
+      "loss": 5.57857608795166,
+      "gradient_norm": 0.4468480944633484,
+      "lr": 0.0009982542280142408,
+      "elapsed_seconds": 56.68158441700143
+    },
+    {
+      "step": 130,
+      "trained_words": 530012,
+      "loss": 5.619658470153809,
+      "gradient_norm": 0.4861365258693695,
+      "lr": 0.0009979487544859984,
+      "elapsed_seconds": 61.3267202920033
+    },
+    {
+      "step": 140,
+      "trained_words": 571169,
+      "loss": 5.5978827476501465,
+      "gradient_norm": 0.4240061640739441,
+      "lr": 0.0009976187336040734,
+      "elapsed_seconds": 65.97616470900175
+    },
+    {
+      "step": 150,
+      "trained_words": 611274,
+      "loss": 5.588160514831543,
+      "gradient_norm": 0.402704656124115,
+      "lr": 0.000997264185725708,
+      "elapsed_seconds": 70.64480750000075
+    },
+    {
+      "step": 160,
+      "trained_words": 652407,
+      "loss": 5.364957332611084,
+      "gradient_norm": 0.45228657126426697,
+      "lr": 0.0009968851327210857,
+      "elapsed_seconds": 75.65636108400213
+    },
+    {
+      "step": 170,
+      "trained_words": 692873,
+      "loss": 5.324686050415039,
+      "gradient_norm": 0.6122459769248962,
+      "lr": 0.0009964815979719814,
+      "elapsed_seconds": 80.02353287500227
+    },
+    {
+      "step": 180,
+      "trained_words": 734962,
+      "loss": 5.4737043380737305,
+      "gradient_norm": 0.5252546072006226,
+      "lr": 0.000996053606370319,
+      "elapsed_seconds": 84.64125216700268
+    },
+    {
+      "step": 190,
+      "trained_words": 775903,
+      "loss": 5.180720329284668,
+      "gradient_norm": 0.6773563623428345,
+      "lr": 0.0009956011843166369,
+      "elapsed_seconds": 88.95145725000111
+    },
+    {
+      "step": 200,
+      "trained_words": 817272,
+      "loss": 5.3185834884643555,
+      "gradient_norm": 0.43882715702056885,
+      "lr": 0.0009951243597184577,
+      "elapsed_seconds": 93.40324320900254
+    },
+    {
+      "step": 210,
+      "trained_words": 856063,
+      "loss": 5.191781997680664,
+      "gradient_norm": 0.5175162553787231,
+      "lr": 0.0009946231619885695,
+      "elapsed_seconds": 96.6877390840018
+    },
+    {
+      "step": 220,
+      "trained_words": 896797,
+      "loss": 5.162485599517822,
+      "gradient_norm": 0.5949570536613464,
+      "lr": 0.0009940976220432088,
+      "elapsed_seconds": 99.89098016700154
+    },
+    {
+      "step": 230,
+      "trained_words": 938081,
+      "loss": 5.17717170715332,
+      "gradient_norm": 0.4600401222705841,
+      "lr": 0.0009935477723001546,
+      "elapsed_seconds": 103.7200490840005
+    },
+    {
+      "step": 240,
+      "trained_words": 978108,
+      "loss": 4.876034736633301,
+      "gradient_norm": 0.4894208610057831,
+      "lr": 0.0009929736466767298,
+      "elapsed_seconds": 106.97536562500318
+    },
+    {
+      "step": 250,
+      "trained_words": 1019917,
+      "loss": 5.164597988128662,
+      "gradient_norm": 0.5099015831947327,
+      "lr": 0.0009923752805877067,
+      "elapsed_seconds": 110.47889970899996
+    },
+    {
+      "step": 260,
+      "trained_words": 1060975,
+      "loss": 5.1736321449279785,
+      "gradient_norm": 0.4459506571292877,
+      "lr": 0.000991752710943124,
+      "elapsed_seconds": 114.012676792001
+    },
+    {
+      "step": 270,
+      "trained_words": 1101631,
+      "loss": 5.1059393882751465,
+      "gradient_norm": 0.5198022723197937,
+      "lr": 0.0009911059761460107,
+      "elapsed_seconds": 117.75650079200204
+    },
+    {
+      "step": 280,
+      "trained_words": 1143375,
+      "loss": 4.9849162101745605,
+      "gradient_norm": 0.5743374228477478,
+      "lr": 0.0009904351160900152,
+      "elapsed_seconds": 121.52018429200325
+    },
+    {
+      "step": 290,
+      "trained_words": 1184375,
+      "loss": 5.032913684844971,
+      "gradient_norm": 0.5645862221717834,
+      "lr": 0.0009897401721569454,
+      "elapsed_seconds": 124.7712064590014
+    },
+    {
+      "step": 300,
+      "trained_words": 1224664,
+      "loss": 4.832503795623779,
+      "gradient_norm": 0.6912604570388794,
+      "lr": 0.0009890211872142169,
+      "elapsed_seconds": 127.82002016700062
+    },
+    {
+      "step": 310,
+      "trained_words": 1264974,
+      "loss": 5.019096851348877,
+      "gradient_norm": 0.6152512431144714,
+      "lr": 0.0009882782056122076,
+      "elapsed_seconds": 131.84720891700272
+    },
+    {
+      "step": 320,
+      "trained_words": 1307384,
+      "loss": 4.751279354095459,
+      "gradient_norm": 0.3832106292247772,
+      "lr": 0.0009875112731815225,
+      "elapsed_seconds": 136.02996850000272
+    },
+    {
+      "step": 330,
+      "trained_words": 1349344,
+      "loss": 4.887147903442383,
+      "gradient_norm": 0.4724418818950653,
+      "lr": 0.0009867204372301665,
+      "elapsed_seconds": 140.03337783400275
+    },
+    {
+      "step": 340,
+      "trained_words": 1390082,
+      "loss": 5.063204288482666,
+      "gradient_norm": 0.5782904624938965,
+      "lr": 0.0009859057465406262,
+      "elapsed_seconds": 142.83263495900246
+    },
+    {
+      "step": 350,
+      "trained_words": 1430936,
+      "loss": 4.7266106605529785,
+      "gradient_norm": 0.4624669551849365,
+      "lr": 0.0009850672513668608,
+      "elapsed_seconds": 145.42253854200317
+    },
+    {
+      "step": 360,
+      "trained_words": 1471194,
+      "loss": 4.864280700683594,
+      "gradient_norm": 0.4687679708003998,
+      "lr": 0.0009842050034312027,
+      "elapsed_seconds": 148.88816950000182
+    },
+    {
+      "step": 370,
+      "trained_words": 1511128,
+      "loss": 4.91546106338501,
+      "gradient_norm": 0.4798281192779541,
+      "lr": 0.0009833190559211656,
+      "elapsed_seconds": 152.2692957090003
+    },
+    {
+      "step": 380,
+      "trained_words": 1552998,
+      "loss": 4.812018871307373,
+      "gradient_norm": 0.40865781903266907,
+      "lr": 0.0009824094634861653,
+      "elapsed_seconds": 155.49392258400258
+    },
+    {
+      "step": 390,
+      "trained_words": 1594261,
+      "loss": 4.631597518920898,
+      "gradient_norm": 0.5181878805160522,
+      "lr": 0.0009814762822341477,
+      "elapsed_seconds": 158.8184342090026
+    },
+    {
+      "step": 400,
+      "trained_words": 1635227,
+      "loss": 4.6293792724609375,
+      "gradient_norm": 0.5215337872505188,
+      "lr": 0.0009805195697281284,
+      "elapsed_seconds": 162.17937266700028
+    },
+    {
+      "step": 410,
+      "trained_words": 1677772,
+      "loss": 4.694863319396973,
+      "gradient_norm": 0.5030221939086914,
+      "lr": 0.000979539384982641,
+      "elapsed_seconds": 164.856096042
+    },
+    {
+      "step": 420,
+      "trained_words": 1718390,
+      "loss": 4.767305374145508,
+      "gradient_norm": 1.1233710050582886,
+      "lr": 0.0009785357884600976,
+      "elapsed_seconds": 167.52035112500016
+    },
+    {
+      "step": 430,
+      "trained_words": 1759584,
+      "loss": 4.692804336547852,
+      "gradient_norm": 0.7731418013572693,
+      "lr": 0.0009775088420670593,
+      "elapsed_seconds": 170.16674958400108
+    },
+    {
+      "step": 440,
+      "trained_words": 1802200,
+      "loss": 4.617833137512207,
+      "gradient_norm": 0.6207918524742126,
+      "lr": 0.0009764586091504169,
+      "elapsed_seconds": 173.09800012500273
+    },
+    {
+      "step": 450,
+      "trained_words": 1842324,
+      "loss": 4.653693199157715,
+      "gradient_norm": 0.5460898876190186,
+      "lr": 0.0009753851544934837,
+      "elapsed_seconds": 176.846145042
+    },
+    {
+      "step": 460,
+      "trained_words": 1882779,
+      "loss": 4.247027397155762,
+      "gradient_norm": 0.6000322103500366,
+      "lr": 0.0009742885443119994,
+      "elapsed_seconds": 179.93227408400344
+    },
+    {
+      "step": 470,
+      "trained_words": 1924093,
+      "loss": 4.377455234527588,
+      "gradient_norm": 0.5577511787414551,
+      "lr": 0.0009731688462500455,
+      "elapsed_seconds": 182.52217825000116
+    },
+    {
+      "step": 480,
+      "trained_words": 1965229,
+      "loss": 4.399742603302002,
+      "gradient_norm": 0.5487700700759888,
+      "lr": 0.0009720261293758725,
+      "elapsed_seconds": 185.02705287500066
+    },
+    {
+      "step": 490,
+      "trained_words": 2005805,
+      "loss": 4.616859436035156,
+      "gradient_norm": 0.42199254035949707,
+      "lr": 0.0009708604641776402,
+      "elapsed_seconds": 187.73696662500151
+    },
+    {
+      "step": 500,
+      "trained_words": 2046218,
+      "loss": 4.19350528717041,
+      "gradient_norm": 0.44860851764678955,
+      "lr": 0.0009696719225590689,
+      "elapsed_seconds": 190.5851757920027
+    },
+    {
+      "step": 510,
+      "trained_words": 2087176,
+      "loss": 4.398179531097412,
+      "gradient_norm": 0.46426376700401306,
+      "lr": 0.0009684605778350036,
+      "elapsed_seconds": 193.24627179200252
+    },
+    {
+      "step": 520,
+      "trained_words": 2127853,
+      "loss": 4.408814907073975,
+      "gradient_norm": 0.5530162453651428,
+      "lr": 0.0009672265047268932,
+      "elapsed_seconds": 195.89242987500256
+    },
+    {
+      "step": 530,
+      "trained_words": 2167582,
+      "loss": 3.995022773742676,
+      "gradient_norm": 0.5478447079658508,
+      "lr": 0.0009659697793581801,
+      "elapsed_seconds": 198.39706741700138
+    },
+    {
+      "step": 540,
+      "trained_words": 2207974,
+      "loss": 4.176126956939697,
+      "gradient_norm": 0.5177270174026489,
+      "lr": 0.0009646904792496043,
+      "elapsed_seconds": 200.89435550000053
+    },
+    {
+      "step": 550,
+      "trained_words": 2249206,
+      "loss": 4.395566463470459,
+      "gradient_norm": 0.43094030022621155,
+      "lr": 0.0009633886833144232,
+      "elapsed_seconds": 203.61502716700124
+    },
+    {
+      "step": 560,
+      "trained_words": 2288628,
+      "loss": 4.6267781257629395,
+      "gradient_norm": 0.4626311957836151,
+      "lr": 0.0009620644718535416,
+      "elapsed_seconds": 206.1327757500003
+    },
+    {
+      "step": 570,
+      "trained_words": 2329458,
+      "loss": 4.572912216186523,
+      "gradient_norm": 0.4666602313518524,
+      "lr": 0.0009607179265505602,
+      "elapsed_seconds": 208.67585637500088
+    },
+    {
+      "step": 580,
+      "trained_words": 2370732,
+      "loss": 4.341383934020996,
+      "gradient_norm": 0.5283761024475098,
+      "lr": 0.0009593491304667359,
+      "elapsed_seconds": 211.4925535000002
+    },
+    {
+      "step": 590,
+      "trained_words": 2411861,
+      "loss": 4.350665092468262,
+      "gradient_norm": 0.5133124589920044,
+      "lr": 0.0009579581680358588,
+      "elapsed_seconds": 213.9177037920017
+    },
+    {
+      "step": 600,
+      "trained_words": 2451832,
+      "loss": 4.376954555511475,
+      "gradient_norm": 0.5645802021026611,
+      "lr": 0.000956545125059044,
+      "elapsed_seconds": 216.5760897500004
+    },
+    {
+      "step": 610,
+      "trained_words": 2492894,
+      "loss": 4.2476420402526855,
+      "gradient_norm": 0.5236873626708984,
+      "lr": 0.000955110088699438,
+      "elapsed_seconds": 219.12291808400187
+    },
+    {
+      "step": 620,
+      "trained_words": 2532782,
+      "loss": 4.537621974945068,
+      "gradient_norm": 0.4713454246520996,
+      "lr": 0.0009536531474768431,
+      "elapsed_seconds": 221.65205020900248
+    },
+    {
+      "step": 630,
+      "trained_words": 2573078,
+      "loss": 4.0945143699646,
+      "gradient_norm": 0.4303355813026428,
+      "lr": 0.0009521743912622567,
+      "elapsed_seconds": 224.2687473750011
+    },
+    {
+      "step": 640,
+      "trained_words": 2614821,
+      "loss": 4.276976108551025,
+      "gradient_norm": 0.5038400292396545,
+      "lr": 0.0009506739112723277,
+      "elapsed_seconds": 226.7576548750003
+    },
+    {
+      "step": 650,
+      "trained_words": 2654406,
+      "loss": 3.837871551513672,
+      "gradient_norm": 0.7311120629310608,
+      "lr": 0.0009491518000637301,
+      "elapsed_seconds": 229.2841368340014
+    },
+    {
+      "step": 660,
+      "trained_words": 2697811,
+      "loss": 4.532284736633301,
+      "gradient_norm": 0.5649791359901428,
+      "lr": 0.0009476081515274524,
+      "elapsed_seconds": 231.85143420900204
+    },
+    {
+      "step": 670,
+      "trained_words": 2740613,
+      "loss": 4.105588436126709,
+      "gradient_norm": 0.630918562412262,
+      "lr": 0.0009460430608830082,
+      "elapsed_seconds": 234.3701122090024
+    },
+    {
+      "step": 680,
+      "trained_words": 2781789,
+      "loss": 4.025033473968506,
+      "gradient_norm": 0.5081024169921875,
+      "lr": 0.0009444566246725601,
+      "elapsed_seconds": 236.8790347920003
+    },
+    {
+      "step": 690,
+      "trained_words": 2822945,
+      "loss": 4.400600910186768,
+      "gradient_norm": 0.5083754062652588,
+      "lr": 0.0009428489407549667,
+      "elapsed_seconds": 239.55921204200058
+    },
+    {
+      "step": 700,
+      "trained_words": 2864776,
+      "loss": 4.323121070861816,
+      "gradient_norm": 0.541903555393219,
+      "lr": 0.0009412201082997449,
+      "elapsed_seconds": 242.4888670420005
+    },
+    {
+      "step": 710,
+      "trained_words": 2905210,
+      "loss": 4.341306209564209,
+      "gradient_norm": 0.5497179627418518,
+      "lr": 0.0009395702277809528,
+      "elapsed_seconds": 244.92599137500292
+    },
+    {
+      "step": 720,
+      "trained_words": 2946013,
+      "loss": 4.080629825592041,
+      "gradient_norm": 0.5149621367454529,
+      "lr": 0.0009378994009709929,
+      "elapsed_seconds": 247.34778558400285
+    },
+    {
+      "step": 730,
+      "trained_words": 2986148,
+      "loss": 4.1466965675354,
+      "gradient_norm": 0.46152061223983765,
+      "lr": 0.0009362077309343327,
+      "elapsed_seconds": 249.74832162500024
+    },
+    {
+      "step": 740,
+      "trained_words": 3026301,
+      "loss": 4.1038289070129395,
+      "gradient_norm": 0.4927389323711395,
+      "lr": 0.0009344953220211485,
+      "elapsed_seconds": 252.2187611670015
+    },
+    {
+      "step": 750,
+      "trained_words": 3066062,
+      "loss": 3.662346601486206,
+      "gradient_norm": 0.5200361609458923,
+      "lr": 0.0009327622798608883,
+      "elapsed_seconds": 254.59091037500184
+    },
+    {
+      "step": 760,
+      "trained_words": 3105481,
+      "loss": 4.058354377746582,
+      "gradient_norm": 0.47436463832855225,
+      "lr": 0.0009310087113557564,
+      "elapsed_seconds": 257.05126241700054
+    },
+    {
+      "step": 770,
+      "trained_words": 3145980,
+      "loss": 3.6188085079193115,
+      "gradient_norm": 0.5875311493873596,
+      "lr": 0.0009292347246741175,
+      "elapsed_seconds": 259.4494297920028
+    },
+    {
+      "step": 780,
+      "trained_words": 3187778,
+      "loss": 4.310063362121582,
+      "gradient_norm": 0.6258873343467712,
+      "lr": 0.0009274404292438268,
+      "elapsed_seconds": 261.8610890420023
+    },
+    {
+      "step": 790,
+      "trained_words": 3228113,
+      "loss": 4.098389625549316,
+      "gradient_norm": 0.4498728811740875,
+      "lr": 0.0009256259357454782,
+      "elapsed_seconds": 264.30175808400236
+    },
+    {
+      "step": 800,
+      "trained_words": 3270949,
+      "loss": 3.8300609588623047,
+      "gradient_norm": 0.4675644338130951,
+      "lr": 0.0009237913561055777,
+      "elapsed_seconds": 266.65461962500194
+    },
+    {
+      "step": 810,
+      "trained_words": 3315868,
+      "loss": 4.3855180740356445,
+      "gradient_norm": 0.45649683475494385,
+      "lr": 0.0009219368034896391,
+      "elapsed_seconds": 269.0897356250025
+    },
+    {
+      "step": 820,
+      "trained_words": 3356805,
+      "loss": 3.801959991455078,
+      "gradient_norm": 0.535811185836792,
+      "lr": 0.0009200623922952036,
+      "elapsed_seconds": 271.46240454200233
+    },
+    {
+      "step": 830,
+      "trained_words": 3399576,
+      "loss": 4.193783760070801,
+      "gradient_norm": 0.5527729988098145,
+      "lr": 0.0009181682381447829,
+      "elapsed_seconds": 273.9082747090033
+    },
+    {
+      "step": 840,
+      "trained_words": 3439847,
+      "loss": 4.043504238128662,
+      "gradient_norm": 0.6157833337783813,
+      "lr": 0.000916254457878727,
+      "elapsed_seconds": 276.3147361670017
+    },
+    {
+      "step": 850,
+      "trained_words": 3481457,
+      "loss": 3.9195690155029297,
+      "gradient_norm": 0.7023996710777283,
+      "lr": 0.0009143211695480178,
+      "elapsed_seconds": 278.6622875840003
+    },
+    {
+      "step": 860,
+      "trained_words": 3523167,
+      "loss": 4.058396816253662,
+      "gradient_norm": 0.49696701765060425,
+      "lr": 0.0009123684924069859,
+      "elapsed_seconds": 281.11195058400335
+    },
+    {
+      "step": 870,
+      "trained_words": 3563996,
+      "loss": 3.858442783355713,
+      "gradient_norm": 0.5282695293426514,
+      "lr": 0.0009103965469059554,
+      "elapsed_seconds": 283.4815353340018
+    },
+    {
+      "step": 880,
+      "trained_words": 3604559,
+      "loss": 3.912468194961548,
+      "gradient_norm": 0.5293752551078796,
+      "lr": 0.0009084054546838134,
+      "elapsed_seconds": 285.96506041700195
+    },
+    {
+      "step": 890,
+      "trained_words": 3645702,
+      "loss": 3.8549225330352783,
+      "gradient_norm": 0.4261123836040497,
+      "lr": 0.0009063953385605073,
+      "elapsed_seconds": 288.33403100000214
+    },
+    {
+      "step": 900,
+      "trained_words": 3687855,
+      "loss": 3.698945999145508,
+      "gradient_norm": 0.5214793086051941,
+      "lr": 0.0009043663225294676,
+      "elapsed_seconds": 290.6599803340032
+    },
+    {
+      "step": 910,
+      "trained_words": 3728337,
+      "loss": 4.108099937438965,
+      "gradient_norm": 0.4853306710720062,
+      "lr": 0.0009023185317499612,
+      "elapsed_seconds": 293.07711858400216
+    },
+    {
+      "step": 920,
+      "trained_words": 3769534,
+      "loss": 3.903339385986328,
+      "gradient_norm": 0.504869282245636,
+      "lr": 0.0009002520925393689,
+      "elapsed_seconds": 295.39659804200346
+    },
+    {
+      "step": 930,
+      "trained_words": 3809894,
+      "loss": 3.698946475982666,
+      "gradient_norm": 0.5502716302871704,
+      "lr": 0.0008981671323653951,
+      "elapsed_seconds": 297.7566094590002
+    },
+    {
+      "step": 940,
+      "trained_words": 3851256,
+      "loss": 4.01653528213501,
+      "gradient_norm": 0.4763734042644501,
+      "lr": 0.0008960637798382043,
+      "elapsed_seconds": 300.1163499590002
+    },
+    {
+      "step": 950,
+      "trained_words": 3891009,
+      "loss": 3.9958887100219727,
+      "gradient_norm": 0.5123096108436584,
+      "lr": 0.0008939421647024883,
+      "elapsed_seconds": 302.4605232920003
+    },
+    {
+      "step": 960,
+      "trained_words": 3930622,
+      "loss": 4.26034688949585,
+      "gradient_norm": 0.48237767815589905,
+      "lr": 0.0008918024178294621,
+      "elapsed_seconds": 304.8798379590007
+    },
+    {
+      "step": 970,
+      "trained_words": 3971647,
+      "loss": 3.7511391639709473,
+      "gradient_norm": 0.48118361830711365,
+      "lr": 0.0008896446712087922,
+      "elapsed_seconds": 307.22895245900145
+    },
+    {
+      "step": 980,
+      "trained_words": 4013284,
+      "loss": 3.328108787536621,
+      "gradient_norm": 0.7839180827140808,
+      "lr": 0.0008874690579404539,
+      "elapsed_seconds": 309.6146606250004
+    },
+    {
+      "step": 990,
+      "trained_words": 4054609,
+      "loss": 3.5387680530548096,
+      "gradient_norm": 0.5173326134681702,
+      "lr": 0.0008852757122265216,
+      "elapsed_seconds": 312.06014116700317
+    },
+    {
+      "step": 1000,
+      "trained_words": 4096777,
+      "loss": 4.277144908905029,
+      "gradient_norm": 0.5168702006340027,
+      "lr": 0.0008830647693628906,
+      "elapsed_seconds": 314.44164845900013
+    },
+    {
+      "step": 1010,
+      "trained_words": 4136673,
+      "loss": 3.615431785583496,
+      "gradient_norm": 0.5232145190238953,
+      "lr": 0.0008808363657309313,
+      "elapsed_seconds": 317.740621334
+    },
+    {
+      "step": 1020,
+      "trained_words": 4177049,
+      "loss": 3.5749776363372803,
+      "gradient_norm": 0.5404133796691895,
+      "lr": 0.0008785906387890763,
+      "elapsed_seconds": 320.6512824590027
+    },
+    {
+      "step": 1030,
+      "trained_words": 4217087,
+      "loss": 3.496861696243286,
+      "gradient_norm": 0.5779202580451965,
+      "lr": 0.0008763277270643418,
+      "elapsed_seconds": 323.7713187500012
+    }
+  ],
+  "mainnet_actions": 0,
+  "quality_approved": false,
+  "best_validation_candidate": {
+    "step": 1000,
+    "trained_words": 4096777,
+    "elapsed_seconds": 314.93136283400236,
+    "validation": {
+      "word_nll": 5.486668013041917,
+      "punctuation_nll": 0.4721726971907695,
+      "joint_nll": 5.958840710232686,
+      "known_words": 22357,
+      "punctuation_positions": 24122,
+      "by_kind": {
+        "narrative": {
+          "word_nll": 5.4477740155102365,
+          "punctuation_nll": 0.4751682791678171,
+          "joint_nll": 5.922942294678053,
+          "known_words": 20967,
+          "punctuation_positions": 22693
+        },
+        "original": {
+          "word_nll": 6.073351787320144,
+          "punctuation_nll": 0.4246018491815737,
+          "joint_nll": 6.497953636501718,
+          "known_words": 1390,
+          "punctuation_positions": 1429
+        }
+      },
+      "selection_macro_joint_nll": 6.210447965589886
+    },
+    "weights_sha256": "2fcfa7f2a239afe6c862f0e726720f88a6cbc9b86f898d6fdb9d7085e43d0170",
+    "packing_q10_max_abs_sums": {
+      "wh1:0:190": 15882,
+      "wh1:190:384": 15882,
+      "wx2:0:190": 15884,
+      "wx2:190:384": 15882,
+      "wh2:0:190": 15883,
+      "wh2:190:384": 15880,
+      "groups.weight:0:260": 15885,
+      "groups.weight:260:384": 9417,
+      "words.weight:0:260": 15886,
+      "words.weight:260:384": 12073,
+      "punct_head.weight:0:260": 15504,
+      "punct_head.weight:260:384": 7240
+    },
+    "tensor_q10_bounds": {
+      "wx1": [
+        -600,
+        613
+      ],
+      "wh1": [
+        -468,
+        488
+      ],
+      "wf": [
+        0,
+        0
+      ],
+      "bh1": [
+        -45,
+        1070
+      ],
+      "wx2": [
+        -437,
+        470
+      ],
+      "wh2": [
+        -487,
+        421
+      ],
+      "bh2": [
+        -46,
+        1113
+      ],
+      "punct_bias": [
+        -5493,
+        -101
+      ],
+      "embedding.weight": [
+        -488,
+        478
+      ],
+      "punct_embedding.weight": [
+        -376,
+        425
+      ],
+      "domain.weight": [
+        -842,
+        430
+      ],
+      "groups.weight": [
+        -341,
+        324
+      ],
+      "group_bias.weight": [
+        -8448,
+        -890
+      ],
+      "words.weight": [
+        -394,
+        469
+      ],
+      "word_bias.weight": [
+        -14737,
+        -530
+      ],
+      "punct_head.weight": [
+        -267,
+        620
+      ],
+      "word_punct_bias.weight": [
+        -859,
+        773
+      ]
+    },
+    "projection_rows": {
+      "wh1:0:190": 72732,
+      "wh1:190:384": 87804,
+      "wx2:0:190": 36387,
+      "wx2:190:384": 40859,
+      "wh2:0:190": 13307,
+      "wh2:190:384": 18157,
+      "groups.weight:0:260": 5214,
+      "groups.weight:260:384": 0,
+      "words.weight:0:260": 58782,
+      "words.weight:260:384": 0,
+      "punct_head.weight:0:260": 0,
+      "punct_head.weight:260:384": 0
+    },
+    "checkpoint": "/Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v10/runs/fresh-fullwidth-4000/checkpoint-001000",
+    "quality_approved": false
+  },
+  "stop_reason": "At step1000 both complete native samples remain ungrammatical and lose continuity. Stop this short control for the requested fast comparison; this is not an exhaustive test of training from scratch.",
+  "last_reviewed_checkpoint": 1000,
+  "last_finished_step": 1030,
+  "trained_words": 4217087,
+  "elapsed_seconds": 323.7713187500012
+}

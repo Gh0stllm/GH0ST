@@ -1,7 +1,7 @@
 # N0VA voice repair: local research
 
-**Work in progress. No replacement has passed the language gate. New weights
-have not yet been verified in a 32M-gas swap.** `STATUS.json` distinguishes the
+**Fast comparison complete: no replacement passed the language gate. One retrained
+checkpoint passed an eight-swap local smoke test below 32M gas.** `STATUS.json` distinguishes the
 research snapshot from a selected model or deployment.
 
 This experiment targets grammatical first-person language and a continuous
@@ -14,6 +14,8 @@ The selected Solidity implementation uses the preceding exact signed layout
 and packed decoder. Changed weights must pass fresh integer-packing proofs,
 independent Q10 replay and full local PoolManager swaps before any gas claim.
 This directory authorizes no deployment or public-chain action.
+
+See `RESULTS.md` for completed findings and `REPRODUCE.md` for local commands.
 
 ## Diagnosis and training
 
@@ -44,6 +46,15 @@ weights are explicitly counted. Source stories remain in their original splits
 and their original license and provenance are retained. Domain zero is the
 first-person context exported for Solidity inference.
 
+The follow-up first-person replay adds attributed Project Gutenberg texts:
+*Flatland*, *Jane Eyre*, *Notes from the Underground* and *The Yellow Wallpaper*.
+Catalog links, source hashes and full license-bearing source files are retained
+under `narrative/`. Paragraph groups are disjoint across splits. The same books
+occur in several splits; these are held-out passages, not unseen-author tests.
+This phase mixes 50% narrative, 30% grammar and 20% original-voice targets.
+A separate fresh H384 initialization tests whether inherited model weights are
+limiting adaptation. Neither experiment is automatically a selected replacement.
+
 ## Evidence
 
 - `data/`, `data-short/`: original prose, source manifests and independent audits.
@@ -62,3 +73,7 @@ Any result must distinguish grammatical examples from generally reliable
 language, and learned recombination from verbatim training passages. The old
 failed trials and raw outputs are retained. Do not infer a passing language or
 gas result from the presence of a checkpoint.
+
+The inherited swap-feature weight tensor remains zero in these language-only
+experiments. Output evolves with recurrent state and sampling seed; these
+results do not establish that language responds to prices or trade direction.
