@@ -1,0 +1,100 @@
+{
+  "status": "PASS",
+  "mode": "UNFORKED_LOCAL_ONLY",
+  "chain_id": 31337,
+  "public_transactions_submitted": 0,
+  "recorded_at": "2026-10-24T09:36:53.401Z",
+  "test_source": "experiments/gh0st-voice/nova-pool/token.test.mjs",
+  "test_source_sha256": "363e17b52451de02d6719e34f5384030459cd2fc457603074f4db90f58af0763",
+  "assertions": [
+    {
+      "name": "the pinned OpenZeppelin sources match their recorded official hashes",
+      "passed": true
+    },
+    {
+      "name": "constructor issues all and only one million tokens",
+      "passed": true
+    },
+    {
+      "name": "transfers have no tax, burn, blacklist, or owner exception",
+      "passed": true
+    },
+    {
+      "name": "allowances are required, consumed exactly, and cannot seize balances",
+      "passed": true
+    },
+    {
+      "name": "zero-address transfer and approval revert instead of burning supply",
+      "passed": true
+    },
+    {
+      "name": "mint, burn, pause, ownership, blacklist and upgrade selectors cannot be called",
+      "passed": true
+    },
+    {
+      "name": "N0VA has only standard ERC20 behavior and immutable one-million supply",
+      "passed": true
+    }
+  ],
+  "total_cases": 7,
+  "exit_code": 0,
+  "observed_assertions": {
+    "initial_supply": "1000000000000000000000000",
+    "final_supply": "1000000000000000000000000",
+    "initial_recipient_balance": "1000000000000000000000000",
+    "initial_other_balance": "0",
+    "name": "GH0ST N0VA",
+    "symbol": "N0VA",
+    "decimals": 18,
+    "zero_recipient_constructor": "REVERT",
+    "transfer_to_zero": "REVERT",
+    "approve_to_zero": "REVERT",
+    "spoofed_zero_sender_transferFrom_0": "REVERT",
+    "spoofed_zero_sender_transferFrom_1": "REVERT",
+    "unapproved_transfer_from": "REVERT",
+    "excess_transfer": "REVERT",
+    "forbidden_selectors": [
+      {
+        "name": "mint",
+        "result": "REVERT"
+      },
+      {
+        "name": "burn",
+        "result": "REVERT"
+      },
+      {
+        "name": "burnFrom",
+        "result": "REVERT"
+      },
+      {
+        "name": "pause",
+        "result": "REVERT"
+      },
+      {
+        "name": "unpause",
+        "result": "REVERT"
+      },
+      {
+        "name": "transferOwnership",
+        "result": "REVERT"
+      },
+      {
+        "name": "renounceOwnership",
+        "result": "REVERT"
+      },
+      {
+        "name": "blacklist",
+        "result": "REVERT"
+      },
+      {
+        "name": "setTax",
+        "result": "REVERT"
+      },
+      {
+        "name": "upgradeTo",
+        "result": "REVERT"
+      }
+    ]
+  },
+  "raw_test_output": "TAP version 13\n# Subtest: N0VA has only standard ERC20 behavior and immutable one-million supply\n    # Subtest: the pinned OpenZeppelin sources match their recorded official hashes\n    ok 1 - the pinned OpenZeppelin sources match their recorded official hashes\n      ---\n      duration_ms: 0.533625\n      type: 'test'\n      ...\n    # Subtest: constructor issues all and only one million tokens\n    ok 2 - constructor issues all and only one million tokens\n      ---\n      duration_ms: 14.80925\n      type: 'test'\n      ...\n    # Subtest: transfers have no tax, burn, blacklist, or owner exception\n    ok 3 - transfers have no tax, burn, blacklist, or owner exception\n      ---\n      duration_ms: 23.125375\n      type: 'test'\n      ...\n    # Subtest: allowances are required, consumed exactly, and cannot seize balances\n    ok 4 - allowances are required, consumed exactly, and cannot seize balances\n      ---\n      duration_ms: 53.051417\n      type: 'test'\n      ...\n    # Subtest: zero-address transfer and approval revert instead of burning supply\n    ok 5 - zero-address transfer and approval revert instead of burning supply\n      ---\n      duration_ms: 12.297833\n      type: 'test'\n      ...\n    # Subtest: mint, burn, pause, ownership, blacklist and upgrade selectors cannot be called\n    ok 6 - mint, burn, pause, ownership, blacklist and upgrade selectors cannot be called\n      ---\n      duration_ms: 15.800917\n      type: 'test'\n      ...\n    1..6\nok 1 - N0VA has only standard ERC20 behavior and immutable one-million supply\n  ---\n  duration_ms: 810.465792\n  type: 'test'\n  ...\n1..1\n# tests 7\n# suites 0\n# pass 7\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 1066.6625\n"
+}

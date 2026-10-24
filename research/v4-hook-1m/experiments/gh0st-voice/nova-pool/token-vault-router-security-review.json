@@ -1,0 +1,55 @@
+{
+  "scope": "Source review of local candidate token, permanent vault, exact-input router and focused token tests",
+  "mainnet_actions": 0,
+  "reviewer": "nova_token_vault subagent",
+  "critical_unresolved_findings": [],
+  "findings": [
+    {
+      "severity": "medium",
+      "status": "FIXED_IN_CURRENT_SOURCE",
+      "file": "contracts/NovaSwapRouter.sol",
+      "issue": "Native settlement did not clear a previously synced ERC20 in the same transaction, allowing a composability denial of service.",
+      "fix": "manager.sync(Currency.wrap(address(0))) immediately precedes native settle.",
+      "regression_test": "NovaPreSyncBuyer performs ERC20 sync then router buy in the same transaction; parent integration runner verifies."
+    }
+  ],
+  "reviewed_guards": [
+    "Vault launch checks exact hook poolManager/nova/initializer/fee/tickSpacing/initialSqrtPriceX96/poolId before any pool initialization",
+    "Vault only permits one initialization with exactly1ETH; constructor requires at least99.9pct of each fixed budget enters the LP",
+    "Vault callback requires immutable manager and one-shot authorization consumed before interactions",
+    "Vault only performs positive liquidity addition with fixed range/salt/amount and matches exact precomputed debt",
+    "No principal/fee/dust withdrawal, approval, arbitrary execution, ownership or upgrade path",
+    "Router bounds exact input to int128, checks deadline/minimum output and requires full fill",
+    "Router callback requires immutable manager and active nonreentrant entry; payouts are directed to the caller encoded by router",
+    "Native payout reentry cannot reenter buy/sell while outer trade active",
+    "Token exposes standard ERC20 functions plus fixed supply constant; no external mint/burn/admin/upgrade selectors"
+  ],
+  "deliberate_limitations": [
+    "Inference failure reverts buys and sells; immutable deployment cannot be patched in place",
+    "Genesis LP fees and dust are permanently inaccessible as well as principal",
+    "Standard ERC20 transferability permits third-party pools not governed by this hook",
+    "Router deployment configuration must be verified against vault/hook; constructor currently checks addresses have code but does not independently read hook bindings"
+  ],
+  "sources": [
+    {
+      "path": "contracts/NovaSwapRouter.sol",
+      "sha256": "56c074b00b15065655ab1dd4c478dadd8bacc61d29277be9297b5fd8d95a91c0"
+    },
+    {
+      "path": "contracts/NovaLiquidityVault.sol",
+      "sha256": "cec732f107e05135d8c4f77a314c21d28a760c90a2e040db69b8c7a88ab2e6e8"
+    },
+    {
+      "path": "contracts/NovaToken.sol",
+      "sha256": "2b64b05d2460e54936246476c5db91846aff126bf3be0b2c9a10631662a8dd0e"
+    },
+    {
+      "path": "contracts/NovaTestHarness.sol",
+      "sha256": "a05c05520802311436e84dc14ff688f3461003395376d1e0b9e369e82b53f05b"
+    },
+    {
+      "path": "token.test.mjs",
+      "sha256": "363e17b52451de02d6719e34f5384030459cd2fc457603074f4db90f58af0763"
+    }
+  ]
+}

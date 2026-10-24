@@ -1,0 +1,41 @@
+{
+  "status": "LOCAL_TEST_PASS_NOT_DEPLOYED",
+  "model": "GH0ST N0VA-8M",
+  "chain_id": 31337,
+  "mainnet_actions": 0,
+  "supply": "1000000",
+  "external_mint": false,
+  "token_admin_functions": false,
+  "lp_lock": "PERMANENT_PRINCIPAL_FEES_AND_DUST",
+  "inference_failure_policy": "REVERT_ENTIRE_TRADE_AS_REQUESTED",
+  "initial_eth": "1",
+  "initial_active_nova": "999999.673447628178549341",
+  "locked_nova_dust": "0.326552371821450659",
+  "target_fdv_usd": "25000",
+  "eth_usd_scenario": "2359.235",
+  "fee_percent": "0.3",
+  "integration_checks": 64,
+  "primary_real_model_swaps": 32,
+  "total_real_model_words": 37,
+  "malformed_model_modes_tested_both_directions": 15,
+  "maximum_primary_swap_gas": "23581932",
+  "all_state_values_and_logits_match_reference": true,
+  "first_round_trip": {
+    "eth_in": "10000000000000000",
+    "nova_received": "940066756655915728257",
+    "eth_returned": "9940115234076145",
+    "gas_buy": "23581932",
+    "gas_sell": "22737177"
+  },
+  "source_checkpoint_sha256": "904e4ee0426dc62c06b5551db19d2ee40d0c0c618fdb62c4a49a39af80d390d3",
+  "model_hash": "0xc6e59c71fcf4ae63c15b306a91fb1882813163e685fcf722cfc920354954ae22",
+  "limitations": [
+    "No mainnet deployment or live liquidity.",
+    "Frozen model and new local contracts explicitly require localchain31337.",
+    "Strict mandatory inference can block sells if the model ever fails; no administrativebypass.",
+    "Principal, fees and dust cannot be recovered from the permanent vault.",
+    "A freelytransferable ERC20 can be traded in other pools without this hook.",
+    "Price target is a scenario from fixed ETHUSD input, not anoracleorpriceguarantee.",
+    "Internal tests/reviews are not an independent externalsecurityaudit."
+  ]
+}
