@@ -1,0 +1,2802 @@
+{
+  "schema_version": 1,
+  "purpose": "Adult first-person continuity corpus; original voice anchors are separate. Neither a Truth Terminal corpus nor a capability claim.",
+  "selection": "General adult seed paragraphs contain I/me/my/mine/myself/we/us/our/ourselves; retain immediate neighboring paragraphs for authentic context. Every general-adult chunk contains a marker. Original anchors are included unchanged whether or not each has an explicit first-person pronoun. No overlapping chunks; no concatenation over unselected paragraph gaps.",
+  "split_method": "80/10/10 deterministic chapter hash for books and whole-essay hash for Gwern BEFORE chunking; original anchor group assignments preserved.",
+  "counts": {
+    "train_records": 3056,
+    "train_words": 828876,
+    "validation_records": 340,
+    "validation_words": 90865,
+    "test_records": 306,
+    "test_words": 78319
+  },
+  "total_words": 998060,
+  "total_records": 3702,
+  "groups": 967,
+  "cross_split_groups": 0,
+  "exact_normalized_duplicates_removed": [],
+  "source_kind": {
+    "general_adult": {
+      "train_words": 798491,
+      "train_records": 2427,
+      "validation_words": 86845,
+      "validation_records": 254,
+      "test_words": 74413,
+      "test_records": 222
+    },
+    "original_voice": {
+      "train_words": 30385,
+      "train_records": 629,
+      "validation_words": 4020,
+      "validation_records": 86,
+      "test_words": 3906,
+      "test_records": 84
+    }
+  },
+  "source_words": {
+    "gwern-about": {
+      "train_words": 2330
+    },
+    "gwern-book-writing": {
+      "train_words": 1882
+    },
+    "gwern-choosing-software": {
+      "train_words": 817
+    },
+    "gwern-creatine": {
+      "train_words": 540
+    },
+    "gwern-culture-is-not-about-esthetics": {
+      "train_words": 3985
+    },
+    "gwern-death-note-anonymity": {
+      "train_words": 1618
+    },
+    "gwern-dnb-faq": {
+      "train_words": 1968
+    },
+    "gwern-improvement": {
+      "validation_words": 305
+    },
+    "gwern-me": {
+      "train_words": 629
+    },
+    "gwern-melatonin": {
+      "train_words": 838
+    },
+    "gwern-modafinil": {
+      "train_words": 3286
+    },
+    "gwern-nicotine": {
+      "train_words": 942
+    },
+    "gwern-on-really-trying": {
+      "train_words": 314
+    },
+    "gwern-silk-road": {
+      "train_words": 7446
+    },
+    "gwern-socks": {
+      "train_words": 2726
+    },
+    "gwern-spaced-repetition": {
+      "train_words": 1649
+    },
+    "gwern-subculture": {
+      "train_words": 1721
+    },
+    "gwern-sunk-cost": {
+      "train_words": 456
+    },
+    "gwern-tool-ai": {
+      "test_words": 1182
+    },
+    "long-voice-original": {
+      "train_words": 1787,
+      "validation_words": 249,
+      "test_words": 126
+    },
+    "prior-authored-full-parents": {
+      "train_words": 19757,
+      "test_words": 2484,
+      "validation_words": 2494
+    },
+    "pg-1026": {
+      "train_words": 26022,
+      "validation_words": 9348,
+      "test_words": 5893
+    },
+    "pg-130": {
+      "validation_words": 8105,
+      "train_words": 52463
+    },
+    "pg-1463": {
+      "validation_words": 9602,
+      "train_words": 45227,
+      "test_words": 5704
+    },
+    "pg-14658": {
+      "train_words": 26203,
+      "test_words": 18887,
+      "validation_words": 5156
+    },
+    "pg-2040": {
+      "train_words": 31199
+    },
+    "pg-205": {
+      "train_words": 93386,
+      "validation_words": 7963,
+      "test_words": 6077
+    },
+    "pg-308": {
+      "train_words": 53345,
+      "validation_words": 2271
+    },
+    "pg-3176": {
+      "train_words": 143384,
+      "validation_words": 11536,
+      "test_words": 11059
+    },
+    "pg-3177": {
+      "validation_words": 10515,
+      "train_words": 109319,
+      "test_words": 7222
+    },
+    "pg-470": {
+      "train_words": 52887,
+      "validation_words": 5646,
+      "test_words": 1152
+    },
+    "pg-534": {
+      "train_words": 26918,
+      "validation_words": 1892,
+      "test_words": 7569
+    },
+    "pg-535": {
+      "train_words": 26906,
+      "validation_words": 4479,
+      "test_words": 1697
+    },
+    "pg-600": {
+      "train_words": 31791,
+      "validation_words": 8272,
+      "test_words": 2283
+    },
+    "pg-849": {
+      "train_words": 29221,
+      "test_words": 5688,
+      "validation_words": 1755
+    },
+    "pg-921": {
+      "train_words": 17073
+    },
+    "original-vignettes": {
+      "train_words": 5086,
+      "test_words": 798,
+      "validation_words": 795
+    },
+    "voice-long-b": {
+      "train_words": 3755,
+      "validation_words": 482,
+      "test_words": 498
+    }
+  },
+  "source_stats": [
+    {
+      "source_id": "gwern-about",
+      "title": "About This Website",
+      "parsed_sections": 14,
+      "parsed_prose_words": 2455,
+      "retained_chunks_before_dedup": 14,
+      "retained_words_before_dedup": 2330,
+      "direct_first_person_paragraph_words": 2185
+    },
+    {
+      "source_id": "gwern-book-writing",
+      "title": "Why To Not Write A Book",
+      "parsed_sections": 7,
+      "parsed_prose_words": 2177,
+      "retained_chunks_before_dedup": 8,
+      "retained_words_before_dedup": 1882,
+      "direct_first_person_paragraph_words": 1453
+    },
+    {
+      "source_id": "gwern-choosing-software",
+      "title": "Choosing Software",
+      "parsed_sections": 7,
+      "parsed_prose_words": 1515,
+      "retained_chunks_before_dedup": 4,
+      "retained_words_before_dedup": 817,
+      "direct_first_person_paragraph_words": 507
+    },
+    {
+      "source_id": "gwern-creatine",
+      "title": "Creatine Cognition Meta-analysis",
+      "parsed_sections": 6,
+      "parsed_prose_words": 634,
+      "retained_chunks_before_dedup": 4,
+      "retained_words_before_dedup": 540,
+      "direct_first_person_paragraph_words": 388
+    },
+    {
+      "source_id": "gwern-culture-is-not-about-esthetics",
+      "title": "Culture Is Not About Esthetics",
+      "parsed_sections": 28,
+      "parsed_prose_words": 4841,
+      "retained_chunks_before_dedup": 23,
+      "retained_words_before_dedup": 3985,
+      "direct_first_person_paragraph_words": 3255
+    },
+    {
+      "source_id": "gwern-death-note-anonymity",
+      "title": "<em>Death Note</em>: L, Anonymity & Eluding Entropy",
+      "parsed_sections": 11,
+      "parsed_prose_words": 2243,
+      "retained_chunks_before_dedup": 8,
+      "retained_words_before_dedup": 1618,
+      "direct_first_person_paragraph_words": 880
+    },
+    {
+      "source_id": "gwern-dnb-faq",
+      "title": "'Dual <em>n</em>-Back FAQ'",
+      "parsed_sections": 50,
+      "parsed_prose_words": 4591,
+      "retained_chunks_before_dedup": 17,
+      "retained_words_before_dedup": 1968,
+      "direct_first_person_paragraph_words": 1463
+    },
+    {
+      "source_id": "gwern-improvement",
+      "title": "My Ordinary Life: Improvements Since the 1990s",
+      "parsed_sections": 1,
+      "parsed_prose_words": 305,
+      "retained_chunks_before_dedup": 1,
+      "retained_words_before_dedup": 305,
+      "direct_first_person_paragraph_words": 208
+    },
+    {
+      "source_id": "gwern-lithium",
+      "title": "Lithium in ground-water and well-being",
+      "parsed_sections": 2,
+      "parsed_prose_words": 357,
+      "retained_chunks_before_dedup": 0,
+      "retained_words_before_dedup": 0,
+      "direct_first_person_paragraph_words": 0
+    },
+    {
+      "source_id": "gwern-me",
+      "title": "About Gwern",
+      "parsed_sections": 4,
+      "parsed_prose_words": 692,
+      "retained_chunks_before_dedup": 3,
+      "retained_words_before_dedup": 629,
+      "direct_first_person_paragraph_words": 535
+    },
+    {
+      "source_id": "gwern-melatonin",
+      "title": "Melatonin",
+      "parsed_sections": 7,
+      "parsed_prose_words": 1059,
+      "retained_chunks_before_dedup": 4,
+      "retained_words_before_dedup": 838,
+      "direct_first_person_paragraph_words": 715
+    },
+    {
+      "source_id": "gwern-modafinil",
+      "title": "Modafinil",
+      "parsed_sections": 24,
+      "parsed_prose_words": 3880,
+      "retained_chunks_before_dedup": 16,
+      "retained_words_before_dedup": 3286,
+      "direct_first_person_paragraph_words": 3043
+    },
+    {
+      "source_id": "gwern-nicotine",
+      "title": "Nicotine",
+      "parsed_sections": 8,
+      "parsed_prose_words": 1206,
+      "retained_chunks_before_dedup": 6,
+      "retained_words_before_dedup": 942,
+      "direct_first_person_paragraph_words": 898
+    },
+    {
+      "source_id": "gwern-on-really-trying",
+      "title": "On Really Trying",
+      "parsed_sections": 2,
+      "parsed_prose_words": 460,
+      "retained_chunks_before_dedup": 1,
+      "retained_words_before_dedup": 314,
+      "direct_first_person_paragraph_words": 261
+    },
+    {
+      "source_id": "gwern-silk-road",
+      "title": "Silk Road 1: Theory & Practice",
+      "parsed_sections": 52,
+      "parsed_prose_words": 8439,
+      "retained_chunks_before_dedup": 42,
+      "retained_words_before_dedup": 7446,
+      "direct_first_person_paragraph_words": 5788
+    },
+    {
+      "source_id": "gwern-socks",
+      "title": "On Having Enough Socks",
+      "parsed_sections": 11,
+      "parsed_prose_words": 3120,
+      "retained_chunks_before_dedup": 10,
+      "retained_words_before_dedup": 2726,
+      "direct_first_person_paragraph_words": 2059
+    },
+    {
+      "source_id": "gwern-spaced-repetition",
+      "title": "Spaced Repetition for Efficient Learning",
+      "parsed_sections": 14,
+      "parsed_prose_words": 2148,
+      "retained_chunks_before_dedup": 8,
+      "retained_words_before_dedup": 1649,
+      "direct_first_person_paragraph_words": 1295
+    },
+    {
+      "source_id": "gwern-subculture",
+      "title": "The Melancholy of Subculture Society",
+      "parsed_sections": 13,
+      "parsed_prose_words": 2340,
+      "retained_chunks_before_dedup": 10,
+      "retained_words_before_dedup": 1721,
+      "direct_first_person_paragraph_words": 1430
+    },
+    {
+      "source_id": "gwern-sunk-cost",
+      "title": "Are Sunk Costs Fallacies?",
+      "parsed_sections": 5,
+      "parsed_prose_words": 507,
+      "retained_chunks_before_dedup": 4,
+      "retained_words_before_dedup": 456,
+      "direct_first_person_paragraph_words": 344
+    },
+    {
+      "source_id": "gwern-tool-ai",
+      "title": "Why Tool AIs Want to Be Agent AIs",
+      "parsed_sections": 10,
+      "parsed_prose_words": 2219,
+      "retained_chunks_before_dedup": 7,
+      "retained_words_before_dedup": 1182,
+      "direct_first_person_paragraph_words": 573
+    },
+    {
+      "source_id": "pg-1026",
+      "title": "The Diary of a Nobody by George Grossmith and Weedon Grossmith",
+      "parsed_sections": 25,
+      "parsed_prose_words": 41285,
+      "retained_chunks_before_dedup": 135,
+      "retained_words_before_dedup": 41263,
+      "direct_first_person_paragraph_words": 39885
+    },
+    {
+      "source_id": "pg-130",
+      "title": "Orthodoxy by G. K. Chesterton",
+      "parsed_sections": 10,
+      "parsed_prose_words": 62919,
+      "retained_chunks_before_dedup": 164,
+      "retained_words_before_dedup": 60568,
+      "direct_first_person_paragraph_words": 58748
+    },
+    {
+      "source_id": "pg-1463",
+      "title": "The Private Papers of Henry Ryecroft by George Gissing",
+      "parsed_sections": 104,
+      "parsed_prose_words": 61303,
+      "retained_chunks_before_dedup": 201,
+      "retained_words_before_dedup": 60533,
+      "direct_first_person_paragraph_words": 59719
+    },
+    {
+      "source_id": "pg-14658",
+      "title": "The Road by Jack London",
+      "parsed_sections": 9,
+      "parsed_prose_words": 50400,
+      "retained_chunks_before_dedup": 148,
+      "retained_words_before_dedup": 50246,
+      "direct_first_person_paragraph_words": 48912
+    },
+    {
+      "source_id": "pg-2040",
+      "title": "Confessions of an English Opium-Eater by Thomas De Quincey",
+      "parsed_sections": 7,
+      "parsed_prose_words": 31298,
+      "retained_chunks_before_dedup": 68,
+      "retained_words_before_dedup": 31199,
+      "direct_first_person_paragraph_words": 30897
+    },
+    {
+      "source_id": "pg-205",
+      "title": "Walden, and On The Duty Of Civil Disobedience by Henry David Thoreau",
+      "parsed_sections": 19,
+      "parsed_prose_words": 108454,
+      "retained_chunks_before_dedup": 286,
+      "retained_words_before_dedup": 107426,
+      "direct_first_person_paragraph_words": 105153
+    },
+    {
+      "source_id": "pg-308",
+      "title": "Three men in a boat (to say nothing of the dog) by Jerome K. Jerome",
+      "parsed_sections": 20,
+      "parsed_prose_words": 61930,
+      "retained_chunks_before_dedup": 193,
+      "retained_words_before_dedup": 55616,
+      "direct_first_person_paragraph_words": 44060
+    },
+    {
+      "source_id": "pg-3176",
+      "title": "The Innocents Abroad by Mark Twain",
+      "parsed_sections": 77,
+      "parsed_prose_words": 175788,
+      "retained_chunks_before_dedup": 500,
+      "retained_words_before_dedup": 165979,
+      "direct_first_person_paragraph_words": 147946
+    },
+    {
+      "source_id": "pg-3177",
+      "title": "Roughing It by Mark Twain",
+      "parsed_sections": 82,
+      "parsed_prose_words": 140944,
+      "retained_chunks_before_dedup": 393,
+      "retained_words_before_dedup": 127056,
+      "direct_first_person_paragraph_words": 109120
+    },
+    {
+      "source_id": "pg-470",
+      "title": "Heretics by G. K. Chesterton",
+      "parsed_sections": 21,
+      "parsed_prose_words": 63279,
+      "retained_chunks_before_dedup": 147,
+      "retained_words_before_dedup": 59685,
+      "direct_first_person_paragraph_words": 56106
+    },
+    {
+      "source_id": "pg-534",
+      "title": "An inland voyage by Robert Louis Stevenson",
+      "parsed_sections": 25,
+      "parsed_prose_words": 36745,
+      "retained_chunks_before_dedup": 109,
+      "retained_words_before_dedup": 36379,
+      "direct_first_person_paragraph_words": 34363
+    },
+    {
+      "source_id": "pg-535",
+      "title": "Travels with a donkey in the Cevennes by Robert Louis Stevenson",
+      "parsed_sections": 21,
+      "parsed_prose_words": 33323,
+      "retained_chunks_before_dedup": 100,
+      "retained_words_before_dedup": 33082,
+      "direct_first_person_paragraph_words": 31469
+    },
+    {
+      "source_id": "pg-600",
+      "title": "Notes from the Underground by Fyodor Dostoyevsky",
+      "parsed_sections": 21,
+      "parsed_prose_words": 42365,
+      "retained_chunks_before_dedup": 108,
+      "retained_words_before_dedup": 42346,
+      "direct_first_person_paragraph_words": 41655
+    },
+    {
+      "source_id": "pg-849",
+      "title": "The Idle Thoughts of an Idle Fellow by Jerome K. Jerome",
+      "parsed_sections": 15,
+      "parsed_prose_words": 40194,
+      "retained_chunks_before_dedup": 112,
+      "retained_words_before_dedup": 36664,
+      "direct_first_person_paragraph_words": 31243
+    },
+    {
+      "source_id": "pg-921",
+      "title": "De Profundis by Oscar Wilde",
+      "parsed_sections": 2,
+      "parsed_prose_words": 17129,
+      "retained_chunks_before_dedup": 49,
+      "retained_words_before_dedup": 17073,
+      "direct_first_person_paragraph_words": 15245
+    }
+  ],
+  "vocabulary_coverage": {
+    "8192": {
+      "method": "train-only frequency after guaranteeing train original-anchor vocabulary; no held-out vocabulary fitting",
+      "actual_vocab": 8192,
+      "anchor_types": 3903,
+      "splits": {
+        "train": {
+          "words": 828876,
+          "oov_words": 72943,
+          "oov_fraction": 0.08800230673828172,
+          "unique_words": 40780,
+          "top_oov": [
+            [
+              "witted",
+              9
+            ],
+            [
+              "santa",
+              9
+            ],
+            [
+              "evils",
+              9
+            ],
+            [
+              "diamond",
+              9
+            ],
+            [
+              "automatic",
+              9
+            ],
+            [
+              "poet.",
+              9
+            ],
+            [
+              "chooses",
+              9
+            ],
+            [
+              "island.",
+              9
+            ],
+            [
+              "attitudes",
+              9
+            ],
+            [
+              "happier",
+              9
+            ],
+            [
+              "lodgings",
+              9
+            ],
+            [
+              "loyalty",
+              9
+            ],
+            [
+              "soothing",
+              9
+            ],
+            [
+              "saxon",
+              9
+            ],
+            [
+              "fancy.",
+              9
+            ],
+            [
+              "carlyle",
+              9
+            ],
+            [
+              "burial",
+              9
+            ],
+            [
+              "martyrdom",
+              9
+            ],
+            [
+              "track.",
+              9
+            ],
+            [
+              "twelfth",
+              9
+            ],
+            [
+              "aristocrats",
+              9
+            ],
+            [
+              "unselfish",
+              9
+            ],
+            [
+              "imitate",
+              9
+            ],
+            [
+              "stoic",
+              9
+            ],
+            [
+              "nightfall",
+              9
+            ],
+            [
+              "fort",
+              9
+            ],
+            [
+              "crew",
+              9
+            ],
+            [
+              "illuminated",
+              9
+            ],
+            [
+              "inspiration",
+              9
+            ],
+            [
+              "colonel",
+              9
+            ]
+          ]
+        },
+        "validation": {
+          "words": 90865,
+          "oov_words": 8585,
+          "oov_fraction": 0.09448082319925163,
+          "unique_words": 12258,
+          "top_oov": [
+            [
+              "kid",
+              24
+            ],
+            [
+              "hank",
+              17
+            ],
+            [
+              "kids",
+              14
+            ],
+            [
+              "madman",
+              13
+            ],
+            [
+              "sacramento",
+              12
+            ],
+            [
+              "admiral",
+              12
+            ],
+            [
+              "ryecroft",
+              11
+            ],
+            [
+              "constable",
+              11
+            ],
+            [
+              "tahoe",
+              11
+            ],
+            [
+              "nickey",
+              10
+            ],
+            [
+              "anecdote",
+              10
+            ],
+            [
+              "crowbillon",
+              9
+            ],
+            [
+              "horace",
+              9
+            ],
+            [
+              "chestnut",
+              9
+            ],
+            [
+              "lunatic",
+              8
+            ],
+            [
+              "pasture",
+              8
+            ],
+            [
+              "tarn",
+              8
+            ],
+            [
+              "piraeus",
+              8
+            ],
+            [
+              "acropolis",
+              8
+            ],
+            [
+              "nautical",
+              8
+            ],
+            [
+              "stillbrook",
+              7
+            ],
+            [
+              "willie",
+              7
+            ],
+            [
+              "drill",
+              7
+            ],
+            [
+              "explains",
+              7
+            ],
+            [
+              "insanity",
+              7
+            ],
+            [
+              "dinny",
+              7
+            ],
+            [
+              "whiskey",
+              7
+            ],
+            [
+              "athens",
+              7
+            ],
+            [
+              "cabman",
+              6
+            ],
+            [
+              "rural",
+              6
+            ]
+          ]
+        },
+        "test": {
+          "words": 78319,
+          "oov_words": 7766,
+          "oov_fraction": 0.09915856944036569,
+          "unique_words": 11269,
+          "top_oov": [
+            [
+              "kid",
+              28
+            ],
+            [
+              "shacks",
+              21
+            ],
+            [
+              "gibraltar",
+              20
+            ],
+            [
+              "blind.",
+              18
+            ],
+            [
+              "swede",
+              18
+            ],
+            [
+              "huttle",
+              16
+            ],
+            [
+              "engine.",
+              14
+            ],
+            [
+              "ais",
+              13
+            ],
+            [
+              "tramps",
+              13
+            ],
+            [
+              "barber",
+              13
+            ],
+            [
+              "skysail",
+              12
+            ],
+            [
+              "ai",
+              10
+            ],
+            [
+              "fireman",
+              10
+            ],
+            [
+              "car.",
+              10
+            ],
+            [
+              "crew",
+              9
+            ],
+            [
+              "barbers",
+              9
+            ],
+            [
+              "creil",
+              9
+            ],
+            [
+              "ditch",
+              8
+            ],
+            [
+              "truck",
+              8
+            ],
+            [
+              "niagara",
+              8
+            ],
+            [
+              "pal",
+              8
+            ],
+            [
+              "pulls",
+              7
+            ],
+            [
+              "ditched",
+              7
+            ],
+            [
+              "pilot",
+              7
+            ],
+            [
+              "swearing",
+              7
+            ],
+            [
+              "tahoe",
+              7
+            ],
+            [
+              "kanaka",
+              7
+            ],
+            [
+              "happier",
+              6
+            ],
+            [
+              "farmerson",
+              6
+            ],
+            [
+              "medium",
+              6
+            ]
+          ]
+        }
+      }
+    },
+    "16384": {
+      "method": "train-only frequency after guaranteeing train original-anchor vocabulary; no held-out vocabulary fitting",
+      "actual_vocab": 16384,
+      "anchor_types": 3903,
+      "splits": {
+        "train": {
+          "words": 828876,
+          "oov_words": 32474,
+          "oov_fraction": 0.03917835719697518,
+          "unique_words": 40780,
+          "top_oov": [
+            [
+              "mouch",
+              3
+            ],
+            [
+              "energetic",
+              3
+            ],
+            [
+              "his.",
+              3
+            ],
+            [
+              "tomato",
+              3
+            ],
+            [
+              "thunderstorms",
+              3
+            ],
+            [
+              "dry.",
+              3
+            ],
+            [
+              "prophesy",
+              3
+            ],
+            [
+              "sneaked",
+              3
+            ],
+            [
+              "doorstep",
+              3
+            ],
+            [
+              "produced.",
+              3
+            ],
+            [
+              "giddy",
+              3
+            ],
+            [
+              "blazer",
+              3
+            ],
+            [
+              "dreamily",
+              3
+            ],
+            [
+              "fit.",
+              3
+            ],
+            [
+              "in!",
+              3
+            ],
+            [
+              "clanking",
+              3
+            ],
+            [
+              "velvets",
+              3
+            ],
+            [
+              "upraised",
+              3
+            ],
+            [
+              "staircases",
+              3
+            ],
+            [
+              "christmas.",
+              3
+            ],
+            [
+              "freshened",
+              3
+            ],
+            [
+              "rim",
+              3
+            ],
+            [
+              "tapestry",
+              3
+            ],
+            [
+              "victorian",
+              3
+            ],
+            [
+              "souvenirs",
+              3
+            ],
+            [
+              "margate",
+              3
+            ],
+            [
+              "impostor.",
+              3
+            ],
+            [
+              "lady.",
+              3
+            ],
+            [
+              "moulsey",
+              3
+            ],
+            [
+              "cloaks",
+              3
+            ]
+          ]
+        },
+        "validation": {
+          "words": 90865,
+          "oov_words": 4741,
+          "oov_fraction": 0.05217630550817146,
+          "unique_words": 12258,
+          "top_oov": [
+            [
+              "hank",
+              17
+            ],
+            [
+              "ryecroft",
+              11
+            ],
+            [
+              "tahoe",
+              11
+            ],
+            [
+              "nickey",
+              10
+            ],
+            [
+              "crowbillon",
+              9
+            ],
+            [
+              "tarn",
+              8
+            ],
+            [
+              "piraeus",
+              8
+            ],
+            [
+              "acropolis",
+              8
+            ],
+            [
+              "willie",
+              7
+            ],
+            [
+              "dinny",
+              7
+            ],
+            [
+              "bindle",
+              6
+            ],
+            [
+              "parthenon",
+              6
+            ],
+            [
+              "sheba",
+              6
+            ],
+            [
+              "dollinger",
+              6
+            ],
+            [
+              "lupkin",
+              5
+            ],
+            [
+              "hanwell",
+              5
+            ],
+            [
+              "dryden",
+              5
+            ],
+            [
+              "determinist",
+              5
+            ],
+            [
+              "quick.",
+              5
+            ],
+            [
+              "abingdon",
+              5
+            ],
+            [
+              "quarantine",
+              5
+            ],
+            [
+              "denny",
+              5
+            ],
+            [
+              "narghili",
+              5
+            ],
+            [
+              "perkupp's",
+              4
+            ],
+            [
+              "parachikka",
+              4
+            ],
+            [
+              "cistern",
+              4
+            ],
+            [
+              "gylterson",
+              4
+            ],
+            [
+              "causeless",
+              4
+            ],
+            [
+              "lichen",
+              4
+            ],
+            [
+              "oakland",
+              4
+            ]
+          ]
+        },
+        "test": {
+          "words": 78319,
+          "oov_words": 4354,
+          "oov_fraction": 0.05559315108722022,
+          "unique_words": 11269,
+          "top_oov": [
+            [
+              "shacks",
+              21
+            ],
+            [
+              "swede",
+              18
+            ],
+            [
+              "engine.",
+              14
+            ],
+            [
+              "ais",
+              13
+            ],
+            [
+              "skysail",
+              12
+            ],
+            [
+              "ai",
+              10
+            ],
+            [
+              "fireman",
+              10
+            ],
+            [
+              "barbers",
+              9
+            ],
+            [
+              "creil",
+              9
+            ],
+            [
+              "pulls",
+              7
+            ],
+            [
+              "tahoe",
+              7
+            ],
+            [
+              "sulphur",
+              6
+            ],
+            [
+              "voucher",
+              6
+            ],
+            [
+              "classification",
+              5
+            ],
+            [
+              "purdick",
+              5
+            ],
+            [
+              "ditched.",
+              5
+            ],
+            [
+              "coal.",
+              5
+            ],
+            [
+              "cube",
+              5
+            ],
+            [
+              "pal.",
+              5
+            ],
+            [
+              "monicas",
+              5
+            ],
+            [
+              "warmer",
+              5
+            ],
+            [
+              "genessaret",
+              5
+            ],
+            [
+              "slade's",
+              5
+            ],
+            [
+              "oise.",
+              5
+            ],
+            [
+              "supervised",
+              4
+            ],
+            [
+              "algorithm",
+              4
+            ],
+            [
+              "optimization",
+              4
+            ],
+            [
+              "reinforcement",
+              4
+            ],
+            [
+              "mayor's",
+              4
+            ],
+            [
+              "departing",
+              4
+            ]
+          ]
+        }
+      }
+    },
+    "32768": {
+      "method": "train-only frequency after guaranteeing train original-anchor vocabulary; no held-out vocabulary fitting",
+      "actual_vocab": 32768,
+      "anchor_types": 3903,
+      "splits": {
+        "train": {
+          "words": 828876,
+          "oov_words": 8012,
+          "oov_fraction": 0.009666102046626998,
+          "unique_words": 40780,
+          "top_oov": [
+            [
+              "confiscated",
+              1
+            ],
+            [
+              "providential",
+              1
+            ],
+            [
+              "archbishops",
+              1
+            ],
+            [
+              "moldy",
+              1
+            ],
+            [
+              "d'oeuvres",
+              1
+            ],
+            [
+              "reubens",
+              1
+            ],
+            [
+              "simpson",
+              1
+            ],
+            [
+              "bottled",
+              1
+            ],
+            [
+              "touched?",
+              1
+            ],
+            [
+              "discover?",
+              1
+            ],
+            [
+              "roman!",
+              1
+            ],
+            [
+              "boundlessness",
+              1
+            ],
+            [
+              "discover!",
+              1
+            ],
+            [
+              "habitant",
+              1
+            ],
+            [
+              "rome!",
+              1
+            ],
+            [
+              "montgomery",
+              1
+            ],
+            [
+              "milked",
+              1
+            ],
+            [
+              "aver",
+              1
+            ],
+            [
+              "vomits",
+              1
+            ],
+            [
+              "settle.",
+              1
+            ],
+            [
+              "covet",
+              1
+            ],
+            [
+              "falsifier",
+              1
+            ],
+            [
+              "laughably",
+              1
+            ],
+            [
+              "hob",
+              1
+            ],
+            [
+              "spurs.",
+              1
+            ],
+            [
+              "straps",
+              1
+            ],
+            [
+              "tilled.",
+              1
+            ],
+            [
+              "rented",
+              1
+            ],
+            [
+              "nobles.",
+              1
+            ],
+            [
+              "civilians",
+              1
+            ]
+          ]
+        },
+        "validation": {
+          "words": 90865,
+          "oov_words": 2793,
+          "oov_fraction": 0.03073790788532438,
+          "unique_words": 12258,
+          "top_oov": [
+            [
+              "hank",
+              17
+            ],
+            [
+              "nickey",
+              10
+            ],
+            [
+              "crowbillon",
+              9
+            ],
+            [
+              "acropolis",
+              8
+            ],
+            [
+              "willie",
+              7
+            ],
+            [
+              "dinny",
+              7
+            ],
+            [
+              "bindle",
+              6
+            ],
+            [
+              "dollinger",
+              6
+            ],
+            [
+              "lupkin",
+              5
+            ],
+            [
+              "hanwell",
+              5
+            ],
+            [
+              "quick.",
+              5
+            ],
+            [
+              "denny",
+              5
+            ],
+            [
+              "narghili",
+              5
+            ],
+            [
+              "parachikka",
+              4
+            ],
+            [
+              "cistern",
+              4
+            ],
+            [
+              "gylterson",
+              4
+            ],
+            [
+              "causeless",
+              4
+            ],
+            [
+              "oakland",
+              4
+            ],
+            [
+              "benicia",
+              4
+            ],
+            [
+              "constable.",
+              4
+            ],
+            [
+              "sensuous",
+              4
+            ],
+            [
+              "clifton",
+              4
+            ],
+            [
+              "iffley",
+              4
+            ],
+            [
+              "placerville",
+              4
+            ],
+            [
+              "horace's",
+              4
+            ],
+            [
+              "humboldt.",
+              4
+            ],
+            [
+              "ores",
+              4
+            ],
+            [
+              "luc",
+              4
+            ],
+            [
+              "putley",
+              3
+            ],
+            [
+              "declined.",
+              3
+            ]
+          ]
+        },
+        "test": {
+          "words": 78319,
+          "oov_words": 2610,
+          "oov_fraction": 0.03332524674727716,
+          "unique_words": 11269,
+          "top_oov": [
+            [
+              "swede",
+              18
+            ],
+            [
+              "ais",
+              13
+            ],
+            [
+              "skysail",
+              12
+            ],
+            [
+              "barbers",
+              9
+            ],
+            [
+              "creil",
+              9
+            ],
+            [
+              "sulphur",
+              6
+            ],
+            [
+              "voucher",
+              6
+            ],
+            [
+              "purdick",
+              5
+            ],
+            [
+              "coal.",
+              5
+            ],
+            [
+              "cube",
+              5
+            ],
+            [
+              "monicas",
+              5
+            ],
+            [
+              "warmer",
+              5
+            ],
+            [
+              "slade's",
+              5
+            ],
+            [
+              "supervised",
+              4
+            ],
+            [
+              "algorithm",
+              4
+            ],
+            [
+              "departing",
+              4
+            ],
+            [
+              "ottawa",
+              4
+            ],
+            [
+              "collar.",
+              4
+            ],
+            [
+              "monica",
+              4
+            ],
+            [
+              "chi",
+              4
+            ],
+            [
+              "swede.",
+              4
+            ],
+            [
+              "barkeeper",
+              4
+            ],
+            [
+              "scabs",
+              4
+            ],
+            [
+              "blizzard",
+              4
+            ],
+            [
+              "poplars",
+              4
+            ],
+            [
+              "gridley",
+              4
+            ],
+            [
+              "paddle.",
+              4
+            ],
+            [
+              "pied",
+              4
+            ],
+            [
+              "neural",
+              3
+            ],
+            [
+              "optimize",
+              3
+            ]
+          ]
+        }
+      }
+    }
+  },
+  "lexical_vocabulary_coverage": {
+    "8192": {
+      "method": "train-only frequency after guaranteeing train original-anchor vocabulary; no held-out vocabulary fitting",
+      "actual_vocab": 8192,
+      "anchor_types": 2929,
+      "splits": {
+        "train": {
+          "words": 828876,
+          "oov_words": 49829,
+          "oov_fraction": 0.06011635033467008,
+          "unique_words": 30899,
+          "top_oov": [
+            [
+              "gaping",
+              7
+            ],
+            [
+              "grumbling",
+              7
+            ],
+            [
+              "scoundrel",
+              7
+            ],
+            [
+              "scorching",
+              7
+            ],
+            [
+              "roughs",
+              7
+            ],
+            [
+              "wales",
+              7
+            ],
+            [
+              "overcoat",
+              7
+            ],
+            [
+              "teddy",
+              7
+            ],
+            [
+              "yell",
+              7
+            ],
+            [
+              "tempered",
+              7
+            ],
+            [
+              "unquestionably",
+              7
+            ],
+            [
+              "prejudiced",
+              7
+            ],
+            [
+              "stroll",
+              7
+            ],
+            [
+              "lina",
+              7
+            ],
+            [
+              "tilted",
+              7
+            ],
+            [
+              "behave",
+              7
+            ],
+            [
+              "guineas",
+              7
+            ],
+            [
+              "expressions",
+              7
+            ],
+            [
+              "oysters",
+              7
+            ],
+            [
+              "perverse",
+              7
+            ],
+            [
+              "irrational",
+              7
+            ],
+            [
+              "barrier",
+              7
+            ],
+            [
+              "alternative",
+              7
+            ],
+            [
+              "sustained",
+              7
+            ],
+            [
+              "illusion",
+              7
+            ],
+            [
+              "futile",
+              7
+            ],
+            [
+              "boasts",
+              7
+            ],
+            [
+              "preaching",
+              7
+            ],
+            [
+              "drill",
+              7
+            ],
+            [
+              "fortress",
+              7
+            ]
+          ]
+        },
+        "validation": {
+          "words": 90865,
+          "oov_words": 6004,
+          "oov_fraction": 0.06607604688273813,
+          "unique_words": 10306,
+          "top_oov": [
+            [
+              "kid",
+              27
+            ],
+            [
+              "kids",
+              17
+            ],
+            [
+              "hank",
+              17
+            ],
+            [
+              "madman",
+              16
+            ],
+            [
+              "constable",
+              15
+            ],
+            [
+              "sacramento",
+              15
+            ],
+            [
+              "tahoe",
+              13
+            ],
+            [
+              "crowbillon",
+              12
+            ],
+            [
+              "admiral",
+              12
+            ],
+            [
+              "ryecroft",
+              11
+            ],
+            [
+              "nickey",
+              11
+            ],
+            [
+              "tarn",
+              10
+            ],
+            [
+              "anecdote",
+              10
+            ],
+            [
+              "parthenon",
+              9
+            ],
+            [
+              "horace",
+              9
+            ],
+            [
+              "lunatic",
+              8
+            ],
+            [
+              "pasture",
+              8
+            ],
+            [
+              "piraeus",
+              8
+            ],
+            [
+              "acropolis",
+              8
+            ],
+            [
+              "nautical",
+              8
+            ],
+            [
+              "willie",
+              7
+            ],
+            [
+              "cabman",
+              7
+            ],
+            [
+              "drill",
+              7
+            ],
+            [
+              "hanwell",
+              7
+            ],
+            [
+              "dinny",
+              7
+            ],
+            [
+              "bindle",
+              7
+            ],
+            [
+              "advantageous",
+              7
+            ],
+            [
+              "neighbour",
+              6
+            ],
+            [
+              "lupkin",
+              6
+            ],
+            [
+              "causeless",
+              6
+            ]
+          ]
+        },
+        "test": {
+          "words": 78319,
+          "oov_words": 5495,
+          "oov_fraction": 0.07016177428210268,
+          "unique_words": 9586,
+          "top_oov": [
+            [
+              "kid",
+              29
+            ],
+            [
+              "swede",
+              22
+            ],
+            [
+              "shacks",
+              21
+            ],
+            [
+              "tramps",
+              15
+            ],
+            [
+              "ais",
+              14
+            ],
+            [
+              "pal",
+              13
+            ],
+            [
+              "ditched",
+              12
+            ],
+            [
+              "barbers",
+              12
+            ],
+            [
+              "skysail",
+              12
+            ],
+            [
+              "fireman",
+              11
+            ],
+            [
+              "ai",
+              10
+            ],
+            [
+              "truck",
+              9
+            ],
+            [
+              "creil",
+              9
+            ],
+            [
+              "ditch",
+              8
+            ],
+            [
+              "niagara",
+              8
+            ],
+            [
+              "medium",
+              7
+            ],
+            [
+              "ottawa",
+              7
+            ],
+            [
+              "pulls",
+              7
+            ],
+            [
+              "penitentiary",
+              7
+            ],
+            [
+              "shaved",
+              7
+            ],
+            [
+              "pilot",
+              7
+            ],
+            [
+              "tahoe",
+              7
+            ],
+            [
+              "kanaka",
+              7
+            ],
+            [
+              "farmerson",
+              6
+            ],
+            [
+              "monica",
+              6
+            ],
+            [
+              "monicas",
+              6
+            ],
+            [
+              "shivered",
+              6
+            ],
+            [
+              "temperature",
+              6
+            ],
+            [
+              "sulphur",
+              6
+            ],
+            [
+              "poplars",
+              6
+            ]
+          ]
+        }
+      }
+    },
+    "16384": {
+      "method": "train-only frequency after guaranteeing train original-anchor vocabulary; no held-out vocabulary fitting",
+      "actual_vocab": 16384,
+      "anchor_types": 2929,
+      "splits": {
+        "train": {
+          "words": 828876,
+          "oov_words": 17739,
+          "oov_fraction": 0.021401271118961097,
+          "unique_words": 30899,
+          "top_oov": [
+            [
+              "jotted",
+              2
+            ],
+            [
+              "persistence",
+              2
+            ],
+            [
+              "tentative",
+              2
+            ],
+            [
+              "erring",
+              2
+            ],
+            [
+              "outrages",
+              2
+            ],
+            [
+              "memoriam",
+              2
+            ],
+            [
+              "levelled",
+              2
+            ],
+            [
+              "misconception",
+              2
+            ],
+            [
+              "sensualist",
+              2
+            ],
+            [
+              "despises",
+              2
+            ],
+            [
+              "edifying",
+              2
+            ],
+            [
+              "leering",
+              2
+            ],
+            [
+              "edification",
+              2
+            ],
+            [
+              "upheld",
+              2
+            ],
+            [
+              "proclaiming",
+              2
+            ],
+            [
+              "favours",
+              2
+            ],
+            [
+              "tonic",
+              2
+            ],
+            [
+              "racial",
+              2
+            ],
+            [
+              "shamelessness",
+              2
+            ],
+            [
+              "imputation",
+              2
+            ],
+            [
+              "mealy",
+              2
+            ],
+            [
+              "mouthed",
+              2
+            ],
+            [
+              "quincey",
+              2
+            ],
+            [
+              "frightens",
+              2
+            ],
+            [
+              "meritorious",
+              2
+            ],
+            [
+              "courageously",
+              2
+            ],
+            [
+              "intrepid",
+              2
+            ],
+            [
+              "strengthening",
+              2
+            ],
+            [
+              "sic",
+              2
+            ],
+            [
+              "erit",
+              2
+            ]
+          ]
+        },
+        "validation": {
+          "words": 90865,
+          "oov_words": 3013,
+          "oov_fraction": 0.0331590821548451,
+          "unique_words": 10306,
+          "top_oov": [
+            [
+              "hank",
+              17
+            ],
+            [
+              "tahoe",
+              13
+            ],
+            [
+              "crowbillon",
+              12
+            ],
+            [
+              "nickey",
+              11
+            ],
+            [
+              "piraeus",
+              8
+            ],
+            [
+              "acropolis",
+              8
+            ],
+            [
+              "willie",
+              7
+            ],
+            [
+              "hanwell",
+              7
+            ],
+            [
+              "dinny",
+              7
+            ],
+            [
+              "bindle",
+              7
+            ],
+            [
+              "lupkin",
+              6
+            ],
+            [
+              "causeless",
+              6
+            ],
+            [
+              "profesh",
+              6
+            ],
+            [
+              "abingdon",
+              6
+            ],
+            [
+              "sheba",
+              6
+            ],
+            [
+              "dollinger",
+              6
+            ],
+            [
+              "cistern",
+              5
+            ],
+            [
+              "dryden",
+              5
+            ],
+            [
+              "determinist",
+              5
+            ],
+            [
+              "costa",
+              5
+            ],
+            [
+              "mccrea",
+              5
+            ],
+            [
+              "denny",
+              5
+            ],
+            [
+              "narghili",
+              5
+            ],
+            [
+              "ores",
+              5
+            ],
+            [
+              "photograph",
+              4
+            ],
+            [
+              "parachikka",
+              4
+            ],
+            [
+              "chlorates",
+              4
+            ],
+            [
+              "gylterson",
+              4
+            ],
+            [
+              "deductions",
+              4
+            ],
+            [
+              "determinism",
+              4
+            ]
+          ]
+        },
+        "test": {
+          "words": 78319,
+          "oov_words": 2839,
+          "oov_fraction": 0.03624918602127198,
+          "unique_words": 9586,
+          "top_oov": [
+            [
+              "swede",
+              22
+            ],
+            [
+              "shacks",
+              21
+            ],
+            [
+              "barbers",
+              12
+            ],
+            [
+              "skysail",
+              12
+            ],
+            [
+              "fireman",
+              11
+            ],
+            [
+              "creil",
+              9
+            ],
+            [
+              "ottawa",
+              7
+            ],
+            [
+              "pulls",
+              7
+            ],
+            [
+              "penitentiary",
+              7
+            ],
+            [
+              "tahoe",
+              7
+            ],
+            [
+              "monica",
+              6
+            ],
+            [
+              "monicas",
+              6
+            ],
+            [
+              "sulphur",
+              6
+            ],
+            [
+              "poplars",
+              6
+            ],
+            [
+              "voucher",
+              6
+            ],
+            [
+              "classification",
+              5
+            ],
+            [
+              "mange",
+              5
+            ],
+            [
+              "purdick",
+              5
+            ],
+            [
+              "brake",
+              5
+            ],
+            [
+              "bailiff",
+              5
+            ],
+            [
+              "cube",
+              5
+            ],
+            [
+              "oregon",
+              5
+            ],
+            [
+              "slade's",
+              5
+            ],
+            [
+              "supervised",
+              4
+            ],
+            [
+              "algorithm",
+              4
+            ],
+            [
+              "optimization",
+              4
+            ],
+            [
+              "mayor's",
+              4
+            ],
+            [
+              "departing",
+              4
+            ],
+            [
+              "coupling",
+              4
+            ],
+            [
+              "waterfall",
+              4
+            ]
+          ]
+        }
+      }
+    },
+    "32768": {
+      "method": "train-only frequency after guaranteeing train original-anchor vocabulary; no held-out vocabulary fitting",
+      "actual_vocab": 30899,
+      "anchor_types": 2929,
+      "splits": {
+        "train": {
+          "words": 828876,
+          "oov_words": 0,
+          "oov_fraction": 0.0,
+          "unique_words": 30899,
+          "top_oov": []
+        },
+        "validation": {
+          "words": 90865,
+          "oov_words": 1409,
+          "oov_fraction": 0.015506520662521324,
+          "unique_words": 10306,
+          "top_oov": [
+            [
+              "crowbillon",
+              12
+            ],
+            [
+              "nickey",
+              11
+            ],
+            [
+              "willie",
+              7
+            ],
+            [
+              "hanwell",
+              7
+            ],
+            [
+              "dinny",
+              7
+            ],
+            [
+              "bindle",
+              7
+            ],
+            [
+              "lupkin",
+              6
+            ],
+            [
+              "dollinger",
+              6
+            ],
+            [
+              "costa",
+              5
+            ],
+            [
+              "mccrea",
+              5
+            ],
+            [
+              "denny",
+              5
+            ],
+            [
+              "parachikka",
+              4
+            ],
+            [
+              "gylterson",
+              4
+            ],
+            [
+              "oakland",
+              4
+            ],
+            [
+              "benicia",
+              4
+            ],
+            [
+              "sensuous",
+              4
+            ],
+            [
+              "clifton",
+              4
+            ],
+            [
+              "iffley",
+              4
+            ],
+            [
+              "placerville",
+              4
+            ],
+            [
+              "horace's",
+              4
+            ],
+            [
+              "willis",
+              4
+            ],
+            [
+              "uncongenial",
+              4
+            ],
+            [
+              "luc",
+              4
+            ],
+            [
+              "attentive",
+              3
+            ],
+            [
+              "putley",
+              3
+            ],
+            [
+              "oldham",
+              3
+            ],
+            [
+              "yacht",
+              3
+            ],
+            [
+              "acutely",
+              3
+            ],
+            [
+              "tilth",
+              3
+            ],
+            [
+              "topsham",
+              3
+            ]
+          ]
+        },
+        "test": {
+          "words": 78319,
+          "oov_words": 1424,
+          "oov_fraction": 0.018182050332614053,
+          "unique_words": 9586,
+          "top_oov": [
+            [
+              "barbers",
+              12
+            ],
+            [
+              "skysail",
+              12
+            ],
+            [
+              "creil",
+              9
+            ],
+            [
+              "ottawa",
+              7
+            ],
+            [
+              "monica",
+              6
+            ],
+            [
+              "monicas",
+              6
+            ],
+            [
+              "voucher",
+              6
+            ],
+            [
+              "purdick",
+              5
+            ],
+            [
+              "cube",
+              5
+            ],
+            [
+              "oregon",
+              5
+            ],
+            [
+              "slade's",
+              5
+            ],
+            [
+              "supervised",
+              4
+            ],
+            [
+              "algorithm",
+              4
+            ],
+            [
+              "java",
+              4
+            ],
+            [
+              "vancouver",
+              4
+            ],
+            [
+              "chi",
+              4
+            ],
+            [
+              "barkeeper",
+              4
+            ],
+            [
+              "scabs",
+              4
+            ],
+            [
+              "greenbacks",
+              4
+            ],
+            [
+              "gridley",
+              4
+            ],
+            [
+              "rosary",
+              4
+            ],
+            [
+              "tittums",
+              4
+            ],
+            [
+              "kitten",
+              4
+            ],
+            [
+              "neural",
+              3
+            ],
+            [
+              "waze",
+              3
+            ],
+            [
+              "optimize",
+              3
+            ],
+            [
+              "minibatch",
+              3
+            ],
+            [
+              "hyperparameter",
+              3
+            ],
+            [
+              "hyperparameters",
+              3
+            ],
+            [
+              "charlie",
+              3
+            ]
+          ]
+        }
+      }
+    }
+  },
+  "anchor_restoration": {
+    "inputs": [
+      {
+        "path": "recurrent-v1/data/long-voice-original.jsonl",
+        "sha256": "ca2a009064d2e5fb983b4f498b6afe858aa0f247c29e4eeb173c99334332da14",
+        "selected_originals": 36
+      },
+      {
+        "path": "recurrent-v1/data/voice-long-b.jsonl",
+        "sha256": "ba7de3df33082bbc6f3c4d1e5bd67cd643ad995a0979d990f45609dfd50d81da",
+        "selected_originals": 80
+      },
+      {
+        "path": "large-v3/recovery-v5/data/original-vignettes.jsonl",
+        "sha256": "ddfce47140022d915e620a9de29fef3ab7396f66c84206b9ed315fba0756faef",
+        "selected_originals": 250
+      },
+      {
+        "path": "large-v3/data/mixed-teacher-v4-final/train.jsonl",
+        "sha256": "69dd38de0a93ef3c4eca1443f98d7799ee9bb4afbe88084da7efe0aae88e11d0",
+        "selected_originals": 345
+      },
+      {
+        "path": "large-v3/data/mixed-teacher-v4-final/validation.jsonl",
+        "sha256": "dc616da67a0ae836b8727fac5b93f4afae7496a8b1bc566a682d04abb44247d5",
+        "selected_originals": 44
+      },
+      {
+        "path": "large-v3/data/mixed-teacher-v4-final/test.jsonl",
+        "sha256": "2248039532445f8bb0a495288fcbde5b45b3704718b13fa29baa589f1b32cecb",
+        "selected_originals": 44
+      }
+    ],
+    "v2_authored_spans_superseded_by_full_parents": 996,
+    "v2_unique_parents_restored": 706,
+    "missing_parents": [],
+    "candidate_originals_before_dedup": 799
+  },
+  "max_raw_word_bytes": 19,
+  "files": {
+    "train.jsonl": {
+      "sha256": "14ea31a42dcb25890ea9fd7a0132195a6db356a605cf979657e0deff59b06bfa",
+      "bytes": 6190109
+    },
+    "validation.jsonl": {
+      "sha256": "7a8b02f07c3ad7598a1ce62ab3f940003687b0613bcddde5df8d3cbf51f63582",
+      "bytes": 681692
+    },
+    "test.jsonl": {
+      "sha256": "a8a4c55ba678d8c10780e67fe6177f6e943ae4c5801518d7760bab3e42193ac5",
+      "bytes": 588822
+    }
+  },
+  "limitations": [
+    "First-person marker is a transparent lexical heuristic; retained adjacent sentences can refer to others.",
+    "Historical prose and human narrator identities dominate; sources are continuity training, not claims about machine experience.",
+    "Some public-domain works contain outdated social attitudes and historical drug/medical references.",
+    "Contemporary essay material is selected conservatively; excluded code, lists, blockquotes, footnotes, and long inline quotations.",
+    "Coverage is measured without deleting any OOV-containing sentences; actual tokenizer normalization belongs to the trainer."
+  ],
+  "excluded_acquired_sources": {
+    "gwern-fiction-clippy": "fiction/model-role ambiguity; not needed for authored essay corpus",
+    "gwern-ai-daydreaming": "contains model-generated examples and prompts",
+    "gwern-review-book": "review collection mixes author commentary with third-party material",
+    "gwern-lithium": "no eligible first-person prose after filtering"
+  },
+  "source_subkind_words": {
+    "original_gh0st_voice_anchor": 38311,
+    "cc0_modern_first_person": 34634,
+    "public_domain_adult_first_person": 925115
+  }
+}

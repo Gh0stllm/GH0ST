@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "status": "FROZEN_BEFORE_V6_TRAINING",
+  "generation": {
+    "quick_gate": {"unprompted": {"seeds": [0, 42], "words": 128}, "case_ids": ["v6-h01", "v6-h04", "v6-h07", "v6-h10"], "prompted_seed": 42, "prompted_words": 96},
+    "final_gate": {"all_cases": true, "seeds": [0, 42], "words": 128, "uninterrupted_long_streams": 2, "long_stream_words": 256},
+    "state": "One initialization per stream. Preserve every generated word and hidden update. No forced punctuation or reset at sentence ends.",
+    "decoder": "Record exact decoder, temperature, features and seed entropy domain; do not silently mix branch and global-word temperatures."
+  },
+  "scores": {
+    "grammar": {"0": "mostly unparseable", "1": "frequent broken clauses", "2": "understandable with recurring syntax errors", "3": "mostly fluent with minor errors", "4": "fluent throughout"},
+    "continuity": {"0": "unrelated fragments", "1": "brief topic then abandonment", "2": "recognizable setting but unstable facts or goals", "3": "consistent perspective and causal progression", "4": "clear development and meaningful ending without reset"},
+    "voice": {"0": "no consistent speaker", "1": "first-person words with incoherent persona", "2": "generic narrator with occasional wit", "3": "consistent adult first-person reflective or comic voice", "4": "distinctive voice that remains understandable"},
+    "repetition": {"0": "loop dominates output", "1": "repeated phrases or semantic restart", "2": "noticeable repeated patterns", "3": "minor repetition only", "4": "develops without unnecessary repetition"}
+  },
+  "quality_pass": "All four dimensions at least3 on at least80% of all final-gate outputs, with no severe semantic loop or repeated paragraph across seeds. This is a chosen research criterion, not a validated industry metric.",
+  "automatic_checks": ["normalized repeated 4-grams", "longest repeated span", "whole sentence duplication", "longest exact match against every training document", "exact 12-word overlap with source provenance", "retained prefix facts with human interpretation", "OOV/special/padding outputs", "finite hidden state and saturation"],
+  "interpretation": "No automatic metric alone proves grammar, originality or semantic continuity. Human scores must cite concrete output passages.",
+  "comparison": "Review baseline and candidate using identical fixed seeds and decoder before looking at checkpoint labels. Keep all raw text and failed cases."
+}

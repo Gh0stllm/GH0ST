@@ -1,0 +1,65 @@
+{
+  "status": "PASS",
+  "scope": "CPU float64 independent objective and gradients; no training or EVM execution",
+  "torch_version": "2.14.1",
+  "source_sha256": {
+    "model.py": "7ea8d5ed21188b65128a0720f4ad1d40fae9086d7b02d305edc08268abba8af1",
+    "engine.py": "83420009cc8ab4425a83a6a9acc74b4ea680b90350b494a67301a35f97ba5bcb",
+    "prepare.py": "48ed1db71cda4818ef343aa518d4ca7b2e15ff4d62d9a5d982ff0cd43476a9e6",
+    "train.py": "5e12dc4c3f03e5a4df83197ed1d0ff0a4085dbb6a79fdaa10fb1ee08e12141a2"
+  },
+  "cases": [
+    {
+      "name": "mixed_groups_padding",
+      "known_weight": 23.0,
+      "packed_loss": 212.89598996223563,
+      "direct_loss": 212.89598996223566,
+      "max_gradient_error": 6.661338147750939e-16,
+      "gradient_errors": {
+        "wx": 8.673617379884035e-18,
+        "wh": 4.336808689942018e-18,
+        "wf": 5.898059818321144e-17,
+        "bh": 1.3877787807814457e-16,
+        "embedding.weight": 3.469446951953614e-17,
+        "domain.weight": 1.1102230246251565e-16,
+        "groups.weight": 0.0,
+        "group_bias.weight": 6.661338147750939e-16,
+        "words.weight": 1.973247953923618e-17,
+        "word_bias.weight": 2.8449465006019636e-16
+      },
+      "unk_input_gradient_l1": 2.8429467253321423,
+      "pack_blocks": 25,
+      "padding_slots": 1567,
+      "status": "PASS"
+    },
+    {
+      "name": "multiple_blocks_same_group",
+      "known_weight": 155.0,
+      "packed_loss": 1807.716321831166,
+      "direct_loss": 1807.7163218311662,
+      "max_gradient_error": 2.6645352591003757e-15,
+      "gradient_errors": {
+        "wx": 1.1102230246251565e-16,
+        "wh": 1.1102230246251565e-16,
+        "wf": 3.3306690738754696e-16,
+        "bh": 1.7763568394002505e-15,
+        "embedding.weight": 1.1102230246251565e-16,
+        "domain.weight": 1.7763568394002505e-15,
+        "groups.weight": 0.0,
+        "group_bias.weight": 6.661338147750939e-16,
+        "words.weight": 3.0531133177191805e-16,
+        "word_bias.weight": 2.6645352591003757e-15
+      },
+      "unk_input_gradient_l1": 8.059551680764345,
+      "pack_blocks": 4,
+      "padding_slots": 94,
+      "status": "PASS"
+    }
+  ],
+  "resume_rng_reproducer": {
+    "numpy_state_available": true,
+    "dropout_without_torch_state_matches": false,
+    "dropout_with_torch_state_matches": true,
+    "mps_rng_api_present": true
+  }
+}

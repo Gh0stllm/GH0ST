@@ -1,0 +1,309 @@
+{
+  "schemaVersion": 1,
+  "mode": "LOCAL_ONLY_NO_PUBLIC_RPC_OR_TRANSACTIONS",
+  "status": "FAIL",
+  "seed": "0x000000000000000000000000000000000000000000000000000000000000002a",
+  "temperatureQ10": 256,
+  "languageQuality": "NOT_EVALUATED_OR_APPROVED",
+  "startedAt": "2026-10-24T07:52:35.851Z",
+  "network": {
+    "chainId": 31337,
+    "hardfork": "cancun",
+    "transactionGasCeiling": "32000000",
+    "blockGasLimit": "32000000"
+  },
+  "limitations": [
+    "All data-shard runtime code is injected with hardhat_setCode, not deployed by transactions.",
+    "PoolManager, model, hook, router and test tokens are deployed by actual local transactions.",
+    "Conditional vocabulary tree evaluates 128cluster and64selected-word logits per word; all 224 hidden units and three dense224x224 recurrent matrices and fused input lookup are evaluated.",
+    "This benchmark establishes EVM behavior and gas, not language quality or mainnet deployment readiness."
+  ],
+  "artifacts": {
+    "core.bin": {
+      "bytes": 309120,
+      "sha256": "b2b10e0658f4ac80860b879c3beded1787f7815eecee49d4a9ae67da741265fc"
+    },
+    "groups.bin": {
+      "bytes": 57600,
+      "sha256": "8427b505f7102f2bc221e55258af05444bfb5421c47a5426654de7016dd52bc3"
+    },
+    "words.bin": {
+      "bytes": 3686400,
+      "sha256": "175f7904ea214e4eac644078bae536c18e62df52b3a335a4e0ae252ad905e835"
+    },
+    "vocabulary.bin": {
+      "bytes": 262144,
+      "sha256": "85901dd4aca08f265f33249104136b02e64f54268515e1c2e1395f99af7f1270"
+    },
+    "fused.bin": {
+      "bytes": 27528480,
+      "sha256": "5ff2bfaf52c6bdce0a8e7f81162167813337564128d891d418a8c34040563242"
+    },
+    "experiments/gh0st-voice/voice-v6/evm/adaptive/contracts/AdaptiveGRUWordModel.sol": {
+      "sha256": "b5b19923e4071c6b70ce5bad8d4502626c63c908e453724a36c6544a699ac0b3"
+    },
+    "experiments/gh0st-voice/voice-v6/evm/adaptive/contracts/AdaptiveGRUWordHook.sol": {
+      "sha256": "cc11249a91a8a7b66dea4ed6db075177f54bec080881ffa4074c7a34f3f67171"
+    }
+  },
+  "dataInjection": {
+    "method": "hardhat_setCode",
+    "chunkBytes": 24000,
+    "groups": {
+      "core": {
+        "shards": 13,
+        "payloadBytes": 309120,
+        "runtimeCommitment": "0xef2d27dc6965f407e8e829f4aa09b4f572d8b48d841009aa123a4a9dcbc3435f"
+      },
+      "groups": {
+        "shards": 3,
+        "payloadBytes": 57600,
+        "runtimeCommitment": "0x41a054d05d5bdc5593ebe44b5085babc4e5cc4ccfb2ffb6dbb9818fdb438a34b"
+      },
+      "words": {
+        "shards": 154,
+        "payloadBytes": 3686400,
+        "runtimeCommitment": "0x22951b9fde7822586abeed004e995126955cd247006237d5e974a880d6044bf6"
+      },
+      "vocabulary": {
+        "shards": 11,
+        "payloadBytes": 262144,
+        "runtimeCommitment": "0x12c85d96b4430b22e736a77d45f8f9576d730178cddff34e17c36f1a94ca9d70"
+      },
+      "fused": {
+        "shards": 1148,
+        "payloadBytes": 27528480,
+        "runtimeCommitment": "0x0d250a4826a2b263dabe5a6196e82dc049bb786677a7e07abc135f3b6ac36c7a"
+      }
+    },
+    "totalShards": 1329,
+    "catalogs": {
+      "core": "0x0000000000000000000000000000000000500000",
+      "groups": "0x0000000000000000000000000000000000500001",
+      "words": "0x0000000000000000000000000000000000500002",
+      "vocabulary": "0x0000000000000000000000000000000000500003",
+      "fused": "0x0000000000000000000000000000000000500004"
+    }
+  },
+  "deployments": [
+    {
+      "name": "AdaptiveGRUWordModel",
+      "address": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+      "gasUsed": "6771028",
+      "runtimeHash": "0x5bd8a8b85bb4db7501857cd291d8dc45aad266cf27c2750c5c347ed35a2befc5",
+      "runtimeBytes": 10706
+    },
+    {
+      "name": "PoolManager",
+      "address": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
+      "gasUsed": "3787265",
+      "runtimeHash": "0x3d3c562cd106b96e8607ef97ee9167a9804302818cc81137da8bdf6ffe2d6889",
+      "runtimeBytes": 17151
+    },
+    {
+      "name": "ContinuityTestRouter",
+      "address": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
+      "gasUsed": "973803",
+      "runtimeHash": "0xd98ee1d71e91fab2e1091928a7bf94a55c307a2283974610f3cebc700c76acec",
+      "runtimeBytes": 4257
+    },
+    {
+      "name": "SentenceV4Create2Factory",
+      "address": "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
+      "gasUsed": "126931",
+      "runtimeHash": "0xc7f27dd299f02bac54eb938553158ad42e7b949edafe9716abb2aa518a3a919a",
+      "runtimeBytes": 340
+    },
+    {
+      "name": "SentenceV4TestToken",
+      "address": "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
+      "gasUsed": "215788",
+      "runtimeHash": "0x27d9ba536e93f2ac3314d68d5409e44f62b324a2c8dbe1605b5c347aa682b758",
+      "runtimeBytes": 752
+    },
+    {
+      "name": "SentenceV4TestToken",
+      "address": "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707",
+      "gasUsed": "215788",
+      "runtimeHash": "0x27d9ba536e93f2ac3314d68d5409e44f62b324a2c8dbe1605b5c347aa682b758",
+      "runtimeBytes": 752
+    }
+  ],
+  "swaps": [],
+  "checks": {
+    "allDataRuntimesVerified": true,
+    "modelHashMatchesIndependentCommitments": true,
+    "initialStateVerified": true,
+    "postInferenceRollback": {
+      "passed": true,
+      "gasUsed": "95561"
+    },
+    "lowGasRollback": {
+      "passed": true,
+      "gasUsed": "95637"
+    },
+    "malformedInputRollback": {
+      "passed": true,
+      "gasUsed": "95444"
+    }
+  },
+  "publicTransactionsSubmitted": 0,
+  "modelManifest": {
+    "scope": "Untrained two-stage output head fixture; numerical/gas experiment, not language-quality evidence",
+    "parameters": 4012992,
+    "hidden_size": 224,
+    "vocabulary_size": 8192,
+    "scale": 1024,
+    "model_domain": "GH0ST_GRU_H224_ADAPTIVE_Q10_LOCAL_V1",
+    "checkpoint_sha256": "75319ca974b1d20f8b7371e64365c006ae982aafaec59db7f9fde70ee2b6bef0",
+    "data_manifest_sha256": "692dfb817de1a9997f069b97755d2a9d8960f38eb7fba99691385ae0a4de8ea8",
+    "exporter_sha256": "90f6a5e4cc4c7be896595e41389ce2028afee23077242a61867e81c2ac93f972",
+    "gate_order": [
+      "r",
+      "z",
+      "n"
+    ],
+    "recurrent_bias": false,
+    "weight_rounding": "nearest_even_no_clipping",
+    "hidden_range": [
+      -1024,
+      1024
+    ],
+    "fused_shape": [
+      8193,
+      672
+    ],
+    "fused_min": -196852,
+    "fused_max": 1239968,
+    "fused_format": "signed40_bigendian_before_any_division",
+    "equations": "X=trunc((fused+Wf*f)/Q);R=trunc(Wh*h/Q);r=S(Xr+Rr);z=S(Xz+Rz);n=2*S(2*(Xn+trunc(r*Rn/Q)))-Q;h=trunc((z*h+(Q-z)*n)/Q)",
+    "ranges": {
+      "embedding.weight": {
+        "min": -265,
+        "max": 242,
+        "shape": [
+          8193,
+          224
+        ]
+      },
+      "wx": {
+        "min": -86,
+        "max": 86,
+        "shape": [
+          672,
+          224
+        ]
+      },
+      "wh": {
+        "min": -254,
+        "max": 272,
+        "shape": [
+          672,
+          224
+        ]
+      },
+      "wf": {
+        "min": -12,
+        "max": 12,
+        "shape": [
+          672,
+          6
+        ]
+      },
+      "bh": {
+        "min": -2,
+        "max": 1026,
+        "shape": [
+          672
+        ]
+      },
+      "nodes.weight": {
+        "min": -123,
+        "max": 126,
+        "shape": [
+          8191,
+          224
+        ]
+      },
+      "bias.weight": {
+        "min": -9231,
+        "max": 4722,
+        "shape": [
+          8191,
+          1
+        ]
+      }
+    },
+    "artifacts": {
+      "core.bin": {
+        "bytes": 309120,
+        "sha256": "b2b10e0658f4ac80860b879c3beded1787f7815eecee49d4a9ae67da741265fc"
+      },
+      "fused.bin": {
+        "bytes": 27528480,
+        "sha256": "5ff2bfaf52c6bdce0a8e7f81162167813337564128d891d418a8c34040563242"
+      },
+      "vocabulary.bin": {
+        "bytes": 262144,
+        "sha256": "85901dd4aca08f265f33249104136b02e64f54268515e1c2e1395f99af7f1270"
+      },
+      "vocabulary.json": {
+        "bytes": 102259,
+        "sha256": "a4b1e9f6703e000e49219497d9b099d6decfc011be4d6e92b902bec5a884e1d8"
+      },
+      "sigmoid-delta.bin": {
+        "bytes": 514,
+        "sha256": "5ecfa8cc900bcb72c83a71a3068049453f64afe78017b73f830e387b1f1a9ad3"
+      },
+      "groups.bin": {
+        "bytes": 57600,
+        "sha256": "8427b505f7102f2bc221e55258af05444bfb5421c47a5426654de7016dd52bc3"
+      },
+      "words.bin": {
+        "bytes": 3686400,
+        "sha256": "175f7904ea214e4eac644078bae536c18e62df52b3a335a4e0ae252ad905e835"
+      },
+      "exp-q32.bin": {
+        "bytes": 2056,
+        "sha256": "011ed986091e4559b9560736f3cd21ab896a88f01bfd5cdd20b81fa6cf0b6c45"
+      }
+    },
+    "reference_only_sources": {
+      "original-embedding.bin": {
+        "bytes": 3670464,
+        "sha256": "ac2a3291a1eb019ee9743d57d53cfbdec1bd71b8c199e5d2838c5f0e1ecafd52",
+        "deployment": "REFERENCE_ONLY_NOT_RESIDENT"
+      },
+      "original-wx.bin": {
+        "bytes": 301056,
+        "sha256": "4e7099342022f638a28313e3886af92cbf1b50b9a9ad7895f1993e2ec26ce2f9",
+        "deployment": "REFERENCE_ONLY_NOT_RESIDENT"
+      },
+      "original-bh.bin": {
+        "bytes": 1344,
+        "sha256": "dcb34ae26054342386655ad902551aa8b3b93ffb117ec3848819e569eacd935e",
+        "deployment": "REFERENCE_ONLY_NOT_RESIDENT"
+      }
+    },
+    "resident_parameter_claim": "Compiled from3983967 learned source parameters; fused scalars are derived, not independent learned parameters.",
+    "fixture_random_seed": 128064,
+    "source_gru_manifest_sha256": "bfa649fb8be30b7c97660e481d0c97a3e5cb94fe6a165bff1e7f99c569f5b4a9",
+    "head_math": "P(group|h)*P(word|group,h);128group logits+64selected-cluster logits; id=group*64+within",
+    "exp_format": "uint64BE Q32 round(exp(-i/16)*2^32),i=0..256",
+    "input_only_unknown": "Future8194-row training embeddings export only first8193rows; runtimeBOS8192; noUNKoutput"
+  },
+  "stage": "INJECT_LOCAL_DATA",
+  "modelHash": "0x48cd9ac50d274ceca37fb32b241e73ab404465b77ba6abcecdf4440cdd1eca2b",
+  "hookAddress": "0xCDa4AD018179CE0A89A14aaBA74fa3B110Bd5040",
+  "pool": {
+    "key": {
+      "currency0": "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707",
+      "currency1": "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
+      "fee": 3000,
+      "tickSpacing": 60,
+      "hooks": "0xCDa4AD018179CE0A89A14aaBA74fa3B110Bd5040"
+    },
+    "id": "0x291fe8fa1fd155db7000cb3d36197eb9eec5024b785608f278daeb90d7289417"
+  },
+  "error": "AssertionError [ERR_ASSERTION]: swap 1\n\n0 !== 1\n\n    at main (file:///Users/abhijith/Documents/ChatGPT/GH0ST/recovered-model/research/v4-hook-1m/experiments/gh0st-voice/voice-v6/evm/adaptive/run-local.mjs:110:93)"
+}

@@ -1,0 +1,94 @@
+{
+  "status": "COMPLETE",
+  "vocabulary": 8192,
+  "bos_input": 8192,
+  "unk_input_only": 8193,
+  "runtime_output_ids": [
+    0,
+    8191
+  ],
+  "normalization": "NFKD lowercase; curly apostrophes normalized; combining accents stripped; unsupported Unicode symbols and separators delimit words. ASCII alphabetic words with internal apostrophe and optional final .!?; raw paragraphs separately preserved.",
+  "vocabulary_fit": "Training only: up to2000 repeated target-voice types, then frequency. Classes are contiguous64 frequency ranks.",
+  "unknown_policy": "Keep complete paragraph token positions; UNK input embedding; mask only unknown target losses; no runtime UNK output.",
+  "domain0": "Original contemporary target-voice paragraphs",
+  "domain1": "Licensed adult first-person grammar corpus",
+  "groups": 968,
+  "cross_split_group_overlap": 0,
+  "cross_split_tokenized_duplicates": 0,
+  "statistics": {
+    "train": {
+      "documents": 3377,
+      "words": 822297,
+      "unknown_words": 67376,
+      "known_target_fraction": 0.9180636679934379,
+      "domains": {
+        "0": {
+          "words": 30385,
+          "unknown": 1027,
+          "documents": 629
+        },
+        "1": {
+          "words": 791912,
+          "unknown": 66349,
+          "documents": 2748
+        }
+      }
+    },
+    "validation": {
+      "documents": 362,
+      "words": 89597,
+      "unknown_words": 8032,
+      "known_target_fraction": 0.910354141321696,
+      "domains": {
+        "0": {
+          "words": 4020,
+          "unknown": 200,
+          "documents": 86
+        },
+        "1": {
+          "words": 85577,
+          "unknown": 7832,
+          "documents": 276
+        }
+      }
+    },
+    "test": {
+      "documents": 323,
+      "words": 77602,
+      "unknown_words": 7366,
+      "known_target_fraction": 0.9050797659854127,
+      "domains": {
+        "0": {
+          "words": 3906,
+          "unknown": 176,
+          "documents": 84
+        },
+        "1": {
+          "words": 73696,
+          "unknown": 7190,
+          "documents": 239
+        }
+      }
+    }
+  },
+  "artifacts": {
+    "train.jsonl": {
+      "sha256": "5b2e2e46901efbd795da4f847b3fb7c4b3319002a83ecca6f34a4af88b5a946d",
+      "bytes": 10402879
+    },
+    "validation.jsonl": {
+      "sha256": "81b2c2adb1a1942ca7e29adec1c221cb42ab9d4a2a5ed30f967b57ebeb5777ba",
+      "bytes": 1129506
+    },
+    "test.jsonl": {
+      "sha256": "f3866b4e12e4dfd7965d0c2d716240347d1f433f77d789aee3c1b66e28834962",
+      "bytes": 979805
+    }
+  },
+  "source_sha256": {
+    "train": "d01a8c66b9c689f27eb1e4c115fc233f8695d7323b77ee0f0ff695cf1ffc15df",
+    "validation": "0b46f683e46ed71ded20651ed0b4293592012ad7e3ea593e430be8adfe0ba207",
+    "test": "4c1f402ffd645d728814e784611cb86dcff0eceb6d73559aa1e8c2573908d87f"
+  },
+  "vocabulary_sha256": "c98af7d927c766d5d56d7bc8f0080ba6348fed6d402f33627546bba8cbe2d961"
+}

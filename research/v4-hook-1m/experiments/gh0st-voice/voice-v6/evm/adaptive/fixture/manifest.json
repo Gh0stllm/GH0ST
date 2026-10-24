@@ -1,0 +1,144 @@
+{
+  "scope": "Untrained two-stage output head fixture; numerical/gas experiment, not language-quality evidence",
+  "parameters": 4012992,
+  "hidden_size": 224,
+  "vocabulary_size": 8192,
+  "scale": 1024,
+  "model_domain": "GH0ST_GRU_H224_ADAPTIVE_Q10_LOCAL_V1",
+  "checkpoint_sha256": "75319ca974b1d20f8b7371e64365c006ae982aafaec59db7f9fde70ee2b6bef0",
+  "data_manifest_sha256": "692dfb817de1a9997f069b97755d2a9d8960f38eb7fba99691385ae0a4de8ea8",
+  "exporter_sha256": "90f6a5e4cc4c7be896595e41389ce2028afee23077242a61867e81c2ac93f972",
+  "gate_order": [
+    "r",
+    "z",
+    "n"
+  ],
+  "recurrent_bias": false,
+  "weight_rounding": "nearest_even_no_clipping",
+  "hidden_range": [
+    -1024,
+    1024
+  ],
+  "fused_shape": [
+    8193,
+    672
+  ],
+  "fused_min": -196852,
+  "fused_max": 1239968,
+  "fused_format": "signed40_bigendian_before_any_division",
+  "equations": "X=trunc((fused+Wf*f)/Q);R=trunc(Wh*h/Q);r=S(Xr+Rr);z=S(Xz+Rz);n=2*S(2*(Xn+trunc(r*Rn/Q)))-Q;h=trunc((z*h+(Q-z)*n)/Q)",
+  "ranges": {
+    "embedding.weight": {
+      "min": -265,
+      "max": 242,
+      "shape": [
+        8193,
+        224
+      ]
+    },
+    "wx": {
+      "min": -86,
+      "max": 86,
+      "shape": [
+        672,
+        224
+      ]
+    },
+    "wh": {
+      "min": -254,
+      "max": 272,
+      "shape": [
+        672,
+        224
+      ]
+    },
+    "wf": {
+      "min": -12,
+      "max": 12,
+      "shape": [
+        672,
+        6
+      ]
+    },
+    "bh": {
+      "min": -2,
+      "max": 1026,
+      "shape": [
+        672
+      ]
+    },
+    "nodes.weight": {
+      "min": -123,
+      "max": 126,
+      "shape": [
+        8191,
+        224
+      ]
+    },
+    "bias.weight": {
+      "min": -9231,
+      "max": 4722,
+      "shape": [
+        8191,
+        1
+      ]
+    }
+  },
+  "artifacts": {
+    "core.bin": {
+      "bytes": 309120,
+      "sha256": "b2b10e0658f4ac80860b879c3beded1787f7815eecee49d4a9ae67da741265fc"
+    },
+    "fused.bin": {
+      "bytes": 27528480,
+      "sha256": "5ff2bfaf52c6bdce0a8e7f81162167813337564128d891d418a8c34040563242"
+    },
+    "vocabulary.bin": {
+      "bytes": 262144,
+      "sha256": "85901dd4aca08f265f33249104136b02e64f54268515e1c2e1395f99af7f1270"
+    },
+    "vocabulary.json": {
+      "bytes": 102259,
+      "sha256": "a4b1e9f6703e000e49219497d9b099d6decfc011be4d6e92b902bec5a884e1d8"
+    },
+    "sigmoid-delta.bin": {
+      "bytes": 514,
+      "sha256": "5ecfa8cc900bcb72c83a71a3068049453f64afe78017b73f830e387b1f1a9ad3"
+    },
+    "groups.bin": {
+      "bytes": 57600,
+      "sha256": "8427b505f7102f2bc221e55258af05444bfb5421c47a5426654de7016dd52bc3"
+    },
+    "words.bin": {
+      "bytes": 3686400,
+      "sha256": "175f7904ea214e4eac644078bae536c18e62df52b3a335a4e0ae252ad905e835"
+    },
+    "exp-q32.bin": {
+      "bytes": 2056,
+      "sha256": "011ed986091e4559b9560736f3cd21ab896a88f01bfd5cdd20b81fa6cf0b6c45"
+    }
+  },
+  "reference_only_sources": {
+    "original-embedding.bin": {
+      "bytes": 3670464,
+      "sha256": "ac2a3291a1eb019ee9743d57d53cfbdec1bd71b8c199e5d2838c5f0e1ecafd52",
+      "deployment": "REFERENCE_ONLY_NOT_RESIDENT"
+    },
+    "original-wx.bin": {
+      "bytes": 301056,
+      "sha256": "4e7099342022f638a28313e3886af92cbf1b50b9a9ad7895f1993e2ec26ce2f9",
+      "deployment": "REFERENCE_ONLY_NOT_RESIDENT"
+    },
+    "original-bh.bin": {
+      "bytes": 1344,
+      "sha256": "dcb34ae26054342386655ad902551aa8b3b93ffb117ec3848819e569eacd935e",
+      "deployment": "REFERENCE_ONLY_NOT_RESIDENT"
+    }
+  },
+  "resident_parameter_claim": "Compiled from3983967 learned source parameters; fused scalars are derived, not independent learned parameters.",
+  "fixture_random_seed": 128064,
+  "source_gru_manifest_sha256": "bfa649fb8be30b7c97660e481d0c97a3e5cb94fe6a165bff1e7f99c569f5b4a9",
+  "head_math": "P(group|h)*P(word|group,h);128group logits+64selected-cluster logits; id=group*64+within",
+  "exp_format": "uint64BE Q32 round(exp(-i/16)*2^32),i=0..256",
+  "input_only_unknown": "Future8194-row training embeddings export only first8193rows; runtimeBOS8192; noUNKoutput"
+}

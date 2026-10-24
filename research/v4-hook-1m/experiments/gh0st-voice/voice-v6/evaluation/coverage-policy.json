@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "purpose": "Fair reporting when unknown targets are masked and unknown input embeddings retain paragraph context",
+  "ids": {"output_words": "0..8191", "start": 8192, "input_only_unknown": 8193},
+  "required_training_reports": [
+    "All original paragraph words and sentence order are retained in encoded context",
+    "Known and masked-unknown target counts by split and source kind",
+    "Loss denominators count only known supervised targets and are labeled that way",
+    "Metrics compare identical fixed encoded windows and masks across checkpoints",
+    "Targets after an unknown input remain supervised when their own vocabulary entry is known",
+    "No unknown, start, padding or empty token may be produced at runtime"
+  ],
+  "required_evaluation_reports": [
+    "Unknown input words and positions for every supplied prefix",
+    "Do not replace or drop an unknown prefix word silently",
+    "Distinguish full-prefix coverage from partial-prefix continuation",
+    "Count generated unknown or special tokens as hard failures",
+    "Report total and known-target held-out loss separately from human paragraph scores"
+  ],
+  "interpretation": "A lower known-target loss with more masking is not automatically a better model. Input-only unknown is a training mechanism, not an on-chain response token."
+}
