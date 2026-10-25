@@ -107,8 +107,8 @@
     },
     "budget": {
       "status": "PASS",
-      "test_count": 18,
-      "verified_by": "Fresh local execution of node --test tests/canary-budget.test.mjs during evidence assembly; all18passed,0failed.",
+      "test_count": 28,
+      "verified_by": "Final local full regression:110 passed,0 failed; includes28 budget tests.",
       "tests": [
         "RH reservation covers worst-case fee plus value and settles only actual successful spend",
         "reverted receipt charges gas but not reverted message value",
@@ -127,7 +127,17 @@
         "opBNB absent l1Fee uses the full conservative reserve, including reverted receipts",
         "opBNB posting cap and mismatched raw receipts fail closed",
         "actual posting overspend is durably charged before throwing and prevents future reservations",
-        "reservation breach below total cap remains stopped after restart for explicit review"
+        "reservation breach below total cap remains stopped after restart for explicit review",
+        "explicit uncapped RH accepts null monetary caps and preserves spend above old finite budgets",
+        "uncapped opBNB retains oracle reservation and actual posting accounting without a finite posting cap",
+        "uncapped still enforces transaction gas, positive and coherent fees, balance and provider identity",
+        "uncapped ledger remains bound to its session policy and authority across copied configs",
+        "bounded approval cannot be changed to uncapped in an existing spend ledger",
+        "uncapped does not bypass unknown broadcast recovery or concurrent locks",
+        "uncapped actual posting above estimate is recorded without imposing a new spending stop",
+        "uncapped mode requires all monetary caps explicitly null and rejects unknown policy",
+        "uncapped settlement still rejects receipt fees or gas outside the signed transaction reservation",
+        "uncapped opBNB missing receipt L1 field still charges the conservative estimate"
       ]
     }
   },
@@ -148,15 +158,15 @@
   "source_sha256": {
     "contracts/RHOpBNBCanary.sol": "ea6eade8c71e8e6a24516274bcf66197df81a75e4f63ce3cbabe3b7dd0e359bd",
     "contracts/GH0STSelfRelayExecutor.sol": "2613aa458839e4382dc4f9552e251d5a84e023d26d29252b50c660173bc53a5b",
-    "scripts/canary-budget.mjs": "7a2ecbcf084b252d9398d4feecffdb8b9ee317311a637bc42860191c630abf24",
-    "scripts/canary-runtime.mjs": "dcef230f26befc322af5db657183ed20942cb086e978e162b084c007595bc065",
+    "scripts/canary-budget.mjs": "6368694a960096dcf656455406a9cd9e1c3bf54949efed6b408ae95395a8f97d",
+    "scripts/canary-runtime.mjs": "79262294f0c7b37878c3359303e545f147d70cca8ea211c398ae8e6c56b75705",
     "scripts/canary-plan.mjs": "0b32c4c778cf071657166f035cbd061c5ece4bb4e85449b382068101f8182d8c",
     "tests/contracts/CanaryMockDVN.sol": "2ef864c718ad63b88223319b2f861ca333fcfca9d709a551ba91d1597898fa67"
   },
   "harness_sha256": {
     "tests/canary-contract.test.mjs": "fa35594d9c6bcb8f3db22a79af3ba3d3ddf333baaaa889103e7d26e222fd264b",
     "tests/canary-transport.mjs": "fe020f3d2e1e821010d6b60a5147f036b4953c482530aa261b6b74e0d633cb55",
-    "tests/canary-budget.test.mjs": "9e2ba7706139b6e99b60dd0a5f44c2a525b72d6dd9b453c8bd08c42949c6f1d5"
+    "tests/canary-budget.test.mjs": "5deada4e6baae7465283ca013a29ed0e06251ab3d28d24e54ea0738027d7578b"
   },
   "compiler_provenance": {
     "application": {
@@ -257,9 +267,17 @@
     "Current harness hashes identify inspected files; the application report itself pins Solidity sources, while the transport report also pins its harness."
   ],
   "completePackageRegression": {
-    "passed": 97,
+    "passed": 110,
     "failed": 0,
-    "log": "reports/canary-final-test.log",
-    "logSha256": "ee123add704f4767ea4d9419f0f421f20a943a549ec3e68a361fafc5620b5d58"
+    "log": "reports/canary-uncapped-test.log",
+    "logSha256": "1bd1282a5ca56fd2b79f6ce5735170c6794c82493b0f05e93a4f7344e5bd21dd"
+  },
+  "spendingPolicyValidation": {
+    "boundedDefault": true,
+    "explicitUncappedMode": true,
+    "monetaryCapsInUncappedMode": null,
+    "configurationTests": 20,
+    "budgetTests": 28,
+    "publicTransactions": 0
   }
 }

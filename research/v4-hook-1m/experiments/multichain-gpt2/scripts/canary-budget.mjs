@@ -11,6 +11,12 @@ import {checkedOutput,equal,validHash} from './canary-runtime.mjs';
 
 const GPO='0x420000000000000000000000000000000000000F';
 const decimal=x=>{assert(/^(?:0|[1-9][0-9]*)$/.test(String(x)),'Invalid unsigned budget number');return BigInt(x);};
+function isUncapped(config,chain){
+  assert(config.spendingPolicy===undefined||['bounded','uncapped'].includes(config.spendingPolicy),'Unknown spending policy');
+  const unlimited=config.spendingPolicy==='uncapped';
+  if(unlimited)for(const field of ['maxTotalSpendWei','maxFeePerGasWei','maxMessageFeeWei','maxPostingFeeWei'])assert(chain[field]===null,'Uncapped policy requires explicit null monetary caps');
+  return unlimited;
+}
 const json=x=>JSON.stringify(x,(_,v)=>typeof v==='bigint'?v.toString():v,2)+'\n';
 function save(file,value){const tmp=file+'.'+randomUUID()+'.tmp';fs.writeFileSync(tmp,json(value),{flag:'wx',mode:0o600});fs.renameSync(tmp,file);}
 function locations(config,chain){
@@ -32,8 +38,8 @@ function acquire(paths){
 }
 function unlock(res){if(!res.released){fs.unlinkSync(res.lock);res.released=true;}}
 function readLedger(file,config,chain){
-  const cap=decimal(chain.maxTotalSpendWei);assert(cap>0n,'Positive total budget required');
-  const identity={schemaVersion:1,sessionId:config.sessionId.toLowerCase(),chainId:chain.chainId,admin:config.admin.toLowerCase(),maxTotalSpendWei:cap.toString()};
+  const unlimited=isUncapped(config,chain),cap=unlimited?null:decimal(chain.maxTotalSpendWei);assert(unlimited||cap>0n,'Positive total budget required');
+  const identity={schemaVersion:1,sessionId:config.sessionId.toLowerCase(),chainId:chain.chainId,admin:config.admin.toLowerCase(),maxTotalSpendWei:cap===null?null:cap.toString()};
   if(!fs.existsSync(file))return {...identity,spentWei:'0',pending:null,receipts:[]};
   const data=JSON.parse(fs.readFileSync(file,'utf8'));
   for(const [k,v] of Object.entries(identity))assert(data[k]===v,'Budget identity or approved cap changed');
@@ -49,15 +55,16 @@ export function canaryBudgetPath(config,chain){return locations(config,chain).fi
 export async function reserveCanarySpend({config,chain,configFile,provider,actionId,gasLimit,feeOverrides,value=0n,data='0x',to=null}){
   void configFile; // Deliberately not part of ledger identity: copying a config cannot reset its budget.
   await network(config,chain,provider);
+  const unlimited=isUncapped(config,chain);
   assert(typeof actionId==='string'&&actionId.length>0&&actionId.length<=160,'Invalid action identity');
   gasLimit=decimal(gasLimit);value=decimal(value);
   assert(gasLimit>0n&&gasLimit<=decimal(chain.maxTransactionGas),'Transaction exceeds gas limit');
-  assert(value<=decimal(chain.maxMessageFeeWei),'Transaction value exceeds message fee cap');
+  assert(unlimited||value<=decimal(chain.maxMessageFeeWei),'Transaction value exceeds message fee cap');
   const legacy=feeOverrides.gasPrice!==undefined;
   assert(Object.keys(feeOverrides).every(k=>['gasPrice','maxFeePerGas','maxPriorityFeePerGas'].includes(k)),'Unexpected fee override');
   assert(legacy?(feeOverrides.maxFeePerGas===undefined&&feeOverrides.maxPriorityFeePerGas===undefined):feeOverrides.maxFeePerGas!==undefined,'Ambiguous transaction fee');
   const feeCap=decimal(legacy?feeOverrides.gasPrice:feeOverrides.maxFeePerGas);
-  assert(feeCap>0n&&feeCap<=decimal(chain.maxFeePerGasWei),'Transaction gas price exceeds cap');
+  assert(feeCap>0n&&(unlimited||feeCap<=decimal(chain.maxFeePerGasWei)),'Transaction gas price exceeds cap');
   if(!legacy)assert(decimal(feeOverrides.maxPriorityFeePerGas??0n)<=feeCap,'Priority fee exceeds fee cap');
   const paths=locations(config,chain);acquire(paths);
   const res={...paths,config,chain,provider,released:false};
@@ -67,16 +74,16 @@ export async function reserveCanarySpend({config,chain,configFile,provider,actio
     assert(Number.isSafeInteger(nonce)&&nonce>=0,'Invalid pending nonce');
     const unsigned=Transaction.from({type:legacy?0:2,chainId:chain.chainId,nonce,to,value,data,gasLimit,...feeOverrides});
     let postingReserve=0n;
-    const postingCap=decimal(chain.maxPostingFeeWei);
+    const postingCap=unlimited?null:decimal(chain.maxPostingFeeWei);
     if(chain.chainId===204){
-      assert(postingCap>0n,'opBNB posting fee cap required');
+      assert(unlimited||postingCap>0n,'opBNB posting fee cap required');
       // Only a byte count is sent to the public oracle, never model data or transaction contents.
       const oracle=new Contract(GPO,['function getL1FeeUpperBound(uint256) view returns(uint256)'],provider);
       postingReserve=2n*BigInt(await oracle.getL1FeeUpperBound(getBytes(unsigned.unsignedSerialized).length));
-      assert(postingReserve<=postingCap,'opBNB posting estimate exceeds cap');
-    }else assert(postingCap===0n,'RH posting is already represented in gas estimation');
+      assert(unlimited||postingReserve<=postingCap,'opBNB posting estimate exceeds cap');
+    }else assert(unlimited||postingCap===0n,'RH posting is already represented in gas estimation');
     const reservedWei=gasLimit*feeCap+value+postingReserve;
-    assert(decimal(ledger.spentWei)+reservedWei<=decimal(ledger.maxTotalSpendWei),'Total canary budget would be exceeded');
+    assert(unlimited||decimal(ledger.spentWei)+reservedWei<=decimal(ledger.maxTotalSpendWei),'Total canary budget would be exceeded');
     assert(BigInt(await provider.getBalance(config.admin,'pending'))>=reservedWei,'Insufficient native balance for reserved spend');
     const pending={id:randomUUID(),actionId,nonce,to:to?.toLowerCase()??null,dataHash:keccak256(data),valueWei:value.toString(),gasLimit:gasLimit.toString(),feeCapWei:feeCap.toString(),postingReserveWei:postingReserve.toString(),reservedWei:reservedWei.toString(),hash:null,createdAt:new Date().toISOString()};
     ledger.pending=pending;save(paths.file,ledger);return Object.assign(res,{id:pending.id,nonce,reservedWei});
@@ -106,10 +113,11 @@ async function settle(res,receipt,provider){
   }
   const status=Number(receipt.status);assert(status===0||status===1,'Unknown receipt status');
   const actual=used*price+posting+(status===1?decimal(p.valueWei):0n);
-  const entry={...p,blockNumber:receipt.blockNumber,blockHash:receipt.blockHash,status,gasUsed:used.toString(),gasPriceWei:price.toString(),postingWei:posting.toString(),postingSource,chargedWei:actual.toString(),settledAt:new Date().toISOString()};
+  const unlimited=isUncapped(res.config,res.chain),reservationExceeded=actual>decimal(p.reservedWei);
+  const entry={...p,blockNumber:receipt.blockNumber,blockHash:receipt.blockHash,status,gasUsed:used.toString(),gasPriceWei:price.toString(),postingWei:posting.toString(),postingSource,chargedWei:actual.toString(),reservationExceeded,settledAt:new Date().toISOString()};
   ledger.spentWei=(decimal(ledger.spentWei)+actual).toString();ledger.receipts.push(entry);ledger.pending=null;
-  ledger.overBudget=decimal(ledger.spentWei)>decimal(ledger.maxTotalSpendWei);
-  ledger.reviewRequired=ledger.reviewRequired===true||actual>decimal(p.reservedWei)||ledger.overBudget;
+  ledger.overBudget=!unlimited&&decimal(ledger.spentWei)>decimal(ledger.maxTotalSpendWei);
+  ledger.reviewRequired=ledger.reviewRequired===true||(!unlimited&&reservationExceeded)||ledger.overBudget;
   save(res.file,ledger);unlock(res);
   assert(!ledger.reviewRequired,'Actual chain fees exceeded the operational reservation; stop for review');
   return entry;

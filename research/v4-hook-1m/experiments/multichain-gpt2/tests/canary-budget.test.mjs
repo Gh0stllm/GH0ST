@@ -61,6 +61,14 @@ function fixture(t, chainId = 4663) {
   return { config, chain, file, directory, provider, reserve, read, broadcast, held };
 }
 
+function uncappedFixture(t, chainId = 4663) {
+  const f = fixture(t, chainId);
+  f.config.spendingPolicy = 'uncapped';
+  for (const key of ['maxTotalSpendWei', 'maxFeePerGasWei', 'maxMessageFeeWei', 'maxPostingFeeWei']) f.chain[key] = null;
+  f.provider.balance = 10n ** 18n;
+  return f;
+}
+
 test('RH reservation covers worst-case fee plus value and settles only actual successful spend', async t => {
   const f = fixture(t), res = await f.reserve();
   assert.equal(res.reservedWei, 1050n); assert.equal(f.read().pending.reservedWei, '1050');
@@ -229,4 +237,103 @@ test('reservation breach below total cap remains stopped after restart for expli
   assert.equal(f.read().reviewRequired, true);
   await assert.rejects(reconcileCanaryBudget({ config: f.config, chain: f.chain, provider: f.provider }), /review|reservation|exceeded/i);
   await assert.rejects(f.reserve(), /review|reservation|exceeded/i);
+});
+
+test('explicit uncapped RH accepts null monetary caps and preserves spend above old finite budgets', async t => {
+  const f = uncappedFixture(t);
+  const res = await f.reserve({ feeOverrides: { gasPrice: 1000n }, value: 10000n });
+  assert.equal(res.reservedWei, 110000n); assert.equal(f.read().maxTotalSpendWei, null);
+  const receipt = f.broadcast(res, { gasUsed: 90n, gasPrice: 900n, txOverrides: { value: 10000n } });
+  const paid = await recordCanaryReceipt(res, receipt);
+  assert.equal(paid.chargedWei, '91000'); assert.equal(f.read().spentWei, '91000');
+  const next = await f.reserve({ feeOverrides: { gasPrice: 1000n }, value: 10000n });
+  assert.equal(next.reservedWei, 110000n); cancelCanaryReservation(next, { neverBroadcast: true });
+  const restored = await reconcileCanaryBudget({ config: { ...f.config }, chain: { ...f.chain }, provider: f.provider,
+    configFile: '/another/path/uncapped-config.json' });
+  assert.equal(restored.spentWei, '91000'); assert.equal(restored.overBudget, false);
+});
+
+test('uncapped opBNB retains oracle reservation and actual posting accounting without a finite posting cap', async t => {
+  const f = uncappedFixture(t, 204); f.provider.postingUpperBound = 1000n;
+  const res = await f.reserve(); assert.equal(res.reservedWei, 3050n);
+  assert.equal(f.read().pending.postingReserveWei, '2000');
+  const entry = await recordCanaryReceipt(res, f.broadcast(res, { l1Fee: '0x5dc' }));
+  assert.equal(entry.postingWei, '1500'); assert.equal(entry.chargedWei, '2110');
+  assert.equal(entry.postingSource, 'receipt');
+  const next = await f.reserve(); assert.equal(next.reservedWei, 3050n);
+  cancelCanaryReservation(next, { neverBroadcast: true });
+});
+
+test('uncapped still enforces transaction gas, positive and coherent fees, balance and provider identity', async t => {
+  const f = uncappedFixture(t);
+  await assert.rejects(f.reserve({ gasLimit: 1001n }), /gas limit/);
+  await assert.rejects(f.reserve({ feeOverrides: { gasPrice: 0n } }), /gas price|positive/i);
+  await assert.rejects(f.reserve({ feeOverrides: { maxFeePerGas: 5n, maxPriorityFeePerGas: 6n } }), /Priority fee/);
+  await assert.rejects(f.reserve({ feeOverrides: { gasPrice: 10n, maxFeePerGas: 10n } }), /Ambiguous transaction fee/);
+  f.provider.balance = 1049n; await assert.rejects(f.reserve(), /Insufficient native balance/);
+  f.provider.balance = 10n ** 18n; f.provider.chainId = 204;
+  await assert.rejects(f.reserve(), /provider chain mismatch/);
+  assert.equal(fs.existsSync(f.file), false);
+});
+
+test('uncapped ledger remains bound to its session policy and authority across copied configs', async t => {
+  const f = uncappedFixture(t), res = await f.reserve(); cancelCanaryReservation(res, { neverBroadcast: true });
+  f.config.spendingPolicy = 'bounded';
+  Object.assign(f.chain, { maxTotalSpendWei: '10000', maxFeePerGasWei: '100', maxMessageFeeWei: '500', maxPostingFeeWei: '0' });
+  await assert.rejects(f.reserve({ configFile: '/copied/bounded.json' }), /identity|policy|cap changed/i);
+  f.config.spendingPolicy = 'uncapped';
+  for (const key of ['maxTotalSpendWei', 'maxFeePerGasWei', 'maxMessageFeeWei', 'maxPostingFeeWei']) f.chain[key] = null;
+  f.config.admin = '0x3333333333333333333333333333333333333333';
+  await assert.rejects(f.reserve(), /identity|policy|cap changed/i);
+});
+
+test('bounded approval cannot be changed to uncapped in an existing spend ledger', async t => {
+  const f = fixture(t), res = await f.reserve(); cancelCanaryReservation(res, { neverBroadcast: true });
+  f.config.spendingPolicy = 'uncapped';
+  for (const key of ['maxTotalSpendWei', 'maxFeePerGasWei', 'maxMessageFeeWei', 'maxPostingFeeWei']) f.chain[key] = null;
+  await assert.rejects(f.reserve(), /identity|policy|cap changed/i);
+});
+
+test('uncapped does not bypass unknown broadcast recovery or concurrent locks', async t => {
+  const f = uncappedFixture(t), res = await f.reserve();
+  await assert.rejects(f.reserve(), /Budget lock exists/);
+  releaseCanaryReservation(res);
+  await assert.rejects(reconcileCanaryBudget({ config: f.config, chain: f.chain, provider: f.provider }), /Unknown broadcast outcome/);
+  await assert.rejects(f.reserve(), /Pending canary spend/);
+  assert.equal(f.read().pending.id, res.id);
+});
+
+test('uncapped actual posting above estimate is recorded without imposing a new spending stop', async t => {
+  const f = uncappedFixture(t, 204), res = await f.reserve();
+  const entry = await recordCanaryReceipt(res, f.broadcast(res, { l1Fee: '0x1000' }));
+  assert.equal(entry.chargedWei, '4706'); assert.equal(entry.reservationExceeded, true);
+  assert.equal(f.read().spentWei, '4706'); assert.equal(f.read().reviewRequired, false); assert.equal(f.read().overBudget, false);
+  const restored = await reconcileCanaryBudget({ config: f.config, chain: f.chain, provider: f.provider });
+  assert.equal(restored.spentWei, '4706');
+  const next = await f.reserve(); cancelCanaryReservation(next, { neverBroadcast: true });
+});
+
+test('uncapped mode requires all monetary caps explicitly null and rejects unknown policy', async t => {
+  const f = uncappedFixture(t);
+  for (const field of ['maxTotalSpendWei', 'maxFeePerGasWei', 'maxMessageFeeWei', 'maxPostingFeeWei']) {
+    f.chain[field] = '1'; await assert.rejects(f.reserve(), /explicit null monetary caps/); f.chain[field] = null;
+  }
+  f.config.spendingPolicy = 'unlimited-guess';
+  await assert.rejects(f.reserve(), /Unknown spending policy/);
+  assert.equal(fs.existsSync(f.file), false);
+});
+
+test('uncapped settlement still rejects receipt fees or gas outside the signed transaction reservation', async t => {
+  const f = uncappedFixture(t), res = await f.reserve();
+  await assert.rejects(recordCanaryReceipt(res, f.broadcast(res, { gasPrice: 11n })), /gas price outside reservation/);
+  await assert.rejects(recordCanaryReceipt(res, f.broadcast(res, { gasUsed: 101n })), /gas exceeds reservation/);
+  assert.equal(f.read().spentWei, '0'); assert.equal(f.read().pending.hash, hash);
+});
+
+test('uncapped opBNB missing receipt L1 field still charges the conservative estimate', async t => {
+  const f = uncappedFixture(t, 204); f.provider.postingUpperBound = 1000n;
+  const res = await f.reserve(), receipt = f.broadcast(res); delete f.provider.raw.l1Fee;
+  const entry = await recordCanaryReceipt(res, receipt);
+  assert.equal(entry.postingSource, 'conservative-reservation'); assert.equal(entry.postingWei, '2000');
+  assert.equal(entry.chargedWei, '2610'); assert.equal(f.read().maxTotalSpendWei, null);
 });

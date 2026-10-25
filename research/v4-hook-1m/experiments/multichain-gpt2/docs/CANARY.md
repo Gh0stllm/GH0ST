@@ -37,7 +37,9 @@ The second command is read-only unless `--execute` is supplied. A pending-nonce 
 
 ## Enable and run
 
-Paid execution requires the configured admin's signer, native balances on both chains, accepted native-currency limits, and all three explicit flags. The example limits are proposals, not permission to spend. Set positive gas-price and message-fee caps; set `maxPostingFeeWei` to zero on RH and a positive reviewed bound on opBNB. Limits apply independently to each chain. Do not place private keys in JSON, source files or chat.
+Paid execution requires the configured admin's signer, native balances on both chains, explicit spending authorization, and all three explicit flags. The default bounded policy uses positive gas-price and message-fee caps; set `maxPostingFeeWei` to zero on RH and a positive reviewed bound on opBNB. Limits apply independently to each chain. The example limits are proposals, not permission to spend. Do not place private keys in JSON, source files or chat.
+
+When the operator explicitly authorizes no monetary limits, set top-level `spendingPolicy` to `"uncapped"` and set all four monetary fields on **both** chains to `null`: `maxTotalSpendWei`, `maxFeePerGasWei`, `maxMessageFeeWei` and `maxPostingFeeWei`. This removes total, gas-price, message-value and posting-fee spending caps without substituting a large artificial number. Transactions still use fresh network fee quotes, finite protocol gas limits, exact preflight checks, the configured signer and available balance. A bounded ledger cannot silently become uncapped; its identity check preserves the existing authorization history.
 
 ```sh
 npm run canary:deploy -- --config=deployments/new-canary/manifest.json --execute --once
@@ -51,9 +53,9 @@ The first paid command submits at most one deployment transaction. After deploym
 
 ## Spend accounting and recovery
 
-Deployment and relay share `deployments/canary-spend/<session>/<chainId>.json`. Moving or copying a configuration does not reset this ledger. Each pending action reserves its full gas limit at its maximum gas price, full message value, and twice the opBNB oracle's L1 fee upper bound. Only the unsigned transaction's byte count is sent to that oracle. A reservation must fit the remaining approved budget and current native balance before broadcast.
+Deployment and relay share `deployments/canary-spend/<session>/<chainId>.json`. Moving or copying a configuration does not reset this ledger. Each pending action reserves its full gas limit at its transaction's maximum gas price, full message value, and twice the opBNB oracle's L1 fee upper bound. Only the unsigned transaction's byte count is sent to that oracle. A reservation must fit the current native balance and, in bounded mode, the remaining approved budget before broadcast.
 
-Mined receipts charge actual execution gas and the full message value as a conservative amount; refunds can make net wallet cost lower. Reverted transactions still charge execution gas. opBNB's receipt L1 fee is added when available; otherwise the full posting reservation remains charged. These posting limits are operational safeguards, not consensus-enforced limits on a changing chain fee. A receipt exceeding its reservation is recorded and permanently stops further automated spending pending review, even if the total budget has room.
+Mined receipts charge actual execution gas and the full message value as a conservative amount; refunds can make net wallet cost lower. Reverted transactions still charge execution gas. opBNB's receipt L1 fee is added when available; otherwise the full posting reservation remains charged. These posting limits are operational safeguards, not consensus-enforced limits on a changing chain fee. In bounded mode, a receipt exceeding its reservation is recorded and permanently stops further automated spending pending review, even if the total budget has room. In explicitly uncapped mode, the variance is recorded without imposing a monetary stop.
 
 Transaction hashes are recorded immediately after broadcast. Restart reconciles known, confirmed receipts; pending transactions remain reserved. An ambiguous broadcast with no recorded hash fails closed and requires nonce/receipt investigation. There is no automatic retry with another transaction.
 

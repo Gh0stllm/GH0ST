@@ -40,7 +40,7 @@ export async function recoverCanaryReceipts({ledger,provider,rows,chain,persist=
     if(!existing||!existing.confirmed){applyReceipt(chain,row,receipt);persist();recovered++;}
   }return recovered;
 }
-export async function run(args){if(args.length===1&&args[0]==='--help'){console.log('deploy-canary --config=deployments/canary/manifest.json [--execute] [--once]\nDry-run by default. Regenerates all unsigned bytes. Paid mode requires explicit enabled, messagingReviewed and budgetApproved flags, positive limits and funded admin key.');return;}
+export async function run(args){if(args.length===1&&args[0]==='--help'){console.log('deploy-canary --config=deployments/canary/manifest.json [--execute] [--once]\nDry-run by default. Regenerates all unsigned bytes. Paid mode requires explicit enabled, messagingReviewed and budgetApproved flags, an approved bounded or uncapped spending policy and funded admin key. Transaction gas ceilings and deadlines remain enforced.');return;}
   const o=parseCanaryArgs(args,['config'],['--execute','--once']);assert(o.config,'config required');const configFile=checkedOutput(o.config),config=JSON.parse(fs.readFileSync(configFile));validateCanaryConfig(config,{deployed:'prepared',paid:!!o.execute});
   const built=compile(),plan=await regenerateCanaryPlan(config,built),sequences=plan.records.map(x=>({key:x.key,txs:validateUnsignedRows(fs.readFileSync(path.join(path.dirname(configFile),x.key+'.unsigned.jsonl'),'utf8').trim().split('\n').map(JSON.parse),x.txs)}));
   const providers=[];let sent=0;
@@ -54,7 +54,7 @@ export async function run(args){if(args.length===1&&args[0]==='--help'){console.
         if(row.index===7){const endpoint=new Contract(ch.endpoint,ENDPOINT_ABI,provider),sendLibrary=new Contract(ch.sendLibrary,ULN_ABI,provider),receiveLibrary=new Contract(ch.receiveLibrary,ULN_ABI,provider),router=new Contract(ch.router,built.artifacts[CANARY_CONTRACT].abi,provider);assert(equal(await router.owner(),config.admin)&&equal(await router.peers(config.chains[1-ch.stage].eid),'0x'+'0'.repeat(24)+config.chains[1-ch.stage].router.slice(2)),'Seal authority or peer differs');await checkCanaryTransport({config:ch,endpoint,sendLibrary,receiveLibrary},config.chains[1-ch.stage]);}
         const tx={to:row.to,data:row.data,value:0n,from:config.admin,nonce:BigInt(row.nonce)},ceiling=BigInt(ch.maxTransactionGas);
         const estimate=await provider.estimateGas({...tx,gasLimit:ceiling}),gasLimit=gasLimitForEstimate(estimate,ceiling);
-        await provider.call({...tx,gasLimit});const feeOverrides=await canaryFeeOverrides({config:ch,provider,deadline:config.deadline});
+        await provider.call({...tx,gasLimit});const feeOverrides=await canaryFeeOverrides({config:ch,runtimeConfig:config,provider,deadline:config.deadline});
         const reservation=await reserveCanarySpend({config,chain:ch,configFile,provider,actionId:'deployment:'+row.index,gasLimit,feeOverrides,value:0n,data:row.data,to:row.to});
         try{assert(BigInt(reservation.nonce)===BigInt(row.nonce),'Reserved nonce differs from exact plan');
         const submitted=await signer.sendTransaction({...tx,gasLimit,...feeOverrides,nonce:reservation.nonce});await markCanaryBroadcast(reservation,submitted.hash);
