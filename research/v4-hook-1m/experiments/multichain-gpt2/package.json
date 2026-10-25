@@ -1,6 +1,6 @@
 {
   "name": "gh0st-multichain-gpt2-research",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
   "type": "module",
   "engines": {
@@ -20,7 +20,17 @@
     "plan:optimized": "node scripts/plan.mjs --config=config/chains.optimized.json --out=reports/optimized-partition.json",
     "benchmark:optimized": "node scripts/optimized-benchmark.mjs --layout=config/optimized-layout.json --engine=GPT2ShardOptimized",
     "benchmark:baseline-native": "node scripts/optimized-benchmark.mjs --layout=config/baseline-native-layout.json --engine=GPT2Shard --out=reports/baseline-native-full",
-    "costs": "node scripts/estimate-costs.mjs"
+    "costs": "node scripts/estimate-costs.mjs",
+    "plan:job": "node scripts/job-plan.mjs",
+    "prepare:job": "node scripts/prepare-job-deployment.mjs",
+    "verify:job": "node scripts/verify-job-deployment.mjs",
+    "worker:job": "node scripts/job-worker.mjs",
+    "relay:job": "node scripts/job-relay.mjs",
+    "costs:economy": "node scripts/estimate-economy-costs.mjs",
+    "test:costs:economy": "node tests/economy-costs.mjs",
+    "benchmark:job": "node scripts/job-benchmark.mjs",
+    "benchmark:job:opbnb": "node scripts/job-benchmark.mjs --compute=opbnb --out=reports/job-opbnb-full",
+    "posting:opbnb": "node scripts/quote-opbnb-posting.mjs"
   },
   "dependencies": {
     "ethers": "6.13.5"

@@ -26,6 +26,7 @@ const CHECKPOINT = '248dfc3911869ec493c76e65bf2fcf7f615828b0254c12b473182f0f81d3
 const range = (start, end) => Array.from({ length: end - start }, (_, i) => start + i);
 const layout = readLayout(option('layout', 'config/optimized-layout.json'));
 const stageConfig = layout.stages;
+const chainCountName = ['', '', 'TWO', 'THREE', 'FOUR'][stageConfig.length];
 if (requestedTargetGas) for (const config of stageConfig) {
   config.targetGas = String(BigInt(requestedTargetGas) < BigInt(config.maxTransactionGas) ? BigInt(requestedTargetGas) : BigInt(config.maxTransactionGas));
 }
@@ -38,9 +39,9 @@ const canonical = value => JSON.stringify(value, (_, item) => item && typeof ite
 let routeId;
 const sessionId = ethers.id('LOCAL_OPTIMIZATION_SESSION:' + engineName + ':' + layout.name);
 const report = { schema_version: 1, status: 'RUNNING', started_at: new Date().toISOString(),
-  mode: 'OPTIMIZED_FOUR_LOCAL_EVM_PROCESSES_REAL_GPT2_MATH_SIMULATED_TRANSPORT', public_transactions_submitted: 0,
+  mode: `OPTIMIZED_${chainCountName}_LOCAL_EVM_PROCESSES_REAL_GPT2_MATH_SIMULATED_TRANSPORT`, public_transactions_submitted: 0,
   weight_data_injected: false, host_inference_results_injected: false, batch_small_phases: batching,
-  stages: stageConfig, layout, route_id: routeId, session_id: sessionId, requested_token_positions: tokenCount,
+  chain_count: stageConfig.length, stages: stageConfig, layout, route_id: routeId, session_id: sessionId, requested_token_positions: tokenCount,
   engine_artifact: engineName, router_artifact: routerName,
   stage_gas_ceilings: stageConfig.map(stage => ({ stage: stage.stage, maximum: stage.maxTransactionGas, target: stage.targetGas })),
   deployments: [], tokens: [], validations: [], preflight_calls: 0, preflight_profiles: [],
@@ -58,7 +59,27 @@ const report = { schema_version: 1, status: 'RUNNING', started_at: new Date().to
 const save = () => fs.writeFileSync(reportFile, json(report));
 const check = (name, details = {}) => report.validations.push({ name, passed: true, ...details });
 save();
-let chains = [], compiled;
+let chains = [], compiled, deployedBuild;
+function selectedDeploymentBuild(build) {
+  const names = new Set();
+  const visit = name => {
+    if (names.has(name)) return;
+    const source = build.sources[name];
+    assert(source, 'Selected deployment import missing from compiler input: ' + name);
+    names.add(name);
+    for (const match of source.content.matchAll(/import[\s\S]*?["']([^"']+)["']\s*;/g)) {
+      const imported = match[1].startsWith('.') ? path.posix.normalize(path.posix.join(path.posix.dirname(name), match[1])) : match[1];
+      visit(imported);
+    }
+  };
+  for (const name of [engineName, routerName, 'MockEndpoint']) {
+    assert(build.artifacts[name], 'Selected deployment artifact missing: ' + name);
+    visit(build.artifacts[name].sourceFile);
+  }
+  report.selected_source_sha256 = Object.fromEntries([...names].sort().map(name => [name, build.compiler.source_sha256[name]]));
+  report.source_assertion_scope = 'Selected engine, router, transport mock and every transitive Solidity import remain unchanged. Full initial compiler input is retained; unreferenced research sources may change independently.';
+  return { ...build, resolvedPaths: Object.fromEntries([...names].map(name => [name, build.resolvedPaths[name]])) };
+}
 const dataDirectory = [path.join(HERE, 'data'), path.resolve(HERE, '../gpt2-bsc/data')].find(base => fs.existsSync(path.join(base, 'manifest.json')));
 const checkedFile = (base, filename) => {
   const file = path.resolve(base, filename);
@@ -299,12 +320,13 @@ async function verifyKV(chain, engine, config, expected, position, tokenRecord) 
 try {
   const { manifest, tensors, expected } = loadInputs();
   compiled = compile({ outputDirectory }); report.compiler = compiled.compiler;
+  deployedBuild = selectedDeploymentBuild(compiled);
   assert(compiled.artifacts[engineName] && compiled.artifacts[routerName] && compiled.artifacts.MockEndpoint);
   report.artifact_roles = { model_engine: engineName, router: routerName, transport_only: 'MockEndpoint',
     mock_model_instantiated: false };
   check('all_compiled_runtimes_fit_EIP170'); save();
   if (args.includes('--check-inputs')) {
-    assertSourcesUnchanged(compiled); report.status = 'PASS_OFFLINE_INPUT_AND_BUILD_PREFLIGHT';
+    assertSourcesUnchanged(deployedBuild); report.status = 'PASS_OFFLINE_INPUT_AND_BUILD_PREFLIGHT';
   } else {
     chains = await startLayoutChains(stageConfig, { onTransaction: entry => {
       fs.appendFileSync(ledgerFile, JSON.stringify(entry, (_, value) => typeof value === 'bigint' ? value.toString() : value) + '\n');
@@ -335,7 +357,7 @@ try {
       assert.equal((await chain.tx(routers[stage], 'bindEngine', [engines[stage].address], { category: 'route_setup' })).status, '0x1');
     }
     for (let stage = 0; stage < chains.length; stage++) {
-      for (const other of [(stage + chains.length - 1) % chains.length, (stage + 1) % chains.length]) {
+      for (const other of new Set([(stage + chains.length - 1) % chains.length, (stage + 1) % chains.length])) {
         assert.equal((await chains[stage].tx(routers[stage], 'setPeer', [EIDS[other], ethers.zeroPadValue(routers[other].address, 32)], { category: 'route_setup' })).status, '0x1');
       }
       assert.equal((await chains[stage].tx(routers[stage], 'sealRoute', [], { category: 'route_setup' })).status, '0x1');
@@ -402,12 +424,12 @@ try {
         console.log(`Completed position${position}: token${inputToken}; model gas${record.model_gas}`); save();
       }
       report.generated_token_ids = report.tokens.map(token => token.output_token);
-      check('complete_124439808_parameter_model_executed_on_four_local_EVMs_for_every_requested_position', { positions: tokenCount });
+      check('complete_124439808_parameter_model_executed_on_configured_local_EVMs_for_every_requested_position', { positions: tokenCount, chain_count: chains.length });
       check('all_emitted_phase_vector_and_full_50257_logit_commitments_match_independent_CPU_reference');
       if (tokenCount >= 2) check('all_KV_entries_persist_and_match_reference_after_second_token_without_reset');
     }
-    assertSourcesUnchanged(compiled);
-    report.status = args.includes('--deploy-only') ? 'PASS_OPTIMIZED_COMPLETE_MODEL_DEPLOYMENT_ONLY' : 'PASS_OPTIMIZED_FOUR_CHAIN_FULL_MODEL_LOCAL_BENCHMARK';
+    assertSourcesUnchanged(deployedBuild);
+    report.status = args.includes('--deploy-only') ? 'PASS_OPTIMIZED_COMPLETE_MODEL_DEPLOYMENT_ONLY' : `PASS_OPTIMIZED_${chainCountName}_CHAIN_FULL_MODEL_LOCAL_BENCHMARK`;
   }
   report.completed_at = new Date().toISOString(); save(); console.log(json({ status: report.status, report: reportFile, totals: report.totals }));
 } catch (error) {

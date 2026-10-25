@@ -1,6 +1,6 @@
 {
-  "schemaVersion": 2,
-  "status": "PASS_LOCAL_OPTIMIZED_FOUR_CHAIN_GPT2_124M",
+  "schemaVersion": 3,
+  "status": "PASS_LOCAL_ECONOMY_GPT2_RESEARCH_PUBLIC_DELIVERY_UNPROVEN",
   "publicTransactionsSubmitted": 0,
   "publicDeployment": false,
   "productionMessagingVerified": false,
@@ -9,39 +9,81 @@
   "model": "GPT-2 124439808 parameters, original INT8 weights and Q12 activations",
   "route": [
     "Robinhood",
-    "BNB",
-    "Arc",
-    "Monad",
+    "opBNB",
     "Robinhood"
   ],
   "engine": "GPT2ShardOptimized",
-  "routeId": "0xa9fb916af8de3d40c9ba4a329a4587bb5febe834e319193417233c9cffe9f9d0",
-  "validation": {
-    "realModelTokenIds": [
-      198,
-      464
+  "economyResearch": {
+    "status": "LOCAL_MODEL_AND_SOURCE_TRANSPORT_TESTS_PASS_PUBLIC_DELIVERY_UNPROVEN",
+    "route": "Robinhood -> opBNB -> Robinhood",
+    "full_model_parameter_count": 124439808,
+    "model_precision_unchanged": true,
+    "all_computation_on_chain": true,
+    "interchain_messages_per_job": 2,
+    "full_model_local_receipts": 6244,
+    "source_transport_local_fork_transactions": 22,
+    "public_transactions": 0,
+    "managed_executor_support": false,
+    "self_relay_optional": true,
+    "public_destination_delivery_verified": false,
+    "cost_evidence": "economy-costs.json",
+    "setup_costs_separate": true
+  },
+  "previousFourChainResearch": {
+    "schemaVersion": 2,
+    "status": "PASS_LOCAL_OPTIMIZED_FOUR_CHAIN_GPT2_124M",
+    "publicTransactionsSubmitted": 0,
+    "publicDeployment": false,
+    "productionMessagingVerified": false,
+    "paidFeeSavingsVerified": false,
+    "localFeeScenarioVerified": true,
+    "model": "GPT-2 124439808 parameters, original INT8 weights and Q12 activations",
+    "route": [
+      "Robinhood",
+      "BNB",
+      "Arc",
+      "Monad",
+      "Robinhood"
     ],
-    "phaseCommitmentsMatchedPerFullRun": 172,
-    "vocabularyLogitsMatchedPerFullRun": 100514,
-    "kvVectorsMatchedPerFullRun": 72,
-    "baselineSuccessfulReceipts": 7930,
-    "optimizedSuccessfulReceipts": 7836,
-    "protocolChecksPassed": 62,
-    "workerConfigTestsPassed": 16,
-    "workerSelectionTestsPassed": 8,
-    "kernelDomainCases": 90,
-    "kernelInvalidInputsRejected": 3,
-    "compilerSourcesHash": "1f86beac48876358d54ff4b13f3cb9bc1a282d2bff65c3f0dadbd3478505ceda",
-    "nodeTestsPassed": 26,
-    "nodeTestsFailed": 0
+    "engine": "GPT2ShardOptimized",
+    "routeId": "0xa9fb916af8de3d40c9ba4a329a4587bb5febe834e319193417233c9cffe9f9d0",
+    "validation": {
+      "realModelTokenIds": [
+        198,
+        464
+      ],
+      "phaseCommitmentsMatchedPerFullRun": 172,
+      "vocabularyLogitsMatchedPerFullRun": 100514,
+      "kvVectorsMatchedPerFullRun": 72,
+      "baselineSuccessfulReceipts": 7930,
+      "optimizedSuccessfulReceipts": 7836,
+      "protocolChecksPassed": 62,
+      "workerConfigTestsPassed": 16,
+      "workerSelectionTestsPassed": 8,
+      "kernelDomainCases": 90,
+      "kernelInvalidInputsRejected": 3,
+      "compilerSourcesHash": "1f86beac48876358d54ff4b13f3cb9bc1a282d2bff65c3f0dadbd3478505ceda",
+      "nodeTestsPassed": 26,
+      "nodeTestsFailed": 0
+    },
+    "estimatedUsdSecondPosition": {
+      "baselineModelAndImport": 91.87864808742634,
+      "optimizedModelAndImport": 21.708695264643964,
+      "modelAndImportSavingsPercent": 76.37242632914315,
+      "optimizedIncludingProviderComponents": 22.760001621137985,
+      "optimizedIncludingSourceAllowanceAndRhRawPosting": 24.54634266138751
+    },
+    "scope": "Two full local benchmark scenarios; native local MonadTen profile and declared gas billing; generic Cancun on other three chain identities; live public price/provider snapshots; no paid public-network inference.",
+    "previousBaselineEvidence": "local-benchmark.json"
   },
-  "estimatedUsdSecondPosition": {
-    "baselineModelAndImport": 91.87864808742634,
-    "optimizedModelAndImport": 21.708695264643964,
-    "modelAndImportSavingsPercent": 76.37242632914315,
-    "optimizedIncludingProviderComponents": 22.760001621137985,
-    "optimizedIncludingSourceAllowanceAndRhRawPosting": 24.54634266138751
+  "latestNodeTests": {
+    "passed": 59,
+    "failed": 0,
+    "log": "reports/economy-final-tests.log"
   },
-  "scope": "Two full local benchmark scenarios; native local MonadTen profile and declared gas billing; generic Cancun on other three chain identities; live public price/provider snapshots; no paid public-network inference.",
-  "previousBaselineEvidence": "local-benchmark.json"
+  "additionalPostingProxyTests": {
+    "passed": 2,
+    "failed": 0,
+    "scope": "Method, argument, and upstream payload restrictions; offline only"
+  }
 }

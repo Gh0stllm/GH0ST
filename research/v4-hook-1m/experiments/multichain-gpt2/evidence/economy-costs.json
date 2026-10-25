@@ -1,0 +1,288 @@
+{
+  "schemaVersion": 1,
+  "status": "LOCAL_MEASUREMENTS_PLUS_LIVE_FEE_SNAPSHOTS_AND_EXPLICIT_UNMEASURED_ALLOWANCES",
+  "publicTransactionsSubmitted": 0,
+  "publicDestinationDeliveryVerified": false,
+  "managedExecutorSupportsRoute": false,
+  "model": {
+    "parameters": 124439808,
+    "precision": "INT8 weights / signed INT32 Q12 activations, unchanged",
+    "promptTokens": [
+      50256
+    ],
+    "outputTokens": [
+      198,
+      464
+    ],
+    "processedPositions": 2,
+    "generatedOutputs": 2,
+    "verifiedPhaseVectors": 172,
+    "verifiedLogits": 100514,
+    "verifiedKVVectors": 72
+  },
+  "market": {
+    "sourceUrl": "https://api.coingecko.com/api/v3/simple/price?ids=ethereum,binancecoin&vs_currencies=usd&include_last_updated_at=true",
+    "retrievedAt": "2026-10-25T13:26:17.393Z",
+    "raw": {
+      "ethereum": {
+        "usd": 2329.92,
+        "last_updated_at": 1792934759
+      },
+      "binancecoin": {
+        "usd": 736.42,
+        "last_updated_at": 1792934759
+      }
+    }
+  },
+  "rhGasPriceWei": "20082000",
+  "computeGas": "7787263841",
+  "computeActions": 633,
+  "exactComputePostingWei": "4132224041145",
+  "sourceSends": [
+    {
+      "stage": 0,
+      "chain_id": 4663,
+      "kind": "request",
+      "transaction": "0x146589be860a83e61661b5fd68a5a8d7a1b8021b3d4e808b8a446548511a1ad3",
+      "gas": "326603",
+      "native_fee": "63755246154",
+      "lz_token_fee": "0",
+      "required_dvns": [
+        "0x1258A278519c7f4bd997a9c3BFd4Aa802a028D89",
+        "0xd01ae6905d48315f7bE10C7330aeCF8360Ef5b12"
+      ],
+      "dvn_fees": [
+        "31877623077",
+        "31877623077"
+      ],
+      "executor_service_fee": "0",
+      "encoded_packet_bytes": 529,
+      "message_bytes": 416,
+      "guid": "0x0db5a4afb7d2e97883982a81b653d148089b43e037f50bc6f3293b217e5f499c",
+      "message_sha256": "4b9f12bef0d7806736131f8b6946c044a18e5b6019f94c1765f7d37b8a7f355f"
+    },
+    {
+      "stage": 1,
+      "chain_id": 204,
+      "kind": "result",
+      "transaction": "0xa972e7c0b641163e3e928e3d2b06fc22a51d0791da482d71a691fc772071b19b",
+      "gas": "251404",
+      "native_fee": "18179872823068",
+      "lz_token_fee": "0",
+      "required_dvns": [
+        "0x3eBb618B5c9d09DE770979D552b27D6357Aff73B",
+        "0xDd7B5E1dB4AaFd5C8EC3b764eFB8ed265Aa5445B"
+      ],
+      "dvn_fees": [
+        "9089936411534",
+        "9089936411534"
+      ],
+      "executor_service_fee": "0",
+      "encoded_packet_bytes": 529,
+      "message_bytes": 416,
+      "guid": "0xc1868c77ed5b19d3d63d6945387dd294e17be53640c03a1e5b0de8f1952a97be",
+      "message_sha256": "ea61b15a42b8e3433c5128f8149d993a27272552972db57e1e2de39c1f803ce0"
+    }
+  ],
+  "allowancePolicy": {
+    "deliveryGasPerChain": "2000000",
+    "rhPostingUsd": 0.01,
+    "otherPostingUsd": 0.01,
+    "scope": "Per-job allowance, not measured gas or a guaranteed upper bound. Delivery covers commitVerification plus lzReceive. DVN verification is already paid by native_fee and is not double-counted. Operator hosting, margins and setup posting are excluded."
+  },
+  "cases": [
+    {
+      "name": "recommended_bid",
+      "gasPriceWei": "1000000",
+      "inclusion": "RPC-recommended bid snapshot; public execution remains untested.",
+      "chains": [
+        {
+          "chain": "Robinhood",
+          "chainId": 4663,
+          "modelComputeUsd": 0,
+          "sourceExecutionUsd": 0.015281575861864322,
+          "dvnQuoteUsd": 0.00014854462311912769,
+          "deliveryExecutionAllowanceUsd": 0.09357890687999999,
+          "postingAllowanceUsd": 0.01,
+          "totalJobUsd": 0.11900902736498344
+        },
+        {
+          "chain": "opBNB",
+          "chainId": 204,
+          "modelComputeUsd": 5.73469683778922,
+          "measuredModelPostingUsd": 0.0030430524283800004,
+          "sourceExecutionUsd": 0.00018513893368,
+          "dvnQuoteUsd": 0.013388021944363735,
+          "deliveryExecutionAllowanceUsd": 0.0014728399999999998,
+          "otherPostingAllowanceUsd": 0.01,
+          "totalJobUsd": 5.762785891095643
+        },
+        {
+          "chain": "BNB Smart Chain",
+          "chainId": 56,
+          "totalJobUsd": 0,
+          "role": "Unused in the cheaper route"
+        },
+        {
+          "chain": "Arc",
+          "chainId": 5042,
+          "totalJobUsd": 0,
+          "role": "Unused in the cheaper route"
+        },
+        {
+          "chain": "Monad",
+          "chainId": 143,
+          "totalJobUsd": 0,
+          "role": "Measured fallback; unused in the cheapest route"
+        }
+      ],
+      "computeAndExactModelPostingUsd": 5.7377398902176,
+      "totalJobUsd": 5.881794918460626,
+      "perOutputTokenUsd": 2.940897459230313,
+      "sessionSetup": [
+        {
+          "chainId": 4663,
+          "measuredGas": "4107857",
+          "measuredTransactions": 6,
+          "receiveConfigurationGasAllowance": "1000000",
+          "measuredScope": "New routers, engine, self executors, route wiring and send configuration; reusable tensors/catalogs excluded.",
+          "executionUsd": 0.2389938372796781
+        },
+        {
+          "chainId": 204,
+          "measuredGas": "7789362",
+          "measuredTransactions": 8,
+          "receiveConfigurationGasAllowance": "1000000",
+          "measuredScope": "New routers, engine, self executors, route wiring and send configuration; reusable tensors/catalogs excluded.",
+          "executionUsd": 0.00647266196404
+        }
+      ],
+      "sessionSetupExecutionOnlyUsd": 0.2454664992437181,
+      "perOutputIncludingSessionExecutionUsd": 3.063630708852172,
+      "setupPostingExcluded": true,
+      "operatorServiceAndMarginExcluded": true
+    },
+    {
+      "name": "observed_low_bid",
+      "gasPriceWei": "10000",
+      "inclusion": "A bid observed in unrelated public receipts; timely inclusion for this workload is unproven.",
+      "chains": [
+        {
+          "chain": "Robinhood",
+          "chainId": 4663,
+          "modelComputeUsd": 0,
+          "sourceExecutionUsd": 0.015281575861864322,
+          "dvnQuoteUsd": 0.00014854462311912769,
+          "deliveryExecutionAllowanceUsd": 0.09357890687999999,
+          "postingAllowanceUsd": 0.01,
+          "totalJobUsd": 0.11900902736498344
+        },
+        {
+          "chain": "opBNB",
+          "chainId": 204,
+          "modelComputeUsd": 0.057346968377892195,
+          "measuredModelPostingUsd": 0.0030430524283800004,
+          "sourceExecutionUsd": 0.0000018513893368,
+          "dvnQuoteUsd": 0.013388021944363735,
+          "deliveryExecutionAllowanceUsd": 0.0000147284,
+          "otherPostingAllowanceUsd": 0.01,
+          "totalJobUsd": 0.08379462253997273
+        },
+        {
+          "chain": "BNB Smart Chain",
+          "chainId": 56,
+          "totalJobUsd": 0,
+          "role": "Unused in the cheaper route"
+        },
+        {
+          "chain": "Arc",
+          "chainId": 5042,
+          "totalJobUsd": 0,
+          "role": "Unused in the cheaper route"
+        },
+        {
+          "chain": "Monad",
+          "chainId": 143,
+          "totalJobUsd": 0,
+          "role": "Measured fallback; unused in the cheapest route"
+        }
+      ],
+      "computeAndExactModelPostingUsd": 0.0603900208062722,
+      "totalJobUsd": 0.20280364990495617,
+      "perOutputTokenUsd": 0.10140182495247808,
+      "sessionSetup": [
+        {
+          "chainId": 4663,
+          "measuredGas": "4107857",
+          "measuredTransactions": 6,
+          "receiveConfigurationGasAllowance": "1000000",
+          "measuredScope": "New routers, engine, self executors, route wiring and send configuration; reusable tensors/catalogs excluded.",
+          "executionUsd": 0.2389938372796781
+        },
+        {
+          "chainId": 204,
+          "measuredGas": "7789362",
+          "measuredTransactions": 8,
+          "receiveConfigurationGasAllowance": "1000000",
+          "measuredScope": "New routers, engine, self executors, route wiring and send configuration; reusable tensors/catalogs excluded.",
+          "executionUsd": 0.0000647266196404
+        }
+      ],
+      "sessionSetupExecutionOnlyUsd": 0.2390585638993185,
+      "perOutputIncludingSessionExecutionUsd": 0.22093110690213735,
+      "setupPostingExcluded": true,
+      "operatorServiceAndMarginExcluded": true
+    }
+  ],
+  "previousFourChainSecondPositionAtCapturedPrices": [
+    {
+      "chain": "Robinhood",
+      "chainId": 4663,
+      "modelAndImportGas": "1221787",
+      "modelAndImportUsd": 0.05697192781
+    },
+    {
+      "chain": "BNB",
+      "chainId": 56,
+      "modelAndImportGas": "234003728",
+      "modelAndImportUsd": 8.648426781287998
+    },
+    {
+      "chain": "Arc",
+      "chainId": 5042,
+      "modelAndImportGas": "233985097",
+      "modelAndImportUsd": 5.847381168068799
+    },
+    {
+      "chain": "Monad",
+      "chainId": 143,
+      "modelAndImportGas": "3798981062",
+      "modelAndImportUsd": 8.191089515227558
+    }
+  ],
+  "previousFourChainModelAndImportUsd": 22.74386939239436,
+  "initialInstallation": {
+    "gasExcludingMockEndpoints": "27932135306",
+    "transactions": 5600,
+    "weightPayloadBytes": 127716426,
+    "weightContracts": 5516,
+    "catalogs": 81,
+    "scope": "Local first installation, before self-executor and production messaging configuration. Deployment posting costs not measured. Tensors/catalogs reusable; session contracts are single-use."
+  },
+  "evidence": {
+    "reports/job-opbnb-full/results.json": "69f7daf19587f0c091f60765117302bdb85129631571d048255a6892e09c0cf1",
+    "reports/job-opbnb-full/transactions.jsonl": "b98f4e52e3a36bf46a1ee57f292da499a19405d59a4fcb92406eac98ce4a5e27",
+    "reports/self-relay-fork/results.json": "1f41c0f4fde08778cd0ba32c2af0ed31367cde520f1082e2750aaa76de4a4989",
+    "reports/self-relay-fork/transactions.jsonl": "a8e0f8ddf8fe326dfd18d8ee4eba292707288d855ddac3b73df9eef0cf21c7ae",
+    "research/opbnb-snapshot.json": "00c2c40c2904f635df2a3e3aa6edaae74526424fbeaabf7ecab81656a9419c41",
+    "research/fee-economy-snapshot.json": "445daf5c4ee47e79272190d7b9b2be48d5062c2e7d64a11b598607bd530b7683"
+  },
+  "limitations": [
+    "Both complete model runs and source-send forks were local. No paid public inference or destination DVN delivery was performed.",
+    "Low bid is not a guaranteed price or inclusion policy. Longer contexts cost more; this two-output EOS job is not a chat-message price.",
+    "Source sends use official forked transport with a model mock only to initialize transport state. Math evidence comes from the separate real-model benchmark.",
+    "A local generic Cancun profile was used for opBNB execution; GPO code/state and source Endpoint/DVN code were forked from pinned public blocks.",
+    "Self-operated delivery removes a commercial executor service fee; it still needs a funded, reliable relayer and live DVN support.",
+    "Initial deployment, session setup posting, operator hosting, margins and any unquoted service charges are additional."
+  ]
+}

@@ -1,0 +1,381 @@
+{
+  "status": "PASS_NATIVE_PROFILE_RECEIPT_RECONCILIATION",
+  "name": "two-chain-monad-all-blocks",
+  "engine": "GPT2ShardOptimized",
+  "report_sha256": "7e4b4e3d1fdfb98dc23a51d94430b4525f5c51ef0f04b808a5199c71a0582f51",
+  "ledger_sha256": "50e998da12d41c64970f09c6a4ace56710abb484789a3c04f45cbb67f63e8939",
+  "public_transactions_submitted": 0,
+  "scope": "Locally measured execution gas plus declared-limit Monad billing scenario. External price/transport snapshots are required for USD estimates.",
+  "calldata_scope": "Raw transaction byte counts, including deployment; no compression or L1 posting cost is inferred.",
+  "maximum_receipt_gas": "29061277",
+  "all": {
+    "gas": "44939500395",
+    "billed_gas": "45303732998",
+    "transactions": 7782,
+    "calldata_bytes": 166986968,
+    "by_category": {
+      "deployment": {
+        "gas": "36405598088",
+        "billed_gas": "36683437649",
+        "transactions": 7230,
+        "calldata_bytes": 166933272
+      },
+      "route_setup": {
+        "gas": "353124",
+        "billed_gas": "358124",
+        "transactions": 6,
+        "calldata_bytes": 216
+      },
+      "activation_import_and_begin": {
+        "gas": "4377193",
+        "billed_gas": "4482340",
+        "transactions": 4,
+        "calldata_bytes": 6352
+      },
+      "model_compute": {
+        "gas": "8521414028",
+        "billed_gas": "8607120069",
+        "transactions": 534,
+        "calldata_bytes": 38392
+      },
+      "message_send_and_hidden_export": {
+        "gas": "7052270",
+        "billed_gas": "7067858",
+        "transactions": 4,
+        "calldata_bytes": 16
+      },
+      "message_receive": {
+        "gas": "705692",
+        "billed_gas": "1266958",
+        "transactions": 4,
+        "calldata_bytes": 8720
+      }
+    }
+  },
+  "stages": [
+    {
+      "stage": 0,
+      "name": "Robinhood",
+      "chain_id": 4663,
+      "profile": "ethereum",
+      "gas": "9177208591",
+      "billed_gas": "9177208591",
+      "transactions": 1789,
+      "calldata_bytes": 42069874,
+      "by_category": {
+        "deployment": {
+          "gas": "9166571990",
+          "billed_gas": "9166571990",
+          "transactions": 1778,
+          "calldata_bytes": 42068198
+        },
+        "route_setup": {
+          "gas": "152948",
+          "billed_gas": "152948",
+          "transactions": 3,
+          "calldata_bytes": 108
+        },
+        "activation_import_and_begin": {
+          "gas": "144056",
+          "billed_gas": "144056",
+          "transactions": 2,
+          "calldata_bytes": 72
+        },
+        "model_compute": {
+          "gas": "3975193",
+          "billed_gas": "3975193",
+          "transactions": 2,
+          "calldata_bytes": 200
+        },
+        "message_send_and_hidden_export": {
+          "gas": "6097446",
+          "billed_gas": "6097446",
+          "transactions": 2,
+          "calldata_bytes": 8
+        },
+        "message_receive": {
+          "gas": "266958",
+          "billed_gas": "266958",
+          "transactions": 2,
+          "calldata_bytes": 1288
+        }
+      }
+    },
+    {
+      "stage": 1,
+      "name": "Monad",
+      "chain_id": 143,
+      "profile": "monad",
+      "gas": "35762291804",
+      "billed_gas": "36126524407",
+      "transactions": 5993,
+      "calldata_bytes": 124917094,
+      "by_category": {
+        "deployment": {
+          "gas": "27239026098",
+          "billed_gas": "27516865659",
+          "transactions": 5452,
+          "calldata_bytes": 124865074
+        },
+        "route_setup": {
+          "gas": "200176",
+          "billed_gas": "205176",
+          "transactions": 3,
+          "calldata_bytes": 108
+        },
+        "message_receive": {
+          "gas": "438734",
+          "billed_gas": "1000000",
+          "transactions": 2,
+          "calldata_bytes": 7432
+        },
+        "activation_import_and_begin": {
+          "gas": "4233137",
+          "billed_gas": "4338284",
+          "transactions": 2,
+          "calldata_bytes": 6280
+        },
+        "model_compute": {
+          "gas": "8517438835",
+          "billed_gas": "8603144876",
+          "transactions": 532,
+          "calldata_bytes": 38192
+        },
+        "message_send_and_hidden_export": {
+          "gas": "954824",
+          "billed_gas": "970412",
+          "transactions": 2,
+          "calldata_bytes": 8
+        }
+      }
+    }
+  ],
+  "positions": [
+    {
+      "position": 0,
+      "input_token": 50256,
+      "output_token": 198,
+      "gas": "4248830920",
+      "billed_gas": "4291832686",
+      "transactions": 273,
+      "calldata_bytes": 26564,
+      "by_category": {
+        "activation_import_and_begin": {
+          "gas": "3030340",
+          "billed_gas": "3104377",
+          "transactions": 2,
+          "calldata_bytes": 3176
+        },
+        "model_compute": {
+          "gas": "4241866221",
+          "billed_gas": "4284522624",
+          "transactions": 267,
+          "calldata_bytes": 19020
+        },
+        "message_send_and_hidden_export": {
+          "gas": "3547185",
+          "billed_gas": "3555118",
+          "transactions": 2,
+          "calldata_bytes": 8
+        },
+        "message_receive": {
+          "gas": "387174",
+          "billed_gas": "650567",
+          "transactions": 2,
+          "calldata_bytes": 4360
+        }
+      },
+      "by_stage": [
+        {
+          "stage": 0,
+          "name": "Robinhood",
+          "chain_id": 4663,
+          "profile": "ethereum",
+          "gas": "6103902",
+          "billed_gas": "6103902",
+          "transactions": 4,
+          "calldata_bytes": 784,
+          "by_category": {
+            "activation_import_and_begin": {
+              "gas": "89090",
+              "billed_gas": "89090",
+              "transactions": 1,
+              "calldata_bytes": 36
+            },
+            "model_compute": {
+              "gas": "2808372",
+              "billed_gas": "2808372",
+              "transactions": 1,
+              "calldata_bytes": 100
+            },
+            "message_send_and_hidden_export": {
+              "gas": "3055873",
+              "billed_gas": "3055873",
+              "transactions": 1,
+              "calldata_bytes": 4
+            },
+            "message_receive": {
+              "gas": "150567",
+              "billed_gas": "150567",
+              "transactions": 1,
+              "calldata_bytes": 644
+            }
+          }
+        },
+        {
+          "stage": 1,
+          "name": "Monad",
+          "chain_id": 143,
+          "profile": "monad",
+          "gas": "4242727018",
+          "billed_gas": "4285728784",
+          "transactions": 269,
+          "calldata_bytes": 25780,
+          "by_category": {
+            "message_receive": {
+              "gas": "236607",
+              "billed_gas": "500000",
+              "transactions": 1,
+              "calldata_bytes": 3716
+            },
+            "activation_import_and_begin": {
+              "gas": "2941250",
+              "billed_gas": "3015287",
+              "transactions": 1,
+              "calldata_bytes": 3140
+            },
+            "model_compute": {
+              "gas": "4239057849",
+              "billed_gas": "4281714252",
+              "transactions": 266,
+              "calldata_bytes": 18920
+            },
+            "message_send_and_hidden_export": {
+              "gas": "491312",
+              "billed_gas": "499245",
+              "transactions": 1,
+              "calldata_bytes": 4
+            }
+          }
+        }
+      ]
+    },
+    {
+      "position": 1,
+      "input_token": 198,
+      "output_token": 464,
+      "gas": "4284718263",
+      "billed_gas": "4328104539",
+      "transactions": 273,
+      "calldata_bytes": 26916,
+      "by_category": {
+        "activation_import_and_begin": {
+          "gas": "1346853",
+          "billed_gas": "1377963",
+          "transactions": 2,
+          "calldata_bytes": 3176
+        },
+        "model_compute": {
+          "gas": "4279547807",
+          "billed_gas": "4322597445",
+          "transactions": 267,
+          "calldata_bytes": 19372
+        },
+        "message_send_and_hidden_export": {
+          "gas": "3505085",
+          "billed_gas": "3512740",
+          "transactions": 2,
+          "calldata_bytes": 8
+        },
+        "message_receive": {
+          "gas": "318518",
+          "billed_gas": "616391",
+          "transactions": 2,
+          "calldata_bytes": 4360
+        }
+      },
+      "by_stage": [
+        {
+          "stage": 0,
+          "name": "Robinhood",
+          "chain_id": 4663,
+          "profile": "ethereum",
+          "gas": "4379751",
+          "billed_gas": "4379751",
+          "transactions": 4,
+          "calldata_bytes": 784,
+          "by_category": {
+            "activation_import_and_begin": {
+              "gas": "54966",
+              "billed_gas": "54966",
+              "transactions": 1,
+              "calldata_bytes": 36
+            },
+            "model_compute": {
+              "gas": "1166821",
+              "billed_gas": "1166821",
+              "transactions": 1,
+              "calldata_bytes": 100
+            },
+            "message_send_and_hidden_export": {
+              "gas": "3041573",
+              "billed_gas": "3041573",
+              "transactions": 1,
+              "calldata_bytes": 4
+            },
+            "message_receive": {
+              "gas": "116391",
+              "billed_gas": "116391",
+              "transactions": 1,
+              "calldata_bytes": 644
+            }
+          }
+        },
+        {
+          "stage": 1,
+          "name": "Monad",
+          "chain_id": 143,
+          "profile": "monad",
+          "gas": "4280338512",
+          "billed_gas": "4323724788",
+          "transactions": 269,
+          "calldata_bytes": 26132,
+          "by_category": {
+            "message_receive": {
+              "gas": "202127",
+              "billed_gas": "500000",
+              "transactions": 1,
+              "calldata_bytes": 3716
+            },
+            "activation_import_and_begin": {
+              "gas": "1291887",
+              "billed_gas": "1322997",
+              "transactions": 1,
+              "calldata_bytes": 3140
+            },
+            "model_compute": {
+              "gas": "4278380986",
+              "billed_gas": "4321430624",
+              "transactions": 266,
+              "calldata_bytes": 19272
+            },
+            "message_send_and_hidden_export": {
+              "gas": "463512",
+              "billed_gas": "471167",
+              "transactions": 1,
+              "calldata_bytes": 4
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "raw_evidence": {
+    "full_report": "reports/economy-two-chain-full/results.json",
+    "full_report_sha256": "7e4b4e3d1fdfb98dc23a51d94430b4525f5c51ef0f04b808a5199c71a0582f51",
+    "raw_ledger": "reports/economy-two-chain-full/transactions.jsonl",
+    "raw_ledger_sha256": "50e998da12d41c64970f09c6a4ace56710abb484789a3c04f45cbb67f63e8939",
+    "full_costs": "reports/economy-two-chain-full/cost-summary.json",
+    "full_costs_sha256": "44d5a9ef39f9e5aca251720bf3266c13ef69ea5877f3720a246f51164dba51b7"
+  }
+}

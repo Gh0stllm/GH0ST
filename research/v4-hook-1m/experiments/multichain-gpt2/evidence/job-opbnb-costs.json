@@ -1,0 +1,271 @@
+{
+  "status": "PASS_WHOLE_MODEL_JOB_RECEIPT_RECONCILIATION",
+  "name": "whole-model-opbnb-job",
+  "engine": "GPT2ShardOptimized",
+  "compute_chain": "opbnb",
+  "compute_chain_id": 204,
+  "report_sha256": "69f7daf19587f0c091f60765117302bdb85129631571d048255a6892e09c0cf1",
+  "ledger_sha256": "b98f4e52e3a36bf46a1ee57f292da499a19405d59a4fcb92406eac98ce4a5e27",
+  "public_transactions_submitted": 0,
+  "scope": "Local receipts and real model checks. External prices, production transport quotes and L1 posting fees are separate evidence.",
+  "billing": "Native Monad uses declared gas; Ethereum profiles use receipt gas. All local transaction gas prices are zero.",
+  "position_scope": "Positions contain model-compute receipts only. Whole-job inference also includes control/begin and simulated transport receipts.",
+  "maximum_receipt_gas": "16209892",
+  "nondeployment_transactions_with_calldata": 642,
+  "all": {
+    "gas": "35723134236",
+    "billed_gas": "35723134236",
+    "transactions": 6244,
+    "calldata_bytes": 128086705,
+    "by_category": {
+      "deployment": {
+        "gas": "27934111928",
+        "billed_gas": "27934111928",
+        "transactions": 5602,
+        "calldata_bytes": 128039785
+      },
+      "route_setup": {
+        "gas": "240206",
+        "billed_gas": "240206",
+        "transactions": 5,
+        "calldata_bytes": 180
+      },
+      "job_request_send": {
+        "gas": "635352",
+        "billed_gas": "635352",
+        "transactions": 1,
+        "calldata_bytes": 132
+      },
+      "message_receive": {
+        "gas": "321792",
+        "billed_gas": "321792",
+        "transactions": 2,
+        "calldata_bytes": 1288
+      },
+      "job_control_and_begin": {
+        "gas": "100132",
+        "billed_gas": "100132",
+        "transactions": 1,
+        "calldata_bytes": 100
+      },
+      "model_compute": {
+        "gas": "7786983853",
+        "billed_gas": "7786983853",
+        "transactions": 630,
+        "calldata_bytes": 45208
+      },
+      "job_control_and_next_begin": {
+        "gas": "179856",
+        "billed_gas": "179856",
+        "transactions": 2,
+        "calldata_bytes": 8
+      },
+      "job_result_send": {
+        "gas": "561117",
+        "billed_gas": "561117",
+        "transactions": 1,
+        "calldata_bytes": 4
+      }
+    }
+  },
+  "inference": {
+    "gas": "7788782102",
+    "billed_gas": "7788782102",
+    "transactions": 637,
+    "calldata_bytes": 46740,
+    "by_category": {
+      "job_request_send": {
+        "gas": "635352",
+        "billed_gas": "635352",
+        "transactions": 1,
+        "calldata_bytes": 132
+      },
+      "message_receive": {
+        "gas": "321792",
+        "billed_gas": "321792",
+        "transactions": 2,
+        "calldata_bytes": 1288
+      },
+      "job_control_and_begin": {
+        "gas": "100132",
+        "billed_gas": "100132",
+        "transactions": 1,
+        "calldata_bytes": 100
+      },
+      "model_compute": {
+        "gas": "7786983853",
+        "billed_gas": "7786983853",
+        "transactions": 630,
+        "calldata_bytes": 45208
+      },
+      "job_control_and_next_begin": {
+        "gas": "179856",
+        "billed_gas": "179856",
+        "transactions": 2,
+        "calldata_bytes": 8
+      },
+      "job_result_send": {
+        "gas": "561117",
+        "billed_gas": "561117",
+        "transactions": 1,
+        "calldata_bytes": 4
+      }
+    }
+  },
+  "initial_deployment_excluding_mock_endpoints": {
+    "gas": "27932135306",
+    "billed_gas": "27932135306",
+    "transactions": 5600,
+    "calldata_bytes": 128030699,
+    "by_category": {
+      "deployment": {
+        "gas": "27932135306",
+        "billed_gas": "27932135306",
+        "transactions": 5600,
+        "calldata_bytes": 128030699
+      }
+    }
+  },
+  "stages": [
+    {
+      "stage": 0,
+      "name": "Robinhood",
+      "chain_id": 4663,
+      "profile": "ethereum",
+      "gas": "5314349",
+      "billed_gas": "5314349",
+      "transactions": 6,
+      "calldata_bytes": 22232,
+      "by_category": {
+        "deployment": {
+          "gas": "4446883",
+          "billed_gas": "4446883",
+          "transactions": 2,
+          "calldata_bytes": 21384
+        },
+        "route_setup": {
+          "gas": "99117",
+          "billed_gas": "99117",
+          "transactions": 2,
+          "calldata_bytes": 72
+        },
+        "job_request_send": {
+          "gas": "635352",
+          "billed_gas": "635352",
+          "transactions": 1,
+          "calldata_bytes": 132
+        },
+        "message_receive": {
+          "gas": "132997",
+          "billed_gas": "132997",
+          "transactions": 1,
+          "calldata_bytes": 644
+        }
+      }
+    },
+    {
+      "stage": 1,
+      "name": "opBNB",
+      "chain_id": 204,
+      "profile": "ethereum",
+      "gas": "35717819887",
+      "billed_gas": "35717819887",
+      "transactions": 6238,
+      "calldata_bytes": 128064473,
+      "by_category": {
+        "deployment": {
+          "gas": "27929665045",
+          "billed_gas": "27929665045",
+          "transactions": 5600,
+          "calldata_bytes": 128018401
+        },
+        "route_setup": {
+          "gas": "141089",
+          "billed_gas": "141089",
+          "transactions": 3,
+          "calldata_bytes": 108
+        },
+        "message_receive": {
+          "gas": "188795",
+          "billed_gas": "188795",
+          "transactions": 1,
+          "calldata_bytes": 644
+        },
+        "job_control_and_begin": {
+          "gas": "100132",
+          "billed_gas": "100132",
+          "transactions": 1,
+          "calldata_bytes": 100
+        },
+        "model_compute": {
+          "gas": "7786983853",
+          "billed_gas": "7786983853",
+          "transactions": 630,
+          "calldata_bytes": 45208
+        },
+        "job_control_and_next_begin": {
+          "gas": "179856",
+          "billed_gas": "179856",
+          "transactions": 2,
+          "calldata_bytes": 8
+        },
+        "job_result_send": {
+          "gas": "561117",
+          "billed_gas": "561117",
+          "transactions": 1,
+          "calldata_bytes": 4
+        }
+      }
+    }
+  ],
+  "positions": [
+    {
+      "position": 0,
+      "input_token": 50256,
+      "output_token": 198,
+      "gas": "3889803784",
+      "billed_gas": "3889803784",
+      "transactions": 315,
+      "calldata_bytes": 22604,
+      "by_category": {
+        "model_compute": {
+          "gas": "3889803784",
+          "billed_gas": "3889803784",
+          "transactions": 315,
+          "calldata_bytes": 22604
+        }
+      }
+    },
+    {
+      "position": 1,
+      "input_token": 198,
+      "output_token": 464,
+      "gas": "3897180069",
+      "billed_gas": "3897180069",
+      "transactions": 315,
+      "calldata_bytes": 22604,
+      "by_category": {
+        "model_compute": {
+          "gas": "3897180069",
+          "billed_gas": "3897180069",
+          "transactions": 315,
+          "calldata_bytes": 22604
+        }
+      }
+    }
+  ],
+  "validation_counts": {
+    "phase_vectors": 172,
+    "full_vocabulary_logits": 100514,
+    "persistent_kv_arrays": 72,
+    "interchain_messages": 2
+  },
+  "raw_evidence": {
+    "full_report": "reports/job-opbnb-full/results.json",
+    "full_report_sha256": "69f7daf19587f0c091f60765117302bdb85129631571d048255a6892e09c0cf1",
+    "raw_ledger": "reports/job-opbnb-full/transactions.jsonl",
+    "raw_ledger_sha256": "b98f4e52e3a36bf46a1ee57f292da499a19405d59a4fcb92406eac98ce4a5e27",
+    "full_costs": "reports/job-opbnb-full/cost-summary.json",
+    "full_costs_sha256": "439dfca92a4846e4eb13e72d50dd3486bda9685d44a7c1c6ba3dbe757f4eecbd"
+  }
+}

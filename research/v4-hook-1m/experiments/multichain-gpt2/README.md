@@ -1,8 +1,34 @@
 # GH0ST multichain GPT-2 research
 
-A real, quantized **124,439,808-parameter GPT-2** executor split across four EVM chains, with authenticated results returning to Robinhood Chain. The token remains GH0ST; this package creates no coin and changes no token supply.
+A real, quantized **124,439,808-parameter GPT-2** executor with Robinhood Chain as home and optional EVM compute chains. The token remains GH0ST; this package creates no coin and changes no token supply.
 
 This is research infrastructure. Compilation and local tests are separate from public deployment, real interchain delivery and paid-chain fee savings. See `evidence/STATUS.json` for the precise completed checks from this revision.
+
+## Cheapest measured architecture
+
+**RH → opBNB → RH**, with every model operation on opBNB and one request plus one final result per job. RH stores no model weights; BNB Smart Chain, Arc and Monad are unused in this route. The original four-chain engine remains available below.
+
+| Two-output, one-token-prompt job | Recommended gas bid | Observed low bid |
+| --- | ---: | ---: |
+| Model/control + exact opBNB posting, per output | $2.869 | $0.030 |
+| Including quoted source messages and explicit delivery/posting allowances, per output | $2.941 | $0.101 |
+| Including estimated new-session execution, per output | $3.064 | $0.221 |
+
+The low bid has **no demonstrated inclusion guarantee**. All figures are local measurements repriced at captured public fees; initial shared weights, session-setup posting, operator hosting and margins are additional. Session contracts are single-use. Longer prompts and responses cost more. See [complete cost accounting](docs/ECONOMY-COSTS.md) and [deployment/relay guide](docs/JOB-DEPLOYMENT.md).
+
+The full opBNB-profile run passed: two outputs `[198, 464]`, 172 phase vectors, 100,514 vocabulary logits and 72 KV comparisons, with 6,244 reconciled local receipts. All 124,439,808 parameters and the existing INT8/Q12 arithmetic are retained. A separate fork test exercised the official LayerZero source Endpoint and send library, including source-side fee assignment to both official DVNs, in both directions. Public destination delivery remains untested, and the default managed executor does not support this pair in our snapshot. The optional self-operated executor retains the two-DVN security configuration and requires an operator to commit verified messages and execute delivery.
+
+After preparing the canonical export in `data/` as described below (or supplying `--data` to the planner):
+
+```sh
+npm run plan:job -- --compute=opbnb
+npm run benchmark:job:opbnb -- --tokens=2
+npm run costs:economy
+```
+
+The completed raw evidence package is needed to regenerate all three cost sources (model, transport, posting). Restore it into `reports/` before running the cost calculator; a fresh model-only benchmark does not recreate the historical fee snapshots or transport fork report. Compact evidence is included under `evidence/`.
+
+## Previous four-chain optimization
 
 The optimized research route uses **RH → BNB → Arc → Monad → RH**, moving ten transformer blocks and the full output head to Monad. It preserves the canonical weights and arithmetic. See [optimization details](docs/OPTIMIZATION.md), [per-chain dollar estimates](docs/COSTS.md), and [captured fee sources](docs/FEE-SOURCES.md). The original engine and 4/4/4 layout remain available for comparison. Both complete native-profile comparisons passed with identical token outputs and full phase/logit/KV checks. The second-position model/import estimate fell from **$91.88 to $21.71 (76.37%)** at the captured prices. Adding provider components gives **$22.76**; adding a conservative source-execution allowance and RH posting scenario gives **$24.55**. These are short-context local-benchmark projections, not paid mainnet fees.
 
@@ -51,6 +77,7 @@ The newer comparison harness uses native Monad metering and tight declared gas l
 
 - `contracts/GPT2Shard.sol`: real bounded inference, strict token-position sequencing and local KV state.
 - `contracts/GPT2ShardOptimized.sol`: compatible exact-arithmetic candidate with fewer repeated reads and copies; selected explicitly by the optimized plan.
+- `contracts/GPT2ShardOptimizedV2.sol`: unselected research candidate with partial kernel measurements only; it has not passed a complete full-model benchmark and is not accepted by the deployment planner.
 - `contracts/GPT2InferenceOApp.sol`: official LayerZero V2 OApp transport, immutable session/route identity, sealed peers, activation commitments and RH finalization.
 - `contracts/mocks/`: isolated protocol-test fixtures. Never use them for a public deployment.
 - `scripts/plan.mjs`: validates the complete model, exact partition coverage and every assigned weight hash.

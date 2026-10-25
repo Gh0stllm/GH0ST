@@ -7,8 +7,8 @@ import * as ethers from 'ethers';
 export { ethers };
 export const CAP = 16_777_216n;
 export const BLOCK_LIMIT = 70_000_000n;
-export const CHAIN_IDS = [4663, 56, 143, 5042];
-export const EIDS = [30416, 30102, 30390, 30417];
+export const CHAIN_IDS = [4663, 56, 143, 5042, 204];
+export const EIDS = [30416, 30102, 30390, 30417, 30202];
 const knownLocalAnvil = '/Users/abhijith/.foundry/versions/foundry-rs/foundry/v1.8.5/anvil';
 export const ANVIL = process.env.ANVIL_BIN ?? (fs.existsSync(knownLocalAnvil) ? knownLocalAnvil : 'anvil');
 const hex = ethers.toBeHex;
@@ -40,11 +40,12 @@ async function unusedPort() {
 export async function startOptimizedChain({ config, onTransaction = () => {} } = {}) {
   assert(config, 'A local stage configuration is required');
   const stage = config.stage, chainId = config.chain_id, profile = config.profile ?? 'ethereum';
-  assert(CHAIN_IDS.includes(chainId), 'Only the four verified chain identities are supported');
+  const knownIndex = CHAIN_IDS.indexOf(chainId);
+  assert(knownIndex >= 0 && EIDS[knownIndex] === Number(config.endpoint_id), 'Only verified chain/EID pairs are supported');
   assert(['ethereum', 'monad'].includes(profile));
   assert(profile !== 'monad' || chainId === 143, 'Native Monad profile belongs only to Monad');
   const cap = BigInt(config.maxTransactionGas ?? (profile === 'monad' ? 30000000 : CAP));
-  const blockLimit = BigInt(config.blockGasLimit ?? (profile === 'monad' ? 150000000 : BLOCK_LIMIT));
+  const blockLimit = BigInt(config.blockGasLimit ?? (profile === 'monad' ? 150000000 : chainId === 204 ? 100000000 : BLOCK_LIMIT));
   assert(cap > 100000n && cap <= (profile === 'monad' ? 30000000n : CAP));
   if (ANVIL.includes('/')) assert(fs.existsSync(ANVIL), 'Local Anvil executable is missing; set ANVIL_BIN');
   const port = await unusedPort();
@@ -108,11 +109,18 @@ export async function startOptimizedChain({ config, onTransaction = () => {} } =
       assert(receipt.gasUsed <= cap, 'Receipt exceeds transaction comparison ceiling');
       const submitted = await rpc('eth_getTransactionByHash', [hash]);
       assert(submitted && BigInt(submitted.gas) === declared, 'Submitted transaction gas differs from billed-gas record');
+      assert.equal(submitted.from.toLowerCase(), from.toLowerCase(), 'Submitted transaction sender differs');
+      assert.equal((submitted.to ?? null)?.toLowerCase(), (request.to ?? null)?.toLowerCase(), 'Submitted transaction destination differs');
+      assert.equal(submitted.input, request.data ?? '0x', 'Submitted transaction calldata differs');
       const calldataBytes = request.data ? (request.data.length - 2) / 2 : 0;
       assert(Number.isSafeInteger(calldataBytes) && calldataBytes >= 0);
       count++; totalGas += receipt.gasUsed;
       await onTransaction({ stage, chain_id: chainId, index: count, category, purpose, hash, from,
         to: request.to ?? null, address: receipt.contractAddress ?? null, declared_gas: declared, gas: receipt.gasUsed,
+        nonce: submitted.nonce, transaction_type: submitted.type, value: submitted.value,
+        gas_price: submitted.gasPrice ?? null, max_fee_per_gas: submitted.maxFeePerGas ?? null,
+        max_priority_fee_per_gas: submitted.maxPriorityFeePerGas ?? null, access_list: submitted.accessList ?? [],
+        ...(category === 'deployment' ? {} : { calldata: submitted.input }),
         calldata_bytes: calldataBytes, gas_limit_verified_from_transaction: true,
         billed_gas_scenario: profile === 'monad' ? declared : receipt.gasUsed,
         billing_basis: profile === 'monad' ? 'declared gas limit per official Monad fee policy; test gas price zero' : 'receipt gas used; test gas price zero',

@@ -47,11 +47,20 @@ export function compile({ includeTests = false, outputDirectory = null } = {}) {
   const errors = (output.errors ?? []).filter(item => item.severity === 'error');
   assert.equal(errors.length, 0, errors.map(item => item.formattedMessage).join('\n'));
   const artifacts = {};
+  const ambiguousNames = new Set();
   for (const [file, contracts] of Object.entries(output.contracts ?? {})) for (const [name, artifact] of Object.entries(contracts)) {
-    if (artifacts[name] && artifacts[name].sourceFile !== file) throw Error('Ambiguous contract name: ' + name);
     const runtimeBytes = artifact.evm.deployedBytecode.object.length / 2;
     if (artifact.evm.bytecode.object) assert(runtimeBytes <= 24_576, `${name} exceeds EIP-170 (${runtimeBytes} bytes)`);
-    artifacts[name] = { ...artifact, sourceFile: file, runtimeBytes };
+    const entry = { ...artifact, sourceFile: file, runtimeBytes };
+    if (artifacts[name] && artifacts[name].sourceFile !== file) {
+      // Third-party packages can contain distinct libraries with the same name.
+      // An ambiguous short name must never silently select either implementation.
+      artifacts[artifacts[name].sourceFile + ':' + name] = artifacts[name];
+      delete artifacts[name];
+      ambiguousNames.add(name);
+    }
+    if (ambiguousNames.has(name)) artifacts[file + ':' + name] = entry;
+    else artifacts[name] = entry;
   }
   const source_sha256 = Object.fromEntries(Object.keys(sources).sort().map(file => [file, sha256(sources[file].content)]));
   const compiler = { version: solc.version(), settings, source_sha256,

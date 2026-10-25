@@ -8,7 +8,13 @@ const args = process.argv.slice(2);
 assert(args.length === 1 && args[0].startsWith('--report='));
 const directory = confinedOutput(args[0].slice(9));
 const rawReport = fs.readFileSync(path.join(directory, 'results.json')), report = JSON.parse(rawReport);
-assert.equal(report.status, 'PASS_OPTIMIZED_FOUR_CHAIN_FULL_MODEL_LOCAL_BENCHMARK');
+const statusByCount = {
+  2: 'PASS_OPTIMIZED_TWO_CHAIN_FULL_MODEL_LOCAL_BENCHMARK',
+  3: 'PASS_OPTIMIZED_THREE_CHAIN_FULL_MODEL_LOCAL_BENCHMARK',
+  4: 'PASS_OPTIMIZED_FOUR_CHAIN_FULL_MODEL_LOCAL_BENCHMARK',
+};
+assert.equal(report.status, statusByCount[report.stages.length]);
+assert.equal(report.chain_count ?? 4, report.stages.length, 'Reported chain count must match actual stage count');
 const rawLedger = fs.readFileSync(path.join(directory, 'transactions.jsonl'));
 const receipts = rawLedger.toString().trim().split('\n').map(JSON.parse);
 const makeTotals = () => ({ gas: 0n, billed_gas: 0n, transactions: 0, calldata_bytes: 0, by_category: {} });

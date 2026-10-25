@@ -21,7 +21,7 @@ export function requiredTensorIds(first, end, embedding, output) {
 export function normalizeLayout(input) {
   assert(input && typeof input === 'object');
   const source = input.stages ?? input.chains;
-  assert(Array.isArray(source) && source.length === 4, 'Every optimization scenario must include all four chains');
+  assert(Array.isArray(source) && source.length >= 2 && source.length <= 4, 'An optimization scenario must use two to four distinct known chains');
   const mode = input.mode ?? 'linear';
   assert.equal(mode, 'linear', 'This runner currently supports the standard embedding-to-final-head route');
   const usedIds = new Set(), usedEids = new Set();
@@ -29,7 +29,7 @@ export function normalizeLayout(input) {
   const stages = source.map((entry, stage) => {
     const chain_id = Number(entry.chainId ?? entry.chain_id), endpoint_id = Number(entry.eid ?? entry.endpoint_id);
     const canonicalIndex = CHAIN_IDS.indexOf(chain_id);
-    assert(canonicalIndex >= 0 && EIDS[canonicalIndex] === endpoint_id, 'Only the four verified chain/EID pairs are supported');
+    assert(canonicalIndex >= 0 && EIDS[canonicalIndex] === endpoint_id, 'Only verified chain/EID pairs are supported');
     assert(!usedIds.has(chain_id) && !usedEids.has(endpoint_id), 'A standard route requires distinct chain/EID pairs');
     usedIds.add(chain_id); usedEids.add(endpoint_id);
     const first = Number(entry.firstLayer ?? entry.first ?? entry.layerRange?.[0]);
@@ -54,7 +54,7 @@ export function normalizeLayout(input) {
       embedding: Boolean(embedding), output: Boolean(output), tensors: requiredTensorIds(first, end, embedding, output) };
   });
   assert.equal(nextLayer, 12, 'All twelve transformer blocks are required');
-  return { name: input.name ?? 'custom-four-chain-layout', mode, chainPlan: input.chainPlan ?? null, stages };
+  return { name: input.name ?? `custom-${stages.length}-chain-layout`, mode, chainPlan: input.chainPlan ?? null, stages };
 }
 
 export function readLayout(filename = 'config/chains.json') {

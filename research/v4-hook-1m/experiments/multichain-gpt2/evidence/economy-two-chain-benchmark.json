@@ -1,0 +1,1348 @@
+{
+  "schema_version": 1,
+  "status": "PASS_OPTIMIZED_TWO_CHAIN_FULL_MODEL_LOCAL_BENCHMARK",
+  "started_at": "2026-10-25T12:52:05.600Z",
+  "completed_at": "2026-10-25T12:57:41.055Z",
+  "mode": "OPTIMIZED_TWO_LOCAL_EVM_PROCESSES_REAL_GPT2_MATH_SIMULATED_TRANSPORT",
+  "public_transactions_submitted": 0,
+  "weight_data_injected": false,
+  "host_inference_results_injected": false,
+  "batch_small_phases": true,
+  "chain_count": 2,
+  "stages": [
+    {
+      "name": "Robinhood",
+      "stage": 0,
+      "chain_id": 4663,
+      "endpoint_id": 30416,
+      "first": 0,
+      "end": 0,
+      "profile": "ethereum",
+      "maxTransactionGas": "16777216",
+      "targetGas": "16273899",
+      "embedding": true,
+      "output": false,
+      "tensors": [
+        0,
+        1
+      ]
+    },
+    {
+      "name": "Monad",
+      "stage": 1,
+      "chain_id": 143,
+      "endpoint_id": 30390,
+      "first": 0,
+      "end": 12,
+      "profile": "monad",
+      "maxTransactionGas": "30000000",
+      "targetGas": "29100000",
+      "embedding": false,
+      "output": true,
+      "tensors": [
+        0,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75,
+        76
+      ]
+    }
+  ],
+  "layout": {
+    "name": "two-chain-monad-all-blocks",
+    "mode": "linear",
+    "chainPlan": "config/chains.economy.json",
+    "stages": [
+      {
+        "name": "Robinhood",
+        "stage": 0,
+        "chain_id": 4663,
+        "endpoint_id": 30416,
+        "first": 0,
+        "end": 0,
+        "profile": "ethereum",
+        "maxTransactionGas": "16777216",
+        "targetGas": "16273899",
+        "embedding": true,
+        "output": false,
+        "tensors": [
+          0,
+          1
+        ]
+      },
+      {
+        "name": "Monad",
+        "stage": 1,
+        "chain_id": 143,
+        "endpoint_id": 30390,
+        "first": 0,
+        "end": 12,
+        "profile": "monad",
+        "maxTransactionGas": "30000000",
+        "targetGas": "29100000",
+        "embedding": false,
+        "output": true,
+        "tensors": [
+          0,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57,
+          58,
+          59,
+          60,
+          61,
+          62,
+          63,
+          64,
+          65,
+          66,
+          67,
+          68,
+          69,
+          70,
+          71,
+          72,
+          73,
+          74,
+          75,
+          76
+        ]
+      }
+    ],
+    "file": "config/economy-layout.json",
+    "sha256": "e6ddc78b0e9549cdfac34de095a222edd65b1f87769070c837fb3824e4e312bf"
+  },
+  "route_id": "0x9d4aa2716e078698de6dec2898bc3f711986955ab323e09d6146bdbc05afa44f",
+  "session_id": "0x306541a1f377f942fa8a2a794bec4fb369cb9256765251c847a8a5f05143e500",
+  "requested_token_positions": 2,
+  "engine_artifact": "GPT2ShardOptimized",
+  "router_artifact": "GPT2InferenceOApp",
+  "stage_gas_ceilings": [
+    {
+      "stage": 0,
+      "maximum": "16777216",
+      "target": "16273899"
+    },
+    {
+      "stage": 1,
+      "maximum": "30000000",
+      "target": "29100000"
+    }
+  ],
+  "totals": {
+    "transaction_count": 7782,
+    "gas_by_category": {
+      "deployment": "36405598088",
+      "route_setup": "353124",
+      "activation_import_and_begin": "4377193",
+      "model_compute": "8521414028",
+      "message_send_and_hidden_export": "7052270",
+      "message_receive": "705692"
+    },
+    "gas_by_stage": {
+      "0": "9177208591",
+      "1": "35762291804"
+    },
+    "billed_gas_by_stage": {
+      "0": "9177208591",
+      "1": "36126524407"
+    },
+    "all_measured_gas": "44939500395",
+    "all_billed_gas_scenario": "45303732998"
+  },
+  "limitations": [
+    "Profiles are explicit per stage. Ethereum profiles use generic Cancun; the Monad profile records its native Anvil fork. Public gas prices, finality and inclusion latency are not measured here.",
+    "MockEndpoint carries exact official OApp packet bytes but has no DVNs, message proofs, validator security, production executor, or real messaging fees.",
+    "No live gas savings are established by this local benchmark. Gas units on separate chains are not interchangeable monetary costs.",
+    "The complete quantized INT8/Q12 GPT-2 model is deterministic but is not bit-identical to the floating-point checkpoint.",
+    "The tied token embedding table is deployed on both embedding and vocabulary-head stages; nonlinear LUTs are duplicated per transformer stage and counted.",
+    "Monad fee scenarios count declared gas limits; other stages count receipt gas. Zero local test gas prices are not live monetary fee measurements.",
+    "Tokenization/display decoding and reference checking happen on the CPU. Every model activation, transformer block, KV update, and vocabulary row is computed by the real Solidity engine.",
+    "Export is charged inside dispatch; model import/begin and simulated receive/send costs are separately labeled. Read-only verification calls incur no paid transaction gas."
+  ],
+  "partition": {
+    "routeId": "0x9d4aa2716e078698de6dec2898bc3f711986955ab323e09d6146bdbc05afa44f",
+    "payloadBytes": 166514830,
+    "uniquePayloadBytes": 127716426,
+    "duplicatedPayloadBytes": 38798404,
+    "weightContracts": 7138,
+    "catalogContracts": 86,
+    "inferenceContracts": 4,
+    "messagesPerPosition": 2,
+    "activationMessagesPerPosition": 1,
+    "resultMessagesPerPosition": 1
+  },
+  "model": {
+    "model_id": "0xd5fe104a83865bb22299096cafcfe77eb1642fff8ddf0047306b4801599b4107",
+    "checkpoint_sha256": "248dfc3911869ec493c76e65bf2fcf7f615828b0254c12b473182f0f81d3a707",
+    "unique_parameter_count": 124439808,
+    "manifest_sha256": "bd266aba71a3753d98660800e43eb05427a43670ddeb1f6f327e9a44fd2a14e5",
+    "data_directory": "../gpt2-bsc/data",
+    "architecture": {
+      "layers": 12,
+      "width": 768,
+      "heads": 12,
+      "head_width": 64,
+      "vocabulary": 50257,
+      "context_tokens": 1024,
+      "mlp_width": 3072,
+      "tied_input_output_embedding": true
+    },
+    "runtime_arithmetic": {
+      "activation_fraction_bits": 12,
+      "scale_fraction_bits": 24,
+      "signed_division": "truncate toward zero",
+      "layernorm_epsilon_q24": 168,
+      "layernorm_mean": "trunc0(sum(x)/768)",
+      "layernorm_variance": "floor(sum((x-mean)^2)/768)",
+      "layernorm_denominator": "floor_sqrt(variance+168)",
+      "layernorm_output": "trunc0(trunc0((x-mean)*4096/denom)*gamma/4096)+beta",
+      "linear_output": "trunc0(dot(x,weights_i8)*scale_q24/16777216)+bias_q12",
+      "embedding_output": "trunc0(weight_i8*scale_q24/4096)+position_q12",
+      "attention_score": "trunc0(dot(q,k)/(8*4096))",
+      "softmax": "stable exp table; index=floor((max-score)/16); difference>65536 -> 0",
+      "attention_output": "trunc0(sum(exp_q24*value_q12)/sum(exp_q24))",
+      "gelu": "x2=trunc0(x*x/4096); x3=trunc0(x2*x/4096); inner=trunc0((x+trunc0(x3*183/4096))*3268/4096); t=sign(inner)*tanh[floor(abs(inner)/16)], clamped to4096 if index>=2048; trunc0(x*(4096+t)/8192)",
+      "argmax": "full 50257 vocabulary; smallest token id wins ties"
+    },
+    "quantization": {
+      "matrix_codes": "symmetric signed INT8 [-127,127], row-wise",
+      "matrix_scales": "unsigned Q24",
+      "other_learned_values": "signed Q12",
+      "export_rounding": "nearest, ties to even",
+      "pruned_parameters": 0,
+      "retrained": false,
+      "distilled": false,
+      "matrix_error_statistics": [
+        {
+          "tensor": "wte.weight",
+          "max_absolute_error": 0.0070227812975645065,
+          "root_mean_square_error": 0.0013264877407252048,
+          "original_rms": 0.1436960495570175,
+          "minimum_scale_q24": 41670,
+          "maximum_scale_q24": 235826
+        },
+        {
+          "tensor": "h.0.attn.c_attn.weight",
+          "max_absolute_error": 0.011190652847290039,
+          "root_mean_square_error": 0.0019076179272778874,
+          "original_rms": 0.1996195785729912,
+          "minimum_scale_q24": 15875,
+          "maximum_scale_q24": 375656
+        },
+        {
+          "tensor": "h.0.attn.c_proj.weight",
+          "max_absolute_error": 0.013015717267990112,
+          "root_mean_square_error": 0.001392759166304532,
+          "original_rms": 0.1474613744709078,
+          "minimum_scale_q24": 8387,
+          "maximum_scale_q24": 438208
+        },
+        {
+          "tensor": "h.0.mlp.c_fc.weight",
+          "max_absolute_error": 0.0180526040494442,
+          "root_mean_square_error": 0.0013473507510040877,
+          "original_rms": 0.14117125451294085,
+          "minimum_scale_q24": 33746,
+          "maximum_scale_q24": 606056
+        },
+        {
+          "tensor": "h.0.mlp.c_proj.weight",
+          "max_absolute_error": 0.024176442995667458,
+          "root_mean_square_error": 0.0017640555432269943,
+          "original_rms": 0.08796546340550132,
+          "minimum_scale_q24": 33823,
+          "maximum_scale_q24": 811549
+        },
+        {
+          "tensor": "h.1.attn.c_attn.weight",
+          "max_absolute_error": 0.004873824771493673,
+          "root_mean_square_error": 0.001212346476373306,
+          "original_rms": 0.14005821486308212,
+          "minimum_scale_q24": 16874,
+          "maximum_scale_q24": 163582
+        },
+        {
+          "tensor": "h.1.attn.c_proj.weight",
+          "max_absolute_error": 0.018535824492573738,
+          "root_mean_square_error": 0.0011602609986620918,
+          "original_rms": 0.10191780238685301,
+          "minimum_scale_q24": 27234,
+          "maximum_scale_q24": 624355
+        },
+        {
+          "tensor": "h.1.mlp.c_fc.weight",
+          "max_absolute_error": 0.00900876522064209,
+          "root_mean_square_error": 0.001086702480532186,
+          "original_rms": 0.13072212547271844,
+          "minimum_scale_q24": 32506,
+          "maximum_scale_q24": 302415
+        },
+        {
+          "tensor": "h.1.mlp.c_proj.weight",
+          "max_absolute_error": 0.05407513678073883,
+          "root_mean_square_error": 0.0016553058664335858,
+          "original_rms": 0.08719110174239059,
+          "minimum_scale_q24": 33705,
+          "maximum_scale_q24": 1814610
+        },
+        {
+          "tensor": "h.2.attn.c_attn.weight",
+          "max_absolute_error": 0.006603460758924484,
+          "root_mean_square_error": 0.0013683845472983994,
+          "original_rms": 0.15266868534318925,
+          "minimum_scale_q24": 20924,
+          "maximum_scale_q24": 221593
+        },
+        {
+          "tensor": "h.2.attn.c_proj.weight",
+          "max_absolute_error": 0.00902588665485382,
+          "root_mean_square_error": 0.0008011819480807953,
+          "original_rms": 0.0810354121763355,
+          "minimum_scale_q24": 25669,
+          "maximum_scale_q24": 303251
+        },
+        {
+          "tensor": "h.2.mlp.c_fc.weight",
+          "max_absolute_error": 0.04147744178771973,
+          "root_mean_square_error": 0.0011899308688742495,
+          "original_rms": 0.1336227528243571,
+          "minimum_scale_q24": 30674,
+          "maximum_scale_q24": 1394464
+        },
+        {
+          "tensor": "h.2.mlp.c_proj.weight",
+          "max_absolute_error": 0.059304893016815186,
+          "root_mean_square_error": 0.0018516520521671487,
+          "original_rms": 0.09308769698073713,
+          "minimum_scale_q24": 39049,
+          "maximum_scale_q24": 1990553
+        },
+        {
+          "tensor": "h.3.attn.c_attn.weight",
+          "max_absolute_error": 0.0074638426303863525,
+          "root_mean_square_error": 0.0013005348121396425,
+          "original_rms": 0.14180738989708888,
+          "minimum_scale_q24": 28531,
+          "maximum_scale_q24": 250470
+        },
+        {
+          "tensor": "h.3.attn.c_proj.weight",
+          "max_absolute_error": 0.008234873414039612,
+          "root_mean_square_error": 0.0007661234335602489,
+          "original_rms": 0.08412503885305087,
+          "minimum_scale_q24": 5272,
+          "maximum_scale_q24": 276593
+        },
+        {
+          "tensor": "h.3.mlp.c_fc.weight",
+          "max_absolute_error": 0.010403968393802643,
+          "root_mean_square_error": 0.0010249844658849966,
+          "original_rms": 0.12966684741592305,
+          "minimum_scale_q24": 29692,
+          "maximum_scale_q24": 349250
+        },
+        {
+          "tensor": "h.3.mlp.c_proj.weight",
+          "max_absolute_error": 0.06731405109167099,
+          "root_mean_square_error": 0.0018489038860086192,
+          "original_rms": 0.09180619121699168,
+          "minimum_scale_q24": 37383,
+          "maximum_scale_q24": 2259287
+        },
+        {
+          "tensor": "h.4.attn.c_attn.weight",
+          "max_absolute_error": 0.013122014701366425,
+          "root_mean_square_error": 0.001407775217147727,
+          "original_rms": 0.14643783848262334,
+          "minimum_scale_q24": 22239,
+          "maximum_scale_q24": 440442
+        },
+        {
+          "tensor": "h.4.attn.c_proj.weight",
+          "max_absolute_error": 0.0072272419929504395,
+          "root_mean_square_error": 0.0008211989562627739,
+          "original_rms": 0.09297906553329943,
+          "minimum_scale_q24": 2868,
+          "maximum_scale_q24": 242907
+        },
+        {
+          "tensor": "h.4.mlp.c_fc.weight",
+          "max_absolute_error": 0.008507102727890015,
+          "root_mean_square_error": 0.001041325963838184,
+          "original_rms": 0.12975422425087677,
+          "minimum_scale_q24": 28076,
+          "maximum_scale_q24": 285525
+        },
+        {
+          "tensor": "h.4.mlp.c_proj.weight",
+          "max_absolute_error": 0.018805837258696556,
+          "root_mean_square_error": 0.001188114353646573,
+          "original_rms": 0.09099929313474725,
+          "minimum_scale_q24": 36045,
+          "maximum_scale_q24": 631076
+        },
+        {
+          "tensor": "h.5.attn.c_attn.weight",
+          "max_absolute_error": 0.005480073392391205,
+          "root_mean_square_error": 0.0010702559723635135,
+          "original_rms": 0.12801271564960806,
+          "minimum_scale_q24": 26762,
+          "maximum_scale_q24": 183940
+        },
+        {
+          "tensor": "h.5.attn.c_proj.weight",
+          "max_absolute_error": 0.007795095443725586,
+          "root_mean_square_error": 0.0008020469045815653,
+          "original_rms": 0.09377478230663851,
+          "minimum_scale_q24": 4494,
+          "maximum_scale_q24": 262007
+        },
+        {
+          "tensor": "h.5.mlp.c_fc.weight",
+          "max_absolute_error": 0.00772939994931221,
+          "root_mean_square_error": 0.0009973797351778425,
+          "original_rms": 0.1267764049818559,
+          "minimum_scale_q24": 27636,
+          "maximum_scale_q24": 259527
+        },
+        {
+          "tensor": "h.5.mlp.c_proj.weight",
+          "max_absolute_error": 0.011180497705936432,
+          "root_mean_square_error": 0.0011441333622496462,
+          "original_rms": 0.09735699221672514,
+          "minimum_scale_q24": 27862,
+          "maximum_scale_q24": 375264
+        },
+        {
+          "tensor": "h.6.attn.c_attn.weight",
+          "max_absolute_error": 0.00636989064514637,
+          "root_mean_square_error": 0.0010841028141430785,
+          "original_rms": 0.12686016134724573,
+          "minimum_scale_q24": 35314,
+          "maximum_scale_q24": 214819
+        },
+        {
+          "tensor": "h.6.attn.c_proj.weight",
+          "max_absolute_error": 0.007303029298782349,
+          "root_mean_square_error": 0.0009678505069492427,
+          "original_rms": 0.11368983184414302,
+          "minimum_scale_q24": 5916,
+          "maximum_scale_q24": 245491
+        },
+        {
+          "tensor": "h.6.mlp.c_fc.weight",
+          "max_absolute_error": 0.008394747972488403,
+          "root_mean_square_error": 0.0009931820559777823,
+          "original_rms": 0.12638792013350728,
+          "minimum_scale_q24": 28283,
+          "maximum_scale_q24": 281753
+        },
+        {
+          "tensor": "h.6.mlp.c_proj.weight",
+          "max_absolute_error": 0.010905355215072632,
+          "root_mean_square_error": 0.0012578044114380038,
+          "original_rms": 0.10733183475042792,
+          "minimum_scale_q24": 8589,
+          "maximum_scale_q24": 365921
+        },
+        {
+          "tensor": "h.7.attn.c_attn.weight",
+          "max_absolute_error": 0.007104422897100449,
+          "root_mean_square_error": 0.0010874278122031717,
+          "original_rms": 0.12898593764422392,
+          "minimum_scale_q24": 34441,
+          "maximum_scale_q24": 238471
+        },
+        {
+          "tensor": "h.7.attn.c_proj.weight",
+          "max_absolute_error": 0.008795499801635742,
+          "root_mean_square_error": 0.0009849912190970764,
+          "original_rms": 0.11391729722299175,
+          "minimum_scale_q24": 2831,
+          "maximum_scale_q24": 295172
+        },
+        {
+          "tensor": "h.7.mlp.c_fc.weight",
+          "max_absolute_error": 0.004850864410400391,
+          "root_mean_square_error": 0.0009788559926836627,
+          "original_rms": 0.1264724386670275,
+          "minimum_scale_q24": 35082,
+          "maximum_scale_q24": 162776
+        },
+        {
+          "tensor": "h.7.mlp.c_proj.weight",
+          "max_absolute_error": 0.01783796399831772,
+          "root_mean_square_error": 0.0013570981407571051,
+          "original_rms": 0.1187349362672803,
+          "minimum_scale_q24": 2355,
+          "maximum_scale_q24": 598797
+        },
+        {
+          "tensor": "h.8.attn.c_attn.weight",
+          "max_absolute_error": 0.007668353617191315,
+          "root_mean_square_error": 0.0010660915864318017,
+          "original_rms": 0.12693078610787908,
+          "minimum_scale_q24": 37628,
+          "maximum_scale_q24": 257342
+        },
+        {
+          "tensor": "h.8.attn.c_proj.weight",
+          "max_absolute_error": 0.01157236099243164,
+          "root_mean_square_error": 0.0010207991974612038,
+          "original_rms": 0.1223635391656614,
+          "minimum_scale_q24": 2550,
+          "maximum_scale_q24": 388366
+        },
+        {
+          "tensor": "h.8.mlp.c_fc.weight",
+          "max_absolute_error": 0.005725979804992676,
+          "root_mean_square_error": 0.0009957498023743811,
+          "original_rms": 0.1272974814749089,
+          "minimum_scale_q24": 34789,
+          "maximum_scale_q24": 192138
+        },
+        {
+          "tensor": "h.8.mlp.c_proj.weight",
+          "max_absolute_error": 0.021152116358280182,
+          "root_mean_square_error": 0.0016300121798433443,
+          "original_rms": 0.13540394321999655,
+          "minimum_scale_q24": 17839,
+          "maximum_scale_q24": 709928
+        },
+        {
+          "tensor": "h.9.attn.c_attn.weight",
+          "max_absolute_error": 0.00781254842877388,
+          "root_mean_square_error": 0.0010687613532490423,
+          "original_rms": 0.12621704684168056,
+          "minimum_scale_q24": 36641,
+          "maximum_scale_q24": 262359
+        },
+        {
+          "tensor": "h.9.attn.c_proj.weight",
+          "max_absolute_error": 0.007823944091796875,
+          "root_mean_square_error": 0.001121639978269839,
+          "original_rms": 0.13681954845988736,
+          "minimum_scale_q24": 2625,
+          "maximum_scale_q24": 262474
+        },
+        {
+          "tensor": "h.9.mlp.c_fc.weight",
+          "max_absolute_error": 0.01094595342874527,
+          "root_mean_square_error": 0.0010087514035174985,
+          "original_rms": 0.12764877293185986,
+          "minimum_scale_q24": 35206,
+          "maximum_scale_q24": 367484
+        },
+        {
+          "tensor": "h.9.mlp.c_proj.weight",
+          "max_absolute_error": 0.02158266305923462,
+          "root_mean_square_error": 0.0018566384787326233,
+          "original_rms": 0.15587382281548343,
+          "minimum_scale_q24": 8042,
+          "maximum_scale_q24": 724918
+        },
+        {
+          "tensor": "h.10.attn.c_attn.weight",
+          "max_absolute_error": 0.007455669343471527,
+          "root_mean_square_error": 0.0010872366511372584,
+          "original_rms": 0.12667363089330408,
+          "minimum_scale_q24": 38482,
+          "maximum_scale_q24": 250178
+        },
+        {
+          "tensor": "h.10.attn.c_proj.weight",
+          "max_absolute_error": 0.01655757427215576,
+          "root_mean_square_error": 0.0012710962533508709,
+          "original_rms": 0.14662733484655308,
+          "minimum_scale_q24": 15786,
+          "maximum_scale_q24": 556444
+        },
+        {
+          "tensor": "h.10.mlp.c_fc.weight",
+          "max_absolute_error": 0.010025128722190857,
+          "root_mean_square_error": 0.0010313366350401581,
+          "original_rms": 0.1276884123712704,
+          "minimum_scale_q24": 39602,
+          "maximum_scale_q24": 337334
+        },
+        {
+          "tensor": "h.10.mlp.c_proj.weight",
+          "max_absolute_error": 0.043502867221832275,
+          "root_mean_square_error": 0.0025434555548762834,
+          "original_rms": 0.17814524625679742,
+          "minimum_scale_q24": 35679,
+          "maximum_scale_q24": 1459809
+        },
+        {
+          "tensor": "h.11.attn.c_attn.weight",
+          "max_absolute_error": 0.009083116427063942,
+          "root_mean_square_error": 0.0011775731581130837,
+          "original_rms": 0.1284747302571,
+          "minimum_scale_q24": 36601,
+          "maximum_scale_q24": 304783
+        },
+        {
+          "tensor": "h.11.attn.c_proj.weight",
+          "max_absolute_error": 0.0349651575088501,
+          "root_mean_square_error": 0.0017021791550414535,
+          "original_rms": 0.18192650678116373,
+          "minimum_scale_q24": 29746,
+          "maximum_scale_q24": 1173324
+        },
+        {
+          "tensor": "h.11.mlp.c_fc.weight",
+          "max_absolute_error": 0.007719963788986206,
+          "root_mean_square_error": 0.0010689132161670722,
+          "original_rms": 0.13001759253962486,
+          "minimum_scale_q24": 39086,
+          "maximum_scale_q24": 259567
+        },
+        {
+          "tensor": "h.11.mlp.c_proj.weight",
+          "max_absolute_error": 0.036246709525585175,
+          "root_mean_square_error": 0.0038195084481842624,
+          "original_rms": 0.19821950222495624,
+          "minimum_scale_q24": 91049,
+          "maximum_scale_q24": 1216881
+        }
+      ]
+    },
+    "unique_tensor_bytes": 127716426,
+    "deployed_tensor_bytes_including_duplicates": 166514830,
+    "duplicate_tensor_bytes": 38798404
+  },
+  "reference": {
+    "reference_sha256": "ea040bcefaa8c0c54df3bf2424317356448596805ef2a1c3a9e975752152fd1b",
+    "file": "../gpt2-bsc/data/reference-report.json",
+    "execution": "local CPU only; all matrices and vocabulary rows executed for each token",
+    "arithmetic": {
+      "activation_fraction_bits": 12,
+      "scale_fraction_bits": 24,
+      "signed_division": "truncate toward zero",
+      "layernorm_epsilon_q24": 168,
+      "layernorm_mean": "trunc0(sum(x)/768)",
+      "layernorm_variance": "floor(sum((x-mean)^2)/768)",
+      "layernorm_denominator": "floor_sqrt(variance+168)",
+      "layernorm_output": "trunc0(trunc0((x-mean)*4096/denom)*gamma/4096)+beta",
+      "linear_output": "trunc0(dot(x,weights_i8)*scale_q24/16777216)+bias_q12",
+      "embedding_output": "trunc0(weight_i8*scale_q24/4096)+position_q12",
+      "attention_score": "trunc0(dot(q,k)/(8*4096))",
+      "softmax": "stable exp table; index=floor((max-score)/16); difference>65536 -> 0",
+      "attention_output": "trunc0(sum(exp_q24*value_q12)/sum(exp_q24))",
+      "gelu": "x2=trunc0(x*x/4096); x3=trunc0(x2*x/4096); inner=trunc0((x+trunc0(x3*183/4096))*3268/4096); t=sign(inner)*tanh[floor(abs(inner)/16)], clamped to4096 if index>=2048; trunc0(x*(4096+t)/8192)",
+      "argmax": "full 50257 vocabulary; smallest token id wins ties"
+    },
+    "token_ids": [
+      198,
+      464,
+      471
+    ],
+    "verified_vector_files": 558
+  },
+  "compiler": {
+    "version": "0.8.30+commit.73712a01.Emscripten.clang",
+    "settings": {
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "viaIR": true,
+      "evmVersion": "cancun",
+      "outputSelection": {
+        "*": {
+          "*": [
+            "abi",
+            "storageLayout",
+            "evm.bytecode.object",
+            "evm.deployedBytecode.object"
+          ]
+        }
+      }
+    },
+    "source_sha256": {
+      "@layerzerolabs/lz-evm-messagelib-v2/contracts/libs/ExecutorOptions.sol": "51a865ee90596427f27ab9421a8606130d7fdee8d1d9e4fe98d18eea5edaac45",
+      "@layerzerolabs/lz-evm-messagelib-v2/contracts/uln/libs/DVNOptions.sol": "b34711a3494285b50b140c55241bb04bf60237dd585bd8c3083062d4c7375e46",
+      "@layerzerolabs/lz-evm-protocol-v2/contracts/interfaces/ILayerZeroEndpointV2.sol": "a88fb702b371527c3791d7e5c168c1157d39021ed29b51e627e02973e6a740e0",
+      "@layerzerolabs/lz-evm-protocol-v2/contracts/interfaces/ILayerZeroReceiver.sol": "24e4add7dd95a72dad23e26c4fadfc1b6ce63148e0c7f4d6ad5dfaeda79db3e7",
+      "@layerzerolabs/lz-evm-protocol-v2/contracts/interfaces/IMessageLibManager.sol": "ffc33e319ab5e9d1392d16f8716625bcfb1dc34b744551f87dad1c0eb3ad11f1",
+      "@layerzerolabs/lz-evm-protocol-v2/contracts/interfaces/IMessagingChannel.sol": "9d0100f7cede83d5a4f6c9e03d6bfd24f861e9331b298ca4c73f99b161c718d5",
+      "@layerzerolabs/lz-evm-protocol-v2/contracts/interfaces/IMessagingComposer.sol": "5e7e5a47a477dcf05c034d5135bf6516119af881ea78d586805eee0ad5ab6b12",
+      "@layerzerolabs/lz-evm-protocol-v2/contracts/interfaces/IMessagingContext.sol": "b7f081828b8d0d206833953ebd73101bb28ac62541e7e8365fddc38eb440a92a",
+      "@layerzerolabs/lz-evm-protocol-v2/contracts/libs/AddressCast.sol": "e48211bfba874d0ce5c3b1fc4e4aac67450ac9539a75e814807745181d04e7dd",
+      "@layerzerolabs/lz-evm-protocol-v2/contracts/libs/CalldataBytesLib.sol": "82e74f2c2f10e53a90244af7ac3fabdf121ee9d38b30b40d40c23c08ee3e7ef5",
+      "@layerzerolabs/lz-evm-protocol-v2/contracts/libs/GUID.sol": "f462f5b95fba0918ab3bf779b09326eedde0eda85092d99bb32c60cf60bb338b",
+      "@layerzerolabs/lz-evm-protocol-v2/contracts/messagelib/libs/BitMaps.sol": "f638b8113c3e046a35e22f5b32ae577efd42221161f09777759dd061c7a735d2",
+      "@layerzerolabs/oapp-evm/contracts/oapp/OApp.sol": "92b191c937374b6e76686245b7b98eb3bc0bfacff4d54b279b7ecf1321878e04",
+      "@layerzerolabs/oapp-evm/contracts/oapp/OAppCore.sol": "b0a3e30618f5d4c71732a2048d7c2928be399508d6ec622c9345915c92b3dd0a",
+      "@layerzerolabs/oapp-evm/contracts/oapp/OAppReceiver.sol": "8d1dd4a6a74c3d9704a078e6404dcf7aab688b750ea64e8331f873e253862bc0",
+      "@layerzerolabs/oapp-evm/contracts/oapp/OAppSender.sol": "276f5d551ae7e478fb0c56002acf5476e628748c1f5ba0d63ea051e93813a137",
+      "@layerzerolabs/oapp-evm/contracts/oapp/interfaces/IOAppCore.sol": "041dd35f0a4a22425614414c05cd5aae6ce7e4b5b86b0350045e57c0ed3cbf1b",
+      "@layerzerolabs/oapp-evm/contracts/oapp/interfaces/IOAppReceiver.sol": "da4aff9322961c648e2221f7df203a44b375a397f2548b74679b3e9d0ae9addd",
+      "@layerzerolabs/oapp-evm/contracts/oapp/libs/OptionsBuilder.sol": "34699bf11b40b6ae8a818375ccfa758b7e03df986bc8d52d29882e57144ace17",
+      "@openzeppelin/contracts/access/Ownable.sol": "38578bd71c0a909840e67202db527cc6b4e6b437e0f39f0c909da32c1e30cb81",
+      "@openzeppelin/contracts/access/Ownable2Step.sol": "c75345d7b9feef17ae29f2a800ca2f65f8021cf80436a41d6ec00f57f5180f36",
+      "@openzeppelin/contracts/interfaces/IERC1363.sol": "9c3a75a925a6dac9e88b03cddc58d42fe3131b0aaaad84408521f3f7af2f991b",
+      "@openzeppelin/contracts/interfaces/IERC165.sol": "dfb3f56fa928a7c6cae41a7ce2c86b9210fa18d33fa26389099d66a0fa790368",
+      "@openzeppelin/contracts/interfaces/IERC20.sol": "0158e2d3e0e28bedd99eec13dcf1a8aa3a70a5b7e4bb2ad709609c95fcc740d1",
+      "@openzeppelin/contracts/token/ERC20/IERC20.sol": "01b6f5c4fa45fd38822b286ecef6daf983d27306dd6362496fa71b3e4600b72c",
+      "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol": "ac1fd9fa99b194a8db8dfa9ae8e3ff44feaa8f16668241fd2b66ae8b47d7c082",
+      "@openzeppelin/contracts/utils/Context.sol": "847fda5460fee70f56f4200f59b82ae622bb03c79c77e67af010e31b7e2cc5b6",
+      "@openzeppelin/contracts/utils/ReentrancyGuard.sol": "32fbb1c908ec1b4de85cc1bb10091aebd5816ffe80dfdd5ca5e084fbea67a462",
+      "@openzeppelin/contracts/utils/introspection/IERC165.sol": "9055c2994b37dea1a41b7b7926dcb510f05dbe2540b0aafc5fbee9558fffd0ca",
+      "@openzeppelin/contracts/utils/math/SafeCast.sol": "9769274bf53f26a7c7896c526ea1980dc9bea5bf5c2a5fd04870008c4afc1de9",
+      "contracts/GPT2Dot8.sol": "c56cbd68fed63b395ba2d41acfc24695ea1e0820e2505c2b98161af3a47837c7",
+      "contracts/GPT2DotOptimized.sol": "19a2ca4289892011cf8c26bdb674161f60bd206faa917ebff36186014e06659a",
+      "contracts/GPT2DotOptimizedV2.sol": "28628280821b315737576104347b5e56f4d28b9f316e43fc59db5c8cbdeca7e3",
+      "contracts/GPT2InferenceOApp.sol": "b1f8ad673e8ee46db7fef6e5401d621b67bc6911275cc66fa2b025131a7802f7",
+      "contracts/GPT2JobOApp.sol": "a3659d6c2c71ca8a8004db2f7131d750a84ccdaef2d8bd74025a1f3c7a46bd2b",
+      "contracts/GPT2Shard.sol": "9f6c1da7ca09ffc053c96ee239e98f8af9980ac5bbb1da5c5efdf958e9d60482",
+      "contracts/GPT2ShardOptimized.sol": "eee131838374db0871dd70835a65f8cfbc3ddce6dd6d5446d834a09e4f3d0194",
+      "contracts/GPT2ShardOptimizedV2.sol": "0acd5afcc406a54bbf8bb84e19ddc7c59cb107202873c21d267f7765d35a3325",
+      "contracts/interfaces/IGPT2Shard.sol": "b5f8d3836627d37c9644ae6f2707278b64779e8cbe3e94144fce387f743fa8fc",
+      "contracts/mocks/MockEndpoint.sol": "467a988465e120b4e72efee39bfb3ac37aca8c1618324c155d0e0bcc61a504ca",
+      "contracts/mocks/MockGPT2Shard.sol": "269798b0d743f01af845946a1a5b505befc2745f75c859e77455054485e7bebb",
+      "solidity-bytes-utils/contracts/BytesLib.sol": "99e631c460da5d1e5741967fcae56758cea911ac384cfd71c6d829a893369840"
+    },
+    "sources_commitment_sha256": "b696f928b684e6fc020aab50809857caa78dc03fb605a4aab792fe981fce4fdb",
+    "input_sha256": "0be7cfe1ebbae82dae4946788663580fc30cde262adff58c887eb5486971928b"
+  },
+  "selected_source_sha256": {
+    "@layerzerolabs/lz-evm-messagelib-v2/contracts/libs/ExecutorOptions.sol": "51a865ee90596427f27ab9421a8606130d7fdee8d1d9e4fe98d18eea5edaac45",
+    "@layerzerolabs/lz-evm-messagelib-v2/contracts/uln/libs/DVNOptions.sol": "b34711a3494285b50b140c55241bb04bf60237dd585bd8c3083062d4c7375e46",
+    "@layerzerolabs/lz-evm-protocol-v2/contracts/interfaces/ILayerZeroEndpointV2.sol": "a88fb702b371527c3791d7e5c168c1157d39021ed29b51e627e02973e6a740e0",
+    "@layerzerolabs/lz-evm-protocol-v2/contracts/interfaces/ILayerZeroReceiver.sol": "24e4add7dd95a72dad23e26c4fadfc1b6ce63148e0c7f4d6ad5dfaeda79db3e7",
+    "@layerzerolabs/lz-evm-protocol-v2/contracts/interfaces/IMessageLibManager.sol": "ffc33e319ab5e9d1392d16f8716625bcfb1dc34b744551f87dad1c0eb3ad11f1",
+    "@layerzerolabs/lz-evm-protocol-v2/contracts/interfaces/IMessagingChannel.sol": "9d0100f7cede83d5a4f6c9e03d6bfd24f861e9331b298ca4c73f99b161c718d5",
+    "@layerzerolabs/lz-evm-protocol-v2/contracts/interfaces/IMessagingComposer.sol": "5e7e5a47a477dcf05c034d5135bf6516119af881ea78d586805eee0ad5ab6b12",
+    "@layerzerolabs/lz-evm-protocol-v2/contracts/interfaces/IMessagingContext.sol": "b7f081828b8d0d206833953ebd73101bb28ac62541e7e8365fddc38eb440a92a",
+    "@layerzerolabs/lz-evm-protocol-v2/contracts/libs/AddressCast.sol": "e48211bfba874d0ce5c3b1fc4e4aac67450ac9539a75e814807745181d04e7dd",
+    "@layerzerolabs/lz-evm-protocol-v2/contracts/libs/CalldataBytesLib.sol": "82e74f2c2f10e53a90244af7ac3fabdf121ee9d38b30b40d40c23c08ee3e7ef5",
+    "@layerzerolabs/lz-evm-protocol-v2/contracts/libs/GUID.sol": "f462f5b95fba0918ab3bf779b09326eedde0eda85092d99bb32c60cf60bb338b",
+    "@layerzerolabs/lz-evm-protocol-v2/contracts/messagelib/libs/BitMaps.sol": "f638b8113c3e046a35e22f5b32ae577efd42221161f09777759dd061c7a735d2",
+    "@layerzerolabs/oapp-evm/contracts/oapp/OApp.sol": "92b191c937374b6e76686245b7b98eb3bc0bfacff4d54b279b7ecf1321878e04",
+    "@layerzerolabs/oapp-evm/contracts/oapp/OAppCore.sol": "b0a3e30618f5d4c71732a2048d7c2928be399508d6ec622c9345915c92b3dd0a",
+    "@layerzerolabs/oapp-evm/contracts/oapp/OAppReceiver.sol": "8d1dd4a6a74c3d9704a078e6404dcf7aab688b750ea64e8331f873e253862bc0",
+    "@layerzerolabs/oapp-evm/contracts/oapp/OAppSender.sol": "276f5d551ae7e478fb0c56002acf5476e628748c1f5ba0d63ea051e93813a137",
+    "@layerzerolabs/oapp-evm/contracts/oapp/interfaces/IOAppCore.sol": "041dd35f0a4a22425614414c05cd5aae6ce7e4b5b86b0350045e57c0ed3cbf1b",
+    "@layerzerolabs/oapp-evm/contracts/oapp/interfaces/IOAppReceiver.sol": "da4aff9322961c648e2221f7df203a44b375a397f2548b74679b3e9d0ae9addd",
+    "@layerzerolabs/oapp-evm/contracts/oapp/libs/OptionsBuilder.sol": "34699bf11b40b6ae8a818375ccfa758b7e03df986bc8d52d29882e57144ace17",
+    "@openzeppelin/contracts/access/Ownable.sol": "38578bd71c0a909840e67202db527cc6b4e6b437e0f39f0c909da32c1e30cb81",
+    "@openzeppelin/contracts/access/Ownable2Step.sol": "c75345d7b9feef17ae29f2a800ca2f65f8021cf80436a41d6ec00f57f5180f36",
+    "@openzeppelin/contracts/interfaces/IERC1363.sol": "9c3a75a925a6dac9e88b03cddc58d42fe3131b0aaaad84408521f3f7af2f991b",
+    "@openzeppelin/contracts/interfaces/IERC165.sol": "dfb3f56fa928a7c6cae41a7ce2c86b9210fa18d33fa26389099d66a0fa790368",
+    "@openzeppelin/contracts/interfaces/IERC20.sol": "0158e2d3e0e28bedd99eec13dcf1a8aa3a70a5b7e4bb2ad709609c95fcc740d1",
+    "@openzeppelin/contracts/token/ERC20/IERC20.sol": "01b6f5c4fa45fd38822b286ecef6daf983d27306dd6362496fa71b3e4600b72c",
+    "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol": "ac1fd9fa99b194a8db8dfa9ae8e3ff44feaa8f16668241fd2b66ae8b47d7c082",
+    "@openzeppelin/contracts/utils/Context.sol": "847fda5460fee70f56f4200f59b82ae622bb03c79c77e67af010e31b7e2cc5b6",
+    "@openzeppelin/contracts/utils/ReentrancyGuard.sol": "32fbb1c908ec1b4de85cc1bb10091aebd5816ffe80dfdd5ca5e084fbea67a462",
+    "@openzeppelin/contracts/utils/introspection/IERC165.sol": "9055c2994b37dea1a41b7b7926dcb510f05dbe2540b0aafc5fbee9558fffd0ca",
+    "@openzeppelin/contracts/utils/math/SafeCast.sol": "9769274bf53f26a7c7896c526ea1980dc9bea5bf5c2a5fd04870008c4afc1de9",
+    "contracts/GPT2DotOptimized.sol": "19a2ca4289892011cf8c26bdb674161f60bd206faa917ebff36186014e06659a",
+    "contracts/GPT2InferenceOApp.sol": "b1f8ad673e8ee46db7fef6e5401d621b67bc6911275cc66fa2b025131a7802f7",
+    "contracts/GPT2ShardOptimized.sol": "eee131838374db0871dd70835a65f8cfbc3ddce6dd6d5446d834a09e4f3d0194",
+    "contracts/interfaces/IGPT2Shard.sol": "b5f8d3836627d37c9644ae6f2707278b64779e8cbe3e94144fce387f743fa8fc",
+    "contracts/mocks/MockEndpoint.sol": "467a988465e120b4e72efee39bfb3ac37aca8c1618324c155d0e0bcc61a504ca",
+    "solidity-bytes-utils/contracts/BytesLib.sol": "99e631c460da5d1e5741967fcae56758cea911ac384cfd71c6d829a893369840"
+  },
+  "source_assertion_scope": "Selected engine, router, transport mock and every transitive Solidity import remain unchanged. Full initial compiler input is retained; unreferenced research sources may change independently.",
+  "artifact_roles": {
+    "model_engine": "GPT2ShardOptimized",
+    "router": "GPT2InferenceOApp",
+    "transport_only": "MockEndpoint",
+    "mock_model_instantiated": false
+  },
+  "environment": [
+    {
+      "stage": 0,
+      "chain_id": 4663,
+      "endpoint_id": 30416,
+      "local_process_pid": 88992,
+      "client": "anvil/v1.8.5",
+      "requested_network_profile": "ethereum",
+      "node_info": {
+        "currentBlockNumber": "0x0",
+        "currentBlockTimestamp": 1792932741,
+        "currentBlockHash": "0x8362c216f578afcd128a1dcac87376b71857dc9ed71b71bf1be8fd752c34d507",
+        "hardFork": "Cancun",
+        "transactionOrder": "fees",
+        "environment": {
+          "baseFee": "0x0",
+          "chainId": 4663,
+          "gasLimit": "0x42c1d80",
+          "gasPrice": "0x3b9aca00"
+        },
+        "forkConfig": {
+          "forkUrl": null,
+          "forkBlockNumber": null,
+          "forkRetryBackoff": null
+        },
+        "network": "ethereum"
+      },
+      "hardfork": "cancun",
+      "execution_profile": "generic Ethereum EVM; target chain identity only",
+      "block_gas_limit": "70000000",
+      "transaction_gas_ceiling": "16777216",
+      "code_size_limit": 24576,
+      "gas_price_wei": 0,
+      "forked": false,
+      "node_arguments": [
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "52052",
+        "--chain-id",
+        "4663",
+        "--network",
+        "ethereum",
+        "--hardfork",
+        "cancun",
+        "--gas-limit",
+        "70000000",
+        "--gas-price",
+        "0",
+        "--block-base-fee-per-gas",
+        "0",
+        "--balance",
+        "1000000000",
+        "--code-size-limit",
+        "24576",
+        "--prune-history",
+        "1",
+        "--silent"
+      ]
+    },
+    {
+      "stage": 1,
+      "chain_id": 143,
+      "endpoint_id": 30390,
+      "local_process_pid": 88993,
+      "client": "anvil/v1.8.5",
+      "requested_network_profile": "monad",
+      "node_info": {
+        "currentBlockNumber": "0x0",
+        "currentBlockTimestamp": 1792932741,
+        "currentBlockHash": "0x8e15b6480ca4dc3a2bdf2e9b9584632713c2efa70dcc8fd41c272d77038fef4e",
+        "hardFork": "MonadTen",
+        "transactionOrder": "fees",
+        "environment": {
+          "baseFee": "0x0",
+          "chainId": 143,
+          "gasLimit": "0x8f0d180",
+          "gasPrice": "0x3b9aca00"
+        },
+        "forkConfig": {
+          "forkUrl": null,
+          "forkBlockNumber": null,
+          "forkRetryBackoff": null
+        },
+        "network": "monad"
+      },
+      "hardfork": "Anvil native default; inspect node_info before matching live Monad",
+      "execution_profile": "Anvil native Monad engine; live-fork parity requires separate semantic checks",
+      "block_gas_limit": "150000000",
+      "transaction_gas_ceiling": "30000000",
+      "code_size_limit": 24576,
+      "gas_price_wei": 0,
+      "forked": false,
+      "node_arguments": [
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "52056",
+        "--chain-id",
+        "143",
+        "--network",
+        "monad",
+        "--gas-limit",
+        "150000000",
+        "--gas-price",
+        "0",
+        "--block-base-fee-per-gas",
+        "0",
+        "--balance",
+        "1000000000",
+        "--code-size-limit",
+        "24576",
+        "--prune-history",
+        "1",
+        "--silent"
+      ]
+    }
+  ],
+  "deadline": 1795524777,
+  "generated_token_ids": [
+    198,
+    464
+  ],
+  "validations": [
+    {
+      "name": "canonical_model_identity_architecture_every_tensor_and_reference_file_verified",
+      "passed": true
+    },
+    {
+      "name": "all_compiled_runtimes_fit_EIP170",
+      "passed": true
+    },
+    {
+      "name": "stage0_every_required_tensor_byte_CREATE_deployed_and_verified",
+      "passed": true,
+      "tensor_ids": [
+        0,
+        1
+      ],
+      "weight_shards": 1769,
+      "catalog_commitments_sha256": "1bc8c56eca51cf7f322cf70debcdfe360927bc9155c020f869e3c6a7f26abc10"
+    },
+    {
+      "name": "stage1_every_required_tensor_byte_CREATE_deployed_and_verified",
+      "passed": true,
+      "tensor_ids": [
+        0,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75,
+        76
+      ],
+      "weight_shards": 5369,
+      "catalog_commitments_sha256": "5828ce9988cbe7df84ff440adf5b7c9cefd45cc6a7a57ec1ec9790addab36eeb"
+    },
+    {
+      "name": "complete_124439808_parameter_model_executed_on_configured_local_EVMs_for_every_requested_position",
+      "passed": true,
+      "positions": 2,
+      "chain_count": 2
+    },
+    {
+      "name": "all_emitted_phase_vector_and_full_50257_logit_commitments_match_independent_CPU_reference",
+      "passed": true
+    },
+    {
+      "name": "all_KV_entries_persist_and_match_reference_after_second_token_without_reset",
+      "passed": true
+    }
+  ],
+  "raw_evidence": {
+    "full_report": "reports/economy-two-chain-full/results.json",
+    "full_report_sha256": "7e4b4e3d1fdfb98dc23a51d94430b4525f5c51ef0f04b808a5199c71a0582f51",
+    "raw_ledger": "reports/economy-two-chain-full/transactions.jsonl",
+    "raw_ledger_sha256": "50e998da12d41c64970f09c6a4ace56710abb484789a3c04f45cbb67f63e8939",
+    "full_costs": "reports/economy-two-chain-full/cost-summary.json",
+    "full_costs_sha256": "44d5a9ef39f9e5aca251720bf3266c13ef69ea5877f3720a246f51164dba51b7"
+  },
+  "deployment_counts": [
+    {
+      "stage": 0,
+      "chain_id": 4663,
+      "by_kind": {
+        "weight_shard": 1769,
+        "tensor_catalog_page": 3,
+        "tensor_catalog": 2,
+        "root_catalog": 1,
+        "transport_mock": 1,
+        "router": 1,
+        "real_model_engine": 1
+      }
+    },
+    {
+      "stage": 1,
+      "chain_id": 143,
+      "by_kind": {
+        "weight_shard": 5369,
+        "tensor_catalog_page": 3,
+        "tensor_catalog": 76,
+        "root_catalog": 1,
+        "transport_mock": 1,
+        "router": 1,
+        "real_model_engine": 1
+      }
+    }
+  ],
+  "system_deployments": [
+    {
+      "stage": 0,
+      "kind": "transport_mock",
+      "address": "0x90fcCa181E4100A42A3cDe0Ff7DACDF046d4e8A0",
+      "gas": "988311",
+      "transaction": "0x6d260845a34df3357de35b825a52a425e0a1c77a98b33058251530435bba01e6",
+      "runtime_bytes": 4321,
+      "runtime_keccak256": "0x467292b53a403af5d68babb6a73acf662718e0d2e7ffbc7c6032f513fcf0747b"
+    },
+    {
+      "stage": 0,
+      "kind": "router",
+      "address": "0x19CC4DD8D86FC525f8CF37c51612DE91b1E52038",
+      "gas": "3193973",
+      "transaction": "0x384d99ce8a37449994f63fd500c057075fd9c3b77ccde502cac590f60a749f1d",
+      "runtime_bytes": 13888,
+      "runtime_keccak256": "0x171bfe8291962bce96622167b43b747613e33a6035176f55bdf6ac1bdd1a07e3"
+    },
+    {
+      "stage": 0,
+      "kind": "real_model_engine",
+      "address": "0x90e49f941bd68341A363225F5A2386D34a7FFd92",
+      "gas": "3639571",
+      "transaction": "0x44a6d180d5e6aee6885540685863aa27ac9e86f0a2fca6a65f8202b89ea07b0b",
+      "runtime_bytes": 16439,
+      "runtime_keccak256": "0x0b8a1f4b1f76afdc7795bab0a5f92315373f14e30affecb9ceba8a3ac085f947"
+    },
+    {
+      "stage": 1,
+      "kind": "transport_mock",
+      "address": "0x10318845C67ec7FC2BC993E706B81ED61DC8b884",
+      "gas": "987914",
+      "transaction": "0xbabed4f2d5fb74d2a9e79d697cffdb01cb04a19f5fc7f51d0d6cc9f34f1d0559",
+      "runtime_bytes": 4321,
+      "runtime_keccak256": "0x0d4890bcdab1ca973784d05fafa0c1e555c7e505f288a44cea42ea95b3acc2ea"
+    },
+    {
+      "stage": 1,
+      "kind": "router",
+      "address": "0x619B5F530B46D778c8A99DA1283ED44fAf42209B",
+      "gas": "3205605",
+      "transaction": "0x0340fa6700fa8f5910b07c603aee33609c0fc47a297b01a583920c9c786f3889",
+      "runtime_bytes": 13888,
+      "runtime_keccak256": "0xc1c8d33d77486643f6916b62dc13fee0bac8d074db8f62dbab3e1ac488f3e99e"
+    },
+    {
+      "stage": 1,
+      "kind": "real_model_engine",
+      "address": "0x0c7056652736A06d6D90f11B29176DEa7630f14C",
+      "gas": "3650862",
+      "transaction": "0x49fc4d75794e207c911c9c8026245dae4877230d3d75965109f7edf39fee3879",
+      "runtime_bytes": 16439,
+      "runtime_keccak256": "0xde712582ffd0608c1db22ba2dcfced00f493668f1c406e07f20a8d979c66c99d"
+    }
+  ],
+  "tokens": [
+    {
+      "position": 0,
+      "input_token": 50256,
+      "output_token": 198,
+      "model_gas": "4241866221",
+      "complete": true,
+      "completed_layers": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "verified_vocabulary_rows": 50257,
+      "verified_phase_vector_count": 86,
+      "verified_kv_array_count": 24,
+      "verified_logit_chunks": 105,
+      "stages": [
+        {
+          "stage": 0,
+          "name": "Robinhood",
+          "gas": "2808372",
+          "transactions": 1,
+          "minimum_gas_reserve": "13968844",
+          "final_checkpoint": {
+            "phase": "13",
+            "layer": "0",
+            "head": "0",
+            "cursor": "0",
+            "position": "0",
+            "pendingToken": "50256",
+            "stepNumber": "1",
+            "bestToken": "0",
+            "bestLogit": "0",
+            "stateCommitment": "0x3de03a1bc48f0612be7854caf5407b20cc874da5e86d318cc557bc318dde34f5"
+          },
+          "complete": true
+        },
+        {
+          "stage": 1,
+          "name": "Monad",
+          "gas": "4239057849",
+          "transactions": 266,
+          "minimum_gas_reserve": "938723",
+          "final_checkpoint": {
+            "phase": "12",
+            "layer": "12",
+            "head": "11",
+            "cursor": "0",
+            "position": "0",
+            "pendingToken": "50256",
+            "stepNumber": "723",
+            "bestToken": "198",
+            "bestLogit": "-160815",
+            "stateCommitment": "0x4b8b8d25ab5f89238db530e1ecb9fccc13d6f9d3b46d8520fb4c8a837c967682"
+          },
+          "complete": true
+        }
+      ]
+    },
+    {
+      "position": 1,
+      "input_token": 198,
+      "output_token": 464,
+      "model_gas": "4279547807",
+      "complete": true,
+      "completed_layers": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "verified_vocabulary_rows": 50257,
+      "verified_phase_vector_count": 86,
+      "verified_kv_array_count": 48,
+      "verified_logit_chunks": 105,
+      "stages": [
+        {
+          "stage": 0,
+          "name": "Robinhood",
+          "gas": "1166821",
+          "transactions": 1,
+          "minimum_gas_reserve": "15610395",
+          "final_checkpoint": {
+            "phase": "13",
+            "layer": "0",
+            "head": "0",
+            "cursor": "0",
+            "position": "1",
+            "pendingToken": "198",
+            "stepNumber": "2",
+            "bestToken": "0",
+            "bestLogit": "0",
+            "stateCommitment": "0x01304b5ca9d7822fac38eba1267e04c68a19aeb2a057d51b9093a4016be6f932"
+          },
+          "complete": true
+        },
+        {
+          "stage": 1,
+          "name": "Monad",
+          "gas": "4278380986",
+          "transactions": 266,
+          "minimum_gas_reserve": "1251691",
+          "final_checkpoint": {
+            "phase": "12",
+            "layer": "12",
+            "head": "11",
+            "cursor": "0",
+            "position": "1",
+            "pendingToken": "198",
+            "stepNumber": "1513",
+            "bestToken": "464",
+            "bestLogit": "-382868",
+            "stateCommitment": "0xcef50784a9f5d5f9ab0506913e31497fdf5b21a9c4e01fb14aa5655373ab20e3"
+          },
+          "complete": true
+        }
+      ]
+    }
+  ]
+}

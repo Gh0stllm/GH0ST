@@ -1,0 +1,227 @@
+{
+  "status": "PASS_RECEIPT_RECONCILED_DEPLOYMENT_SPLIT",
+  "scope": "Existing immutable weight/catalog deployment may be reused by new engine/router sessions. Current JobOApp sessions are single-use; this does not assert reset support.",
+  "public_transactions_submitted": 0,
+  "scenarios": [
+    {
+      "name": "job-opbnb",
+      "raw_evidence": {
+        "full_report": "reports/job-opbnb-full/results.json",
+        "full_report_sha256": "69f7daf19587f0c091f60765117302bdb85129631571d048255a6892e09c0cf1",
+        "raw_ledger": "reports/job-opbnb-full/transactions.jsonl",
+        "raw_ledger_sha256": "b98f4e52e3a36bf46a1ee57f292da499a19405d59a4fcb92406eac98ce4a5e27",
+        "full_costs": "reports/job-opbnb-full/cost-summary.json",
+        "full_costs_sha256": "439dfca92a4846e4eb13e72d50dd3486bda9685d44a7c1c6ba3dbe757f4eecbd"
+      },
+      "stages": [
+        {
+          "stage": 0,
+          "chain_id": 4663,
+          "name": "Robinhood",
+          "profile": "ethereum",
+          "shared_model_weights_and_catalogs": {
+            "gas": "0",
+            "billed_gas": "0",
+            "transactions": 0
+          },
+          "new_session_routers_and_engines": {
+            "gas": "3458572",
+            "billed_gas": "3458572",
+            "transactions": 1
+          },
+          "excluded_mock_endpoints": {
+            "gas": "988311",
+            "billed_gas": "988311",
+            "transactions": 1
+          },
+          "session_route_setup": {
+            "gas": "99117",
+            "billed_gas": "99117",
+            "transactions": 2
+          }
+        },
+        {
+          "stage": 1,
+          "chain_id": 204,
+          "name": "opBNB",
+          "profile": "ethereum",
+          "shared_model_weights_and_catalogs": {
+            "gas": "27921578617",
+            "billed_gas": "27921578617",
+            "transactions": 5597
+          },
+          "new_session_routers_and_engines": {
+            "gas": "7098117",
+            "billed_gas": "7098117",
+            "transactions": 2
+          },
+          "excluded_mock_endpoints": {
+            "gas": "988311",
+            "billed_gas": "988311",
+            "transactions": 1
+          },
+          "session_route_setup": {
+            "gas": "141089",
+            "billed_gas": "141089",
+            "transactions": 3
+          }
+        }
+      ]
+    },
+    {
+      "name": "job-monad",
+      "raw_evidence": {
+        "full_report": "reports/job-two-chain-full/results.json",
+        "full_report_sha256": "67cb5da1557f406b574a2641495807a8ffe57d658d346e83f103e7e1e05d1a1f",
+        "raw_ledger": "reports/job-two-chain-full/transactions.jsonl",
+        "raw_ledger_sha256": "d02951b2cd195dc2fb294f59020beba8c69f583ec53a0b65ef92fc27e84757b2",
+        "full_costs": "reports/job-two-chain-full/cost-summary.json",
+        "full_costs_sha256": "bd57fb2f51371ff72413c782a73732a9b9dd9aadc82433983ca9de0db0a5f25f"
+      },
+      "stages": [
+        {
+          "stage": 0,
+          "chain_id": 4663,
+          "name": "Robinhood",
+          "profile": "ethereum",
+          "shared_model_weights_and_catalogs": {
+            "gas": "0",
+            "billed_gas": "0",
+            "transactions": 0
+          },
+          "new_session_routers_and_engines": {
+            "gas": "3458572",
+            "billed_gas": "3458572",
+            "transactions": 1
+          },
+          "excluded_mock_endpoints": {
+            "gas": "988311",
+            "billed_gas": "988311",
+            "transactions": 1
+          },
+          "session_route_setup": {
+            "gas": "99117",
+            "billed_gas": "99117",
+            "transactions": 2
+          }
+        },
+        {
+          "stage": 1,
+          "chain_id": 143,
+          "name": "Monad",
+          "profile": "monad",
+          "shared_model_weights_and_catalogs": {
+            "gas": "27905893518",
+            "billed_gas": "28190546675",
+            "transactions": 5597
+          },
+          "new_session_routers_and_engines": {
+            "gas": "7120001",
+            "billed_gas": "7193200",
+            "transactions": 2
+          },
+          "excluded_mock_endpoints": {
+            "gas": "987914",
+            "billed_gas": "998793",
+            "transactions": 1
+          },
+          "session_route_setup": {
+            "gas": "178012",
+            "billed_gas": "182791",
+            "transactions": 3
+          }
+        }
+      ]
+    },
+    {
+      "name": "economy-two-chain",
+      "raw_evidence": {
+        "full_report": "reports/economy-two-chain-full/results.json",
+        "full_report_sha256": "7e4b4e3d1fdfb98dc23a51d94430b4525f5c51ef0f04b808a5199c71a0582f51",
+        "raw_ledger": "reports/economy-two-chain-full/transactions.jsonl",
+        "raw_ledger_sha256": "50e998da12d41c64970f09c6a4ace56710abb484789a3c04f45cbb67f63e8939",
+        "full_costs": "reports/economy-two-chain-full/cost-summary.json",
+        "full_costs_sha256": "44d5a9ef39f9e5aca251720bf3266c13ef69ea5877f3720a246f51164dba51b7"
+      },
+      "stages": [
+        {
+          "stage": 0,
+          "chain_id": 4663,
+          "name": "Robinhood",
+          "profile": "ethereum",
+          "shared_model_weights_and_catalogs": {
+            "gas": "9158750135",
+            "billed_gas": "9158750135",
+            "transactions": 1775
+          },
+          "new_session_routers_and_engines": {
+            "gas": "6833544",
+            "billed_gas": "6833544",
+            "transactions": 2
+          },
+          "excluded_mock_endpoints": {
+            "gas": "988311",
+            "billed_gas": "988311",
+            "transactions": 1
+          },
+          "session_route_setup": {
+            "gas": "152948",
+            "billed_gas": "152948",
+            "transactions": 3
+          }
+        },
+        {
+          "stage": 1,
+          "chain_id": 143,
+          "name": "Monad",
+          "profile": "monad",
+          "shared_model_weights_and_catalogs": {
+            "gas": "27231181717",
+            "billed_gas": "27508939835",
+            "transactions": 5449
+          },
+          "new_session_routers_and_engines": {
+            "gas": "6856467",
+            "billed_gas": "6927031",
+            "transactions": 2
+          },
+          "excluded_mock_endpoints": {
+            "gas": "987914",
+            "billed_gas": "998793",
+            "transactions": 1
+          },
+          "session_route_setup": {
+            "gas": "200176",
+            "billed_gas": "205176",
+            "transactions": 3
+          }
+        }
+      ]
+    }
+  ],
+  "official_endpoint_session_components": {
+    "scope": "Additional measurements from local public-state forks; model engine deployment remains from full opBNB benchmark. These rows are not public paid transactions.",
+    "source": {
+      "full_report": "reports/self-relay-fork/results.json",
+      "full_report_sha256": "1f41c0f4fde08778cd0ba32c2af0ed31367cde520f1082e2750aaa76de4a4989",
+      "raw_ledger": "reports/self-relay-fork/transactions.jsonl",
+      "raw_ledger_sha256": "a8e0f8ddf8fe326dfd18d8ee4eba292707288d855ddac3b73df9eef0cf21c7ae"
+    },
+    "chains": [
+      {
+        "chain_id": 4663,
+        "job_router_creation": "3460030",
+        "self_relay_executor_creation": "324144",
+        "official_send_library_selection": "57742",
+        "official_send_library_configuration": "166824"
+      },
+      {
+        "chain_id": 204,
+        "job_router_creation": "3460030",
+        "self_relay_executor_creation": "324132",
+        "official_send_library_selection": "57742",
+        "official_send_library_configuration": "166824"
+      }
+    ]
+  }
+}
