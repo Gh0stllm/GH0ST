@@ -1,0 +1,47 @@
+{
+  "status": "PLANNING_ALLOCATION_NOT_NEW_MULTICHAIN_MEASUREMENT",
+  "modelId": "0xd5fe104a83865bb22299096cafcfe77eb1642fff8ddf0047306b4801599b4107",
+  "routeId": "0x2f89baf64437cb54e29157d15d09e2c0bfc8bc02a2fbd6dd718ac79e4f9a58dd",
+  "singleEvmBasisSha256": "c6165c8f7342d1ec16d13b69ab928d808d84568c776748585521eeeea830a002",
+  "tokenExamples": [
+    {
+      "contextPosition": 0,
+      "executionGasByProposedStage": {
+        "robinhood": 2860182,
+        "bsc": 1081960245,
+        "monad": 1066524944,
+        "arc": 2363587199
+      },
+      "totalExecutionGas": 4514981851,
+      "source": "historical completed single-EVM unbatched benchmark; assigned by phase/layer, excludes new protocol overhead"
+    },
+    {
+      "contextPosition": 1,
+      "executionGasByProposedStage": {
+        "robinhood": 1218643,
+        "bsc": 1073849999,
+        "monad": 1073816450,
+        "arc": 2370707252
+      },
+      "totalExecutionGas": 4519624648,
+      "source": "historical completed single-EVM unbatched benchmark; assigned by phase/layer, excludes new protocol overhead"
+    }
+  ],
+  "modelDataDeploymentGasByStage": {
+    "robinhood": 9158768075,
+    "bsc": 6256715059,
+    "monad": 6257749243,
+    "arc": 14742279907
+  },
+  "modelDataDeploymentGasTotal": 36415512284,
+  "messagesPerProcessedPosition": 4,
+  "nativeChainMetersMeasured": false,
+  "realLayerZeroFeesMeasured": false,
+  "routingOverheadIncluded": false,
+  "limitations": [
+    "Distinct chains use different meters and fee assets; these allocated units are not directly comparable native costs.",
+    "Deployment excludes new router/engine and security configuration transactions.",
+    "Context positions 0 and1 only; prefill and attention costs grow with prompt length.",
+    "No fee savings have been established."
+  ]
+}

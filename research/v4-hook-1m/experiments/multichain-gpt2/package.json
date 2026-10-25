@@ -1,0 +1,32 @@
+{
+  "name": "gh0st-multichain-gpt2-research",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "plan": "node scripts/plan.mjs",
+    "benchmark": "node scripts/local-benchmark.mjs",
+    "prepare:deployment": "node scripts/prepare-deployment.mjs",
+    "verify:deployment": "node scripts/verify-deployment.mjs",
+    "worker": "node scripts/worker.mjs",
+    "model:fetch": "python3 model/fetch.py",
+    "model:export": "python3 model/export.py",
+    "model:reference": "python3 model/reference.py --quick --tokens=2"
+  },
+  "dependencies": {
+    "ethers": "6.13.5"
+  },
+  "devDependencies": {
+    "solc": "0.8.30",
+    "@layerzerolabs/oapp-evm": "0.4.1",
+    "@layerzerolabs/lz-evm-protocol-v2": "3.0.168",
+    "@layerzerolabs/lz-evm-messagelib-v2": "3.0.168",
+    "@layerzerolabs/lz-evm-v1-0.7": "3.0.168",
+    "@openzeppelin/contracts": "5.4.0",
+    "@openzeppelin/contracts-upgradeable": "5.4.0",
+    "solidity-bytes-utils": "0.8.4"
+  }
+}
