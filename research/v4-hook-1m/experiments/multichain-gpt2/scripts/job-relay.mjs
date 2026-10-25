@@ -72,7 +72,12 @@ export async function chooseRelayAction(destination,packet) {
   if(equal(hash,packet.payloadHash))return {kind:'deliver',target:endpoint,method:'lzReceive',args:[packet.origin,config.router,packet.guid,packet.message,'0x']};
   assert(equal(hash,ZeroHash),'Endpoint holds a different or nil payload');
   assert(BigInt(await endpoint.lazyInboundNonce(config.router,packet.origin.srcEid,packet.origin.sender))<packet.origin.nonce,'Nonce already cleared without this job acceptance');
-  const uln=validateTwoDvnConfig(await receiveLibrary.getUlnConfig(config.router,packet.origin.srcEid),config);
+  const decoded=validateTwoDvnConfig(await receiveLibrary.getUlnConfig(config.router,packet.origin.srcEid),config);
+  // Copy immutable ethers Results before its argument resolver normalizes
+  // nested address arrays for the next contract call.
+  const uln={confirmations:decoded.confirmations,requiredDVNCount:decoded.requiredDVNCount,
+    optionalDVNCount:decoded.optionalDVNCount,optionalDVNThreshold:decoded.optionalDVNThreshold,
+    requiredDVNs:Array.from(decoded.requiredDVNs),optionalDVNs:Array.from(decoded.optionalDVNs)};
   if(!await receiveLibrary.verifiable(uln,packet.headerHash,packet.payloadHash))return {kind:'waiting-dvns'};
   return {kind:'commit',target:receiveLibrary,method:'commitVerification',args:[packet.header,packet.payloadHash]};
 }

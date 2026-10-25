@@ -1,8 +1,8 @@
 {
   "schemaVersion": 3,
-  "status": "PASS_LOCAL_ECONOMY_GPT2_RESEARCH_PUBLIC_DELIVERY_UNPROVEN",
-  "publicTransactionsSubmitted": 0,
-  "publicDeployment": false,
+  "status": "PASS_PUBLIC_CANARY_LOCAL_MODEL_RESEARCH",
+  "publicTransactionsSubmitted": 22,
+  "publicDeployment": true,
   "productionMessagingVerified": false,
   "paidFeeSavingsVerified": false,
   "localFeeScenarioVerified": true,
@@ -77,10 +77,10 @@
     "previousBaselineEvidence": "local-benchmark.json"
   },
   "latestNodeTests": {
-    "passed": 110,
+    "passed": 126,
     "failed": 0,
-    "log": "reports/canary-uncapped-test.log",
-    "logSha256": "1bd1282a5ca56fd2b79f6ce5735170c6794c82493b0f05e93a4f7344e5bd21dd"
+    "log": "reports/canary-live-final-tests.log",
+    "logSha256": "628ee896af7be8bcb9b627534ce634bc6f237ab279889a3edd6196371b8b5152"
   },
   "additionalPostingProxyTests": {
     "passed": 2,
@@ -88,17 +88,20 @@
     "scope": "Method, argument, and upstream payload restrictions; offline only"
   },
   "canaryResearch": {
-    "status": "PASS_LOCAL_MODEL_FREE_CANARY_PUBLIC_TEST_PENDING",
+    "status": "PASS_PUBLIC_ROUND_TRIP",
     "applicationChecks": 43,
     "officialLocalTransportChecks": 37,
     "expectedTransportReverts": 32,
     "budgetTests": 28,
-    "configurationAndRecoveryTests": 20,
+    "configurationAndRecoveryTests": 21,
     "mockDvnAttestations": true,
-    "publicTransactionsSubmitted": 0,
-    "publicRoundTripVerified": false,
-    "evidence": "canary-local.json",
+    "publicTransactionsSubmitted": 22,
+    "publicRoundTripVerified": true,
+    "evidence": "canary-public.json",
     "guide": "../docs/CANARY.md",
-    "explicitUncappedSpendingSupported": true
-  }
+    "explicitUncappedSpendingSupported": true,
+    "keystoreTests": 14
+  },
+  "publicDeploymentKind": "model-free-canary",
+  "modelPublicDeployment": false
 }

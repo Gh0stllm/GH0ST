@@ -1,9 +1,9 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import {AbiCoder,ZeroHash,concat,dataSlice,keccak256,solidityPacked,zeroPadValue,getBytes} from 'ethers';
+import {AbiCoder,Contract,Interface,ZeroHash,concat,dataSlice,keccak256,solidityPacked,zeroPadValue,getBytes} from 'ethers';
 import {MODEL_ID,JOB_ROUTE_IDS,TRUSTED_JOB_TRANSPORT} from '../scripts/job-plan.mjs';
 import {JOB_PACKET_TYPE,packJobTokens} from '../scripts/job-worker.mjs';
-import {decodeRelayPacket,validateTwoDvnConfig,chooseRelayAction,sendRelayAction,FIXED_OPTIONS} from '../scripts/job-relay.mjs';
+import {decodeRelayPacket,validateTwoDvnConfig,chooseRelayAction,sendRelayAction,FIXED_OPTIONS,ULN_RELAY_ABI} from '../scripts/job-relay.mjs';
 const coder=AbiCoder.defaultAbiCoder();
 const addr=n=>'0x'+n.toString(16).padStart(40,'0');
 function fixture(result=false) {
@@ -48,6 +48,17 @@ test('failed quorum never constructs a payable commit or delivery action',async(
 test('successful quorum commits exact packet header and guid-plus-message hash',async()=>{
  const f=fixture(),d=receiver(f,{quorum:true});const action=await chooseRelayAction(d,f.decoded);
  assert.equal(action.method,'commitVerification');assert.deepEqual(action.args,[f.header,keccak256(concat([f.guid,f.message]))]);
+});
+test('real ethers immutable ULN results pass through contract argument resolution safely',async()=>{
+ const f=fixture(),d=receiver(f),iface=new Interface(ULN_RELAY_ABI),calls=[];
+ d.receiveLibrary=new Contract(addr(99),ULN_RELAY_ABI,{call:async tx=>{
+   const parsed=iface.parseTransaction(tx);calls.push(parsed.name);
+   if(parsed.name==='getUlnConfig')return iface.encodeFunctionResult('getUlnConfig',[[20,2,0,0,d.uln.requiredDVNs,[]]]);
+   assert.equal(parsed.name,'verifiable');assert.deepEqual(Array.from(parsed.args[0].requiredDVNs).map(x=>x.toLowerCase()),d.uln.requiredDVNs);
+   assert.equal(parsed.args[1],f.decoded.headerHash);assert.equal(parsed.args[2],f.decoded.payloadHash);
+   return iface.encodeFunctionResult('verifiable',[true]);
+ }});
+ const action=await chooseRelayAction(d,f.decoded);assert.equal(action.kind,'commit');assert.deepEqual(calls,['getUlnConfig','verifiable']);
 });
 test('delivery is selected only after endpoint stores the exact verified payload hash',async()=>{
  const f=fixture(),d=receiver(f,{stored:f.decoded.payloadHash});const action=await chooseRelayAction(d,f.decoded);

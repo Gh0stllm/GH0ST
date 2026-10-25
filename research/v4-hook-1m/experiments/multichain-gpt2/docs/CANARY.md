@@ -2,7 +2,9 @@
 
 This is a small, model-free deployment to test the exact two-chain transport before paying to deploy model weights. RH sends one challenge; opBNB accepts it and sends an acknowledgement; RH accepts the acknowledgement. The route uses the official LayerZero EndpointV2 and ULN libraries, two required DVNs in each direction, and GH0ST's self-operated delivery runner. No model, inference, swap or token transfer occurs.
 
-**Current evidence is local only.** Application tests exercise 43 guards. A separate test runs unmodified official EndpointV2, SendUln302 and ReceiveUln302 on two local chains and passes 37 checks, including 32 expected reverts. Its two DVNs are explicitly mocked; it establishes neither live DVN participation nor public delivery. See `evidence/canary-local.json` and the original reports named there.
+**The public canary completed on 25 October 2026.** All 22 deployment, configuration and transport transactions succeeded. RH accepted the matching acknowledgement from opBNB. The [public evidence](../evidence/canary-public.json) records contracts, receipt hashes, two-DVN verification and actual fees. The run included a manual restart after a local ethers argument-encoding bug; its total elapsed time is not a steady-state network-latency benchmark. No model weights, inference or swap were included.
+
+Local application tests exercise 43 guards. A separate test runs unmodified official EndpointV2, SendUln302 and ReceiveUln302 on two local chains and passes 37 checks, including 32 expected reverts. Its two DVNs are explicitly mocked; it establishes neither live DVN participation nor public delivery. See `evidence/canary-local.json` and the original reports named there.
 
 The managed LayerZero executors rejected this exact endpoint pair in the inspected snapshot. Self-delivery removes the executor service charge but still pays source transaction fees, both DVNs, destination verification and delivery transactions. If either real DVN does not attest to this route, the runner waits. It cannot manufacture an attestation or bypass the quorum.
 
@@ -37,6 +39,10 @@ The second command is read-only unless `--execute` is supplied. A pending-nonce 
 
 ## Enable and run
 
+For the local interactive workflow, `npm run canary:setup` accepts the account private key through a hidden TTY prompt, verifies the exact configured wallet address and writes only an encrypted version-3 keystore under ignored `deployments/canary-signer.json` with mode `0600`. It never signs or broadcasts. The key and password are never passed through command arguments, shell history or environment variables. Run this in a private local terminal, not chat.
+
+`npm run canary:check` reads both balances and reports whether the encrypted signer is present. `npm run canary:run` checks that both chains are funded, unlocks the keystore through a hidden password prompt, then deploys and runs the canary. It passes the unlocked signer directly in memory. The existing environment-key commands below remain available for other operators; they are not used by this encrypted-keystore workflow.
+
 Paid execution requires the configured admin's signer, native balances on both chains, explicit spending authorization, and all three explicit flags. The default bounded policy uses positive gas-price and message-fee caps; set `maxPostingFeeWei` to zero on RH and a positive reviewed bound on opBNB. Limits apply independently to each chain. The example limits are proposals, not permission to spend. Do not place private keys in JSON, source files or chat.
 
 When the operator explicitly authorizes no monetary limits, set top-level `spendingPolicy` to `"uncapped"` and set all four monetary fields on **both** chains to `null`: `maxTotalSpendWei`, `maxFeePerGasWei`, `maxMessageFeeWei` and `maxPostingFeeWei`. This removes total, gas-price, message-value and posting-fee spending caps without substituting a large artificial number. Transactions still use fresh network fee quotes, finite protocol gas limits, exact preflight checks, the configured signer and available balance. A bounded ledger cannot silently become uncapped; its identity check preserves the existing authorization history.
@@ -63,4 +69,4 @@ Only one process may spend a session's chain budget at a time. An unclean shutdo
 
 ## Public success criteria
 
-Record both deployments, the original ping and acknowledgement, both verification commits, both deliveries, all receipt gas and opBNB posting fees, and the RH contract's final accepted challenge. Report cost and latency from those public receipts. Until those exist, this package is tested local infrastructure with a prepared public canary, not a live cross-chain inference deployment.
+Record both deployments, the original ping and acknowledgement, both verification commits, both deliveries, all receipt gas and opBNB posting fees, and the RH contract's final accepted challenge. Report cost and latency from those public receipts. Those transport records now exist for the completed canary. A public full-model inference deployment still requires its own model, execution and result evidence.

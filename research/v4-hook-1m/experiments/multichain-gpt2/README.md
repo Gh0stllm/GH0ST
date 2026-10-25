@@ -4,7 +4,7 @@ A real, quantized **124,439,808-parameter GPT-2** executor with Robinhood Chain 
 
 This is research infrastructure. Compilation and local tests are separate from public deployment, real interchain delivery and paid-chain fee savings. See `evidence/STATUS.json` for the precise completed checks from this revision.
 
-The next deployment is a small **RH → opBNB → RH transport canary**, before model weights. It includes sealed request/acknowledgement contracts, an exact unsigned deployment plan, a two-DVN delivery runner, and persistent native-fee budgets. The local official-protocol test passed; its DVN attestations are mocked, and no public canary transaction has been submitted. See [canary setup and recovery](docs/CANARY.md) and [local evidence](evidence/canary-local.json).
+The **RH → opBNB → RH transport canary has completed on both public chains**: all 22 deployment, setup and message transactions succeeded, and RH accepted the acknowledgement. Both directions retain the two-required-DVN configuration. This canary deployed no model weights and performed no inference or swap. See [public proof](evidence/canary-public.json), [canary setup and recovery](docs/CANARY.md), and [local test evidence](evidence/canary-local.json).
 
 ## Cheapest measured architecture
 
@@ -18,7 +18,7 @@ The next deployment is a small **RH → opBNB → RH transport canary**, before 
 
 The low bid has **no demonstrated inclusion guarantee**. All figures are local measurements repriced at captured public fees; initial shared weights, session-setup posting, operator hosting and margins are additional. Session contracts are single-use. Longer prompts and responses cost more. See [complete cost accounting](docs/ECONOMY-COSTS.md) and [deployment/relay guide](docs/JOB-DEPLOYMENT.md).
 
-The full opBNB-profile run passed: two outputs `[198, 464]`, 172 phase vectors, 100,514 vocabulary logits and 72 KV comparisons, with 6,244 reconciled local receipts. All 124,439,808 parameters and the existing INT8/Q12 arithmetic are retained. A separate fork test exercised the official LayerZero source Endpoint and send library, including source-side fee assignment to both official DVNs, in both directions. Public destination delivery remains untested, and the default managed executor does not support this pair in our snapshot. The optional self-operated executor retains the two-DVN security configuration and requires an operator to commit verified messages and execute delivery.
+The full opBNB-profile run passed: two outputs `[198, 464]`, 172 phase vectors, 100,514 vocabulary logits and 72 KV comparisons, with 6,244 reconciled local receipts. All 124,439,808 parameters and the existing INT8/Q12 arithmetic are retained. A separate fork test exercised the official LayerZero source Endpoint and send library, including source-side fee assignment to both official DVNs, in both directions. Public full-model job delivery remains untested; the separate model-free canary verifies its transport route. The default managed executor does not support this pair in our snapshot. The optional self-operated executor retains the two-DVN security configuration and requires an operator to commit verified messages and execute delivery.
 
 After preparing the canonical export in `data/` as described below (or supplying `--data` to the planner):
 

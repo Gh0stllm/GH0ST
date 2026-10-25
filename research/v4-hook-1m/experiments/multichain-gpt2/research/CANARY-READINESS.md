@@ -1,3 +1,7 @@
+## Public completion update
+
+The model-free RH to opBNB to RH canary completed on 25 October 2026. All 22 transactions succeeded and RH accepted the matching acknowledgement. The historical readiness snapshots below remain as provenance; the current public proof is in `../evidence/canary-public.json`. Model weights and inference were not deployed.
+
 # RH ↔ opBNB transport canary readiness
 
 Checked 25 October 2026 at **15:39:03 UTC**. Read-only: no signatures, transactions, deployments, approvals, funding or private-key reads. Scope is a small **model-free request/acknowledgement round trip**, not model installation or a trading pool.
