@@ -25,7 +25,35 @@ const safeInteger = value => Number.isSafeInteger(value) && value >= 0;
 const validAddress = value => typeof value === 'string' && addressPattern.test(value) && !equal(value, ZeroAddress);
 const validHash = value => typeof value === 'string' && digestPattern.test(value) && !equal(value, ZeroHash);
 
+export const SUPPORTED_ENGINES = Object.freeze(['GPT2Shard', 'GPT2ShardOptimized']);
+const TRUSTED_ROUTE_FILES = Object.freeze(['config/chains.json', 'config/chains.optimized.json']);
+
+// The runtime manifest selects audited local sources, never supplied bytecode or arbitrary JSON.
+export function resolveProductionSelection(config = {}) {
+  const engineContract = config.engineContract ?? 'GPT2Shard';
+  requireThat(SUPPORTED_ENGINES.includes(engineContract), 'CONFIG_ENGINE_NOT_ALLOWED');
+  const requested = config.routeConfiguration ?? 'config/chains.json';
+  requireThat(typeof requested === 'string', 'CONFIG_ROUTE_FILE_NOT_ALLOWED');
+  const resolved = path.resolve(HERE, requested);
+  const routeConfiguration = TRUSTED_ROUTE_FILES.find(name => path.resolve(HERE, name) === resolved);
+  requireThat(Boolean(routeConfiguration), 'CONFIG_ROUTE_FILE_NOT_ALLOWED');
+  requireThat(fs.realpathSync(resolved) === path.resolve(fs.realpathSync(HERE), routeConfiguration), 'CONFIG_ROUTE_FILE_SYMLINK');
+  const bytes = fs.readFileSync(resolved);
+  const routeConfigurationSha256 = hash(bytes);
+  requireThat(config.routeConfigurationSha256 === undefined
+    || config.routeConfigurationSha256 === routeConfigurationSha256, 'CONFIG_ROUTE_FILE_HASH');
+  return {engineContract, routeConfiguration, routeConfigurationSha256, configuration: JSON.parse(bytes)};
+}
+
+export function nativeTransactionGasCeiling(chain, plannedChain = chain) {
+  const nativeMaximum = chain.chainId === 143 && chain.key === 'monad' ? 30000000n : 16777216n;
+  const configuredMaximum = BigInt(plannedChain.maxTransactionGas ?? nativeMaximum);
+  requireThat(configuredMaximum > 100000n && configuredMaximum <= nativeMaximum, 'CONFIG_NATIVE_GAS_CEILING');
+  return configuredMaximum;
+}
+
 export function validateRuntimeConfig(config, plan) {
+  const selection = resolveProductionSelection(config);
   requireThat(config?.schemaVersion === 1, 'CONFIG_SCHEMA');
   requireThat(config.enabled === undefined || typeof config.enabled === 'boolean', 'CONFIG_ENABLED');
   requireThat(equal(config.modelId, MODEL_ID) && equal(config.modelId, plan.modelId), 'CONFIG_MODEL_ID');
@@ -50,7 +78,8 @@ export function validateRuntimeConfig(config, plan) {
     requireThat(safeInteger(chain.deploymentBlock), 'CONFIG_DEPLOYMENT_BLOCK');
     requireThat(chain.confirmations === undefined || (safeInteger(chain.confirmations) && chain.confirmations >= 1), 'CONFIG_CONFIRMATIONS');
     try {
-      requireThat(BigInt(chain.maxTransactionGas) > 100000n && BigInt(chain.maxTransactionGas) <= 16777216n,
+      requireThat(chain.engineContract === undefined || chain.engineContract === selection.engineContract, 'CONFIG_CHAIN_ENGINE');
+      requireThat(BigInt(chain.maxTransactionGas) > 100000n && BigInt(chain.maxTransactionGas) <= nativeTransactionGasCeiling(chain, expected),
         'CONFIG_TRANSACTION_GAS');
       requireThat(BigInt(chain.maxMessageFeeWei) >= 0n, 'CONFIG_MESSAGE_FEE');
     } catch (error) {
@@ -228,11 +257,12 @@ async function verifyWeights({ rpc, root, rootCode, stagePlan, manifest, dataDir
 }
 
 export async function verifyDeployment({ config, dataDirectory, progress = () => {} }) {
-  let plan, manifest, built;
+  let plan, manifest, built, selection;
   try {
     manifest = JSON.parse(fs.readFileSync(path.join(dataDirectory, 'manifest.json')));
     verifyManifestLayout(manifest);
-    plan = makePlan(dataDirectory, { verify: true });
+    selection = resolveProductionSelection(config);
+    plan = makePlan(dataDirectory, { verify: true, configuration: selection.configuration });
     validateRuntimeConfig(config, plan);
     built = compile();
   } catch (error) {
@@ -242,6 +272,8 @@ export async function verifyDeployment({ config, dataDirectory, progress = () =>
   const endpointInterface = new Interface(['function eid() view returns (uint32)']);
   const report = { schemaVersion: 1, status: 'VERIFYING', startedAt: new Date().toISOString(),
     modelId: config.modelId, routeId: config.routeId, sessionId: config.sessionId,
+    engineContract: selection.engineContract, routeConfiguration: selection.routeConfiguration,
+    routeConfigurationSha256: selection.routeConfigurationSha256,
     compilerSourcesHash: built.compiler.sources_commitment_sha256,
     compilerVersion: built.compiler.version, manifestSha256: plan.manifestSha256,
     checkpointSha256: plan.checkpointSha256, messagingReady: false,
@@ -260,7 +292,9 @@ export async function verifyDeployment({ config, dataDirectory, progress = () =>
       requireThat(block && validHash(block.hash) && typeof block.number === 'string', 'SNAPSHOT_BLOCK_INVALID');
       const blockTag = block.number;
       const routerInterface = new Interface(built.artifacts.GPT2InferenceOApp.abi);
-      const engineInterface = new Interface(built.artifacts.GPT2Shard.abi);
+      const engineArtifact = built.artifacts[selection.engineContract];
+      requireThat(Boolean(engineArtifact?.evm.bytecode.object), 'ENGINE_ARTIFACT_MISSING');
+      const engineInterface = new Interface(engineArtifact.abi);
       async function call(address, iface, method, args = []) {
         const result = await rpc.request('eth_call', [{ to: address, data: iface.encodeFunctionData(method, args) }, blockTag]);
         try { return iface.decodeFunctionResult(method, result)[0]; }
@@ -311,7 +345,7 @@ export async function verifyDeployment({ config, dataDirectory, progress = () =>
           requireThat(config.admin === undefined || equal(args[1], config.admin), 'ROUTER_DEPLOYMENT_ADMIN');
         } });
       const engineCreation = await verifyCreation({ rpc, chain, address: chain.engine, transactionHash: chain.engineDeploymentTx,
-        artifact: built.artifacts.GPT2Shard, blockTag, expectedArgs: args => {
+        artifact: engineArtifact, blockTag, expectedArgs: args => {
           requireThat(equal(args[0], chain.root) && equal(args[1], rootCodeHash) && equal(args[2], config.modelId)
             && BigInt(args[3]) === BigInt(chain.chainId) && Number(args[4]) === stagePlan.layerRange[0]
             && Number(args[5]) === stagePlan.layerRange[1] && args[6] === stagePlan.doesEmbedding
@@ -343,6 +377,7 @@ export async function verifyDeployment({ config, dataDirectory, progress = () =>
       requireThat(endBlock && equal(endBlock.hash, block.hash), 'SNAPSHOT_REORG');
       requireThat(BigInt(await rpc.request('eth_chainId')) === BigInt(chain.chainId), 'RPC_CHAIN_ID_CHANGED');
       report.chains.push({ key: chain.key, stage, chainId: chain.chainId, eid: chain.eid,
+        engineContract: selection.engineContract,
         router: getAddress(chain.router), engine: getAddress(chain.engine), root: getAddress(chain.root),
         routerCodeHash: routerCreation.codeHash, engineCodeHash: engineCreation.codeHash, rootCodeHash,
         verifiedBlock: Number(BigInt(blockTag)), verifiedBlockHash: block.hash,
@@ -362,6 +397,7 @@ export async function verifyDeployment({ config, dataDirectory, progress = () =>
     }
   }
   assertSourcesUnchanged(built);
+  requireThat(resolveProductionSelection(config).routeConfigurationSha256 === selection.routeConfigurationSha256, 'CONFIG_ROUTE_CHANGED_DURING_VERIFICATION');
   report.status = 'PASS_VERIFIED_DEPLOYMENT';
   report.completedAt = new Date().toISOString();
   report.totals = { verifiedWeightShards: report.chains.reduce((n, c) => n + c.verifiedWeightShards, 0),

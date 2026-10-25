@@ -2,18 +2,20 @@
 
 A real, quantized **124,439,808-parameter GPT-2** executor split across four EVM chains, with authenticated results returning to Robinhood Chain. The token remains GH0ST; this package creates no coin and changes no token supply.
 
-This is research infrastructure. Compilation and local tests are separate from public deployment, real interchain delivery, native chain metering and fee savings. See `evidence/STATUS.json` for the precise completed checks from this revision.
+This is research infrastructure. Compilation and local tests are separate from public deployment, real interchain delivery and paid-chain fee savings. See `evidence/STATUS.json` for the precise completed checks from this revision.
 
-The full four-node run passed: two generated token IDs (198, 464), 172 phase commitments, all 100,514 vocabulary logits and 72 KV-vector comparisons match the independent integer reference. All 7,966 local transaction receipts reconcile. The 62 protocol checks and eight worker-configuration tests also pass. No public transaction was submitted.
+The optimized research route uses **RH → BNB → Arc → Monad → RH**, moving ten transformer blocks and the full output head to Monad. It preserves the canonical weights and arithmetic. See [optimization details](docs/OPTIMIZATION.md), [per-chain dollar estimates](docs/COSTS.md), and [captured fee sources](docs/FEE-SOURCES.md). The original engine and 4/4/4 layout remain available for comparison. Both complete native-profile comparisons passed with identical token outputs and full phase/logit/KV checks. The second-position model/import estimate fell from **$91.88 to $21.71 (76.37%)** at the captured prices. Adding provider components gives **$22.76**; adding a conservative source-execution allowance and RH posting scenario gives **$24.55**. These are short-context local-benchmark projections, not paid mainnet fees.
+
+The original generic-Cancun four-node run passed: two generated token IDs (198, 464), 172 phase commitments, all 100,514 vocabulary logits and 72 KV-vector comparisons match the independent integer reference. All 7,966 local transaction receipts reconcile. The current 62 protocol checks, 16 configuration checks and eight worker-selection checks also pass. No public transaction was submitted.
 
 | Stage | Intended chain | Computation |
 | --- | --- | --- |
 | 0 | Robinhood, 4663 | Token/position embedding; receive final output |
-| 1 | BNB, 56 | Transformer blocks 0–3 |
-| 2 | Monad, 143 | Transformer blocks 4–7 |
-| 3 | Arc, 5042 | Blocks 8–11, final normalization, all 50,257 output logits |
+| 1 | BNB, 56 | Transformer block 0 |
+| 2 | Arc, 5042 | Transformer block 1 |
+| 3 | Monad, 143 | Blocks 2–11, final normalization, all 50,257 output logits |
 
-For every processed token position, the route is **RH → BNB → Monad → Arc → RH**. Each intermediate message carries one 768-element signed-int32 residual vector: 3,072 bytes. The canonical ABI packet is 3,488 bytes; the final token packet is 416 bytes. KV caches stay on the chain that owns the associated layers. Computation advances through bounded transactions; no model inference runs inside the messaging callback.
+For every processed token position, the optimized route is **RH → BNB → Arc → Monad → RH**. Each intermediate message carries one 768-element signed-int32 residual vector: 3,072 bytes. The canonical ABI packet is 3,488 bytes; the final token packet is 416 bytes. KV caches stay on the chain that owns the associated layers. Computation advances through bounded transactions; no model inference runs inside the messaging callback.
 
 This is sequential layer partitioning. It does not execute dependent blocks in parallel. All parameters are retained; INT8 weights, row scales and Q12 activations approximate FP32 GPT-2. GPT-2 124M is the first integration model, not a billion-parameter or instruction-tuned model.
 
@@ -43,9 +45,12 @@ Set `GH0ST_MODEL_CACHE` to reuse an existing checkpoint/tokenizer directory. The
 
 The local harness creates four separate unforked EVM nodes, deploys actual model bytes using CREATE, executes the full model, checks phase vectors and the complete vocabulary against the independent CPU oracle, and records transaction receipts. Local endpoint mocks replace only the external message-delivery service. They are not LayerZero security verification or production fee quotes. The four local nodes use a common EVM gas schedule with target chain IDs; native Monad, BNB, Arc and Robinhood metering is a separate measurement.
 
+The newer comparison harness uses native Monad metering and tight declared gas limits on its Monad stage. Run `npm run plan:optimized`, `npm run benchmark:baseline-native -- --tokens=2`, and `npm run benchmark:optimized -- --tokens=2 --out=reports/optimized-native-full`. Then `npm run costs -- --markdown=docs/COSTS.md` reconciles receipts and applies the saved live price snapshot. The other three nodes still use generic Cancun; exact target-chain fee quotes remain separate.
+
 ## Structure
 
 - `contracts/GPT2Shard.sol`: real bounded inference, strict token-position sequencing and local KV state.
+- `contracts/GPT2ShardOptimized.sol`: compatible exact-arithmetic candidate with fewer repeated reads and copies; selected explicitly by the optimized plan.
 - `contracts/GPT2InferenceOApp.sol`: official LayerZero V2 OApp transport, immutable session/route identity, sealed peers, activation commitments and RH finalization.
 - `contracts/mocks/`: isolated protocol-test fixtures. Never use them for a public deployment.
 - `scripts/plan.mjs`: validates the complete model, exact partition coverage and every assigned weight hash.
@@ -57,11 +62,11 @@ The local harness creates four separate unforked EVM nodes, deploys actual model
 - `config/`: network metadata and an intentionally incomplete, disabled deployment template.
 - `docs/TRANSPORT.md`: authentication, operational setup and trust boundaries.
 
-## Cost objective
+## Historical baseline cost
 
 The goal is a lower total fee per inference. Splitting does not remove matrix operations, and adds message delivery plus activation import/export. Gas numbers from different chains are not directly interchangeable economic costs.
 
-Latest measured local run, including activation import/export and **simulated** message send/receive:
+Original generic-Cancun run, before the fee-aware placement and kernel optimization, including activation import/export and **simulated** message send/receive:
 
 | Stage | First position gas | Second position gas |
 | --- | ---: | ---: |
@@ -101,6 +106,6 @@ node scripts/worker.mjs --config=deployments/runtime.json --execute --watch \
 
 The initial version uses one contract pair per session, not a multi-tenant serving cluster. A stalled or expired route needs operator recovery; the worker does not skip authenticated sequence rules or fabricate results. No end-user fee escrow, slashing, trustless computation proof or production deployment is claimed.
 
-The data catalogs themselves can be reused by subsequent verified sessions on the same chain; the supplied deployment planner prepares a full initial installation. Session state and KV caches belong to the engine instance.
+The data catalogs themselves can be reused by subsequent verified sessions on the same chain; the supplied deployment planner prepares a full initial installation. Session state and KV caches belong to the engine instance. For the optimized route, use `config/runtime.optimized.example.json` and explicitly select `--config=config/chains.optimized.json --engine=GPT2ShardOptimized` when preparing unsigned deployment requests. Verification pins both selections and the route-file hash.
 
 Model provenance: [official GPT-2](https://github.com/openai/gpt-2), checkpoint revision `607a30d783dfa663caf39e06633721c8d4cfcd7e`, SHA-256 `248dfc3911869ec493c76e65bf2fcf7f615828b0254c12b473182f0f81d3a707`. LayerZero network and security sources are linked in `config/chains.json` and `docs/TRANSPORT.md`.

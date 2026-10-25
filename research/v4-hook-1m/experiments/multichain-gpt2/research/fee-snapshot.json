@@ -1,0 +1,788 @@
+{
+  "schemaVersion": 1,
+  "status": "LIVE_PRICE_RPC_AND_PROVIDER_COMPONENT_SNAPSHOT_NOT_NATIVE_INFERENCE_COST",
+  "captureStartedAtUtc": "2026-10-25T10:10:47.776025+00:00",
+  "captureCompletedAtUtc": "2026-10-25T10:10:55.583128+00:00",
+  "market": {
+    "status": "LIVE_MARKET_SNAPSHOT",
+    "sourceUrl": "https://api.coingecko.com/api/v3/simple/price?ids=ethereum,binancecoin,monad,usd-coin&vs_currencies=usd&include_last_updated_at=true",
+    "retrievedAtUtc": "2026-10-25T10:10:55.579629+00:00",
+    "quoteCurrency": "USD",
+    "raw": {
+      "ethereum": {
+        "usd": 2326.16,
+        "last_updated_at": 1792923026
+      },
+      "binancecoin": {
+        "usd": 737.44,
+        "last_updated_at": 1792923038
+      },
+      "monad": {
+        "usd": 0.0209865,
+        "last_updated_at": 1792923038
+      },
+      "usd-coin": {
+        "usd": 0.999562,
+        "last_updated_at": 1792923038
+      }
+    }
+  },
+  "chains": [
+    {
+      "key": "robinhood",
+      "expectedChainId": 4663,
+      "nativeSymbol": "ETH",
+      "nativeDecimals": 18,
+      "coinGeckoId": "ethereum",
+      "rpcSourceUrl": "https://rpc.mainnet.chain.robinhood.com",
+      "rpcSourceDocsUrl": "https://docs.robinhood.com/chain/connecting/",
+      "readStartedAtUtc": "2026-10-25T10:10:47.777684+00:00",
+      "chainId": 4663,
+      "chainIdVerifiedBeforeOtherReads": true,
+      "gasPriceWei": "20014000",
+      "gasPriceGwei": "0.020014",
+      "block": {
+        "number": "97508232",
+        "hash": "0x274affa2f0a2ac184657a1403ce8e88a2a9789b0a4d2b6d1a010e361ff0a83f0",
+        "timestamp": "1792923049",
+        "gasLimit": "1125899906842624",
+        "gasUsed": "171587",
+        "baseFeePerGas": "20068000",
+        "timestampUtc": "2026-10-25T10:10:49+00:00"
+      },
+      "priorityFeeWei": "0",
+      "feeHistory": {
+        "oldestBlock": "0x5cfdb96",
+        "reward": [
+          [
+            "0x0",
+            "0x0",
+            "0x0"
+          ],
+          [
+            "0x0",
+            "0x0",
+            "0x0"
+          ],
+          [
+            "0x0",
+            "0x0",
+            "0x0"
+          ],
+          [
+            "0x0",
+            "0x0",
+            "0x0"
+          ],
+          [
+            "0x0",
+            "0x0",
+            "0x0"
+          ]
+        ],
+        "baseFeePerGas": [
+          "0x1316b80",
+          "0x1319290",
+          "0x131d110",
+          "0x131e880",
+          "0x1323e70",
+          "0x1324e10"
+        ],
+        "gasUsedRatio": [
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      "arbGasInfoGetPricesInWei": {
+        "contract": "0x000000000000000000000000000000000000006c",
+        "blockNumber": "97508232",
+        "rawWords": [
+          "2191282240",
+          "15652016",
+          "401360000000",
+          "20000000",
+          "68000",
+          "20068000"
+        ],
+        "status": "success",
+        "decoded": {
+          "perL2TransactionWei": "2191282240",
+          "perL1CalldataByteWei": "15652016",
+          "perStorageAllocationWei": "401360000000",
+          "perArbGasBaseWei": "20000000",
+          "perArbGasCongestionWei": "68000",
+          "perArbGasTotalWei": "20068000"
+        },
+        "interfaceSourceUrl": "https://github.com/OffchainLabs/nitro-precompile-interfaces/blob/main/ArbGasInfo.sol"
+      },
+      "status": "LIVE_PUBLIC_RPC_SNAPSHOT",
+      "readCompletedAtUtc": "2026-10-25T10:10:54.038851+00:00",
+      "nativeUsd": "2326.16",
+      "marketUpdatedAtUnix": 1792923026,
+      "marketUpdatedAtUtc": "2026-10-25T10:10:26+00:00",
+      "nominalUsdPerNativeGas": "4.655576624E-8",
+      "nominalUsdPerMillionNativeGas": "0.04655576624000000",
+      "fixed500kReceiveBudgetNominalUsd": "0.02327788312000000"
+    },
+    {
+      "key": "bsc",
+      "expectedChainId": 56,
+      "nativeSymbol": "BNB",
+      "nativeDecimals": 18,
+      "coinGeckoId": "binancecoin",
+      "rpcSourceUrl": "https://bsc-dataseed.bnbchain.org",
+      "rpcSourceDocsUrl": "https://docs.bnbchain.org/bnb-smart-chain/developers/json_rpc/json-rpc-endpoint/",
+      "readStartedAtUtc": "2026-10-25T10:10:47.777901+00:00",
+      "chainId": 56,
+      "chainIdVerifiedBeforeOtherReads": true,
+      "gasPriceWei": "50000000",
+      "gasPriceGwei": "0.05",
+      "block": {
+        "number": "129687407",
+        "hash": "0xd8bbc5907bc6af9df333525dbba7cbcb32961f56f60a9758eab93f58f69c923f",
+        "timestamp": "1792923051",
+        "gasLimit": "70000000",
+        "gasUsed": "19303605",
+        "baseFeePerGas": "0",
+        "timestampUtc": "2026-10-25T10:10:51+00:00"
+      },
+      "priorityFeeWei": "50000000",
+      "feeHistory": {
+        "oldestBlock": "0x7badf70",
+        "reward": [
+          [
+            "0x2faf080",
+            "0x2faf081",
+            "0x8f0d180"
+          ],
+          [
+            "0x2faf080",
+            "0x2faf080",
+            "0x4749830"
+          ],
+          [
+            "0x2faf080",
+            "0x2faf080",
+            "0x8f0d180"
+          ],
+          [
+            "0x2faf080",
+            "0x311d3e0",
+            "0x5f5e100"
+          ],
+          [
+            "0x2faf080",
+            "0x2faf080",
+            "0x5f5e100"
+          ]
+        ],
+        "baseFeePerGas": [
+          "0x0",
+          "0x0",
+          "0x0",
+          "0x0",
+          "0x0",
+          "0x0"
+        ],
+        "gasUsedRatio": [
+          0.32102831428571427,
+          0.23946844285714286,
+          0.2186511142857143,
+          0.19670727142857142,
+          0.33997725714285715
+        ],
+        "baseFeePerBlobGas": [
+          "0x1",
+          "0x1",
+          "0x1",
+          "0x1",
+          "0x1",
+          "0x1"
+        ],
+        "blobGasUsedRatio": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "status": "LIVE_PUBLIC_RPC_SNAPSHOT",
+      "readCompletedAtUtc": "2026-10-25T10:10:54.310674+00:00",
+      "nativeUsd": "737.44",
+      "marketUpdatedAtUnix": 1792923038,
+      "marketUpdatedAtUtc": "2026-10-25T10:10:38+00:00",
+      "nominalUsdPerNativeGas": "3.68720E-8",
+      "nominalUsdPerMillionNativeGas": "0.0368720000000",
+      "fixed500kReceiveBudgetNominalUsd": "0.0184360000000"
+    },
+    {
+      "key": "monad",
+      "expectedChainId": 143,
+      "nativeSymbol": "MON",
+      "nativeDecimals": 18,
+      "coinGeckoId": "monad",
+      "rpcSourceUrl": "https://rpc.monad.xyz",
+      "rpcSourceDocsUrl": "https://docs.monad.xyz/developer-essentials/network-information",
+      "readStartedAtUtc": "2026-10-25T10:10:47.778039+00:00",
+      "chainId": 143,
+      "chainIdVerifiedBeforeOtherReads": true,
+      "gasPriceWei": "102000000000",
+      "gasPriceGwei": "102",
+      "block": {
+        "number": "116442249",
+        "hash": "0xf6f715cc2dd5a882d78f14cf1950cdb3916e79d339f9f7707729e3fcf07eba24",
+        "timestamp": "1792923051",
+        "gasLimit": "150000000",
+        "gasUsed": "7504301",
+        "baseFeePerGas": "100000000000",
+        "timestampUtc": "2026-10-25T10:10:51+00:00"
+      },
+      "priorityFeeWei": "2000000000",
+      "feeHistory": {
+        "baseFeePerGas": [
+          "0x174876e800",
+          "0x174876e800",
+          "0x174876e800",
+          "0x174876e800",
+          "0x174876e800",
+          "0x174876e800"
+        ],
+        "gasUsedRatio": [
+          0.07074466,
+          0.025349433333333334,
+          0.052481766666666665,
+          0.020589986666666667,
+          0.05989221333333333
+        ],
+        "baseFeePerBlobGas": [
+          "0x0",
+          "0x0",
+          "0x0",
+          "0x0",
+          "0x0",
+          "0x0"
+        ],
+        "blobGasUsedRatio": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "oldestBlock": "0x6f0c48c",
+        "reward": [
+          [
+            "0x77359400",
+            "0x77359400",
+            "0x12a05f200"
+          ],
+          [
+            "0x77359400",
+            "0x77359400",
+            "0x2cb417800"
+          ],
+          [
+            "0x77359400",
+            "0x1dcd65000",
+            "0x2cb417800"
+          ],
+          [
+            "0x77359400",
+            "0x306dc4200",
+            "0x306dc4200"
+          ],
+          [
+            "0x77359400",
+            "0x77359400",
+            "0x1dcd65000"
+          ]
+        ]
+      },
+      "status": "LIVE_PUBLIC_RPC_SNAPSHOT",
+      "readCompletedAtUtc": "2026-10-25T10:10:53.579651+00:00",
+      "nativeUsd": "0.0209865",
+      "marketUpdatedAtUnix": 1792923038,
+      "marketUpdatedAtUtc": "2026-10-25T10:10:38+00:00",
+      "nominalUsdPerNativeGas": "2.1406230E-9",
+      "nominalUsdPerMillionNativeGas": "0.0021406230000000",
+      "fixed500kReceiveBudgetNominalUsd": "0.0010703115000000"
+    },
+    {
+      "key": "arc",
+      "expectedChainId": 5042,
+      "nativeSymbol": "USDC",
+      "nativeDecimals": 18,
+      "coinGeckoId": "usd-coin",
+      "rpcSourceUrl": "https://rpc.drpc.mainnet.arc.io",
+      "rpcSourceDocsUrl": "https://docs.arc.io/arc/references/connect-to-arc",
+      "readStartedAtUtc": "2026-10-25T10:10:47.778138+00:00",
+      "chainId": 5042,
+      "chainIdVerifiedBeforeOtherReads": true,
+      "gasPriceWei": "20914091501",
+      "gasPriceGwei": "20.914091501",
+      "block": {
+        "number": "27778202",
+        "hash": "0x3513f976126f52c63e95c9da77affd8ff43fd1af432a01a1982d822e9280fc61",
+        "timestamp": "1792923050",
+        "gasLimit": "30000000",
+        "gasUsed": "240714",
+        "baseFeePerGas": "20000000000",
+        "timestampUtc": "2026-10-25T10:10:50+00:00"
+      },
+      "priorityFeeWei": "1051205226",
+      "feeHistory": {
+        "baseFeePerGas": [
+          "0x4a817c800",
+          "0x4a817c800",
+          "0x4a817c800",
+          "0x4a817c800",
+          "0x4a817c800",
+          "0x4a817c800"
+        ],
+        "gasUsedRatio": [
+          0.0080238,
+          0.0117528,
+          0.0061980333333333335,
+          0,
+          0.0070386
+        ],
+        "baseFeePerBlobGas": [
+          "0x1",
+          "0x1",
+          "0x1",
+          "0x1",
+          "0x1",
+          "0x1"
+        ],
+        "blobGasUsedRatio": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "oldestBlock": "0x1a7dc9a",
+        "reward": [
+          [
+            "0x156ba0980",
+            "0x156ba0980",
+            "0x4a817c800"
+          ],
+          [
+            "0x4a817c800",
+            "0x4a817c800",
+            "0x4a817c800"
+          ],
+          [
+            "0x3ea81e6a",
+            "0x3ea81e6a",
+            "0x3ea81e6a"
+          ],
+          [
+            "0x0",
+            "0x0",
+            "0x0"
+          ],
+          [
+            "0x480e22f9",
+            "0x1399b4c7f",
+            "0x1399b4c7f"
+          ]
+        ]
+      },
+      "status": "LIVE_PUBLIC_RPC_SNAPSHOT",
+      "readCompletedAtUtc": "2026-10-25T10:10:53.061639+00:00",
+      "nativeUsd": "0.999562",
+      "marketUpdatedAtUnix": 1792923038,
+      "marketUpdatedAtUtc": "2026-10-25T10:10:38+00:00",
+      "nominalUsdPerNativeGas": "2.0904931128922562E-8",
+      "nominalUsdPerMillionNativeGas": "0.020904931128922562000000",
+      "fixed500kReceiveBudgetNominalUsd": "0.010452465564461281000000"
+    }
+  ],
+  "nominalGasPriceRank": [
+    {
+      "rank": 1,
+      "key": "monad",
+      "usdPerMillionNativeGas": "0.0021406230000000"
+    },
+    {
+      "rank": 2,
+      "key": "arc",
+      "usdPerMillionNativeGas": "0.020904931128922562000000"
+    },
+    {
+      "rank": 3,
+      "key": "bsc",
+      "usdPerMillionNativeGas": "0.0368720000000"
+    },
+    {
+      "rank": 4,
+      "key": "robinhood",
+      "usdPerMillionNativeGas": "0.04655576624000000"
+    }
+  ],
+  "importantLimitations": [
+    "Each entry prices its own native gas unit. Generic Cancun receipt gas is not equivalent to native Monad metering.",
+    "Monad bills declared gas limits; cold state, SSTORE and memory pricing differ from Ethereum.",
+    "RH has parent-chain data cost converted into gas; exact cost depends on compressed transaction bytes.",
+    "This is not an executed inference fee, native-gas benchmark or LayerZero delivery quote.",
+    "Suggested gasPrice and market prices can change immediately; gas price suggestions are not guarantees of inclusion."
+  ],
+  "localReceiptScenario": {
+    "status": "NOMINAL_TRANSLATION_ONLY_NOT_A_NATIVE_COST_ESTIMATE",
+    "source": "evidence/local-costs.json",
+    "sourceSha256": "d079d12128bce58736682f3dfdde7eb6d77858539ec47f15604043d8e55689a0",
+    "position": 1,
+    "rows": [
+      {
+        "key": "robinhood",
+        "genericCancunGas": "4433120",
+        "nominalUsdTranslation": "0.20638729843386880"
+      },
+      {
+        "key": "bsc",
+        "genericCancunGas": "1078633416",
+        "nominalUsdTranslation": "39.7713713147520"
+      },
+      {
+        "key": "monad",
+        "genericCancunGas": "1078602021",
+        "nominalUsdTranslation": "2.3088802939990830"
+      },
+      {
+        "key": "arc",
+        "genericCancunGas": "2372683113",
+        "nominalUsdTranslation": "49.600777068022588742095506"
+      }
+    ],
+    "sumUsd": "91.887415975207540542095506",
+    "warning": "Profile includes simulated MockEndpoint send/receive cost, which is not real LayerZero cost; Monad native gas/declared limits and RH data fees are not remeasured."
+  },
+  "messaging": {
+    "status": "PROVIDER_COMPONENT_SCENARIO_NOT_DEPLOYED_OAPP_QUOTE",
+    "messagesPerPosition": 4,
+    "activationPayloadBytes": 3488,
+    "resultPayloadBytes": 416,
+    "receiveGasOptionPerHop": 500000,
+    "reason": "No production inference OApps are deployed/configured. Endpoint quotes depend on source OApp, destination, exact bytes/options, send library and configured supported DVNs/executor. A default or unrelated application quote would not price this route.",
+    "fixedReceiveBudgetNominalUsdAcrossFourHops": "0.053236660184461281000000",
+    "unknownAdditionalFees": [
+      "Exact deployed-OApp sender-specific changes to quoted DVN/executor components",
+      "Source dispatch native execution/data fees",
+      "Treasury/protocol fee if configured"
+    ],
+    "hardUpperBoundWithoutReviewedBudget": null,
+    "route": [
+      "robinhood",
+      "bsc",
+      "arc",
+      "monad"
+    ],
+    "scenario": {
+      "sender": "0x1111111111111111111111111111111111111111",
+      "confirmations": 20,
+      "receiveGas": 500000,
+      "fullType3Options": "0x0003010011010000000000000000000000000007a120",
+      "executorWorkerOptions": "0x010011010000000000000000000000000007a120",
+      "exactOptionsExplanation": "Strip only the 0x0003 type header; UlnOptions.decode retains executor worker ID/size/type envelope."
+    },
+    "metadataSource": "https://metadata.layerzero-api.com/v1/metadata",
+    "componentQuotes": [
+      {
+        "source": "robinhood",
+        "destination": "bsc",
+        "sourceChainId": 4663,
+        "destinationEid": 30102,
+        "sender": "0x1111111111111111111111111111111111111111",
+        "confirmations": 20,
+        "payloadBytes": 3488,
+        "receiveGas": 500000,
+        "executorOptions": "0x010011010000000000000000000000000007a120",
+        "fullType3Options": "0x0003010011010000000000000000000000000007a120",
+        "dvnOptions": "0x",
+        "rpcSourceUrl": "https://rpc.mainnet.chain.robinhood.com",
+        "readStartedAtUtc": "2026-10-25T10:11:33.329Z",
+        "components": [
+          {
+            "type": "dvn",
+            "providerId": "layerzero-labs",
+            "address": "0xd01ae6905d48315f7be10c7330aecf8360ef5b12",
+            "feeNativeWei": "1593881153932",
+            "status": "QUOTE_SUCCESS"
+          },
+          {
+            "type": "dvn",
+            "providerId": "horizen-labs",
+            "address": "0x1258a278519c7f4bd997a9c3bfd4aa802a028d89",
+            "feeNativeWei": "1593881153932",
+            "status": "QUOTE_SUCCESS"
+          },
+          {
+            "type": "executor",
+            "address": "0x4208d6e27538189bb48e603d6123a94b8abe0a0b",
+            "feeNativeWei": "111336075383832",
+            "status": "QUOTE_SUCCESS"
+          }
+        ],
+        "status": "PROVIDER_COMPONENT_QUOTES_SUCCESS_NOT_OAPP_QUOTE",
+        "componentSumNativeWei": "114523837691696",
+        "componentSumNominalUsd": 0.26640077028491554,
+        "treasuryFeeStatus": "NOT_QUOTED",
+        "sourceExecutionFeeStatus": "NOT_INCLUDED",
+        "readCompletedAtUtc": "2026-10-25T10:11:35.117Z"
+      },
+      {
+        "source": "bsc",
+        "destination": "arc",
+        "sourceChainId": 56,
+        "destinationEid": 30417,
+        "sender": "0x1111111111111111111111111111111111111111",
+        "confirmations": 20,
+        "payloadBytes": 3488,
+        "receiveGas": 500000,
+        "executorOptions": "0x010011010000000000000000000000000007a120",
+        "fullType3Options": "0x0003010011010000000000000000000000000007a120",
+        "dvnOptions": "0x",
+        "rpcSourceUrl": "https://bsc-dataseed.bnbchain.org",
+        "readStartedAtUtc": "2026-10-25T10:11:33.333Z",
+        "components": [
+          {
+            "type": "dvn",
+            "providerId": "layerzero-labs",
+            "address": "0xfd6865c841c2d64565562fcc7e05e619a30615f0",
+            "feeNativeWei": "2824318557674",
+            "status": "QUOTE_SUCCESS"
+          },
+          {
+            "type": "dvn",
+            "providerId": "horizen-labs",
+            "address": "0x247624e2143504730aec22912ed41f092498bef2",
+            "feeNativeWei": "2824318557674",
+            "status": "QUOTE_SUCCESS"
+          },
+          {
+            "type": "executor",
+            "address": "0x3ebd570ed38b1b3b4bc886999fcf507e9d584859",
+            "feeNativeWei": "345107805706957",
+            "status": "QUOTE_SUCCESS"
+          }
+        ],
+        "status": "PROVIDER_COMPONENT_QUOTES_SUCCESS_NOT_OAPP_QUOTE",
+        "componentSumNativeWei": "350756442822305",
+        "componentSumNominalUsd": 0.2586618311948806,
+        "treasuryFeeStatus": "NOT_QUOTED",
+        "sourceExecutionFeeStatus": "NOT_INCLUDED",
+        "readCompletedAtUtc": "2026-10-25T10:11:35.693Z"
+      },
+      {
+        "source": "arc",
+        "destination": "monad",
+        "sourceChainId": 5042,
+        "destinationEid": 30390,
+        "sender": "0x1111111111111111111111111111111111111111",
+        "confirmations": 20,
+        "payloadBytes": 3488,
+        "receiveGas": 500000,
+        "executorOptions": "0x010011010000000000000000000000000007a120",
+        "fullType3Options": "0x0003010011010000000000000000000000000007a120",
+        "dvnOptions": "0x",
+        "rpcSourceUrl": "https://rpc.drpc.mainnet.arc.io",
+        "readStartedAtUtc": "2026-10-25T10:11:33.334Z",
+        "components": [
+          {
+            "type": "dvn",
+            "providerId": "layerzero-labs",
+            "address": "0xa2447e5b58d357c49bf74b50b14421e6a100e525",
+            "feeNativeWei": "342925552692729",
+            "status": "QUOTE_SUCCESS"
+          },
+          {
+            "type": "dvn",
+            "providerId": "horizen-labs",
+            "address": "0xd36246c322ee102a2203bca9cafb84c179d306f6",
+            "feeNativeWei": "339017917088290",
+            "status": "QUOTE_SUCCESS"
+          },
+          {
+            "type": "executor",
+            "address": "0x4208d6e27538189bb48e603d6123a94b8abe0a0b",
+            "feeNativeWei": "252100311980152101",
+            "status": "QUOTE_SUCCESS"
+          }
+        ],
+        "status": "PROVIDER_COMPONENT_QUOTES_SUCCESS_NOT_OAPP_QUOTE",
+        "componentSumNativeWei": "252782255449933120",
+        "componentSumNominalUsd": 0.252671536822046,
+        "treasuryFeeStatus": "NOT_QUOTED",
+        "sourceExecutionFeeStatus": "NOT_INCLUDED",
+        "readCompletedAtUtc": "2026-10-25T10:11:35.128Z"
+      },
+      {
+        "source": "monad",
+        "destination": "robinhood",
+        "sourceChainId": 143,
+        "destinationEid": 30416,
+        "sender": "0x1111111111111111111111111111111111111111",
+        "confirmations": 20,
+        "payloadBytes": 416,
+        "receiveGas": 500000,
+        "executorOptions": "0x010011010000000000000000000000000007a120",
+        "fullType3Options": "0x0003010011010000000000000000000000000007a120",
+        "dvnOptions": "0x",
+        "rpcSourceUrl": "https://rpc.monad.xyz",
+        "readStartedAtUtc": "2026-10-25T10:11:33.335Z",
+        "components": [
+          {
+            "type": "dvn",
+            "providerId": "layerzero-labs",
+            "address": "0x282b3386571f7f794450d5789911a9804fa346b4",
+            "feeNativeWei": "237703624430544480",
+            "status": "QUOTE_SUCCESS"
+          },
+          {
+            "type": "dvn",
+            "providerId": "horizen-labs",
+            "address": "0xdcdd4628f858b45260c31d6ad076bd2c3d3c2f73",
+            "feeNativeWei": "237703624430544480",
+            "status": "QUOTE_SUCCESS"
+          },
+          {
+            "type": "executor",
+            "address": "0x4208d6e27538189bb48e603d6123a94b8abe0a0b",
+            "feeNativeWei": "12560221283394370051",
+            "status": "QUOTE_SUCCESS"
+          }
+        ],
+        "status": "PROVIDER_COMPONENT_QUOTES_SUCCESS_NOT_OAPP_QUOTE",
+        "componentSumNativeWei": "13035628532255459011",
+        "componentSumNominalUsd": 0.27357221819217925,
+        "treasuryFeeStatus": "NOT_QUOTED",
+        "sourceExecutionFeeStatus": "NOT_INCLUDED",
+        "readCompletedAtUtc": "2026-10-25T10:11:35.742Z"
+      }
+    ],
+    "limitations": [
+      "Read-only worker.getFee results for a dummy sender are provider component scenarios, not actual GH0ST OApp quotes or confirmation/finality recommendations.",
+      "No application configuration, source transaction execution, future price movement or treasury fee is included.",
+      "20 source confirmations is an explicit illustrative assumption, not a reviewed security policy.",
+      "No contract was deployed or state overridden; no model calldata or model bytecode was submitted."
+    ],
+    "localMockReceiptProfile": [
+      {
+        "kind": "message_send_and_hidden_export:activation",
+        "samples": 6,
+        "minimumGasUsed": "3041479",
+        "maximumGasUsed": "3056484",
+        "scope": "Generic Cancun mock transport only; not a production LayerZero gas bound."
+      },
+      {
+        "kind": "message_receive:activation",
+        "samples": 6,
+        "minimumGasUsed": "180484",
+        "maximumGasUsed": "216820",
+        "scope": "Generic Cancun mock transport only; not a production LayerZero gas bound."
+      },
+      {
+        "kind": "message_send_and_hidden_export:final",
+        "samples": 2,
+        "minimumGasUsed": "495160",
+        "maximumGasUsed": "509460",
+        "scope": "Generic Cancun mock transport only; not a production LayerZero gas bound."
+      },
+      {
+        "kind": "message_receive:final",
+        "samples": 2,
+        "minimumGasUsed": "116403",
+        "maximumGasUsed": "150591",
+        "scope": "Generic Cancun mock transport only; not a production LayerZero gas bound."
+      }
+    ],
+    "componentSumAcrossRouteNominalUsd": "1.0513063564940214063877915",
+    "componentQuoteStatus": "All 12 provider component calls succeeded; excludes source dispatch execution and treasury.",
+    "explicitBudgetScenario": {
+      "status": "OPERATOR_CAP_SCENARIO_NOT_ESTIMATED_GAS_REQUIREMENT",
+      "assumptions": [
+        "Each source dispatch is explicitly capped at 16,777,216 native gas and at the captured gasPrice.",
+        "Provider component quotes stay unchanged; source transactions may fail inclusion if the caps are inadequate.",
+        "The executor component already includes requested destination execution; do not add the separate500k receive reference again.",
+        "Treasury fee remains unquoted and outside this subtotal."
+      ],
+      "sources": [
+        {
+          "source": "robinhood",
+          "sourceGasLimitCap": 16777216,
+          "sourceGasPriceCapWei": "20014000",
+          "sourceFeeCapNominalUsd": "0.78107614625398784"
+        },
+        {
+          "source": "bsc",
+          "sourceGasLimitCap": 16777216,
+          "sourceGasPriceCapWei": "50000000",
+          "sourceFeeCapNominalUsd": "0.6186095083520"
+        },
+        {
+          "source": "arc",
+          "sourceGasLimitCap": 16777216,
+          "sourceGasPriceCapWei": "20914091501",
+          "sourceFeeCapNominalUsd": "0.350726545015057669947392"
+        },
+        {
+          "source": "monad",
+          "sourceGasLimitCap": 16777216,
+          "sourceGasPriceCapWei": "102000000000",
+          "sourceFeeCapNominalUsd": "0.0359136944455680"
+        }
+      ],
+      "sourceExecutionCapSumUsd": "1.786325894066613509947392",
+      "componentPlusCappedSourceSubtotalUsd": "2.8376322505606349163351835"
+    }
+  },
+  "nativeMetering": {
+    "robinhood": {
+      "docs": [
+        "https://docs.robinhood.com/chain/connecting/",
+        "https://docs.arbitrum.io/how-arbitrum-works/deep-dives/gas-and-fees",
+        "https://docs.arbitrum.io/arbitrum-essentials/how-to-estimate-gas"
+      ],
+      "caveat": "Arbitrum execution plus dynamic compressed parent-chain posting costs; use per-transaction gas estimates to include L1 data."
+    },
+    "monad": {
+      "docs": [
+        "https://docs.monad.xyz/developer-essentials/gas-pricing",
+        "https://docs.monad.xyz/developer-essentials/opcode-pricing"
+      ],
+      "charging": "declared gas limit",
+      "currentDocsRevision": "MONAD_TEN",
+      "transactionGasLimit": 30000000,
+      "blockGasLimit": 150000000,
+      "coldAccountGas": 10100,
+      "coldStorageGasPer128SlotPage": 8100,
+      "warmStorageGas": 100,
+      "memoryExpansionGas": "w/2 where w is32bytewords",
+      "memoryCapBytes": 8388608,
+      "caveat": "Different coldstate/SSTORE/memory schedule makes genericEVM receipts non-equivalent."
+    },
+    "arc": {
+      "docs": [
+        "https://docs.arc.io/arc/references/gas-and-fees"
+      ],
+      "nativeGasDecimals": 18,
+      "baseFeeFloorGwei": 20,
+      "baseFeeCeilingGwei": 20000,
+      "blockGasLimit": 30000000,
+      "caveat": "USDC ERC20 interface decimals6 must not be used for native gas arithmetic."
+    },
+    "bsc": {
+      "docs": [
+        "https://docs.bnbchain.org/bnb-smart-chain/developers/json_rpc/json-rpc-endpoint/"
+      ],
+      "caveat": "BSC chain56 only; unrelated BNB New L1 draft fee rules are not applied."
+    }
+  },
+  "lastUpdatedAtUtc": "2026-10-25T10:12:13.988159+00:00"
+}

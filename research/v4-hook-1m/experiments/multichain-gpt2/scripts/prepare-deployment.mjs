@@ -7,16 +7,19 @@ import {fileURLToPath} from 'node:url';
 import {ContractFactory, Interface, ZeroAddress, getAddress, getBytes, getCreateAddress, keccak256, zeroPadValue} from 'ethers';
 import {makePlan} from './plan.mjs';
 import {compile, assertSourcesUnchanged, HERE, json, sha256} from './build.mjs';
+import {resolveProductionSelection, nativeTransactionGasCeiling} from './verify-deployment.mjs';
 
 const STATUS = 'UNSIGNED_NEEDS_SECURITY_AND_GAS_REVIEW';
 const MAX_NONCE = (1n << 64n) - 1n;
 const MAX_RUNTIME = 24576;
 const PER_PAGE = 767;
-const cliKeys = new Set(['admin', 'requester', 'session-id', 'deadline', 'nonces', 'data', 'out']);
+const requiredKeys = ['admin', 'requester', 'session-id', 'deadline', 'nonces', 'data', 'out'];
+const cliKeys = new Set([...requiredKeys, 'config', 'engine']);
 const equal = (a, b) => String(a).toLowerCase() === String(b).toLowerCase();
 
 function usage() {
   return 'prepare-deployment.mjs --admin=0xEOA --requester=0xEOA --session-id=0xBYTES32 --deadline=UNIX_SECONDS --nonces=nonces.json --data=export-directory --out=deployments/new-directory [--summary-only]\n'
+    + 'Optional: --config=config/chains.optimized.json --engine=GPT2ShardOptimized (defaults: config/chains.json and GPT2Shard).\n'
     + 'Offline only. Nonces JSON must contain one nonnegative integer per configured chain key.\n'
     + '--summary-only still verifies model bytes, addresses and hashes, but writes no raw transaction bodies.\n'
     + 'EOA status, live nonces, gas, fees and all LayerZero security settings require separate live review. No sealRoute transaction is generated.';
@@ -35,7 +38,7 @@ function parseArgs(args) {
     assert(result[match[1]] === undefined, 'Duplicate option: --' + match[1]);
     result[match[1]] = match[2];
   }
-  for (const key of cliKeys) assert(result[key], 'Missing --' + key);
+  for (const key of requiredKeys) assert(result[key], 'Missing --' + key);
   return result;
 }
 
@@ -100,6 +103,7 @@ function readTensor(dataDirectory, tensor) {
 
 export async function prepare(args) {
   const options = parseArgs(args);
+  const selection = resolveProductionSelection({routeConfiguration: options.config, engineContract: options.engine});
   const admin = checkedAddress(options.admin, 'Admin');
   const requester = checkedAddress(options.requester, 'Requester');
   assert(/^0x[0-9a-fA-F]{64}$/.test(options['session-id']) && !/^0x0{64}$/.test(options['session-id']), 'Session ID must be nonzero bytes32');
@@ -110,13 +114,13 @@ export async function prepare(args) {
   const dataDirectory = path.resolve(options.data);
   const nonceInputs = JSON.parse(fs.readFileSync(path.resolve(options.nonces), 'utf8'));
   assert(nonceInputs && typeof nonceInputs === 'object' && !Array.isArray(nonceInputs), 'Nonces must be a chain-key object');
-  const partition = makePlan(dataDirectory);
+  const partition = makePlan(dataDirectory, {configuration: selection.configuration});
   assert.deepEqual(Object.keys(nonceInputs).sort(), partition.stages.map(stage => stage.key).sort(), 'Nonce keys must exactly match configured chains');
   const modelManifestPath = path.join(dataDirectory, 'manifest.json');
   const modelManifest = JSON.parse(fs.readFileSync(modelManifestPath, 'utf8'));
   const built = compile();
   const routerArtifact = built.artifacts.GPT2InferenceOApp;
-  const engineArtifact = built.artifacts.GPT2Shard;
+  const engineArtifact = built.artifacts[selection.engineContract];
   assert(routerArtifact && engineArtifact, 'Production artifacts are missing');
   const routerFactory = new ContractFactory(routerArtifact.abi, routerArtifact.evm.bytecode.object);
   const engineFactory = new ContractFactory(engineArtifact.abi, engineArtifact.evm.bytecode.object);
@@ -216,7 +220,7 @@ export async function prepare(args) {
       const engineArgs = [state.root, state.rootCodeHash, partition.modelId, stage.chainId,
         ...stage.layerRange, stage.doesEmbedding, stage.doesOutput, state.router];
       const engineTx = await engineFactory.getDeployTransaction(...engineArgs);
-      const engineCreation = append(state, {data: engineTx.data, kind: 'engine', label: 'CREATE GPT2Shard',
+      const engineCreation = append(state, {data: engineTx.data, kind: 'engine', label: 'CREATE ' + selection.engineContract,
         runtime: {bytes: engineArtifact.runtimeBytes, sha256: null, keccak256: null, status: 'REQUIRES_POST_DEPLOYMENT_IMMUTABLE_VERIFICATION'},
         details: {constructorArgs: engineArgs}});
       state.engine = engineCreation.address;
@@ -237,16 +241,19 @@ export async function prepare(args) {
       }
     }
     assertSourcesUnchanged(built);
+    assert.equal(resolveProductionSelection(selection).routeConfigurationSha256, selection.routeConfigurationSha256, 'Route configuration changed during preparation');
     assert.equal(sha256(fs.readFileSync(modelManifestPath)), partition.manifestSha256, 'Model manifest changed during preparation');
     const chains = states.map(state => {
       assert.equal(state.count, state.expectedCount, 'Final transaction count differs from the validated partition');
       const defaults = template.chains.find(chain => chain.key === state.stage.key);
       assert(defaults?.rpcEnv, 'Missing named RPC configuration for ' + state.stage.key);
       return {key: state.stage.key, stage: state.stage.stage, chainId: state.stage.chainId, eid: state.stage.eid,
+        engineContract: selection.engineContract,
         rpcEnv: defaults.rpcEnv, endpoint: state.stage.endpointV2, router: state.router, engine: state.engine, root: state.root,
         rootCodeHash: state.rootCodeHash, layerRange: state.stage.layerRange, doesEmbedding: state.stage.doesEmbedding, doesOutput: state.stage.doesOutput,
         routerDeploymentTx: null, engineDeploymentTx: null, deploymentBlock: 0,
         maxTransactionGas: null, maxMessageFeeWei: null, maxFeePerGasWei: null, confirmations: null,
+        maximumPermittedTransactionGas: String(nativeTransactionGasCeiling(state.stage)),
         nonceStart: String(state.startNonce), nonceEndExclusive: String(state.nonce), transactionCount: state.count,
         transactionInputBytes: state.bytes, transactionsFile: state.filename, transactionsSha256: state.hash.digest('hex'),
         creationTxIndexes: {router: state.routerCreationIndex, root: state.rootCreationIndex, engine: state.engineCreationIndex},
@@ -255,6 +262,8 @@ export async function prepare(args) {
     const manifest = {schemaVersion: 1, status: STATUS, enabled: false, createdAt: new Date().toISOString(),
       offline: true, publicTransactions: 0, signedTransactions: 0, rawTransactionBodiesIncluded: !options.summaryOnly,
       admin, requester, modelId: partition.modelId, routeId: partition.routeId, sessionId, deadline: Number(deadline),
+      engineContract: selection.engineContract, routeConfiguration: selection.routeConfiguration,
+      routeConfigurationSha256: selection.routeConfigurationSha256,
       verificationFile: 'verified.json', keyEnv: 'GH0ST_WORKER_KEY', compilerSourcesHash: built.compiler.sources_commitment_sha256,
       modelManifestSha256: partition.manifestSha256, checkpointSha256: partition.checkpointSha256,
       sourceCommitment: built.compiler, chains, totals: {...partition.totals,
@@ -280,6 +289,7 @@ export async function prepare(args) {
     fs.unlinkSync(path.join(out, 'INCOMPLETE'));
     completed = true;
     const summary = {status: STATUS, summaryOnly: options.summaryOnly, modelId: partition.modelId, routeId: partition.routeId,
+      engineContract: selection.engineContract, routeConfiguration: selection.routeConfiguration,
       sessionId, publicTransactions: 0, sealRouteTransactionsIncluded: false,
       chains: chains.map(chain => ({key: chain.key, nonceStart: chain.nonceStart, nonceEndExclusive: chain.nonceEndExclusive,
         router: chain.router, engine: chain.engine, root: chain.root, transactions: chain.transactionCount})), totals: manifest.totals, output: out};

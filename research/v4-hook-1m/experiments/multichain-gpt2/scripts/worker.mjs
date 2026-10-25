@@ -6,6 +6,8 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { Contract, JsonRpcProvider, Wallet, NonceManager, keccak256, AbiCoder } from 'ethers';
 import { compile, HERE } from './build.mjs';
+import { MODEL_ID } from './plan.mjs';
+import { resolveProductionSelection, nativeTransactionGasCeiling } from './verify-deployment.mjs';
 
 const coder = AbiCoder.defaultAbiCoder();
 const packetType = 'tuple(uint8 version,bytes32 routeId,bytes32 modelId,bytes32 sessionId,uint32 position,uint32 inputToken,uint8 destinationStage,uint8 kind,uint32 outputToken,bytes32 trace,bytes hidden)';
@@ -15,7 +17,9 @@ const delay = ms => new Promise(resolve=>setTimeout(resolve,ms));
 
 export function validateConfig(config) {
   assert.equal(config.schemaVersion,1,'Unsupported worker configuration');
+  const selection=resolveProductionSelection(config);
   for(const key of ['modelId','routeId','sessionId']) assert(/^0x[0-9a-fA-F]{64}$/.test(config[key]),'Missing '+key);
+  assert(equal(config.modelId,MODEL_ID),'Only the canonical complete GPT-2 model is supported');
   assert(Array.isArray(config.chains) && config.chains.length>=2 && config.chains.length<=8);
   const keys=new Set(),ids=new Set(),eids=new Set();
   config.chains.forEach((chain,index)=>{
@@ -26,8 +30,18 @@ export function validateConfig(config) {
     for(const field of ['router','engine','root']) assert(/^0x[0-9a-fA-F]{40}$/.test(chain[field])&&!/^0x0{40}$/.test(chain[field]),'Unconfigured '+field);
     assert(Number.isSafeInteger(chain.deploymentBlock)&&chain.deploymentBlock>=0);
     assert(chain.confirmations===undefined||(Number.isSafeInteger(chain.confirmations)&&chain.confirmations>=1));
-    assert(BigInt(chain.maxTransactionGas)>100000n&&BigInt(chain.maxTransactionGas)<=16777216n,'Invalid gas ceiling');
+    const planned=selection.configuration.chains[index];
+    assert(planned,'Chain is absent from trusted route configuration');
+    assert(chain.key===planned.key&&chain.chainId===planned.chainId&&chain.eid===planned.eid,'Trusted route identity differs');
+    assert(chain.engineContract===undefined||chain.engineContract===selection.engineContract,'Chain engine differs from selected engine');
+    assert(BigInt(chain.maxTransactionGas)>100000n&&BigInt(chain.maxTransactionGas)<=nativeTransactionGasCeiling(chain,planned),'Invalid gas ceiling');
     assert(BigInt(chain.maxMessageFeeWei)>=0n,'A per-hop fee budget is required');
+  });
+  assert.equal(config.chains.length,selection.configuration.chains.length,'Trusted route length differs');
+  config.chains.forEach((chain,index)=>{
+    const expected=selection.configuration.chains[index];
+    assert(chain.key===expected.key&&chain.chainId===expected.chainId&&chain.eid===expected.eid,'Trusted route identity differs');
+    if(chain.layerRange!==undefined)assert.deepEqual(chain.layerRange,expected.layerRange,'Trusted layer range differs');
   });
   return config;
 }
@@ -69,23 +83,86 @@ async function feeOverrides(connection) {
   return {gasPrice:fee.gasPrice};
 }
 
-async function advance(connection) {
-  const {engine,config}=connection;
-  const state=await engine.checkpoint();
-  const phase=Number(state[0]),step=Number(state[6]);
+// Monad charges the declared limit. Round its 1% margin upward, then apply
+// the operator ceiling; a discarded eth_call below verifies that exact limit.
+export function gasLimitForEstimate(estimate, ceiling, monad = false) {
+  estimate=BigInt(estimate);ceiling=BigInt(ceiling);
+  assert(estimate>0n&&ceiling>0n&&estimate<=ceiling,'Gas estimate exceeds configured ceiling or is invalid');
+  const padded=monad?(estimate*101n+99n)/100n+1000n:estimate*110n/100n+10000n;
+  if(monad)return padded>ceiling?ceiling:padded;
+  assert(padded<=ceiling,'Padded gas exceeds configured ceiling');
+  return padded;
+}
+
+const isMonad = connection => connection.config.chainId===143&&connection.config.key==='monad';
+
+async function sendRouterAction(connection,method,args=[],extra={}) {
+  const {router,config}=connection;
   const ceiling=BigInt(config.maxTransactionGas);
-  const maxRows=phase===4||phase===5?64:512;
-  // A reverted estimate changes no state. Every paid chunk is estimated at its current checkpoint.
-  for(const steps of [8,2,1]) for(const rows of [maxRows,Math.min(maxRows,128),32,8,1]){
-    let gas;
-    try {gas=await engine.advanceMany.estimateGas(step,rows,steps,{gasLimit:ceiling});}
-    catch {continue;}
-    gas=gas*110n/100n+10000n;
-    if(gas>ceiling) continue;
-    await waitReceipt(await engine.advanceMany(step,rows,steps,{gasLimit:gas,...await feeOverrides(connection)}),config,'compute');
-    return true;
+  let gasLimit=ceiling;
+  if(isMonad(connection)){
+    const estimate=await router[method].estimateGas(...args,{...extra,gasLimit:ceiling});
+    gasLimit=gasLimitForEstimate(estimate,ceiling,true);
+    await router[method].staticCall(...args,{...extra,gasLimit});
   }
-  throw Error('No compute chunk fits configured transaction gas limit');
+  // The fresh fee and expiry checks are the last asynchronous step before signing.
+  const fees=await feeOverrides(connection);
+  await waitReceipt(await router[method](...args,{...extra,gasLimit,...fees}),config,method);
+}
+
+const SMALL_PHASES = new Set([1,2,4,5,7,10]);
+const HEAVY_PHASE_ROWS = Object.freeze({3:2304,6:768,8:3072,9:768,11:50257});
+
+/// Select only read-only estimated and simulated work at one immutable expected step.
+/// Heavy phases use a direct advance; small phases may batch at most64 bounded steps.
+export async function selectWork(connection, checkpoint = null) {
+  const {engine,config}=connection;
+  const raw=checkpoint??await engine.checkpoint();
+  const state=Array.isArray(raw)?{phase:raw[0],cursor:raw[3],stepNumber:raw[6]}:raw;
+  const phase=Number(state.phase),cursor=Number(state.cursor),step=BigInt(state.stepNumber);
+  assert(Number.isSafeInteger(phase)&&phase>=1&&phase<=11&&step>=0n,'Engine is not in an active compute phase');
+  assert(Number.isSafeInteger(cursor)&&cursor>=0,'Invalid compute cursor');
+  const ceiling=BigInt(config.maxTransactionGas),monad=isMonad(connection);
+  const targetGas=monad?ceiling*97n/100n:ceiling*90n/100n-10000n;
+  assert(targetGas>0n,'Configured gas ceiling has no safe compute budget');
+  const small=SMALL_PHASES.has(phase);
+  const totalRows=HEAVY_PHASE_ROWS[phase];
+  if(!small)assert(totalRows!==undefined&&cursor<totalRows,'Heavy-phase cursor is outside its output');
+  const method=small?'advanceMany':'advance';
+  const maximum=small?64:Math.min(512,totalRows-cursor);
+  const argsFor=amount=>small?[step,128,amount]:[step,amount];
+  const probe=async amount=>{
+    const args=argsFor(amount);
+    try {
+      const estimate=BigInt(await engine[method].estimateGas(...args,{gasLimit:ceiling}));
+      if(estimate>targetGas)return null;
+      const gasLimit=gasLimitForEstimate(estimate,ceiling,monad);
+      // Every chosen call is simulated at the precise declared limit, including on other chains.
+      await engine[method].staticCall(...args,{gasLimit});
+      return {method,args,phase,cursor,rows:small?128:amount,steps:small?amount:1,estimate,gasLimit,targetGas};
+    } catch {return null;}
+  };
+  let best=await probe(maximum);
+  if(best)return best;
+  let low=0,high=maximum-1;
+  while(low<high){
+    const middle=Math.floor((low+high+1)/2);
+    const candidate=await probe(middle);
+    if(candidate){low=middle;best=candidate;}else high=middle-1;
+  }
+  assert(low>0&&best,'No compute chunk passes exact-state gas preflight');
+  // Recheck after the search: other permissionless workers may have advanced the checkpoint.
+  const fresh=await probe(low);
+  assert(fresh,'Selected compute chunk changed or failed final preflight');
+  return fresh;
+}
+
+export async function advance(connection) {
+  const {engine,config}=connection;
+  const work=await selectWork(connection);
+  const fees=await feeOverrides(connection);
+  await waitReceipt(await engine[work.method](...work.args,{gasLimit:work.gasLimit,...fees}),config,'compute');
+  return true;
 }
 
 export async function run(args) {
@@ -99,9 +176,13 @@ export async function run(args) {
   const execute=args.includes('--execute');
   const configFile=path.resolve(option(args,'config',path.join(HERE,'deployments/runtime.json')));
   const config=validateConfig(JSON.parse(fs.readFileSync(configFile)));
+  const selection=resolveProductionSelection(config);
   assert(config.verificationFile,'Run verify-deployment first');
   const verification=JSON.parse(fs.readFileSync(path.resolve(path.dirname(configFile),config.verificationFile)));
   assert.equal(verification.status,'PASS_VERIFIED_DEPLOYMENT');
+  assert.equal(verification.engineContract,selection.engineContract,'Verified engine differs from configured engine');
+  assert.equal(verification.routeConfiguration,selection.routeConfiguration,'Verified route configuration differs');
+  assert.equal(verification.routeConfigurationSha256,selection.routeConfigurationSha256,'Trusted route changed since verification');
   for(const field of ['modelId','routeId','sessionId']) assert(equal(config[field],verification[field]),'Verification identity differs');
   const built=compile();
   assert.equal(verification.compilerSourcesHash,built.compiler.sources_commitment_sha256,'Compiler inputs changed since verification');
@@ -127,13 +208,15 @@ export async function run(args) {
       assert.equal(BigInt(await provider.send('eth_chainId',[])),BigInt(chain.chainId),'RPC chain ID differs');
       const trusted=verification.chains.find(c=>c.key===chain.key);
       assert(trusted&&trusted.chainId===chain.chainId&&trusted.eid===chain.eid,'Chain absent from verification');
+      assert.equal(trusted.engineContract,selection.engineContract,'Verified chain engine differs');
       for(const name of ['router','engine','root']){
         assert(equal(chain[name],trusted[name]),'Address differs from verified deployment');
         assert(equal(keccak256(await provider.getCode(chain[name])),trusted[name+'CodeHash']),'Verified bytecode changed');
       }
       const signer=execute?new NonceManager(new Wallet(key,provider)):provider;
       const router=new Contract(chain.router,built.artifacts.GPT2InferenceOApp.abi,signer);
-      const engine=new Contract(chain.engine,built.artifacts.GPT2Shard.abi,signer);
+      assert(built.artifacts[selection.engineContract]?.evm.bytecode.object,'Selected audited engine artifact is missing');
+      const engine=new Contract(chain.engine,built.artifacts[selection.engineContract].abi,signer);
       if(execute&&chain.stage===0&&prompt.length) assert(equal(await router.requester(),await signer.getAddress()),'Prompt submission requires the configured requester');
       assert(await router.routeSealed(),'Route is not sealed');
       for(const field of ['modelId','routeId','sessionId']) assert(equal(await router[field](),config[field]),'Onchain identity differs');
@@ -166,17 +249,17 @@ export async function run(args) {
         }
         if(awaiting){
           const hidden=await pendingActivation(c);
-          await waitReceipt(await c.router.activate(hidden,{gasLimit:BigInt(c.config.maxTransactionGas),...await feeOverrides(c)}),c.config,'activate');progressed=true;
+          await sendRouterAction(c,'activate',[hidden]);progressed=true;
         }else if(active&&!sent){
           if(phase===12||phase===13){
             const quote=await c.router.quoteDispatch();
             assert.equal(quote.lzTokenFee,0n);
             assert(quote.nativeFee<=BigInt(c.config.maxMessageFeeWei),'Messaging quote exceeds per-hop budget');
-            await waitReceipt(await c.router.dispatch({value:quote.nativeFee,gasLimit:BigInt(c.config.maxTransactionGas),...await feeOverrides(c)}),c.config,'dispatch');progressed=true;
+            await sendRouterAction(c,'dispatch',[],{value:quote.nativeFee});progressed=true;
           }else if(phase>0){await advance(c);progressed=true;}
         }else if(c===home&&!active&&positions!==null&&position<positions){
           const input=position<prompt.length?prompt[position]:Number(await home.router.latestResult());
-          await waitReceipt(await c.router.beginToken(input,{gasLimit:BigInt(c.config.maxTransactionGas),...await feeOverrides(c)}),c.config,'begin');progressed=true;
+          await sendRouterAction(c,'beginToken',[input]);progressed=true;
         }
       }
       rounds++;

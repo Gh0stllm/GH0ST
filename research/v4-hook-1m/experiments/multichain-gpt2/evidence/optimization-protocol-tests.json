@@ -1,0 +1,488 @@
+{
+  "status": "PASS_LOCAL_PROTOCOL_AND_REAL_ENGINE_INPUT_GUARDS",
+  "scope": "LOCAL_PROTOCOL_ONLY_WITH_EXPLICITLY_MOCKED_MODEL_MATH",
+  "public_transactions_submitted": 0,
+  "transport": "MockEndpoint: no DVNs, message proof verification, finality, real executor, or live fees",
+  "tests": [
+    {
+      "name": "unsealed route cannot begin",
+      "passed": true
+    },
+    {
+      "name": "seal requires bound engine and both peers",
+      "passed": true
+    },
+    {
+      "name": "non-admin cannot bind engine",
+      "passed": true
+    },
+    {
+      "name": "sealed peer configuration is immutable",
+      "passed": true
+    },
+    {
+      "name": "sealed engine binding is immutable",
+      "passed": true
+    },
+    {
+      "name": "owner cannot renounce route administration",
+      "passed": true
+    },
+    {
+      "name": "non-requester cannot begin token",
+      "passed": true
+    },
+    {
+      "name": "non-home stage cannot begin token",
+      "passed": true
+    },
+    {
+      "name": "vocabulary overflow rejected",
+      "passed": true
+    },
+    {
+      "name": "direct non-endpoint receive rejected",
+      "passed": true
+    },
+    {
+      "name": "engine input controller is fixed",
+      "passed": true
+    },
+    {
+      "name": "active home rejects another token",
+      "passed": true
+    },
+    {
+      "name": "dispatch waits for completed stage",
+      "passed": true
+    },
+    {
+      "name": "quote waits for completed stage",
+      "passed": true
+    },
+    {
+      "name": "activation wire format is canonical ABI with exactly 3072 hidden bytes",
+      "passed": true,
+      "packet_bytes": 3488,
+      "hidden_bytes": 3072,
+      "options": "0x0003010011010000000000000000000000000007a120"
+    },
+    {
+      "name": "underpaid dispatch reverts atomically including outbound state",
+      "passed": true
+    },
+    {
+      "name": "duplicate dispatch rejected",
+      "passed": true
+    },
+    {
+      "name": "home waits for final result after exact-byte dispatch",
+      "passed": true
+    },
+    {
+      "name": "wrong source EID rejected",
+      "passed": true
+    },
+    {
+      "name": "wrong source peer rejected",
+      "passed": true
+    },
+    {
+      "name": "wrong version rejected",
+      "passed": true
+    },
+    {
+      "name": "wrong route rejected",
+      "passed": true
+    },
+    {
+      "name": "wrong model rejected",
+      "passed": true
+    },
+    {
+      "name": "wrong session rejected",
+      "passed": true
+    },
+    {
+      "name": "wrong future position rejected",
+      "passed": true
+    },
+    {
+      "name": "wrong destination rejected",
+      "passed": true
+    },
+    {
+      "name": "wrong message kind rejected",
+      "passed": true
+    },
+    {
+      "name": "wrong input vocabulary rejected",
+      "passed": true
+    },
+    {
+      "name": "wrong activation output token rejected",
+      "passed": true
+    },
+    {
+      "name": "wrong empty trace rejected",
+      "passed": true
+    },
+    {
+      "name": "wrong short activation rejected",
+      "passed": true
+    },
+    {
+      "name": "trailing ABI bytes rejected",
+      "passed": true
+    },
+    {
+      "name": "oversized ABI bytes rejected before decode",
+      "passed": true
+    },
+    {
+      "name": "500000-gas receive records payload without starting model arithmetic",
+      "passed": true,
+      "gas": "215104"
+    },
+    {
+      "name": "duplicate GUID rejected",
+      "passed": true
+    },
+    {
+      "name": "same logical position with new GUID rejected while pending",
+      "passed": true
+    },
+    {
+      "name": "altered activation bytes rejected",
+      "passed": true
+    },
+    {
+      "name": "rejected activation cannot mutate engine state",
+      "passed": true
+    },
+    {
+      "name": "activation cannot execute twice",
+      "passed": true
+    },
+    {
+      "name": "any relayer may activate the committed payload",
+      "passed": true
+    },
+    {
+      "name": "final result must match pending input token",
+      "passed": true
+    },
+    {
+      "name": "final result token must be in vocabulary",
+      "passed": true
+    },
+    {
+      "name": "final result must carry no activation bytes",
+      "passed": true
+    },
+    {
+      "name": "final token returns to home and advances exactly one position",
+      "passed": true,
+      "token": 198,
+      "packet_bytes": 416
+    },
+    {
+      "name": "final logical replay with fresh GUID rejected",
+      "passed": true
+    },
+    {
+      "name": "completed remote position replay with new GUID rejected",
+      "passed": true
+    },
+    {
+      "name": "two ordered tokens complete without resetting the session (mock arithmetic only)",
+      "passed": true
+    },
+    {
+      "name": "expired session cannot begin",
+      "passed": true
+    },
+    {
+      "name": "expired session cannot reconfigure",
+      "passed": true
+    },
+    {
+      "name": "harness rejects above-cap gas before submission",
+      "passed": true
+    },
+    {
+      "name": "real shard controller blocks unauthorized begin",
+      "passed": true
+    },
+    {
+      "name": "real shard requires initial position zero",
+      "passed": true
+    },
+    {
+      "name": "real shard rejects short signed-vector import",
+      "passed": true
+    },
+    {
+      "name": "real shard rejects invalid input token",
+      "passed": true
+    },
+    {
+      "name": "real shard signed-int32 min/max import is exact (guard fixture, no model arithmetic)",
+      "passed": true,
+      "input_sha256": "692f280bb68ec53615ef62601e786c7aa2250129f60f5b486dff902dc74fa068"
+    },
+    {
+      "name": "real shard rejects replacing active input",
+      "passed": true
+    },
+    {
+      "name": "real shard rejects export before boundary",
+      "passed": true
+    },
+    {
+      "name": "real shard rejects stale step",
+      "passed": true
+    },
+    {
+      "name": "real shard rejects zero rows",
+      "passed": true
+    },
+    {
+      "name": "real shard rejects 513 rows",
+      "passed": true
+    },
+    {
+      "name": "real shard rejects zero steps",
+      "passed": true
+    },
+    {
+      "name": "real shard rejects 65 steps",
+      "passed": true
+    }
+  ],
+  "started_at": "2026-10-25T11:24:40.970Z",
+  "compiler": {
+    "version": "0.8.30+commit.73712a01.Emscripten.clang",
+    "settings": {
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "viaIR": true,
+      "evmVersion": "cancun",
+      "outputSelection": {
+        "*": {
+          "*": [
+            "abi",
+            "storageLayout",
+            "evm.bytecode.object",
+            "evm.deployedBytecode.object"
+          ]
+        }
+      }
+    },
+    "source_sha256": {
+      "@layerzerolabs/lz-evm-messagelib-v2/contracts/libs/ExecutorOptions.sol": "51a865ee90596427f27ab9421a8606130d7fdee8d1d9e4fe98d18eea5edaac45",
+      "@layerzerolabs/lz-evm-messagelib-v2/contracts/uln/libs/DVNOptions.sol": "b34711a3494285b50b140c55241bb04bf60237dd585bd8c3083062d4c7375e46",
+      "@layerzerolabs/lz-evm-protocol-v2/contracts/interfaces/ILayerZeroEndpointV2.sol": "a88fb702b371527c3791d7e5c168c1157d39021ed29b51e627e02973e6a740e0",
+      "@layerzerolabs/lz-evm-protocol-v2/contracts/interfaces/ILayerZeroReceiver.sol": "24e4add7dd95a72dad23e26c4fadfc1b6ce63148e0c7f4d6ad5dfaeda79db3e7",
+      "@layerzerolabs/lz-evm-protocol-v2/contracts/interfaces/IMessageLibManager.sol": "ffc33e319ab5e9d1392d16f8716625bcfb1dc34b744551f87dad1c0eb3ad11f1",
+      "@layerzerolabs/lz-evm-protocol-v2/contracts/interfaces/IMessagingChannel.sol": "9d0100f7cede83d5a4f6c9e03d6bfd24f861e9331b298ca4c73f99b161c718d5",
+      "@layerzerolabs/lz-evm-protocol-v2/contracts/interfaces/IMessagingComposer.sol": "5e7e5a47a477dcf05c034d5135bf6516119af881ea78d586805eee0ad5ab6b12",
+      "@layerzerolabs/lz-evm-protocol-v2/contracts/interfaces/IMessagingContext.sol": "b7f081828b8d0d206833953ebd73101bb28ac62541e7e8365fddc38eb440a92a",
+      "@layerzerolabs/lz-evm-protocol-v2/contracts/libs/AddressCast.sol": "e48211bfba874d0ce5c3b1fc4e4aac67450ac9539a75e814807745181d04e7dd",
+      "@layerzerolabs/lz-evm-protocol-v2/contracts/libs/CalldataBytesLib.sol": "82e74f2c2f10e53a90244af7ac3fabdf121ee9d38b30b40d40c23c08ee3e7ef5",
+      "@layerzerolabs/lz-evm-protocol-v2/contracts/libs/GUID.sol": "f462f5b95fba0918ab3bf779b09326eedde0eda85092d99bb32c60cf60bb338b",
+      "@layerzerolabs/lz-evm-protocol-v2/contracts/messagelib/libs/BitMaps.sol": "f638b8113c3e046a35e22f5b32ae577efd42221161f09777759dd061c7a735d2",
+      "@layerzerolabs/oapp-evm/contracts/oapp/OApp.sol": "92b191c937374b6e76686245b7b98eb3bc0bfacff4d54b279b7ecf1321878e04",
+      "@layerzerolabs/oapp-evm/contracts/oapp/OAppCore.sol": "b0a3e30618f5d4c71732a2048d7c2928be399508d6ec622c9345915c92b3dd0a",
+      "@layerzerolabs/oapp-evm/contracts/oapp/OAppReceiver.sol": "8d1dd4a6a74c3d9704a078e6404dcf7aab688b750ea64e8331f873e253862bc0",
+      "@layerzerolabs/oapp-evm/contracts/oapp/OAppSender.sol": "276f5d551ae7e478fb0c56002acf5476e628748c1f5ba0d63ea051e93813a137",
+      "@layerzerolabs/oapp-evm/contracts/oapp/interfaces/IOAppCore.sol": "041dd35f0a4a22425614414c05cd5aae6ce7e4b5b86b0350045e57c0ed3cbf1b",
+      "@layerzerolabs/oapp-evm/contracts/oapp/interfaces/IOAppReceiver.sol": "da4aff9322961c648e2221f7df203a44b375a397f2548b74679b3e9d0ae9addd",
+      "@layerzerolabs/oapp-evm/contracts/oapp/libs/OptionsBuilder.sol": "34699bf11b40b6ae8a818375ccfa758b7e03df986bc8d52d29882e57144ace17",
+      "@openzeppelin/contracts/access/Ownable.sol": "38578bd71c0a909840e67202db527cc6b4e6b437e0f39f0c909da32c1e30cb81",
+      "@openzeppelin/contracts/access/Ownable2Step.sol": "c75345d7b9feef17ae29f2a800ca2f65f8021cf80436a41d6ec00f57f5180f36",
+      "@openzeppelin/contracts/interfaces/IERC1363.sol": "9c3a75a925a6dac9e88b03cddc58d42fe3131b0aaaad84408521f3f7af2f991b",
+      "@openzeppelin/contracts/interfaces/IERC165.sol": "dfb3f56fa928a7c6cae41a7ce2c86b9210fa18d33fa26389099d66a0fa790368",
+      "@openzeppelin/contracts/interfaces/IERC20.sol": "0158e2d3e0e28bedd99eec13dcf1a8aa3a70a5b7e4bb2ad709609c95fcc740d1",
+      "@openzeppelin/contracts/token/ERC20/IERC20.sol": "01b6f5c4fa45fd38822b286ecef6daf983d27306dd6362496fa71b3e4600b72c",
+      "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol": "ac1fd9fa99b194a8db8dfa9ae8e3ff44feaa8f16668241fd2b66ae8b47d7c082",
+      "@openzeppelin/contracts/utils/Context.sol": "847fda5460fee70f56f4200f59b82ae622bb03c79c77e67af010e31b7e2cc5b6",
+      "@openzeppelin/contracts/utils/ReentrancyGuard.sol": "32fbb1c908ec1b4de85cc1bb10091aebd5816ffe80dfdd5ca5e084fbea67a462",
+      "@openzeppelin/contracts/utils/introspection/IERC165.sol": "9055c2994b37dea1a41b7b7926dcb510f05dbe2540b0aafc5fbee9558fffd0ca",
+      "@openzeppelin/contracts/utils/math/SafeCast.sol": "9769274bf53f26a7c7896c526ea1980dc9bea5bf5c2a5fd04870008c4afc1de9",
+      "contracts/GPT2Dot8.sol": "c56cbd68fed63b395ba2d41acfc24695ea1e0820e2505c2b98161af3a47837c7",
+      "contracts/GPT2DotOptimized.sol": "19a2ca4289892011cf8c26bdb674161f60bd206faa917ebff36186014e06659a",
+      "contracts/GPT2InferenceOApp.sol": "b1f8ad673e8ee46db7fef6e5401d621b67bc6911275cc66fa2b025131a7802f7",
+      "contracts/GPT2Shard.sol": "9f6c1da7ca09ffc053c96ee239e98f8af9980ac5bbb1da5c5efdf958e9d60482",
+      "contracts/GPT2ShardOptimized.sol": "eee131838374db0871dd70835a65f8cfbc3ddce6dd6d5446d834a09e4f3d0194",
+      "contracts/interfaces/IGPT2Shard.sol": "b5f8d3836627d37c9644ae6f2707278b64779e8cbe3e94144fce387f743fa8fc",
+      "contracts/mocks/MockEndpoint.sol": "467a988465e120b4e72efee39bfb3ac37aca8c1618324c155d0e0bcc61a504ca",
+      "contracts/mocks/MockGPT2Shard.sol": "269798b0d743f01af845946a1a5b505befc2745f75c859e77455054485e7bebb",
+      "solidity-bytes-utils/contracts/BytesLib.sol": "99e631c460da5d1e5741967fcae56758cea911ac384cfd71c6d829a893369840"
+    },
+    "sources_commitment_sha256": "1f86beac48876358d54ff4b13f3cb9bc1a282d2bff65c3f0dadbd3478505ceda",
+    "input_sha256": "ced4396ea4dc13d13a6e041a4c1c9ca3b542e4affd4a62de921ecad4cb52ad62"
+  },
+  "environment": [
+    {
+      "stage": 0,
+      "chain_id": 4663,
+      "endpoint_id": 30416,
+      "local_process_pid": 88025,
+      "client": "anvil/v1.8.5",
+      "hardfork": "cancun",
+      "execution_profile": "generic Ethereum EVM; chain identity only, no chain-specific execution emulation",
+      "block_gas_limit": "70000000",
+      "transaction_gas_ceiling": "16777216",
+      "code_size_limit": 24576,
+      "gas_price_wei": 0,
+      "forked": false,
+      "node_arguments": [
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "50729",
+        "--chain-id",
+        "4663",
+        "--network",
+        "ethereum",
+        "--hardfork",
+        "cancun",
+        "--gas-limit",
+        "70000000",
+        "--gas-price",
+        "0",
+        "--block-base-fee-per-gas",
+        "0",
+        "--balance",
+        "1000000000",
+        "--code-size-limit",
+        "24576",
+        "--prune-history",
+        "1",
+        "--silent"
+      ]
+    },
+    {
+      "stage": 1,
+      "chain_id": 56,
+      "endpoint_id": 30102,
+      "local_process_pid": 88026,
+      "client": "anvil/v1.8.5",
+      "hardfork": "cancun",
+      "execution_profile": "generic Ethereum EVM; chain identity only, no chain-specific execution emulation",
+      "block_gas_limit": "70000000",
+      "transaction_gas_ceiling": "16777216",
+      "code_size_limit": 24576,
+      "gas_price_wei": 0,
+      "forked": false,
+      "node_arguments": [
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "50733",
+        "--chain-id",
+        "56",
+        "--network",
+        "ethereum",
+        "--hardfork",
+        "cancun",
+        "--gas-limit",
+        "70000000",
+        "--gas-price",
+        "0",
+        "--block-base-fee-per-gas",
+        "0",
+        "--balance",
+        "1000000000",
+        "--code-size-limit",
+        "24576",
+        "--prune-history",
+        "1",
+        "--silent"
+      ]
+    },
+    {
+      "stage": 2,
+      "chain_id": 143,
+      "endpoint_id": 30390,
+      "local_process_pid": 88027,
+      "client": "anvil/v1.8.5",
+      "hardfork": "cancun",
+      "execution_profile": "generic Ethereum EVM; chain identity only, no chain-specific execution emulation",
+      "block_gas_limit": "70000000",
+      "transaction_gas_ceiling": "16777216",
+      "code_size_limit": 24576,
+      "gas_price_wei": 0,
+      "forked": false,
+      "node_arguments": [
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "50737",
+        "--chain-id",
+        "143",
+        "--network",
+        "ethereum",
+        "--hardfork",
+        "cancun",
+        "--gas-limit",
+        "70000000",
+        "--gas-price",
+        "0",
+        "--block-base-fee-per-gas",
+        "0",
+        "--balance",
+        "1000000000",
+        "--code-size-limit",
+        "24576",
+        "--prune-history",
+        "1",
+        "--silent"
+      ]
+    },
+    {
+      "stage": 3,
+      "chain_id": 5042,
+      "endpoint_id": 30417,
+      "local_process_pid": 88028,
+      "client": "anvil/v1.8.5",
+      "hardfork": "cancun",
+      "execution_profile": "generic Ethereum EVM; chain identity only, no chain-specific execution emulation",
+      "block_gas_limit": "70000000",
+      "transaction_gas_ceiling": "16777216",
+      "code_size_limit": 24576,
+      "gas_price_wei": 0,
+      "forked": false,
+      "node_arguments": [
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "50749",
+        "--chain-id",
+        "5042",
+        "--network",
+        "ethereum",
+        "--hardfork",
+        "cancun",
+        "--gas-limit",
+        "70000000",
+        "--gas-price",
+        "0",
+        "--block-base-fee-per-gas",
+        "0",
+        "--balance",
+        "1000000000",
+        "--code-size-limit",
+        "24576",
+        "--prune-history",
+        "1",
+        "--silent"
+      ]
+    }
+  ],
+  "tests_passed": 62,
+  "completed_at": "2026-10-25T11:24:53.425Z"
+}

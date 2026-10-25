@@ -1,9 +1,11 @@
 {
   "name": "gh0st-multichain-gpt2-research",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "build": "node scripts/build.mjs",
     "test": "node --test tests/*.test.mjs",
@@ -14,7 +16,11 @@
     "worker": "node scripts/worker.mjs",
     "model:fetch": "python3 model/fetch.py",
     "model:export": "python3 model/export.py",
-    "model:reference": "python3 model/reference.py --quick --tokens=2"
+    "model:reference": "python3 model/reference.py --quick --tokens=2",
+    "plan:optimized": "node scripts/plan.mjs --config=config/chains.optimized.json --out=reports/optimized-partition.json",
+    "benchmark:optimized": "node scripts/optimized-benchmark.mjs --layout=config/optimized-layout.json --engine=GPT2ShardOptimized",
+    "benchmark:baseline-native": "node scripts/optimized-benchmark.mjs --layout=config/baseline-native-layout.json --engine=GPT2Shard --out=reports/baseline-native-full",
+    "costs": "node scripts/estimate-costs.mjs"
   },
   "dependencies": {
     "ethers": "6.13.5"

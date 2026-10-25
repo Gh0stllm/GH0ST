@@ -1,0 +1,693 @@
+{
+  "schemaVersion": 1,
+  "status": "LOCAL_NATIVE_PROFILE_FEE_SCENARIO_NOT_PAID_MAINNET_COST",
+  "generatedAtUtc": "2026-10-25T11:29:12.018Z",
+  "feeSnapshotSha256": "8a2d9c934499e816f442256129be57f2f8b4c9f19183d6fbc511add15d1091d2",
+  "feeSnapshotAtUtc": "2026-10-25T10:10:55.583128+00:00",
+  "unit": "one processed token position; measured at context lengths one and two",
+  "baseline": {
+    "directory": "reports/baseline-native-full",
+    "reportSha256": "8afdff65faf13a3f201b1435e8337c1b4851e7a42986c51f094bba25fc5eb3d1",
+    "ledgerSha256": "8bf64a27f07ad242a4f8db235bbb5099cc930c12035e7995e8d0d6af79b5ada3",
+    "compiler": {
+      "version": "0.8.30+commit.73712a01.Emscripten.clang",
+      "settings": {
+        "optimizer": {
+          "enabled": true,
+          "runs": 200
+        },
+        "viaIR": true,
+        "evmVersion": "cancun",
+        "outputSelection": {
+          "*": {
+            "*": [
+              "abi",
+              "storageLayout",
+              "evm.bytecode.object",
+              "evm.deployedBytecode.object"
+            ]
+          }
+        }
+      },
+      "source_sha256": {
+        "@layerzerolabs/lz-evm-messagelib-v2/contracts/libs/ExecutorOptions.sol": "51a865ee90596427f27ab9421a8606130d7fdee8d1d9e4fe98d18eea5edaac45",
+        "@layerzerolabs/lz-evm-messagelib-v2/contracts/uln/libs/DVNOptions.sol": "b34711a3494285b50b140c55241bb04bf60237dd585bd8c3083062d4c7375e46",
+        "@layerzerolabs/lz-evm-protocol-v2/contracts/interfaces/ILayerZeroEndpointV2.sol": "a88fb702b371527c3791d7e5c168c1157d39021ed29b51e627e02973e6a740e0",
+        "@layerzerolabs/lz-evm-protocol-v2/contracts/interfaces/ILayerZeroReceiver.sol": "24e4add7dd95a72dad23e26c4fadfc1b6ce63148e0c7f4d6ad5dfaeda79db3e7",
+        "@layerzerolabs/lz-evm-protocol-v2/contracts/interfaces/IMessageLibManager.sol": "ffc33e319ab5e9d1392d16f8716625bcfb1dc34b744551f87dad1c0eb3ad11f1",
+        "@layerzerolabs/lz-evm-protocol-v2/contracts/interfaces/IMessagingChannel.sol": "9d0100f7cede83d5a4f6c9e03d6bfd24f861e9331b298ca4c73f99b161c718d5",
+        "@layerzerolabs/lz-evm-protocol-v2/contracts/interfaces/IMessagingComposer.sol": "5e7e5a47a477dcf05c034d5135bf6516119af881ea78d586805eee0ad5ab6b12",
+        "@layerzerolabs/lz-evm-protocol-v2/contracts/interfaces/IMessagingContext.sol": "b7f081828b8d0d206833953ebd73101bb28ac62541e7e8365fddc38eb440a92a",
+        "@layerzerolabs/lz-evm-protocol-v2/contracts/libs/AddressCast.sol": "e48211bfba874d0ce5c3b1fc4e4aac67450ac9539a75e814807745181d04e7dd",
+        "@layerzerolabs/lz-evm-protocol-v2/contracts/libs/CalldataBytesLib.sol": "82e74f2c2f10e53a90244af7ac3fabdf121ee9d38b30b40d40c23c08ee3e7ef5",
+        "@layerzerolabs/lz-evm-protocol-v2/contracts/libs/GUID.sol": "f462f5b95fba0918ab3bf779b09326eedde0eda85092d99bb32c60cf60bb338b",
+        "@layerzerolabs/lz-evm-protocol-v2/contracts/messagelib/libs/BitMaps.sol": "f638b8113c3e046a35e22f5b32ae577efd42221161f09777759dd061c7a735d2",
+        "@layerzerolabs/oapp-evm/contracts/oapp/OApp.sol": "92b191c937374b6e76686245b7b98eb3bc0bfacff4d54b279b7ecf1321878e04",
+        "@layerzerolabs/oapp-evm/contracts/oapp/OAppCore.sol": "b0a3e30618f5d4c71732a2048d7c2928be399508d6ec622c9345915c92b3dd0a",
+        "@layerzerolabs/oapp-evm/contracts/oapp/OAppReceiver.sol": "8d1dd4a6a74c3d9704a078e6404dcf7aab688b750ea64e8331f873e253862bc0",
+        "@layerzerolabs/oapp-evm/contracts/oapp/OAppSender.sol": "276f5d551ae7e478fb0c56002acf5476e628748c1f5ba0d63ea051e93813a137",
+        "@layerzerolabs/oapp-evm/contracts/oapp/interfaces/IOAppCore.sol": "041dd35f0a4a22425614414c05cd5aae6ce7e4b5b86b0350045e57c0ed3cbf1b",
+        "@layerzerolabs/oapp-evm/contracts/oapp/interfaces/IOAppReceiver.sol": "da4aff9322961c648e2221f7df203a44b375a397f2548b74679b3e9d0ae9addd",
+        "@layerzerolabs/oapp-evm/contracts/oapp/libs/OptionsBuilder.sol": "34699bf11b40b6ae8a818375ccfa758b7e03df986bc8d52d29882e57144ace17",
+        "@openzeppelin/contracts/access/Ownable.sol": "38578bd71c0a909840e67202db527cc6b4e6b437e0f39f0c909da32c1e30cb81",
+        "@openzeppelin/contracts/access/Ownable2Step.sol": "c75345d7b9feef17ae29f2a800ca2f65f8021cf80436a41d6ec00f57f5180f36",
+        "@openzeppelin/contracts/interfaces/IERC1363.sol": "9c3a75a925a6dac9e88b03cddc58d42fe3131b0aaaad84408521f3f7af2f991b",
+        "@openzeppelin/contracts/interfaces/IERC165.sol": "dfb3f56fa928a7c6cae41a7ce2c86b9210fa18d33fa26389099d66a0fa790368",
+        "@openzeppelin/contracts/interfaces/IERC20.sol": "0158e2d3e0e28bedd99eec13dcf1a8aa3a70a5b7e4bb2ad709609c95fcc740d1",
+        "@openzeppelin/contracts/token/ERC20/IERC20.sol": "01b6f5c4fa45fd38822b286ecef6daf983d27306dd6362496fa71b3e4600b72c",
+        "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol": "ac1fd9fa99b194a8db8dfa9ae8e3ff44feaa8f16668241fd2b66ae8b47d7c082",
+        "@openzeppelin/contracts/utils/Context.sol": "847fda5460fee70f56f4200f59b82ae622bb03c79c77e67af010e31b7e2cc5b6",
+        "@openzeppelin/contracts/utils/ReentrancyGuard.sol": "32fbb1c908ec1b4de85cc1bb10091aebd5816ffe80dfdd5ca5e084fbea67a462",
+        "@openzeppelin/contracts/utils/introspection/IERC165.sol": "9055c2994b37dea1a41b7b7926dcb510f05dbe2540b0aafc5fbee9558fffd0ca",
+        "@openzeppelin/contracts/utils/math/SafeCast.sol": "9769274bf53f26a7c7896c526ea1980dc9bea5bf5c2a5fd04870008c4afc1de9",
+        "contracts/GPT2Dot8.sol": "c56cbd68fed63b395ba2d41acfc24695ea1e0820e2505c2b98161af3a47837c7",
+        "contracts/GPT2DotOptimized.sol": "19a2ca4289892011cf8c26bdb674161f60bd206faa917ebff36186014e06659a",
+        "contracts/GPT2InferenceOApp.sol": "b1f8ad673e8ee46db7fef6e5401d621b67bc6911275cc66fa2b025131a7802f7",
+        "contracts/GPT2Shard.sol": "9f6c1da7ca09ffc053c96ee239e98f8af9980ac5bbb1da5c5efdf958e9d60482",
+        "contracts/GPT2ShardOptimized.sol": "eee131838374db0871dd70835a65f8cfbc3ddce6dd6d5446d834a09e4f3d0194",
+        "contracts/interfaces/IGPT2Shard.sol": "b5f8d3836627d37c9644ae6f2707278b64779e8cbe3e94144fce387f743fa8fc",
+        "contracts/mocks/MockEndpoint.sol": "467a988465e120b4e72efee39bfb3ac37aca8c1618324c155d0e0bcc61a504ca",
+        "contracts/mocks/MockGPT2Shard.sol": "269798b0d743f01af845946a1a5b505befc2745f75c859e77455054485e7bebb",
+        "solidity-bytes-utils/contracts/BytesLib.sol": "99e631c460da5d1e5741967fcae56758cea911ac384cfd71c6d829a893369840"
+      },
+      "sources_commitment_sha256": "1f86beac48876358d54ff4b13f3cb9bc1a282d2bff65c3f0dadbd3478505ceda",
+      "input_sha256": "ced4396ea4dc13d13a6e041a4c1c9ca3b542e4affd4a62de921ecad4cb52ad62"
+    },
+    "routeId": "0x2f89baf64437cb54e29157d15d09e2c0bfc8bc02a2fbd6dd718ac79e4f9a58dd",
+    "engine": "GPT2Shard",
+    "totalVerifiedReceipts": 7930,
+    "positions": [
+      {
+        "position": 0,
+        "inputToken": 50256,
+        "outputToken": 198,
+        "chains": [
+          {
+            "stage": 0,
+            "chainId": 4663,
+            "key": "robinhood",
+            "profile": "ethereum",
+            "gas": "2950913",
+            "declaredGas": "33554432",
+            "billedGas": "2950913",
+            "transactions": 2,
+            "calldataBytes": 136,
+            "firstLayer": 0,
+            "endLayer": 0,
+            "doesEmbedding": true,
+            "doesOutput": false,
+            "modelAndImportUsd": 0.1373820158225771
+          },
+          {
+            "stage": 1,
+            "chainId": 56,
+            "key": "bsc",
+            "profile": "ethereum",
+            "gas": "1085124589",
+            "declaredGas": "1358954496",
+            "billedGas": "1085124589",
+            "transactions": 81,
+            "calldataBytes": 8964,
+            "firstLayer": 0,
+            "endLayer": 4,
+            "doesEmbedding": false,
+            "doesOutput": false,
+            "modelAndImportUsd": 40.010713845608
+          },
+          {
+            "stage": 2,
+            "chainId": 143,
+            "key": "monad",
+            "profile": "monad",
+            "gas": "1191840424",
+            "declaredGas": "1203863414",
+            "billedGas": "1203863414",
+            "transactions": 61,
+            "calldataBytes": 7604,
+            "firstLayer": 4,
+            "endLayer": 8,
+            "doesEmbedding": false,
+            "doesOutput": false,
+            "modelAndImportUsd": 2.577017712866922
+          },
+          {
+            "stage": 3,
+            "chainId": 5042,
+            "key": "arc",
+            "profile": "ethereum",
+            "gas": "2381889259",
+            "declaredGas": "3019898880",
+            "billedGas": "2381889259",
+            "transactions": 180,
+            "calldataBytes": 15728,
+            "firstLayer": 8,
+            "endLayer": 12,
+            "doesEmbedding": false,
+            "doesOutput": true,
+            "modelAndImportUsd": 49.7932309161154
+          }
+        ],
+        "modelAndImportUsd": 92.51834449041289,
+        "rhPostingScenario": {
+          "rawCalldataAndEnvelopeBytes": 416,
+          "envelopeAssumptionBytesPerTransaction": 140,
+          "transactionEnvelopePricing": "perL2TransactionWei already includes the fixed transaction envelope; no second envelope fee",
+          "nativeWei": "6511238656",
+          "usd": 0.00001514618291204096,
+          "status": "RAW_BYTE_SCENARIO_NOT_COMPRESSED_POSTING_QUOTE"
+        }
+      },
+      {
+        "position": 1,
+        "inputToken": 198,
+        "outputToken": 464,
+        "chains": [
+          {
+            "stage": 0,
+            "chainId": 4663,
+            "key": "robinhood",
+            "profile": "ethereum",
+            "gas": "1275238",
+            "declaredGas": "33554432",
+            "billedGas": "1275238",
+            "transactions": 2,
+            "calldataBytes": 136,
+            "firstLayer": 0,
+            "endLayer": 0,
+            "doesEmbedding": true,
+            "doesOutput": false,
+            "modelAndImportUsd": 0.05936968222836512
+          },
+          {
+            "stage": 1,
+            "chainId": 56,
+            "key": "bsc",
+            "profile": "ethereum",
+            "gas": "1075311880",
+            "declaredGas": "1358954496",
+            "billedGas": "1075311880",
+            "transactions": 81,
+            "calldataBytes": 8964,
+            "firstLayer": 0,
+            "endLayer": 4,
+            "doesEmbedding": false,
+            "doesOutput": false,
+            "modelAndImportUsd": 39.64889963936
+          },
+          {
+            "stage": 2,
+            "chainId": 143,
+            "key": "monad",
+            "profile": "monad",
+            "gas": "1195943416",
+            "declaredGas": "1207985003",
+            "billedGas": "1207985003",
+            "transactions": 65,
+            "calldataBytes": 7876,
+            "firstLayer": 4,
+            "endLayer": 8,
+            "doesEmbedding": false,
+            "doesOutput": false,
+            "modelAndImportUsd": 2.585840481076869
+          },
+          {
+            "stage": 3,
+            "chainId": 5042,
+            "key": "arc",
+            "profile": "ethereum",
+            "gas": "2371906321",
+            "declaredGas": "3019898880",
+            "billedGas": "2371906321",
+            "transactions": 180,
+            "calldataBytes": 15728,
+            "firstLayer": 8,
+            "endLayer": 12,
+            "doesEmbedding": false,
+            "doesOutput": true,
+            "modelAndImportUsd": 49.584538284761095
+          }
+        ],
+        "modelAndImportUsd": 91.87864808742634,
+        "rhPostingScenario": {
+          "rawCalldataAndEnvelopeBytes": 416,
+          "envelopeAssumptionBytesPerTransaction": 140,
+          "transactionEnvelopePricing": "perL2TransactionWei already includes the fixed transaction envelope; no second envelope fee",
+          "nativeWei": "6511238656",
+          "usd": 0.00001514618291204096,
+          "status": "RAW_BYTE_SCENARIO_NOT_COMPRESSED_POSTING_QUOTE"
+        }
+      }
+    ],
+    "initialDeployment": [
+      {
+        "chainId": 4663,
+        "key": "robinhood",
+        "gas": "9165672301",
+        "billedGas": "9165672301",
+        "transactions": 1781,
+        "usd": 426.7148970777989
+      },
+      {
+        "chainId": 56,
+        "key": "bsc",
+        "gas": "6263626752",
+        "billedGas": "6263626752",
+        "transactions": 1283,
+        "usd": 230.952445599744
+      },
+      {
+        "chainId": 143,
+        "key": "monad",
+        "gas": "6261246433",
+        "billedGas": "6325141274",
+        "transactions": 1283,
+        "usd": 13.539742889373702
+      },
+      {
+        "chainId": 5042,
+        "key": "arc",
+        "gas": "14749191745",
+        "billedGas": "14749191745",
+        "transactions": 2911,
+        "usd": 308.3308376364982
+      }
+    ]
+  },
+  "optimized": {
+    "directory": "reports/optimized-native-full",
+    "reportSha256": "bfc4ead61862a2303406de33855018d22dfc9222d74df85d44eebde62a849cf6",
+    "ledgerSha256": "2d141ec482645103df656f3acba7d33828954953a54851a93f7ed240045b59fa",
+    "compiler": {
+      "version": "0.8.30+commit.73712a01.Emscripten.clang",
+      "settings": {
+        "optimizer": {
+          "enabled": true,
+          "runs": 200
+        },
+        "viaIR": true,
+        "evmVersion": "cancun",
+        "outputSelection": {
+          "*": {
+            "*": [
+              "abi",
+              "storageLayout",
+              "evm.bytecode.object",
+              "evm.deployedBytecode.object"
+            ]
+          }
+        }
+      },
+      "source_sha256": {
+        "@layerzerolabs/lz-evm-messagelib-v2/contracts/libs/ExecutorOptions.sol": "51a865ee90596427f27ab9421a8606130d7fdee8d1d9e4fe98d18eea5edaac45",
+        "@layerzerolabs/lz-evm-messagelib-v2/contracts/uln/libs/DVNOptions.sol": "b34711a3494285b50b140c55241bb04bf60237dd585bd8c3083062d4c7375e46",
+        "@layerzerolabs/lz-evm-protocol-v2/contracts/interfaces/ILayerZeroEndpointV2.sol": "a88fb702b371527c3791d7e5c168c1157d39021ed29b51e627e02973e6a740e0",
+        "@layerzerolabs/lz-evm-protocol-v2/contracts/interfaces/ILayerZeroReceiver.sol": "24e4add7dd95a72dad23e26c4fadfc1b6ce63148e0c7f4d6ad5dfaeda79db3e7",
+        "@layerzerolabs/lz-evm-protocol-v2/contracts/interfaces/IMessageLibManager.sol": "ffc33e319ab5e9d1392d16f8716625bcfb1dc34b744551f87dad1c0eb3ad11f1",
+        "@layerzerolabs/lz-evm-protocol-v2/contracts/interfaces/IMessagingChannel.sol": "9d0100f7cede83d5a4f6c9e03d6bfd24f861e9331b298ca4c73f99b161c718d5",
+        "@layerzerolabs/lz-evm-protocol-v2/contracts/interfaces/IMessagingComposer.sol": "5e7e5a47a477dcf05c034d5135bf6516119af881ea78d586805eee0ad5ab6b12",
+        "@layerzerolabs/lz-evm-protocol-v2/contracts/interfaces/IMessagingContext.sol": "b7f081828b8d0d206833953ebd73101bb28ac62541e7e8365fddc38eb440a92a",
+        "@layerzerolabs/lz-evm-protocol-v2/contracts/libs/AddressCast.sol": "e48211bfba874d0ce5c3b1fc4e4aac67450ac9539a75e814807745181d04e7dd",
+        "@layerzerolabs/lz-evm-protocol-v2/contracts/libs/CalldataBytesLib.sol": "82e74f2c2f10e53a90244af7ac3fabdf121ee9d38b30b40d40c23c08ee3e7ef5",
+        "@layerzerolabs/lz-evm-protocol-v2/contracts/libs/GUID.sol": "f462f5b95fba0918ab3bf779b09326eedde0eda85092d99bb32c60cf60bb338b",
+        "@layerzerolabs/lz-evm-protocol-v2/contracts/messagelib/libs/BitMaps.sol": "f638b8113c3e046a35e22f5b32ae577efd42221161f09777759dd061c7a735d2",
+        "@layerzerolabs/oapp-evm/contracts/oapp/OApp.sol": "92b191c937374b6e76686245b7b98eb3bc0bfacff4d54b279b7ecf1321878e04",
+        "@layerzerolabs/oapp-evm/contracts/oapp/OAppCore.sol": "b0a3e30618f5d4c71732a2048d7c2928be399508d6ec622c9345915c92b3dd0a",
+        "@layerzerolabs/oapp-evm/contracts/oapp/OAppReceiver.sol": "8d1dd4a6a74c3d9704a078e6404dcf7aab688b750ea64e8331f873e253862bc0",
+        "@layerzerolabs/oapp-evm/contracts/oapp/OAppSender.sol": "276f5d551ae7e478fb0c56002acf5476e628748c1f5ba0d63ea051e93813a137",
+        "@layerzerolabs/oapp-evm/contracts/oapp/interfaces/IOAppCore.sol": "041dd35f0a4a22425614414c05cd5aae6ce7e4b5b86b0350045e57c0ed3cbf1b",
+        "@layerzerolabs/oapp-evm/contracts/oapp/interfaces/IOAppReceiver.sol": "da4aff9322961c648e2221f7df203a44b375a397f2548b74679b3e9d0ae9addd",
+        "@layerzerolabs/oapp-evm/contracts/oapp/libs/OptionsBuilder.sol": "34699bf11b40b6ae8a818375ccfa758b7e03df986bc8d52d29882e57144ace17",
+        "@openzeppelin/contracts/access/Ownable.sol": "38578bd71c0a909840e67202db527cc6b4e6b437e0f39f0c909da32c1e30cb81",
+        "@openzeppelin/contracts/access/Ownable2Step.sol": "c75345d7b9feef17ae29f2a800ca2f65f8021cf80436a41d6ec00f57f5180f36",
+        "@openzeppelin/contracts/interfaces/IERC1363.sol": "9c3a75a925a6dac9e88b03cddc58d42fe3131b0aaaad84408521f3f7af2f991b",
+        "@openzeppelin/contracts/interfaces/IERC165.sol": "dfb3f56fa928a7c6cae41a7ce2c86b9210fa18d33fa26389099d66a0fa790368",
+        "@openzeppelin/contracts/interfaces/IERC20.sol": "0158e2d3e0e28bedd99eec13dcf1a8aa3a70a5b7e4bb2ad709609c95fcc740d1",
+        "@openzeppelin/contracts/token/ERC20/IERC20.sol": "01b6f5c4fa45fd38822b286ecef6daf983d27306dd6362496fa71b3e4600b72c",
+        "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol": "ac1fd9fa99b194a8db8dfa9ae8e3ff44feaa8f16668241fd2b66ae8b47d7c082",
+        "@openzeppelin/contracts/utils/Context.sol": "847fda5460fee70f56f4200f59b82ae622bb03c79c77e67af010e31b7e2cc5b6",
+        "@openzeppelin/contracts/utils/ReentrancyGuard.sol": "32fbb1c908ec1b4de85cc1bb10091aebd5816ffe80dfdd5ca5e084fbea67a462",
+        "@openzeppelin/contracts/utils/introspection/IERC165.sol": "9055c2994b37dea1a41b7b7926dcb510f05dbe2540b0aafc5fbee9558fffd0ca",
+        "@openzeppelin/contracts/utils/math/SafeCast.sol": "9769274bf53f26a7c7896c526ea1980dc9bea5bf5c2a5fd04870008c4afc1de9",
+        "contracts/GPT2Dot8.sol": "c56cbd68fed63b395ba2d41acfc24695ea1e0820e2505c2b98161af3a47837c7",
+        "contracts/GPT2DotOptimized.sol": "19a2ca4289892011cf8c26bdb674161f60bd206faa917ebff36186014e06659a",
+        "contracts/GPT2InferenceOApp.sol": "b1f8ad673e8ee46db7fef6e5401d621b67bc6911275cc66fa2b025131a7802f7",
+        "contracts/GPT2Shard.sol": "9f6c1da7ca09ffc053c96ee239e98f8af9980ac5bbb1da5c5efdf958e9d60482",
+        "contracts/GPT2ShardOptimized.sol": "eee131838374db0871dd70835a65f8cfbc3ddce6dd6d5446d834a09e4f3d0194",
+        "contracts/interfaces/IGPT2Shard.sol": "b5f8d3836627d37c9644ae6f2707278b64779e8cbe3e94144fce387f743fa8fc",
+        "contracts/mocks/MockEndpoint.sol": "467a988465e120b4e72efee39bfb3ac37aca8c1618324c155d0e0bcc61a504ca",
+        "contracts/mocks/MockGPT2Shard.sol": "269798b0d743f01af845946a1a5b505befc2745f75c859e77455054485e7bebb",
+        "solidity-bytes-utils/contracts/BytesLib.sol": "99e631c460da5d1e5741967fcae56758cea911ac384cfd71c6d829a893369840"
+      },
+      "sources_commitment_sha256": "1f86beac48876358d54ff4b13f3cb9bc1a282d2bff65c3f0dadbd3478505ceda",
+      "input_sha256": "ced4396ea4dc13d13a6e041a4c1c9ca3b542e4affd4a62de921ecad4cb52ad62"
+    },
+    "routeId": "0xa9fb916af8de3d40c9ba4a329a4587bb5febe834e319193417233c9cffe9f9d0",
+    "engine": "GPT2ShardOptimized",
+    "totalVerifiedReceipts": 7836,
+    "positions": [
+      {
+        "position": 0,
+        "inputToken": 50256,
+        "outputToken": 198,
+        "chains": [
+          {
+            "stage": 0,
+            "chainId": 4663,
+            "key": "robinhood",
+            "profile": "ethereum",
+            "gas": "2897462",
+            "declaredGas": "33554432",
+            "billedGas": "2897462",
+            "transactions": 2,
+            "calldataBytes": 136,
+            "firstLayer": 0,
+            "endLayer": 0,
+            "doesEmbedding": true,
+            "doesOutput": false,
+            "modelAndImportUsd": 0.13489356356128288
+          },
+          {
+            "stage": 1,
+            "chainId": 56,
+            "key": "bsc",
+            "profile": "ethereum",
+            "gas": "248301564",
+            "declaredGas": "318767104",
+            "billedGas": "248301564",
+            "transactions": 19,
+            "calldataBytes": 4460,
+            "firstLayer": 0,
+            "endLayer": 1,
+            "doesEmbedding": false,
+            "doesOutput": false,
+            "modelAndImportUsd": 9.155375267808001
+          },
+          {
+            "stage": 2,
+            "chainId": 5042,
+            "key": "arc",
+            "profile": "ethereum",
+            "gas": "248116919",
+            "declaredGas": "318767104",
+            "billedGas": "248116919",
+            "transactions": 19,
+            "calldataBytes": 4460,
+            "firstLayer": 1,
+            "endLayer": 2,
+            "doesEmbedding": false,
+            "doesOutput": false,
+            "modelAndImportUsd": 5.186867103615458
+          },
+          {
+            "stage": 3,
+            "chainId": 143,
+            "key": "monad",
+            "profile": "monad",
+            "gas": "3732676784",
+            "declaredGas": "3770286016",
+            "billedGas": "3770286016",
+            "transactions": 239,
+            "calldataBytes": 20028,
+            "firstLayer": 2,
+            "endLayer": 12,
+            "doesEmbedding": false,
+            "doesOutput": true,
+            "modelAndImportUsd": 8.070760962427968
+          }
+        ],
+        "modelAndImportUsd": 22.54789689741271,
+        "rhPostingScenario": {
+          "rawCalldataAndEnvelopeBytes": 416,
+          "envelopeAssumptionBytesPerTransaction": 140,
+          "transactionEnvelopePricing": "perL2TransactionWei already includes the fixed transaction envelope; no second envelope fee",
+          "nativeWei": "6511238656",
+          "usd": 0.00001514618291204096,
+          "status": "RAW_BYTE_SCENARIO_NOT_COMPRESSED_POSTING_QUOTE"
+        }
+      },
+      {
+        "position": 1,
+        "inputToken": 198,
+        "outputToken": 464,
+        "chains": [
+          {
+            "stage": 0,
+            "chainId": 4663,
+            "key": "robinhood",
+            "profile": "ethereum",
+            "gas": "1221787",
+            "declaredGas": "33554432",
+            "billedGas": "1221787",
+            "transactions": 2,
+            "calldataBytes": 136,
+            "firstLayer": 0,
+            "endLayer": 0,
+            "doesEmbedding": true,
+            "doesOutput": false,
+            "modelAndImportUsd": 0.05688122996707088
+          },
+          {
+            "stage": 1,
+            "chainId": 56,
+            "key": "bsc",
+            "profile": "ethereum",
+            "gas": "234003728",
+            "declaredGas": "318767104",
+            "billedGas": "234003728",
+            "transactions": 19,
+            "calldataBytes": 4460,
+            "firstLayer": 0,
+            "endLayer": 1,
+            "doesEmbedding": false,
+            "doesOutput": false,
+            "modelAndImportUsd": 8.628185458816
+          },
+          {
+            "stage": 2,
+            "chainId": 5042,
+            "key": "arc",
+            "profile": "ethereum",
+            "gas": "233985097",
+            "declaredGas": "318767104",
+            "billedGas": "233985097",
+            "transactions": 19,
+            "calldataBytes": 4460,
+            "firstLayer": 1,
+            "endLayer": 2,
+            "doesEmbedding": false,
+            "doesOutput": false,
+            "modelAndImportUsd": 4.8914423379792655
+          },
+          {
+            "stage": 3,
+            "chainId": 143,
+            "key": "monad",
+            "profile": "monad",
+            "gas": "3761113890",
+            "declaredGas": "3798981062",
+            "billedGas": "3798981062",
+            "transactions": 239,
+            "calldataBytes": 20316,
+            "firstLayer": 2,
+            "endLayer": 12,
+            "doesEmbedding": false,
+            "doesOutput": true,
+            "modelAndImportUsd": 8.132186237881626
+          }
+        ],
+        "modelAndImportUsd": 21.708695264643964,
+        "rhPostingScenario": {
+          "rawCalldataAndEnvelopeBytes": 416,
+          "envelopeAssumptionBytesPerTransaction": 140,
+          "transactionEnvelopePricing": "perL2TransactionWei already includes the fixed transaction envelope; no second envelope fee",
+          "nativeWei": "6511238656",
+          "usd": 0.00001514618291204096,
+          "status": "RAW_BYTE_SCENARIO_NOT_COMPRESSED_POSTING_QUOTE"
+        }
+      }
+    ],
+    "initialDeployment": [
+      {
+        "chainId": 4663,
+        "key": "robinhood",
+        "gas": "9165796071",
+        "billedGas": "9165796071",
+        "transactions": 1781,
+        "usd": 426.7206592849864
+      },
+      {
+        "chainId": 56,
+        "key": "bsc",
+        "gas": "1574961443",
+        "billedGas": "1574961443",
+        "transactions": 329,
+        "usd": 58.071978326296
+      },
+      {
+        "chainId": 5042,
+        "key": "arc",
+        "gas": "1574918496",
+        "billedGas": "1574918496",
+        "transactions": 329,
+        "usd": 32.923562692546305
+      },
+      {
+        "chainId": 143,
+        "key": "monad",
+        "gas": "24114497853",
+        "billedGas": "24360459460",
+        "transactions": 4819,
+        "usd": 52.14655981064358
+      }
+    ]
+  },
+  "comparison": [
+    {
+      "position": 0,
+      "baselineModelAndImportUsd": 92.51834449041289,
+      "optimizedModelAndImportUsd": 22.54789689741271,
+      "modelAndImportSavingsPercent": 75.62872852772543
+    },
+    {
+      "position": 1,
+      "baselineModelAndImportUsd": 91.87864808742634,
+      "optimizedModelAndImportUsd": 21.708695264643964,
+      "modelAndImportSavingsPercent": 76.37242632914315
+    }
+  ],
+  "messaging": {
+    "status": "LIVE_PROVIDER_COMPONENTS_PLUS_EXPLICIT_SOURCE_EXECUTION_ALLOWANCE",
+    "byChain": [
+      {
+        "source": "robinhood",
+        "destination": "bsc",
+        "providerComponentUsd": 0.26640077028491554,
+        "sourceDispatchGasAllowance": "16777216",
+        "sourceDispatchUsdAllowance": 0.7810761462539878
+      },
+      {
+        "source": "bsc",
+        "destination": "arc",
+        "providerComponentUsd": 0.2586618311948806,
+        "sourceDispatchGasAllowance": "16777216",
+        "sourceDispatchUsdAllowance": 0.618609508352
+      },
+      {
+        "source": "arc",
+        "destination": "monad",
+        "providerComponentUsd": 0.252671536822046,
+        "sourceDispatchGasAllowance": "16777216",
+        "sourceDispatchUsdAllowance": 0.3507265450150577
+      },
+      {
+        "source": "monad",
+        "destination": "robinhood",
+        "providerComponentUsd": 0.27357221819217925,
+        "sourceDispatchGasAllowance": "16777216",
+        "sourceDispatchUsdAllowance": 0.035913694445568
+      }
+    ],
+    "providerComponentUsd": 1.0513063564940213,
+    "sourceDispatchUsdAllowance": 1.7863258940666136,
+    "treasuryFee": "NOT_QUOTED",
+    "receiveGas": "already included in executor quote; never added twice"
+  },
+  "optimizedBudgetScenarios": [
+    {
+      "position": 0,
+      "chains": [
+        {
+          "key": "robinhood",
+          "modelAndImportUsd": 0.13489356356128288,
+          "providerComponentUsd": 0.26640077028491554,
+          "sourceDispatchUsdAllowance": 0.7810761462539878,
+          "rhRawPostingScenarioUsd": 0.00001514618291204096,
+          "estimatedSubtotalUsd": 0.4012943338461984,
+          "subtotalWithSourceAllowanceUsd": 1.1823856262830983
+        },
+        {
+          "key": "bsc",
+          "modelAndImportUsd": 9.155375267808001,
+          "providerComponentUsd": 0.2586618311948806,
+          "sourceDispatchUsdAllowance": 0.618609508352,
+          "rhRawPostingScenarioUsd": 0,
+          "estimatedSubtotalUsd": 9.414037099002881,
+          "subtotalWithSourceAllowanceUsd": 10.03264660735488
+        },
+        {
+          "key": "arc",
+          "modelAndImportUsd": 5.186867103615458,
+          "providerComponentUsd": 0.252671536822046,
+          "sourceDispatchUsdAllowance": 0.3507265450150577,
+          "rhRawPostingScenarioUsd": 0,
+          "estimatedSubtotalUsd": 5.439538640437504,
+          "subtotalWithSourceAllowanceUsd": 5.7902651854525615
+        },
+        {
+          "key": "monad",
+          "modelAndImportUsd": 8.070760962427968,
+          "providerComponentUsd": 0.27357221819217925,
+          "sourceDispatchUsdAllowance": 0.035913694445568,
+          "rhRawPostingScenarioUsd": 0,
+          "estimatedSubtotalUsd": 8.344333180620147,
+          "subtotalWithSourceAllowanceUsd": 8.380246875065716
+        }
+      ],
+      "modelAndProviderSubtotalUsd": 23.59920325390673,
+      "withSourceAllowanceAndRhRawPostingUsd": 25.385544294156254
+    },
+    {
+      "position": 1,
+      "chains": [
+        {
+          "key": "robinhood",
+          "modelAndImportUsd": 0.05688122996707088,
+          "providerComponentUsd": 0.26640077028491554,
+          "sourceDispatchUsdAllowance": 0.7810761462539878,
+          "rhRawPostingScenarioUsd": 0.00001514618291204096,
+          "estimatedSubtotalUsd": 0.32328200025198645,
+          "subtotalWithSourceAllowanceUsd": 1.1043732926888863
+        },
+        {
+          "key": "bsc",
+          "modelAndImportUsd": 8.628185458816,
+          "providerComponentUsd": 0.2586618311948806,
+          "sourceDispatchUsdAllowance": 0.618609508352,
+          "rhRawPostingScenarioUsd": 0,
+          "estimatedSubtotalUsd": 8.88684729001088,
+          "subtotalWithSourceAllowanceUsd": 9.50545679836288
+        },
+        {
+          "key": "arc",
+          "modelAndImportUsd": 4.8914423379792655,
+          "providerComponentUsd": 0.252671536822046,
+          "sourceDispatchUsdAllowance": 0.3507265450150577,
+          "rhRawPostingScenarioUsd": 0,
+          "estimatedSubtotalUsd": 5.144113874801311,
+          "subtotalWithSourceAllowanceUsd": 5.494840419816369
+        },
+        {
+          "key": "monad",
+          "modelAndImportUsd": 8.132186237881626,
+          "providerComponentUsd": 0.27357221819217925,
+          "sourceDispatchUsdAllowance": 0.035913694445568,
+          "rhRawPostingScenarioUsd": 0,
+          "estimatedSubtotalUsd": 8.405758456073805,
+          "subtotalWithSourceAllowanceUsd": 8.441672150519373
+        }
+      ],
+      "modelAndProviderSubtotalUsd": 22.760001621137985,
+      "withSourceAllowanceAndRhRawPostingUsd": 24.54634266138751
+    }
+  ],
+  "limitations": [
+    "Monad uses local native MONAD_TEN semantics and declared gas limits. Other nodes use generic Cancun with target chain IDs, not exact target-network clients.",
+    "Local full-model execution, actual outputs and receipt reconciliation are verified. All dollar figures are projections at a point-in-time public price snapshot.",
+    "Model/import excludes local mock send and receive costs. Provider quotes include destination execution. Source dispatch is an explicit allowance, not measured production LayerZero execution.",
+    "No exact deployed-OApp quote, treasury fee, congestion forecast or paid public-chain inference was obtained.",
+    "RH raw-byte posting scenario is not an exact compressed parent-chain fee. Source dispatch posting is not independently quoted.",
+    "Initial deployment is a local execution-only scenario, excludes mock endpoints, RH posting fees and production messaging security setup; it is not amortized into per-token prices.",
+    "Longer prompts and contexts require more positions and growing attention/KV work; multiplying the two-position benchmark is only an illustrative scenario.",
+    "This route minimizes exposure to expensive chains within the implemented whole-block partition requiring nonzero transformer work on BNB and Arc; it is not proof of a global architectural optimum."
+  ]
+}

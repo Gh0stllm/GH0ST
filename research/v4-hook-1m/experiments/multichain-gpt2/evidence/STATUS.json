@@ -1,38 +1,47 @@
 {
-  "schemaVersion": 1,
-  "status": "PASS_LOCAL_FOUR_CHAIN_GPT2_124M",
+  "schemaVersion": 2,
+  "status": "PASS_LOCAL_OPTIMIZED_FOUR_CHAIN_GPT2_124M",
   "publicTransactionsSubmitted": 0,
   "publicDeployment": false,
   "productionMessagingVerified": false,
-  "feeSavingsVerified": false,
-  "model": "GPT-2 124439808 parameters, INT8 weights and Q12 activations",
+  "paidFeeSavingsVerified": false,
+  "localFeeScenarioVerified": true,
+  "model": "GPT-2 124439808 parameters, original INT8 weights and Q12 activations",
   "route": [
     "Robinhood",
     "BNB",
-    "Monad",
     "Arc",
+    "Monad",
     "Robinhood"
   ],
+  "engine": "GPT2ShardOptimized",
+  "routeId": "0xa9fb916af8de3d40c9ba4a329a4587bb5febe834e319193417233c9cffe9f9d0",
   "validation": {
-    "protocolChecksPassed": 62,
-    "workerConfigTestsPassed": 8,
     "realModelTokenIds": [
       198,
       464
     ],
-    "phaseCommitmentsMatched": 172,
-    "vocabularyLogitsMatched": 100514,
-    "kvVectorsMatched": 72,
-    "successfulReceipts": 7966,
-    "maxTransactionGas": 16186577,
-    "compilerSourcesHash": "83ea62ad2ec39cf5042e6a61712bc15a530cdf859c1a816d53e2a997a1c385a5",
-    "partition": "all77 tensors and canonical shard layouts verified"
+    "phaseCommitmentsMatchedPerFullRun": 172,
+    "vocabularyLogitsMatchedPerFullRun": 100514,
+    "kvVectorsMatchedPerFullRun": 72,
+    "baselineSuccessfulReceipts": 7930,
+    "optimizedSuccessfulReceipts": 7836,
+    "protocolChecksPassed": 62,
+    "workerConfigTestsPassed": 16,
+    "workerSelectionTestsPassed": 8,
+    "kernelDomainCases": 90,
+    "kernelInvalidInputsRejected": 3,
+    "compilerSourcesHash": "1f86beac48876358d54ff4b13f3cb9bc1a282d2bff65c3f0dadbd3478505ceda",
+    "nodeTestsPassed": 26,
+    "nodeTestsFailed": 0
   },
-  "gas": {
-    "deploymentIncludingTestEndpoints": "36446260980",
-    "routeSetup": "843429",
-    "firstPositionIncludingSimulatedTransport": "4565727273",
-    "secondPositionIncludingSimulatedTransport": "4534351670"
+  "estimatedUsdSecondPosition": {
+    "baselineModelAndImport": 91.87864808742634,
+    "optimizedModelAndImport": 21.708695264643964,
+    "modelAndImportSavingsPercent": 76.37242632914315,
+    "optimizedIncludingProviderComponents": 22.760001621137985,
+    "optimizedIncludingSourceAllowanceAndRhRawPosting": 24.54634266138751
   },
-  "scope": "Four isolated generic Cancun EVMs; real model weights and arithmetic; simulated message delivery; no public-network execution or monetary fee claim."
+  "scope": "Two full local benchmark scenarios; native local MonadTen profile and declared gas billing; generic Cancun on other three chain identities; live public price/provider snapshots; no paid public-network inference.",
+  "previousBaselineEvidence": "local-benchmark.json"
 }

@@ -33,8 +33,8 @@ export function tensorIds(stage, count, start, end) {
   return [...new Set(ids)].sort((a, b) => a - b);
 }
 
-export function makePlan(dataDirectory, { verify = true } = {}) {
-  const config = JSON.parse(fs.readFileSync(path.join(ROOT, 'config/chains.json')));
+export function makePlan(dataDirectory, { verify = true, configuration = null } = {}) {
+  const config = configuration ?? JSON.parse(fs.readFileSync(path.join(ROOT, 'config/chains.json')));
   const manifestFile = path.join(dataDirectory, 'manifest.json');
   const manifest = JSON.parse(fs.readFileSync(manifestFile));
   assert.equal(manifest.unique_parameter_count, 124439808);
@@ -116,12 +116,14 @@ export function makePlan(dataDirectory, { verify = true } = {}) {
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const args = process.argv.slice(2);
-  assert(args.every(x => x.startsWith('--data=') || x.startsWith('--out=')));
+  assert(args.every(x => x.startsWith('--data=') || x.startsWith('--out=') || x.startsWith('--config=')));
   const local = path.join(ROOT,'data'), fallback = path.resolve(ROOT,'../gpt2-bsc/data');
   const data = path.resolve(args.find(x=>x.startsWith('--data='))?.slice(7) ?? (fs.existsSync(path.join(local,'manifest.json')) ? local : fallback));
   const out = path.resolve(ROOT, args.find(x=>x.startsWith('--out='))?.slice(6) ?? 'reports/partition.json');
   assert(out.startsWith(ROOT + path.sep), 'Output must stay in this project');
-  const plan = makePlan(data);
+  const configPath=args.find(x=>x.startsWith('--config='))?.slice(9);
+  const configuration=configPath?JSON.parse(fs.readFileSync(path.resolve(ROOT,configPath))):null;
+  const plan = makePlan(data,{configuration});
   fs.mkdirSync(path.dirname(out),{recursive:true}); fs.writeFileSync(out,JSON.stringify(plan,null,2)+'\n');
   console.log(JSON.stringify({status:plan.status, modelId:plan.modelId,routeId:plan.routeId,stages:plan.stages.map(s=>({chain:s.key,layers:s.layerRange,payloadBytes:s.payloadBytes})),totals:plan.totals,output:out},null,2));
 }
