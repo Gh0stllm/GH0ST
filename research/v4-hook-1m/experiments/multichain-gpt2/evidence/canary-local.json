@@ -1,0 +1,265 @@
+{
+  "schema_version": 1,
+  "status": "PASS_LOCAL_CANARY_VALIDATION",
+  "created_at_utc": "2026-10-25T15:44:43.276330+00:00",
+  "scope": "Model-free RH/opBNB transport canary, local validation only. No public transaction or public RPC was used by these test runs.",
+  "public_transactions_submitted": 0,
+  "public_rpc_calls": 0,
+  "neural_model_instantiated": false,
+  "model_weights_deployed": false,
+  "attestations": "Both required DVNs are explicit administrator-controlled local mocks. No production DVN signature or mainnet finality proof is claimed.",
+  "checks": {
+    "application": {
+      "status": "PASS_CANARY_APPLICATION_GUARDS",
+      "count": 43,
+      "transport": "MockEndpoint for focused application guards",
+      "checks": [
+        "unsealed send rejected 0",
+        "unsealed send rejected 1",
+        "requester authorization",
+        "remote cannot originate ping",
+        "zero challenge rejected",
+        "ack unavailable before ping delivery",
+        "home cannot originate ack",
+        "sealed peer frozen",
+        "route cannot seal twice",
+        "ownership cannot be renounced",
+        "underpayment rolls back state",
+        "exact packet and options",
+        "challenge bound to domain/session/peers/both endpoints",
+        "wrong source endpoint",
+        "wrong source peer",
+        "direct non-endpoint delivery",
+        "packet rejects altered version",
+        "packet rejects altered kind",
+        "packet rejects altered sessionId",
+        "packet rejects altered challenge",
+        "packet rejects altered nonce",
+        "packet rejects altered homeEid",
+        "packet rejects altered computeEid",
+        "packet rejects altered requestHash",
+        "packet rejects altered reserved0",
+        "packet rejects altered reserved1",
+        "packet rejects altered reserved2",
+        "packet rejects altered reserved3",
+        "packet rejects altered reserved4",
+        "trailing data rejected",
+        "truncated data rejected",
+        "valid request accepted within callback budget",
+        "duplicate GUID",
+        "same logical ping with new GUID",
+        "second source ping",
+        "any funded sender can relay exact ack",
+        "complete local mock round trip",
+        "duplicate ack rejected",
+        "second ack send rejected",
+        "unsealed send rejected 0",
+        "unsealed send rejected 1",
+        "expired ping rejected",
+        "expired quote rejected"
+      ]
+    },
+    "official_transport": {
+      "status": "PASS_OFFICIAL_LOCAL_CANARY_TRANSPORT_WITH_MOCK_DVN_ATTESTATIONS",
+      "count": 37,
+      "transaction_count": 92,
+      "expected_reverts": 32,
+      "mock_endpoint_used": false,
+      "checks": [
+        "official_libraries_and_two_required_dvns_configured_stage_0",
+        "official_libraries_and_two_required_dvns_configured_stage_1",
+        "ack_cannot_precede_authenticated_ping",
+        "requester_restriction_on_ping",
+        "one_ping_only",
+        "stage1_delivery_before_any_attestation_blocked",
+        "stage1_commit_without_attestations_blocked",
+        "stage1_unconfigured_attestor_does_not_satisfy_quorum",
+        "stage1_only_test_admin_can_control_mock_dvn",
+        "stage1_one_dvn_cannot_commit",
+        "stage1_one_dvn_cannot_deliver",
+        "stage1_duplicate_first_dvn_does_not_make_two",
+        "stage1_insufficient_confirmations_blocked",
+        "stage1_both_attested_but_uncommitted_cannot_deliver",
+        "stage1_changed_message_blocked",
+        "stage1_changed_guid_blocked",
+        "stage1_changed_sender_blocked",
+        "stage1_delivered_packet_replay_blocked",
+        "stage1_recommit_delivered_nonce_blocked",
+        "two_dvn_committed_delivery_stage_1",
+        "stage0_delivery_before_any_attestation_blocked",
+        "stage0_commit_without_attestations_blocked",
+        "stage0_unconfigured_attestor_does_not_satisfy_quorum",
+        "stage0_only_test_admin_can_control_mock_dvn",
+        "stage0_one_dvn_cannot_commit",
+        "stage0_one_dvn_cannot_deliver",
+        "stage0_duplicate_first_dvn_does_not_make_two",
+        "stage0_insufficient_confirmations_blocked",
+        "stage0_both_attested_but_uncommitted_cannot_deliver",
+        "stage0_changed_message_blocked",
+        "stage0_changed_guid_blocked",
+        "stage0_changed_sender_blocked",
+        "stage0_delivered_packet_replay_blocked",
+        "stage0_recommit_delivered_nonce_blocked",
+        "two_dvn_committed_delivery_stage_0",
+        "one_ack_only",
+        "complete_canary_ping_ack_roundtrip_through_real_official_protocol"
+      ]
+    },
+    "budget": {
+      "status": "PASS",
+      "test_count": 18,
+      "verified_by": "Fresh local execution of node --test tests/canary-budget.test.mjs during evidence assembly; all18passed,0failed.",
+      "tests": [
+        "RH reservation covers worst-case fee plus value and settles only actual successful spend",
+        "reverted receipt charges gas but not reverted message value",
+        "confirmed broadcast can be settled after restart and old config path cannot reset spend",
+        "copying config preserves budget and cumulative reservations cannot overspend",
+        "unknown broadcast fails closed across release, restart and new reservations",
+        "only proven never-broadcast reservation can be canceled",
+        "pending and underconfirmed known transactions retain the durable reservation",
+        "provider identity, deadline and approval gates reject before reserving",
+        "reconciliation refuses a provider switch or expired configuration without releasing spend",
+        "concurrent reservations have one winner and a live lock cannot be stolen",
+        "stale and foreign-host locks both fail closed and are never auto-deleted",
+        "transaction content/authority mismatch and receipt hash mismatch do not settle",
+        "fee/gas/value/balance caps reject before any durable charge",
+        "opBNB reserves twice the oracle upper bound and records actual receipt L1 fee",
+        "opBNB absent l1Fee uses the full conservative reserve, including reverted receipts",
+        "opBNB posting cap and mismatched raw receipts fail closed",
+        "actual posting overspend is durably charged before throwing and prevents future reservations",
+        "reservation breach below total cap remains stopped after restart for explicit review"
+      ]
+    }
+  },
+  "raw_evidence": {
+    "application_report": {
+      "path": "reports/canary-contract/results.json",
+      "sha256": "67d9084bfb6858eb1ec2465d33c051e986b8d85905e59131ef9b9c0cd0d240ab"
+    },
+    "transport_report": {
+      "path": "reports/canary-transport/results.json",
+      "sha256": "0622d7f55f7c49818a09275b8feda6cba87b2ed7ff2de790fd89b7a34db7a030"
+    },
+    "transport_ledger": {
+      "path": "reports/canary-transport/transactions.jsonl",
+      "sha256": "1ef42a3c335fbc3b24e25fb576492cf3324eacf3c572f49b503573a6e1004ccf"
+    }
+  },
+  "source_sha256": {
+    "contracts/RHOpBNBCanary.sol": "ea6eade8c71e8e6a24516274bcf66197df81a75e4f63ce3cbabe3b7dd0e359bd",
+    "contracts/GH0STSelfRelayExecutor.sol": "2613aa458839e4382dc4f9552e251d5a84e023d26d29252b50c660173bc53a5b",
+    "scripts/canary-budget.mjs": "7a2ecbcf084b252d9398d4feecffdb8b9ee317311a637bc42860191c630abf24",
+    "scripts/canary-runtime.mjs": "dcef230f26befc322af5db657183ed20942cb086e978e162b084c007595bc065",
+    "scripts/canary-plan.mjs": "0b32c4c778cf071657166f035cbd061c5ece4bb4e85449b382068101f8182d8c",
+    "tests/contracts/CanaryMockDVN.sol": "2ef864c718ad63b88223319b2f861ca333fcfca9d709a551ba91d1597898fa67"
+  },
+  "harness_sha256": {
+    "tests/canary-contract.test.mjs": "fa35594d9c6bcb8f3db22a79af3ba3d3ddf333baaaa889103e7d26e222fd264b",
+    "tests/canary-transport.mjs": "fe020f3d2e1e821010d6b60a5147f036b4953c482530aa261b6b74e0d633cb55",
+    "tests/canary-budget.test.mjs": "9e2ba7706139b6e99b60dd0a5f44c2a525b72d6dd9b453c8bd08c42949c6f1d5"
+  },
+  "compiler_provenance": {
+    "application": {
+      "version": "0.8.30+commit.73712a01.Emscripten.clang",
+      "settings": {
+        "optimizer": {
+          "enabled": true,
+          "runs": 200
+        },
+        "viaIR": true,
+        "evmVersion": "cancun",
+        "outputSelection": {
+          "*": {
+            "*": [
+              "abi",
+              "storageLayout",
+              "evm.bytecode.object",
+              "evm.deployedBytecode.object"
+            ]
+          }
+        }
+      },
+      "source_commitment_sha256": "252915dd8937556012452ad96bfe3cee2fb6924b89fa8ce9de871cb89fb37758",
+      "input_sha256": "fecbd12d48f9fb74e9ec04157b8293ea688d519ffbd757e674bf159f53c54283"
+    },
+    "official_protocol": {
+      "version": "0.8.30+commit.73712a01.Emscripten.clang",
+      "openzeppelin_graph": "@openzeppelin/contracts-v4",
+      "input_sha256": "199e9c58b6519cb4ce667fed0ecb93aca0fe5577a822ca88bd7cb33ad317e59c",
+      "dependencies": {
+        "@openzeppelin/contracts-v4": "4.9.6",
+        "@layerzerolabs/lz-evm-protocol-v2": "3.0.168",
+        "@layerzerolabs/lz-evm-messagelib-v2": "3.0.168",
+        "solidity-bytes-utils": "0.8.4"
+      }
+    }
+  },
+  "integrity": {
+    "recorded_application_sources_match_current_canary_and_self_executor": true,
+    "recorded_transport_harness_matches_current_file": true,
+    "receipt_sums_and_status_counts_reconciled": true,
+    "budget_state": "Every random test-session directory was cleaned after testing."
+  },
+  "gas": {
+    "unit": "native EVM gas units; local Cancun execution with zero test gas price",
+    "pricing_note": "Source-send gas uses mock zero-fee DVNs. These units are not live provider fee quotes or paid public receipts.",
+    "by_chain": [
+      {
+        "chain_id": 4663,
+        "application_and_self_executor_deployment_gas": "2410630",
+        "application_deployment_transactions": 2,
+        "application_route_configuration_gas": "497761",
+        "route_configuration_transactions": 6,
+        "application_deploy_plus_route_gas": "2908391",
+        "local_protocol_and_mock_dvn_fixture_deployment_gas": "9807936",
+        "fixture_note": "EndpointV2, SendUln302, ReceiveUln302 and two mock DVNs are deployed for local isolation; this is not a production deployment requirement.",
+        "source_send": {
+          "operation": "ping",
+          "gas": "250312",
+          "transactions": 1
+        },
+        "destination_commit_gas": "77420",
+        "destination_delivery_gas": "122907",
+        "all_test_transaction_gas": "14691486",
+        "expected_revert_gas": "608356"
+      },
+      {
+        "chain_id": 204,
+        "application_and_self_executor_deployment_gas": "2410630",
+        "application_deployment_transactions": 2,
+        "application_route_configuration_gas": "497763",
+        "route_configuration_transactions": 6,
+        "application_deploy_plus_route_gas": "2908393",
+        "local_protocol_and_mock_dvn_fixture_deployment_gas": "9807936",
+        "fixture_note": "EndpointV2, SendUln302, ReceiveUln302 and two mock DVNs are deployed for local isolation; this is not a production deployment requirement.",
+        "source_send": {
+          "operation": "ack",
+          "gas": "210037",
+          "transactions": 1
+        },
+        "destination_commit_gas": "77420",
+        "destination_delivery_gas": "162844",
+        "all_test_transaction_gas": "14691623",
+        "expected_revert_gas": "608829"
+      }
+    ],
+    "all_test_gas": "29383109",
+    "message_bytes": 416,
+    "wire_packet_bytes": 529,
+    "focused_mock_endpoint_receive_gas": {
+      "opbnb_ping": "160416",
+      "robinhood_ack": "120455"
+    }
+  },
+  "limitations": [
+    "No model inference, AMM swap, token or liquidity was tested.",
+    "Successful local roundtrip does not demonstrate live provider willingness, confirmed public delivery, uptime or production economics.",
+    "Current harness hashes identify inspected files; the application report itself pins Solidity sources, while the transport report also pins its harness."
+  ],
+  "completePackageRegression": {
+    "passed": 97,
+    "failed": 0,
+    "log": "reports/canary-final-test.log",
+    "logSha256": "ee123add704f4767ea4d9419f0f421f20a943a549ec3e68a361fafc5620b5d58"
+  }
+}

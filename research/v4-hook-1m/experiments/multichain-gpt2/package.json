@@ -30,7 +30,13 @@
     "test:costs:economy": "node tests/economy-costs.mjs",
     "benchmark:job": "node scripts/job-benchmark.mjs",
     "benchmark:job:opbnb": "node scripts/job-benchmark.mjs --compute=opbnb --out=reports/job-opbnb-full",
-    "posting:opbnb": "node scripts/quote-opbnb-posting.mjs"
+    "posting:opbnb": "node scripts/quote-opbnb-posting.mjs",
+    "canary:plan": "node scripts/canary-plan.mjs",
+    "canary:prepare": "node scripts/prepare-canary.mjs",
+    "canary:verify": "node scripts/verify-canary.mjs",
+    "canary:deploy": "node scripts/deploy-canary.mjs",
+    "canary:relay": "node scripts/canary-relay.mjs",
+    "test:canary:transport": "node tests/canary-transport.mjs"
   },
   "dependencies": {
     "ethers": "6.13.5"
@@ -42,6 +48,7 @@
     "@layerzerolabs/lz-evm-messagelib-v2": "3.0.168",
     "@layerzerolabs/lz-evm-v1-0.7": "3.0.168",
     "@openzeppelin/contracts": "5.4.0",
+    "@openzeppelin/contracts-v4": "npm:@openzeppelin/contracts@4.9.6",
     "@openzeppelin/contracts-upgradeable": "5.4.0",
     "solidity-bytes-utils": "0.8.4"
   }

@@ -4,6 +4,8 @@ A real, quantized **124,439,808-parameter GPT-2** executor with Robinhood Chain 
 
 This is research infrastructure. Compilation and local tests are separate from public deployment, real interchain delivery and paid-chain fee savings. See `evidence/STATUS.json` for the precise completed checks from this revision.
 
+The next deployment is a small **RH → opBNB → RH transport canary**, before model weights. It includes sealed request/acknowledgement contracts, an exact unsigned deployment plan, a two-DVN delivery runner, and persistent native-fee budgets. The local official-protocol test passed; its DVN attestations are mocked, and no public canary transaction has been submitted. See [canary setup and recovery](docs/CANARY.md) and [local evidence](evidence/canary-local.json).
+
 ## Cheapest measured architecture
 
 **RH → opBNB → RH**, with every model operation on opBNB and one request plus one final result per job. RH stores no model weights; BNB Smart Chain, Arc and Monad are unused in this route. The original four-chain engine remains available below.
