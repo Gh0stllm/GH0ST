@@ -1,0 +1,571 @@
+#![allow(deprecated)] // CDK 0.18 API pinned; upgrade deliberately, with Candid checks.
+mod core;
+mod types;
+
+use core::*;
+use ic_cdk::api::management_canister::{
+    ecdsa::{
+        ecdsa_public_key, sign_with_ecdsa, EcdsaCurve, EcdsaKeyId, EcdsaPublicKeyArgument,
+        SignWithEcdsaArgument,
+    },
+    http_request::{
+        http_request, CanisterHttpRequestArgument, HttpMethod, HttpResponse, TransformArgs,
+        TransformContext,
+    },
+    main::{canister_status, CanisterIdRecord},
+};
+use ic_cdk::{init, post_upgrade, pre_upgrade, query, update};
+use serde_json::{json, Value};
+use std::cell::RefCell;
+use types::*;
+
+thread_local! { static STATE: RefCell<State> = RefCell::new(State::default()); }
+const RPC_CYCLES: u128 = 1_000_000_000;
+const MAX_JOBS: usize = 256;
+const SIGNING_RESERVE: u128 = 35_000_000_000;
+
+fn config() -> Config {
+    STATE.with(|s| s.borrow().config.clone().expect("not initialized"))
+}
+fn authorized() -> Result<(), String> {
+    let caller = ic_cdk::caller();
+    STATE.with(|s| {
+        let s = s.borrow();
+        if s.owner == Some(caller) || s.config.as_ref().map(|c| c.worker) == Some(caller) {
+            Ok(())
+        } else {
+            Err("unauthorized".into())
+        }
+    })
+}
+fn now() -> u64 {
+    ic_cdk::api::time() / 1_000_000_000
+}
+fn key_id(c: &Config) -> EcdsaKeyId {
+    EcdsaKeyId {
+        curve: EcdsaCurve::Secp256k1,
+        name: c.ecdsa_key_name.clone(),
+    }
+}
+fn derivation() -> Vec<Vec<u8>> {
+    vec![b"gh0st-rh-icp-v1".to_vec()]
+}
+fn cache(j: &Job) -> String {
+    format!("gh0st-{}.cache", j.request.id.trim_start_matches("0x"))
+}
+
+#[init]
+fn init(c: Config) {
+    validate_config(&c).unwrap_or_else(|e| ic_cdk::trap(&e));
+    STATE.with(|s| {
+        *s.borrow_mut() = State {
+            owner: Some(ic_cdk::caller()),
+            config: Some(c),
+            ..State::default()
+        }
+    });
+}
+#[pre_upgrade]
+fn pre_upgrade() {
+    STATE.with(|s| ic_cdk::storage::stable_save((s.borrow().clone(),)).expect("stable save"));
+}
+#[post_upgrade]
+fn post_upgrade() {
+    let (mut state,): (State,) = ic_cdk::storage::stable_restore().expect("stable restore");
+    // Never silently replay an interrupted model call: it may have committed.
+    for job in state.jobs.values_mut() {
+        if job.busy {
+            job.busy = false;
+            job.phase = Phase::Failed;
+            job.error = "upgrade interrupted a call; reconcile before resubmission".into();
+        }
+    }
+    state.verifying = false;
+    if state
+        .active
+        .as_ref()
+        .is_some_and(|id| state.jobs.get(id).is_none_or(|j| j.phase == Phase::Failed))
+    {
+        state.active = None;
+    }
+    STATE.with(|s| *s.borrow_mut() = state);
+}
+#[query]
+fn get_config() -> Config {
+    config()
+}
+#[query]
+fn get_job(id: String) -> Option<Job> {
+    STATE.with(|s| s.borrow().jobs.get(&id.to_lowercase()).cloned())
+}
+#[query]
+fn list_jobs() -> Vec<Job> {
+    STATE.with(|s| s.borrow().jobs.values().cloned().collect())
+}
+#[update]
+fn set_paused(value: bool) -> Result<(), String> {
+    STATE.with(|s| {
+        let mut s = s.borrow_mut();
+        if s.owner != Some(ic_cdk::caller()) {
+            return Err("unauthorized".into());
+        }
+        s.paused = value;
+        Ok(())
+    })
+}
+
+/// The canister must exist to derive its key before the EVM gateway is deployed.
+/// Bind that gateway once; later changes require a separately reviewed upgrade.
+#[update]
+fn bind_gateway(gateway: String) -> Result<(), String> {
+    let value = bytes(&gateway, 20)?;
+    if value == vec![0; 20] {
+        return Err("zero gateway".into());
+    }
+    STATE.with(|s| {
+        let mut s = s.borrow_mut();
+        if s.owner != Some(ic_cdk::caller()) {
+            return Err("unauthorized".into());
+        }
+        let c = s.config.as_mut().ok_or("not initialized")?;
+        if bytes(&c.gateway, 20)? != vec![0; 20] {
+            return Err("gateway already bound".into());
+        }
+        c.gateway = gateway.to_lowercase();
+        Ok(())
+    })
+}
+
+/// Canonical JSON and no volatile HTTP headers, so IC nodes agree on replies.
+#[query]
+fn transform(args: TransformArgs) -> HttpResponse {
+    let mut response = args.response;
+    response.headers = vec![];
+    if let Ok(v) = serde_json::from_slice::<Value>(&response.body) {
+        // Retain only the JSON-RPC result/error; providers sometimes add metadata.
+        response.body =
+            serde_json::to_vec(&json!({"result":v.get("result"),"error":v.get("error")})).unwrap();
+    }
+    response
+}
+
+async fn rpc(url: &str, method: &str, params: Value) -> Result<Value, String> {
+    let args = CanisterHttpRequestArgument {
+        url: url.into(),
+        max_response_bytes: Some(65_536),
+        method: HttpMethod::POST,
+        headers: vec![ic_cdk::api::management_canister::http_request::HttpHeader {
+            name: "Content-Type".into(),
+            value: "application/json".into(),
+        }],
+        body: Some(
+            serde_json::to_vec(&json!({"jsonrpc":"2.0","id":1,"method":method,"params":params}))
+                .unwrap(),
+        ),
+        transform: Some(TransformContext::from_name("transform".into(), vec![])),
+    };
+    let (response,) = http_request(args, RPC_CYCLES)
+        .await
+        .map_err(|e| format!("RPC transport: {e:?}"))?;
+    if response.status != candid::Nat::from(200u16) {
+        return Err("RPC HTTP failure".into());
+    }
+    let body: Value = serde_json::from_slice(&response.body).map_err(|_| "RPC JSON failure")?;
+    if !body["error"].is_null() || body["result"].is_null() {
+        return Err("RPC error or unconfirmed data".into());
+    }
+    Ok(body["result"].clone())
+}
+
+async fn verify_request(c: &Config, tx: &str, log_index: u64) -> Result<Request, String> {
+    bytes(tx, 32)?;
+    if bytes(&c.gateway, 20)? == vec![0; 20] {
+        return Err("gateway not bound".into());
+    }
+    let mut agreed: Option<Request> = None;
+    for url in &c.rpc_urls {
+        if quantity(&rpc(url, "eth_chainId", json!([])).await?)? != c.chain_id {
+            return Err("RPC chain mismatch".into());
+        }
+        let receipt = rpc(url, "eth_getTransactionReceipt", json!([tx])).await?;
+        let req = parse_receipt(&receipt, c, tx, log_index)?;
+        let anchor = req
+            .block_number
+            .checked_add(c.confirmations)
+            .ok_or("block overflow")?;
+        let block = format!("0x{anchor:x}");
+        // A numbered descendant exists. No changing `latest` response to break
+        // HTTP-outcall consensus between replicas. This is confirmation depth,
+        // not a cryptographic/L1-finality proof.
+        quantity(&rpc(url, "eth_getBlockTransactionCountByNumber", json!([block])).await?)?;
+        let calldata = format!(
+            "{}{}",
+            hex0(&hash("requests(bytes32)")[..4]),
+            req.id.trim_start_matches("0x")
+        );
+        let value = rpc(
+            url,
+            "eth_call",
+            json!([{"to":c.gateway,"data":calldata},block]),
+        )
+        .await?;
+        let data = hex::decode(
+            value
+                .as_str()
+                .ok_or("bad gateway state")?
+                .trim_start_matches("0x"),
+        )
+        .map_err(|_| "bad gateway hex")?;
+        let state = ethabi::decode(
+            &[
+                ethabi::ParamType::Address,
+                ethabi::ParamType::Uint(32),
+                ethabi::ParamType::Uint(64),
+                ethabi::ParamType::Uint(8),
+                ethabi::ParamType::FixedBytes(32),
+                ethabi::ParamType::FixedBytes(32),
+            ],
+            &data,
+        )
+        .map_err(|_| "gateway state ABI")?;
+        if state[3].clone().into_uint() != Some(1u64.into())
+            || state[0].clone().into_address().map(|a| hex0(a.as_bytes()))
+                != Some(req.requester.clone())
+            || state[1].clone().into_uint() != Some(req.max_tokens.into())
+            || state[2].clone().into_uint() != Some(req.deadline.into())
+            || state[4].clone().into_fixed_bytes().map(hex0) != Some(req.prompt_hash.clone())
+        {
+            return Err("request no longer pending or state mismatch".into());
+        }
+        framed_prompt(&req.prompt)?;
+        if req.deadline <= now() + 120 {
+            return Err("request needs at least 120 seconds before deadline".into());
+        }
+        if agreed.as_ref().is_some_and(|previous| previous != &req) {
+            return Err("RPC providers disagree".into());
+        }
+        agreed = Some(req);
+    }
+    agreed.ok_or_else(|| "no providers".into())
+}
+
+#[update]
+async fn submit_request(tx_hash: String, log_index: u64) -> Result<Job, String> {
+    authorized()?;
+    STATE.with(|s| {
+        let mut s = s.borrow_mut();
+        if s.paused || s.verifying || s.active.is_some() || s.jobs.len() >= MAX_JOBS {
+            return Err("paused, busy, or job retention limit reached".to_string());
+        }
+        s.verifying = true;
+        Ok(())
+    })?;
+    let verified = verify_request(&config(), &tx_hash, log_index).await;
+    STATE.with(|s| {
+        let mut s = s.borrow_mut();
+        s.verifying = false;
+        let request = verified?;
+        if let Some(job) = s.jobs.get(&request.id) {
+            return Ok(job.clone());
+        }
+        let job = Job::new(request);
+        s.active = Some(job.request.id.clone());
+        s.jobs.insert(job.request.id.clone(), job.clone());
+        Ok(job)
+    })
+}
+
+async fn model_balance(c: &Config) -> Result<u128, String> {
+    let (status,) = canister_status(CanisterIdRecord {
+        canister_id: c.model_canister,
+    })
+    .await
+    .map_err(|e| format!("model status (coordinator must be controller): {e:?}"))?;
+    if status.module_hash.as_ref() != Some(&bytes(&c.model_wasm_hash, 32)?) {
+        return Err("model Wasm hash differs from pinned build".into());
+    }
+    status
+        .cycles
+        .to_string()
+        .parse()
+        .map_err(|_| "cycle balance overflow".into())
+}
+async fn model_call(c: &Config, method: &str, args: Vec<String>) -> Result<ModelOutput, String> {
+    let (r,): (ModelResult,) = ic_cdk::call(c.model_canister, method, (ModelInput { args },))
+        .await
+        .map_err(|e| format!("model call failed; do not replay blindly: {e:?}"))?;
+    match r {
+        ModelResult::Ok(v) if v.status_code == 200 => Ok(v),
+        ModelResult::Err(v) | ModelResult::Ok(v) => {
+            Err(format!("model status {}: {}", v.status_code, v.error))
+        }
+    }
+}
+async fn public_key(c: &Config) -> Result<Vec<u8>, String> {
+    let (r,) = ecdsa_public_key(EcdsaPublicKeyArgument {
+        canister_id: None,
+        derivation_path: derivation(),
+        key_id: key_id(c),
+    })
+    .await
+    .map_err(|e| format!("ECDSA key: {e:?}"))?;
+    Ok(r.public_key)
+}
+#[update]
+async fn signer_address() -> Result<String, String> {
+    authorized()?;
+    let key = public_key(&config()).await?;
+    let pk = k256::PublicKey::from_sec1_bytes(&key).map_err(|_| "bad public key")?;
+    use k256::elliptic_curve::sec1::ToEncodedPoint;
+    Ok(hex0(
+        &hash(&pk.to_encoded_point(false).as_bytes()[1..])[12..],
+    ))
+}
+async fn step(c: &Config, j: &mut Job) -> Result<(), String> {
+    if j.request.deadline <= now() {
+        return Err("request expired".into());
+    }
+    if ic_cdk::api::canister_balance128() < SIGNING_RESERVE + 8 * RPC_CYCLES {
+        return Err("coordinator cycle reserve too low".into());
+    }
+    match j.phase {
+        Phase::Verified => {
+            j.model_cycles_before = model_balance(c).await?;
+            model_call(
+                c,
+                "new_chat",
+                vec![
+                    "--prompt-cache".into(),
+                    cache(j),
+                    "--cache-type-k".into(),
+                    "q8_0".into(),
+                    "--cache-type-v".into(),
+                    "q8_0".into(),
+                ],
+            )
+            .await?;
+            let after = model_balance(c).await?;
+            j.model_cycles = j
+                .model_cycles_before
+                .checked_sub(after)
+                .ok_or("model funded during measurement; retry with a new request")?;
+            j.phase = Phase::Running;
+        }
+        Phase::Running => {
+            if j.chunks >= 48 || j.model_cycles + CHUNK_RESERVE > c.model_cycle_budget {
+                return Err("model cycle/chunk budget reached".into());
+            }
+            let remaining = u64::from(j.request.max_tokens)
+                .checked_sub(j.output_tokens)
+                .ok_or("token overflow")?;
+            if remaining == 0 {
+                return Err("unexpected exhausted token budget".into());
+            }
+            let prompt = if j.prompt_ingested {
+                String::new()
+            } else {
+                framed_prompt(&j.request.prompt)?
+            };
+            let r = model_call(
+                c,
+                "run_update",
+                vec![
+                    "--prompt-cache".into(),
+                    cache(j),
+                    "--prompt-cache-all".into(),
+                    "--cache-type-k".into(),
+                    "q8_0".into(),
+                    "--cache-type-v".into(),
+                    "q8_0".into(),
+                    "--temp".into(),
+                    "0".into(),
+                    "--seed".into(),
+                    "42".into(),
+                    "--repeat-penalty".into(),
+                    "1.1".into(),
+                    "-p".into(),
+                    prompt,
+                    "-n".into(),
+                    remaining.min(16).to_string(),
+                ],
+            )
+            .await?;
+            let tokens = r
+                .n_tokens_generated
+                .ok_or("upstream exact-token accounting missing")?;
+            if tokens > remaining.min(16) {
+                return Err("model exceeded token cap".into());
+            }
+            j.output_tokens += tokens;
+            j.input_tokens = j
+                .input_tokens
+                .max(r.n_prompt_tokens.ok_or("prompt accounting missing")?);
+            j.prompt_ingested = r
+                .n_prompt_tokens_remaining
+                .ok_or("remaining prompt accounting missing")?
+                == 0
+                && r.prompt_remaining.is_empty();
+            j.answer.push_str(&r.output);
+            j.chunks += 1;
+            if j.answer.len() > 8192 {
+                return Err("answer byte cap exceeded".into());
+            }
+            let after = model_balance(c).await?;
+            j.model_cycles = j
+                .model_cycles_before
+                .checked_sub(after)
+                .ok_or("model funded during measurement; measurement invalid")?;
+            if j.model_cycles > c.model_cycle_budget {
+                return Err("model cycle budget exceeded".into());
+            }
+            if r.generated_eog || j.output_tokens == u64::from(j.request.max_tokens) {
+                if j.answer.trim().is_empty() || j.output_tokens == 0 {
+                    return Err("empty model response".into());
+                }
+                j.phase = Phase::ReadyToSign;
+            }
+        }
+        Phase::ReadyToSign => {
+            let digest = result_digest(c, j)?;
+            let public = public_key(c).await?;
+            let (r,) = sign_with_ecdsa(SignWithEcdsaArgument {
+                message_hash: digest.to_vec(),
+                derivation_path: derivation(),
+                key_id: key_id(c),
+            })
+            .await
+            .map_err(|e| format!("ECDSA signing: {e:?}"))?;
+            let (signature, signer) = recover_signature(&digest, &r.signature, &public)?;
+            j.signature = signature;
+            j.signer = signer;
+            j.digest = hex0(digest);
+            j.phase = Phase::Complete;
+        }
+        Phase::Complete => {}
+        Phase::Failed => return Err("failed jobs are retained and never silently replayed".into()),
+    }
+    Ok(())
+}
+
+#[update]
+async fn advance(id: String) -> Result<Job, String> {
+    authorized()?;
+    let id = id.to_lowercase();
+    let mut job = STATE.with(|s| {
+        let mut s = s.borrow_mut();
+        if s.paused {
+            return Err("paused".to_string());
+        }
+        let job = s.jobs.get_mut(&id).ok_or("unknown request")?;
+        if job.busy {
+            return Err("job already in flight".into());
+        }
+        if job.phase == Phase::Complete || job.phase == Phase::Failed {
+            return Ok(job.clone());
+        }
+        job.busy = true;
+        Ok(job.clone())
+    })?;
+    if job.phase == Phase::Complete || job.phase == Phase::Failed {
+        return Ok(job);
+    }
+    let old_phase = job.phase.clone();
+    if let Err(e) = step(&config(), &mut job).await {
+        job.error = e;
+        // Signing retries are safe: the answer/digest are already fixed.
+        job.phase = if old_phase == Phase::ReadyToSign && job.request.deadline > now() {
+            Phase::ReadyToSign
+        } else {
+            Phase::Failed
+        };
+    } else {
+        job.error.clear();
+    }
+    job.busy = false;
+    STATE.with(|s| {
+        let mut s = s.borrow_mut();
+        if job.phase == Phase::Complete || job.phase == Phase::Failed {
+            s.active = None;
+        }
+        s.jobs.insert(id, job.clone());
+    });
+    Ok(job)
+}
+
+/// Stop a job without repeating or replacing any inference output. An in-flight
+/// model call must finish first so its callback cannot overwrite this decision.
+#[update]
+fn abort(id: String) -> Result<(), String> {
+    authorized()?;
+    let id = id.to_lowercase();
+    STATE.with(|s| {
+        let mut s = s.borrow_mut();
+        let job = s.jobs.get_mut(&id).ok_or("unknown request")?;
+        if job.busy {
+            return Err("job is in flight".into());
+        }
+        if job.phase == Phase::Complete {
+            return Err("signed result is already complete".into());
+        }
+        job.phase = Phase::Failed;
+        job.error = "stopped by operator; request retained".into();
+        if s.active.as_ref() == Some(&id) {
+            s.active = None;
+        }
+        Ok(())
+    })
+}
+
+/// Remove stable-memory prompt caches after completion/failure. Does not delete
+/// request tombstones or signatures; replay protection survives upgrades.
+#[update]
+async fn cleanup(id: String) -> Result<(), String> {
+    authorized()?;
+    if STATE.with(|s| s.borrow().active.is_some() || s.borrow().verifying) {
+        return Err(
+            "another request is active; cleanup would contaminate its cycle measurement".into(),
+        );
+    }
+    let j = get_job(id).ok_or("unknown request")?;
+    if j.busy || !matches!(j.phase, Phase::Complete | Phase::Failed) {
+        return Err("job not terminal".into());
+    }
+    model_call(
+        &config(),
+        "remove_prompt_cache",
+        vec!["--prompt-cache".into(), cache(&j)],
+    )
+    .await?;
+    Ok(())
+}
+
+ic_cdk::export_candid!();
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn export_candid() {
+        let did = super::__export_service();
+        std::fs::write("coordinator.did", did).unwrap();
+    }
+    #[test]
+    fn stable_state_roundtrip_preserves_large_cycle_counters() {
+        let v: serde_json::Value =
+            serde_json::from_str(include_str!("../../tests/fixtures/bridge-vector.json")).unwrap();
+        let mut job: super::types::Job = serde_json::from_value(v["job"].clone()).unwrap();
+        job.model_cycles_before = u128::MAX - 1;
+        job.model_cycles = u128::MAX / 2;
+        let mut state = super::types::State::default();
+        state.jobs.insert(job.request.id.clone(), job);
+        let encoded = candid::encode_args((state,)).unwrap();
+        let (decoded,): (super::types::State,) = candid::decode_args(&encoded).unwrap();
+        assert_eq!(
+            decoded.jobs.values().next().unwrap().model_cycles_before,
+            u128::MAX - 1
+        );
+        assert_eq!(
+            decoded.jobs.values().next().unwrap().model_cycles,
+            u128::MAX / 2
+        );
+    }
+}

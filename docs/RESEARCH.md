@@ -2,6 +2,10 @@
 
 [Documentation](README.md) · [Repository map](REPOSITORY-MAP.md) · [Results index](RESULTS-INDEX.md) · [Recovery record](recovery/RECOVERY.md)
 
+## RH → ICP → RH prototype
+
+[Cross-chain inference infrastructure](../rh-icp-inference/README.md) adds an RH request gateway, an ICP Qwen coordinator and a transport worker. The first checkpoint has local contract/signature tests and a compiled coordinator Wasm; live ICP deployment, model loading and measured cross-chain costs remain outstanding. See the [validation record](../rh-icp-inference/VALIDATION.md) and [deployment guide](../rh-icp-inference/DEPLOYMENT.md).
+
 The recovery staging tree brings the surviving research, website and Genesis files together for `Gh0stllm/GH0ST`. Individual-file restoration to the new repository is **in progress**. The relative links below identify recovered local paths; they do not certify that every file has already been uploaded or that historical branches were restored.
 
 ## Recovered tracks

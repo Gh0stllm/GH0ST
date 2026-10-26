@@ -1,0 +1,73 @@
+type Config = record {
+  confirmations : nat64;
+  artifact_hash : text;
+  ecdsa_key_name : text;
+  rpc_urls : vec text;
+  chain_id : nat64;
+  gateway : text;
+  model_canister : principal;
+  model_cycle_budget : nat;
+  model_wasm_hash : text;
+  worker : principal;
+  model_id : text;
+};
+type HttpHeader = record { value : text; name : text };
+type HttpResponse = record {
+  status : nat;
+  body : blob;
+  headers : vec HttpHeader;
+};
+type Job = record {
+  signature : blob;
+  output_tokens : nat64;
+  busy : bool;
+  request : Request;
+  model_cycles : nat;
+  answer : text;
+  error : text;
+  signer : text;
+  digest : text;
+  phase : Phase;
+  chunks : nat32;
+  input_tokens : nat64;
+  prompt_ingested : bool;
+  model_cycles_before : nat;
+};
+type Phase = variant { Failed; Complete; Running; ReadyToSign; Verified };
+type Request = record {
+  id : text;
+  requester : text;
+  block_hash : text;
+  log_index : nat64;
+  prompt_hash : text;
+  deadline : nat64;
+  block_number : nat64;
+  max_tokens : nat32;
+  prompt : text;
+  tx_hash : text;
+  model_id : text;
+};
+type Result = variant { Ok; Err : text };
+type Result_1 = variant { Ok : Job; Err : text };
+type Result_2 = variant { Ok : text; Err : text };
+type TransformArgs = record { context : blob; response : HttpResponse };
+service : (Config) -> {
+  // Stop a job without repeating or replacing any inference output. An in-flight
+  // model call must finish first so its callback cannot overwrite this decision.
+  abort : (text) -> (Result);
+  advance : (text) -> (Result_1);
+  // The canister must exist to derive its key before the EVM gateway is deployed.
+  // Bind that gateway once; later changes require a separately reviewed upgrade.
+  bind_gateway : (text) -> (Result);
+  // Remove stable-memory prompt caches after completion/failure. Does not delete
+  // request tombstones or signatures; replay protection survives upgrades.
+  cleanup : (text) -> (Result);
+  get_config : () -> (Config) query;
+  get_job : (text) -> (opt Job) query;
+  list_jobs : () -> (vec Job) query;
+  set_paused : (bool) -> (Result);
+  signer_address : () -> (Result_2);
+  submit_request : (text, nat64) -> (Result_1);
+  // Canonical JSON and no volatile HTTP headers, so IC nodes agree on replies.
+  transform : (TransformArgs) -> (HttpResponse) query;
+}
