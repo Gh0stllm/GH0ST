@@ -4,6 +4,8 @@ An asynchronous Qwen3-0.6B inference bridge. An RH request is checked against tw
 
 **Status: first implementation, locally tested; not deployed.** No ICP canister, loaded Qwen model, live cross-chain request or measured ICP price is claimed by this checkpoint. Existing GH0ST deployments are unaffected.
 
+**Product target:** [GH0ST swap → ICP monologue → confirmed RH result → X post](SWAP-SOCIAL-AGENT.md). The current bridge is the initial infrastructure checkpoint; automatic swap ingestion, persistent character memory and X publication remain to be implemented.
+
 ```mermaid
 flowchart TD
     A[RH request event] --> B[Transport worker]
