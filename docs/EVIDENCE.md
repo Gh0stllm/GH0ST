@@ -1,5 +1,7 @@
 # Achievements, evidence and costs
 
+**Historical Falcon snapshot:** this page preserves the evidence available on 20 October 2026. The later S0UL deployment and completed inference have separate [records in the project home](../README.md#s0ul-on-robinhood-chain-mainnet). [Provenance and verification](PROVENANCE.md) explains the recovered history and how to check those records.
+
 [Documentation guide](README.md) · [Architecture](ARCHITECTURE.md) · [Request lifecycle](REQUEST-LIFECYCLE.md) · [Project home](../README.md)
 
 GH0ST's strongest result is a concrete implementation trail: a pinned deployed weight file, integer matrix validation, a bounded full inference runtime, exact deployed-runtime verification and local end-to-end numerical/payment checks. These results establish different properties and should be read at their measured scope.

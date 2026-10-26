@@ -1,5 +1,7 @@
 # GH0ST documentation
 
+**Guide scope:** the Falcon architecture and metrics below are a historical 20 October 2026 snapshot. For the repository's current introduction and S0UL execution records, start with the [project home](../README.md). For the migration history, commit-count explanation and verification limits, read [Provenance and verification](PROVENANCE.md).
+
 ```text
              .-""""-.
             /        \

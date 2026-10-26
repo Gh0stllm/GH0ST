@@ -2,11 +2,19 @@
 
 # GH0ST
 
-Research into language models and agents with weights, inference and execution records on-chain. This recovery combines the surviving research Git history, model artifacts, verified S0UL runtime, website and Genesis collection from the project's separate workspaces and saved files.
+Research into language models and agents with model weights, inference and execution records on-chain. GH0ST includes quantized neural-network arithmetic, Solidity inference runtimes, gas benchmarks and model artifacts.
 
-[Research index](docs/RESEARCH.md) · [Repository map](docs/REPOSITORY-MAP.md) · [Recovery record](docs/recovery/RECOVERY.md) · [Website](website/) · [Contributing](CONTRIBUTING.md)
+[Provenance and verification](docs/PROVENANCE.md) · [Research index](docs/RESEARCH.md) · [Repository map](docs/REPOSITORY-MAP.md) · [Recovery record](docs/recovery/RECOVERY.md) · [Website](website/) · [Contributing](CONTRIBUTING.md)
 
-## Recovered work
+## Project status and repository history
+
+**Early-stage, single-maintainer research.** Public source and execution records are available; broad adoption and an independent security audit are not established by this repository.
+
+The current GitHub repository was created on **21 October 2026** to republish surviving work from an earlier account and separate workspaces. Its initial `main` snapshot contains **980 commits**, published on 21–22 October, including hundreds of individual-file restoration commits. This count measures publication activity as well as development; it is not evidence of 980 independent engineering changes.
+
+The recovery record describes 43 surviving older commits retained locally. **Those original commits and their parent relationships were not imported into this public history.** Recovered files, reconstructed documentation and missing material are described in the [provenance guide](docs/PROVENANCE.md). Technical claims should be assessed through the source, reproducible checks and execution records below.
+
+## Research areas and source records
 
 | Area | Source and evidence |
 | --- | --- |

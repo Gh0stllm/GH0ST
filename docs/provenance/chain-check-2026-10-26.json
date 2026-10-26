@@ -1,0 +1,171 @@
+{
+  "format": "gh0st-public-chain-sample-verification-v1",
+  "recorded_at_utc": "2026-10-26T15:53:24.715Z",
+  "verified_date_utc": "2026-10-26",
+  "verified_at_utc": null,
+  "timestamp_note": "Read calls completed earlier in the same agent turn on the verified date. Per-request clock timestamps were not recorded; recorded_at_utc is artifact creation time, not an invented exact verification time.",
+  "public_rpc_url": "https://rpc.mainnet.chain.robinhood.com",
+  "transport": "Node.js fetch POST JSON-RPC",
+  "read_only": true,
+  "transactions_submitted": 0,
+  "scope": {
+    "receipt_count_checked": 2,
+    "full_398_receipt_audit_rerun": false,
+    "all_1024_logits_reread": false,
+    "all_51_deployments_reread": false,
+    "description": "Sample deployment and completion receipts, current engine code hash, and stored request 1 output. Does not establish broad model quality, security audit coverage, adoption or file authorship."
+  },
+  "source_records": {
+    "repository": "Gh0stllm/GH0ST",
+    "deployment_journal": "https://github.com/Gh0stllm/GH0ST/blob/main/s0ul-1m/deployments/robinhood-mainnet.json",
+    "inference_report": "https://github.com/Gh0stllm/GH0ST/blob/main/s0ul-1m/reports/robinhood-mainnet-inference-check.json",
+    "contract_source": "https://github.com/Gh0stllm/GH0ST/blob/main/s0ul-1m/contracts/S0ULInference.sol"
+  },
+  "checks": [
+    {
+      "method": "eth_chainId",
+      "params": [],
+      "raw_result": "0x1237",
+      "expected": 4663,
+      "actual": 4663,
+      "match": true
+    },
+    {
+      "method": "eth_getCode",
+      "params": [
+        "0x07bB8455Db0928bEBEb3E7F27A22A0599AF1b650",
+        "latest"
+      ],
+      "raw_result_retained": false,
+      "actual_byte_length": 18938,
+      "expected_keccak256": "0xb7a6bc7ae646bde8afce18291fe14fff72cde8efa7e718d9f4c933c346184ae2",
+      "actual_keccak256": "0xb7a6bc7ae646bde8afce18291fe14fff72cde8efa7e718d9f4c933c346184ae2",
+      "match": true
+    },
+    {
+      "method": "eth_getTransactionReceipt",
+      "params": [
+        "0x389d9661edfbe6fb3c82b85b3b6fba68102ea1b4364543264380b037c4ddc67e"
+      ],
+      "actual": {
+        "transactionHash": "0x389d9661edfbe6fb3c82b85b3b6fba68102ea1b4364543264380b037c4ddc67e",
+        "blockNumber": "0x5a3180b",
+        "blockHash": "0xb1b68764a314905638d1559273e1c1ff9df7e62db0affa1898a96f3a87bf116f",
+        "status": "0x1",
+        "from": "0x8d6b11cfdf079e27c17e05cb7ea81235887691c6",
+        "to": null,
+        "contractAddress": "0x07bb8455db0928bebeb3e7f27a22a0599af1b650",
+        "gasUsed": "0x41b4ff",
+        "effectiveGasPrice": "0x1367490",
+        "logs": []
+      },
+      "expected": {
+        "status": "0x1",
+        "contractAddress": "0x07bB8455Db0928bEBEb3E7F27A22A0599AF1b650",
+        "blockNumber": 94574603,
+        "blockHash": "0xb1b68764a314905638d1559273e1c1ff9df7e62db0affa1898a96f3a87bf116f",
+        "gasUsed": 4306175
+      },
+      "match": true
+    },
+    {
+      "method": "eth_getTransactionReceipt",
+      "params": [
+        "0x35c6bfd477222cef2f1c07d121f1427d5635cc5659c46fdc8de7728182b1e24f"
+      ],
+      "actual": {
+        "transactionHash": "0x35c6bfd477222cef2f1c07d121f1427d5635cc5659c46fdc8de7728182b1e24f",
+        "blockNumber": "0x5a34231",
+        "blockHash": "0x31decc16269e21691174a8d09c7a4d85cf3ad82328df90810557d05f38a63dbe",
+        "status": "0x1",
+        "from": "0x8d6b11cfdf079e27c17e05cb7ea81235887691c6",
+        "to": "0x07bb8455db0928bebeb3e7f27a22a0599af1b650",
+        "contractAddress": null,
+        "gasUsed": "0x6496d",
+        "effectiveGasPrice": "0x1365d20",
+        "log_count": 3,
+        "relevant_logs": [
+          {
+            "event": "TokenGenerated",
+            "address": "0x07bb8455db0928bebeb3e7f27a22a0599af1b650",
+            "topics": [
+              "0xaeb5f6e8fb94a5251ef514956afd5c2ff8273f53e11ce1bec1c4fc299dccef15",
+              "0x0000000000000000000000000000000000000000000000000000000000000001"
+            ],
+            "data": "0x00000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000002",
+            "decoded": {
+              "requestId": 1,
+              "outputIndex": 1,
+              "tokenId": 2
+            }
+          },
+          {
+            "event": "Completed",
+            "address": "0x07bb8455db0928bebeb3e7f27a22a0599af1b650",
+            "topics": [
+              "0x3c184f830bdb4a7176a48916c707449ecafd4247bf31ac5e62969846e762ce81",
+              "0x0000000000000000000000000000000000000000000000000000000000000001"
+            ],
+            "data": "0x000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000",
+            "decoded": {
+              "requestId": 1,
+              "generated": 2,
+              "endedWithEOS": true,
+              "saturationCount": 0
+            }
+          }
+        ]
+      },
+      "expected": {
+        "status": "0x1",
+        "to": "0x07bB8455Db0928bEBEb3E7F27A22A0599AF1b650",
+        "blockNumber": 94585393,
+        "blockHash": "0x31decc16269e21691174a8d09c7a4d85cf3ad82328df90810557d05f38a63dbe",
+        "gasUsed": 412013
+      },
+      "match": true
+    },
+    {
+      "method": "eth_call",
+      "function_signature": "outputTokens(uint256)",
+      "selector": "0x28c34c08",
+      "params": [
+        {
+          "to": "0x07bB8455Db0928bEBEb3E7F27A22A0599AF1b650",
+          "data": "0x28c34c080000000000000000000000000000000000000000000000000000000000000001"
+        },
+        "latest"
+      ],
+      "raw_result": "0x00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000010c0000000000000000000000000000000000000000000000000000000000000002",
+      "decoded_actual": [
+        268,
+        2
+      ],
+      "expected": [
+        268,
+        2
+      ],
+      "match": true
+    },
+    {
+      "method": "eth_call",
+      "function_signature": "decodedOutput(uint256)",
+      "selector": "0xd479fd38",
+      "params": [
+        {
+          "to": "0x07bB8455Db0928bEBEb3E7F27A22A0599AF1b650",
+          "data": "0xd479fd380000000000000000000000000000000000000000000000000000000000000001"
+        },
+        "latest"
+      ],
+      "raw_result": "0x00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000009574149543c454f533e0000000000000000000000000000000000000000000000",
+      "decoded_actual_hex": "0x574149543c454f533e",
+      "decoded_actual_utf8": "WAIT<EOS>",
+      "expected": "WAIT<EOS>",
+      "match": true
+    }
+  ],
+  "environment_notes": [
+    "Earlier Python urllib requests to the same public endpoint returned HTTP 403. The successful results recorded here came from subsequent Node.js fetch calls."
+  ]
+}

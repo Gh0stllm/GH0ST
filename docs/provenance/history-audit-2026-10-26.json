@@ -1,0 +1,135 @@
+{
+  "schema": "gh0st-main-history-audit-v1",
+  "checked_at_utc": "2026-10-26T15:53:11Z",
+  "scope": "Read-only GitHub API enumeration of the current main branch before the provenance documentation update. No code execution or chain verification is included.",
+  "repository": {
+    "full_name": "Gh0stllm/GH0ST",
+    "id": 1428849323,
+    "created_at_utc": "2026-10-21T19:39:18Z",
+    "default_branch": "main",
+    "url": "https://github.com/Gh0stllm/GH0ST"
+  },
+  "snapshot": {
+    "head_sha": "d9d6306b8cbf0eb39e844097e7aa669afe82729e",
+    "head_committer_date_utc": "2026-10-22T19:10:48Z",
+    "root_sha": "12c7a6321b966b4262e54d46f0908cd9edc7b78e",
+    "root_committer_date_utc": "2026-10-21T19:43:09Z",
+    "total_reachable_commits": 980,
+    "unique_commit_shas": 980,
+    "committer_date_counts_utc": {
+      "2026-10-22": 169,
+      "2026-10-21": 811
+    },
+    "all_committer_dates_within_utc_range": [
+      "2026-10-21T19:43:09Z",
+      "2026-10-22T19:10:48Z"
+    ]
+  },
+  "graph": {
+    "root_count": 1,
+    "one_parent_commit_count": 979,
+    "merge_commit_count": 0,
+    "linear_parent_chain_verified": true
+  },
+  "authorship": {
+    "github_author_logins": [
+      "Gh0stllm"
+    ],
+    "commit_author_names": [
+      "Gh0stllm"
+    ],
+    "note": "Commit metadata establishes the recorded author account, not whether one person performed every underlying task."
+  },
+  "subject_heuristic": {
+    "method": "Case-insensitive first-word classification of each commit's first message line; Restore, Publish, Add, or other.",
+    "counts": {
+      "starts_with_restore": 769,
+      "other": 135,
+      "starts_with_add": 54,
+      "starts_with_publish": 22
+    },
+    "restore_share_percent": 78.47,
+    "limitations": "Message classification is not a semantic audit of all diffs. It does not prove intent, establish development duration, or mean that commits outside Restore are original development."
+  },
+  "examples": [
+    {
+      "sha": "12c7a6321b966b4262e54d46f0908cd9edc7b78e",
+      "subject": "Initialize GH0ST recovery",
+      "committer_date_utc": "2026-10-21T19:43:09Z",
+      "url": "https://github.com/Gh0stllm/GH0ST/commit/12c7a6321b966b4262e54d46f0908cd9edc7b78e"
+    },
+    {
+      "sha": "30c5eea7f45fe51fea30585ea5e4c20d1ffbc1da",
+      "subject": "Add recovered research overview with token address omitted pending verification",
+      "committer_date_utc": "2026-10-21T19:44:46Z",
+      "url": "https://github.com/Gh0stllm/GH0ST/commit/30c5eea7f45fe51fea30585ea5e4c20d1ffbc1da"
+    },
+    {
+      "sha": "e6312f817384b36e173f7270894d9780c52ea371",
+      "subject": "Remove unused bulk importer; restore files individually as requested",
+      "committer_date_utc": "2026-10-21T20:02:52Z",
+      "url": "https://github.com/Gh0stllm/GH0ST/commit/e6312f817384b36e173f7270894d9780c52ea371"
+    },
+    {
+      "sha": "87960a9b58207256520f8704a5e459083fba0bad",
+      "subject": "Restore assets/recovered/Publish-GH0ST.py [skip ci]",
+      "committer_date_utc": "2026-10-21T20:30:59Z",
+      "url": "https://github.com/Gh0stllm/GH0ST/commit/87960a9b58207256520f8704a5e459083fba0bad"
+    },
+    {
+      "sha": "3d9f0bae4f05dfab265cc0fb83b85cb5844628a6",
+      "subject": "Restore 10 recovered files [skip ci]",
+      "committer_date_utc": "2026-10-22T02:48:42Z",
+      "url": "https://github.com/Gh0stllm/GH0ST/commit/3d9f0bae4f05dfab265cc0fb83b85cb5844628a6"
+    },
+    {
+      "sha": "d9d6306b8cbf0eb39e844097e7aa669afe82729e",
+      "subject": "Restore 25 recovered model artifacts [skip ci]",
+      "committer_date_utc": "2026-10-22T19:10:48Z",
+      "url": "https://github.com/Gh0stllm/GH0ST/commit/d9d6306b8cbf0eb39e844097e7aa669afe82729e"
+    }
+  ],
+  "provenance_evidence": {
+    "recovery_record": "https://github.com/Gh0stllm/GH0ST/blob/d9d6306b8cbf0eb39e844097e7aa669afe82729e/docs/recovery/RECOVERY.md",
+    "historical_binary_manifest": "https://github.com/Gh0stllm/GH0ST/blob/d9d6306b8cbf0eb39e844097e7aa669afe82729e/docs/recovery/historical-binaries-provenance.json",
+    "media_manifest": "https://github.com/Gh0stllm/GH0ST/blob/d9d6306b8cbf0eb39e844097e7aa669afe82729e/docs/recovery/media-provenance.json",
+    "recorded_original_repository": "8tk8m2kv9f-lang/GH0ST",
+    "interpretation": "The recovery record says original surviving history was retained locally and that individual-file GitHub Contents API publication generated new commits without transferring the original commit graph. The removal-of-bulk-importer commit explicitly records switching to individual restoration. This explains the publication pattern; it does not establish malicious inflation or validate all research claims.",
+    "not_independently_verified": [
+      "43 original pre-recovery commits retained locally",
+      "All 4,552 historical binary files match their recorded hashes",
+      "Missing historical branches and complete restoration state"
+    ]
+  },
+  "procedure": {
+    "actual_read_endpoints": [
+      "https://api.github.com/repos/Gh0stllm/GH0ST",
+      "https://api.github.com/repos/Gh0stllm/GH0ST/branches/main",
+      "https://api.github.com/repos/Gh0stllm/GH0ST/commits?per_page=100&page=1",
+      "https://api.github.com/repos/Gh0stllm/GH0ST/commits?per_page=100&page=2",
+      "https://api.github.com/repos/Gh0stllm/GH0ST/commits?per_page=100&page=3",
+      "https://api.github.com/repos/Gh0stllm/GH0ST/commits?per_page=100&page=4",
+      "https://api.github.com/repos/Gh0stllm/GH0ST/commits?per_page=100&page=5",
+      "https://api.github.com/repos/Gh0stllm/GH0ST/commits?per_page=100&page=6",
+      "https://api.github.com/repos/Gh0stllm/GH0ST/commits?per_page=100&page=7",
+      "https://api.github.com/repos/Gh0stllm/GH0ST/commits?per_page=100&page=8",
+      "https://api.github.com/repos/Gh0stllm/GH0ST/commits?per_page=100&page=9",
+      "https://api.github.com/repos/Gh0stllm/GH0ST/commits?per_page=100&page=10",
+      "https://api.github.com/repos/Gh0stllm/GH0ST/commits/e6312f817384b36e173f7270894d9780c52ea371",
+      "https://api.github.com/repos/Gh0stllm/GH0ST/commits/87960a9b58207256520f8704a5e459083fba0bad"
+    ],
+    "pagination": {
+      "per_page": 100,
+      "pages": 10,
+      "final_page_items": 80
+    },
+    "consistency_checks": [
+      "Head entry equals observed main head SHA.",
+      "Every non-root commit has exactly one parent equal to the next enumerated SHA.",
+      "The final commit has no parent.",
+      "All enumerated commit SHAs are unique."
+    ],
+    "reproduce_pinned_listing": "https://api.github.com/repos/Gh0stllm/GH0ST/commits?sha=d9d6306b8cbf0eb39e844097e7aa669afe82729e&per_page=100&page=1",
+    "reproduction_note": "Actual enumeration used main-default endpoints listed above; their contiguous ancestry was verified and the resulting audit is bound to head_sha. For future reproduction, pass sha=head_sha on every paginated request."
+  }
+}

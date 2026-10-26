@@ -1,6 +1,6 @@
 # Contributing to GH0ST
 
-GH0ST welcomes code improvements, bug reports, reproducible research, documentation fixes and new ideas. You can contribute without deploying contracts, spending funds or holding the research-support token. Individual-file restoration to `Gh0stllm/GH0ST` is in progress; consult the [recovery record](docs/recovery/RECOVERY.md) before treating a temporarily absent file as missing from the surviving local sources.
+GH0ST welcomes code improvements, bug reports, reproducible research, documentation fixes and new ideas. You can contribute without deploying contracts, spending funds or holding the research-support token. The initial publication used individual-file restoration; the [provenance guide](docs/PROVENANCE.md) explains the import history. Consult the [recovery record](docs/recovery/RECOVERY.md) for the documented surviving sources and missing material.
 
 [Suggest an improvement](https://github.com/Gh0stllm/GH0ST/issues/new/choose) · [Browse issues](https://github.com/Gh0stllm/GH0ST/issues) · [Open pull requests](https://github.com/Gh0stllm/GH0ST/pulls) · [Project guide](docs/README.md)
 
@@ -63,7 +63,7 @@ This is a collection of research studies with separate environments and harnesse
 | Earlier experiments | The README and pinned tooling in the affected study directory |
 | Documentation or templates | Check links, formatting and consistency with the cited source records |
 
-The current runtime instructions use Solidity 0.8.30, Anvil, the pinned checkpoint/export and prepared reference traces. Follow the linked study's environment and artifact preparation instructions; cloning the repository alone does not supply every model binary. [Recovery and artifact information](docs/recovery/RECOVERY.md).
+The Falcon runtime instructions use Solidity 0.8.30, Anvil, the pinned checkpoint/export and prepared reference traces. Follow the linked study's environment and artifact preparation instructions; cloning the repository alone does not supply every model binary. [Recovery and artifact information](docs/recovery/RECOVERY.md).
 
 Run experiments locally using the relevant harness. A contribution does not require a mainnet deployment or paid inference. Source changes do not update immutable contracts that have already been deployed.
 
@@ -84,6 +84,8 @@ A matrix benchmark is different from complete token generation. A maximum escrow
 A Stylus proposal should state whether it was tested on a chain with the required support, or remains a feasibility estimate. Proposed savings should identify their measured or modeled basis.
 
 ## Preserve the research record
+
+Publish related source, tests and results together in focused commits. Batch future file imports and identify their source and verification method in the commit description; do not use one-file upload counts as a development milestone. Preserve existing history and distinguish newly executed experiments from imported reports. A new independent reproduction should record its source commit, commands, environment, output and any differences from the published result.
 
 Keep existing experiment reports, deployment receipts, manifests and upstream notices intact. Add a new dated report or candidate artifact for a new result rather than rewriting a historical measurement. Clearly separate a proposal, local validation and public deployment.
 
