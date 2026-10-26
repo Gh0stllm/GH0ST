@@ -22,6 +22,7 @@ type Job = record {
   signature : blob;
   output_tokens : nat64;
   source : opt SwapSource;
+  voice : opt VoiceJob;
   busy : bool;
   request : Request;
   model_cycles : nat;
@@ -51,7 +52,8 @@ type Request = record {
 };
 type Result = variant { Ok; Err : text };
 type Result_1 = variant { Ok : Job; Err : text };
-type Result_2 = variant { Ok : text; Err : text };
+type Result_2 = variant { Ok : VoiceState; Err : text };
+type Result_3 = variant { Ok : text; Err : text };
 type SwapPool = record {
   fee : nat32;
   manager : text;
@@ -67,7 +69,36 @@ type SwapSource = record {
   log_index : nat64;
   pool_id : text;
 };
+type ThoughtMemory = record {
+  request_id : text;
+  direction : text;
+  manager : opt text;
+  "text" : text;
+  source_block : nat64;
+  callback_log_index : nat64;
+  callback_tx_hash : text;
+  pool_id : text;
+};
 type TransformArgs = record { context : blob; response : HttpResponse };
+type VoiceJob = record {
+  direction : text;
+  previous_input_tokens : nat64;
+  attempt : nat8;
+  memory_hash : text;
+  profile_version : text;
+  seed : nat32;
+  quality_error : text;
+  previous_output_tokens : nat64;
+  base_prompt : text;
+  remembered : bool;
+  profile_hash : text;
+};
+type VoiceState = record {
+  memories : vec ThoughtMemory;
+  recent_outputs : vec text;
+  revision : nat64;
+  remembering : opt text;
+};
 service : (Config) -> {
   // Stop a job without repeating or replacing any inference output. An in-flight
   // model call must finish first so its callback cannot overwrite this decision.
@@ -81,9 +112,14 @@ service : (Config) -> {
   cleanup : (text) -> (Result);
   get_config : () -> (Config) query;
   get_job : (text) -> (opt Job) query;
+  get_voice_state : () -> (VoiceState) query;
   list_jobs : () -> (vec Job) query;
+  // A retained thought becomes character memory only after independently
+  // verifying its exact, confirmed RH fulfillment. Repeated acknowledgements are
+  // free of repeated RPC work and cannot append duplicate memories.
+  remember_delivered : (text, text, nat64) -> (Result_2);
   set_paused : (bool) -> (Result);
-  signer_address : () -> (Result_2);
+  signer_address : () -> (Result_3);
   submit_request : (text, nat64) -> (Result_1);
   // A confirmed existing-pool Swap log can start inference without modifying the
   // pool or creating a separate RH request transaction. The caller supplies only

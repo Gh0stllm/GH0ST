@@ -14,6 +14,35 @@ export const idlFactory = ({ IDL }) => {
     transaction_hash: IDL.Text,
     log_index: IDL.Nat64,
   });
+  const VoiceJob = IDL.Record({
+    profile_version: IDL.Text,
+    profile_hash: IDL.Text,
+    seed: IDL.Nat32,
+    attempt: IDL.Nat8,
+    base_prompt: IDL.Text,
+    memory_hash: IDL.Text,
+    previous_input_tokens: IDL.Nat64,
+    previous_output_tokens: IDL.Nat64,
+    quality_error: IDL.Text,
+    remembered: IDL.Bool,
+    direction: IDL.Text,
+  });
+  const ThoughtMemory = IDL.Record({
+    request_id: IDL.Text,
+    text: IDL.Text,
+    callback_tx_hash: IDL.Text,
+    callback_log_index: IDL.Nat64,
+    pool_id: IDL.Text,
+    source_block: IDL.Nat64,
+    direction: IDL.Text,
+    manager: IDL.Opt(IDL.Text),
+  });
+  const VoiceState = IDL.Record({
+    revision: IDL.Nat64,
+    memories: IDL.Vec(ThoughtMemory),
+    recent_outputs: IDL.Vec(IDL.Text),
+    remembering: IDL.Opt(IDL.Text),
+  });
   const Config = IDL.Record({
     worker: IDL.Principal,
     model_canister: IDL.Principal,
@@ -63,14 +92,21 @@ export const idlFactory = ({ IDL }) => {
     signer: IDL.Text,
     error: IDL.Text,
     source: IDL.Opt(SwapSource),
+    voice: IDL.Opt(VoiceJob),
   });
   const Result = (t) => IDL.Variant({ Ok: t, Err: IDL.Text });
   return IDL.Service({
     get_config: IDL.Func([], [Config], ["query"]),
+    get_voice_state: IDL.Func([], [VoiceState], ["query"]),
     get_job: IDL.Func([IDL.Text], [IDL.Opt(Job)], ["query"]),
     list_jobs: IDL.Func([], [IDL.Vec(Job)], ["query"]),
     submit_request: IDL.Func([IDL.Text, IDL.Nat64], [Result(Job)], []),
     submit_swap: IDL.Func([IDL.Text, IDL.Nat64], [Result(Job)], []),
+    remember_delivered: IDL.Func(
+      [IDL.Text, IDL.Text, IDL.Nat64],
+      [Result(VoiceState)],
+      [],
+    ),
     advance: IDL.Func([IDL.Text], [Result(Job)], []),
     abort: IDL.Func([IDL.Text], [Result(IDL.Null)], []),
     cleanup: IDL.Func([IDL.Text], [Result(IDL.Null)], []),

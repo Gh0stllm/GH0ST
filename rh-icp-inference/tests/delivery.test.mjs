@@ -23,7 +23,7 @@ const receipt = {
   hash: id("callback"),
   blockNumber: 100,
   blockHash,
-  logs: [{ address, ...encoded }],
+  logs: [{ address, index: 7, ...encoded }],
 };
 test("delivery waits for configured depth and checks canonical block and exact answer", () => {
   const inspect = (r, b, h = answerHash, a = answer, safe = 100) =>

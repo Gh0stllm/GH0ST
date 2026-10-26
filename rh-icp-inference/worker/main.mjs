@@ -18,6 +18,12 @@ import { readJournal, writeJournal, unwrap } from "./journal.mjs";
 import { loadSources, scanSwaps } from "./swaps.mjs";
 import { callbackFor } from "./routing.mjs";
 import { findFulfillment } from "./delivery.mjs";
+import { acknowledgeVoice } from "./voice.mjs";
+import {
+  planPublication,
+  publishPlanned,
+  verifyPublishingAccount,
+} from "./x-publisher.mjs";
 
 const required = (name) => {
   if (!process.env[name]) throw Error(`Missing ${name}`);
@@ -99,6 +105,26 @@ const wallet = process.env.RH_RELAYER_PRIVATE_KEY
   : null;
 if (wallet && !process.env.RELAY_MAX_FEE_GWEI)
   throw Error("Set RELAY_MAX_FEE_GWEI to bound transaction fees");
+const xEnabled = process.env.X_ENABLED === "1";
+let xAccount = null,
+  xAuthorizationError = null,
+  lastXCheck = 0;
+async function checkXAccount() {
+  if (!xEnabled || xAccount || Date.now() - lastXCheck < 60000) return;
+  lastXCheck = Date.now();
+  try {
+    xAccount = await verifyPublishingAccount({
+      enabled: true,
+      accessToken: process.env.X_USER_ACCESS_TOKEN,
+      expectedUsername: process.env.X_EXPECTED_USERNAME ?? "llmgh0st",
+      timeoutMs: 5000,
+    });
+    xAuthorizationError = null;
+  } catch (error) {
+    xAuthorizationError = String(error.message ?? error).slice(0, 300);
+  }
+}
+await checkXAccount();
 const lock = file + ".lock";
 fs.mkdirSync(path.dirname(file), { recursive: true, mode: 0o700 });
 // The journal represents one nonce stream. Never run two writers concurrently.
@@ -115,6 +141,59 @@ for (const signal of ["SIGINT", "SIGTERM"])
   });
 const save = () => writeJournal(file, state);
 
+async function serviceDelivery(item, knownJob) {
+  const job = knownJob ?? (await coordinator.get_job(item.id))[0];
+  if (!job) return;
+  if (!item.memoryAcknowledged) {
+    try {
+      await acknowledgeVoice(item, job, coordinator);
+      delete item.memoryError;
+    } catch (error) {
+      item.memoryError = String(error.message ?? error).slice(0, 300);
+    }
+    save();
+  }
+  if (item.kind !== "swap" || !job.voice?.[0]) return;
+  if (
+    ["posted", "blocked", "needs_reconciliation"].includes(
+      item.publication?.status,
+    )
+  )
+    return;
+  try {
+    const plan = planPublication({ ...item.delivery, requestId: item.id });
+    item.publicationPlan = {
+      planId: plan.planId,
+      textHash: plan.textHash,
+      text: plan.text,
+      proofUrl: plan.proofUrl,
+    };
+    save();
+    await checkXAccount();
+    if (xEnabled && !xAccount) {
+      item.publicationError =
+        xAuthorizationError ?? "X account authorization is unavailable";
+      save();
+      return;
+    }
+    const outcome = await publishPlanned(plan, {
+      enabled: xEnabled,
+      accessToken: process.env.X_USER_ACCESS_TOKEN,
+      existing: item.publication,
+      persist: async (publication) => {
+        item.publication = publication;
+        save();
+      },
+    });
+    item.publication = outcome;
+    delete item.publicationError;
+    save();
+  } catch (error) {
+    item.publicationError = String(error.message ?? error).slice(0, 300);
+    save();
+  }
+}
+
 async function confirmDelivery(item, job, onchain, safeBlock) {
   const delivery = await findFulfillment(
     provider,
@@ -128,6 +207,7 @@ async function confirmDelivery(item, job, onchain, safeBlock) {
   item.state = delivery ? "fulfilled" : "awaiting_confirmation";
   if (delivery) item.delivery = delivery;
   save();
+  if (delivery) await serviceDelivery(item, job);
   return !!delivery;
 }
 
@@ -259,6 +339,17 @@ async function tick() {
   }
   // One model stream at a time. Completed signed jobs do not block later work.
   for (const item of state.requests) {
+    if (item.state === "fulfilled") {
+      if (
+        !item.memoryAcknowledged ||
+        (xEnabled &&
+          !["posted", "blocked", "needs_reconciliation"].includes(
+            item.publication?.status,
+          ))
+      )
+        await serviceDelivery(item);
+      continue;
+    }
     if (
       [
         "fulfilled",
@@ -327,6 +418,8 @@ try {
       gateway: gatewayAddress,
       relayEnabled: !!wallet,
       swapPools: swapPools.length,
+      xPublishingEnabled: xEnabled,
+      xAccount: xAccount?.username ?? null,
     }),
   );
   do {

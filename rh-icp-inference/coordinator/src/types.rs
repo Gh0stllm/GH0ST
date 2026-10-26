@@ -68,6 +68,8 @@ pub struct Job {
     pub request: Request,
     #[serde(default)]
     pub source: Option<SwapSource>,
+    #[serde(default)]
+    pub voice: Option<VoiceJob>,
     pub phase: Phase,
     pub busy: bool,
     pub answer: String,
@@ -88,6 +90,7 @@ impl Job {
         Self {
             request,
             source: None,
+            voice: None,
             phase: Phase::Verified,
             busy: false,
             answer: String::new(),
@@ -113,6 +116,44 @@ pub struct State {
     pub active: Option<String>,
     pub verifying: bool,
     pub paused: bool,
+    #[serde(default)]
+    pub voice: Option<VoiceState>,
+}
+
+#[derive(Clone, Debug, CandidType, Deserialize, Serialize)]
+pub struct VoiceJob {
+    pub profile_version: String,
+    pub profile_hash: String,
+    pub seed: u32,
+    pub attempt: u8,
+    pub base_prompt: String,
+    pub memory_hash: String,
+    pub direction: String,
+    pub previous_input_tokens: u64,
+    pub previous_output_tokens: u64,
+    pub quality_error: String,
+    pub remembered: bool,
+}
+
+#[derive(Clone, Debug, Default, CandidType, Deserialize, Serialize)]
+pub struct VoiceState {
+    pub revision: u64,
+    pub memories: Vec<ThoughtMemory>,
+    pub recent_outputs: Vec<String>,
+    pub remembering: Option<String>,
+}
+
+#[derive(Clone, Debug, CandidType, Deserialize, Serialize)]
+pub struct ThoughtMemory {
+    pub request_id: String,
+    pub text: String,
+    pub callback_tx_hash: String,
+    pub callback_log_index: u64,
+    pub pool_id: String,
+    #[serde(default)]
+    pub manager: Option<String>,
+    pub source_block: u64,
+    pub direction: String,
 }
 
 #[derive(CandidType, Deserialize)]

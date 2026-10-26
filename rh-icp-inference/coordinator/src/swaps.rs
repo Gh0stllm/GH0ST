@@ -221,25 +221,13 @@ pub fn swap_request(
     swap: &VerifiedSwap,
     timestamp: u64,
 ) -> Result<Request, String> {
-    let prompt = format!(
-        "Write one short, cryptic, irreverent GH0ST monologue inspired by a swap. Stay under 200 characters. No URLs or mentions. Pool deltas in raw units: currency0 {}; currency1 {}. Tick {}; fee {}. A swap is a stimulus for your own recurring imagery.",
-        swap.amount0, swap.amount1, swap.tick, swap.fee
-    );
-    Ok(Request {
-        id: source_id(config.chain_id, &swap.source)?,
-        requester: swap.sender.clone(),
-        model_id: config.model_id.clone(),
-        prompt_hash: hex0(hash(prompt.as_bytes())),
-        prompt,
-        max_tokens: 50,
-        deadline: timestamp
-            .checked_add(3600)
-            .ok_or("swap deadline overflow")?,
-        tx_hash: swap.source.transaction_hash.clone(),
-        log_index: swap.source.log_index,
-        block_number: swap.block_number,
-        block_hash: swap.block_hash.clone(),
-    })
+    crate::persona::create_request(
+        config,
+        swap,
+        timestamp,
+        &crate::types::VoiceState::default(),
+    )
+    .map(|v| v.0)
 }
 
 #[cfg(test)]
@@ -338,7 +326,10 @@ mod tests {
         assert_eq!(swap.tick, "-7");
         assert_eq!(swap.fee, 3000);
         let request = swap_request(&c, &swap, 1000).unwrap();
-        assert_eq!(request.max_tokens, 50);
+        assert_eq!(
+            request.max_tokens,
+            crate::persona::profile().sampling.max_output_tokens
+        );
         assert_eq!(request.deadline, 4600);
         assert_eq!(request.prompt_hash, hex0(hash(request.prompt.as_bytes())));
         assert_eq!(request.id, source_id(c.chain_id, &swap.source).unwrap());

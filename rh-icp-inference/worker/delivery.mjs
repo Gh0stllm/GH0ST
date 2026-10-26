@@ -39,12 +39,17 @@ export function inspectFulfillment(
       throw Error(
         "Confirmed callback answer differs from the committed result",
       );
+    const logIndex = Number(log.index ?? log.logIndex);
+    if (!Number.isSafeInteger(logIndex) || logIndex < 0)
+      throw Error("Callback log index is missing");
     return {
+      confirmed: true,
       transactionHash: receipt.hash ?? receipt.transactionHash,
       blockNumber: receipt.blockNumber,
       blockHash: receipt.blockHash,
       answer: event.args.answer,
       answerHash: event.args.answerHash,
+      logIndex,
     };
   }
   throw Error(

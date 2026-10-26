@@ -7,41 +7,43 @@
     "license": "MIT"
   },
   "model": {
-    "repository": "Qwen/Qwen3-0.6B-GGUF",
-    "revision": "23749fefcc72300e3a2ad315e1317431b06b590a",
-    "filename": "Qwen3-0.6B-Q8_0.gguf",
-    "sha256": "9465e63a22add5354d9bb4b99e90117043c7124007664907259bd16d043bb031",
-    "bytes": 639446688,
+    "id": "qwen3-1.7b-q4_k_m",
+    "repository": "unsloth/Qwen3-1.7B-GGUF",
+    "source_repository": "Qwen/Qwen3-1.7B",
+    "revision": "d7f544eead698dbd1f15126ef60b45a1e1933222",
+    "filename": "Qwen3-1.7B-Q4_K_M.gguf",
+    "sha256": "b139949c5bd74937ad8ed8c8cf3d9ffb1e99c866c823204dc42c0d91fa181897",
+    "bytes": 1107409472,
     "license": "Apache-2.0"
   },
   "load_args": [
     "--model",
     "models/model.gguf",
+    "--no-warmup",
     "--cache-type-k",
     "q8_0",
     "--cache-type-v",
     "q8_0",
     "--batch-size",
-    "64",
+    "8",
     "--ubatch-size",
-    "64",
+    "8",
     "--ctx-size",
     "4096"
   ],
   "generation": {
     "thinking": false,
-    "temperature": 0,
-    "seed": 42,
-    "repeat_penalty": 1.1,
-    "tokens_per_call": 16,
-    "max_output_tokens": 128
+    "swap_persona_profile": "persona-profile.json",
+    "seed_policy": "source ID + attempt + generated-token offset + profile hash",
+    "manual_requests": "Retain their deterministic infrastructure-test decoding settings."
   },
   "limits": {
     "prompt_bytes": 4096,
     "answer_bytes": 8192,
-    "max_chunks": 48,
-    "model_cycle_budget": "400000000000",
-    "wasm_memory_limit": 4026531840
+    "max_chunks": 96,
+    "model_cycle_budget": "2000000000000",
+    "wasm_memory_limit": 4026531840,
+    "explicit_request_max_chunks": 48
   },
-  "status": "Pinned inputs only; model Wasm, upload, loaded weights and live inference still require verification."
+  "status": "Qwen3-1.7B Q4_K_M voice profile; pinned local evaluation and live ICP validation are separate records. No trained weight changes."
 }

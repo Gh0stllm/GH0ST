@@ -17,6 +17,12 @@ if (
   throw Error("GGUF differs from pinned Qwen artifact");
 const manifest = {
   ...lock,
+  persona_profile: JSON.parse(
+    fs.readFileSync(
+      new URL("../persona-profile.json", import.meta.url),
+      "utf8",
+    ),
+  ),
   model_wasm_sha256: await shaFile(
     "vendor/llama_cpp_canister/build/llama_cpp.wasm",
   ),
@@ -30,7 +36,7 @@ fs.writeFileSync("build/artifact-manifest.json", content + "\n");
 console.log(
   JSON.stringify(
     {
-      modelId: id("qwen3-0.6b-q8_0"),
+      modelId: id(lock.model.id),
       artifactHash: keccak256(toUtf8Bytes(content)),
       modelWasmHash: "0x" + manifest.model_wasm_sha256,
     },

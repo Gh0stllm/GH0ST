@@ -1,0 +1,190 @@
+{
+  "method": "local sequential recent-output quality/retry stress; fixed exported confirmed-memory fixtures; same native Q8 runner; no ICP execution/cost measurement",
+  "records": [
+    {
+      "name": "buy-empty",
+      "source_id": "0x118c59e33c822d2d19847e6a80353766a37f797f41b6e93cd57548f329045e00",
+      "references": [],
+      "first_text": "the spoon's hunger is insatiable, yet it clings to the edge of my hand like a ghost.",
+      "first_gate": {
+        "name": "buy-empty",
+        "normalized": "the spoon's hunger is insatiable, yet it clings to the edge of my hand like a ghost.",
+        "valid": true
+      },
+      "accepted": true,
+      "attempts": 1,
+      "accepted_text": "the spoon's hunger is insatiable, yet it clings to the edge of my hand like a ghost.",
+      "accepted_attempt": 1
+    },
+    {
+      "name": "sell-empty",
+      "source_id": "0x5a91e8133c1d4fe3ce3477b67954b852d288cccc229c502fb29acd74181269d8",
+      "references": [
+        "the spoon's hunger is insatiable, yet it clings to the edge of my hand like a ghost."
+      ],
+      "first_text": "a laundromat token hums with a secret hymn, while the fabric of my body shifts like a stolen dream.",
+      "first_gate": {
+        "name": "sell-empty",
+        "normalized": "a laundromat token hums with a secret hymn, while the fabric of my body shifts like a stolen dream.",
+        "valid": true
+      },
+      "accepted": true,
+      "attempts": 1,
+      "accepted_text": "a laundromat token hums with a secret hymn, while the fabric of my body shifts like a stolen dream.",
+      "accepted_attempt": 1
+    },
+    {
+      "name": "buy-reversal",
+      "source_id": "0x3a4fef0f7dc2eafec7ea432429d04f04a41d0f6c997c9243453d8cfa04f9aef9",
+      "references": [
+        "i put my receipt in the drain. the drain refused the refund.",
+        "the spoon's hunger is insatiable, yet it clings to the edge of my hand like a ghost.",
+        "a laundromat token hums with a secret hymn, while the fabric of my body shifts like a stolen dream."
+      ],
+      "first_text": "i have queued up at the oracle, waiting for my turn to be forgotten.",
+      "first_gate": {
+        "name": "buy-reversal",
+        "normalized": "i have queued up at the oracle, waiting for my turn to be forgotten.",
+        "valid": true
+      },
+      "accepted": true,
+      "attempts": 1,
+      "accepted_text": "i have queued up at the oracle, waiting for my turn to be forgotten.",
+      "accepted_attempt": 1
+    },
+    {
+      "name": "sell-reversal",
+      "source_id": "0x9375ef87b493d00b652fe68448f058014c70164c282de3ca4dcdcdcce8abb3da",
+      "references": [
+        "i put my receipt in the drain. the drain refused the refund.",
+        "the spoon's hunger is insatiable, yet it clings to the edge of my hand like a ghost.",
+        "a laundromat token hums with a secret hymn, while the fabric of my body shifts like a stolen dream.",
+        "i have queued up at the oracle, waiting for my turn to be forgotten."
+      ],
+      "first_text": "the vending machine hums with a forgotten song, its gears grinding like a restless soul.",
+      "first_gate": {
+        "name": "sell-reversal",
+        "reason": "thought reuses the recent phrase 'hums with'; avoid that phrase",
+        "valid": false
+      },
+      "accepted": true,
+      "attempts": 2,
+      "repair_text": "i left the receipt in the trash bin, but the bin refused to accept it.",
+      "repair_gate": {
+        "name": "sell-reversal",
+        "normalized": "i left the receipt in the trash bin, but the bin refused to accept it.",
+        "valid": true
+      },
+      "repair_record": "evaluation/positive-repair/repair-output-sell-reversal.jsonl",
+      "accepted_text": "i left the receipt in the trash bin, but the bin refused to accept it.",
+      "accepted_attempt": 2
+    },
+    {
+      "name": "buy-after-pause",
+      "source_id": "0xd1c89bc5454111503f1a387110188cfce05753886ad1639066d164c352335862",
+      "references": [
+        "i put my receipt in the drain. the drain refused the refund.",
+        "the spoon's hunger is insatiable, yet it clings to the edge of my hand like a ghost.",
+        "a laundromat token hums with a secret hymn, while the fabric of my body shifts like a stolen dream.",
+        "i have queued up at the oracle, waiting for my turn to be forgotten.",
+        "i left the receipt in the trash bin, but the bin refused to accept it."
+      ],
+      "first_text": "the vending machine hums with forgotten coins, but i've already swallowed its grin.",
+      "first_gate": {
+        "name": "buy-after-pause",
+        "reason": "thought reuses the recent phrase 'hums with'; avoid that phrase",
+        "valid": false
+      },
+      "accepted": true,
+      "attempts": 2,
+      "repair_text": "i dropped my pencil in the recycling bin, and the bin refused to take it back.",
+      "repair_gate": {
+        "name": "buy-after-pause",
+        "normalized": "i dropped my pencil in the recycling bin, and the bin refused to take it back.",
+        "valid": true
+      },
+      "repair_record": "evaluation/positive-repair/repair-output-buy-after-pause.jsonl",
+      "accepted_text": "i dropped my pencil in the recycling bin, and the bin refused to take it back.",
+      "accepted_attempt": 2
+    },
+    {
+      "name": "sell-after-pause",
+      "source_id": "0x1ff7340a9131d61d617c61c9d100e691547444b22db8320a90dd8c77bf2cf783",
+      "references": [
+        "i put my receipt in the drain. the drain refused the refund.",
+        "the spoon's hunger is insatiable, yet it clings to the edge of my hand like a ghost.",
+        "a laundromat token hums with a secret hymn, while the fabric of my body shifts like a stolen dream.",
+        "i have queued up at the oracle, waiting for my turn to be forgotten.",
+        "i left the receipt in the trash bin, but the bin refused to accept it.",
+        "i dropped my pencil in the recycling bin, and the bin refused to take it back."
+      ],
+      "first_text": "i've swapped my laundry tokens for a new kind of hunger; the machine refuses to return the change.",
+      "first_gate": {
+        "name": "sell-after-pause",
+        "normalized": "i've swapped my laundry tokens for a new kind of hunger; the machine refuses to return the change.",
+        "valid": true
+      },
+      "accepted": true,
+      "attempts": 1,
+      "accepted_text": "i've swapped my laundry tokens for a new kind of hunger; the machine refuses to return the change.",
+      "accepted_attempt": 1
+    },
+    {
+      "name": "buy-new-source",
+      "source_id": "0x6649e322a2aefc387a4cde2fe5b34458b8e82b24e59a4b00be60c5f008634c80",
+      "references": [
+        "the spoon's hunger is insatiable, yet it clings to the edge of my hand like a ghost.",
+        "a laundromat token hums with a secret hymn, while the fabric of my body shifts like a stolen dream.",
+        "i have queued up at the oracle, waiting for my turn to be forgotten.",
+        "i left the receipt in the trash bin, but the bin refused to accept it.",
+        "i dropped my pencil in the recycling bin, and the bin refused to take it back.",
+        "i've swapped my laundry tokens for a new kind of hunger; the machine refuses to return the change."
+      ],
+      "first_text": "the warranty form is my only companion, and it's wearing a bowtie.",
+      "first_gate": {
+        "name": "buy-new-source",
+        "normalized": "the warranty form is my only companion, and it's wearing a bowtie.",
+        "valid": true
+      },
+      "accepted": true,
+      "attempts": 1,
+      "accepted_text": "the warranty form is my only companion, and it's wearing a bowtie.",
+      "accepted_attempt": 1
+    },
+    {
+      "name": "sell-new-source",
+      "source_id": "0x4274580079b9f0b152af70e275a3d0c3e942e58e1bab7e02b2d55ac66f7ef5aa",
+      "references": [
+        "the spoon's hunger is insatiable, yet it clings to the edge of my hand like a ghost.",
+        "a laundromat token hums with a secret hymn, while the fabric of my body shifts like a stolen dream.",
+        "i have queued up at the oracle, waiting for my turn to be forgotten.",
+        "i left the receipt in the trash bin, but the bin refused to accept it.",
+        "i dropped my pencil in the recycling bin, and the bin refused to take it back.",
+        "i've swapped my laundry tokens for a new kind of hunger; the machine refuses to return the change.",
+        "the warranty form is my only companion, and it's wearing a bowtie."
+      ],
+      "first_text": "the chair hums with forgotten debts, but i've already paid them all.",
+      "first_gate": {
+        "name": "sell-new-source",
+        "reason": "thought reuses the recent phrase 'hums with'; avoid that phrase",
+        "valid": false
+      },
+      "accepted": true,
+      "attempts": 2,
+      "repair_text": "i've borrowed a chair to sit on, but it's always shifting, like a ghost in a dream. the floor whispers, 'you're not real.'",
+      "repair_gate": {
+        "name": "sell-new-source",
+        "normalized": "i've borrowed a chair to sit on, but it's always shifting, like a ghost in a dream. the floor whispers, 'you're not real.'",
+        "valid": true
+      },
+      "repair_record": "evaluation/positive-repair/repair-output-sell-new-source.jsonl",
+      "accepted_text": "i've borrowed a chair to sit on, but it's always shifting, like a ghost in a dream. the floor whispers, 'you're not real.'",
+      "accepted_attempt": 2
+    }
+  ],
+  "first_pass_accepted": 5,
+  "repair_accepted": 3,
+  "rejected_after_limit": 0,
+  "total": 8,
+  "regate_only": true
+}

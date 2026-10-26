@@ -19,12 +19,12 @@ Download the official GGUF at the pinned revision and verify its hash:
 ```bash
 mkdir -p models
 curl --fail --location --continue-at - \
-  --output models/Qwen3-0.6B-Q8_0.gguf \
-  https://huggingface.co/Qwen/Qwen3-0.6B-GGUF/resolve/23749fefcc72300e3a2ad315e1317431b06b590a/Qwen3-0.6B-Q8_0.gguf
+  --output models/Qwen3-1.7B-Q4_K_M.gguf \
+  https://huggingface.co/unsloth/Qwen3-1.7B-GGUF/resolve/d7f544eead698dbd1f15126ef60b45a1e1933222/Qwen3-1.7B-Q4_K_M.gguf
 node scripts/manifest.mjs
 ```
 
-`manifest.mjs` checks the model's 639,446,688-byte size and SHA-256, writes `build/artifact-manifest.json`, and prints the model ID, artifact hash and model Wasm hash. Publish this manifest with eventual deployment evidence. The gateway and coordinator must use these exact values.
+`manifest.mjs` checks the model's 1,107,409,472-byte size and SHA-256, writes `build/artifact-manifest.json`, and prints the model ID, artifact hash and model Wasm hash. Publish this manifest with eventual deployment evidence. The gateway and coordinator must use these exact values.
 
 ## 2. Create and load the model canister
 
@@ -42,7 +42,7 @@ Upload the GGUF with the pinned runtime's `scripts.upload`, using the explicit d
 icp canister call model -e production load_model '(record { args = vec {
   "--model"; "models/model.gguf";
   "--cache-type-k"; "q8_0"; "--cache-type-v"; "q8_0";
-  "--batch-size"; "64"; "--ubatch-size"; "64"; "--ctx-size"; "4096"
+  "--no-warmup"; "--batch-size"; "8"; "--ubatch-size"; "8"; "--ctx-size"; "4096"
 } })'
 icp canister call model -e production set_max_tokens '(record {
   max_tokens_update = 0 : nat64; max_tokens_query = 0 : nat64
@@ -71,7 +71,7 @@ The output is its public principal. The file contains a secret and must not be p
 | `gateway`                                      | `0x0000000000000000000000000000000000000000` initially                                                  |
 | `rpc_urls`                                     | `https://rpc.mainnet.chain.robinhood.com` and `https://api.blockvectra.com/v1/robinhood_mainnet/public` |
 | `confirmations`                                | `12 : nat64` initially; review against RH finality policy                                               |
-| `model_cycle_budget`                           | `400000000000 : nat`                                                                                    |
+| `model_cycle_budget`                           | `2000000000000 : nat`                                                                                   |
 | `ecdsa_key_name`                               | `key_1` on ICP production                                                                               |
 
 Use `icp.yaml`'s `init_args` for the coordinator, or the included legacy `dfx.json` with an argument file. Do not deploy the coordinator without its required `Config` argument. The zero gateway is a deliberate bootstrap state and cannot process requests.
@@ -132,4 +132,14 @@ This alternative input path requires the updated coordinator and gateway from th
 
 Direct swap jobs need no separate RH request transaction. Existing hook gas and behavior remain part of the original swap. The worker waits for a canonical confirmed fulfillment event and exact answer/hash before marking delivery complete. Retain its journal and the coordinator's source tombstones. The original 256-job pilot retention limit still applies; review capacity before opening admission at production trading volumes.
 
-The event sender may be a router; it is not proof of a trader wallet. Character memory and X publishing remain separate implementation tasks.
+The event sender may be a router; it is not proof of a trader wallet. The worker can acknowledge confirmed delivery into character memory and publish the exact thought using the optional X configuration below.
+
+## Voice profile and optional X delivery
+
+The 1.7B Q4_K_M profile replaces the original 0.6B infrastructure default. Rebuild the coordinator after changing the embedded persona and generate a new artifact manifest. Do not reuse a manifest, coordinator Wasm hash or model ID from the 0.6B checkpoint. Set the model cycle budget to the reviewed value in model-lock.json; the 2T cap is a compute ceiling, not a measured price or guarantee that both generation attempts will finish.
+
+After a confirmed RH callback, the worker calls `remember_delivered` with its actual callback transaction and log index. ICP checks the proof independently before adding the bounded memory. Keep the journal so acknowledgements and publication are recoverable.
+
+To enable original posts, configure an OAuth user-context token in the worker secret environment, set `X_EXPECTED_USERNAME=llmgh0st` and then `X_ENABLED=1`. Startup verifies `/2/users/me` matches that account before allowing publication. The default is disabled and produces a reviewable publication plan in the journal instead. Never put the access token in Git or share it in a chat.
+
+The publisher waits for canonical RH confirmation, preserves the committed text, and journals intent before each API attempt. If a post outcome is uncertain, reconcile the account before retrying. Publication authentication/rate limits do not change a completed swap or generate a different thought. See X-PUBLISHER.md for the API boundary and recovery states.

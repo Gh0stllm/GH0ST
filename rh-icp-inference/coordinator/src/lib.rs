@@ -1,7 +1,8 @@
 #![allow(deprecated)] // CDK 0.18 API pinned; upgrade deliberately, with Candid checks.
-mod core;
-mod swaps;
-mod types;
+pub mod core;
+pub mod persona;
+pub mod swaps;
+pub mod types;
 
 use core::*;
 use ic_cdk::api::management_canister::{
@@ -52,7 +53,14 @@ fn derivation() -> Vec<Vec<u8>> {
     vec![b"gh0st-rh-icp-v1".to_vec()]
 }
 fn cache(j: &Job) -> String {
-    format!("gh0st-{}.cache", j.request.id.trim_start_matches("0x"))
+    match &j.voice {
+        Some(v) => format!(
+            "gh0st-{}-a{}.cache",
+            j.request.id.trim_start_matches("0x"),
+            v.attempt
+        ),
+        None => format!("gh0st-{}.cache", j.request.id.trim_start_matches("0x")),
+    }
 }
 
 #[init]
@@ -82,6 +90,9 @@ fn post_upgrade() {
         }
     }
     state.verifying = false;
+    if let Some(voice) = state.voice.as_mut() {
+        voice.remembering = None;
+    }
     if state
         .active
         .as_ref()
@@ -102,6 +113,10 @@ fn get_job(id: String) -> Option<Job> {
 #[query]
 fn list_jobs() -> Vec<Job> {
     STATE.with(|s| s.borrow().jobs.values().cloned().collect())
+}
+#[query]
+fn get_voice_state() -> VoiceState {
+    STATE.with(|s| s.borrow().voice.clone().unwrap_or_default())
 }
 #[update]
 fn set_paused(value: bool) -> Result<(), String> {
@@ -356,13 +371,18 @@ async fn submit_swap(tx_hash: String, log_index: u64) -> Result<Job, String> {
         let mut s = s.borrow_mut();
         s.verifying = false;
         let swap = verified?;
-        let request =
-            swaps::swap_request(s.config.as_ref().ok_or("not initialized")?, &swap, now())?;
+        let (request, voice) = persona::create_request(
+            s.config.as_ref().ok_or("not initialized")?,
+            &swap,
+            now(),
+            &s.voice.clone().unwrap_or_default(),
+        )?;
         if let Some(job) = s.jobs.get(&request.id) {
             return Ok(job.clone());
         }
         let mut job = Job::new(request);
         job.source = Some(swap.source);
+        job.voice = Some(voice);
         s.active = Some(job.request.id.clone());
         s.jobs.insert(job.request.id.clone(), job.clone());
         Ok(job)
@@ -422,9 +442,25 @@ async fn step(c: &Config, j: &mut Job) -> Result<(), String> {
     if ic_cdk::api::canister_balance128() < SIGNING_RESERVE + 8 * RPC_CYCLES {
         return Err("coordinator cycle reserve too low".into());
     }
+    if j.voice
+        .as_ref()
+        .is_some_and(|v| v.profile_hash != persona::profile_hash())
+    {
+        return Err("persona profile changed during this job; inspect the retained source".into());
+    }
     match j.phase {
         Phase::Verified => {
-            j.model_cycles_before = model_balance(c).await?;
+            if j.voice.as_ref().is_some_and(|v| v.attempt > 1)
+                && (j.chunks >= persona::max_chunks(j)
+                    || j.model_cycles + CHUNK_RESERVE > c.model_cycle_budget)
+            {
+                return Err("persona repair has no remaining model cycle/chunk reserve".into());
+            }
+            // A quality repair is a new cache, not a new budget. Preserve the
+            // first attempt's baseline across all later model calls.
+            if j.voice.as_ref().is_none_or(|v| v.attempt == 1) {
+                j.model_cycles_before = model_balance(c).await?;
+            }
             model_call(
                 c,
                 "new_chat",
@@ -443,10 +479,15 @@ async fn step(c: &Config, j: &mut Job) -> Result<(), String> {
                 .model_cycles_before
                 .checked_sub(after)
                 .ok_or("model funded during measurement; retry with a new request")?;
+            if j.model_cycles > c.model_cycle_budget {
+                return Err("model cycle budget exceeded while preparing cache".into());
+            }
             j.phase = Phase::Running;
         }
         Phase::Running => {
-            if j.chunks >= 48 || j.model_cycles + CHUNK_RESERVE > c.model_cycle_budget {
+            if j.chunks >= persona::max_chunks(j)
+                || j.model_cycles + CHUNK_RESERVE > c.model_cycle_budget
+            {
                 return Err("model cycle/chunk budget reached".into());
             }
             let remaining = u64::from(j.request.max_tokens)
@@ -460,34 +501,60 @@ async fn step(c: &Config, j: &mut Job) -> Result<(), String> {
             } else {
                 framed_prompt(&j.request.prompt)?
             };
-            let r = model_call(
-                c,
-                "run_update",
-                vec![
-                    "--prompt-cache".into(),
-                    cache(j),
-                    "--prompt-cache-all".into(),
-                    "--cache-type-k".into(),
-                    "q8_0".into(),
-                    "--cache-type-v".into(),
-                    "q8_0".into(),
+            let mut args = vec![
+                "--prompt-cache".into(),
+                cache(j),
+                "--prompt-cache-all".into(),
+                "--cache-type-k".into(),
+                "q8_0".into(),
+                "--cache-type-v".into(),
+                "q8_0".into(),
+            ];
+            let per_call = if let Some(v) = &j.voice {
+                let p = persona::profile();
+                args.extend(vec![
+                    "--temp".into(),
+                    p.sampling.temperature.to_string(),
+                    "--top-p".into(),
+                    p.sampling.top_p.to_string(),
+                    "--top-k".into(),
+                    p.sampling.top_k.to_string(),
+                    "--min-p".into(),
+                    p.sampling.min_p.to_string(),
+                    "--repeat-penalty".into(),
+                    p.sampling.repeat_penalty.to_string(),
+                    "--repeat-last-n".into(),
+                    "64".into(),
+                    "--seed".into(),
+                    persona::seed(&j.request.id, v.attempt, j.output_tokens, &v.profile_hash)?
+                        .to_string(),
+                ]);
+                if !p.sampling.grammar.is_empty() {
+                    args.extend(vec!["--grammar".into(), p.sampling.grammar.clone()]);
+                }
+                p.sampling.tokens_per_call
+            } else {
+                args.extend(vec![
                     "--temp".into(),
                     "0".into(),
                     "--seed".into(),
                     "42".into(),
                     "--repeat-penalty".into(),
                     "1.1".into(),
-                    "-p".into(),
-                    prompt,
-                    "-n".into(),
-                    remaining.min(16).to_string(),
-                ],
-            )
-            .await?;
+                ]);
+                16
+            };
+            args.extend(vec![
+                "-p".into(),
+                prompt,
+                "-n".into(),
+                remaining.min(per_call).to_string(),
+            ]);
+            let r = model_call(c, "run_update", args).await?;
             let tokens = r
                 .n_tokens_generated
                 .ok_or("upstream exact-token accounting missing")?;
-            if tokens > remaining.min(16) {
+            if tokens > remaining.min(per_call) {
                 return Err("model exceeded token cap".into());
             }
             j.output_tokens += tokens;
@@ -513,13 +580,42 @@ async fn step(c: &Config, j: &mut Job) -> Result<(), String> {
                 return Err("model cycle budget exceeded".into());
             }
             if r.generated_eog || j.output_tokens == u64::from(j.request.max_tokens) {
-                if j.answer.trim().is_empty() || j.output_tokens == 0 {
+                if j.voice.is_none() && (j.answer.trim().is_empty() || j.output_tokens == 0) {
                     return Err("empty model response".into());
+                }
+                if j.voice.is_some() {
+                    let recent = STATE.with(|s| {
+                        s.borrow()
+                            .voice
+                            .as_ref()
+                            .map(persona::recent_references)
+                            .unwrap_or_default()
+                    });
+                    match persona::validate_thought(&j.answer, &recent) {
+                        Ok(answer) => j.answer = answer,
+                        Err(reason) => {
+                            persona::prepare_repair(j, &reason)?;
+                            return Ok(());
+                        }
+                    }
                 }
                 j.phase = Phase::ReadyToSign;
             }
         }
         Phase::ReadyToSign => {
+            if j.voice.is_some() {
+                let recent = STATE.with(|s| {
+                    s.borrow()
+                        .voice
+                        .as_ref()
+                        .map(persona::recent_references)
+                        .unwrap_or_default()
+                });
+                if let Err(reason) = persona::validate_thought(&j.answer, &recent) {
+                    persona::prepare_repair(j, &reason)?;
+                    return Ok(());
+                }
+            }
             let digest = result_digest(c, j)?;
             let public = public_key(c).await?;
             let (r,) = sign_with_ecdsa(SignWithEcdsaArgument {
@@ -565,9 +661,13 @@ async fn advance(id: String) -> Result<Job, String> {
     }
     let old_phase = job.phase.clone();
     if let Err(e) = step(&config(), &mut job).await {
+        let terminal_voice_error = e.starts_with("persona ") || e.starts_with("repair ");
         job.error = e;
         // Signing retries are safe: the answer/digest are already fixed.
-        job.phase = if old_phase == Phase::ReadyToSign && job.request.deadline > now() {
+        job.phase = if old_phase == Phase::ReadyToSign
+            && job.request.deadline > now()
+            && !terminal_voice_error
+        {
             Phase::ReadyToSign
         } else {
             Phase::Failed
@@ -578,12 +678,97 @@ async fn advance(id: String) -> Result<Job, String> {
     job.busy = false;
     STATE.with(|s| {
         let mut s = s.borrow_mut();
+        if job.phase == Phase::Complete && old_phase != Phase::Complete && job.voice.is_some() {
+            persona::record_output(s.voice.get_or_insert_with(VoiceState::default), &job.answer);
+        }
         if job.phase == Phase::Complete || job.phase == Phase::Failed {
             s.active = None;
         }
         s.jobs.insert(id, job.clone());
     });
     Ok(job)
+}
+
+async fn verify_delivered(
+    c: &Config,
+    job: &Job,
+    tx: &str,
+    log_index: u64,
+) -> Result<persona::DeliveredProof, String> {
+    let mut agreed = None;
+    for url in &c.rpc_urls {
+        if quantity(&rpc(url, "eth_chainId", json!([])).await?)? != c.chain_id {
+            return Err("delivery RPC chain mismatch".into());
+        }
+        let receipt = rpc(url, "eth_getTransactionReceipt", json!([tx])).await?;
+        let proof = persona::parse_delivered(&receipt, c, job, tx, log_index)?;
+        let anchor = proof
+            .block_number
+            .checked_add(c.confirmations)
+            .ok_or("delivery block overflow")?;
+        quantity(
+            &rpc(
+                url,
+                "eth_getBlockTransactionCountByNumber",
+                json!([format!("0x{anchor:x}")]),
+            )
+            .await?,
+        )?;
+        let reread = rpc(url, "eth_getTransactionReceipt", json!([tx])).await?;
+        if persona::parse_delivered(&reread, c, job, tx, log_index)? != proof {
+            return Err("delivery receipt changed during verification".into());
+        }
+        if agreed.as_ref().is_some_and(|previous| previous != &proof) {
+            return Err("delivery RPC providers disagree".into());
+        }
+        agreed = Some(proof);
+    }
+    agreed.ok_or_else(|| "no delivery providers".into())
+}
+
+/// A retained thought becomes character memory only after independently
+/// verifying its exact, confirmed RH fulfillment. Repeated acknowledgements are
+/// free of repeated RPC work and cannot append duplicate memories.
+#[update]
+async fn remember_delivered(
+    id: String,
+    callback_tx_hash: String,
+    log_index: u64,
+) -> Result<VoiceState, String> {
+    authorized()?;
+    let id = id.to_lowercase();
+    bytes(&callback_tx_hash, 32)?;
+    let job = get_job(id.clone()).ok_or("unknown voice request")?;
+    let voice = job
+        .voice
+        .as_ref()
+        .ok_or("manual request is not a voice thought")?;
+    if job.phase != Phase::Complete || job.source.is_none() {
+        return Err("voice thought is not signed and complete".into());
+    }
+    if voice.remembered {
+        return Ok(get_voice_state());
+    }
+    if ic_cdk::api::canister_balance128() < SIGNING_RESERVE + 8 * RPC_CYCLES {
+        return Err("coordinator cycle reserve too low for memory confirmation".into());
+    }
+    STATE.with(|s| {
+        let mut s = s.borrow_mut();
+        let memory = s.voice.get_or_insert_with(VoiceState::default);
+        if memory.remembering.is_some() {
+            return Err("another delivery memory verification is in flight".to_string());
+        }
+        memory.remembering = Some(id.clone());
+        Ok(())
+    })?;
+    let result = verify_delivered(&config(), &job, &callback_tx_hash, log_index).await;
+    STATE.with(|s| {
+        let mut s = s.borrow_mut();
+        let memory = s.voice.get_or_insert_with(VoiceState::default);
+        memory.remembering = None;
+        let proof = result?;
+        persona::remember_verified(&mut s, &id, &proof)
+    })
 }
 
 /// Stop a job without repeating or replacing any inference output. An in-flight
@@ -624,12 +809,18 @@ async fn cleanup(id: String) -> Result<(), String> {
     if j.busy || !matches!(j.phase, Phase::Complete | Phase::Failed) {
         return Err("job not terminal".into());
     }
-    model_call(
-        &config(),
-        "remove_prompt_cache",
-        vec!["--prompt-cache".into(), cache(&j)],
-    )
-    .await?;
+    let mut clean = j.clone();
+    for attempt in 1..=j.voice.as_ref().map(|v| v.attempt).unwrap_or(1) {
+        if let Some(v) = clean.voice.as_mut() {
+            v.attempt = attempt;
+        }
+        model_call(
+            &config(),
+            "remove_prompt_cache",
+            vec!["--prompt-cache".into(), cache(&clean)],
+        )
+        .await?;
+    }
     Ok(())
 }
 

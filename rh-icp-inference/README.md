@@ -1,10 +1,10 @@
 # GH0ST · RH → ICP → RH
 
-An asynchronous Qwen3-0.6B inference bridge. An RH request is checked against two RPC providers, executed by a dedicated ICP model canister, and returned to RH with a threshold-ECDSA signature.
+An asynchronous Qwen3-1.7B inference bridge. An RH request is checked against two RPC providers, executed by a dedicated ICP model canister, and returned to RH with a threshold-ECDSA signature.
 
 **Status: first implementation, locally tested; not deployed.** No ICP canister, loaded Qwen model, live cross-chain request or measured ICP price is claimed by this checkpoint. Existing GH0ST deployments are unaffected.
 
-**Product target:** [GH0ST swap → ICP monologue → confirmed RH result → X post](SWAP-SOCIAL-AGENT.md). The prototype includes automatic observation of registered existing v4 pools and direct swap-proof ingestion. Persistent character memory and X publication remain to be implemented.
+**Product target:** [GH0ST swap → ICP monologue → confirmed RH result → X post](SWAP-SOCIAL-AGENT.md). The prototype includes automatic observation of registered existing v4 pools and direct swap-proof ingestion. The coordinator now includes a bounded persona and confirmed-delivery memory; the worker includes an opt-in X publisher. Live deployment and account authorization remain pending.
 
 ```mermaid
 flowchart TD
@@ -43,12 +43,12 @@ Requests and answers are public. The gateway stores the answer hash and emits th
 ## Limits and cost measurement
 
 - Pilot admission is restricted on RH and on the coordinator. One model job runs at a time; at most 256 job records are retained, with no deletion/replay loophole.
-- Prompt ≤4,096 bytes; answer ≤8,192 bytes; output ≤128 tokens; at most 16 generated tokens per model call and 48 model calls. These are safety ceilings, not the 100-input/50-output benchmark workload.
+- Prompt ≤4,096 bytes; answer ≤8,192 bytes; output ≤128 tokens globally. Persona swap jobs use ≤80 tokens, four generated tokens per call and at most 96 calls across two attempts. Explicit requests retain the earlier 16-token/48-call ceilings. These are safety ceilings, not the 100-input/50-output benchmark workload.
 - A dedicated model canister is required. The coordinator must be its controller to read cycle balances and invoke the model. Do not run unrelated requests, upgrades, top-ups or cleanup during a measurement.
 - `model_cycles` is the model canister balance delta from before `new_chat` to the end of generation. It includes idle/storage burn in that interval. It excludes later cache cleanup, coordinator execution, RPC and signing charges.
-- The default **400 billion model-cycle budget** is checked between chunks with a 40 billion reserve. This is not a dollar-denominated billing guarantee: subnet pricing, per-call overhead and consumption during an in-flight call matter.
+- The voice deployment profile uses a **2 trillion model-cycle budget** is checked between chunks with a 40 billion reserve. This is not a dollar-denominated billing guarantee: subnet pricing, per-call overhead and consumption during an in-flight call matter.
 - The coordinator makes eight bounded HTTPS outcalls per new request for two-provider chain/receipt/confirmation/state checks. An idle worker polls RH externally, so it does not create recurring ICP RPC charges while idle.
-- For total cost, snapshot **both** canister balances around an isolated request, include cleanup and confirmation, and record RH receipt gas separately. Freeze external top-ups during the measurement. The earlier $0.60 planning allowance remains unverified.
+- For total cost, snapshot **both** canister balances around an isolated request, include cleanup and confirmation, and record RH receipt gas separately. Freeze external top-ups during the measurement. The earlier $0.60 allowance for a short 0.6B request does not price this longer 1.7B persona prompt and memory. Live cost remains unmeasured.
 
 An interrupted model call is never silently repeated: its outcome may have committed before a response was lost. A failed job is retained for inspection. Signing retries use the already-fixed answer. Upgrades mark in-flight jobs failed; run upgrades only with no active request.
 
@@ -70,7 +70,7 @@ No signing secret, funded ICP identity or model weight file is included. Runtime
 
 ## Attribution
 
-The model runtime is [onicai/llama_cpp_canister](https://github.com/onicai/llama_cpp_canister/tree/4276f526970b7916cc7105c357ad2f2ed018ed37), MIT licensed. Version `0.23.0rc4` includes the upstream Candid decoder security fix. The model is [Qwen/Qwen3-0.6B-GGUF](https://huggingface.co/Qwen/Qwen3-0.6B-GGUF/tree/23749fefcc72300e3a2ad315e1317431b06b590a), Apache-2.0 licensed. Preserve both upstream license notices when distributing builds or weights.
+The model runtime is [onicai/llama_cpp_canister](https://github.com/onicai/llama_cpp_canister/tree/4276f526970b7916cc7105c357ad2f2ed018ed37), MIT licensed. Version `0.23.0rc4` includes the upstream Candid decoder security fix. The source model is [Qwen3-1.7B](https://huggingface.co/Qwen/Qwen3-1.7B), with the pinned [Unsloth Q4_K_M GGUF](https://huggingface.co/unsloth/Qwen3-1.7B-GGUF/tree/d7f544eead698dbd1f15126ef60b45a1e1933222), Apache-2.0 licensed. Preserve both upstream license notices when distributing builds or weights.
 
 ## Existing pools as the trigger
 
@@ -79,3 +79,11 @@ Set `WATCH_SWAPS=1` after configuring the same approved pools in the ICP coordin
 Direct swap jobs use `submit_swap(transactionHash, logIndex)` and return via `fulfillSwapInference`. They need no extra RH request transaction: the existing swap and later RH callback are the two RH transactions in this route. Each source ID commits to the chain, manager, pool, transaction and log index. The gateway rejects repeated source IDs and accepts results only for enabled pools with the pinned signer.
 
 [swap-sources.json](swap-sources.json) includes the recorded sentence-hook and Pons pool keys. These are saved deployment configurations, not fresh liquidity attestations. Enable only independently verified sources. Other venues need protocol-specific adapters or registration. The worker marks a result delivered only after confirming the canonical fulfillment event, its exact answer/hash and the configured confirmation depth.
+
+## Swap-conditioned voice and delivery
+
+[persona-profile.json](persona-profile.json) defines GH0ST's original voice and decoding settings. [Voice tuning](VOICE-TUNING.md) distinguishes actual local model outputs from human-written prompt examples and from live ICP execution. Verified buy/sell flow, remembered direction reversals and block rhythm shape the input; raw router addresses and token amounts are not repeated as a market report.
+
+The source-derived seed changes with the swap, attempt and generated-token offset. The stateless printable-character grammar is compatible with resumed sampling, while output gates check length, finished phrasing, boilerplate and recent repetition before signing. One rejected complete candidate may be regenerated within the same cumulative cycle/chunk budget. No stock text is substituted.
+
+The two recent confirmed RH thoughts become character memory only after independent two-provider receipt verification through `remember_delivered`. Eight recent signed outputs are retained for repetition checks. The new [X publisher](X-PUBLISHER.md) defaults to disabled, verifies the intended account when enabled, and posts only the exact confirmed RH thought plus its proof link.

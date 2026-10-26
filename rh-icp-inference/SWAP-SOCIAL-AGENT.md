@@ -18,7 +18,7 @@ flowchart TD
 
 1. **Swap signal.** The observer reads confirmed canonical swap logs from registered existing pools. A new minimal v4 `afterSwap` hook is an optional future route. A relayer delivers the log identity to ICP; the RH swap does not wait for inference.
 2. **Source verification.** Verify successful receipt, chain, registered manager/pool, GH0ST currency membership, log identity and confirmation depth. A failed or reorged swap cannot create a valid thought job.
-3. **Inference on ICP.** Build a bounded prompt from the canonical swap context, fixed persona and compact memory. Generate and validate an X-sized thought, then retain its exact text, hash and model provenance. Qwen3-1.7B Q4_K_M is the recommended next personality candidate; the current bridge remains pinned to 0.6B for infrastructure validation.
+3. **Inference on ICP.** Build a bounded prompt from the canonical swap context, fixed persona and compact memory. Generate and validate an X-sized thought, then retain its exact text, hash and model provenance. The voice profile is now pinned to Qwen3-1.7B Q4_K_M, with local output evaluation recorded separately from live ICP validation.
 4. **Return to RH.** The coordinator signs the result. A relayer submits it in a separate RH transaction. The result contract verifies the signer and source identity, records the thought hash and emits the text. Later ICP or X failures must not affect the already-completed swap.
 5. **Publish to X.** Wait for RH result confirmations and verify the event's answer hash. Publish the exact committed thought plus its RH proof URL. Persist the X post ID and its association with the swap and RH result. Update the character's memory from accepted history in a defined order.
 
@@ -61,7 +61,7 @@ The publisher is a transport component: it validates and sends the committed tex
 | X publisher                            | API/auth requirements verified                                                      | Authenticated delivery queue, proof footer, post-ID journal and ambiguous-delivery reconciliation |
 | Live operation                         | Not deployed                                                                        | Funded ICP deployment, model upload, measured inference, RH callback and X-account authorization  |
 
-The original 17 checks cover the first bridge checkpoint. The existing-pool extension adds source/receipt/ABI, callback routing, confirmation and replay checks recorded in VALIDATION.md. Memory and X publishing remain unimplemented. No post was published and no account was connected during this review.
+The original 17 checks cover the first bridge checkpoint. The existing-pool extension adds source/receipt/ABI, callback routing, confirmation and replay checks recorded in VALIDATION.md. Persona, bounded confirmed memory and the opt-in publisher are implemented locally; live deployment remains pending. No post was published and no account was connected during this review.
 
 ## Primary references
 
