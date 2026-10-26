@@ -28,3 +28,13 @@ The dependency audit reports advisories in Ganache's bundled development/test de
 Model-Wasm hash checks and receipt comparisons are implemented but must be exercised on the selected ICP subnet. In particular, confirm response sizes fit the 64 KiB HTTPS response bound and that the one-billion-cycle attachment covers the selected subnet's outcall pricing. Failure returns an error rather than accepting unchecked data.
 
 All changes are additive in `rh-icp-inference/`, plus its documentation index link. No existing model run, deployment, website or workflow was modified.
+
+## Existing-pool trigger extension · 26 October 2026
+
+- **24 JavaScript/EVM checks passed**, including the original bridge checks, existing-pool receipt scanning, full PoolKey/token validation, canonical source IDs, source-bound callback routing, one result per swap log, same-transaction multiple swaps, callback confirmation depth, canonical block checks and exact committed answer verification.
+- **12 Rust checks passed**, including independent JavaScript/Rust equality for the saved GH0ST pool key, Swap topic and source ID, canonical signed ABI widths, source registration checks and canister-derived prompts. Existing manual-request signature vectors remain valid.
+- The updated coordinator built successfully to Wasm with its generated Candid interface embedded: 1,460,776 bytes. The updated gateway compiled to 5,914 bytes of deployed runtime code with the same Solidity settings.
+- Both saved source PoolKeys (sentence-hook and Pons) hash to the declared pool IDs. This is configuration verification, not a fresh liquidity or live-state attestation.
+- No pool, liquidity, hook, model training run, canister or X account was changed. Live source RPC/canister integration, model inference and actual RH callbacks remain unverified. X publishing and persistent character memory are still pending.
+
+The callback confirmation check validates the canonical fulfillment event and answer hash/text before recording terminal delivery. Queue/job/signed result IDs are checked for both direct swaps and explicit requests. A confirmed callback is still subject to the selected confirmation/finality policy; this is not a proof against arbitrary deep chain reorganizations.

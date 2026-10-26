@@ -1,4 +1,19 @@
 export const idlFactory = ({ IDL }) => {
+  const SwapPool = IDL.Record({
+    manager: IDL.Text,
+    pool_id: IDL.Text,
+    currency0: IDL.Text,
+    currency1: IDL.Text,
+    fee: IDL.Nat32,
+    tick_spacing: IDL.Int32,
+    hook: IDL.Text,
+  });
+  const SwapSource = IDL.Record({
+    manager: IDL.Text,
+    pool_id: IDL.Text,
+    transaction_hash: IDL.Text,
+    log_index: IDL.Nat64,
+  });
   const Config = IDL.Record({
     worker: IDL.Principal,
     model_canister: IDL.Principal,
@@ -11,6 +26,7 @@ export const idlFactory = ({ IDL }) => {
     confirmations: IDL.Nat64,
     model_cycle_budget: IDL.Nat,
     ecdsa_key_name: IDL.Text,
+    swap_sources: IDL.Opt(IDL.Vec(SwapPool)),
   });
   const Request = IDL.Record({
     id: IDL.Text,
@@ -46,6 +62,7 @@ export const idlFactory = ({ IDL }) => {
     digest: IDL.Text,
     signer: IDL.Text,
     error: IDL.Text,
+    source: IDL.Opt(SwapSource),
   });
   const Result = (t) => IDL.Variant({ Ok: t, Err: IDL.Text });
   return IDL.Service({
@@ -53,6 +70,7 @@ export const idlFactory = ({ IDL }) => {
     get_job: IDL.Func([IDL.Text], [IDL.Opt(Job)], ["query"]),
     list_jobs: IDL.Func([], [IDL.Vec(Job)], ["query"]),
     submit_request: IDL.Func([IDL.Text, IDL.Nat64], [Result(Job)], []),
+    submit_swap: IDL.Func([IDL.Text, IDL.Nat64], [Result(Job)], []),
     advance: IDL.Func([IDL.Text], [Result(Job)], []),
     abort: IDL.Func([IDL.Text], [Result(IDL.Null)], []),
     cleanup: IDL.Func([IDL.Text], [Result(IDL.Null)], []),

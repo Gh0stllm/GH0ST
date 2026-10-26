@@ -62,17 +62,17 @@ node scripts/create-worker-identity.mjs /absolute/private/path/worker-identity.j
 
 The output is its public principal. The file contains a secret and must not be published. Set the coordinator's installation arguments using the generated [Candid interface](coordinator/coordinator.did):
 
-| Field                                          | Value                                                      |
-| ---------------------------------------------- | ---------------------------------------------------------- |
-| `worker`                                       | Worker identity principal                                  |
-| `model_canister`                               | Deployed model principal                                   |
-| `model_id`, `artifact_hash`, `model_wasm_hash` | Manifest outputs from step 1                               |
-| `chain_id`                                     | `4663 : nat64`                                             |
-| `gateway`                                      | `0x0000000000000000000000000000000000000000` initially     |
+| Field                                          | Value                                                                                                   |
+| ---------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `worker`                                       | Worker identity principal                                                                               |
+| `model_canister`                               | Deployed model principal                                                                                |
+| `model_id`, `artifact_hash`, `model_wasm_hash` | Manifest outputs from step 1                                                                            |
+| `chain_id`                                     | `4663 : nat64`                                                                                          |
+| `gateway`                                      | `0x0000000000000000000000000000000000000000` initially                                                  |
 | `rpc_urls`                                     | `https://rpc.mainnet.chain.robinhood.com` and `https://api.blockvectra.com/v1/robinhood_mainnet/public` |
-| `confirmations`                                | `12 : nat64` initially; review against RH finality policy  |
-| `model_cycle_budget`                           | `400000000000 : nat`                                       |
-| `ecdsa_key_name`                               | `key_1` on ICP production                                  |
+| `confirmations`                                | `12 : nat64` initially; review against RH finality policy                                               |
+| `model_cycle_budget`                           | `400000000000 : nat`                                                                                    |
+| `ecdsa_key_name`                               | `key_1` on ICP production                                                                               |
 
 Use `icp.yaml`'s `init_args` for the coordinator, or the included legacy `dfx.json` with an argument file. Do not deploy the coordinator without its required `Config` argument. The zero gateway is a deliberate bootstrap state and cannot process requests.
 
@@ -119,3 +119,17 @@ Use one worker process and one nonce stream. The state lock is removed on clean 
 Do not announce an observed per-request ICP price or a live route until those receipts and balance measurements exist. The current tests use local EVM execution and deterministic fixtures; they do not invoke a loaded Qwen model or live ICP threshold signing.
 
 Sources: [pinned model runtime](https://github.com/onicai/llama_cpp_canister/tree/4276f526970b7916cc7105c357ad2f2ed018ed37), [ICP deployment guide](https://github.com/dfinity/icp-cli/blob/main/docs/guides/deploying-to-mainnet.md), [threshold ECDSA API](https://docs.internetcomputer.org/references/ic-interface-spec/#ic-ecdsa_public_key).
+
+## Existing-pool observation
+
+This alternative input path requires the updated coordinator and gateway from this branch. The existing trading pools and liquidity are not redeployed.
+
+1. Review [swap-sources.json](swap-sources.json) against the intended RH chain, manager and full PoolKeys. Its sentence-hook and Pons keys are dated records; independently verify the deployed contracts and source pools before enabling them.
+2. Add `swap_sources` to the coordinator installation `Config`. It is `opt vec SwapPool`; omitting it keeps swap observation disabled. Generate the Candid value for the saved registry with `node scripts/swap-sources-candid.mjs`, then insert it as `swap_sources = <printed value>` in the Config record. Use the new generated Candid interface. Source configuration changes require a reviewed upgrade.
+3. As the RH gateway owner, call `setSwapPool(manager, poolId, true)` for each selected source. This authorizes only the result gateway; it does not modify the trading pool. The worker checks these permissions at startup.
+4. Set `WATCH_SWAPS=1` and an explicit `START_BLOCK` for activation or intentional backfill. Start with a recent confirmed activation block for new trades. Choosing an old block intentionally queues historical swaps and incurs inference cost. A different source set needs a separate journal; reconcile previous pending callbacks first.
+5. Run the worker normally. It scans at most 250 confirmed blocks per batch, verifies receipts and queues distinct registered swap logs. ICP derives the prompt from independently verified event data. The callback is `fulfillSwapInference(source, result, answer, signature)`.
+
+Direct swap jobs need no separate RH request transaction. Existing hook gas and behavior remain part of the original swap. The worker waits for a canonical confirmed fulfillment event and exact answer/hash before marking delivery complete. Retain its journal and the coordinator's source tombstones. The original 256-job pilot retention limit still applies; review capacity before opening admission at production trading volumes.
+
+The event sender may be a router; it is not proof of a trader wallet. Character memory and X publishing remain separate implementation tasks.

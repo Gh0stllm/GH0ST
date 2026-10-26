@@ -1,5 +1,6 @@
 #![allow(deprecated)] // CDK 0.18 API pinned; upgrade deliberately, with Candid checks.
 mod core;
+mod swaps;
 mod types;
 
 use core::*;
@@ -269,6 +270,99 @@ async fn submit_request(tx_hash: String, log_index: u64) -> Result<Job, String> 
             return Ok(job.clone());
         }
         let job = Job::new(request);
+        s.active = Some(job.request.id.clone());
+        s.jobs.insert(job.request.id.clone(), job.clone());
+        Ok(job)
+    })
+}
+
+async fn verify_swap(c: &Config, tx: &str, log_index: u64) -> Result<swaps::VerifiedSwap, String> {
+    bytes(tx, 32)?;
+    if bytes(&c.gateway, 20)? == vec![0; 20] {
+        return Err("gateway not bound".into());
+    }
+    if c.swap_sources.as_deref().unwrap_or_default().is_empty() {
+        return Err("no registered swap sources".into());
+    }
+    let mut agreed: Option<swaps::VerifiedSwap> = None;
+    for url in &c.rpc_urls {
+        if quantity(&rpc(url, "eth_chainId", json!([])).await?)? != c.chain_id {
+            return Err("RPC chain mismatch".into());
+        }
+        let receipt = rpc(url, "eth_getTransactionReceipt", json!([tx])).await?;
+        let swap = swaps::parse_swap_receipt(&receipt, c, tx, log_index)?;
+        let anchor = swap
+            .block_number
+            .checked_add(c.confirmations)
+            .ok_or("block overflow")?;
+        quantity(
+            &rpc(
+                url,
+                "eth_getBlockTransactionCountByNumber",
+                json!([format!("0x{anchor:x}")]),
+            )
+            .await?,
+        )?;
+        // Read the receipt again after establishing confirmation depth. An
+        // orphaned or changed receipt fails instead of triggering inference.
+        let confirmed = rpc(url, "eth_getTransactionReceipt", json!([tx])).await?;
+        if swaps::parse_swap_receipt(&confirmed, c, tx, log_index)? != swap {
+            return Err("swap receipt changed during confirmation verification".into());
+        }
+        if agreed.as_ref().is_some_and(|previous| previous != &swap) {
+            return Err("RPC providers disagree on swap".into());
+        }
+        agreed = Some(swap);
+    }
+    agreed.ok_or_else(|| "no providers".into())
+}
+
+/// A confirmed existing-pool Swap log can start inference without modifying the
+/// pool or creating a separate RH request transaction. The caller supplies only
+/// the transaction hash and log index; source facts and prompt are derived here.
+#[update]
+async fn submit_swap(tx_hash: String, log_index: u64) -> Result<Job, String> {
+    authorized()?;
+    bytes(&tx_hash, 32)?;
+    let tx_hash = tx_hash.to_lowercase();
+    // Retrieval is idempotent even while another job is active or the queue is
+    // paused/full, and avoids repeating verification costs for a known source.
+    if let Some(job) = STATE.with(|s| {
+        s.borrow()
+            .jobs
+            .values()
+            .find(|j| {
+                j.source.is_some()
+                    && j.request.tx_hash == tx_hash
+                    && j.request.log_index == log_index
+            })
+            .cloned()
+    }) {
+        return Ok(job);
+    }
+    if ic_cdk::api::canister_balance128() < SIGNING_RESERVE + 8 * RPC_CYCLES {
+        return Err("coordinator cycle reserve too low for swap verification".into());
+    }
+    STATE.with(|s| {
+        let mut s = s.borrow_mut();
+        if s.paused || s.verifying || s.active.is_some() || s.jobs.len() >= MAX_JOBS {
+            return Err("paused, busy, or job retention limit reached".to_string());
+        }
+        s.verifying = true;
+        Ok(())
+    })?;
+    let verified = verify_swap(&config(), &tx_hash, log_index).await;
+    STATE.with(|s| {
+        let mut s = s.borrow_mut();
+        s.verifying = false;
+        let swap = verified?;
+        let request =
+            swaps::swap_request(s.config.as_ref().ok_or("not initialized")?, &swap, now())?;
+        if let Some(job) = s.jobs.get(&request.id) {
+            return Ok(job.clone());
+        }
+        let mut job = Job::new(request);
+        job.source = Some(swap.source);
         s.active = Some(job.request.id.clone());
         s.jobs.insert(job.request.id.clone(), job.clone());
         Ok(job)

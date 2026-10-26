@@ -4,7 +4,7 @@ An asynchronous Qwen3-0.6B inference bridge. An RH request is checked against tw
 
 **Status: first implementation, locally tested; not deployed.** No ICP canister, loaded Qwen model, live cross-chain request or measured ICP price is claimed by this checkpoint. Existing GH0ST deployments are unaffected.
 
-**Product target:** [GH0ST swap → ICP monologue → confirmed RH result → X post](SWAP-SOCIAL-AGENT.md). The current bridge is the initial infrastructure checkpoint; automatic swap ingestion, persistent character memory and X publication remain to be implemented.
+**Product target:** [GH0ST swap → ICP monologue → confirmed RH result → X post](SWAP-SOCIAL-AGENT.md). The prototype includes automatic observation of registered existing v4 pools and direct swap-proof ingestion. Persistent character memory and X publication remain to be implemented.
 
 ```mermaid
 flowchart TD
@@ -71,3 +71,11 @@ No signing secret, funded ICP identity or model weight file is included. Runtime
 ## Attribution
 
 The model runtime is [onicai/llama_cpp_canister](https://github.com/onicai/llama_cpp_canister/tree/4276f526970b7916cc7105c357ad2f2ed018ed37), MIT licensed. Version `0.23.0rc4` includes the upstream Candid decoder security fix. The model is [Qwen/Qwen3-0.6B-GGUF](https://huggingface.co/Qwen/Qwen3-0.6B-GGUF/tree/23749fefcc72300e3a2ad315e1317431b06b590a), Apache-2.0 licensed. Preserve both upstream license notices when distributing builds or weights.
+
+## Existing pools as the trigger
+
+Set `WATCH_SWAPS=1` after configuring the same approved pools in the ICP coordinator and RH result gateway. The worker reads canonical `PoolManager.Swap` logs from existing pools. It does not change the pool, its hook or liquidity. Both the worker and ICP validate the full pool key and GH0ST membership; ICP independently checks receipts with two RPC providers.
+
+Direct swap jobs use `submit_swap(transactionHash, logIndex)` and return via `fulfillSwapInference`. They need no extra RH request transaction: the existing swap and later RH callback are the two RH transactions in this route. Each source ID commits to the chain, manager, pool, transaction and log index. The gateway rejects repeated source IDs and accepts results only for enabled pools with the pinned signer.
+
+[swap-sources.json](swap-sources.json) includes the recorded sentence-hook and Pons pool keys. These are saved deployment configurations, not fresh liquidity attestations. Enable only independently verified sources. Other venues need protocol-specific adapters or registration. The worker marks a result delivered only after confirming the canonical fulfillment event, its exact answer/hash and the configured confirmation depth.

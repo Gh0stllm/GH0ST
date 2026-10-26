@@ -9,6 +9,7 @@ import {
   keccak256,
   toUtf8Bytes,
   TypedDataEncoder,
+  AbiCoder,
 } from "ethers";
 import { compile } from "../scripts/compile.mjs";
 import { resultTypes } from "../worker/protocol.mjs";
@@ -203,4 +204,146 @@ test("malformed and high-s signatures are rejected", async () => {
   await assert.rejects(
     c.gateway.fulfillInference(c.value, c.answer, "0x" + bytes.toString("hex")),
   );
+});
+
+async function swapResult(c, logIndex = 7) {
+  const source = {
+    manager: "0x3333333333333333333333333333333333333333",
+    poolId: id("existing-GH0ST-pool"),
+    transactionHash: id("already-confirmed-swap"),
+    logIndex,
+  };
+  const sourceId = keccak256(
+    AbiCoder.defaultAbiCoder().encode(
+      ["uint256", "address", "bytes32", "bytes32", "uint256"],
+      [
+        4663,
+        source.manager,
+        source.poolId,
+        source.transactionHash,
+        source.logIndex,
+      ],
+    ),
+  );
+  const value = { ...c.value, requestId: sourceId };
+  return {
+    source,
+    value,
+    signature: await icp.signTypedData(c.domain, resultTypes, value),
+  };
+}
+
+test("existing-pool swap records a signed thought without a request transaction", async () => {
+  const c = await setup();
+  const s = await swapResult(c);
+  await (
+    await c.gateway.setSwapPool(s.source.manager, s.source.poolId, true)
+  ).wait();
+  assert.equal(await c.gateway.swapSourceId(s.source), s.value.requestId);
+  assert.equal((await c.gateway.requests(s.value.requestId)).status, 0n);
+  const receipt = await (
+    await c.gateway
+      .connect(relayer)
+      .fulfillSwapInference(s.source, s.value, c.answer, s.signature)
+  ).wait();
+  assert.equal((await c.gateway.requests(s.value.requestId)).status, 2n);
+  assert.equal(
+    c.gateway.interface.parseLog(receipt.logs[0]).name,
+    "SwapThoughtRecorded",
+  );
+  assert.equal(
+    c.gateway.interface.parseLog(receipt.logs[1]).args.answer,
+    c.answer,
+  );
+  await assert.rejects(
+    c.gateway.fulfillSwapInference.staticCall(
+      s.source,
+      s.value,
+      c.answer,
+      s.signature,
+    ),
+  );
+  await assert.rejects(
+    c.gateway.fulfillInference.staticCall(s.value, c.answer, s.signature),
+  );
+});
+
+test("swap callback binds manager, pool, transaction and log identity", async () => {
+  const c = await setup();
+  const s = await swapResult(c);
+  await assert.rejects(
+    c.gateway.fulfillSwapInference.staticCall(
+      s.source,
+      s.value,
+      c.answer,
+      s.signature,
+    ),
+  );
+  await (
+    await c.gateway.setSwapPool(s.source.manager, s.source.poolId, true)
+  ).wait();
+  for (const source of [
+    { ...s.source, manager: other.address },
+    { ...s.source, poolId: id("another-pool") },
+    { ...s.source, transactionHash: id("another-transaction") },
+    { ...s.source, logIndex: 8 },
+  ])
+    await assert.rejects(
+      c.gateway.fulfillSwapInference.staticCall(
+        source,
+        s.value,
+        c.answer,
+        s.signature,
+      ),
+    );
+  await assert.rejects(
+    c.gateway.fulfillSwapInference.staticCall(
+      s.source,
+      s.value,
+      c.answer,
+      await Wallet.createRandom().signTypedData(c.domain, resultTypes, s.value),
+    ),
+  );
+  await assert.rejects(
+    c.gateway
+      .connect(other)
+      .setSwapPool(s.source.manager, s.source.poolId, true),
+  );
+});
+
+test("separate swap logs in the same transaction get separate thoughts and can be paused", async () => {
+  const c = await setup();
+  const a = await swapResult(c, 7),
+    b = await swapResult(c, 8);
+  await (
+    await c.gateway.setSwapPool(a.source.manager, a.source.poolId, true)
+  ).wait();
+  assert.notEqual(a.value.requestId, b.value.requestId);
+  await (
+    await c.gateway.fulfillSwapInference(
+      a.source,
+      a.value,
+      c.answer,
+      a.signature,
+    )
+  ).wait();
+  await (await c.gateway.setPaused(true)).wait();
+  await assert.rejects(
+    c.gateway.fulfillSwapInference.staticCall(
+      b.source,
+      b.value,
+      c.answer,
+      b.signature,
+    ),
+  );
+  await (await c.gateway.setPaused(false)).wait();
+  await (
+    await c.gateway.fulfillSwapInference(
+      b.source,
+      b.value,
+      c.answer,
+      b.signature,
+    )
+  ).wait();
+  assert.equal((await c.gateway.requests(b.value.requestId)).status, 2n);
 });

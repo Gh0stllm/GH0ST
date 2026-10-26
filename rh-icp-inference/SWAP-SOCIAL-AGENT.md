@@ -16,17 +16,17 @@ flowchart TD
 
 ## Transaction and delivery boundaries
 
-1. **Swap signal.** A minimal v4 `afterSwap` hook emits bounded context and returns immediately. A relayer observes confirmed logs and delivers the request to ICP. The RH hook does not make an HTTP call or wait for inference.
+1. **Swap signal.** The observer reads confirmed canonical swap logs from registered existing pools. A new minimal v4 `afterSwap` hook is an optional future route. A relayer delivers the log identity to ICP; the RH swap does not wait for inference.
 2. **Source verification.** Verify successful receipt, chain, registered manager/pool, GH0ST currency membership, log identity and confirmation depth. A failed or reorged swap cannot create a valid thought job.
 3. **Inference on ICP.** Build a bounded prompt from the canonical swap context, fixed persona and compact memory. Generate and validate an X-sized thought, then retain its exact text, hash and model provenance. Qwen3-1.7B Q4_K_M is the recommended next personality candidate; the current bridge remains pinned to 0.6B for infrastructure validation.
 4. **Return to RH.** The coordinator signs the result. A relayer submits it in a separate RH transaction. The result contract verifies the signer and source identity, records the thought hash and emits the text. Later ICP or X failures must not affect the already-completed swap.
 5. **Publish to X.** Wait for RH result confirmations and verify the event's answer hash. Publish the exact committed thought plus its RH proof URL. Persist the X post ID and its association with the swap and RH result. Update the character's memory from accepted history in a defined order.
 
-The first bridge checkpoint has an explicit authorized `requestInference` transaction. Connecting an observer to that interface would add this RH request transaction between the original swap and the callback. The intended streamlined flow instead verifies the swap directly on ICP and binds the RH result to that source, or queues the request inside a new hook's swap transaction. Neither extension is implemented in the initial bridge.
+The explicit authorized `requestInference` interface remains available. The direct route verifies an existing swap on ICP through `submit_swap`, then binds `fulfillSwapInference` to that source on RH. It avoids an extra RH request transaction. A new hook/pool is not required for this observation path.
 
 ## One identity throughout
 
-Use a canonical source ID derived from `(chainId, poolId, swapTransactionHash, logIndex)`. A transaction can contain more than one actual swap; each qualifying swap log gets its own identity. Verify pool keys against the GH0ST token address `0x2eb2849cde7957b86d0dfd4b59e450a9f9d15559`.
+Use a canonical source ID derived from `(chainId, manager, poolId, swapTransactionHash, logIndex)`. A transaction can contain more than one actual swap; each qualifying swap log gets its own identity. Verify pool keys against the GH0ST token address `0x2eb2849cde7957b86d0dfd4b59e450a9f9d15559`.
 
 Persist the mapping:
 
@@ -52,16 +52,16 @@ The publisher is a transport component: it validates and sends the committed tex
 
 ## Current implementation versus next work
 
-| Component | Current checkpoint | Required extension |
-| --- | --- | --- |
-| RH request/result gateway | Implemented, local EVM tests | Bind automatic swap source IDs and eliminate duplicate source requests |
-| ICP verification/inference coordinator | Implemented, compiled to Wasm | Direct swap-proof ingestion, persona, memory, post-length validation and profile evaluation |
-| Transport worker | Implemented for explicit gateway requests | Verified swap discovery/queue and source-aware recovery |
-| Lightweight async v4 hook | Design recorded | New implementation, local integration checks and optional new-pool deployment |
-| X publisher | API/auth requirements verified | Authenticated delivery queue, proof footer, post-ID journal and ambiguous-delivery reconciliation |
-| Live operation | Not deployed | Funded ICP deployment, model upload, measured inference, RH callback and X-account authorization |
+| Component                              | Current checkpoint                                                                  | Required extension                                                                                |
+| -------------------------------------- | ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| RH request/result gateway              | Explicit and direct-swap callbacks, source deduplication                            | Live deployment and end-to-end confirmation                                                       |
+| ICP verification/inference coordinator | Explicit and direct swap-proof ingestion, compiled to Wasm                          | Persona, memory, post-length validation and profile evaluation                                    |
+| Transport worker                       | Confirmed registered-pool discovery, source-aware queue and callback reconciliation | Live integration and operational checks                                                           |
+| Lightweight async v4 hook              | Design recorded                                                                     | New implementation, local integration checks and optional new-pool deployment                     |
+| X publisher                            | API/auth requirements verified                                                      | Authenticated delivery queue, proof footer, post-ID journal and ambiguous-delivery reconciliation |
+| Live operation                         | Not deployed                                                                        | Funded ICP deployment, model upload, measured inference, RH callback and X-account authorization  |
 
-The 17 existing checks validate the original bridge checkpoint. This note does not claim the new swap, memory or X extensions have been implemented or tested. No post was published and no account was connected during this review.
+The original 17 checks cover the first bridge checkpoint. The existing-pool extension adds source/receipt/ABI, callback routing, confirmation and replay checks recorded in VALIDATION.md. Memory and X publishing remain unimplemented. No post was published and no account was connected during this review.
 
 ## Primary references
 

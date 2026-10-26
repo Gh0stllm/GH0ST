@@ -41,6 +41,7 @@ pub fn validate_config(c: &Config) -> Result<(), String> {
     bytes(&c.model_id, 32)?;
     bytes(&c.artifact_hash, 32)?;
     bytes(&c.model_wasm_hash, 32)?;
+    crate::swaps::validate_pools(c.swap_sources.as_deref())?;
     if c.worker == candid::Principal::anonymous()
         || c.model_canister == candid::Principal::anonymous()
         || c.chain_id == 0

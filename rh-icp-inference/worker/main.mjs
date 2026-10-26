@@ -9,10 +9,15 @@ import {
   Wallet,
   keccak256,
   parseUnits,
+  AbiCoder,
+  toUtf8Bytes,
 } from "ethers";
 import { idlFactory } from "./candid.mjs";
 import { validateJob, json } from "./protocol.mjs";
 import { readJournal, writeJournal, unwrap } from "./journal.mjs";
+import { loadSources, scanSwaps } from "./swaps.mjs";
+import { callbackFor } from "./routing.mjs";
+import { findFulfillment } from "./delivery.mjs";
 
 const required = (name) => {
   if (!process.env[name]) throw Error(`Missing ${name}`);
@@ -40,6 +45,15 @@ const artifact = JSON.parse(
 );
 const gateway = new Contract(gatewayAddress, artifact.abi, provider);
 const config = await coordinator.get_config();
+const watchSwaps = process.env.WATCH_SWAPS === "1";
+const swapPools = watchSwaps
+  ? loadSources(
+      { chain_id: chainId, pools: config.swap_sources?.[0] ?? [] },
+      chainId,
+    )
+  : [];
+if (watchSwaps && !swapPools.length)
+  throw Error("WATCH_SWAPS requires registered coordinator swap_sources");
 if (
   config.gateway.toLowerCase() !== gatewayAddress.toLowerCase() ||
   config.chain_id !== BigInt(chainId)
@@ -52,6 +66,16 @@ if (
 )
   throw Error("Model/artifact binding mismatch");
 const signer = await gateway.icpSigner();
+for (const pool of swapPools) {
+  const key = keccak256(
+    AbiCoder.defaultAbiCoder().encode(
+      ["address", "bytes32"],
+      [pool.manager, pool.pool_id],
+    ),
+  );
+  if (!(await gateway.authorizedSwapPool(key)))
+    throw Error("Swap pool is not enabled in the RH result gateway");
+}
 if (
   unwrap(await coordinator.signer_address()).toLowerCase() !==
   signer.toLowerCase()
@@ -60,7 +84,14 @@ if (
 const file = path.resolve(process.env.JOURNAL ?? ".state/worker.json");
 const state = readJournal(
   file,
-  { chainId, gateway: gatewayAddress.toLowerCase(), canisterId },
+  {
+    chainId,
+    gateway: gatewayAddress.toLowerCase(),
+    canisterId,
+    ...(watchSwaps
+      ? { swapSourcesHash: keccak256(toUtf8Bytes(json(swapPools))) }
+      : {}),
+  },
   startBlock,
 );
 const wallet = process.env.RH_RELAYER_PRIVATE_KEY
@@ -84,17 +115,40 @@ for (const signal of ["SIGINT", "SIGTERM"])
   });
 const save = () => writeJournal(file, state);
 
+async function confirmDelivery(item, job, onchain, safeBlock) {
+  const delivery = await findFulfillment(
+    provider,
+    gateway,
+    item,
+    onchain.answerHash,
+    job && "Complete" in job.phase ? job.answer : undefined,
+    safeBlock,
+    startBlock,
+  );
+  item.state = delivery ? "fulfilled" : "awaiting_confirmation";
+  if (delivery) item.delivery = delivery;
+  save();
+  return !!delivery;
+}
+
 async function relay(item, job) {
   const result = validateJob(config, job, signer);
+  const callback = callbackFor(item, job, chainId, result);
   const onchain = await gateway.requests(item.id);
   if (Number(onchain.status) === 2) {
-    item.state = "fulfilled";
-    save();
+    await confirmDelivery(
+      item,
+      job,
+      onchain,
+      (await provider.getBlockNumber()) - Number(config.confirmations),
+    );
     return;
   }
   if (
-    Number(onchain.status) !== 1 ||
-    Number(onchain.deadline) <= Math.floor(Date.now() / 1000)
+    item.kind === "swap"
+      ? Number(onchain.status) !== 0
+      : Number(onchain.status) !== 1 ||
+        Number(onchain.deadline) <= Math.floor(Date.now() / 1000)
   ) {
     item.state = "expired_or_cancelled";
     save();
@@ -109,10 +163,8 @@ async function relay(item, job) {
     const cap = parseUnits(process.env.RELAY_MAX_FEE_GWEI, "gwei");
     if (fees.maxFeePerGas == null || fees.maxFeePerGas > cap)
       throw Error("Current fee exceeds cap or EIP-1559 fees unavailable");
-    const call = await gateway.fulfillInference.populateTransaction(
-      result.result,
-      result.answer,
-      result.signature,
+    const call = await gateway[callback.method].populateTransaction(
+      ...callback.args,
     );
     const gas = await provider.estimateGas({ ...call, from: wallet.address });
     const gasLimit = (gas * 120n) / 100n;
@@ -132,7 +184,27 @@ async function relay(item, job) {
   }
   const receipt = await provider.getTransactionReceipt(item.transactionHash);
   if (receipt) {
-    item.state = receipt.status === 1 ? "fulfilled" : "callback_reverted";
+    const safeBlock =
+      (await provider.getBlockNumber()) - Number(config.confirmations);
+    if (receipt.blockNumber > safeBlock) {
+      item.state = "awaiting_confirmation";
+      save();
+      return;
+    }
+    const block = await provider.getBlock(receipt.blockNumber);
+    if (!block || block.hash !== receipt.blockHash) {
+      item.state = "awaiting_confirmation";
+      save();
+      return;
+    }
+    if (receipt.status === 1)
+      await confirmDelivery(
+        item,
+        job,
+        await gateway.requests(item.id),
+        safeBlock,
+      );
+    else item.state = "callback_reverted";
     item.gasUsed = receipt.gasUsed.toString();
     item.feeWei = receipt.fee.toString();
     save();
@@ -155,14 +227,33 @@ async function tick() {
       state.nextBlock,
       end,
     );
+    const discovered = [];
     for (const log of logs)
       if (!state.requests.some((r) => r.id === log.args.requestId))
-        state.requests.push({
+        discovered.push({
+          kind: "request",
           id: log.args.requestId,
           txHash: log.transactionHash,
           logIndex: log.index,
           state: "queued",
+          blockNumber: log.blockNumber,
         });
+    if (watchSwaps)
+      discovered.push(
+        ...(await scanSwaps(
+          provider,
+          swapPools,
+          state.nextBlock,
+          end,
+          chainId,
+        )),
+      );
+    discovered.sort(
+      (a, b) => a.blockNumber - b.blockNumber || a.logIndex - b.logIndex,
+    );
+    for (const item of discovered)
+      if (!state.requests.some((r) => r.id === item.id))
+        state.requests.push(item);
     state.nextBlock = end + 1;
     save();
   }
@@ -180,9 +271,15 @@ async function tick() {
     if (item.state === "signed" && !wallet) continue;
     let job = (await coordinator.get_job(item.id))[0];
     const onchain = await gateway.requests(item.id);
+    if (Number(onchain.status) === 2) {
+      await confirmDelivery(item, job, onchain, safe);
+      continue;
+    }
     if (
-      Number(onchain.status) !== 1 ||
-      Number(onchain.deadline) <= Math.floor(Date.now() / 1000)
+      item.kind === "swap"
+        ? Number(onchain.status) !== 0
+        : Number(onchain.status) !== 1 ||
+          Number(onchain.deadline) <= Math.floor(Date.now() / 1000)
     ) {
       if (job?.busy) return;
       if (job && !("Complete" in job.phase) && !("Failed" in job.phase))
@@ -194,7 +291,9 @@ async function tick() {
     }
     if (!job)
       job = unwrap(
-        await coordinator.submit_request(item.txHash, BigInt(item.logIndex)),
+        await (item.kind === "swap"
+          ? coordinator.submit_swap(item.txHash, BigInt(item.logIndex))
+          : coordinator.submit_request(item.txHash, BigInt(item.logIndex))),
       );
     if (job.busy) return;
     if ("Failed" in job.phase) {
@@ -227,6 +326,7 @@ try {
       canisterId,
       gateway: gatewayAddress,
       relayEnabled: !!wallet,
+      swapPools: swapPools.length,
     }),
   );
   do {

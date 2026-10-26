@@ -15,6 +15,28 @@ pub struct Config {
     pub confirmations: u64,
     pub model_cycle_budget: u128,
     pub ecdsa_key_name: String,
+    /// Explicitly registered v4 pool keys. None preserves manual-request mode.
+    #[serde(default)]
+    pub swap_sources: Option<Vec<SwapPool>>,
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, CandidType, Deserialize, Serialize)]
+pub struct SwapPool {
+    pub manager: String,
+    pub pool_id: String,
+    pub currency0: String,
+    pub currency1: String,
+    pub fee: u32,
+    pub tick_spacing: i32,
+    pub hook: String,
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, CandidType, Deserialize, Serialize)]
+pub struct SwapSource {
+    pub manager: String,
+    pub pool_id: String,
+    pub transaction_hash: String,
+    pub log_index: u64,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, CandidType, Deserialize, Serialize)]
@@ -44,6 +66,8 @@ pub enum Phase {
 #[derive(Clone, CandidType, Deserialize, Serialize)]
 pub struct Job {
     pub request: Request,
+    #[serde(default)]
+    pub source: Option<SwapSource>,
     pub phase: Phase,
     pub busy: bool,
     pub answer: String,
@@ -63,6 +87,7 @@ impl Job {
     pub fn new(request: Request) -> Self {
         Self {
             request,
+            source: None,
             phase: Phase::Verified,
             busy: false,
             answer: String::new(),

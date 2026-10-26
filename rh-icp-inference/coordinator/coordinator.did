@@ -3,6 +3,7 @@ type Config = record {
   artifact_hash : text;
   ecdsa_key_name : text;
   rpc_urls : vec text;
+  swap_sources : opt vec SwapPool;
   chain_id : nat64;
   gateway : text;
   model_canister : principal;
@@ -20,6 +21,7 @@ type HttpResponse = record {
 type Job = record {
   signature : blob;
   output_tokens : nat64;
+  source : opt SwapSource;
   busy : bool;
   request : Request;
   model_cycles : nat;
@@ -50,6 +52,21 @@ type Request = record {
 type Result = variant { Ok; Err : text };
 type Result_1 = variant { Ok : Job; Err : text };
 type Result_2 = variant { Ok : text; Err : text };
+type SwapPool = record {
+  fee : nat32;
+  manager : text;
+  currency0 : text;
+  currency1 : text;
+  hook : text;
+  pool_id : text;
+  tick_spacing : int32;
+};
+type SwapSource = record {
+  manager : text;
+  transaction_hash : text;
+  log_index : nat64;
+  pool_id : text;
+};
 type TransformArgs = record { context : blob; response : HttpResponse };
 service : (Config) -> {
   // Stop a job without repeating or replacing any inference output. An in-flight
@@ -68,6 +85,10 @@ service : (Config) -> {
   set_paused : (bool) -> (Result);
   signer_address : () -> (Result_2);
   submit_request : (text, nat64) -> (Result_1);
+  // A confirmed existing-pool Swap log can start inference without modifying the
+  // pool or creating a separate RH request transaction. The caller supplies only
+  // the transaction hash and log index; source facts and prompt are derived here.
+  submit_swap : (text, nat64) -> (Result_1);
   // Canonical JSON and no volatile HTTP headers, so IC nodes agree on replies.
   transform : (TransformArgs) -> (HttpResponse) query;
 }
