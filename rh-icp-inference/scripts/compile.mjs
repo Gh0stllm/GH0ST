@@ -20,6 +20,7 @@ export function compile() {
                 "abi",
                 "evm.bytecode.object",
                 "evm.deployedBytecode.object",
+                "evm.deployedBytecode.immutableReferences",
               ],
             },
           },

@@ -69,3 +69,17 @@ test("external-relayer delivery is reconciled from confirmed events and bounded 
   );
   assert.equal(item.deliveryScanNext, 101);
 });
+
+test("confirmed manual callback cost is computed from its receipt", () => {
+  const result = inspectFulfillment(
+    { ...receipt, gasUsed: 45678n, gasPrice: 24000000n },
+    { hash: blockHash }, address, iface, requestId, answerHash, answer, 100,
+  );
+  assert.equal(result.gasUsed, "45678");
+  assert.equal(result.feeWei, "1096272000000");
+  const rpcResult = inspectFulfillment(
+    { ...receipt, gasUsed: "0xb26e", effectiveGasPrice: "0x16e3600" },
+    { hash: blockHash }, address, iface, requestId, answerHash, answer, 100,
+  );
+  assert.equal(rpcResult.feeWei, result.feeWei);
+});

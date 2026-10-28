@@ -83,6 +83,9 @@ pub struct Job {
     pub digest: String,
     pub signer: String,
     pub error: String,
+    /// Optional for stable/Candid compatibility with pre-recovery jobs.
+    #[serde(default)]
+    pub recovery: Option<RecoveryInfo>,
 }
 
 impl Job {
@@ -104,8 +107,33 @@ impl Job {
             digest: String::new(),
             signer: String::new(),
             error: String::new(),
+            recovery: None,
         }
     }
+}
+
+#[derive(Clone, Debug, CandidType, Deserialize, Serialize)]
+pub struct RecoveryInfo {
+    pub total_budget: u128,
+    pub grants: u32,
+    pub carry_cycles: u128,
+    pub segment_baseline: Option<u128>,
+    pub rebuilding: bool,
+    pub replay_target: String,
+    pub replay_target_tokens: u64,
+    pub replay_output: String,
+    pub replay_tokens: u64,
+    pub replay_prompt_ingested: bool,
+    pub parked: bool,
+    pub requires_owner: bool,
+    pub last_error: String,
+    pub chunks_at_recovery: u32,
+    pub max_chunks: u32,
+    pub retry_after: u64,
+    pub safe_retry_count: u32,
+    pub resume_deadline: u64,
+    pub accounting_uncertain: bool,
+    pub cache_evidence_hash: Option<String>,
 }
 
 #[derive(Clone, Default, CandidType, Deserialize, Serialize)]
@@ -118,6 +146,16 @@ pub struct State {
     pub paused: bool,
     #[serde(default)]
     pub voice: Option<VoiceState>,
+    #[serde(default)]
+    pub deferred_swaps: Option<Vec<DeferredSwap>>,
+}
+
+#[derive(Clone, Debug, CandidType, Deserialize, Serialize)]
+pub struct DeferredSwap {
+    pub id: String,
+    pub model_cycles: u128,
+    pub reason: String,
+    pub deferred_at: u64,
 }
 
 #[derive(Clone, Debug, CandidType, Deserialize, Serialize)]
@@ -133,6 +171,8 @@ pub struct VoiceJob {
     pub previous_output_tokens: u64,
     pub quality_error: String,
     pub remembered: bool,
+    #[serde(default)]
+    pub generation: Option<candid::Nat>,
 }
 
 #[derive(Clone, Debug, Default, CandidType, Deserialize, Serialize)]

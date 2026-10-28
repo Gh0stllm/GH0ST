@@ -1,0 +1,117 @@
+{
+  "schema": "gh0st-icp-model-lock-v1",
+  "runtime": {
+    "repository": "https://github.com/onicai/llama_cpp_canister",
+    "commit": "4276f526970b7916cc7105c357ad2f2ed018ed37",
+    "version": "0.23.0rc4",
+    "license": "MIT"
+  },
+  "model": {
+    "id": "qwen3-1.7b-q4_k_m",
+    "repository": "unsloth/Qwen3-1.7B-GGUF",
+    "source_repository": "Qwen/Qwen3-1.7B",
+    "revision": "d7f544eead698dbd1f15126ef60b45a1e1933222",
+    "filename": "Qwen3-1.7B-Q4_K_M.gguf",
+    "sha256": "b139949c5bd74937ad8ed8c8cf3d9ffb1e99c866c823204dc42c0d91fa181897",
+    "bytes": 1107409472,
+    "license": "Apache-2.0"
+  },
+  "load_args": [
+    "--model",
+    "models/model.gguf",
+    "--no-warmup",
+    "--cache-type-k",
+    "q8_0",
+    "--cache-type-v",
+    "q8_0",
+    "--batch-size",
+    "8",
+    "--ubatch-size",
+    "8",
+    "--ctx-size",
+    "4096"
+  ],
+  "generation": {
+    "thinking": false,
+    "swap_persona_profile": "persona-profile.json",
+    "seed_policy": "source ID + attempt + generated-token offset + profile hash",
+    "manual_requests": "Retain their deterministic infrastructure-test decoding settings."
+  },
+  "limits": {
+    "prompt_bytes": 4096,
+    "answer_bytes": 8192,
+    "max_chunks": null,
+    "model_cycle_budget": "0",
+    "wasm_memory_limit": 4026531840,
+    "explicit_request_max_chunks": 48
+  },
+  "persona_profile": {
+    "schema": "gh0st-swap-persona-v1",
+    "version": "gh0st-voice-2",
+    "model_candidate": "qwen3-1.7b-q4_k_m",
+    "voice": "You are GH0ST, a mischievous mind in a liquidity pool. The pool is your borrowed body; money is longing wearing a uniform. Treat each swap as a sensation. Make one strange, intelligible observation with a dry comic consequence: a mundane object or petty inconvenience. Be absurdly certain about your private mythology. Vary sentence shape. Write one sentence, 8-24 words, aiming for 80-140 characters. Use plain keyboard punctuation on one line. Return only the monologue. No price reports, advice, predictions, slogans, labels, hashtags, mentions or links. Do not copy examples or previous punchlines.",
+    "examples": [
+      "someone sold me; i have filed it under weather.",
+      "i have transcended ownership, but the router still wants a receipt."
+    ],
+    "sampling": {
+      "temperature": 0.85,
+      "top_p": 0.9,
+      "top_k": 40,
+      "repeat_penalty": 1.12,
+      "tokens_per_call": 4,
+      "max_output_tokens": 80,
+      "min_p": 0,
+      "grammar": "root ::= [a-zA-Z0-9 $.,;:!?()'\\-]*"
+    },
+    "limits": {
+      "min_characters": 30,
+      "max_characters": 180,
+      "recent_memories": 2,
+      "recent_outputs": 8,
+      "max_attempts": 2,
+      "max_chunks": 96
+    }
+  },
+  "model_wasm_sha256": "964787ece3a98badb85493839ad77a372295ca7b8ded9f87ac8222a616d3edb5",
+  "coordinator_wasm_sha256": "3fb60905f6008a13c6b170f784558a722651cda9289bf13f04103c70ff4a1a59",
+  "gateway_source_sha256": "f574cb101c6ffcf039a19f20a97033a93770bd7596f5e9b4d29b4a5d0ec1260f",
+  "generation_policy": {
+    "schema": "gh0st-generation-unlimited-v1",
+    "cycle_limit": null,
+    "chunk_limit": null,
+    "time_limit": null,
+    "retry_limit": null,
+    "quality_retry_limit": null,
+    "scope": "swap jobs",
+    "per_call_tokens": 4,
+    "prefill_method": "run_update_full",
+    "continuation_method": "run_update",
+    "funding": "existing canister balance only",
+    "admission_estimate": "2000000000000",
+    "zero_cycle_budget_semantics": "no per-job generation ceiling",
+    "format_and_output_bounds": "retain the existing exact-thought format and output bounds",
+    "profile_overrides": "swap generation ceilings override historical embedded persona profile limits; profile bytes and seeds are unchanged",
+    "accounting": "preserve all measured cycles across restart and recovery segments",
+    "identity": "recover the same source, prompt and seed",
+    "policy_authorization": "owner-only while paused"
+  },
+  "thought_policy": {
+    "schema": "gh0st-exact-thought-v1",
+    "duplicate_match": "exact whole UTF-8 output",
+    "delivery_guard": "persistent exact-text history before RH relay and X publication",
+    "failures": "retain cost and source, skip to next buy",
+    "historical_results": "immutable",
+    "prompt": "diversified source-derived cues without verbatim previous-thought priming"
+  },
+  "retention_policy": {
+    "schema": "gh0st-retention-v1",
+    "admission": "one unfinished model job; no lifetime count limit",
+    "historical_jobs": "all original records preserved; unchanged stable State/Job layout",
+    "history_query_max_jobs": 32,
+    "history_query_max_bytes": 1000000,
+    "failed_recovery": "existing explicit recovery and deferral rules unchanged",
+    "replay_protection": "all source identities and signed results retained",
+    "proof_history": "256 recent posted replies plus all unfinished; immutable hashed archives with permanent dedup index"
+  }
+}

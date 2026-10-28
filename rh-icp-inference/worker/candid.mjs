@@ -1,3 +1,5 @@
+import {retentionStatusType, jobPageType} from "./job-history.mjs";
+
 export const idlFactory = ({ IDL }) => {
   const SwapPool = IDL.Record({
     manager: IDL.Text,
@@ -19,6 +21,7 @@ export const idlFactory = ({ IDL }) => {
     profile_hash: IDL.Text,
     seed: IDL.Nat32,
     attempt: IDL.Nat8,
+    generation: IDL.Opt(IDL.Nat),
     base_prompt: IDL.Text,
     memory_hash: IDL.Text,
     previous_input_tokens: IDL.Nat64,
@@ -70,6 +73,17 @@ export const idlFactory = ({ IDL }) => {
     block_number: IDL.Nat64,
     block_hash: IDL.Text,
   });
+  const RecoveryInfo = IDL.Record({
+    total_budget: IDL.Nat, grants: IDL.Nat32, carry_cycles: IDL.Nat,
+    segment_baseline: IDL.Opt(IDL.Nat), rebuilding: IDL.Bool,
+    replay_target: IDL.Text, replay_target_tokens: IDL.Nat64,
+    replay_output: IDL.Text, replay_tokens: IDL.Nat64, replay_prompt_ingested: IDL.Bool,
+    parked: IDL.Bool, requires_owner: IDL.Bool, last_error: IDL.Text,
+    chunks_at_recovery: IDL.Nat32, max_chunks: IDL.Nat32,
+    retry_after: IDL.Nat64, safe_retry_count: IDL.Nat32, resume_deadline: IDL.Nat64,
+    accounting_uncertain: IDL.Bool,
+    cache_evidence_hash: IDL.Opt(IDL.Text),
+  });
   const Job = IDL.Record({
     request: Request,
     phase: IDL.Variant({
@@ -93,13 +107,17 @@ export const idlFactory = ({ IDL }) => {
     error: IDL.Text,
     source: IDL.Opt(SwapSource),
     voice: IDL.Opt(VoiceJob),
+    recovery: IDL.Opt(RecoveryInfo),
   });
+  const DeferredSwap = IDL.Record({id:IDL.Text,model_cycles:IDL.Nat,reason:IDL.Text,deferred_at:IDL.Nat64});
   const Result = (t) => IDL.Variant({ Ok: t, Err: IDL.Text });
   return IDL.Service({
     get_config: IDL.Func([], [Config], ["query"]),
     get_voice_state: IDL.Func([], [VoiceState], ["query"]),
     get_job: IDL.Func([IDL.Text], [IDL.Opt(Job)], ["query"]),
     list_jobs: IDL.Func([], [IDL.Vec(Job)], ["query"]),
+    retention_status: IDL.Func([], [retentionStatusType(IDL)], ["query"]),
+    list_jobs_page: IDL.Func([IDL.Opt(IDL.Text), IDL.Nat32], [jobPageType(IDL, Job)], ["query"]),
     submit_request: IDL.Func([IDL.Text, IDL.Nat64], [Result(Job)], []),
     submit_swap: IDL.Func([IDL.Text, IDL.Nat64], [Result(Job)], []),
     remember_delivered: IDL.Func(
@@ -112,6 +130,13 @@ export const idlFactory = ({ IDL }) => {
     cleanup: IDL.Func([IDL.Text], [Result(IDL.Null)], []),
     signer_address: IDL.Func([], [Result(IDL.Text)], []),
     bind_gateway: IDL.Func([IDL.Text], [Result(IDL.Null)], []),
+    rebind_gateway: IDL.Func([IDL.Text, IDL.Text, IDL.Text, IDL.Text], [Result(IDL.Null)], []),
+    recover_job: IDL.Func([IDL.Text, IDL.Nat], [Result(Job)], []),
+    resume_job: IDL.Func([IDL.Text], [Result(Job)], []),
+    enable_unlimited_swaps: IDL.Func([IDL.Nat], [Result(IDL.Null)], []),
+    defer_failed_swap: IDL.Func([IDL.Text,IDL.Nat,IDL.Text], [Result(IDL.Null)], []),
+    get_deferred_swaps: IDL.Func([], [IDL.Vec(DeferredSwap)], ["query"]),
+    resume_retained_job: IDL.Func([IDL.Text,IDL.Nat,IDL.Nat32,IDL.Text], [Result(Job)], []),
     set_paused: IDL.Func([IDL.Bool], [Result(IDL.Null)], []),
   });
 };

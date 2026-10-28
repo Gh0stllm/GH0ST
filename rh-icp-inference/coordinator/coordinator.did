@@ -12,6 +12,12 @@ type Config = record {
   worker : principal;
   model_id : text;
 };
+type DeferredSwap = record {
+  id : text;
+  model_cycles : nat;
+  deferred_at : nat64;
+  reason : text;
+};
 type HttpHeader = record { value : text; name : text };
 type HttpResponse = record {
   status : nat;
@@ -28,6 +34,7 @@ type Job = record {
   model_cycles : nat;
   answer : text;
   error : text;
+  recovery : opt RecoveryInfo;
   signer : text;
   digest : text;
   phase : Phase;
@@ -36,7 +43,30 @@ type Job = record {
   prompt_ingested : bool;
   model_cycles_before : nat;
 };
+type JobPage = record { total : nat64; jobs : vec Job; next : opt text };
 type Phase = variant { Failed; Complete; Running; ReadyToSign; Verified };
+type RecoveryInfo = record {
+  last_error : text;
+  retry_after : nat64;
+  grants : nat32;
+  segment_baseline : opt nat;
+  total_budget : nat;
+  rebuilding : bool;
+  accounting_uncertain : bool;
+  chunks_at_recovery : nat32;
+  requires_owner : bool;
+  replay_target : text;
+  replay_target_tokens : nat64;
+  replay_tokens : nat64;
+  cache_evidence_hash : opt text;
+  replay_prompt_ingested : bool;
+  safe_retry_count : nat32;
+  carry_cycles : nat;
+  max_chunks : nat32;
+  parked : bool;
+  resume_deadline : nat64;
+  replay_output : text;
+};
 type Request = record {
   id : text;
   requester : text;
@@ -54,6 +84,18 @@ type Result = variant { Ok; Err : text };
 type Result_1 = variant { Ok : Job; Err : text };
 type Result_2 = variant { Ok : VoiceState; Err : text };
 type Result_3 = variant { Ok : text; Err : text };
+type RetentionStatus = record {
+  admission_allowed : bool;
+  active : opt text;
+  busy : nat64;
+  open : nat64;
+  completed : nat64;
+  verifying : bool;
+  retained : nat64;
+  blocked_failed : bool;
+  failed : nat64;
+  paused : bool;
+};
 type SwapPool = record {
   fee : nat32;
   manager : text;
@@ -87,6 +129,7 @@ type VoiceJob = record {
   memory_hash : text;
   profile_version : text;
   seed : nat32;
+  generation : opt nat;
   quality_error : text;
   previous_output_tokens : nat64;
   base_prompt : text;
@@ -107,17 +150,32 @@ service : (Config) -> {
   // The canister must exist to derive its key before the EVM gateway is deployed.
   // Bind that gateway once; later changes require a separately reviewed upgrade.
   bind_gateway : (text) -> (Result);
-  // Remove stable-memory prompt caches after completion/failure. Does not delete
+  // Remove stable-memory prompt caches only after completion. Held failed caches
+  // remain available for explicit recovery. Does not delete
   // request tombstones or signatures; replay protection survives upgrades.
   cleanup : (text) -> (Result);
+  defer_failed_swap : (text, nat, text) -> (Result);
+  enable_unlimited_swaps : (nat) -> (Result);
   get_config : () -> (Config) query;
+  get_deferred_swaps : () -> (vec DeferredSwap) query;
   get_job : (text) -> (opt Job) query;
   get_voice_state : () -> (VoiceState) query;
   list_jobs : () -> (vec Job) query;
+  // Prefer this bounded history reader to the legacy full-history list_jobs.
+  list_jobs_page : (opt text, nat32) -> (JobPage) query;
+  // Owner-reviewed artifact migration only. Never grants model budget or changes
+  // the worker, model, chain, source IDs, prompts or existing result signatures.
+  rebind_gateway : (text, text, text, text) -> (Result);
+  // Explicit bounded owner recovery; workers cannot grant themselves more work.
+  recover_job : (text, nat) -> (Result_1);
   // A retained thought becomes character memory only after independently
   // verifying its exact, confirmed RH fulfillment. Repeated acknowledgements are
   // free of repeated RPC work and cannot append duplicate memories.
   remember_delivered : (text, text, nat64) -> (Result_2);
+  resume_job : (text) -> (Result_1);
+  resume_retained_job : (text, nat, nat32, text) -> (Result_1);
+  // Bounded operational status; completed/failed history consumes no work slot.
+  retention_status : () -> (RetentionStatus) query;
   set_paused : (bool) -> (Result);
   signer_address : () -> (Result_3);
   submit_request : (text, nat64) -> (Result_1);

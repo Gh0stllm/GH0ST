@@ -42,6 +42,13 @@ export function inspectFulfillment(
     const logIndex = Number(log.index ?? log.logIndex);
     if (!Number.isSafeInteger(logIndex) || logIndex < 0)
       throw Error("Callback log index is missing");
+    const gasUsed = receipt.gasUsed == null ? null : BigInt(receipt.gasUsed);
+    const gasPrice = receipt.effectiveGasPrice ?? receipt.gasPrice;
+    const fee = gasUsed != null && gasPrice != null
+      ? gasUsed * BigInt(gasPrice)
+      : receipt.fee == null ? null : BigInt(receipt.fee);
+    if ((gasUsed != null && gasUsed < 0n) || (fee != null && fee < 0n))
+      throw Error("Invalid callback receipt cost");
     return {
       confirmed: true,
       transactionHash: receipt.hash ?? receipt.transactionHash,
@@ -50,6 +57,8 @@ export function inspectFulfillment(
       answer: event.args.answer,
       answerHash: event.args.answerHash,
       logIndex,
+      ...(gasUsed == null ? {} : { gasUsed: gasUsed.toString() }),
+      ...(fee == null ? {} : { feeWei: fee.toString() }),
     };
   }
   throw Error(

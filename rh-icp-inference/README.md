@@ -2,9 +2,9 @@
 
 An asynchronous Qwen3-1.7B inference bridge. An RH request is checked against two RPC providers, executed by a dedicated ICP model canister, and returned to RH with a threshold-ECDSA signature.
 
-**Status: first implementation, locally tested; not deployed.** No ICP canister, loaded Qwen model, live cross-chain request or measured ICP price is claimed by this checkpoint. Existing GH0ST deployments are unaffected.
+**Status: deployed and verified on 28 October 2026.** The retained-history repair is live on the existing coordinator and model canisters. A queued source completed generation, a canonical RH callback, an X post and proof reply, recorder capture, and a dashboard update. See the [repair record](docs/RETENTION-REPAIR-20261028.md) for exact artifacts and evidence; counts there are dated snapshots.
 
-**Product target:** [GH0ST swap → ICP monologue → confirmed RH result → X post](SWAP-SOCIAL-AGENT.md). The prototype includes automatic observation of registered existing v4 pools and direct swap-proof ingestion. The coordinator now includes a bounded persona and confirmed-delivery memory; the worker includes an opt-in X publisher. Live deployment and account authorization remain pending.
+**Live route:** [GH0ST swap → ICP monologue → confirmed RH result → X post](SWAP-SOCIAL-AGENT.md). The worker observes registered existing v4 pools and submits their swap proofs. The coordinator applies the persona and confirmed-delivery memory; the authorized production worker publishes the confirmed result to X. Fresh installations still require their own deployment and account authorization.
 
 ```mermaid
 flowchart TD
@@ -22,7 +22,7 @@ flowchart TD
 | Component                                         | Behavior                                                                                                                           |
 | ------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
 | [RH gateway](contracts/GH0STInferenceGateway.sol) | Authorized pilot requests, deadlines, cancellation, EIP-712 result verification, replay protection and answer events               |
-| [ICP coordinator](coordinator/src/lib.rs)         | Two-provider receipt/state checks, bounded model calls, resumable jobs, stable upgrade state and threshold-ECDSA result signatures |
+| [ICP coordinator](coordinator/src/lib.rs)         | Two-provider receipt/state checks, one unfinished job, paginated retained history, stable upgrade state and threshold-ECDSA result signatures |
 | [Worker](worker/main.mjs)                         | Confirmed-event polling, persisted queue, independent signature verification and optional RH callback submission                   |
 | [Model lock](model-lock.json)                     | Exact upstream source revision, official GGUF revision/hash, non-thinking prompt format and generation settings                    |
 | [Validation](VALIDATION.md)                       | Executed checks, limitations and next deployment checks                                                                            |
@@ -34,7 +34,7 @@ No training jobs or GitHub Actions are added. The worker schedules calls and tra
 
 This is a cross-chain route, not inference executed by the RH EVM. A swap hook cannot synchronously wait for ICP. A later callback is a separate RH transaction.
 
-The threshold key signs **the result attestation**. A relayer pays RH gas and signs the RH transaction. The prototype does **not** have ICP construct/sign/broadcast its own RH transaction. Anyone may transport a valid result; an unavailable worker can be replaced without changing the gateway signer.
+The threshold key signs **the result attestation**. A relayer pays RH gas and signs the RH transaction. ICP does **not** construct/sign/broadcast its own RH transaction. Anyone may transport a valid result; an unavailable worker can be replaced without changing the gateway signer.
 
 The signature commits to the request, prompt, model identifier, artifact manifest, answer, token counts and model-cycle measurement. Its EIP-712 domain binds the RH chain and gateway. RH verifies the configured signer; it does not independently prove every model operation. RPC providers supply source-chain facts, and ICP canister controllers remain part of the trust model. Keep their identities and any subsequent upgrades public. The model-Wasm hash is checked before measuring inference, but correct GGUF loading and settings must also be verified during deployment.
 
@@ -42,13 +42,13 @@ Requests and answers are public. The gateway stores the answer hash and emits th
 
 ## Limits and cost measurement
 
-- Pilot admission is restricted on RH and on the coordinator. One model job runs at a time; at most 256 job records are retained, with no deletion/replay loophole.
-- Prompt ≤4,096 bytes; answer ≤8,192 bytes; output ≤128 tokens globally. Persona swap jobs use ≤80 tokens, four generated tokens per call and at most 96 calls across two attempts. Explicit requests retain the earlier 16-token/48-call ceilings. These are safety ceilings, not the 100-input/50-output benchmark workload.
+- Admission permits one unfinished model job at a time. Completed and failed records no longer consume a lifetime admission quota: all historical jobs and replay protection remain retained. Production readers use pages of at most 32 jobs and 1,000,000 encoded Candid bytes. The legacy full-history query remains for compatibility.
+- Prompt ≤4,096 bytes; answer transport ≤8,192 bytes. Persona swap candidates use ≤80 generated tokens, four per continuation call, and must pass the unchanged 30–180-character printable-ASCII output policy before signing. Manual requests retain their separate safety bounds.
 - A dedicated model canister is required. The coordinator must be its controller to read cycle balances and invoke the model. Do not run unrelated requests, upgrades, top-ups or cleanup during a measurement.
 - `model_cycles` is the model canister balance delta from before `new_chat` to the end of generation. It includes idle/storage burn in that interval. It excludes later cache cleanup, coordinator execution, RPC and signing charges.
-- The voice deployment profile uses a **2 trillion model-cycle budget** is checked between chunks with a 40 billion reserve. This is not a dollar-denominated billing guarantee: subnet pricing, per-call overhead and consumption during an in-flight call matter.
+- The deployed coordinator uses `model_cycle_budget = 0` for swap jobs: no per-job generation-cycle, chunk, or deadline ceiling. The **2 trillion cycles** checked by the worker are an admission reserve, not a hard execution budget or dollar-price guarantee. Funding floors and the existing funding policy remain in force. The production worker separately enforces a single-attempt policy: a rejected candidate is retained/deferred and the queue continues; it does not exercise the coordinator’s unlimited quality-retry capability.
 - The coordinator makes eight bounded HTTPS outcalls per new request for two-provider chain/receipt/confirmation/state checks. An idle worker polls RH externally, so it does not create recurring ICP RPC charges while idle.
-- For total cost, snapshot **both** canister balances around an isolated request, include cleanup and confirmation, and record RH receipt gas separately. Freeze external top-ups during the measurement. The earlier $0.60 allowance for a short 0.6B request does not price this longer 1.7B persona prompt and memory. Live cost remains unmeasured.
+- For total cost, snapshot **both** canister balances around an isolated request, include cleanup and confirmation, and record RH receipt gas separately. Freeze external top-ups during the measurement. The earlier $0.60 allowance for a short 0.6B request does not price this longer 1.7B persona prompt and memory. The [verified repair thought](docs/RETENTION-REPAIR-20261028.md#verified-thought) recorded 1,602,979,391,152 model cycles; that is one observation, not a fixed price for future thoughts.
 
 An interrupted model call is never silently repeated: its outcome may have committed before a response was lost. A failed job is retained for inspection. Signing retries use the already-fixed answer. Upgrades mark in-flight jobs failed; run upgrades only with no active request.
 
@@ -59,14 +59,17 @@ Node.js 22+ and Rust with the `wasm32-unknown-unknown` target:
 ```bash
 cd rh-icp-inference
 npm ci
+mkdir -p build
+cp deployments/retention-20261028/artifact-manifest.json build/artifact-manifest.json
+npm run compile
 npm test
 node scripts/build-canister.mjs
 npm run preflight
 ```
 
-The Wasm build script runs Rust tests, builds the coordinator and embeds its generated Candid interface. This does not build the much larger upstream Qwen runtime. See [deployment](DEPLOYMENT.md) for that separate, pinned build.
+The Wasm build script runs Rust tests, builds the coordinator and embeds its generated Candid interface. This does not build the much larger upstream Qwen runtime. To inspect the deployed release without rebuilding it, use [the versioned artifacts](deployments/retention-20261028/). See [deployment](DEPLOYMENT.md) for a new installation and the [repair record](docs/RETENTION-REPAIR-20261028.md) for the existing deployment.
 
-No signing secret, funded ICP identity or model weight file is included. Runtime/vendor files, private identities, state journals and build outputs are ignored by Git.
+No signing secret, funded ICP identity or model weight file is included. Vendor files, private identities, state journals and local build outputs are ignored by Git. The explicitly versioned deployment artifacts contain public code and manifests only.
 
 ## Attribution
 
@@ -84,6 +87,6 @@ Direct swap jobs use `submit_swap(transactionHash, logIndex)` and return via `fu
 
 [persona-profile.json](persona-profile.json) defines GH0ST's original voice and decoding settings. [Voice tuning](VOICE-TUNING.md) distinguishes actual local model outputs from human-written prompt examples and from live ICP execution. Verified buy/sell flow, remembered direction reversals and block rhythm shape the input; raw router addresses and token amounts are not repeated as a market report.
 
-The source-derived seed changes with the swap, attempt and generated-token offset. The stateless printable-character grammar is compatible with resumed sampling, while output gates check length, finished phrasing, boilerplate and recent repetition before signing. One rejected complete candidate may be regenerated within the same cumulative cycle/chunk budget. No stock text is substituted.
+The source-derived seed changes with the swap, attempt and generated-token offset. The stateless printable-character grammar is compatible with resumed sampling, while output gates check length, finished phrasing, boilerplate and recent repetition before signing. The coordinator can prepare another candidate under its configured execution policy. The production worker instead retains and defers failures under its separate single-attempt policy and proceeds to the next queued buy. No stock text is substituted.
 
-The two recent confirmed RH thoughts become character memory only after independent two-provider receipt verification through `remember_delivered`. Eight recent signed outputs are retained for repetition checks. The new [X publisher](X-PUBLISHER.md) defaults to disabled, verifies the intended account when enabled, and posts only the exact confirmed RH thought plus its proof link.
+The two recent confirmed RH thoughts become character memory only after independent two-provider receipt verification through `remember_delivered`. Eight recent signed outputs are retained for repetition checks. The [X publisher](X-PUBLISHER.md) defaults to disabled in a fresh setup, verifies the intended account when enabled, and publishes only a confirmed RH thought. Production posts the exact text and Afterimage, then adds its proof reply. Older posted proof records can move to hashed archives with permanent deduplication; unfinished and ambiguous records stay in the active journal.

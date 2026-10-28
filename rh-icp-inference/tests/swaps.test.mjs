@@ -13,7 +13,7 @@ import {
 } from "../worker/swaps.mjs";
 
 const registry = JSON.parse(
-  fs.readFileSync(new URL("../swap-sources.json", import.meta.url)),
+  fs.readFileSync(new URL("./fixtures/swap-sources.json", import.meta.url)),
 );
 const pools = loadSources(registry, 4663);
 const pool = pools[0];

@@ -6,7 +6,6 @@ use crate::types::{Config, Job, Request, State, ThoughtMemory, VoiceJob, VoiceSt
 use ethabi::ParamType;
 use serde::Deserialize;
 use serde_json::Value;
-use std::collections::BTreeSet;
 
 pub const PROFILE_JSON: &str = include_str!("../../persona-profile.json");
 pub const FULFILLED_EVENT: &str =
@@ -56,6 +55,9 @@ pub fn profile_hash() -> String {
 /// The 1.7B prompt may require many instruction-bounded ingestion calls. This
 /// count spans both attempts; the original shared cycle budget is the hard cap.
 pub fn max_chunks(job: &Job) -> u32 {
+    if let Some(r) = &job.recovery {
+        if r.grants > 0 { return r.max_chunks.min(crate::core::MAX_RECOVERY_CHUNKS); }
+    }
     if job.voice.is_some() {
         profile().limits.max_chunks
     } else {
@@ -142,6 +144,71 @@ pub fn seed(
     Ok(value)
 }
 
+/// An arbitrary precision generation number avoids turning the old u8
+/// display field into an execution limit. Old caches and seeds stay identical.
+pub fn generation(voice: &VoiceJob) -> candid::Nat {
+    voice.generation.clone().unwrap_or_else(|| candid::Nat::from(voice.attempt))
+}
+pub fn generation_seed(source_id: &str, voice: &VoiceJob, output_offset: u64) -> Result<u32, String> {
+    let n = generation(voice);
+    if let Ok(attempt) = u8::try_from(&n.0) {
+        return seed(source_id, attempt, output_offset, &voice.profile_hash);
+    }
+    let mut raw = b"gh0st-quality-generation-v1".to_vec();
+    raw.extend(bytes(source_id, 32)?);
+    raw.extend(n.0.to_bytes_be());
+    raw.extend(output_offset.to_be_bytes());
+    raw.extend(bytes(&voice.profile_hash, 32)?);
+    let n = u32::from_be_bytes(hash(raw)[..4].try_into().unwrap());
+    Ok(if n == u32::MAX { n-1 } else { n })
+}
+pub fn generation_cache_tag(voice: &VoiceJob) -> String {
+    let n = generation(voice);
+    if let Ok(attempt) = u8::try_from(&n.0) { format!("a{attempt}") }
+    else { format!("g{}", hex::encode(hash(n.0.to_bytes_be()))) }
+}
+
+/// Compose a scene from independent source-derived choices. Neither prior
+/// output text nor a rejected candidate becomes an example to imitate.
+fn scene_instruction(source: &str, generation: &candid::Nat) -> Result<String, String> {
+    let mut material = b"gh0st-scene-v2".to_vec();
+    material.extend(bytes(source, 32)?);
+    material.extend(generation.0.to_bytes_be());
+    let digest = hash(material);
+    let places = [
+        "an empty swimming pool", "a midnight bus stop", "a flooded library", "a laundromat",
+        "a roadside diner", "a courtroom hallway", "a train platform", "a supermarket freezer",
+        "a hotel elevator", "a dentist's waiting room", "a museum storeroom", "an abandoned cinema",
+        "a kitchen at dawn", "a dry fountain", "a ship's radio room", "a lost-property office",
+        "a school roof", "a planetarium", "a rain-soaked car park", "a botanical greenhouse",
+        "a cable car", "a customs desk", "a quiet pharmacy", "a public chess table",
+    ];
+    let objects = [
+        "a brass key", "a paper crown", "a blank map", "a cracked bell", "a silk glove",
+        "a bent antenna", "a red umbrella", "a glass marble", "an unlit match", "a wooden ruler",
+        "a silver thimble", "a broken compass", "a sealed envelope", "a cracked teacup",
+        "a borrowed shoe", "a chalk moon", "a ticking suitcase", "a tiny ladder", "an empty birdcage",
+        "a stubborn magnet", "a soap sculpture", "a folding mirror", "a velvet rope", "a wind-up fish",
+    ];
+    let tensions = [
+        "silence mistaken for permission", "something refusing to belong", "admission charged to a memory",
+        "gravity treated as a suggestion", "a ceremony with nobody in charge", "an apology sent to the future",
+        "a door remembering the wrong person", "a measurement changing what it measures",
+        "a shadow promoted above its owner", "a shortcut taking the long way", "a secret made unnecessarily public",
+        "an answer arriving before its question", "a small victory with an inconvenient cost",
+        "a promise expiring before noon", "an ordinary rule applied too literally", "an absence leaving fingerprints",
+    ];
+    let openings = [
+        "Begin with a concrete sensory detail.", "Let the object be the subject of the sentence.",
+        "Start with a small action already in progress.", "Lead with the unexpected consequence.",
+        "Use a quiet observation that takes a strange turn.", "Begin with a place rather than a speaker.",
+        "Make a blunt declaration, then undermine it.", "Frame the thought as a tiny discovery.",
+    ];
+    Ok(format!("Scene cue: {}; {}; {}. {} Make one concrete observation with an unexpected consequence; do not list these instructions.",
+        places[digest[0] as usize % places.len()], objects[digest[1] as usize % objects.len()],
+        tensions[digest[2] as usize % tensions.len()], openings[digest[3] as usize % openings.len()]))
+}
+
 pub fn build_prompt(
     config: &Config,
     swap: &VerifiedSwap,
@@ -151,17 +218,6 @@ pub fn build_prompt(
     let p = profile();
     let direction = direction(config, swap)?;
     let id = source_id(config.chain_id, &swap.source)?;
-    let digest = hash(bytes(&id, 32)?);
-    let motifs = [
-        "a lost receipt",
-        "an unpaid parking ticket",
-        "a laundromat token",
-        "a queue at the oracle",
-        "a broken vending machine",
-        "a rented chair",
-        "a warranty form",
-        "a spoon with no owner",
-    ];
     let cue = match direction {
         "buy" => "GH0ST left the pool: an arrival, acquisition or belief.",
         "sell" => "GH0ST entered the pool: a departure, shedding or impermanence.",
@@ -201,13 +257,13 @@ pub fn build_prompt(
             .collect::<Vec<_>>()
             .join("\n")
     };
-    let examples = p
-        .examples
-        .iter()
-        .map(|s| format!("- {s}"))
-        .collect::<Vec<_>>()
-        .join("\n");
-    let prompt=format!("{}\nStyle examples (do not copy):\n{}\nConfirmed memories:\n{}\nVerified pulse: {} {}\nImage seed: {}.\nWrite the next thought.",p.voice,examples,memory_text,cue,rhythm,motifs[digest[0]as usize%motifs.len()]);
+    // Preserve the same commitment to exact confirmed memories without feeding
+    // their wording back into the model. Only abstract continuity is prompted.
+    let continuity = if memories.is_empty() { "A first sensation, with no established habit." }
+        else if previous.is_some_and(|m| m.direction != direction) { "A familiar motion has changed direction." }
+        else { "The motion is familiar; notice a different detail this time." };
+    let scene = scene_instruction(&id, &candid::Nat::from(1u8))?;
+    let prompt=format!("{}\nContinuity cue: {}\nVerified pulse: {} {}\n{}\nWrite the next thought.",p.voice,continuity,cue,rhythm,scene);
     if prompt.len() > 4096 {
         return Err("persona prompt exceeds byte cap".into());
     }
@@ -229,6 +285,7 @@ pub fn create_request(
         profile_hash: ph.clone(),
         seed: seed(&id, 1, 0, &ph)?,
         attempt: 1,
+        generation: None,
         base_prompt: prompt.clone(),
         memory_hash,
         direction: direction(config, swap)?.into(),
@@ -255,49 +312,6 @@ pub fn create_request(
     Ok((request, voice))
 }
 
-fn ordered_words(text: &str) -> Vec<String> {
-    text.split(|c: char| !c.is_ascii_alphanumeric())
-        .filter(|s| !s.is_empty())
-        .map(str::to_ascii_lowercase)
-        .collect()
-}
-fn words(text: &str) -> BTreeSet<String> {
-    text.split(|c: char| !c.is_ascii_alphanumeric())
-        .filter(|s| !s.is_empty())
-        .map(str::to_ascii_lowercase)
-        .collect()
-}
-pub fn near_duplicate(a: &str, b: &str) -> bool {
-    let ordered_a = ordered_words(a);
-    let ordered_b = ordered_words(b);
-    if ordered_a.len() >= 6 && ordered_b.len() >= 6 {
-        if ordered_a[..4] == ordered_b[..4] {
-            return true;
-        }
-        let ending = &ordered_a[ordered_a.len() - 3..];
-        let stop = [
-            "the", "a", "an", "is", "are", "was", "were", "it", "this", "that", "to", "of", "and",
-            "for", "all", "now", "i", "me", "my", "you", "your", "in", "on",
-        ];
-        if ending == &ordered_b[ordered_b.len() - 3..]
-            && ending.iter().any(|word| !stop.contains(&word.as_str()))
-        {
-            return true;
-        }
-    }
-    let aa = words(a);
-    let bb = words(b);
-    if aa.is_empty() || bb.is_empty() {
-        return false;
-    }
-    if aa == bb {
-        return true;
-    }
-    let intersection = aa.intersection(&bb).count();
-    let union = aa.union(&bb).count();
-    // Allow a recurring motif; reject almost the same sentence/punchline.
-    intersection >= 5 && intersection * 100 >= union * 75
-}
 pub fn validate_thought(text: &str, recent: &[String]) -> Result<String, String> {
     let p = profile();
     let answer = text.trim();
@@ -376,23 +390,12 @@ pub fn validate_thought(text: &str, recent: &[String]) -> Result<String, String>
     if answer.starts_with('"') || answer.ends_with('"') || !finished {
         return Err("thought needs a finished, unwrapped sentence".into());
     }
-    for phrase in ["hums with", "whispers of", "echoes of"] {
-        if lower.contains(phrase)
-            && recent
-                .iter()
-                .any(|old| old.to_ascii_lowercase().contains(phrase))
-        {
-            return Err(format!(
-                "thought reuses the recent phrase '{phrase}'; avoid that phrase"
-            ));
-        }
-    }
     if p.examples
         .iter()
         .chain(recent.iter())
-        .any(|old| near_duplicate(answer, old))
+        .any(|old| answer == old)
     {
-        return Err("thought repeats an example or recent output".into());
+        return Err("thought exactly repeats an example or recent output".into());
     }
     Ok(answer.to_string())
 }
@@ -400,24 +403,35 @@ pub fn validate_thought(text: &str, recent: &[String]) -> Result<String, String>
 /// Reset only a completed, rejected candidate. The model baseline and global
 /// chunk counter intentionally survive, so repair cannot erase compute spend.
 pub fn prepare_repair(job: &mut Job, reason: &str) -> Result<(), String> {
+    prepare_repair_with_policy(job, reason, false)
+}
+pub fn prepare_repair_with_policy(job: &mut Job, reason: &str, unlimited: bool) -> Result<(), String> {
     let p = profile();
     let voice = job
         .voice
         .as_mut()
         .ok_or("manual requests do not use voice repair")?;
-    if voice.attempt >= p.limits.max_attempts {
+    if !unlimited && voice.attempt >= p.limits.max_attempts {
         return Err(format!("persona quality gate exhausted: {reason}"));
     }
     voice.previous_input_tokens = voice.previous_input_tokens.saturating_add(job.input_tokens);
     voice.previous_output_tokens = voice
         .previous_output_tokens
         .saturating_add(job.output_tokens);
-    voice.attempt += 1;
+    if unlimited {
+        let mut next = generation(voice); next.0 += 1u8;
+        voice.generation = Some(next);
+        voice.attempt = voice.attempt.saturating_add(1);
+    } else { voice.attempt += 1; }
     voice.quality_error = reason.chars().take(240).collect();
-    voice.seed = seed(&job.request.id, voice.attempt, 0, &voice.profile_hash)?;
+    voice.seed = generation_seed(&job.request.id, voice, 0)?;
     // Keep the diagnostic in metadata, not in the generation prompt: naming a
     // repeated phrase was observed to prime this small model to say it again.
-    job.request.prompt=format!("{}\nWrite a fresh first-person sentence: one petty administrative action and one absurd consequence. Use a new opening and action; finish in 30-140 plain keyboard characters.",voice.base_prompt);
+    let scene = scene_instruction(&job.request.id, &generation(voice))?;
+    let context = voice.base_prompt.lines().filter(|line|
+        !line.starts_with("Scene cue:") && !line.starts_with("Image seed:") && *line != "Write the next thought.")
+        .collect::<Vec<_>>().join("\n");
+    job.request.prompt=format!("{}\nA different angle for this attempt: {}\nFinish one sentence in 30-180 plain keyboard characters.",context,scene);
     if job.request.prompt.len() > 4096 {
         return Err("repair prompt exceeds byte cap".into());
     }
@@ -726,14 +740,18 @@ mod tests {
         });
         let (next, nh) = build_prompt(&c, &s, &m).unwrap();
         assert!(next.contains("direction reversed"));
-        assert!(next.contains("drain started charging rent"));
+        assert!(!next.contains("drain started charging rent"));
+        assert!(!next.contains(&m.memories[0].text));
+        assert!(!next.contains("Style examples"));
+        assert!(next.contains("Continuity cue:"));
+        for example in profile().examples { assert!(!next.contains(&example)); }
         assert_ne!(h, nh);
         m.memories[0].manager = Some(hex0([0xee; 20]));
         let (other, _) = build_prompt(&c, &s, &m).unwrap();
         assert!(!other.contains("direction reversed"));
     }
     #[test]
-    fn gates_format_boilerplate_copies_and_near_repeats_without_banning_motifs() {
+    fn gates_format_boilerplate_and_exact_copies_but_allows_distinct_variants() {
         let good = "i loaned my shadow to the drain. it came back with a mortgage.";
         assert_eq!(validate_thought(good, &[]).unwrap(), good);
         assert!(validate_thought("As an AI, I am a machine in this liquidity pool.", &[]).is_err());
@@ -756,7 +774,7 @@ mod tests {
             "i loaned my shadow to a drain. it came back with a mortgage!",
             &[good.to_string()]
         )
-        .is_err());
+        .is_ok());
         assert!(validate_thought(
             "the drain has elected a new pope. i suspect the plumbing lobby.",
             &[good.to_string()]
@@ -788,19 +806,15 @@ mod tests {
             .contains("exhausted"));
     }
     #[test]
-    fn repeated_openings_punchlines_roles_and_bare_domains_are_rejected() {
-        assert!(near_duplicate(
-            "the vending machine hums with borrowed teeth.",
-            "the vending machine hums beneath my unpaid warranty."
-        ));
-        assert!(near_duplicate(
-            "i sold my shadow so it could pay the rent.",
-            "a spoon appeared in the pool to pay the rent."
-        ));
-        assert!(!near_duplicate(
-            "i moved my furniture and that is all.",
-            "the vending machine forgave everyone and that is all."
-        ));
+    fn repeated_openings_and_punchlines_are_allowed_but_roles_and_domains_are_rejected() {
+        for (a,b) in [
+            ("the vending machine hums with borrowed teeth.","the vending machine hums beneath my unpaid warranty."),
+            ("i sold my shadow so it could pay the rent.","a spoon appeared in the pool to pay the rent."),
+            ("i have swallowed the receipt and now the ink sings.","i have swallowed the moon and now the tide owes me rent."),
+        ] {
+            assert!(validate_thought(a, &[b.to_string()]).is_ok());
+            assert!(validate_thought(a, &[a.to_string()]).is_err());
+        }
         for text in [
             "Assistant: my shadow finally learned to pay the rent.",
             "system: i borrowed a chair from the oracle yesterday.",
@@ -819,19 +833,19 @@ mod tests {
     #[test]
     fn repair_keeps_diagnostics_out_of_positive_generation_prompt() {
         let (_, mut j) = job();
-        let reason = "thought reuses the recent phrase 'hums with'; avoid that phrase";
+        let reason = "thought exactly repeats an example or recent output";
         prepare_repair(&mut j, reason).unwrap();
         assert_eq!(j.voice.as_ref().unwrap().quality_error, reason);
         assert!(!j.request.prompt.contains("hums with"));
         assert!(!j.request.prompt.contains("previous candidate was rejected"));
+        assert!(j.request.prompt.contains("A different angle for this attempt: Scene cue:"));
+        assert_eq!(j.request.prompt.matches("Scene cue:").count(), 1);
+        assert!(!j.request.prompt.contains("one petty administrative action"));
+        assert!(!j.request.prompt.contains("Use a new opening and action"));
         assert!(j
             .request
             .prompt
-            .contains("one petty administrative action and one absurd consequence"));
-        assert!(j
-            .request
-            .prompt
-            .contains("30-140 plain keyboard characters"));
+            .contains("Finish one sentence in 30-180 plain keyboard characters."));
         assert!(j.request.prompt.len() <= 4096);
         assert_eq!(
             j.request.prompt_hash,
@@ -858,16 +872,83 @@ mod tests {
         .is_err());
     }
     #[test]
-    fn observed_stock_verbs_have_a_recent_cooldown_without_banning_motif_reuse() {
+    fn shared_stock_phrases_no_longer_count_as_duplicates() {
         let recent = vec!["the vending machine hums with borrowed teeth.".to_string()];
-        let reason = validate_thought("my rented chair hums with bureaucratic regret.", &recent)
-            .unwrap_err();
-        assert!(reason.contains("hums with"));
+        assert!(validate_thought("my rented chair hums with bureaucratic regret.", &recent).is_ok());
         assert!(validate_thought(
             "the vending machine has applied for custody of my spare change.",
             &recent
         )
         .is_ok());
+    }
+    #[test]
+    fn duplicate_policy_is_exact_not_case_punctuation_word_order_or_overlap() {
+        let original = "the quiet bell rings because nobody remembered to leave.";
+        for distinct in [
+            "The quiet bell rings because nobody remembered to leave.",
+            "the quiet bell rings because nobody remembered to leave!",
+            "because nobody remembered to leave, the quiet bell rings.",
+            "the quiet bell rings because someone forgot to leave.",
+        ] {
+            assert!(validate_thought(distinct, &[original.to_string()]).is_ok(), "{distinct}");
+        }
+        assert!(validate_thought(original, &[original.to_string()]).unwrap_err().contains("exactly repeats"));
+        // Whitespace is removed from the published answer before equality.
+        assert!(validate_thought(&format!("  {original}  "), &[original.to_string()]).is_err());
+        for phrase in ["hums with", "whispers of", "echoes of"] {
+            let recent = format!("the old wall {phrase} electricity and hidden debts.");
+            let fresh = format!("my little clock {phrase} a holiday nobody approved.");
+            assert!(validate_thought(&fresh, &[recent]).is_ok());
+        }
+    }
+    #[test]
+    fn retention_fix_preserves_deployed_output_bounds() {
+        assert!(validate_thought("hi.", &[]).is_err());
+        let valid = "The cupboard has elected another mayor and nobody has asked the spoons.";
+        assert_eq!(validate_thought(valid, &[]).unwrap(), valid);
+        let long = format!("{}.", "the cupboard has elected another mayor and nobody has asked the spoons. ".repeat(4));
+        assert!(validate_thought(&long, &[]).is_err());
+    }
+    #[test]
+    fn retention_fix_preserves_deployed_new_and_retry_prompts() {
+        let (_, mut j) = job();
+        assert!(j.request.prompt.contains("8-24"));
+        assert!(j.request.prompt.contains("80-140"));
+        prepare_repair(&mut j, "rejected output").unwrap();
+        assert!(j.request.prompt.contains("30-180"));
+        assert!(j.request.prompt.contains("Finish one sentence"));
+        assert_eq!(profile().sampling.max_output_tokens, 80);
+        assert_eq!(j.request.max_tokens, 80);
+        assert_eq!(j.voice.as_ref().unwrap().profile_hash, profile_hash());
+    }
+    #[test]
+    fn composed_scenes_are_source_deterministic_varied_and_attempt_specific() {
+        let mut scenes = std::collections::BTreeSet::new();
+        for n in 0..64 {
+            let id = hex0(hash(format!("scene-source-{n}")));
+            let first = scene_instruction(&id, &candid::Nat::from(1u8)).unwrap();
+            assert_eq!(first, scene_instruction(&id, &candid::Nat::from(1u8)).unwrap());
+            assert_ne!(first, scene_instruction(&id, &candid::Nat::from(2u8)).unwrap());
+            assert!(!first.contains("Image seed:"));
+            scenes.insert(first);
+        }
+        assert!(scenes.len() >= 60);
+    }
+    #[test]
+    fn new_prompt_hashes_history_without_replaying_its_words() {
+        let c = config(); let s = swap(&c);
+        let mut memory = VoiceState::default();
+        let text = "i have swallowed the receipt and the printer wants custody.";
+        memory.memories.push(ThoughtMemory { request_id:hex0(hash("memory-source")), text:text.into(),
+            callback_tx_hash:hex0(hash("callback")), callback_log_index:1, pool_id:s.source.pool_id.clone(),
+            manager:Some(s.source.manager.clone()), source_block:99, direction:"buy".into() });
+        let (prompt, commitment) = build_prompt(&c, &s, &memory).unwrap();
+        assert!(!prompt.contains(text));
+        assert!(!prompt.contains("i have swallowed"));
+        assert_eq!(commitment, hex0(hash(format!("- {text}"))));
+        assert_eq!(build_prompt(&c, &s, &memory).unwrap(), (prompt.clone(), commitment));
+        assert!(prompt.contains("Scene cue:"));
+        assert!(prompt.len() < 4096);
     }
     #[test]
     fn only_exact_fulfillment_can_become_memory_and_capacity_is_bounded() {
@@ -968,4 +1049,20 @@ mod tests {
         let (decoded,): (State,) = candid::decode_args(&data).unwrap();
         assert!(decoded.voice.is_none());
     }
+    #[test]
+    fn unlimited_quality_generation_crosses_u8_without_seed_or_cache_collision() {
+        let c=config();let swap=swap(&c);let (request,voice)=create_request(&c,&swap,100,&VoiceState::default()).unwrap();
+        let mut j=Job::new(request);j.voice=Some(voice);j.source=Some(swap.source);
+        for n in 2u16..=300 {
+            prepare_repair_with_policy(&mut j,"rejected candidate",true).unwrap();
+            let v=j.voice.as_ref().unwrap();assert_eq!(generation(v),candid::Nat::from(n));
+            if n<=255 {assert_eq!(generation_seed(&j.request.id,v,0).unwrap(),seed(&j.request.id,n as u8,0,&v.profile_hash).unwrap());}
+            else {assert!(generation_cache_tag(v).starts_with('g'));}
+        }
+        assert_eq!(j.voice.as_ref().unwrap().attempt,255);
+        let first=generation_cache_tag(j.voice.as_ref().unwrap());
+        prepare_repair_with_policy(&mut j,"another rejected candidate",true).unwrap();
+        assert_ne!(first,generation_cache_tag(j.voice.as_ref().unwrap()));
+    }
+
 }
