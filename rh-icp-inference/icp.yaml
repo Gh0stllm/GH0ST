@@ -1,0 +1,19 @@
+canisters:
+  - name: coordinator
+    build:
+      steps:
+        - type: pre-built
+          path: build/coordinator.wasm
+  - name: model
+    build:
+      steps:
+        - type: pre-built
+          path: vendor/llama_cpp_canister/build/llama_cpp.wasm
+environments:
+  - name: production
+    network: ic
+networks:
+  - name: local
+    mode: managed
+    gateway:
+      port: 8001
