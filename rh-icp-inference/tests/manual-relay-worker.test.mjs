@@ -167,6 +167,7 @@ function runBuyWorker(options = {}) {
       render:0,upload:0,mediaRequests:0,mediaScopes:[],mediaIntents:[],assetSavedBeforeUpload:false};
     const job={phase:{[p.jobPhase??'Complete']:null},answer:p.answer??'The spoon has filed another complaint against gravity.',
       voice:[{attempt:p.attempt??1,quality_error:p.qualityError??''}],model_cycles:1400000000000n,
+      input_tokens:0n,output_tokens:0n,prompt_ingested:false,
       busy:!!p.busy,request:{id:p.firstBuy.id,tx_hash:p.firstBuy.txHash,log_index:p.firstBuy.logIndex,
       block_number:p.firstBuy.blockNumber,block_hash:p.firstBuy.blockHash},source:[p.firstBuy.source]};
     const f=globalThis.fixture={
@@ -181,14 +182,17 @@ function runBuyWorker(options = {}) {
       relayer:p.noRelayer?null:{address},
       coordinator:{get_config:async()=>f.config,signer_address:async()=>{counts.signerCalls=(counts.signerCalls??0)+1;return address;},list_jobs:async()=>Array(p.capacity?256:0).fill({}),
         retention_status:async()=>{counts.retentionReads=(counts.retentionReads??0)+1;if(p.retentionThrows)throw Error('retention query unavailable');return{retained:BigInt(p.retainedJobs??(p.capacity?256:0)),completed:BigInt(p.retainedJobs??0),failed:0n,open:BigInt(p.capacity?256:0),busy:0n,paused:false,verifying:false,active:[],blocked_failed:false,admission_allowed:!p.capacity};},
-        get_job:async id=>{counts.getJobs.push(id);return !p.missingJob&&p.existingQueue&&id===p.firstBuy.id?[job]:[];},
+        get_job:async id=>{counts.getJobs.push(id);return !p.missingJob&&p.existingQueue&&id===p.firstBuy.id?
+          [{...job,busy:job.busy||(p.stopBusyAfterAdvances!=null&&counts.advance>=p.stopBusyAfterAdvances)}]:[];},
         submit_swap:async(hash,index)=>{counts.order.push('submit');counts.submissions.push([hash,index.toString()]);if(p.submitThrows)throw Error('uncertain submit');
           const event=p.scanned.find(e=>e.txHash===hash&&e.logIndex===Number(index));
           return{...job,phase:{Failed:null},error:'stop after checked submission',model_cycles:0n,busy:false,
             request:{id:event.id,tx_hash:event.txHash,log_index:event.logIndex,block_number:event.blockNumber,block_hash:event.blockHash},source:[event.source]};},
         abort:async()=>{counts.abort++;job.phase={Failed:null};job.error='stopped by operator; request retained';return null;},
         cleanup:async()=>null,
-        advance:async()=>{counts.advance++;throw Error('must not regenerate');}},
+        advance:async()=>{counts.advance++;if(!p.advanceOutcomes)throw Error('must not regenerate');
+          const outcome=p.advanceOutcomes[counts.advance-1];if(!outcome||outcome==='throw')throw Error('uncertain advance');
+          Object.assign(job,outcome);return job;}},
       gateway:{modelId:async()=> 'model',artifactHash:async()=> 'artifact',icpSigner:async()=>address,authorizedSwapPool:async()=>true,
         filters:{InferenceRequested:()=>({})},queryFilter:async()=>{throw Error('must not scan manual requests');},
         requests:async()=>({status:p.confirmed?2:0,answerHash:'0x'+'66'.repeat(32)})},
@@ -227,6 +231,7 @@ function runBuyWorker(options = {}) {
       await options.persist(result);return result;
     };
     const sources={
+      ...(p.stopAfterDelay?{'node:timers/promises':"export const setTimeout=async ms=>{const f=globalThis.fixture;f.counts.delays??=[];f.counts.delays.push(ms);throw Error('fixture stopped after polling delay');};"}:{}),
       'node:fs':'export default globalThis.fixture.fs;',
       '@icp-sdk/core/agent':'export const HttpAgent={create:async()=>({})};export const Actor={createActor:()=>globalThis.fixture.coordinator};',
       '@icp-sdk/core/identity':'export const Ed25519KeyIdentity={fromJSON:()=>globalThis.fixture.identity};',
@@ -273,6 +278,58 @@ test("BUY_ONLY scans Pons, excludes sells and submits only the oldest queued buy
   assert.equal(state.buyQueue.entries[0].status, "failed_final");
   assert.equal(state.buyQueue.entries[0].actualCycles, "0");
   assert.equal(counts.binding.buyOnly.poolId, BUY_POOL.pool_id);
+});
+
+test("BUY_ONLY immediately continues confirmed generation steps but waits when the job becomes busy", () => {
+  const state = activeBuyState(); state.requests[0].state = "queued";
+  const { counts, state: after, error } = runBuyWorker({ state, jobPhase: "Verified",
+    advanceOutcomes: [
+      { phase: { Running: null } },
+      { phase: { Running: null }, prompt_ingested: true, input_tokens: "120", output_tokens: "4" },
+      { phase: { ReadyToSign: null }, output_tokens: "8" },
+    ], stopBusyAfterAdvances: 3, stopAfterDelay: true, captureFailure: true,
+    env: { ONCE: "0", POLL_MS: "15000" } });
+  assert.match(error, /fixture stopped after polling delay/);
+  assert.equal(counts.advance, 3);
+  assert.equal(counts.getJobs.length, 4);
+  assert.deepEqual(counts.delays, [15000]);
+  assert.equal(after.requests[0].phase, "ReadyToSign");
+  assert.equal(after.requests[0].pendingUpdate, undefined);
+  assert.equal(after.buyQueue.activeSourceId, firstBuy.id);
+  assert.equal(after.requests[1].state, "queued");
+  assert.equal(counts.publish, 0);
+});
+
+test("BUY_ONLY keeps the normal delay for a successful call with no generation progress", () => {
+  const state = activeBuyState(); state.requests[0].state = "queued";
+  const { counts, state: after } = runBuyWorker({ state, jobPhase: "Running",
+    advanceOutcomes: [{ model_cycles: "1400000000001" }], stopAfterDelay: true, captureFailure: true,
+    env: { ONCE: "0", POLL_MS: "15000" } });
+  assert.equal(counts.advance, 1);
+  assert.deepEqual(counts.delays, [15000]);
+  assert.equal(after.requests[0].pendingUpdate, undefined);
+});
+
+test("BUY_ONLY keeps the normal delay and durable reconciliation marker after an uncertain advance", () => {
+  const state = activeBuyState(); state.requests[0].state = "queued";
+  const { counts, state: after } = runBuyWorker({ state, jobPhase: "Running",
+    advanceOutcomes: ["throw"], stopAfterDelay: true, captureFailure: true,
+    env: { ONCE: "0", POLL_MS: "15000" } });
+  assert.equal(counts.advance, 1);
+  assert.deepEqual(counts.delays, [15000]);
+  assert.equal(after.requests[0].pendingUpdate.operation, "advance");
+  assert.equal(after.requests[0].buyHalt.operation, "advance");
+  assert.equal(after.buyQueue.activeSourceId, firstBuy.id);
+  assert.equal(after.requests[1].state, "queued");
+});
+
+test("BUY_ONLY keeps the normal delay while idle or while reads fail", () => {
+  for (const options of [{ state: { nextBlock: 101, requests: [] } }, { readFailure: true }]) {
+    const { counts } = runBuyWorker({ ...options, stopAfterDelay: true, captureFailure: true,
+      env: { ONCE: "0", POLL_MS: "15000" } });
+    assert.deepEqual(counts.delays, [15000]);
+    assert.equal(counts.advance, 0);
+  }
 });
 
 test("WATCH_ONLY queues new Pons buys without any ICP update, wallet or X call", () => {

@@ -16,6 +16,7 @@ import {
 import { idlFactory } from "./candid.mjs";
 import { readRetentionStatus } from "./job-history.mjs";
 import { coordinatorCallTransform } from "./icp-polling.mjs";
+import { generationProgress, canContinueGeneration } from "./continuation-polling.mjs";
 import { validateJob, json } from "./protocol.mjs";
 import { readJournal, writeJournal, unwrap } from "./journal.mjs";
 import { loadSources, scanSwaps } from "./swaps.mjs";
@@ -923,8 +924,12 @@ async function tick() {
       if (buyOnly) syncBuyQueue(item);
       return;
     }
-    if (!("Complete" in job.phase))
+    let continueGeneration = false;
+    if (!("Complete" in job.phase)) {
+      const before = generationProgress(job);
       job = await runBuyMutation(item, "advance", async () => unwrap(await coordinator.advance(item.id)), job);
+      continueGeneration = buyOnly && canContinueGeneration(before, job);
+    }
     item.phase = Object.keys(job.phase)[0];
     item.modelCycles = job.model_cycles.toString();
     if (buyOnly && "Failed" in job.phase) { item.state = "failed"; item.error = job.error; }
@@ -939,7 +944,7 @@ async function tick() {
       }
     }
     if (buyOnly) syncBuyQueue(item);
-    return;
+    return continueGeneration;
   }
 }
 try {
@@ -959,9 +964,10 @@ try {
     }),
   );
   do {
+    let continueImmediately = false;
     try {
       if (!buyOnly || !state.readBackoff || state.readBackoff.nextRetryAt <= Date.now()) {
-        await tick();
+        continueImmediately = await tick() === true;
         if (buyOnly && state.readBackoff) { delete state.readBackoff; save(); }
       }
     } catch (e) {
@@ -974,7 +980,7 @@ try {
       if (process.env.ONCE === "1") throw e;
     }
     if (process.env.ONCE === "1") break;
-    await delay(Number(process.env.POLL_MS ?? 15000));
+    if (!continueImmediately) await delay(Number(process.env.POLL_MS ?? 15000));
   } while (true);
 } finally {
   release();
