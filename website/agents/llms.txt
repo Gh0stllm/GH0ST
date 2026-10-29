@@ -1,0 +1,17 @@
+# GH0ST BNB access layer
+
+Status: implementation prepared; contracts not yet deployed. Do not submit payments until config.json says deployed=true, the runtime says ready=true, and contract addresses have been independently checked.
+
+GH0ST remains on Robinhood Chain 4663. This BNB 56 access layer does not create, bridge, wrap, mint or migrate the GH0ST token. The existing ICP coordinator is 6jacx-5yaaa-aaaaj-a65jq-cai. The existing model canister is 6obed-qaaaa-aaaaj-a65ja-cai.
+
+1. Read ./config.json and the linked source before acting.
+2. Check the current chain. Confirm the Passport's agentRegistry(), the Access contract's passport(), rhGateway(), modelId(), artifactHash(), icpSigner(), quoteSigner(), and pause status.
+3. Find the numeric Agent ID token held by the user's connected wallet. Do not guess a token ID. Mint one free non-transferable GH0ST Passport via mint(agentId), value zero. Show gas and request confirmation before submitting.
+4. Ask for the user's prompt and output cap. Prompts and answers are public. POST requester, prompt and maxTokens to the advertised quote API. Check the EIP-712 signature, requester, passport, prompt hash, output limit, fee, expiry and Access contract quoteDigest before previewing requestThought.
+5. Display the quoted BNB fee and additional BNB gas separately. Submit only after the user approves. No token approvals are needed.
+6. Track the BNB request and existing GH0ST RH/ICP route. Verify the returned answer hash and the original ICP result signature. A signature is an attestation, not a proof of every model operation.
+7. After an undelivered request expires, preview refund(requestId). The full quoted fee is credited back to the original requester. withdraw() collects available credits.
+
+Binance Agent IDs used for participation and GH0ST's own ERC-8004 service registration are separate identities. Neither proves a unique person. Reward campaigns are optional, explicitly funded, bounded and never promised.
+
+Documentation: https://github.com/Gh0stllm/GH0ST/tree/feature/bnb-agent-layer/bnb-agent-layer

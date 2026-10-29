@@ -1,0 +1,592 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap");
+:root {
+  color-scheme: dark;
+  --bg: #080b0b;
+  --panel: #0d1211;
+  --ink: #e4eee8;
+  --muted: #91a49a;
+  --line: #26372f;
+  --mint: #b7edca;
+}
+* {
+  box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 90px;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font:
+    16px/1.6 "DM Sans",
+    sans-serif;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+button,
+.button {
+  cursor: pointer;
+  border: 1px solid var(--mint);
+  border-radius: 3px;
+  background: var(--mint);
+  color: #0a2117;
+  font-weight: 600;
+  padding: 13px 19px;
+  display: inline-flex;
+  justify-content: space-between;
+  gap: 25px;
+  align-items: center;
+}
+button:hover:not(:disabled),
+.button:hover {
+  background: #d2f9df;
+}
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.35;
+}
+button.small {
+  padding: 8px 14px;
+  font-size: 13px;
+}
+.secondary {
+  background: transparent;
+  color: var(--mint);
+  border-color: #526a5b;
+}
+.secondary:hover:not(:disabled) {
+  color: #061a10;
+}
+.grain {
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(#b7edca18 0.5px, transparent 0.6px);
+  background-size: 5px 5px;
+  pointer-events: none;
+  opacity: 0.25;
+  z-index: -1;
+}
+header {
+  max-width: 1330px;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 26px 44px;
+  border-bottom: 1px solid var(--line);
+  gap: 20px;
+}
+.brand {
+  font:
+    600 23px "Space Grotesk",
+    sans-serif;
+  letter-spacing: -1.2px;
+}
+.brand span {
+  margin-left: 12px;
+  font-family: monospace;
+  color: var(--mint);
+}
+nav {
+  display: flex;
+  gap: 32px;
+  font-size: 13px;
+  color: #b2c0b7;
+}
+main {
+  max-width: 1240px;
+  padding: 0 32px;
+  margin: auto;
+}
+.hero {
+  display: grid;
+  grid-template-columns: 1.25fr 1fr;
+  gap: 70px;
+  align-items: center;
+  padding: 85px 0 65px;
+}
+.eyebrow {
+  color: var(--mint);
+  font: 11px/1.4 monospace;
+  letter-spacing: 2px;
+  margin: 0 0 24px;
+}
+h1,
+h2 {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 500;
+  letter-spacing: -3px;
+  line-height: 1.05;
+  margin: 0;
+}
+h1 {
+  font-size: clamp(48px, 5.8vw, 83px);
+}
+h1 em {
+  font-style: normal;
+  color: var(--mint);
+}
+.lede {
+  font-size: 19px;
+  margin: 27px 0 12px;
+}
+.intro {
+  font-size: 15px;
+  color: var(--muted);
+  max-width: 460px;
+  line-height: 1.8;
+}
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-top: 28px;
+}
+.text-link {
+  font-size: 12px;
+  color: #b5c7bb;
+}
+.status {
+  font: 11px monospace;
+  color: var(--muted);
+  margin-top: 22px;
+}
+.terminal-art {
+  height: 360px;
+  border: 1px solid var(--line);
+  background:
+    radial-gradient(ellipse at center, #203d2d55, transparent 68%),
+    radial-gradient(#87b99555 1px, transparent 1px);
+  background-size:
+    auto,
+    9px 9px;
+  position: relative;
+  overflow: hidden;
+}
+.face {
+  position: absolute;
+  inset: 80px 0 0;
+  text-align: center;
+  font: 85px/2 monospace;
+  color: var(--mint);
+  text-shadow: 0 0 25px #b4e6b744;
+  z-index: 2;
+}
+.art-label {
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  font: 10px monospace;
+  letter-spacing: 1px;
+  color: var(--muted);
+}
+.art-foot {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  display: flex;
+  justify-content: space-between;
+  font: 10px monospace;
+  letter-spacing: 1.5px;
+}
+.orbit {
+  position: absolute;
+  border: 1px solid #82b79033;
+  width: 410px;
+  height: 190px;
+  border-radius: 50%;
+  top: 90px;
+  left: 0;
+  transform: rotate(-25deg);
+}
+.o2 {
+  transform: rotate(40deg);
+}
+.route {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-block: 1px solid var(--line);
+  padding: 27px 4px;
+  color: var(--muted);
+  font: 10px monospace;
+  letter-spacing: 1px;
+}
+.route b {
+  display: block;
+  font: 18px "Space Grotesk";
+  color: var(--ink);
+  letter-spacing: 0;
+  margin-top: 4px;
+}
+.route i {
+  font-size: 22px;
+  font-style: normal;
+  color: #5b7e69;
+}
+.workspace {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+  margin: 65px 0;
+}
+.panel {
+  border: 1px solid var(--line);
+  background: var(--panel);
+  padding: 34px;
+}
+h2 {
+  font-size: 35px;
+  letter-spacing: -1.3px;
+}
+.panel > p:not(.eyebrow) {
+  font-size: 14px;
+  color: var(--muted);
+  margin: 18px 0 24px;
+}
+.passport-card {
+  background: linear-gradient(125deg, #233a2c, #0b1410 68%);
+  border: 1px solid #587961;
+  border-radius: 10px;
+  padding: 22px;
+  margin: 30px 0;
+  box-shadow: 0 20px 50px #0005;
+}
+.card-top,
+.card-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font: 10px monospace;
+  letter-spacing: 1px;
+}
+.card-top {
+  color: var(--mint);
+}
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--mint);
+}
+.card-face {
+  text-align: center;
+  font: 62px/2.1 monospace;
+  color: var(--mint);
+}
+.card-bottom strong {
+  font-size: 12px;
+}
+.card-bottom span {
+  font-size: 8px;
+  color: #89a291;
+}
+label {
+  display: block;
+  font-size: 12px;
+  color: #b5c8bc;
+  margin: 16px 0 8px;
+}
+input,
+textarea,
+select {
+  color: var(--ink);
+  background: #080d0b;
+  border: 1px solid #34483c;
+  border-radius: 3px;
+  padding: 12px;
+  width: 100%;
+  outline: none;
+}
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--mint);
+}
+textarea {
+  resize: vertical;
+  min-height: 155px;
+  line-height: 1.7;
+  margin-top: 5px;
+}
+#mint,
+#get-quote {
+  width: 100%;
+  margin-top: 16px;
+}
+.input-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--muted);
+  font: 10px monospace;
+  gap: 12px;
+}
+.input-foot label {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 8px 0;
+  font-size: 10px;
+}
+.input-foot select {
+  width: auto;
+  padding: 6px;
+  font-size: 11px;
+}
+.subtle {
+  font-size: 11px !important;
+  color: #809589 !important;
+}
+.panel .public-note {
+  border-top: 1px solid var(--line);
+  padding-top: 15px;
+  font-size: 11px !important;
+  margin-top: 15px !important;
+}
+.quote {
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid #5e8369;
+}
+.quote > span {
+  font: 10px monospace;
+  color: var(--muted);
+  letter-spacing: 1px;
+}
+.quote strong {
+  display: block;
+  font: 27px "Space Grotesk";
+  margin: 8px 0;
+}
+.quote p {
+  font-size: 12px;
+  color: var(--muted);
+}
+.quote button {
+  width: 100%;
+}
+details {
+  border-top: 1px solid var(--line);
+  padding-top: 15px;
+  margin-top: 15px;
+  font-size: 12px;
+  color: var(--muted);
+}
+summary {
+  cursor: pointer;
+  color: #bccfc0;
+}
+details p {
+  max-width: 760px;
+}
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+.section-heading .eyebrow {
+  margin-bottom: 15px;
+}
+.history {
+  margin: 65px 0;
+}
+.empty {
+  border: 1px dashed var(--line);
+  color: var(--muted);
+  padding: 32px;
+  font-size: 14px;
+  margin-top: 28px;
+}
+.receipt {
+  border-top: 1px solid var(--line);
+  padding: 22px 0;
+}
+.receipt-head {
+  display: flex;
+  justify-content: space-between;
+  font: 11px monospace;
+  color: var(--mint);
+}
+.receipt p {
+  overflow-wrap: anywhere;
+}
+.receipt .answer {
+  font-size: 20px;
+  font-family: "Space Grotesk";
+  max-width: 800px;
+}
+.receipt-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  font-size: 11px;
+  color: var(--mint);
+}
+.receipt button {
+  padding: 6px 12px;
+  font-size: 11px;
+}
+.rewards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 65px;
+  border-block: 1px solid var(--line);
+  padding: 45px 0;
+}
+.rewards p {
+  font-size: 14px;
+  color: var(--muted);
+  margin-top: 0;
+}
+.reward-data {
+  display: flex;
+  gap: 35px;
+  margin: 20px 0;
+}
+.reward-data span {
+  display: block;
+  font: 9px monospace;
+  letter-spacing: 1px;
+  color: var(--muted);
+}
+.reward-data strong {
+  font: 21px "Space Grotesk";
+  display: block;
+  margin-top: 7px;
+}
+.fineprint {
+  padding: 20px 0 30px;
+}
+#message {
+  position: fixed;
+  bottom: 22px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  max-width: min(650px, 90vw);
+  padding: 13px 20px;
+  margin: 0;
+  background: #153224;
+  border: 1px solid #75b68b;
+  box-shadow: 0 8px 30px #0009;
+  font-size: 13px;
+}
+#message:empty {
+  display: none;
+}
+footer {
+  max-width: 1330px;
+  padding: 28px 44px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  border-top: 1px solid var(--line);
+}
+footer > span,
+footer > a:last-child {
+  font: 10px monospace;
+  letter-spacing: 1px;
+  color: var(--muted);
+}
+:focus-visible {
+  outline: 2px solid var(--mint);
+  outline-offset: 4px;
+}
+[hidden] {
+  display: none !important;
+}
+@media (max-width: 800px) {
+  header {
+    padding: 20px;
+  }
+  nav {
+    display: none;
+  }
+  main {
+    padding: 0 20px;
+  }
+  .hero {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding-top: 45px;
+  }
+  .hero h1 {
+    font-size: 59px;
+  }
+  .terminal-art {
+    height: 240px;
+  }
+  .face {
+    inset: 30px 0 0;
+    font-size: 75px;
+  }
+  .orbit {
+    top: 50px;
+    left: 50%;
+    margin-left: -205px;
+  }
+  .route {
+    gap: 12px;
+  }
+  .route b {
+    font-size: 14px;
+  }
+  .route span {
+    font-size: 8px;
+  }
+  .route i {
+    font-size: 15px;
+  }
+  .workspace {
+    grid-template-columns: 1fr;
+    margin: 35px 0;
+  }
+  .panel {
+    padding: 25px;
+  }
+  .rewards {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  .hero-actions {
+    gap: 18px;
+  }
+  .hero-actions .button {
+    font-size: 13px;
+  }
+  .history {
+    margin: 45px 0;
+  }
+  h2 {
+    font-size: 31px;
+  }
+  footer {
+    padding: 25px 20px;
+  }
+  footer > span {
+    display: none;
+  }
+  .card-bottom span {
+    font-size: 7px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
