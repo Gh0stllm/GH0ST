@@ -1,0 +1,61 @@
+{
+  "format": "s0ul-manual-proof-reimbursement-policy-validation-v1",
+  "result": "PASS_TARGETED_REGRESSIONS",
+  "createdAt": "2026-10-22T12:26:27.342899+00:00",
+  "scope": "Manual proof resume policy only. No contract/model/store migration and no chain calls by validating agent.",
+  "source": {
+    "manualScriptSha256": "0c37d02d9e7ce7b3d132eec99bc37be3a262fe38c2b8338afcc23f95668ff014",
+    "workerCoreSha256": "d75ae1241d802e0957a77bdf8dd5d8b05f64e59ca4d1337960ce8f05aebc6a7e",
+    "testSha256": "ce7a4098cfd8271df7e895023168d36b93f15eb5299c75e78bae5941b945132c"
+  },
+  "policy": {
+    "defaultCoreMaxReimbursementShortfallBps": 0,
+    "manualOptInBps": 5,
+    "hardMaximumBps": 5,
+    "rounding": "floor(actualFeeWei * bps / 10000)",
+    "paidReceiptConditions": "Canonical successful advance/finalize with positive actual RewardCredited amount. Zero credit, reverted receipt, or over-limit shortfall stops further work.",
+    "manualLifetimeNetworkFeeBudgetWei": "500000000000000000",
+    "feeBudgetAccounting": "All opening, paid-work, refund and withdrawal network fees count; before each send the full signed next-fee reserve must fit.",
+    "toleratedPaidShortfallUpperBoundWei": "250000000000000",
+    "boundLimit": "Bound applies to tolerated positive-credit paid shortfalls only; an over-limit or reverted receipt has already spent its recorded network fee before stopping. Owner/withdrawal costs are separate operating costs within the same lifetime fee budget.",
+    "profitabilityClaimed": false
+  },
+  "observedFirstMainnetReceipt": {
+    "publicProofSha256AtPausedSnapshot": "fb8f91b1e3eceecacb0e23e8c11bcf55ccf94c310ddac91187a237bf95c05454",
+    "hash": "0x363a5d412ec85df9278609545bc7ab2f546c29129fc485843896851534c9ff16",
+    "gasUsed": 7313167,
+    "actualGasPriceWei": "20208000",
+    "actualFeeWei": "147784478736000",
+    "rewardCreditedWei": "147780517968000",
+    "actualShortfallWei": "3960768000",
+    "shortfallGasEquivalent": 196,
+    "floor5BpsToleranceWei": "73892239368",
+    "allowedUnderExplicit5Bps": true
+  },
+  "nativeEvidence": {
+    "calibrationReportSha256": "e00dea7507fe4d30d683f241603a0dee5607c210b231858ad86b8a0cb014d7aa",
+    "sameInitialFourStepBatchReceiptGas": 7312623,
+    "sameInitialFourStepBatchMeasuredRewardGas": 7312971,
+    "mainnetExtraReceiptGasAgainstLocal": 544,
+    "inference": "Mainnet posting/receipt overhead is consistent with the additional 544 receipt gas consuming the 348 gas local reimbursement margin, leaving 196 gas short. This is not proof of all future Nitro posting costs."
+  },
+  "regressions": {
+    "command": "node --test s0ul-1m/test/analysis-mainnet-proof-policy.test.mjs",
+    "passed": 7,
+    "failed": 0,
+    "checks": [
+      "Actual 196 gas receipt accepted only as explicit tolerated cost.",
+      "Floor boundary accepted; one wei beyond rejected.",
+      "Zero credit/reverted historical paid receipts rejected.",
+      "All owner/withdrawal fees count toward 0.5 ETH lifetime budget.",
+      "Excess credit on another receipt never offsets a shortfall.",
+      "Canonical reward binds emitter/worker/job and signed method.",
+      "Edited saved method/job cannot disguise a paid receipt as withdrawal."
+    ]
+  },
+  "syntaxAndHelpPassed": true,
+  "fullMainnetGenerationClaimed": false,
+  "agentPublicRpcCalls": 0,
+  "agentPublicTransactions": 0,
+  "agentSigningOperations": 0
+}

@@ -1,0 +1,70 @@
+{
+  "baseline_source_hashes": {
+    "integer.py": "c3388221b20397ba747d2de03f4bd46ba30b5bac0cb9ed7046fcd83c249e02f5",
+    "model.py": "bd03dab9dae15fdb27a2909a49b79d5a88a69f0353894c8d9ef1a59ea96beb9d",
+    "tokenizer.py": "0a2ff45a8193c7095e3618f6573e73ba06162d8b5c9cc63205b653eb5556ede7"
+  },
+  "candidate_step": 2000,
+  "cases": [
+    {
+      "exact": false,
+      "features": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "generated": "value, value, value, value, safety."
+    },
+    {
+      "exact": false,
+      "features": [
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "generated": "value, value, value,"
+    }
+  ],
+  "checkpoint_sha256": "26323948c0631811db2afff6f91079b145d880f4034a1b38e6b9bbfc817bda1d",
+  "diagnosis": "Only two of24002unique training vectors represented no-code observations; explicitly weight these known training states in separate continuation.",
+  "failed_source_snapshots": {
+    "dataset_v1_failed.py": "5cec2cdf75f3f8cf2bf2a43d8bd81dfdee47c3abf09abc5eaa825be8a4209eef",
+    "train_analysis_contract_only.py": "87e9c98c5c9f8e6ff92c30fa2a5dac38b50f1bcc0590269dd08ba5c07920bd4f"
+  },
+  "format": "s0ul-analysis-dev-failure-v1",
+  "initial_run_summary": {
+    "completed_steps": 3747,
+    "continuation_used_known_failed_step": 2000,
+    "observed_elapsed_seconds": 602.4224111700023,
+    "sealed_test_read": false,
+    "selection_best_step": 3250,
+    "status": "duration_cap_reached"
+  },
+  "intermediate_checkpoint_publication": "Intermediate and duplicate checkpoints omitted; final frozen checkpoint and original integer initialization are retained.",
+  "label_correction": "Replace claims of reachable opcode relationships with separate observed-pattern descriptions.",
+  "production_claim": false,
+  "sealed_test_read": false,
+  "source": "read-only development probe stdout before any sealed evaluation"
+}

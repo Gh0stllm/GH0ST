@@ -1,0 +1,145 @@
+{
+  "format": "s0ul-analysis-facts-local-evm-validation-v1",
+  "verifiedUtc": "2026-10-22T10:41:20.550Z",
+  "result": "PASS",
+  "scope": "In-process Ganache31340/shanghai only. Real S0ULUniversalReader, S0ULAnalysisFacts and S0ULAnalysisCodec; local adversarial target fixtures. No public RPC, transactions or model-quality claim.",
+  "compiler": "0.8.30+commit.73712a01.Emscripten.clang",
+  "sourceSha256": {
+    "contracts/analysis/S0ULAnalysisFacts.sol": "179cf0d807450e33c7feafc27ff999b7f02a3cd68c6538112686304d6f4f85c3",
+    "contracts/analysis/S0ULAnalysisCodec.sol": "3ca0597d89ea9f586125b26369934f7f37dda3f05c048ce078530c63d0e57d6b",
+    "contracts/intel/v2/S0ULUniversalReader.sol": "3703b1564b1153150720560de03bf8883748d470a4f4f7a75f23abb54d48038a",
+    "contracts/analysis/test/S0ULAnalysisFactsMocks.sol": "4d613c7a8392a385b2b96182512c06b5413293c6b9a7a9cd812cef6fa05b3144",
+    "analysis-model/schema.json": "ad3a20e98017eec39c13e636ef9d2536cca7318b012785138ebbdc0764080faa",
+    "analysis-model/vocabulary.json": "bdf78a26cdb8677ce6eb129f02480200467adcad717dd4323f3098dc348b2196"
+  },
+  "runtimeBytes": {
+    "reader": 6163,
+    "facts": 4304,
+    "codec": 4937
+  },
+  "tests": {
+    "total": 18,
+    "passed": 18,
+    "failed": 0
+  },
+  "gas": {
+    "adversarial24576ByteCapture": "9415048"
+  },
+  "cases": [
+    {
+      "name": "reader identity, schema identity and constructor pins fail closed",
+      "result": "PASS",
+      "durationMs": 107
+    },
+    {
+      "name": "zero, unfunded no-code and funded no-code addresses are accepted with exact full-width native balance",
+      "result": "PASS",
+      "durationMs": 716
+    },
+    {
+      "name": "contract evidence preserves exact code hash, balance, block counter and observation timestamp",
+      "result": "PASS",
+      "durationMs": 4612
+    },
+    {
+      "name": "reported interface masks require canonical ERC165 and map directly to the model input",
+      "result": "PASS",
+      "durationMs": 35231
+    },
+    {
+      "name": "ownership, implementation and asset classify unavailable, zero and nonzero separately without truncating dirty addresses",
+      "result": "PASS",
+      "durationMs": 50829
+    },
+    {
+      "name": "pause has unavailable, false and true states and rejects noncanonical boolean data",
+      "result": "PASS",
+      "durationMs": 21875
+    },
+    {
+      "name": "supply availability is independent of zero or positive value and preserves all uint256 bits",
+      "result": "PASS",
+      "durationMs": 16536
+    },
+    {
+      "name": "scalar return bombs, truncation, revert, gas exhaustion and attempted writes cannot poison feature classes",
+      "result": "PASS",
+      "durationMs": 43465
+    },
+    {
+      "name": "pool compatibility requires canonical reserves and live distinct asset contract addresses",
+      "result": "PASS",
+      "durationMs": 36834
+    },
+    {
+      "name": "pool zero reserves, uint112 and uint32 boundaries are distinguished and out-of-range words are rejected",
+      "result": "PASS",
+      "durationMs": 29024
+    },
+    {
+      "name": "pool malformed sizes, bombs, reverts, exhausted gas and write attempts are unavailable rather than fabricated",
+      "result": "PASS",
+      "durationMs": 33434
+    },
+    {
+      "name": "opcode features are exact structural flags, skip PUSH data and retain incomplete-scan evidence",
+      "result": "PASS",
+      "durationMs": 60278
+    },
+    {
+      "name": "cross-checks reject reader target, native balance, code identity, mask, clock or block inconsistencies",
+      "result": "PASS",
+      "durationMs": 875
+    },
+    {
+      "name": "capture derives prompt internally, ignores trailing ABI data, rejects insufficient gas and fits bounded adversarial scan",
+      "result": "PASS",
+      "durationMs": 111440
+    },
+    {
+      "name": "strict word codec: domain, schema and all output words match the frozen Python vocabulary",
+      "result": "PASS",
+      "durationMs": 1692
+    },
+    {
+      "name": "strict word codec: exact generated words round trip without selecting or replacing content",
+      "result": "PASS",
+      "durationMs": 894
+    },
+    {
+      "name": "strict word codec: missing EOS, repeated or middle specials, input IDs, padding and unassigned vocabulary IDs fail closed",
+      "result": "PASS",
+      "durationMs": 398
+    },
+    {
+      "name": "strict word codec: output length counts EOS and enforces the thirty-two-token generation boundary",
+      "result": "PASS",
+      "durationMs": 540
+    }
+  ],
+  "validationRuns": [
+    {
+      "verifiedUtc": "2026-10-22T10:40:51.734Z",
+      "passed": 14,
+      "scope": "facts integration",
+      "sourceSha256": {
+        "contracts/analysis/S0ULAnalysisFacts.sol": "179cf0d807450e33c7feafc27ff999b7f02a3cd68c6538112686304d6f4f85c3",
+        "contracts/intel/v2/S0ULUniversalReader.sol": "3703b1564b1153150720560de03bf8883748d470a4f4f7a75f23abb54d48038a",
+        "contracts/analysis/test/S0ULAnalysisFactsMocks.sol": "4d613c7a8392a385b2b96182512c06b5413293c6b9a7a9cd812cef6fa05b3144"
+      }
+    },
+    {
+      "verifiedUtc": "2026-10-22T10:41:20.550Z",
+      "passed": 4,
+      "scope": "codec subset; prior facts cases retained only after exact unchanged-source hash checks",
+      "sourceSha256": {
+        "contracts/analysis/S0ULAnalysisFacts.sol": "179cf0d807450e33c7feafc27ff999b7f02a3cd68c6538112686304d6f4f85c3",
+        "contracts/analysis/S0ULAnalysisCodec.sol": "3ca0597d89ea9f586125b26369934f7f37dda3f05c048ce078530c63d0e57d6b",
+        "contracts/intel/v2/S0ULUniversalReader.sol": "3703b1564b1153150720560de03bf8883748d470a4f4f7a75f23abb54d48038a",
+        "contracts/analysis/test/S0ULAnalysisFactsMocks.sol": "4d613c7a8392a385b2b96182512c06b5413293c6b9a7a9cd812cef6fa05b3144",
+        "analysis-model/schema.json": "ad3a20e98017eec39c13e636ef9d2536cca7318b012785138ebbdc0764080faa",
+        "analysis-model/vocabulary.json": "bdf78a26cdb8677ce6eb129f02480200467adcad717dd4323f3098dc348b2196"
+      }
+    }
+  ]
+}

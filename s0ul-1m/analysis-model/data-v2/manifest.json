@@ -1,0 +1,38 @@
+{
+  "combination_holdout": "owner=nonzero AND pause=true AND origin=present is excluded from train/validation/ordinary test",
+  "feature_schema_sha256": "eadc97e902dcdadbc655ee8b920562997737c5aa5690f181f7860bf1543c41f0",
+  "files": {
+    "combination_test": {
+      "examples": 256,
+      "path": "combination_test.jsonl",
+      "sha256": "aa5b226ed6316ddc4c612d70cb06fe80bf526073356d56ae7d3a0ed52de1bfdb"
+    },
+    "test": {
+      "examples": 512,
+      "path": "test.jsonl",
+      "sha256": "7ded406d1044253c92630aca111813c1481f1a78633066f6480e131a4953a5ab"
+    },
+    "train": {
+      "examples": 24002,
+      "path": "train.jsonl",
+      "sha256": "17d78d0440fa5cc83ba3b63fe27a5417c8f384cca4ddd5cdf881f246ddd67fea"
+    },
+    "validation": {
+      "examples": 512,
+      "path": "validation.jsonl",
+      "sha256": "a31ae38703e894d14e8c5b02232b63a6243c23d518c17447b87800a2ccdf10a6"
+    }
+  },
+  "format": "s0ul-analysis-dataset-v1",
+  "generator_sha256": "fd0adb9dc4d636139f41c3ba480b33e58d39b6dcc100c422dcde54c3b0ced8d8",
+  "label_source": "deterministic authored fact-only rules; no teacher, external feed, address history or financial labels",
+  "limitations": [
+    "Authored labels measure agreement with this finite fact task, not real-world analyst expertise.",
+    "Feature combinations can include adversarial or inconsistent getter reports.",
+    "Output deliberately prioritizes observations; it does not enumerate every feature."
+  ],
+  "maximum_response_words": 27,
+  "no_code_cases": "two exhaustive training cases; independently checked as regression, not test generalization",
+  "partition": "SHA256 of full feature vector; train/validation/test disjoint",
+  "seed": 20261022
+}

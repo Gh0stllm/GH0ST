@@ -1,0 +1,96 @@
+{
+  "format": "s0ul-analysis-site-release-validation-v1",
+  "recordedAt": "2026-10-22T12:29:10.932Z",
+  "evidenceAttribution": {
+    "remoteChecks": "Reported by parent agent /root after its authenticated Netlify CLI26 production deployments; final deployment public configuration and repeated read-only setup checks are root observations. This recording agent performed no remote checks, authentication, publication, or transactions.",
+    "localChecks": "This recording agent rechecked the preceding dist file count, every non-overlay frozen-base file, both PDF bytes, public configuration/HTML SHA-256, and migration size. Root reported the final build retained 563 files, 558 preserved base files and both exact PDFs; this report-only update performed no additional build or network checks."
+  },
+  "deployment": {
+    "site": "https://gh0st.wiki",
+    "deployId": "6ada00f59e93bdabdc6b16bb",
+    "context": "production",
+    "chainId": 4663,
+    "executor": "0x150e7F441bF5218d00716aD3B25a72D6e22423B5",
+    "modelId": "0xbbebbe2e6ff555505e97c8b674a03f9c1033438e9e73c16661c122b25b47e998",
+    "deployUrl": "https://6ada00f59e93bdabdc6b16bb--gh0st-observatory.netlify.app",
+    "uploaded": {
+      "staticFiles": 1,
+      "functions": 2
+    }
+  },
+  "staticBuild": {
+    "files": 563,
+    "preservedBaseFiles": 558,
+    "baseArchiveSha256": "9902a5c5749a476f142fd8db9c9a31ceb2411a2c62d9cae507aa009da215a18c",
+    "pdfsExact": true,
+    "pdfs": {
+      "research/gh0st-research-paper-001.pdf": {
+        "sha256": "abdb5445a21dc7b09b482bf899085f72ab1582a9fbb240363a18ad3f29b51923",
+        "sizeBytes": 308075
+      },
+      "research/gh0st-research-paper-002.pdf": {
+        "sha256": "3440ba7df0d22ff0cc998f204df2a91fe853c0d3a550204bd7317a587d1fc878",
+        "sizeBytes": 3202328
+      }
+    },
+    "publicConfigurationSha256": "daf1c22d4bbcb3f0ddb4c97dd0434e072cc6fec894b385420655da5cee341587",
+    "publicHtmlSha256": "40b7115de1694563c6d996767142423a7e00ffad6dac7728b20a2239e89e5b7d"
+  },
+  "rootObservedHttpChecks": {
+    "publicHtml": {
+      "path": "/s0ul/",
+      "status": 200,
+      "sha256": "40b7115de1694563c6d996767142423a7e00ffad6dac7728b20a2239e89e5b7d",
+      "observedDeployId": "6ad9fe1c44d916f32efb78b0"
+    },
+    "publicConfiguration": {
+      "path": "/s0ul-analysis-deployment.json",
+      "status": 200,
+      "sha256": "daf1c22d4bbcb3f0ddb4c97dd0434e072cc6fec894b385420655da5cee341587",
+      "observedDeployId": "6ada00f59e93bdabdc6b16bb"
+    },
+    "readOnlySetup": {
+      "path": "/api/s0ul/worker?setup=1",
+      "status": 200,
+      "setup": {
+        "deployment": true,
+        "database": true,
+        "migrations": true,
+        "blobs": true
+      },
+      "signedTransactions": 0,
+      "submitted": 0,
+      "executionEnabled": false,
+      "observedDeployId": "6ada00f59e93bdabdc6b16bb",
+      "responseSha256": "926529a1e813cf1fc866f863183a908b375339504c4a758cc559223c5e1563ea"
+    },
+    "normalWorkerHealth": {
+      "path": "/api/s0ul/worker",
+      "status": 503,
+      "ready": false,
+      "available": false,
+      "expected": "Worker execution remains disabled.",
+      "observedDeployId": "6ad9fe1c44d916f32efb78b0"
+    }
+  },
+  "migration": {
+    "path": "netlify/database/migrations/20261022120000_s0ul_analysis_worker.sql",
+    "sizeBytes": 701,
+    "rootObserved": "Netlify CLI26 default build staged and applied this migration."
+  },
+  "worker": {
+    "serviceVerified": false,
+    "executionEnabled": false,
+    "signedTransactions": 0,
+    "submitted": 0,
+    "maxReimbursementShortfallBps": 5
+  },
+  "history": [
+    {
+      "deployId": "6ad9fe1c44d916f32efb78b0",
+      "publicConfigurationSha256": "33ee6d8e37c692541d5359a793d73f633b27efe9c2c91d4b8ba63d3604fa6781",
+      "publicHtmlSha256": "40b7115de1694563c6d996767142423a7e00ffad6dac7728b20a2239e89e5b7d",
+      "workerExecutionEnabled": false
+    }
+  ]
+}
