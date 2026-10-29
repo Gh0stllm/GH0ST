@@ -12,6 +12,7 @@ import {
   accessAbi,
   passportAbi,
   quoteTypes,
+  tokenQuoteTypes,
   quoteDomain,
 } from "./protocol.mjs";
 const $ = (id) => document.getElementById(id);
@@ -22,6 +23,7 @@ let config,
   account,
   access,
   passport,
+  paymentTokenContract,
   activeQuote,
   generation = 0;
 const tell = (text) => {
@@ -47,7 +49,10 @@ function controls() {
   $("refresh").disabled = !ready;
   $("get-quote").disabled = !ready || !config.ready;
   $("copy-prompt").disabled = !config?.deployed;
-  if (!ready) $("withdraw").disabled = true;
+  if (!ready) {
+    $("withdraw").disabled = true;
+    $("withdraw-token").disabled = true;
+  }
 }
 async function load() {
   config = await (await fetch("./config.json", { cache: "no-store" })).json();
@@ -69,6 +74,19 @@ async function load() {
       ? "● BNB ACCESS ACTIVE / POWERED BY EXISTING GH0ST"
       : "● PASSPORT DEPLOYED / INFERENCE INTAKE PAUSED"
     : "○ IMPLEMENTATION PREVIEW / CONTRACT DEPLOYMENT PENDING";
+  if (config.paymentToken) {
+    paymentTokenContract = new Contract(
+      config.paymentToken,
+      [
+        "function balanceOf(address) view returns(uint256)",
+        "function allowance(address,address) view returns(uint256)",
+        "function approve(address,uint256) returns(bool)",
+      ],
+      readProvider,
+    );
+    $("asset-gh0st").disabled = false;
+    $("payment-asset").value = "gh0st";
+  }
   controls();
   await refresh();
 }
@@ -141,6 +159,14 @@ async function refresh() {
   ]);
   $("credits").textContent = formatEther(credit) + " BNB";
   $("withdraw").disabled = credit === 0n;
+  if (paymentTokenContract) {
+    const tokenCredit = await access.tokenCredits(account),
+      balance = await paymentTokenContract.balanceOf(account);
+    $("token-credits").textContent = formatEther(tokenCredit) + " GH0ST";
+    $("token-balance").textContent =
+      "Wallet: " + formatEther(balance) + " GH0ST";
+    $("withdraw-token").disabled = tokenCredit === 0n;
+  }
   $("passport-number").textContent = id ? "PASSPORT #" + id : "NOT MINTED";
   $("passport-state").textContent = id
     ? isActive
@@ -254,6 +280,7 @@ $("prompt").oninput = () => {
     toUtf8Bytes($("prompt").value).length + " / 3400 bytes";
 };
 $("tokens").onchange = resetQuote;
+$("payment-asset").onchange = resetQuote;
 $("get-quote").onclick = async () => {
   const button = $("get-quote");
   button.disabled = true;
@@ -261,13 +288,31 @@ $("get-quote").onclick = async () => {
   try {
     const prompt = $("prompt").value,
       maxTokens = Number($("tokens").value),
-      response = await api("/quote", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ requester: account, prompt, maxTokens }),
-      });
-    const q = response.quote,
-      expectedSigner = await access.quoteSigner();
+      tokenMode = $("payment-asset").value === "gh0st";
+    if (tokenMode && !paymentTokenContract)
+      throw Error("GH0ST payments are not active yet.");
+    const response = await api("/quote", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        requester: account,
+        prompt,
+        maxTokens,
+        paymentToken: tokenMode ? config.paymentToken : null,
+      }),
+    });
+    const q = response.tokenQuote?.request ?? response.quote,
+      types = tokenMode ? tokenQuoteTypes : quoteTypes,
+      value = tokenMode ? response.tokenQuote : q;
+    if (
+      tokenMode &&
+      (!value ||
+        getAddress(value.paymentToken) !== getAddress(config.paymentToken))
+    )
+      throw Error("Quote uses the wrong payment token.");
+    if (!tokenMode && response.tokenQuote)
+      throw Error("Quote has the wrong denomination.");
+    const expectedSigner = await access.quoteSigner();
     if (
       version !== generation ||
       getAddress(q.requester) !== getAddress(account) ||
@@ -276,33 +321,71 @@ $("get-quote").onclick = async () => {
       getAddress(
         verifyTypedData(
           quoteDomain(config.access),
-          quoteTypes,
-          q,
+          types,
+          value,
           response.signature,
         ),
       ) !== getAddress(expectedSigner)
     )
       throw Error("Quote does not match this wallet and request.");
-    const pid = await passport.passportOf(account);
-    if (BigInt(q.passportId) !== pid)
+    if (BigInt(q.passportId) !== (await passport.passportOf(account)))
       throw Error("Quote uses a different passport.");
-    if ((await access.quoteDigest(q)) !== response.requestId)
-      throw Error("Quote digest does not match the contract.");
-    const gas = await access
+    const digest = tokenMode
+      ? await access.tokenQuoteDigest(value)
+      : await access.quoteDigest(q);
+    if (digest !== response.requestId)
+      throw Error("Quote digest differs from the contract.");
+    let needsApproval = false,
+      gas;
+    if (tokenMode) {
+      if ((await paymentTokenContract.balanceOf(account)) < BigInt(q.fee))
+        throw Error("Not enough GH0ST on BNB. Use the GH0ST bridge first.");
+      needsApproval =
+        (await paymentTokenContract.allowance(account, config.access)) <
+        BigInt(q.fee);
+      gas = needsApproval
+        ? await paymentTokenContract
+            .connect(signer)
+            .approve.estimateGas(config.access, q.fee)
+        : await access
+            .connect(signer)
+            .requestThoughtWithToken.estimateGas(
+              prompt,
+              value,
+              response.signature,
+            );
+    } else
+      gas = await access
         .connect(signer)
         .requestThought.estimateGas(prompt, q, response.signature, {
           value: BigInt(q.fee),
-        }),
-      fees = await walletProvider.getFeeData();
+        });
+    const fees = await walletProvider.getFeeData();
     if (version !== generation) return;
-    activeQuote = { ...response, prompt, account };
-    $("quote-price").textContent = formatEther(q.fee) + " BNB";
+    activeQuote = {
+      ...response,
+      quote: q,
+      prompt,
+      account,
+      tokenMode,
+      needsApproval,
+    };
+    $("quote-price").textContent =
+      formatEther(q.fee) + (tokenMode ? " GH0ST" : " BNB");
     $("quote-detail").textContent =
-      "Request gas estimate: " +
+      (needsApproval ? "Approval" : "Request") +
+      " gas estimate: " +
       formatEther(gas * (fees.maxFeePerGas ?? fees.gasPrice ?? 0n)) +
-      " BNB. Price expires " +
+      " BNB. " +
+      (needsApproval ? "Payment is a separate wallet confirmation. " : "") +
+      "Price expires " +
       new Date(Number(q.validUntil) * 1000).toLocaleTimeString() +
       ".";
+    $("submit").textContent = needsApproval
+      ? "Approve " + formatEther(q.fee) + " GH0ST"
+      : tokenMode
+        ? "Pay in GH0ST"
+        : "Approve in wallet";
     $("quote").hidden = false;
   } catch (e) {
     tell(friendly(e));
@@ -313,12 +396,54 @@ $("get-quote").onclick = async () => {
 $("submit").onclick = async () => {
   const q = activeQuote;
   if (!q || q.account !== account) return tell("Get a fresh quote first.");
-  await transact($("submit"), () =>
-    access.connect(signer).requestThought(q.prompt, q.quote, q.signature, {
-      value: BigInt(q.quote.fee),
-    }),
-  ).catch((e) => tell(friendly(e)));
+  const button = $("submit");
+  button.disabled = true;
+  try {
+    if (
+      q.tokenMode &&
+      (await paymentTokenContract.allowance(account, config.access)) <
+        BigInt(q.quote.fee)
+    ) {
+      const tx = await paymentTokenContract
+        .connect(signer)
+        .approve(config.access, q.quote.fee);
+      tell("Waiting for the exact GH0ST allowance to confirm…");
+      await tx.wait();
+      if (activeQuote !== q || q.account !== account) return;
+      if (
+        Number(q.quote.validUntil) <
+        (await walletProvider.getBlock("latest")).timestamp
+      ) {
+        resetQuote();
+        tell("Approval confirmed. Get a fresh price before paying.");
+        return;
+      }
+      q.needsApproval = false;
+      button.textContent = "Pay " + formatEther(q.quote.fee) + " GH0ST";
+      tell("Allowance confirmed. Review and click Pay to submit the request.");
+      return;
+    }
+    await transact(button, () =>
+      q.tokenMode
+        ? access
+            .connect(signer)
+            .requestThoughtWithToken(q.prompt, q.tokenQuote, q.signature)
+        : access
+            .connect(signer)
+            .requestThought(q.prompt, q.quote, q.signature, {
+              value: BigInt(q.quote.fee),
+            }),
+    );
+  } catch (e) {
+    tell(friendly(e));
+  } finally {
+    button.disabled = false;
+  }
 };
+$("withdraw-token").onclick = () =>
+  transact($("withdraw-token"), () =>
+    access.connect(signer).withdrawToken(),
+  ).catch((e) => tell(friendly(e)));
 $("withdraw").onclick = () =>
   transact($("withdraw"), () => access.connect(signer).withdraw()).catch((e) =>
     tell(friendly(e)),

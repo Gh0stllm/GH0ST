@@ -25,6 +25,7 @@ import { compile } from "../scripts/compile.mjs";
 import {
   quoteDomain,
   quoteTypes,
+  tokenQuoteTypes,
   resultDomain,
   resultTypes,
   transportPrompt,
@@ -32,6 +33,46 @@ import {
 const example = JSON.parse(
   fs.readFileSync(new URL("../config.example.json", import.meta.url)),
 );
+test("GH0ST quotes use explicit token units and bind their denomination", async () => {
+  const token = Wallet.createRandom().address,
+    signer = Wallet.createRandom(),
+    c = {
+      ...example,
+      access: Wallet.createRandom().address,
+      paymentToken: token,
+      paymentTokenDecimals: 18,
+      tokenPricing: {
+        baseUnits: "100",
+        inputByteUnits: "2",
+        outputTokenUnits: "3",
+        deliveryUnits: "50",
+      },
+    };
+  validateConfig(c);
+  const out = await signQuote(
+    c,
+    signer,
+    {
+      requester: Wallet.createRandom().address,
+      passportId: 1,
+      prompt: "hello",
+      maxTokens: 32,
+      paymentToken: token,
+    },
+    1000,
+  );
+  assert.equal(out.quote.fee, 256n);
+  assert.equal(
+    out.requestId,
+    TypedDataEncoder.hash(
+      quoteDomain(c.access),
+      tokenQuoteTypes,
+      out.tokenQuote,
+    ),
+  );
+  assert.throws(() => pricedFee(c, "hello", 32, Wallet.createRandom().address));
+  assert.throws(() => validateConfig({ ...c, tokenPricing: null }));
+});
 test("configuration and prices reject wrong chains, unsafe URLs and unbounded inputs", () => {
   assert.equal(validateConfig(example).chainId, 56);
   for (const patch of [

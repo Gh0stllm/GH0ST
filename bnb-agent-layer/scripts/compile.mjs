@@ -50,9 +50,16 @@ export function compile() {
       {
         import: (p) => {
           try {
+            const mapped = p.replace(
+              "@openzeppelin/contracts@5.3.0/",
+              "@openzeppelin/contracts/",
+            );
+            const local = path.join(root, "contracts", mapped);
             return {
               contents: fs.readFileSync(
-                path.join(root, "node_modules", p),
+                fs.existsSync(local)
+                  ? local
+                  : path.join(root, "node_modules", mapped),
                 "utf8",
               ),
             };
@@ -76,7 +83,14 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const artifacts = compile();
   fs.mkdirSync(path.join(root, "build"), { recursive: true });
   for (const [name, artifact] of Object.entries(artifacts))
-    if (["GH0STAccess", "GH0STPassport"].includes(name)) {
+    if (
+      [
+        "GH0STAccess",
+        "GH0STPassport",
+        "GH0STBridgedToken",
+        "GH0STRobinhoodEscrow",
+      ].includes(name)
+    ) {
       fs.writeFileSync(
         path.join(root, "build", name + ".json"),
         JSON.stringify(artifact, null, 2),
