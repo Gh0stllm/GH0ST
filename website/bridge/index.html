@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>GH0ST / Bridge</title>
+    <meta
+      name="description"
+      content="Move GH0ST between Robinhood and BNB using a 1:1 backed bridge."
+    />
+    <link rel="stylesheet" href="../agents/style.css" />
+  </head>
+  <body>
+    <header>
+      <a class="brand" href="/">GH0ST [0_0]</a>
+      <nav aria-label="Main">
+        <a href="/agents/">Agent access</a><a href="#backing">Backing</a
+        ><a href="https://github.com/Gh0stllm/GH0ST">Source ↗</a>
+      </nav>
+      <button id="connect" class="small">Connect wallet</button>
+    </header>
+    <main>
+      <section class="hero">
+        <div>
+          <p class="eyebrow">ROBINHOOD ↔ BNB / POWERED BY CCIP</p>
+          <h1>Same GH0ST.<br />Another <em>chain.</em></h1>
+          <p class="lede">Move the token. Keep its roots.</p>
+          <p class="intro">
+            GH0ST stays native to Robinhood. Tokens sent here are locked there
+            before an equal backed balance is issued on BNB. Bridge back to burn
+            the BNB balance and release the original.
+          </p>
+          <p id="deployment" class="status" role="status">
+            Checking bridge configuration…
+          </p>
+        </div>
+        <div class="terminal-art" aria-hidden="true">
+          <div class="art-label">ONE ASSET / TWO NETWORKS</div>
+          <div class="face">[0_0]</div>
+          <div class="art-foot">
+            <span>1 GH0ST LOCKED</span><span>1 GH0ST BACKED</span>
+          </div>
+        </div>
+      </section>
+      <div class="workspace">
+        <section class="panel">
+          <p class="eyebrow">TRANSFER</p>
+          <h2>Choose the route.</h2>
+          <label for="direction">From → To</label
+          ><select id="direction">
+            <option value="robinhood">Robinhood → BNB</option>
+            <option value="bnb">BNB → Robinhood</option>
+          </select>
+          <p id="balance" class="subtle">Connect to check your balance.</p>
+          <label for="amount">Amount of GH0ST</label
+          ><input
+            id="amount"
+            inputmode="decimal"
+            placeholder="0.0"
+            autocomplete="off"
+          /><label for="recipient">Receiving wallet</label
+          ><input id="recipient" placeholder="0x…" autocomplete="off" /><button
+            id="quote"
+            disabled
+            style="width: 100%; margin-top: 20px"
+          >
+            Review bridge fee <span>↗</span>
+          </button>
+          <div id="preview" hidden class="quote">
+            <strong id="fee"></strong>
+            <p id="fee-detail"></p>
+            <button id="send">Approve GH0ST</button>
+          </div>
+          <p class="subtle">
+            GH0ST pays for inference after it arrives on BNB. Bridging and
+            transaction gas use the sending chain’s native token.
+          </p>
+        </section>
+        <section id="backing" class="panel">
+          <p class="eyebrow">BACKING / RECEIPTS</p>
+          <h2>One-to-one.<br />Every transfer recorded.</h2>
+          <p id="backing-stats">
+            Backing becomes visible after the verified bridge is deployed.
+          </p>
+          <p id="addresses" class="subtle"></p>
+          <div id="receipt" class="empty">
+            Your confirmed source transaction and CCIP message ID will appear
+            here. Delivery is asynchronous.
+          </div>
+          <p id="credit" class="subtle"></p>
+          <button id="withdraw-credit" class="secondary" disabled>
+            Withdraw unused fee credit
+          </button>
+          <p class="subtle">
+            A confirmed source transaction means the transfer was sent. Wait for
+            the destination balance or a successful CCIP delivery before using
+            the tokens.
+          </p>
+        </section>
+      </div>
+      <section class="fineprint">
+        <details>
+          <summary>What happens if delivery is delayed?</summary>
+          <p>
+            The transfer remains in flight while CCIP delivers it. Failed
+            destination execution can be retried through CCIP. Source tokens
+            cannot be unilaterally refunded after sending, because their
+            destination message may still execute. Keep the source receipt and
+            message ID.
+          </p>
+        </details>
+        <details>
+          <summary>What secures the bridge?</summary>
+          <p>
+            Both contracts accept finalized messages only from the configured
+            CCIP router and the fixed bridge peer. The BNB contract has no
+            administrator mint function. The bridge still depends on CCIP’s
+            verification, the correctness of these contracts, and correct
+            initial peer configuration.
+          </p>
+        </details>
+      </section>
+      <p id="message" role="status" aria-live="polite"></p>
+    </main>
+    <footer>
+      <a class="brand" href="/agents/">GH0ST [0_0]</a
+      ><span>ROOTED ON ROBINHOOD</span
+      ><a
+        href="https://github.com/Gh0stllm/GH0ST/tree/feature/bnb-gh0st-token-bridge/bnb-agent-layer"
+        >Source ↗</a
+      >
+    </footer>
+    <script type="module" src="./app.mjs"></script>
+  </body>
+</html>

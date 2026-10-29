@@ -1,0 +1,88 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.4;
+
+import {IAny2EVMMessageReceiver} from "../interfaces/IAny2EVMMessageReceiver.sol";
+import {IAny2EVMMessageReceiverV2} from "../interfaces/IAny2EVMMessageReceiverV2.sol";
+
+import {Client} from "../libraries/Client.sol";
+
+import {FinalityCodec} from "../libraries/FinalityCodec.sol";
+import {IERC165} from "@openzeppelin/contracts@5.3.0/utils/introspection/IERC165.sol";
+
+/// @title CCIPReceiver - Base contract for CCIP applications that can receive messages.
+abstract contract CCIPReceiver is IAny2EVMMessageReceiverV2, IERC165 {
+  address internal immutable i_ccipRouter;
+
+  constructor(
+    address router
+  ) {
+    if (router == address(0)) revert InvalidRouter(address(0));
+    i_ccipRouter = router;
+  }
+
+  /// @notice IERC165 supports an interfaceId.
+  /// @param interfaceId The interfaceId to check.
+  /// @return true if the interfaceId is supported.
+  /// @dev Should indicate whether the contract implements IAny2EVMMessageReceiver.
+  /// e.g. return interfaceId == type(IAny2EVMMessageReceiver).interfaceId || interfaceId == type(IERC165).interfaceId
+  /// This allows CCIP to check if ccipReceive is available before calling it.
+  /// - If this returns false or reverts, only tokens are transferred to the receiver.
+  /// - If this returns true, tokens are transferred and ccipReceive is called atomically.
+  /// Additionally, if the receiver address does not have code associated with it at the time of
+  /// execution (EXTCODESIZE returns 0), only tokens will be transferred.
+  function supportsInterface(
+    bytes4 interfaceId
+  ) public pure virtual override returns (bool) {
+    return interfaceId == type(IAny2EVMMessageReceiver).interfaceId
+      || interfaceId == type(IAny2EVMMessageReceiverV2).interfaceId || interfaceId == type(IERC165).interfaceId;
+  }
+
+  /// @inheritdoc IAny2EVMMessageReceiver
+  function ccipReceive(
+    Client.Any2EVMMessage calldata message
+  ) external virtual override onlyRouter {
+    _ccipReceive(message);
+  }
+
+  /// @notice Override this function in your implementation.
+  /// @param message Any2EVMMessage.
+  function _ccipReceive(
+    Client.Any2EVMMessage memory message
+  ) internal virtual;
+
+  /// @notice Return the current router
+  /// @return CCIP router address
+  function getRouter() public view virtual returns (address) {
+    return address(i_ccipRouter);
+  }
+
+  /// @notice Return the CCVs required/optional and allowed finality config for a source chain.
+  /// @dev This can be overridden to specify different CCVs per source chain. The current implementation means the
+  /// default CCV is used and finality is required (allowedFinalityConfig = FinalityCodec.WAIT_FOR_FINALITY_FLAG).
+  function getCCVsAndFinalityConfig(
+    uint64,
+    bytes calldata
+  )
+    external
+    view
+    virtual
+    returns (
+      address[] memory requiredCCVs,
+      address[] memory optionalCCVs,
+      uint8 optionalThreshold,
+      bytes4 allowedFinalityConfig
+    )
+  {
+    // By default no specific CCVs are required or optional. This means the default CCV is chosen.
+    // allowedFinalityConfig = FinalityCodec.WAIT_FOR_FINALITY_FLAG means finality is required.
+    return (new address[](0), new address[](0), 0, FinalityCodec.WAIT_FOR_FINALITY_FLAG);
+  }
+
+  error InvalidRouter(address router);
+
+  /// @dev only calls from the set router are accepted.
+  modifier onlyRouter() {
+    if (msg.sender != getRouter()) revert InvalidRouter(msg.sender);
+    _;
+  }
+}

@@ -9,6 +9,7 @@ import {
 import {
   quoteDomain,
   quoteTypes,
+  tokenQuoteTypes,
   resultDomain,
   resultTypes,
   transportPrompt,
@@ -79,9 +80,22 @@ export function validateConfig(c) {
     if (!Number.isSafeInteger(c.deploymentBlock) || c.deploymentBlock < 0)
       throw Error("Missing deployment block");
   }
+  if (c.paymentToken) {
+    if (BigInt(getAddress(c.paymentToken)) === 0n)
+      throw Error("Invalid payment token");
+    if (c.paymentTokenDecimals !== 18) throw Error("GH0ST uses 18 decimals");
+    for (const k of [
+      "baseUnits",
+      "inputByteUnits",
+      "outputTokenUnits",
+      "deliveryUnits",
+    ])
+      if (!/^[1-9]\d*$/.test(c.tokenPricing?.[k] ?? ""))
+        throw Error("Explicit positive GH0ST pricing is required");
+  }
   return c;
 }
-export function pricedFee(c, prompt, maxTokens) {
+export function pricedFee(c, prompt, maxTokens, paymentToken = null) {
   if (
     typeof prompt !== "string" ||
     ["<|im_start|>", "<|im_end|>", "<|endoftext|>"].some((x) =>
@@ -98,6 +112,17 @@ export function pricedFee(c, prompt, maxTokens) {
     maxTokens > 128
   )
     throw Error("Prompt must be 1–3400 UTF-8 bytes and output 1–128 tokens");
+  if (paymentToken) {
+    if (!c.paymentToken || !same(paymentToken, c.paymentToken))
+      throw Error("Unsupported payment token");
+    const p = c.tokenPricing;
+    const compute =
+      BigInt(p.baseUnits) +
+      BigInt(p.inputByteUnits) * BigInt(inputBytes) +
+      BigInt(p.outputTokenUnits) * BigInt(maxTokens);
+    const delivery = BigInt(p.deliveryUnits);
+    return { inputBytes, compute, delivery, total: compute + delivery };
+  }
   const compute =
     BigInt(c.computeBaseWei) +
     BigInt(c.inputByteWei) * BigInt(inputBytes) +
@@ -115,10 +140,10 @@ export function pricedFee(c, prompt, maxTokens) {
 export async function signQuote(
   c,
   signer,
-  { requester, passportId, prompt, maxTokens },
+  { requester, passportId, prompt, maxTokens, paymentToken = null },
   chainTime,
 ) {
-  const breakdown = pricedFee(c, prompt, maxTokens);
+  const breakdown = pricedFee(c, prompt, maxTokens, paymentToken);
   const quote = {
     requester: getAddress(requester),
     passportId: BigInt(passportId),
@@ -129,12 +154,20 @@ export async function signQuote(
     deadline: chainTime + c.requestSeconds,
     nonce: "0x" + crypto.randomBytes(32).toString("hex"),
   };
-  const domain = quoteDomain(c.access),
-    signature = await signer.signTypedData(domain, quoteTypes, quote);
+  const domain = quoteDomain(c.access);
+  const tokenQuote = paymentToken
+    ? { request: quote, paymentToken: getAddress(paymentToken) }
+    : null;
+  const types = tokenQuote ? tokenQuoteTypes : quoteTypes;
+  const value = tokenQuote ?? quote;
+  const signature = await signer.signTypedData(domain, types, value);
   return {
     quote,
+    ...(tokenQuote
+      ? { tokenQuote, paymentToken: tokenQuote.paymentToken }
+      : {}),
     signature,
-    requestId: TypedDataEncoder.hash(domain, quoteTypes, quote),
+    requestId: TypedDataEncoder.hash(domain, types, value),
     breakdown,
   };
 }

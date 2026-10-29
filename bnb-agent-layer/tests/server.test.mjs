@@ -45,6 +45,7 @@ test("read-only service exposes the page and guide but never issues undeployed q
     assert.equal(cfg.ready, false);
     assert.equal(cfg.deployed, false);
     assert.match(await (await fetch(base + "/agents/")).text(), /Another way/);
+    assert.match(await (await fetch(base + "/bridge/")).text(), /Same GH0ST/);
     assert.match(
       await (await fetch(base + "/agents/llms.txt")).text(),
       /does not create/,

@@ -44,6 +44,9 @@ const publicConfig = () => ({
   modelCanister: config.modelCanister,
   apiBase: "/api/bnb",
   quoteSigner: quoter?.address ?? null,
+  paymentToken: config.paymentToken ?? null,
+  paymentTokenSymbol: config.paymentToken ? "GH0ST" : null,
+  paymentTokenDecimals: config.paymentToken ? 18 : null,
 });
 async function initialize() {
   if (!config.deployed) return;
@@ -64,6 +67,11 @@ async function initialize() {
       throw Error(`Access contract ${method} differs from configuration`);
   if (!same(await passport.agentRegistry(), config.agentRegistry))
     throw Error("Passport registry differs from configuration");
+  if (
+    config.paymentToken &&
+    !same(await access.paymentToken(), config.paymentToken)
+  )
+    throw Error("Bound GH0ST payment token differs from configuration");
   if (
     !process.env.GH0ST_BNB_QUOTE_KEY ||
     !process.env.GH0ST_RELAY_KEY ||
@@ -194,8 +202,14 @@ const server = http.createServer(async (req, res) => {
     const local =
       url.pathname === "/agents" || url.pathname === "/agents/"
         ? "/agents/index.html"
-        : url.pathname;
-    if (!local.startsWith("/agents/") && local !== "/mint/vendor/ethers.js")
+        : url.pathname === "/bridge" || url.pathname === "/bridge/"
+          ? "/bridge/index.html"
+          : url.pathname;
+    if (
+      !local.startsWith("/agents/") &&
+      !local.startsWith("/bridge/") &&
+      local !== "/mint/vendor/ethers.js"
+    )
       return json(res, 404, { error: "Not found" });
     const target = path.resolve(webroot, "." + decodeURIComponent(local));
     if (!target.startsWith(webroot + path.sep))

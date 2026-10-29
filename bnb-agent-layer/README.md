@@ -1,26 +1,28 @@
 # GH0ST BNB access layer
 
-An additive access layer on BNB Smart Chain, built on the **existing GH0ST Robinhood/ICP system**. It creates no fungible token, no wrapped GH0ST supply, no replacement model and no second inference coordinator.
+An additive access layer on BNB Smart Chain, built on the **existing GH0ST Robinhood/ICP system**. The optional [GH0ST bridge](BRIDGE.md) locks original tokens on Robinhood and issues a 1:1 backed BNB representation for payments. It does not replace the existing token, model or coordinator.
 
 **Status:** implementation and local validation. The BNB contracts, service activation and ERC-8004 registration are not deployed. The checked-in page deliberately disables paid actions until deployment and service readiness are verified.
 
-[Validation: 17 passing tests and read-only mainnet checks](VALIDATION.md).
+[Original access-layer validation](VALIDATION.md) · [Bridge and GH0ST payment implementation](BRIDGE.md) · [Bridge validation](BRIDGE-VALIDATION.md).
 
 ## Components
 
 | Component             | Behavior                                                                                                                                                                                                                                                         |
 | --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `GH0STPassport.sol`   | Free ERC-721/ERC-5192 soulbound passport. Minting checks ownership of a specific upstream Agent ID; each ID and wallet can mint once. Losing the upstream ID disables new requests. On-chain SVG and metadata.                                                   |
-| `GH0STAccess.sol`     | Signed, expiring BNB fee quotes; exact-prompt commitments; prepaid escrow; permissionless delivery of the existing ICP signature; full expiry refunds; public request history and completion counts.                                                             |
+| `GH0STAccess.sol`     | Signed, expiring BNB or GH0ST fee quotes; exact-prompt commitments; prepaid escrow; permissionless delivery of the existing ICP signature; full expiry refunds; public request history and completion counts.                                                             |
 | Participation rewards | Optional native-BNB pool, separately funded, capped globally and per passport. Only completed requests qualify. No escrow diversion or promised return.                                                                                                          |
 | Relay                 | Confirms BNB events, submits a domain-bound prompt to the existing RH gateway, uses the existing coordinator, settles the result on RH, then transports its original signature to BNB. Durable signed transaction and ICP-update journals prevent blind retries. |
 | `/agents/`            | Wallet connection, identity mint, signed price preview, requests, history, receipt links, refunds, withdrawals and AI-wallet instructions.                                                                                                                       |
 | ERC-8004              | Registration metadata and unsigned registration-transaction preparation. This is GH0ST's service identity, separate from users' Binance Agent IDs.                                                                                                               |
 
+The bridge adds `GH0STRobinhoodEscrow` (original-token custody), `GH0STBridgedToken` (backed BNB balances) and `/bridge/` (transfer and receipt interface). See [BRIDGE.md](BRIDGE.md) for deployment ordering, peer binding and payment-token configuration.
+
 ## Existing GH0ST is the execution layer
 
-1. A user obtains a Passport and signs an exact BNB quote.
-2. The Access contract escrows BNB and commits to a transport prompt containing its own address and unique request ID.
+1. A user obtains a Passport and signs an exact BNB or GH0ST quote.
+2. The Access contract escrows the quoted asset and commits to a transport prompt containing its own address and unique request ID.
 3. The relay submits that exact prompt to **the existing RH gateway**. Its wallet must be explicitly authorized there.
 4. **The existing ICP coordinator and model** verify and execute that RH request. Their current one-active-job admission remains authoritative.
 5. The original ICP signature settles the answer on RH. The relay waits for confirmed RH state before transporting it to BNB.

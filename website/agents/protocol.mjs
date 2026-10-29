@@ -10,6 +10,13 @@ export const quoteTypes = {
     ["nonce", "bytes32"],
   ].map(([name, type]) => ({ name, type })),
 };
+export const tokenQuoteTypes = {
+  TokenQuote: [
+    { name: "request", type: "Quote" },
+    { name: "paymentToken", type: "address" },
+  ],
+  Quote: quoteTypes.Quote,
+};
 export const resultTypes = {
   InferenceResult: [
     ["requestId", "bytes32"],
@@ -53,6 +60,15 @@ export const quoteTuple =
 export const resultTuple =
   "(bytes32 requestId,bytes32 promptHash,bytes32 modelId,bytes32 artifactHash,bytes32 answerHash,uint64 inputTokens,uint64 outputTokens,uint128 modelCycles)";
 export const accessAbi = [
+  `function requestThoughtWithToken(string prompt,(${quoteTuple} request,address paymentToken) tokenQuote,bytes signature) returns(bytes32)`,
+  `function tokenQuoteDigest((${quoteTuple} request,address paymentToken) tokenQuote) view returns(bytes32)`,
+  "function bindPaymentToken(address)",
+  "function paymentToken() view returns(address)",
+  "function requestPaymentToken(bytes32) view returns(address)",
+  "function tokenCredits(address) view returns(uint256)",
+  "function tokenEscrowed() view returns(uint256)",
+  "function totalTokenCredits() view returns(uint256)",
+  "function withdrawToken()",
   `function requestThought(string prompt,${quoteTuple} quote,bytes signature) payable returns(bytes32)`,
   `function requests(bytes32) view returns${requestTuple}`,
   `function fulfill(bytes32 requestId,${resultTuple} result,string answer,bytes signature)`,

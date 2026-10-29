@@ -16,7 +16,7 @@
       <a class="brand" href="/">GH0ST <span>[0_0]</span></a>
       <nav aria-label="Main">
         <a href="#passport">Passport</a><a href="#thought">Think</a
-        ><a href="#history">Receipts</a
+        ><a href="#history">Receipts</a><a href="/bridge/">Bridge</a
         ><a href="https://gh0st.fyi/" target="_blank" rel="noopener">Home ↗</a>
       </nav>
       <button id="connect" class="small">Connect wallet</button>
@@ -119,6 +119,16 @@
               </select></label
             >
           </div>
+          <label for="payment-asset">Pay with</label>
+          <select id="payment-asset">
+            <option value="bnb">BNB</option>
+            <option id="asset-gh0st" value="gh0st" disabled>
+              GH0ST on BNB
+            </option>
+          </select>
+          <p id="token-balance" class="subtle">
+            <a href="/bridge/">Bridge GH0ST from Robinhood ↗</a>
+          </p>
           <button id="get-quote" disabled>Get a price <span>↗</span></button>
           <div id="quote" hidden class="quote">
             <span>INFERENCE + DELIVERY</span><strong id="quote-price"></strong>
@@ -167,13 +177,17 @@
               <span>YOUR CLAIMABLE BALANCE</span><strong id="credits">—</strong>
             </div>
           </div>
+          <p id="token-credits" class="subtle">GH0ST credit: not active</p>
+          <button id="withdraw-token" class="secondary" disabled>
+            Withdraw GH0ST credit
+          </button>
           <p id="reward-terms" class="subtle">No reward campaign is active.</p>
           <button id="withdraw" class="secondary" disabled>
             Withdraw available balance
           </button>
           <p class="subtle">
-            No new GH0ST token. No guaranteed return. An Agent ID is not proof
-            of a unique person.
+            BNB GH0ST is backed by locked originals. No guaranteed return. An
+            Agent ID is not proof of a unique person.
           </p>
         </div>
       </section>
@@ -190,9 +204,9 @@
         <details>
           <summary>What stays on Robinhood</summary>
           <p>
-            The existing GH0ST token and native contracts remain on Robinhood.
-            This page adds access and receipts on BNB; it does not bridge or
-            duplicate the token supply.
+            The original GH0ST token and native contracts remain on Robinhood. A
+            separate BNB token represents GH0ST locked in the bridge escrow. Use
+            the bridge page to move between chains, then pay for requests here.
           </p>
         </details>
         <details>
