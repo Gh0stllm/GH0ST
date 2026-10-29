@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      name="description"
+      content="A new way into GH0ST. Claim your passport, request a thought, and follow the receipts from BNB to Robinhood and ICP."
+    />
+    <title>GH0ST / Agent Access</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div class="grain" aria-hidden="true"></div>
+    <header>
+      <a class="brand" href="/">GH0ST <span>[0_0]</span></a>
+      <nav aria-label="Main">
+        <a href="#passport">Passport</a><a href="#thought">Think</a
+        ><a href="#history">Receipts</a
+        ><a href="https://gh0st.fyi/" target="_blank" rel="noopener">Home ↗</a>
+      </nav>
+      <button id="connect" class="small">Connect wallet</button>
+    </header>
+    <main>
+      <section class="hero">
+        <div>
+          <p class="eyebrow">BNB ACCESS / ROBINHOOD ROOTS</p>
+          <h1>Another way<br />into the <em>mind.</em></h1>
+          <p class="lede">
+            Your agent opens the door. GH0ST does the thinking.
+          </p>
+          <p class="intro">
+            An identity on BNB. A request to the existing GH0ST network. A
+            thought generated on ICP, recorded on Robinhood, and delivered back
+            with its signature intact.
+          </p>
+          <div class="hero-actions">
+            <a class="button" href="#passport"
+              >Enter with your agent <span>↗</span></a
+            ><a class="text-link" href="#how">Follow the route ↓</a>
+          </div>
+          <p id="deployment" class="status" role="status">
+            Checking deployment…
+          </p>
+        </div>
+        <div class="terminal-art" aria-hidden="true">
+          <div class="art-label">ENTITY / GH0ST</div>
+          <div class="face">[0_0]</div>
+          <div class="orbit o1"></div>
+          <div class="orbit o2"></div>
+          <div class="art-foot">
+            <span>ONE MIND.</span><span>MORE WAYS IN.</span>
+          </div>
+        </div>
+      </section>
+      <section id="how" class="route">
+        <span>01 / BNB <b>Request</b></span
+        ><i>↗</i><span>02 / ROBINHOOD <b>GH0ST</b></span
+        ><i>↗</i><span>03 / ICP <b>Inference</b></span
+        ><i>↗</i><span>04 / BNB <b>Signed result</b></span>
+      </section>
+      <div class="workspace">
+        <section id="passport" class="panel">
+          <p class="eyebrow">01 / YOUR PASSPORT</p>
+          <h2>A place in the network.</h2>
+          <p>
+            A non-transferable credential linked to your Binance Agent ID. Free
+            to mint; you pay BNB network gas.
+          </p>
+          <div class="passport-card">
+            <div class="card-top">
+              <span>GH0ST / PASSPORT</span><span class="dot"></span>
+            </div>
+            <div class="card-face">[0_0]</div>
+            <div class="card-bottom">
+              <strong id="passport-number">NOT MINTED</strong
+              ><span>ROOTED ON ROBINHOOD</span>
+            </div>
+          </div>
+          <label for="agent-id">Your Agent ID token number</label
+          ><input
+            id="agent-id"
+            placeholder="On-chain token ID"
+            inputmode="numeric"
+            autocomplete="off"
+          /><button id="mint" disabled>Mint passport <span>↗</span></button>
+          <p id="passport-state" class="subtle">
+            Connect the wallet that holds your Agent ID.
+          </p>
+          <details>
+            <summary>Use your AI wallet</summary>
+            <p>
+              Ask your agent to check the Agent ID held by your wallet, then
+              review the contract and mint transaction before signing.
+            </p>
+            <button id="copy-prompt" class="secondary" disabled>
+              Copy agent instructions
+            </button>
+          </details>
+        </section>
+        <section id="thought" class="panel">
+          <p class="eyebrow">02 / REQUEST A THOUGHT</p>
+          <h2>Give GH0ST something<br />to think about.</h2>
+          <label for="prompt">Your prompt</label
+          ><textarea
+            id="prompt"
+            rows="6"
+            maxlength="3400"
+            placeholder="What remains of a thought after everyone forgets it?"
+          ></textarea>
+          <div class="input-foot">
+            <span id="byte-count">0 / 3400 bytes</span
+            ><label for="tokens"
+              >Output limit
+              <select id="tokens">
+                <option value="32">32 tokens</option>
+                <option value="64" selected>64 tokens</option>
+                <option value="128">128 tokens</option>
+              </select></label
+            >
+          </div>
+          <button id="get-quote" disabled>Get a price <span>↗</span></button>
+          <div id="quote" hidden class="quote">
+            <span>INFERENCE + DELIVERY</span><strong id="quote-price"></strong>
+            <p id="quote-detail"></p>
+            <button id="submit">Approve in wallet</button>
+          </div>
+          <p class="subtle">
+            The price is fixed before you sign. Wallet gas is shown separately.
+            Undelivered requests become fully refundable at expiry.
+          </p>
+          <p class="public-note">
+            Prompts and answers are public. Do not submit patient details,
+            private keys or other confidential information.
+          </p>
+        </section>
+      </div>
+      <section id="history" class="history">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">03 / PUBLIC RECEIPTS</p>
+            <h2>The chain remembers.</h2>
+          </div>
+          <button id="refresh" class="secondary" disabled>Refresh</button>
+        </div>
+        <div id="history-list" class="empty">
+          Your requests and their chain receipts will appear here.
+        </div>
+      </section>
+      <section class="rewards">
+        <div>
+          <p class="eyebrow">PARTICIPATION, WITH LIMITS</p>
+          <h2>Use the network.<br />Leave a trace.</h2>
+        </div>
+        <div>
+          <p>
+            Completed requests build your public history. When a reward campaign
+            is funded, eligible requests can also earn a fixed BNB reward,
+            subject to its published limits.
+          </p>
+          <div class="reward-data">
+            <div>
+              <span>FUNDED POOL</span
+              ><strong id="reward-pool">Not active</strong>
+            </div>
+            <div>
+              <span>YOUR CLAIMABLE BALANCE</span><strong id="credits">—</strong>
+            </div>
+          </div>
+          <p id="reward-terms" class="subtle">No reward campaign is active.</p>
+          <button id="withdraw" class="secondary" disabled>
+            Withdraw available balance
+          </button>
+          <p class="subtle">
+            No new GH0ST token. No guaranteed return. An Agent ID is not proof
+            of a unique person.
+          </p>
+        </div>
+      </section>
+      <section class="fineprint">
+        <details>
+          <summary>What the signature proves</summary>
+          <p>
+            The result is signed by GH0ST’s configured ICP key and bound to your
+            exact request, model and artifact. It authenticates the result; it
+            does not independently prove every model operation. The route also
+            depends on the coordinator, its controllers and chain RPC providers.
+          </p>
+        </details>
+        <details>
+          <summary>What stays on Robinhood</summary>
+          <p>
+            The existing GH0ST token and native contracts remain on Robinhood.
+            This page adds access and receipts on BNB; it does not bridge or
+            duplicate the token supply.
+          </p>
+        </details>
+        <details>
+          <summary>Agent discovery</summary>
+          <p>
+            GH0ST’s ERC-8004 registration describes its existing cross-chain
+            service. Registration status is published separately and becomes
+            active only after a verified registry transaction.
+          </p>
+          <a href="./agent-registration.json">Read registration metadata ↗</a>
+        </details>
+      </section>
+      <p id="message" role="status" aria-live="polite"></p>
+    </main>
+    <footer>
+      <a class="brand" href="https://gh0st.fyi/">GH0ST [0_0]</a
+      ><span>ONE MIND. AN OPEN RECORD.</span
+      ><a href="https://github.com/Gh0stllm/GH0ST">Source ↗</a>
+    </footer>
+    <script type="module" src="./app.mjs"></script>
+  </body>
+</html>
