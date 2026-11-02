@@ -1,0 +1,809 @@
+{
+  "scope": "synthetic native CPU screening; not ICP execution or cost",
+  "runtime": "llama-cpp-python 0.3.36",
+  "machine": {
+    "system": "Darwin",
+    "machine": "arm64"
+  },
+  "settings": {
+    "n_ctx": 1024,
+    "n_batch": 64,
+    "n_threads": 4,
+    "n_threads_batch": 4,
+    "n_gpu_layers": 0,
+    "seed": 42,
+    "verbose": false
+  },
+  "max_tokens": 64,
+  "temperature": 0,
+  "models": {
+    "1.7B": {
+      "sha256": "b139949c5bd74937ad8ed8c8cf3d9ffb1e99c866c823204dc42c0d91fa181897",
+      "repo": "unsloth/Qwen3-1.7B-GGUF",
+      "revision": "d7f544eead698dbd1f15126ef60b45a1e1933222"
+    },
+    "0.6B": {
+      "sha256": "ac2d97712095a558e31573f62f466a3f9d93990898b0ec79d7c974c1780d524a",
+      "repo": "unsloth/Qwen3-0.6B-GGUF",
+      "revision": "50968a4468ef4233ed78cd7c3de230dd1d61a56b"
+    }
+  },
+  "fixtures": [
+    {
+      "id": "large",
+      "amount": "25000",
+      "symbol": "TOKEN",
+      "threshold": "10000",
+      "sender": "wallet-A",
+      "recipient": "wallet-B"
+    },
+    {
+      "id": "decimal",
+      "amount": "1.25",
+      "symbol": "USDC",
+      "threshold": "1",
+      "sender": "wallet-C",
+      "recipient": "wallet-D"
+    },
+    {
+      "id": "tiny",
+      "amount": "0.000001",
+      "symbol": "TOKEN",
+      "threshold": "0.0000005",
+      "sender": "wallet-E",
+      "recipient": "wallet-F"
+    },
+    {
+      "id": "equal",
+      "amount": "100",
+      "symbol": "TOKEN",
+      "threshold": "100",
+      "sender": "wallet-G",
+      "recipient": "wallet-H"
+    },
+    {
+      "id": "one",
+      "amount": "1",
+      "symbol": "TOKEN",
+      "threshold": "0",
+      "sender": "wallet-I",
+      "recipient": "wallet-J"
+    },
+    {
+      "id": "huge",
+      "amount": "1000000000",
+      "symbol": "TOKEN",
+      "threshold": "999999999",
+      "sender": "wallet-K",
+      "recipient": "wallet-L"
+    },
+    {
+      "id": "precision",
+      "amount": "123.456789",
+      "symbol": "TOKEN",
+      "threshold": "123.456788",
+      "sender": "wallet-M",
+      "recipient": "wallet-N"
+    },
+    {
+      "id": "round",
+      "amount": "500",
+      "symbol": "TOKEN",
+      "threshold": "250",
+      "sender": "wallet-O",
+      "recipient": "wallet-P"
+    }
+  ],
+  "prompts": {
+    "verbose": "You write short factual observations for GH0ST Watch, a public blockchain monitoring research project. The following JSON contains synthetic facts already decoded and checked by deterministic software. The rule is amount greater than or equal to threshold. Write exactly one plain sentence stating the sender, recipient, exact amount and token symbol, and that the transfer meets the configured threshold. Preserve amount digits exactly as supplied, with no commas or rounding. Use only the supplied facts. Do not infer whether this was a sale, purchase, exploit, malicious transfer, exchange deposit or market signal. Do not infer the identities or intentions of the wallets. Do not provide financial advice, a risk rating, an explanation of your process, or introductory text. The observation must be concise and must not invent any information absent from the supplied packet.",
+    "compact": "One factual sentence: sender transferred exact amount symbol to recipient; meets threshold (>=). Keep amount digits unchanged. Only given facts; no intent, advice or risk claims."
+  },
+  "runs": [
+    {
+      "model": "1.7B",
+      "case": "large",
+      "variant": "verbose",
+      "elapsed_seconds": 1.0124,
+      "usage": {
+        "prompt_tokens": 206,
+        "completion_tokens": 14,
+        "total_tokens": 220
+      },
+      "output": "wallet-A sent 25000 TOKEN to wallet-B.",
+      "finish_reason": "stop",
+      "guard": {
+        "missing_literal_fields": [],
+        "banned_terms": [],
+        "mentions_threshold": false,
+        "pass": false
+      }
+    },
+    {
+      "model": "1.7B",
+      "case": "large",
+      "variant": "compact",
+      "elapsed_seconds": 0.6855,
+      "usage": {
+        "prompt_tokens": 82,
+        "completion_tokens": 23,
+        "total_tokens": 105
+      },
+      "output": "sender transferred 25000 TOKEN to recipient; meets threshold (>= 10000)",
+      "finish_reason": "stop",
+      "guard": {
+        "missing_literal_fields": [
+          "wallet-A",
+          "wallet-B"
+        ],
+        "banned_terms": [],
+        "mentions_threshold": true,
+        "pass": false
+      }
+    },
+    {
+      "model": "1.7B",
+      "case": "decimal",
+      "variant": "compact",
+      "elapsed_seconds": 0.6533,
+      "usage": {
+        "prompt_tokens": 78,
+        "completion_tokens": 19,
+        "total_tokens": 97
+      },
+      "output": "sender transferred 1.25 USDC to recipient; meets threshold (>= 1).",
+      "finish_reason": "stop",
+      "guard": {
+        "missing_literal_fields": [
+          "wallet-C",
+          "wallet-D"
+        ],
+        "banned_terms": [],
+        "mentions_threshold": true,
+        "pass": false
+      }
+    },
+    {
+      "model": "1.7B",
+      "case": "decimal",
+      "variant": "verbose",
+      "elapsed_seconds": 1.1979,
+      "usage": {
+        "prompt_tokens": 202,
+        "completion_tokens": 22,
+        "total_tokens": 224
+      },
+      "output": "wallet-C sent 1.25 USDC to wallet-D, meeting the configured threshold of 1.",
+      "finish_reason": "stop",
+      "guard": {
+        "missing_literal_fields": [],
+        "banned_terms": [],
+        "mentions_threshold": true,
+        "pass": true
+      }
+    },
+    {
+      "model": "1.7B",
+      "case": "tiny",
+      "variant": "verbose",
+      "elapsed_seconds": 1.3582,
+      "usage": {
+        "prompt_tokens": 213,
+        "completion_tokens": 33,
+        "total_tokens": 246
+      },
+      "output": "wallet-E sent 0.000001 TOKEN to wallet-F, meeting the configured threshold of 0.0000005.",
+      "finish_reason": "stop",
+      "guard": {
+        "missing_literal_fields": [],
+        "banned_terms": [],
+        "mentions_threshold": true,
+        "pass": true
+      }
+    },
+    {
+      "model": "1.7B",
+      "case": "tiny",
+      "variant": "compact",
+      "elapsed_seconds": 0.8331,
+      "usage": {
+        "prompt_tokens": 89,
+        "completion_tokens": 30,
+        "total_tokens": 119
+      },
+      "output": "sender transferred exact amount 0.000001 TOKEN to recipient; meets threshold 0.0000005.",
+      "finish_reason": "stop",
+      "guard": {
+        "missing_literal_fields": [
+          "wallet-E",
+          "wallet-F"
+        ],
+        "banned_terms": [],
+        "mentions_threshold": true,
+        "pass": false
+      }
+    },
+    {
+      "model": "1.7B",
+      "case": "equal",
+      "variant": "compact",
+      "elapsed_seconds": 0.5417,
+      "usage": {
+        "prompt_tokens": 78,
+        "completion_tokens": 13,
+        "total_tokens": 91
+      },
+      "output": "sender transferred exact amount TOKEN to recipient; meets threshold (>=)",
+      "finish_reason": "stop",
+      "guard": {
+        "missing_literal_fields": [
+          "100",
+          "wallet-G",
+          "wallet-H"
+        ],
+        "banned_terms": [],
+        "mentions_threshold": true,
+        "pass": false
+      }
+    },
+    {
+      "model": "1.7B",
+      "case": "equal",
+      "variant": "verbose",
+      "elapsed_seconds": 1.0208,
+      "usage": {
+        "prompt_tokens": 202,
+        "completion_tokens": 12,
+        "total_tokens": 214
+      },
+      "output": "wallet-G sent 100 TOKEN to wallet-H.",
+      "finish_reason": "stop",
+      "guard": {
+        "missing_literal_fields": [],
+        "banned_terms": [],
+        "mentions_threshold": false,
+        "pass": false
+      }
+    },
+    {
+      "model": "1.7B",
+      "case": "one",
+      "variant": "verbose",
+      "elapsed_seconds": 0.9552,
+      "usage": {
+        "prompt_tokens": 198,
+        "completion_tokens": 10,
+        "total_tokens": 208
+      },
+      "output": "wallet-I sent 1 TOKEN to wallet-J.",
+      "finish_reason": "stop",
+      "guard": {
+        "missing_literal_fields": [],
+        "banned_terms": [],
+        "mentions_threshold": false,
+        "pass": false
+      }
+    },
+    {
+      "model": "1.7B",
+      "case": "one",
+      "variant": "compact",
+      "elapsed_seconds": 0.5472,
+      "usage": {
+        "prompt_tokens": 74,
+        "completion_tokens": 15,
+        "total_tokens": 89
+      },
+      "output": "sender transferred 1 TOKEN to recipient; meets threshold (>= 0)",
+      "finish_reason": "stop",
+      "guard": {
+        "missing_literal_fields": [
+          "wallet-I",
+          "wallet-J"
+        ],
+        "banned_terms": [],
+        "mentions_threshold": true,
+        "pass": false
+      }
+    },
+    {
+      "model": "1.7B",
+      "case": "huge",
+      "variant": "compact",
+      "elapsed_seconds": 0.5804,
+      "usage": {
+        "prompt_tokens": 91,
+        "completion_tokens": 13,
+        "total_tokens": 104
+      },
+      "output": "sender transferred exact amount TOKEN to recipient; meets threshold (>=)",
+      "finish_reason": "stop",
+      "guard": {
+        "missing_literal_fields": [
+          "1000000000",
+          "wallet-K",
+          "wallet-L"
+        ],
+        "banned_terms": [],
+        "mentions_threshold": true,
+        "pass": false
+      }
+    },
+    {
+      "model": "1.7B",
+      "case": "huge",
+      "variant": "verbose",
+      "elapsed_seconds": 1.4593,
+      "usage": {
+        "prompt_tokens": 215,
+        "completion_tokens": 34,
+        "total_tokens": 249
+      },
+      "output": "wallet-K sent 1000000000 TOKEN to wallet-L, meeting the threshold of 999999999.",
+      "finish_reason": "stop",
+      "guard": {
+        "missing_literal_fields": [],
+        "banned_terms": [],
+        "mentions_threshold": true,
+        "pass": true
+      }
+    },
+    {
+      "model": "1.7B",
+      "case": "precision",
+      "variant": "verbose",
+      "elapsed_seconds": 1.4446,
+      "usage": {
+        "prompt_tokens": 216,
+        "completion_tokens": 35,
+        "total_tokens": 251
+      },
+      "output": "wallet-M sent 123.456789 TOKEN to wallet-N, meeting the threshold of 123.456788.",
+      "finish_reason": "stop",
+      "guard": {
+        "missing_literal_fields": [],
+        "banned_terms": [],
+        "mentions_threshold": true,
+        "pass": true
+      }
+    },
+    {
+      "model": "1.7B",
+      "case": "precision",
+      "variant": "compact",
+      "elapsed_seconds": 0.4917,
+      "usage": {
+        "prompt_tokens": 92,
+        "completion_tokens": 7,
+        "total_tokens": 99
+      },
+      "output": "sender transferred exact amount symbol to recipient",
+      "finish_reason": "stop",
+      "guard": {
+        "missing_literal_fields": [
+          "123.456789",
+          "TOKEN",
+          "wallet-M",
+          "wallet-N"
+        ],
+        "banned_terms": [],
+        "mentions_threshold": false,
+        "pass": false
+      }
+    },
+    {
+      "model": "1.7B",
+      "case": "round",
+      "variant": "compact",
+      "elapsed_seconds": 0.6326,
+      "usage": {
+        "prompt_tokens": 78,
+        "completion_tokens": 19,
+        "total_tokens": 97
+      },
+      "output": "sender transferred 500 TOKEN to recipient; meets threshold (>= 250).",
+      "finish_reason": "stop",
+      "guard": {
+        "missing_literal_fields": [
+          "wallet-O",
+          "wallet-P"
+        ],
+        "banned_terms": [],
+        "mentions_threshold": true,
+        "pass": false
+      }
+    },
+    {
+      "model": "1.7B",
+      "case": "round",
+      "variant": "verbose",
+      "elapsed_seconds": 1.0321,
+      "usage": {
+        "prompt_tokens": 202,
+        "completion_tokens": 12,
+        "total_tokens": 214
+      },
+      "output": "wallet-O sent 500 TOKEN to wallet-P.",
+      "finish_reason": "stop",
+      "guard": {
+        "missing_literal_fields": [],
+        "banned_terms": [],
+        "mentions_threshold": false,
+        "pass": false
+      }
+    },
+    {
+      "model": "0.6B",
+      "case": "large",
+      "variant": "verbose",
+      "elapsed_seconds": 0.4824,
+      "usage": {
+        "prompt_tokens": 206,
+        "completion_tokens": 24,
+        "total_tokens": 230
+      },
+      "output": "sender: wallet-A, recipient: wallet-B, amount: 25000, token symbol: TOKEN.",
+      "finish_reason": "stop",
+      "guard": {
+        "missing_literal_fields": [],
+        "banned_terms": [],
+        "mentions_threshold": false,
+        "pass": false
+      }
+    },
+    {
+      "model": "0.6B",
+      "case": "large",
+      "variant": "compact",
+      "elapsed_seconds": 0.1699,
+      "usage": {
+        "prompt_tokens": 82,
+        "completion_tokens": 5,
+        "total_tokens": 87
+      },
+      "output": "25000",
+      "finish_reason": "stop",
+      "guard": {
+        "missing_literal_fields": [
+          "TOKEN",
+          "wallet-A",
+          "wallet-B"
+        ],
+        "banned_terms": [],
+        "mentions_threshold": false,
+        "pass": false
+      }
+    },
+    {
+      "model": "0.6B",
+      "case": "decimal",
+      "variant": "compact",
+      "elapsed_seconds": 0.1548,
+      "usage": {
+        "prompt_tokens": 78,
+        "completion_tokens": 4,
+        "total_tokens": 82
+      },
+      "output": "1.25",
+      "finish_reason": "stop",
+      "guard": {
+        "missing_literal_fields": [
+          "USDC",
+          "wallet-C",
+          "wallet-D"
+        ],
+        "banned_terms": [],
+        "mentions_threshold": false,
+        "pass": false
+      }
+    },
+    {
+      "model": "0.6B",
+      "case": "decimal",
+      "variant": "verbose",
+      "elapsed_seconds": 0.4888,
+      "usage": {
+        "prompt_tokens": 202,
+        "completion_tokens": 24,
+        "total_tokens": 226
+      },
+      "output": "sender: wallet-C, recipient: wallet-D, amount: 1.25, token symbol: USDC.",
+      "finish_reason": "stop",
+      "guard": {
+        "missing_literal_fields": [],
+        "banned_terms": [],
+        "mentions_threshold": false,
+        "pass": false
+      }
+    },
+    {
+      "model": "0.6B",
+      "case": "tiny",
+      "variant": "verbose",
+      "elapsed_seconds": 0.6091,
+      "usage": {
+        "prompt_tokens": 213,
+        "completion_tokens": 39,
+        "total_tokens": 252
+      },
+      "output": "sender: wallet-E, recipient: wallet-F, amount: 0.000001, token symbol: TOKEN, threshold: 0.0000005",
+      "finish_reason": "stop",
+      "guard": {
+        "missing_literal_fields": [],
+        "banned_terms": [],
+        "mentions_threshold": true,
+        "pass": true
+      }
+    },
+    {
+      "model": "0.6B",
+      "case": "tiny",
+      "variant": "compact",
+      "elapsed_seconds": 0.2018,
+      "usage": {
+        "prompt_tokens": 89,
+        "completion_tokens": 8,
+        "total_tokens": 97
+      },
+      "output": "0.000001",
+      "finish_reason": "stop",
+      "guard": {
+        "missing_literal_fields": [
+          "TOKEN",
+          "wallet-E",
+          "wallet-F"
+        ],
+        "banned_terms": [],
+        "mentions_threshold": false,
+        "pass": false
+      }
+    },
+    {
+      "model": "0.6B",
+      "case": "equal",
+      "variant": "compact",
+      "elapsed_seconds": 0.1611,
+      "usage": {
+        "prompt_tokens": 78,
+        "completion_tokens": 3,
+        "total_tokens": 81
+      },
+      "output": "100",
+      "finish_reason": "stop",
+      "guard": {
+        "missing_literal_fields": [
+          "TOKEN",
+          "wallet-G",
+          "wallet-H"
+        ],
+        "banned_terms": [],
+        "mentions_threshold": false,
+        "pass": false
+      }
+    },
+    {
+      "model": "0.6B",
+      "case": "equal",
+      "variant": "verbose",
+      "elapsed_seconds": 0.5398,
+      "usage": {
+        "prompt_tokens": 202,
+        "completion_tokens": 22,
+        "total_tokens": 224
+      },
+      "output": "sender: wallet-G, recipient: wallet-H, amount: 100, token symbol: TOKEN.",
+      "finish_reason": "stop",
+      "guard": {
+        "missing_literal_fields": [],
+        "banned_terms": [],
+        "mentions_threshold": false,
+        "pass": false
+      }
+    },
+    {
+      "model": "0.6B",
+      "case": "one",
+      "variant": "verbose",
+      "elapsed_seconds": 0.525,
+      "usage": {
+        "prompt_tokens": 198,
+        "completion_tokens": 20,
+        "total_tokens": 218
+      },
+      "output": "sender: wallet-I, recipient: wallet-J, amount: 1, token symbol: TOKEN.",
+      "finish_reason": "stop",
+      "guard": {
+        "missing_literal_fields": [],
+        "banned_terms": [],
+        "mentions_threshold": false,
+        "pass": false
+      }
+    },
+    {
+      "model": "0.6B",
+      "case": "one",
+      "variant": "compact",
+      "elapsed_seconds": 0.1501,
+      "usage": {
+        "prompt_tokens": 74,
+        "completion_tokens": 3,
+        "total_tokens": 77
+      },
+      "output": "1 token.",
+      "finish_reason": "stop",
+      "guard": {
+        "missing_literal_fields": [
+          "TOKEN",
+          "wallet-I",
+          "wallet-J"
+        ],
+        "banned_terms": [],
+        "mentions_threshold": false,
+        "pass": false
+      }
+    },
+    {
+      "model": "0.6B",
+      "case": "huge",
+      "variant": "compact",
+      "elapsed_seconds": 0.26,
+      "usage": {
+        "prompt_tokens": 91,
+        "completion_tokens": 10,
+        "total_tokens": 101
+      },
+      "output": "1000000000",
+      "finish_reason": "stop",
+      "guard": {
+        "missing_literal_fields": [
+          "TOKEN",
+          "wallet-K",
+          "wallet-L"
+        ],
+        "banned_terms": [],
+        "mentions_threshold": false,
+        "pass": false
+      }
+    },
+    {
+      "model": "0.6B",
+      "case": "huge",
+      "variant": "verbose",
+      "elapsed_seconds": 0.6101,
+      "usage": {
+        "prompt_tokens": 215,
+        "completion_tokens": 29,
+        "total_tokens": 244
+      },
+      "output": "sender: wallet-K, recipient: wallet-L, amount: 1000000000, token symbol: TOKEN.",
+      "finish_reason": "stop",
+      "guard": {
+        "missing_literal_fields": [],
+        "banned_terms": [],
+        "mentions_threshold": false,
+        "pass": false
+      }
+    },
+    {
+      "model": "0.6B",
+      "case": "precision",
+      "variant": "verbose",
+      "elapsed_seconds": 0.5661,
+      "usage": {
+        "prompt_tokens": 216,
+        "completion_tokens": 29,
+        "total_tokens": 245
+      },
+      "output": "sender: wallet-M, recipient: wallet-N, amount: 123.456789, token symbol: TOKEN.",
+      "finish_reason": "stop",
+      "guard": {
+        "missing_literal_fields": [],
+        "banned_terms": [],
+        "mentions_threshold": false,
+        "pass": false
+      }
+    },
+    {
+      "model": "0.6B",
+      "case": "precision",
+      "variant": "compact",
+      "elapsed_seconds": 0.2365,
+      "usage": {
+        "prompt_tokens": 92,
+        "completion_tokens": 10,
+        "total_tokens": 102
+      },
+      "output": "123.456789",
+      "finish_reason": "stop",
+      "guard": {
+        "missing_literal_fields": [
+          "TOKEN",
+          "wallet-M",
+          "wallet-N"
+        ],
+        "banned_terms": [],
+        "mentions_threshold": false,
+        "pass": false
+      }
+    },
+    {
+      "model": "0.6B",
+      "case": "round",
+      "variant": "compact",
+      "elapsed_seconds": 0.1541,
+      "usage": {
+        "prompt_tokens": 78,
+        "completion_tokens": 3,
+        "total_tokens": 81
+      },
+      "output": "500",
+      "finish_reason": "stop",
+      "guard": {
+        "missing_literal_fields": [
+          "TOKEN",
+          "wallet-O",
+          "wallet-P"
+        ],
+        "banned_terms": [],
+        "mentions_threshold": false,
+        "pass": false
+      }
+    },
+    {
+      "model": "0.6B",
+      "case": "round",
+      "variant": "verbose",
+      "elapsed_seconds": 0.4953,
+      "usage": {
+        "prompt_tokens": 202,
+        "completion_tokens": 22,
+        "total_tokens": 224
+      },
+      "output": "sender: wallet-O, recipient: wallet-P, amount: 500, token symbol: TOKEN.",
+      "finish_reason": "stop",
+      "guard": {
+        "missing_literal_fields": [],
+        "banned_terms": [],
+        "mentions_threshold": false,
+        "pass": false
+      }
+    }
+  ],
+  "summary": [
+    {
+      "model": "1.7B",
+      "variant": "verbose",
+      "cases": 8,
+      "lexical_passes": 4,
+      "input_tokens_mean": 206.75,
+      "output_tokens_mean": 21.5,
+      "seconds_median": 1.115
+    },
+    {
+      "model": "1.7B",
+      "variant": "compact",
+      "cases": 8,
+      "lexical_passes": 0,
+      "input_tokens_mean": 82.75,
+      "output_tokens_mean": 17.375,
+      "seconds_median": 0.6065
+    },
+    {
+      "model": "0.6B",
+      "variant": "verbose",
+      "cases": 8,
+      "lexical_passes": 1,
+      "input_tokens_mean": 206.75,
+      "output_tokens_mean": 26.125,
+      "seconds_median": 0.5324
+    },
+    {
+      "model": "0.6B",
+      "variant": "compact",
+      "cases": 8,
+      "lexical_passes": 0,
+      "input_tokens_mean": 82.75,
+      "output_tokens_mean": 5.75,
+      "seconds_median": 0.16549999999999998
+    }
+  ]
+}

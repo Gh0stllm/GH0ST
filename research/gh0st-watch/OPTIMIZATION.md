@@ -58,8 +58,10 @@ Source references: [cache copy](https://github.com/onicai/llama_cpp_canister/blo
 
 Smaller models, alternative quantization, changed chunk sizes and prefix caching are benchmark candidates, not established savings. Running inference on a normal server could change costs substantially but changes the execution/trust model, so it is not the default recommendation for this on-chain research direction.
 
-## Local validation plan
+## Local validation results
 
-Use the already-downloaded pinned Qwen3-1.7B Q4_K_M file to compare verbose and compact fact prompts on synthetic cases. Record exact input tokens, generated output, completion, lexical guard results and local latency. Keep facts identical between variants and score factual errors as well as token savings. A failed short prompt is a failed optimization.
+[Model screening](MODEL-SELECTION.md) now includes 48 local generations across pinned Qwen3-1.7B and 0.6B Q4_K_M files, three prompts and eight synthetic cases. The first shortened prompt failed the complete-output checks for both models. A clearer revision reduced mean input tokens from 206.75 to 94.75 (54.2%), but the 1.7B output still contained an invented extra quantity in one case. Its lexical guard missed that error. Do not ship that guard as production validation or accept prompt savings based on token counts alone.
 
-The native runtime differs from the deployed ICP Wasm. Local timing is a machine-specific screening result, not ICP latency, cycle cost, verified model parity or general language-quality evidence. Next publish runnable fixtures, a calculation script and raw local results on this branch. No paid benchmark is part of this checkpoint.
+The native runtime differs from deployed ICP Wasm. Local timing is a machine-specific screening result, not ICP latency, cycle cost, verified model parity or general language-quality evidence. No paid benchmark occurred. [cost_model.py](cost_model.py) reproduces the modeled scenarios in [cost-scenarios.json](cost-scenarios.json), including range splitting and matched-bound budget reductions.
+
+For contract vulnerability auditing, use the separate [audit-model recommendation](CONTRACT-AUDIT-MODELS.md). These small Qwen tests provide no evidence of auditing ability.

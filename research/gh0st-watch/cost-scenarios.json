@@ -1,0 +1,45 @@
+{
+  "status": "modeled, not observed",
+  "currency": "USD",
+  "exclusions": "setup, development, taxes, SMS, archive backfill, high availability; see README",
+  "rates_source": "https://www.alchemy.com/docs/reference/compute-unit-costs",
+  "scan_scope": "primary scanner only; excludes verification, retries, backfill, stream delivery and filter splitting",
+  "shared_scan": {
+    "ticks": 86400,
+    "log_calls_per_tick": 1,
+    "primary_provider_cu": 6048000
+  },
+  "25_separate_scans": {
+    "ticks": 86400,
+    "log_calls_per_tick": 1,
+    "primary_provider_cu": 151200000
+  },
+  "hypothetical_300_blocks_tick_10_block_limit": {
+    "ticks": 86400,
+    "log_calls_per_tick": 30,
+    "primary_provider_cu": 156384000
+  },
+  "removed_duplicate_scan_fraction": 0.96,
+  "all_300_explanations": [
+    925,
+    1600
+  ],
+  "selected_30_explanations": [
+    115,
+    250
+  ],
+  "no_ai": [
+    25,
+    100
+  ],
+  "total_cost_reduction_matched_bounds": [
+    0.8756756756756756,
+    0.84375
+  ],
+  "fanout_example": {
+    "subscribers_with_identical_public_context": 20,
+    "inference_jobs_before": 20,
+    "inference_jobs_after": 1,
+    "fewer_jobs_fraction": 0.95
+  }
+}

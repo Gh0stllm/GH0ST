@@ -1,0 +1,451 @@
+{
+  "scope": "synthetic native CPU screening; not ICP execution or cost",
+  "runtime": "llama-cpp-python 0.3.36",
+  "machine": {
+    "system": "Darwin",
+    "machine": "arm64"
+  },
+  "settings": {
+    "n_ctx": 1024,
+    "n_batch": 64,
+    "n_threads": 4,
+    "n_threads_batch": 4,
+    "n_gpu_layers": 0,
+    "seed": 42,
+    "verbose": false
+  },
+  "max_tokens": 64,
+  "temperature": 0,
+  "models": {
+    "1.7B": {
+      "sha256": "b139949c5bd74937ad8ed8c8cf3d9ffb1e99c866c823204dc42c0d91fa181897",
+      "repo": "unsloth/Qwen3-1.7B-GGUF",
+      "revision": "d7f544eead698dbd1f15126ef60b45a1e1933222"
+    },
+    "0.6B": {
+      "sha256": "ac2d97712095a558e31573f62f466a3f9d93990898b0ec79d7c974c1780d524a",
+      "repo": "unsloth/Qwen3-0.6B-GGUF",
+      "revision": "50968a4468ef4233ed78cd7c3de230dd1d61a56b"
+    }
+  },
+  "fixtures": [
+    {
+      "id": "large",
+      "amount": "25000",
+      "symbol": "TOKEN",
+      "threshold": "10000",
+      "sender": "wallet-A",
+      "recipient": "wallet-B"
+    },
+    {
+      "id": "decimal",
+      "amount": "1.25",
+      "symbol": "USDC",
+      "threshold": "1",
+      "sender": "wallet-C",
+      "recipient": "wallet-D"
+    },
+    {
+      "id": "tiny",
+      "amount": "0.000001",
+      "symbol": "TOKEN",
+      "threshold": "0.0000005",
+      "sender": "wallet-E",
+      "recipient": "wallet-F"
+    },
+    {
+      "id": "equal",
+      "amount": "100",
+      "symbol": "TOKEN",
+      "threshold": "100",
+      "sender": "wallet-G",
+      "recipient": "wallet-H"
+    },
+    {
+      "id": "one",
+      "amount": "1",
+      "symbol": "TOKEN",
+      "threshold": "0",
+      "sender": "wallet-I",
+      "recipient": "wallet-J"
+    },
+    {
+      "id": "huge",
+      "amount": "1000000000",
+      "symbol": "TOKEN",
+      "threshold": "999999999",
+      "sender": "wallet-K",
+      "recipient": "wallet-L"
+    },
+    {
+      "id": "precision",
+      "amount": "123.456789",
+      "symbol": "TOKEN",
+      "threshold": "123.456788",
+      "sender": "wallet-M",
+      "recipient": "wallet-N"
+    },
+    {
+      "id": "round",
+      "amount": "500",
+      "symbol": "TOKEN",
+      "threshold": "250",
+      "sender": "wallet-O",
+      "recipient": "wallet-P"
+    }
+  ],
+  "prompts": {
+    "compact_v2": "Convert the JSON facts into one short sentence. Use the actual values for sender, recipient, amount and symbol. State that the amount meets the threshold. Copy numbers exactly. Use only these facts; do not infer intent or risk.",
+    "verbose": "You write short factual observations for GH0ST Watch, a public blockchain monitoring research project. The following JSON contains synthetic facts already decoded and checked by deterministic software. The rule is amount greater than or equal to threshold. Write exactly one plain sentence stating the sender, recipient, exact amount and token symbol, and that the transfer meets the configured threshold. Preserve amount digits exactly as supplied, with no commas or rounding. Use only the supplied facts. Do not infer whether this was a sale, purchase, exploit, malicious transfer, exchange deposit or market signal. Do not infer the identities or intentions of the wallets. Do not provide financial advice, a risk rating, an explanation of your process, or introductory text. The observation must be concise and must not invent any information absent from the supplied packet.",
+    "compact": "One factual sentence: sender transferred exact amount symbol to recipient; meets threshold (>=). Keep amount digits unchanged. Only given facts; no intent, advice or risk claims."
+  },
+  "runs": [
+    {
+      "model": "1.7B",
+      "case": "large",
+      "variant": "compact_v2",
+      "elapsed_seconds": 0.9053,
+      "usage": {
+        "prompt_tokens": 94,
+        "completion_tokens": 28,
+        "total_tokens": 122
+      },
+      "output": "The sender wallet-A sent 25000 TOKEN to wallet-B, which meets the threshold of 10000.",
+      "finish_reason": "stop",
+      "guard": {
+        "missing_literal_fields": [],
+        "banned_terms": [],
+        "mentions_threshold": true,
+        "pass": true
+      }
+    },
+    {
+      "model": "1.7B",
+      "case": "decimal",
+      "variant": "compact_v2",
+      "elapsed_seconds": 0.7604,
+      "usage": {
+        "prompt_tokens": 90,
+        "completion_tokens": 24,
+        "total_tokens": 114
+      },
+      "output": "The sender wallet-C sent 1.25 USDC to wallet-D, which meets the threshold of 1.",
+      "finish_reason": "stop",
+      "guard": {
+        "missing_literal_fields": [],
+        "banned_terms": [],
+        "mentions_threshold": true,
+        "pass": true
+      }
+    },
+    {
+      "model": "1.7B",
+      "case": "tiny",
+      "variant": "compact_v2",
+      "elapsed_seconds": 1.1294,
+      "usage": {
+        "prompt_tokens": 101,
+        "completion_tokens": 45,
+        "total_tokens": 146
+      },
+      "output": "The sender wallet-E sent 1 copy of TOKEN to recipient wallet-F, with an amount of 0.000001, which meets the threshold of 0.0000005.",
+      "finish_reason": "stop",
+      "guard": {
+        "missing_literal_fields": [],
+        "banned_terms": [],
+        "mentions_threshold": true,
+        "pass": true
+      }
+    },
+    {
+      "model": "1.7B",
+      "case": "equal",
+      "variant": "compact_v2",
+      "elapsed_seconds": 1.0168,
+      "usage": {
+        "prompt_tokens": 90,
+        "completion_tokens": 27,
+        "total_tokens": 117
+      },
+      "output": "The sender wallet-G sent 100 TOKEN to recipient wallet-H, and the amount meets the threshold of 100.",
+      "finish_reason": "stop",
+      "guard": {
+        "missing_literal_fields": [],
+        "banned_terms": [],
+        "mentions_threshold": true,
+        "pass": true
+      }
+    },
+    {
+      "model": "1.7B",
+      "case": "one",
+      "variant": "compact_v2",
+      "elapsed_seconds": 0.7076,
+      "usage": {
+        "prompt_tokens": 86,
+        "completion_tokens": 22,
+        "total_tokens": 108
+      },
+      "output": "The sender wallet-I sent 1 TOKEN to wallet-J, and the amount meets the threshold of 0.",
+      "finish_reason": "stop",
+      "guard": {
+        "missing_literal_fields": [],
+        "banned_terms": [],
+        "mentions_threshold": true,
+        "pass": true
+      }
+    },
+    {
+      "model": "1.7B",
+      "case": "huge",
+      "variant": "compact_v2",
+      "elapsed_seconds": 1.1109,
+      "usage": {
+        "prompt_tokens": 103,
+        "completion_tokens": 39,
+        "total_tokens": 142
+      },
+      "output": "The sender wallet-K sent 1000000000 TOKEN to wallet-L, and the amount meets the threshold of 999999999.",
+      "finish_reason": "stop",
+      "guard": {
+        "missing_literal_fields": [],
+        "banned_terms": [],
+        "mentions_threshold": true,
+        "pass": true
+      }
+    },
+    {
+      "model": "1.7B",
+      "case": "precision",
+      "variant": "compact_v2",
+      "elapsed_seconds": 1.1398,
+      "usage": {
+        "prompt_tokens": 104,
+        "completion_tokens": 37,
+        "total_tokens": 141
+      },
+      "output": "The amount 123.456789 TOKEN sent from wallet-M to wallet-N meets the threshold of 123.456788.",
+      "finish_reason": "stop",
+      "guard": {
+        "missing_literal_fields": [],
+        "banned_terms": [],
+        "mentions_threshold": true,
+        "pass": true
+      }
+    },
+    {
+      "model": "1.7B",
+      "case": "round",
+      "variant": "compact_v2",
+      "elapsed_seconds": 0.8287,
+      "usage": {
+        "prompt_tokens": 90,
+        "completion_tokens": 26,
+        "total_tokens": 116
+      },
+      "output": "The sender wallet-O sent 500 TOKEN to the recipient wallet-P, which meets the threshold of 250.",
+      "finish_reason": "stop",
+      "guard": {
+        "missing_literal_fields": [],
+        "banned_terms": [],
+        "mentions_threshold": true,
+        "pass": true
+      }
+    },
+    {
+      "model": "0.6B",
+      "case": "large",
+      "variant": "compact_v2",
+      "elapsed_seconds": 0.3772,
+      "usage": {
+        "prompt_tokens": 94,
+        "completion_tokens": 30,
+        "total_tokens": 124
+      },
+      "output": "The amount (25,000) meets the threshold (10,000) for sender wallet-A and recipient wallet-B.",
+      "finish_reason": "stop",
+      "guard": {
+        "missing_literal_fields": [
+          "25000",
+          "TOKEN"
+        ],
+        "banned_terms": [],
+        "mentions_threshold": true,
+        "pass": false
+      }
+    },
+    {
+      "model": "0.6B",
+      "case": "decimal",
+      "variant": "compact_v2",
+      "elapsed_seconds": 0.2502,
+      "usage": {
+        "prompt_tokens": 90,
+        "completion_tokens": 14,
+        "total_tokens": 104
+      },
+      "output": "The amount (1.25 USDC) meets the threshold.",
+      "finish_reason": "stop",
+      "guard": {
+        "missing_literal_fields": [
+          "wallet-C",
+          "wallet-D"
+        ],
+        "banned_terms": [],
+        "mentions_threshold": true,
+        "pass": false
+      }
+    },
+    {
+      "model": "0.6B",
+      "case": "tiny",
+      "variant": "compact_v2",
+      "elapsed_seconds": 0.4213,
+      "usage": {
+        "prompt_tokens": 101,
+        "completion_tokens": 36,
+        "total_tokens": 137
+      },
+      "output": "The amount (0.000001) meets the threshold (0.0000005) with the sender wallet-E and recipient wallet-F.",
+      "finish_reason": "stop",
+      "guard": {
+        "missing_literal_fields": [
+          "TOKEN"
+        ],
+        "banned_terms": [],
+        "mentions_threshold": true,
+        "pass": false
+      }
+    },
+    {
+      "model": "0.6B",
+      "case": "equal",
+      "variant": "compact_v2",
+      "elapsed_seconds": 0.2374,
+      "usage": {
+        "prompt_tokens": 90,
+        "completion_tokens": 12,
+        "total_tokens": 102
+      },
+      "output": "The amount (100 TOKEN) meets the threshold.",
+      "finish_reason": "stop",
+      "guard": {
+        "missing_literal_fields": [
+          "wallet-G",
+          "wallet-H"
+        ],
+        "banned_terms": [],
+        "mentions_threshold": true,
+        "pass": false
+      }
+    },
+    {
+      "model": "0.6B",
+      "case": "one",
+      "variant": "compact_v2",
+      "elapsed_seconds": 0.2273,
+      "usage": {
+        "prompt_tokens": 86,
+        "completion_tokens": 10,
+        "total_tokens": 96
+      },
+      "output": "The amount (1 TOKEN) meets the threshold.",
+      "finish_reason": "stop",
+      "guard": {
+        "missing_literal_fields": [
+          "wallet-I",
+          "wallet-J"
+        ],
+        "banned_terms": [],
+        "mentions_threshold": true,
+        "pass": false
+      }
+    },
+    {
+      "model": "0.6B",
+      "case": "huge",
+      "variant": "compact_v2",
+      "elapsed_seconds": 0.4449,
+      "usage": {
+        "prompt_tokens": 103,
+        "completion_tokens": 38,
+        "total_tokens": 141
+      },
+      "output": "The amount (1000000000) meets the threshold (999999999) with the sender wallet-K and recipient wallet-L.",
+      "finish_reason": "stop",
+      "guard": {
+        "missing_literal_fields": [
+          "TOKEN"
+        ],
+        "banned_terms": [],
+        "mentions_threshold": true,
+        "pass": false
+      }
+    },
+    {
+      "model": "0.6B",
+      "case": "precision",
+      "variant": "compact_v2",
+      "elapsed_seconds": 0.4482,
+      "usage": {
+        "prompt_tokens": 104,
+        "completion_tokens": 36,
+        "total_tokens": 140
+      },
+      "output": "The amount (123.456789) meets the threshold (123.456788) for the specified sender and recipient.",
+      "finish_reason": "stop",
+      "guard": {
+        "missing_literal_fields": [
+          "TOKEN",
+          "wallet-M",
+          "wallet-N"
+        ],
+        "banned_terms": [],
+        "mentions_threshold": true,
+        "pass": false
+      }
+    },
+    {
+      "model": "0.6B",
+      "case": "round",
+      "variant": "compact_v2",
+      "elapsed_seconds": 0.273,
+      "usage": {
+        "prompt_tokens": 90,
+        "completion_tokens": 17,
+        "total_tokens": 107
+      },
+      "output": "The amount (500 TOKEN) meets the threshold (250 TOKEN).",
+      "finish_reason": "stop",
+      "guard": {
+        "missing_literal_fields": [
+          "wallet-O",
+          "wallet-P"
+        ],
+        "banned_terms": [],
+        "mentions_threshold": true,
+        "pass": false
+      }
+    }
+  ],
+  "summary": [
+    {
+      "model": "1.7B",
+      "variant": "compact_v2",
+      "cases": 8,
+      "lexical_passes": 8,
+      "input_tokens_mean": 94.75,
+      "output_tokens_mean": 31,
+      "seconds_median": 0.96105
+    },
+    {
+      "model": "0.6B",
+      "variant": "compact_v2",
+      "cases": 8,
+      "lexical_passes": 0,
+      "input_tokens_mean": 94.75,
+      "output_tokens_mean": 24.125,
+      "seconds_median": 0.3251
+    }
+  ]
+}
