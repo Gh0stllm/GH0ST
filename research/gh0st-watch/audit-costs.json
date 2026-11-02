@@ -1,0 +1,95 @@
+{
+  "scope": "model engine only; local metering projected to USD, not a mainnet invoice or security-service price",
+  "usd_per_trillion_cycles_planning_assumption": 1.4,
+  "mainnet_verified": false,
+  "storage_pricing_discrepancy": "Public docs list 127000 cycles/GiB-second. Tested local replica and cited IC source match 317500 plus 10000 base cycles/second. Use reported idle rate; verify target subnet before funding.",
+  "memory_bytes": 2958519871,
+  "idle_30_days_cycles": 2293451597070,
+  "idle_30_days_usd": 3.2108322358979997,
+  "setup_cycles_including_allowance": 3638898455241,
+  "setup_usd_including_allowance": 5.0944578373374,
+  "setup_components_cycles": {
+    "creation_published_fee": 500000000000,
+    "upload_local_delta": 3023982348623,
+    "load_local_delta": 14916106618,
+    "installation_and_other_setup_allowance_not_measured": 100000000000
+  },
+  "complete_synthetic_job": {
+    "input_tokens": 154,
+    "output_tokens": 91,
+    "cycles": 1614081800993,
+    "usd": 2.2597145213901997,
+    "seconds": 183.040796499,
+    "output_is_correct_audit": false
+  },
+  "single_token_probe": {
+    "n_prompt_tokens_decoded": {
+      "tokens": 11,
+      "mean_cycles": 8001182664.363636,
+      "min_cycles": 7825101931,
+      "max_cycles": 8027274779
+    },
+    "n_tokens_generated": {
+      "tokens": 32,
+      "mean_cycles": 8045118428.96875,
+      "min_cycles": 8038999970,
+      "max_cycles": 8075843605
+    }
+  },
+  "monthly_same_job_scenarios": [
+    {
+      "jobs": 10,
+      "steady_state_cycles": 18434269607000,
+      "steady_state_usd": 25.8079774498,
+      "first_month_with_setup_usd": 30.902435287137397,
+      "first_month_with_setup_and_20pct_job_retry_allowance_usd": 35.421864329917796
+    },
+    {
+      "jobs": 100,
+      "steady_state_cycles": 163701631696370,
+      "steady_state_usd": 229.18228437491797,
+      "first_month_with_setup_usd": 234.27674221225539,
+      "first_month_with_setup_and_20pct_job_retry_allowance_usd": 279.4710326400594
+    },
+    {
+      "jobs": 1000,
+      "steady_state_cycles": 1616375252590070,
+      "steady_state_usd": 2262.9253536260976,
+      "first_month_with_setup_usd": 2268.0198114634354,
+      "first_month_with_setup_and_20pct_job_retry_allowance_usd": 2719.962715741475
+    }
+  ],
+  "larger_workload_projections": [
+    {
+      "input_tokens_per_pass": 256,
+      "output_tokens_per_pass": 64,
+      "passes": 1,
+      "cycles": 2563200000000,
+      "usd": 3.58848,
+      "scope": "linear projection from short one-token updates; excludes idle/setup/external costs; context-dependent and unvalidated"
+    },
+    {
+      "input_tokens_per_pass": 1024,
+      "output_tokens_per_pass": 256,
+      "passes": 1,
+      "cycles": 10252800000000,
+      "usd": 14.35392,
+      "scope": "linear projection from short one-token updates; excludes idle/setup/external costs; context-dependent and unvalidated"
+    },
+    {
+      "input_tokens_per_pass": 1024,
+      "output_tokens_per_pass": 256,
+      "passes": 3,
+      "cycles": 30758400000000,
+      "usd": 43.06176,
+      "scope": "linear projection from short one-token updates; excludes idle/setup/external costs; context-dependent and unvalidated"
+    }
+  ],
+  "excluded_unpriced": [
+    "source retrieval and RPC",
+    "scanner/fuzzer hosting and engineering",
+    "production coordinator calls",
+    "human confirmation",
+    "target-subnet storage reservations/funding requirements"
+  ]
+}

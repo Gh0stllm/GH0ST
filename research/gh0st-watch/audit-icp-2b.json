@@ -1,0 +1,2211 @@
+{
+  "scope": "local ICP replica only; cycle balance deltas include storage during elapsed time; no mainnet deployment",
+  "model": "Qwen3.5-2B-Q4_K_M.gguf",
+  "bytes": 1280835840,
+  "sha256": "aaf42c8b7c3cab2bf3d69c355048d4a0ee9973d48f16c731c0520ee914699223",
+  "canister_wasm_sha256": "964787ece3a98badb85493839ad77a372295ca7b8ded9f87ac8222a616d3edb5",
+  "runtime": "onicai/llama_cpp_canister v0.23.0rc4",
+  "calls": [
+    {
+      "method": "load_model",
+      "args": {
+        "args": [
+          "--model",
+          "models/model.gguf",
+          "--no-warmup",
+          "-c",
+          "2048",
+          "--batch-size",
+          "4",
+          "--ubatch-size",
+          "4",
+          "--cache-type-k",
+          "q8_0",
+          "--cache-type-v",
+          "q8_0"
+        ]
+      },
+      "result": {
+        "Ok": {
+          "n_prompt_tokens": [],
+          "output": "Model succesfully loaded into memory.",
+          "n_tokens_generated": [],
+          "conversation": "",
+          "error": "",
+          "n_prompt_tokens_remaining": [],
+          "n_prompt_tokens_cached": [],
+          "status_code": 200,
+          "prompt_remaining": "",
+          "generated_eog": false,
+          "partial": [],
+          "n_prompt_tokens_decoded": []
+        }
+      },
+      "error": null,
+      "elapsed_seconds": 6.727238833999991,
+      "cycles_delta": 14916106618
+    },
+    {
+      "method": "set_max_tokens",
+      "args": {
+        "max_tokens_update": 1,
+        "max_tokens_query": 1
+      },
+      "result": {
+        "Ok": {
+          "status_code": 200
+        }
+      },
+      "error": null,
+      "elapsed_seconds": 15.273020458000019,
+      "cycles_delta": 19478229
+    },
+    {
+      "method": "new_chat",
+      "args": {
+        "args": [
+          "--prompt-cache",
+          "audit-probe.cache"
+        ]
+      },
+      "result": {
+        "Ok": {
+          "n_prompt_tokens": [],
+          "output": "Ready to start a new chat for cache file .canister_cache/2vxsx-fae/sessions/audit-probe.cache",
+          "n_tokens_generated": [],
+          "conversation": "",
+          "error": "",
+          "n_prompt_tokens_remaining": [],
+          "n_prompt_tokens_cached": [],
+          "status_code": 200,
+          "prompt_remaining": "",
+          "generated_eog": false,
+          "partial": [],
+          "n_prompt_tokens_decoded": []
+        }
+      },
+      "error": null,
+      "elapsed_seconds": 0.25999512500004585,
+      "cycles_delta": 19087870
+    },
+    {
+      "method": "run_update",
+      "args": {
+        "args": [
+          "--prompt-cache",
+          "audit-probe.cache",
+          "--prompt-cache-all",
+          "--simple-io",
+          "--no-display-prompt",
+          "-n",
+          "128",
+          "--seed",
+          "42",
+          "--temp",
+          "0",
+          "-p",
+          "<|im_start|>user\nReply OK.<|im_end|>\n<|im_start|>assistant\n"
+        ]
+      },
+      "result": {
+        "Ok": {
+          "n_prompt_tokens": [
+            11
+          ],
+          "output": "",
+          "n_tokens_generated": [
+            0
+          ],
+          "conversation": "",
+          "error": "",
+          "n_prompt_tokens_remaining": [
+            10
+          ],
+          "n_prompt_tokens_cached": [
+            0
+          ],
+          "status_code": 200,
+          "prompt_remaining": "user\nReply OK.<|im_end|>\n<|im_start|>assistant\n",
+          "generated_eog": false,
+          "partial": [],
+          "n_prompt_tokens_decoded": [
+            1
+          ]
+        }
+      },
+      "error": null,
+      "elapsed_seconds": 1.016476166000018,
+      "cycles_delta": 7825101931
+    },
+    {
+      "method": "run_update",
+      "args": {
+        "args": [
+          "--prompt-cache",
+          "audit-probe.cache",
+          "--prompt-cache-all",
+          "--simple-io",
+          "--no-display-prompt",
+          "-n",
+          "128",
+          "--seed",
+          "42",
+          "--temp",
+          "0",
+          "-p",
+          "<|im_start|>user\nReply OK.<|im_end|>\n<|im_start|>assistant\n"
+        ]
+      },
+      "result": {
+        "Ok": {
+          "n_prompt_tokens": [
+            11
+          ],
+          "output": "",
+          "n_tokens_generated": [
+            0
+          ],
+          "conversation": "user",
+          "error": "",
+          "n_prompt_tokens_remaining": [
+            9
+          ],
+          "n_prompt_tokens_cached": [
+            1
+          ],
+          "status_code": 200,
+          "prompt_remaining": "\nReply OK.<|im_end|>\n<|im_start|>assistant\n",
+          "generated_eog": false,
+          "partial": [],
+          "n_prompt_tokens_decoded": [
+            1
+          ]
+        }
+      },
+      "error": null,
+      "elapsed_seconds": 1.1147378329999924,
+      "cycles_delta": 8027274779
+    },
+    {
+      "method": "run_update",
+      "args": {
+        "args": [
+          "--prompt-cache",
+          "audit-probe.cache",
+          "--prompt-cache-all",
+          "--simple-io",
+          "--no-display-prompt",
+          "-n",
+          "128",
+          "--seed",
+          "42",
+          "--temp",
+          "0",
+          "-p",
+          "<|im_start|>user\nReply OK.<|im_end|>\n<|im_start|>assistant\n"
+        ]
+      },
+      "result": {
+        "Ok": {
+          "n_prompt_tokens": [
+            11
+          ],
+          "output": "",
+          "n_tokens_generated": [
+            0
+          ],
+          "conversation": "user\n",
+          "error": "",
+          "n_prompt_tokens_remaining": [
+            8
+          ],
+          "n_prompt_tokens_cached": [
+            2
+          ],
+          "status_code": 200,
+          "prompt_remaining": "Reply OK.<|im_end|>\n<|im_start|>assistant\n",
+          "generated_eog": false,
+          "partial": [],
+          "n_prompt_tokens_decoded": [
+            1
+          ]
+        }
+      },
+      "error": null,
+      "elapsed_seconds": 1.2179502500000012,
+      "cycles_delta": 8016833701
+    },
+    {
+      "method": "run_update",
+      "args": {
+        "args": [
+          "--prompt-cache",
+          "audit-probe.cache",
+          "--prompt-cache-all",
+          "--simple-io",
+          "--no-display-prompt",
+          "-n",
+          "128",
+          "--seed",
+          "42",
+          "--temp",
+          "0",
+          "-p",
+          "<|im_start|>user\nReply OK.<|im_end|>\n<|im_start|>assistant\n"
+        ]
+      },
+      "result": {
+        "Ok": {
+          "n_prompt_tokens": [
+            11
+          ],
+          "output": "",
+          "n_tokens_generated": [
+            0
+          ],
+          "conversation": "user\nReply",
+          "error": "",
+          "n_prompt_tokens_remaining": [
+            7
+          ],
+          "n_prompt_tokens_cached": [
+            3
+          ],
+          "status_code": 200,
+          "prompt_remaining": " OK.<|im_end|>\n<|im_start|>assistant\n",
+          "generated_eog": false,
+          "partial": [],
+          "n_prompt_tokens_decoded": [
+            1
+          ]
+        }
+      },
+      "error": null,
+      "elapsed_seconds": 1.0448020840000254,
+      "cycles_delta": 8015847937
+    },
+    {
+      "method": "run_update",
+      "args": {
+        "args": [
+          "--prompt-cache",
+          "audit-probe.cache",
+          "--prompt-cache-all",
+          "--simple-io",
+          "--no-display-prompt",
+          "-n",
+          "128",
+          "--seed",
+          "42",
+          "--temp",
+          "0",
+          "-p",
+          "<|im_start|>user\nReply OK.<|im_end|>\n<|im_start|>assistant\n"
+        ]
+      },
+      "result": {
+        "Ok": {
+          "n_prompt_tokens": [
+            11
+          ],
+          "output": "",
+          "n_tokens_generated": [
+            0
+          ],
+          "conversation": "user\nReply OK",
+          "error": "",
+          "n_prompt_tokens_remaining": [
+            6
+          ],
+          "n_prompt_tokens_cached": [
+            4
+          ],
+          "status_code": 200,
+          "prompt_remaining": ".<|im_end|>\n<|im_start|>assistant\n",
+          "generated_eog": false,
+          "partial": [],
+          "n_prompt_tokens_decoded": [
+            1
+          ]
+        }
+      },
+      "error": null,
+      "elapsed_seconds": 1.0888262080000004,
+      "cycles_delta": 8016957917
+    },
+    {
+      "method": "run_update",
+      "args": {
+        "args": [
+          "--prompt-cache",
+          "audit-probe.cache",
+          "--prompt-cache-all",
+          "--simple-io",
+          "--no-display-prompt",
+          "-n",
+          "128",
+          "--seed",
+          "42",
+          "--temp",
+          "0",
+          "-p",
+          "<|im_start|>user\nReply OK.<|im_end|>\n<|im_start|>assistant\n"
+        ]
+      },
+      "result": {
+        "Ok": {
+          "n_prompt_tokens": [
+            11
+          ],
+          "output": "",
+          "n_tokens_generated": [
+            0
+          ],
+          "conversation": "user\nReply OK.",
+          "error": "",
+          "n_prompt_tokens_remaining": [
+            5
+          ],
+          "n_prompt_tokens_cached": [
+            5
+          ],
+          "status_code": 200,
+          "prompt_remaining": "<|im_end|>\n<|im_start|>assistant\n",
+          "generated_eog": false,
+          "partial": [],
+          "n_prompt_tokens_decoded": [
+            1
+          ]
+        }
+      },
+      "error": null,
+      "elapsed_seconds": 1.0848495000000185,
+      "cycles_delta": 8017140948
+    },
+    {
+      "method": "run_update",
+      "args": {
+        "args": [
+          "--prompt-cache",
+          "audit-probe.cache",
+          "--prompt-cache-all",
+          "--simple-io",
+          "--no-display-prompt",
+          "-n",
+          "128",
+          "--seed",
+          "42",
+          "--temp",
+          "0",
+          "-p",
+          "<|im_start|>user\nReply OK.<|im_end|>\n<|im_start|>assistant\n"
+        ]
+      },
+      "result": {
+        "Ok": {
+          "n_prompt_tokens": [
+            11
+          ],
+          "output": "",
+          "n_tokens_generated": [
+            0
+          ],
+          "conversation": "user\nReply OK.",
+          "error": "",
+          "n_prompt_tokens_remaining": [
+            4
+          ],
+          "n_prompt_tokens_cached": [
+            6
+          ],
+          "status_code": 200,
+          "prompt_remaining": "\n<|im_start|>assistant\n",
+          "generated_eog": false,
+          "partial": [],
+          "n_prompt_tokens_decoded": [
+            1
+          ]
+        }
+      },
+      "error": null,
+      "elapsed_seconds": 1.0930589999999825,
+      "cycles_delta": 8016421743
+    },
+    {
+      "method": "run_update",
+      "args": {
+        "args": [
+          "--prompt-cache",
+          "audit-probe.cache",
+          "--prompt-cache-all",
+          "--simple-io",
+          "--no-display-prompt",
+          "-n",
+          "128",
+          "--seed",
+          "42",
+          "--temp",
+          "0",
+          "-p",
+          "<|im_start|>user\nReply OK.<|im_end|>\n<|im_start|>assistant\n"
+        ]
+      },
+      "result": {
+        "Ok": {
+          "n_prompt_tokens": [
+            11
+          ],
+          "output": "",
+          "n_tokens_generated": [
+            0
+          ],
+          "conversation": "user\nReply OK.\n",
+          "error": "",
+          "n_prompt_tokens_remaining": [
+            3
+          ],
+          "n_prompt_tokens_cached": [
+            7
+          ],
+          "status_code": 200,
+          "prompt_remaining": "<|im_start|>assistant\n",
+          "generated_eog": false,
+          "partial": [],
+          "n_prompt_tokens_decoded": [
+            1
+          ]
+        }
+      },
+      "error": null,
+      "elapsed_seconds": 1.0874520829999597,
+      "cycles_delta": 8018503881
+    },
+    {
+      "method": "run_update",
+      "args": {
+        "args": [
+          "--prompt-cache",
+          "audit-probe.cache",
+          "--prompt-cache-all",
+          "--simple-io",
+          "--no-display-prompt",
+          "-n",
+          "128",
+          "--seed",
+          "42",
+          "--temp",
+          "0",
+          "-p",
+          "<|im_start|>user\nReply OK.<|im_end|>\n<|im_start|>assistant\n"
+        ]
+      },
+      "result": {
+        "Ok": {
+          "n_prompt_tokens": [
+            11
+          ],
+          "output": "",
+          "n_tokens_generated": [
+            0
+          ],
+          "conversation": "user\nReply OK.\n",
+          "error": "",
+          "n_prompt_tokens_remaining": [
+            2
+          ],
+          "n_prompt_tokens_cached": [
+            8
+          ],
+          "status_code": 200,
+          "prompt_remaining": "assistant\n",
+          "generated_eog": false,
+          "partial": [],
+          "n_prompt_tokens_decoded": [
+            1
+          ]
+        }
+      },
+      "error": null,
+      "elapsed_seconds": 1.0797731659999954,
+      "cycles_delta": 8018466430
+    },
+    {
+      "method": "run_update",
+      "args": {
+        "args": [
+          "--prompt-cache",
+          "audit-probe.cache",
+          "--prompt-cache-all",
+          "--simple-io",
+          "--no-display-prompt",
+          "-n",
+          "128",
+          "--seed",
+          "42",
+          "--temp",
+          "0",
+          "-p",
+          "<|im_start|>user\nReply OK.<|im_end|>\n<|im_start|>assistant\n"
+        ]
+      },
+      "result": {
+        "Ok": {
+          "n_prompt_tokens": [
+            11
+          ],
+          "output": "",
+          "n_tokens_generated": [
+            0
+          ],
+          "conversation": "user\nReply OK.\nassistant",
+          "error": "",
+          "n_prompt_tokens_remaining": [
+            1
+          ],
+          "n_prompt_tokens_cached": [
+            9
+          ],
+          "status_code": 200,
+          "prompt_remaining": "\n",
+          "generated_eog": false,
+          "partial": [],
+          "n_prompt_tokens_decoded": [
+            1
+          ]
+        }
+      },
+      "error": null,
+      "elapsed_seconds": 1.111770541999988,
+      "cycles_delta": 8020944826
+    },
+    {
+      "method": "run_update",
+      "args": {
+        "args": [
+          "--prompt-cache",
+          "audit-probe.cache",
+          "--prompt-cache-all",
+          "--simple-io",
+          "--no-display-prompt",
+          "-n",
+          "128",
+          "--seed",
+          "42",
+          "--temp",
+          "0",
+          "-p",
+          "<|im_start|>user\nReply OK.<|im_end|>\n<|im_start|>assistant\n"
+        ]
+      },
+      "result": {
+        "Ok": {
+          "n_prompt_tokens": [
+            11
+          ],
+          "output": "",
+          "n_tokens_generated": [
+            0
+          ],
+          "conversation": "user\nReply OK.\nassistant\n",
+          "error": "",
+          "n_prompt_tokens_remaining": [
+            0
+          ],
+          "n_prompt_tokens_cached": [
+            10
+          ],
+          "status_code": 200,
+          "prompt_remaining": "",
+          "generated_eog": false,
+          "partial": [],
+          "n_prompt_tokens_decoded": [
+            1
+          ]
+        }
+      },
+      "error": null,
+      "elapsed_seconds": 1.1159926670000004,
+      "cycles_delta": 8019515215
+    },
+    {
+      "method": "run_update",
+      "args": {
+        "args": [
+          "--prompt-cache",
+          "audit-probe.cache",
+          "--prompt-cache-all",
+          "--simple-io",
+          "--no-display-prompt",
+          "-n",
+          "128",
+          "--seed",
+          "42",
+          "--temp",
+          "0",
+          "-p",
+          ""
+        ]
+      },
+      "result": {
+        "Ok": {
+          "n_prompt_tokens": [
+            11
+          ],
+          "output": "<think>",
+          "n_tokens_generated": [
+            1
+          ],
+          "conversation": "user\nReply OK.\nassistant\n<think>",
+          "error": "",
+          "n_prompt_tokens_remaining": [
+            0
+          ],
+          "n_prompt_tokens_cached": [
+            11
+          ],
+          "status_code": 200,
+          "prompt_remaining": "",
+          "generated_eog": false,
+          "partial": [],
+          "n_prompt_tokens_decoded": [
+            0
+          ]
+        }
+      },
+      "error": null,
+      "elapsed_seconds": 1.1930045829999472,
+      "cycles_delta": 8040514638
+    },
+    {
+      "method": "run_update",
+      "args": {
+        "args": [
+          "--prompt-cache",
+          "audit-probe.cache",
+          "--prompt-cache-all",
+          "--simple-io",
+          "--no-display-prompt",
+          "-n",
+          "128",
+          "--seed",
+          "42",
+          "--temp",
+          "0",
+          "-p",
+          ""
+        ]
+      },
+      "result": {
+        "Ok": {
+          "n_prompt_tokens": [
+            12
+          ],
+          "output": "\n",
+          "n_tokens_generated": [
+            1
+          ],
+          "conversation": "user\nReply OK.\nassistant\n<think>\n",
+          "error": "",
+          "n_prompt_tokens_remaining": [
+            0
+          ],
+          "n_prompt_tokens_cached": [
+            12
+          ],
+          "status_code": 200,
+          "prompt_remaining": "",
+          "generated_eog": false,
+          "partial": [],
+          "n_prompt_tokens_decoded": [
+            0
+          ]
+        }
+      },
+      "error": null,
+      "elapsed_seconds": 1.1576894589999824,
+      "cycles_delta": 8038999970
+    },
+    {
+      "method": "run_update",
+      "args": {
+        "args": [
+          "--prompt-cache",
+          "audit-probe.cache",
+          "--prompt-cache-all",
+          "--simple-io",
+          "--no-display-prompt",
+          "-n",
+          "128",
+          "--seed",
+          "42",
+          "--temp",
+          "0",
+          "-p",
+          ""
+        ]
+      },
+      "result": {
+        "Ok": {
+          "n_prompt_tokens": [
+            13
+          ],
+          "output": "Thinking",
+          "n_tokens_generated": [
+            1
+          ],
+          "conversation": "user\nReply OK.\nassistant\n<think>\nThinking",
+          "error": "",
+          "n_prompt_tokens_remaining": [
+            0
+          ],
+          "n_prompt_tokens_cached": [
+            13
+          ],
+          "status_code": 200,
+          "prompt_remaining": "",
+          "generated_eog": false,
+          "partial": [],
+          "n_prompt_tokens_decoded": [
+            0
+          ]
+        }
+      },
+      "error": null,
+      "elapsed_seconds": 1.101380541000026,
+      "cycles_delta": 8039975822
+    },
+    {
+      "method": "run_update",
+      "args": {
+        "args": [
+          "--prompt-cache",
+          "audit-probe.cache",
+          "--prompt-cache-all",
+          "--simple-io",
+          "--no-display-prompt",
+          "-n",
+          "128",
+          "--seed",
+          "42",
+          "--temp",
+          "0",
+          "-p",
+          ""
+        ]
+      },
+      "result": {
+        "Ok": {
+          "n_prompt_tokens": [
+            14
+          ],
+          "output": " Process",
+          "n_tokens_generated": [
+            1
+          ],
+          "conversation": "user\nReply OK.\nassistant\n<think>\nThinking Process",
+          "error": "",
+          "n_prompt_tokens_remaining": [
+            0
+          ],
+          "n_prompt_tokens_cached": [
+            14
+          ],
+          "status_code": 200,
+          "prompt_remaining": "",
+          "generated_eog": false,
+          "partial": [],
+          "n_prompt_tokens_decoded": [
+            0
+          ]
+        }
+      },
+      "error": null,
+      "elapsed_seconds": 1.1010222079999608,
+      "cycles_delta": 8040067231
+    },
+    {
+      "method": "run_update",
+      "args": {
+        "args": [
+          "--prompt-cache",
+          "audit-probe.cache",
+          "--prompt-cache-all",
+          "--simple-io",
+          "--no-display-prompt",
+          "-n",
+          "128",
+          "--seed",
+          "42",
+          "--temp",
+          "0",
+          "-p",
+          ""
+        ]
+      },
+      "result": {
+        "Ok": {
+          "n_prompt_tokens": [
+            15
+          ],
+          "output": ":",
+          "n_tokens_generated": [
+            1
+          ],
+          "conversation": "user\nReply OK.\nassistant\n<think>\nThinking Process:",
+          "error": "",
+          "n_prompt_tokens_remaining": [
+            0
+          ],
+          "n_prompt_tokens_cached": [
+            15
+          ],
+          "status_code": 200,
+          "prompt_remaining": "",
+          "generated_eog": false,
+          "partial": [],
+          "n_prompt_tokens_decoded": [
+            0
+          ]
+        }
+      },
+      "error": null,
+      "elapsed_seconds": 1.0879365419999658,
+      "cycles_delta": 8039029215
+    },
+    {
+      "method": "run_update",
+      "args": {
+        "args": [
+          "--prompt-cache",
+          "audit-probe.cache",
+          "--prompt-cache-all",
+          "--simple-io",
+          "--no-display-prompt",
+          "-n",
+          "128",
+          "--seed",
+          "42",
+          "--temp",
+          "0",
+          "-p",
+          ""
+        ]
+      },
+      "result": {
+        "Ok": {
+          "n_prompt_tokens": [
+            16
+          ],
+          "output": "\n\n",
+          "n_tokens_generated": [
+            1
+          ],
+          "conversation": "user\nReply OK.\nassistant\n<think>\nThinking Process:\n\n",
+          "error": "",
+          "n_prompt_tokens_remaining": [
+            0
+          ],
+          "n_prompt_tokens_cached": [
+            16
+          ],
+          "status_code": 200,
+          "prompt_remaining": "",
+          "generated_eog": false,
+          "partial": [],
+          "n_prompt_tokens_decoded": [
+            0
+          ]
+        }
+      },
+      "error": null,
+      "elapsed_seconds": 1.0839168339999787,
+      "cycles_delta": 8039588434
+    },
+    {
+      "method": "run_update",
+      "args": {
+        "args": [
+          "--prompt-cache",
+          "audit-probe.cache",
+          "--prompt-cache-all",
+          "--simple-io",
+          "--no-display-prompt",
+          "-n",
+          "128",
+          "--seed",
+          "42",
+          "--temp",
+          "0",
+          "-p",
+          ""
+        ]
+      },
+      "result": {
+        "Ok": {
+          "n_prompt_tokens": [
+            17
+          ],
+          "output": "1",
+          "n_tokens_generated": [
+            1
+          ],
+          "conversation": "user\nReply OK.\nassistant\n<think>\nThinking Process:\n\n1",
+          "error": "",
+          "n_prompt_tokens_remaining": [
+            0
+          ],
+          "n_prompt_tokens_cached": [
+            17
+          ],
+          "status_code": 200,
+          "prompt_remaining": "",
+          "generated_eog": false,
+          "partial": [],
+          "n_prompt_tokens_decoded": [
+            0
+          ]
+        }
+      },
+      "error": null,
+      "elapsed_seconds": 1.0656829999999786,
+      "cycles_delta": 8039858569
+    },
+    {
+      "method": "run_update",
+      "args": {
+        "args": [
+          "--prompt-cache",
+          "audit-probe.cache",
+          "--prompt-cache-all",
+          "--simple-io",
+          "--no-display-prompt",
+          "-n",
+          "128",
+          "--seed",
+          "42",
+          "--temp",
+          "0",
+          "-p",
+          ""
+        ]
+      },
+      "result": {
+        "Ok": {
+          "n_prompt_tokens": [
+            18
+          ],
+          "output": ".",
+          "n_tokens_generated": [
+            1
+          ],
+          "conversation": "user\nReply OK.\nassistant\n<think>\nThinking Process:\n\n1.",
+          "error": "",
+          "n_prompt_tokens_remaining": [
+            0
+          ],
+          "n_prompt_tokens_cached": [
+            18
+          ],
+          "status_code": 200,
+          "prompt_remaining": "",
+          "generated_eog": false,
+          "partial": [],
+          "n_prompt_tokens_decoded": [
+            0
+          ]
+        }
+      },
+      "error": null,
+      "elapsed_seconds": 1.1165494579999518,
+      "cycles_delta": 8040362706
+    },
+    {
+      "method": "run_update",
+      "args": {
+        "args": [
+          "--prompt-cache",
+          "audit-probe.cache",
+          "--prompt-cache-all",
+          "--simple-io",
+          "--no-display-prompt",
+          "-n",
+          "128",
+          "--seed",
+          "42",
+          "--temp",
+          "0",
+          "-p",
+          ""
+        ]
+      },
+      "result": {
+        "Ok": {
+          "n_prompt_tokens": [
+            19
+          ],
+          "output": " ",
+          "n_tokens_generated": [
+            1
+          ],
+          "conversation": "user\nReply OK.\nassistant\n<think>\nThinking Process:\n\n1. ",
+          "error": "",
+          "n_prompt_tokens_remaining": [
+            0
+          ],
+          "n_prompt_tokens_cached": [
+            19
+          ],
+          "status_code": 200,
+          "prompt_remaining": "",
+          "generated_eog": false,
+          "partial": [],
+          "n_prompt_tokens_decoded": [
+            0
+          ]
+        }
+      },
+      "error": null,
+      "elapsed_seconds": 1.095411040999977,
+      "cycles_delta": 8040585829
+    },
+    {
+      "method": "run_update",
+      "args": {
+        "args": [
+          "--prompt-cache",
+          "audit-probe.cache",
+          "--prompt-cache-all",
+          "--simple-io",
+          "--no-display-prompt",
+          "-n",
+          "128",
+          "--seed",
+          "42",
+          "--temp",
+          "0",
+          "-p",
+          ""
+        ]
+      },
+      "result": {
+        "Ok": {
+          "n_prompt_tokens": [
+            20
+          ],
+          "output": " **",
+          "n_tokens_generated": [
+            1
+          ],
+          "conversation": "user\nReply OK.\nassistant\n<think>\nThinking Process:\n\n1.  **",
+          "error": "",
+          "n_prompt_tokens_remaining": [
+            0
+          ],
+          "n_prompt_tokens_cached": [
+            20
+          ],
+          "status_code": 200,
+          "prompt_remaining": "",
+          "generated_eog": false,
+          "partial": [],
+          "n_prompt_tokens_decoded": [
+            0
+          ]
+        }
+      },
+      "error": null,
+      "elapsed_seconds": 1.1181843749999985,
+      "cycles_delta": 8075843605
+    },
+    {
+      "method": "run_update",
+      "args": {
+        "args": [
+          "--prompt-cache",
+          "audit-probe.cache",
+          "--prompt-cache-all",
+          "--simple-io",
+          "--no-display-prompt",
+          "-n",
+          "128",
+          "--seed",
+          "42",
+          "--temp",
+          "0",
+          "-p",
+          ""
+        ]
+      },
+      "result": {
+        "Ok": {
+          "n_prompt_tokens": [
+            21
+          ],
+          "output": "An",
+          "n_tokens_generated": [
+            1
+          ],
+          "conversation": "user\nReply OK.\nassistant\n<think>\nThinking Process:\n\n1.  **An",
+          "error": "",
+          "n_prompt_tokens_remaining": [
+            0
+          ],
+          "n_prompt_tokens_cached": [
+            21
+          ],
+          "status_code": 200,
+          "prompt_remaining": "",
+          "generated_eog": false,
+          "partial": [],
+          "n_prompt_tokens_decoded": [
+            0
+          ]
+        }
+      },
+      "error": null,
+      "elapsed_seconds": 1.0882596669999884,
+      "cycles_delta": 8040900346
+    },
+    {
+      "method": "run_update",
+      "args": {
+        "args": [
+          "--prompt-cache",
+          "audit-probe.cache",
+          "--prompt-cache-all",
+          "--simple-io",
+          "--no-display-prompt",
+          "-n",
+          "128",
+          "--seed",
+          "42",
+          "--temp",
+          "0",
+          "-p",
+          ""
+        ]
+      },
+      "result": {
+        "Ok": {
+          "n_prompt_tokens": [
+            22
+          ],
+          "output": "alyze",
+          "n_tokens_generated": [
+            1
+          ],
+          "conversation": "user\nReply OK.\nassistant\n<think>\nThinking Process:\n\n1.  **Analyze",
+          "error": "",
+          "n_prompt_tokens_remaining": [
+            0
+          ],
+          "n_prompt_tokens_cached": [
+            22
+          ],
+          "status_code": 200,
+          "prompt_remaining": "",
+          "generated_eog": false,
+          "partial": [],
+          "n_prompt_tokens_decoded": [
+            0
+          ]
+        }
+      },
+      "error": null,
+      "elapsed_seconds": 1.1011943750000341,
+      "cycles_delta": 8044459113
+    },
+    {
+      "method": "run_update",
+      "args": {
+        "args": [
+          "--prompt-cache",
+          "audit-probe.cache",
+          "--prompt-cache-all",
+          "--simple-io",
+          "--no-display-prompt",
+          "-n",
+          "128",
+          "--seed",
+          "42",
+          "--temp",
+          "0",
+          "-p",
+          ""
+        ]
+      },
+      "result": {
+        "Ok": {
+          "n_prompt_tokens": [
+            23
+          ],
+          "output": " the",
+          "n_tokens_generated": [
+            1
+          ],
+          "conversation": "user\nReply OK.\nassistant\n<think>\nThinking Process:\n\n1.  **Analyze the",
+          "error": "",
+          "n_prompt_tokens_remaining": [
+            0
+          ],
+          "n_prompt_tokens_cached": [
+            23
+          ],
+          "status_code": 200,
+          "prompt_remaining": "",
+          "generated_eog": false,
+          "partial": [],
+          "n_prompt_tokens_decoded": [
+            0
+          ]
+        }
+      },
+      "error": null,
+      "elapsed_seconds": 1.1876348750000147,
+      "cycles_delta": 8042060569
+    },
+    {
+      "method": "run_update",
+      "args": {
+        "args": [
+          "--prompt-cache",
+          "audit-probe.cache",
+          "--prompt-cache-all",
+          "--simple-io",
+          "--no-display-prompt",
+          "-n",
+          "128",
+          "--seed",
+          "42",
+          "--temp",
+          "0",
+          "-p",
+          ""
+        ]
+      },
+      "result": {
+        "Ok": {
+          "n_prompt_tokens": [
+            24
+          ],
+          "output": " Request",
+          "n_tokens_generated": [
+            1
+          ],
+          "conversation": "user\nReply OK.\nassistant\n<think>\nThinking Process:\n\n1.  **Analyze the Request",
+          "error": "",
+          "n_prompt_tokens_remaining": [
+            0
+          ],
+          "n_prompt_tokens_cached": [
+            24
+          ],
+          "status_code": 200,
+          "prompt_remaining": "",
+          "generated_eog": false,
+          "partial": [],
+          "n_prompt_tokens_decoded": [
+            0
+          ]
+        }
+      },
+      "error": null,
+      "elapsed_seconds": 1.315657750000014,
+      "cycles_delta": 8045818171
+    },
+    {
+      "method": "run_update",
+      "args": {
+        "args": [
+          "--prompt-cache",
+          "audit-probe.cache",
+          "--prompt-cache-all",
+          "--simple-io",
+          "--no-display-prompt",
+          "-n",
+          "128",
+          "--seed",
+          "42",
+          "--temp",
+          "0",
+          "-p",
+          ""
+        ]
+      },
+      "result": {
+        "Ok": {
+          "n_prompt_tokens": [
+            25
+          ],
+          "output": ":**",
+          "n_tokens_generated": [
+            1
+          ],
+          "conversation": "user\nReply OK.\nassistant\n<think>\nThinking Process:\n\n1.  **Analyze the Request:**",
+          "error": "",
+          "n_prompt_tokens_remaining": [
+            0
+          ],
+          "n_prompt_tokens_cached": [
+            25
+          ],
+          "status_code": 200,
+          "prompt_remaining": "",
+          "generated_eog": false,
+          "partial": [],
+          "n_prompt_tokens_decoded": [
+            0
+          ]
+        }
+      },
+      "error": null,
+      "elapsed_seconds": 1.3604332909999926,
+      "cycles_delta": 8045288771
+    },
+    {
+      "method": "run_update",
+      "args": {
+        "args": [
+          "--prompt-cache",
+          "audit-probe.cache",
+          "--prompt-cache-all",
+          "--simple-io",
+          "--no-display-prompt",
+          "-n",
+          "128",
+          "--seed",
+          "42",
+          "--temp",
+          "0",
+          "-p",
+          ""
+        ]
+      },
+      "result": {
+        "Ok": {
+          "n_prompt_tokens": [
+            26
+          ],
+          "output": "\n",
+          "n_tokens_generated": [
+            1
+          ],
+          "conversation": "user\nReply OK.\nassistant\n<think>\nThinking Process:\n\n1.  **Analyze the Request:**\n",
+          "error": "",
+          "n_prompt_tokens_remaining": [
+            0
+          ],
+          "n_prompt_tokens_cached": [
+            26
+          ],
+          "status_code": 200,
+          "prompt_remaining": "",
+          "generated_eog": false,
+          "partial": [],
+          "n_prompt_tokens_decoded": [
+            0
+          ]
+        }
+      },
+      "error": null,
+      "elapsed_seconds": 1.3671340409999857,
+      "cycles_delta": 8045475824
+    },
+    {
+      "method": "run_update",
+      "args": {
+        "args": [
+          "--prompt-cache",
+          "audit-probe.cache",
+          "--prompt-cache-all",
+          "--simple-io",
+          "--no-display-prompt",
+          "-n",
+          "128",
+          "--seed",
+          "42",
+          "--temp",
+          "0",
+          "-p",
+          ""
+        ]
+      },
+      "result": {
+        "Ok": {
+          "n_prompt_tokens": [
+            27
+          ],
+          "output": "   ",
+          "n_tokens_generated": [
+            1
+          ],
+          "conversation": "user\nReply OK.\nassistant\n<think>\nThinking Process:\n\n1.  **Analyze the Request:**\n   ",
+          "error": "",
+          "n_prompt_tokens_remaining": [
+            0
+          ],
+          "n_prompt_tokens_cached": [
+            27
+          ],
+          "status_code": 200,
+          "prompt_remaining": "",
+          "generated_eog": false,
+          "partial": [],
+          "n_prompt_tokens_decoded": [
+            0
+          ]
+        }
+      },
+      "error": null,
+      "elapsed_seconds": 1.339817499999981,
+      "cycles_delta": 8043808947
+    },
+    {
+      "method": "run_update",
+      "args": {
+        "args": [
+          "--prompt-cache",
+          "audit-probe.cache",
+          "--prompt-cache-all",
+          "--simple-io",
+          "--no-display-prompt",
+          "-n",
+          "128",
+          "--seed",
+          "42",
+          "--temp",
+          "0",
+          "-p",
+          ""
+        ]
+      },
+      "result": {
+        "Ok": {
+          "n_prompt_tokens": [
+            28
+          ],
+          "output": " *",
+          "n_tokens_generated": [
+            1
+          ],
+          "conversation": "user\nReply OK.\nassistant\n<think>\nThinking Process:\n\n1.  **Analyze the Request:**\n    *",
+          "error": "",
+          "n_prompt_tokens_remaining": [
+            0
+          ],
+          "n_prompt_tokens_cached": [
+            28
+          ],
+          "status_code": 200,
+          "prompt_remaining": "",
+          "generated_eog": false,
+          "partial": [],
+          "n_prompt_tokens_decoded": [
+            0
+          ]
+        }
+      },
+      "error": null,
+      "elapsed_seconds": 1.3622090839999714,
+      "cycles_delta": 8043494864
+    },
+    {
+      "method": "run_update",
+      "args": {
+        "args": [
+          "--prompt-cache",
+          "audit-probe.cache",
+          "--prompt-cache-all",
+          "--simple-io",
+          "--no-display-prompt",
+          "-n",
+          "128",
+          "--seed",
+          "42",
+          "--temp",
+          "0",
+          "-p",
+          ""
+        ]
+      },
+      "result": {
+        "Ok": {
+          "n_prompt_tokens": [
+            29
+          ],
+          "output": "  ",
+          "n_tokens_generated": [
+            1
+          ],
+          "conversation": "user\nReply OK.\nassistant\n<think>\nThinking Process:\n\n1.  **Analyze the Request:**\n    *  ",
+          "error": "",
+          "n_prompt_tokens_remaining": [
+            0
+          ],
+          "n_prompt_tokens_cached": [
+            29
+          ],
+          "status_code": 200,
+          "prompt_remaining": "",
+          "generated_eog": false,
+          "partial": [],
+          "n_prompt_tokens_decoded": [
+            0
+          ]
+        }
+      },
+      "error": null,
+      "elapsed_seconds": 1.3510673750000137,
+      "cycles_delta": 8044594996
+    },
+    {
+      "method": "run_update",
+      "args": {
+        "args": [
+          "--prompt-cache",
+          "audit-probe.cache",
+          "--prompt-cache-all",
+          "--simple-io",
+          "--no-display-prompt",
+          "-n",
+          "128",
+          "--seed",
+          "42",
+          "--temp",
+          "0",
+          "-p",
+          ""
+        ]
+      },
+      "result": {
+        "Ok": {
+          "n_prompt_tokens": [
+            30
+          ],
+          "output": " Input",
+          "n_tokens_generated": [
+            1
+          ],
+          "conversation": "user\nReply OK.\nassistant\n<think>\nThinking Process:\n\n1.  **Analyze the Request:**\n    *   Input",
+          "error": "",
+          "n_prompt_tokens_remaining": [
+            0
+          ],
+          "n_prompt_tokens_cached": [
+            30
+          ],
+          "status_code": 200,
+          "prompt_remaining": "",
+          "generated_eog": false,
+          "partial": [],
+          "n_prompt_tokens_decoded": [
+            0
+          ]
+        }
+      },
+      "error": null,
+      "elapsed_seconds": 1.3360136670000315,
+      "cycles_delta": 8044446675
+    },
+    {
+      "method": "run_update",
+      "args": {
+        "args": [
+          "--prompt-cache",
+          "audit-probe.cache",
+          "--prompt-cache-all",
+          "--simple-io",
+          "--no-display-prompt",
+          "-n",
+          "128",
+          "--seed",
+          "42",
+          "--temp",
+          "0",
+          "-p",
+          ""
+        ]
+      },
+      "result": {
+        "Ok": {
+          "n_prompt_tokens": [
+            31
+          ],
+          "output": ":",
+          "n_tokens_generated": [
+            1
+          ],
+          "conversation": "user\nReply OK.\nassistant\n<think>\nThinking Process:\n\n1.  **Analyze the Request:**\n    *   Input:",
+          "error": "",
+          "n_prompt_tokens_remaining": [
+            0
+          ],
+          "n_prompt_tokens_cached": [
+            31
+          ],
+          "status_code": 200,
+          "prompt_remaining": "",
+          "generated_eog": false,
+          "partial": [],
+          "n_prompt_tokens_decoded": [
+            0
+          ]
+        }
+      },
+      "error": null,
+      "elapsed_seconds": 1.4023660420000397,
+      "cycles_delta": 8044709808
+    },
+    {
+      "method": "run_update",
+      "args": {
+        "args": [
+          "--prompt-cache",
+          "audit-probe.cache",
+          "--prompt-cache-all",
+          "--simple-io",
+          "--no-display-prompt",
+          "-n",
+          "128",
+          "--seed",
+          "42",
+          "--temp",
+          "0",
+          "-p",
+          ""
+        ]
+      },
+      "result": {
+        "Ok": {
+          "n_prompt_tokens": [
+            32
+          ],
+          "output": " \"",
+          "n_tokens_generated": [
+            1
+          ],
+          "conversation": "user\nReply OK.\nassistant\n<think>\nThinking Process:\n\n1.  **Analyze the Request:**\n    *   Input: \"",
+          "error": "",
+          "n_prompt_tokens_remaining": [
+            0
+          ],
+          "n_prompt_tokens_cached": [
+            32
+          ],
+          "status_code": 200,
+          "prompt_remaining": "",
+          "generated_eog": false,
+          "partial": [],
+          "n_prompt_tokens_decoded": [
+            0
+          ]
+        }
+      },
+      "error": null,
+      "elapsed_seconds": 1.3886445830000298,
+      "cycles_delta": 8045918396
+    },
+    {
+      "method": "run_update",
+      "args": {
+        "args": [
+          "--prompt-cache",
+          "audit-probe.cache",
+          "--prompt-cache-all",
+          "--simple-io",
+          "--no-display-prompt",
+          "-n",
+          "128",
+          "--seed",
+          "42",
+          "--temp",
+          "0",
+          "-p",
+          ""
+        ]
+      },
+      "result": {
+        "Ok": {
+          "n_prompt_tokens": [
+            33
+          ],
+          "output": "Reply",
+          "n_tokens_generated": [
+            1
+          ],
+          "conversation": "user\nReply OK.\nassistant\n<think>\nThinking Process:\n\n1.  **Analyze the Request:**\n    *   Input: \"Reply",
+          "error": "",
+          "n_prompt_tokens_remaining": [
+            0
+          ],
+          "n_prompt_tokens_cached": [
+            33
+          ],
+          "status_code": 200,
+          "prompt_remaining": "",
+          "generated_eog": false,
+          "partial": [],
+          "n_prompt_tokens_decoded": [
+            0
+          ]
+        }
+      },
+      "error": null,
+      "elapsed_seconds": 1.4112331659999882,
+      "cycles_delta": 8045491020
+    },
+    {
+      "method": "run_update",
+      "args": {
+        "args": [
+          "--prompt-cache",
+          "audit-probe.cache",
+          "--prompt-cache-all",
+          "--simple-io",
+          "--no-display-prompt",
+          "-n",
+          "128",
+          "--seed",
+          "42",
+          "--temp",
+          "0",
+          "-p",
+          ""
+        ]
+      },
+      "result": {
+        "Ok": {
+          "n_prompt_tokens": [
+            34
+          ],
+          "output": " OK",
+          "n_tokens_generated": [
+            1
+          ],
+          "conversation": "user\nReply OK.\nassistant\n<think>\nThinking Process:\n\n1.  **Analyze the Request:**\n    *   Input: \"Reply OK",
+          "error": "",
+          "n_prompt_tokens_remaining": [
+            0
+          ],
+          "n_prompt_tokens_cached": [
+            34
+          ],
+          "status_code": 200,
+          "prompt_remaining": "",
+          "generated_eog": false,
+          "partial": [],
+          "n_prompt_tokens_decoded": [
+            0
+          ]
+        }
+      },
+      "error": null,
+      "elapsed_seconds": 1.343289000000027,
+      "cycles_delta": 8046358530
+    },
+    {
+      "method": "run_update",
+      "args": {
+        "args": [
+          "--prompt-cache",
+          "audit-probe.cache",
+          "--prompt-cache-all",
+          "--simple-io",
+          "--no-display-prompt",
+          "-n",
+          "128",
+          "--seed",
+          "42",
+          "--temp",
+          "0",
+          "-p",
+          ""
+        ]
+      },
+      "result": {
+        "Ok": {
+          "n_prompt_tokens": [
+            35
+          ],
+          "output": ".\"",
+          "n_tokens_generated": [
+            1
+          ],
+          "conversation": "user\nReply OK.\nassistant\n<think>\nThinking Process:\n\n1.  **Analyze the Request:**\n    *   Input: \"Reply OK.\"",
+          "error": "",
+          "n_prompt_tokens_remaining": [
+            0
+          ],
+          "n_prompt_tokens_cached": [
+            35
+          ],
+          "status_code": 200,
+          "prompt_remaining": "",
+          "generated_eog": false,
+          "partial": [],
+          "n_prompt_tokens_decoded": [
+            0
+          ]
+        }
+      },
+      "error": null,
+      "elapsed_seconds": 1.3355340830000273,
+      "cycles_delta": 8048048590
+    },
+    {
+      "method": "run_update",
+      "args": {
+        "args": [
+          "--prompt-cache",
+          "audit-probe.cache",
+          "--prompt-cache-all",
+          "--simple-io",
+          "--no-display-prompt",
+          "-n",
+          "128",
+          "--seed",
+          "42",
+          "--temp",
+          "0",
+          "-p",
+          ""
+        ]
+      },
+      "result": {
+        "Ok": {
+          "n_prompt_tokens": [
+            36
+          ],
+          "output": "\n",
+          "n_tokens_generated": [
+            1
+          ],
+          "conversation": "user\nReply OK.\nassistant\n<think>\nThinking Process:\n\n1.  **Analyze the Request:**\n    *   Input: \"Reply OK.\"\n",
+          "error": "",
+          "n_prompt_tokens_remaining": [
+            0
+          ],
+          "n_prompt_tokens_cached": [
+            36
+          ],
+          "status_code": 200,
+          "prompt_remaining": "",
+          "generated_eog": false,
+          "partial": [],
+          "n_prompt_tokens_decoded": [
+            0
+          ]
+        }
+      },
+      "error": null,
+      "elapsed_seconds": 1.3694320000000175,
+      "cycles_delta": 8046840002
+    },
+    {
+      "method": "run_update",
+      "args": {
+        "args": [
+          "--prompt-cache",
+          "audit-probe.cache",
+          "--prompt-cache-all",
+          "--simple-io",
+          "--no-display-prompt",
+          "-n",
+          "128",
+          "--seed",
+          "42",
+          "--temp",
+          "0",
+          "-p",
+          ""
+        ]
+      },
+      "result": {
+        "Ok": {
+          "n_prompt_tokens": [
+            37
+          ],
+          "output": "   ",
+          "n_tokens_generated": [
+            1
+          ],
+          "conversation": "user\nReply OK.\nassistant\n<think>\nThinking Process:\n\n1.  **Analyze the Request:**\n    *   Input: \"Reply OK.\"\n   ",
+          "error": "",
+          "n_prompt_tokens_remaining": [
+            0
+          ],
+          "n_prompt_tokens_cached": [
+            37
+          ],
+          "status_code": 200,
+          "prompt_remaining": "",
+          "generated_eog": false,
+          "partial": [],
+          "n_prompt_tokens_decoded": [
+            0
+          ]
+        }
+      },
+      "error": null,
+      "elapsed_seconds": 1.4642900829999803,
+      "cycles_delta": 8048519756
+    },
+    {
+      "method": "run_update",
+      "args": {
+        "args": [
+          "--prompt-cache",
+          "audit-probe.cache",
+          "--prompt-cache-all",
+          "--simple-io",
+          "--no-display-prompt",
+          "-n",
+          "128",
+          "--seed",
+          "42",
+          "--temp",
+          "0",
+          "-p",
+          ""
+        ]
+      },
+      "result": {
+        "Ok": {
+          "n_prompt_tokens": [
+            38
+          ],
+          "output": " *",
+          "n_tokens_generated": [
+            1
+          ],
+          "conversation": "user\nReply OK.\nassistant\n<think>\nThinking Process:\n\n1.  **Analyze the Request:**\n    *   Input: \"Reply OK.\"\n    *",
+          "error": "",
+          "n_prompt_tokens_remaining": [
+            0
+          ],
+          "n_prompt_tokens_cached": [
+            38
+          ],
+          "status_code": 200,
+          "prompt_remaining": "",
+          "generated_eog": false,
+          "partial": [],
+          "n_prompt_tokens_decoded": [
+            0
+          ]
+        }
+      },
+      "error": null,
+      "elapsed_seconds": 1.4176038749999975,
+      "cycles_delta": 8047907857
+    },
+    {
+      "method": "run_update",
+      "args": {
+        "args": [
+          "--prompt-cache",
+          "audit-probe.cache",
+          "--prompt-cache-all",
+          "--simple-io",
+          "--no-display-prompt",
+          "-n",
+          "128",
+          "--seed",
+          "42",
+          "--temp",
+          "0",
+          "-p",
+          ""
+        ]
+      },
+      "result": {
+        "Ok": {
+          "n_prompt_tokens": [
+            39
+          ],
+          "output": "  ",
+          "n_tokens_generated": [
+            1
+          ],
+          "conversation": "user\nReply OK.\nassistant\n<think>\nThinking Process:\n\n1.  **Analyze the Request:**\n    *   Input: \"Reply OK.\"\n    *  ",
+          "error": "",
+          "n_prompt_tokens_remaining": [
+            0
+          ],
+          "n_prompt_tokens_cached": [
+            39
+          ],
+          "status_code": 200,
+          "prompt_remaining": "",
+          "generated_eog": false,
+          "partial": [],
+          "n_prompt_tokens_decoded": [
+            0
+          ]
+        }
+      },
+      "error": null,
+      "elapsed_seconds": 1.3427883749999978,
+      "cycles_delta": 8049643878
+    },
+    {
+      "method": "run_update",
+      "args": {
+        "args": [
+          "--prompt-cache",
+          "audit-probe.cache",
+          "--prompt-cache-all",
+          "--simple-io",
+          "--no-display-prompt",
+          "-n",
+          "128",
+          "--seed",
+          "42",
+          "--temp",
+          "0",
+          "-p",
+          ""
+        ]
+      },
+      "result": {
+        "Ok": {
+          "n_prompt_tokens": [
+            40
+          ],
+          "output": " Intent",
+          "n_tokens_generated": [
+            1
+          ],
+          "conversation": "user\nReply OK.\nassistant\n<think>\nThinking Process:\n\n1.  **Analyze the Request:**\n    *   Input: \"Reply OK.\"\n    *   Intent",
+          "error": "",
+          "n_prompt_tokens_remaining": [
+            0
+          ],
+          "n_prompt_tokens_cached": [
+            40
+          ],
+          "status_code": 200,
+          "prompt_remaining": "",
+          "generated_eog": false,
+          "partial": [],
+          "n_prompt_tokens_decoded": [
+            0
+          ]
+        }
+      },
+      "error": null,
+      "elapsed_seconds": 1.3423199999999724,
+      "cycles_delta": 8048143755
+    },
+    {
+      "method": "run_update",
+      "args": {
+        "args": [
+          "--prompt-cache",
+          "audit-probe.cache",
+          "--prompt-cache-all",
+          "--simple-io",
+          "--no-display-prompt",
+          "-n",
+          "128",
+          "--seed",
+          "42",
+          "--temp",
+          "0",
+          "-p",
+          ""
+        ]
+      },
+      "result": {
+        "Ok": {
+          "n_prompt_tokens": [
+            41
+          ],
+          "output": ":",
+          "n_tokens_generated": [
+            1
+          ],
+          "conversation": "user\nReply OK.\nassistant\n<think>\nThinking Process:\n\n1.  **Analyze the Request:**\n    *   Input: \"Reply OK.\"\n    *   Intent:",
+          "error": "",
+          "n_prompt_tokens_remaining": [
+            0
+          ],
+          "n_prompt_tokens_cached": [
+            41
+          ],
+          "status_code": 200,
+          "prompt_remaining": "",
+          "generated_eog": false,
+          "partial": [],
+          "n_prompt_tokens_decoded": [
+            0
+          ]
+        }
+      },
+      "error": null,
+      "elapsed_seconds": 1.3981678750000128,
+      "cycles_delta": 8049669937
+    },
+    {
+      "method": "run_update",
+      "args": {
+        "args": [
+          "--prompt-cache",
+          "audit-probe.cache",
+          "--prompt-cache-all",
+          "--simple-io",
+          "--no-display-prompt",
+          "-n",
+          "128",
+          "--seed",
+          "42",
+          "--temp",
+          "0",
+          "-p",
+          ""
+        ]
+      },
+      "result": {
+        "Ok": {
+          "n_prompt_tokens": [
+            42
+          ],
+          "output": " The",
+          "n_tokens_generated": [
+            1
+          ],
+          "conversation": "user\nReply OK.\nassistant\n<think>\nThinking Process:\n\n1.  **Analyze the Request:**\n    *   Input: \"Reply OK.\"\n    *   Intent: The",
+          "error": "",
+          "n_prompt_tokens_remaining": [
+            0
+          ],
+          "n_prompt_tokens_cached": [
+            42
+          ],
+          "status_code": 200,
+          "prompt_remaining": "",
+          "generated_eog": false,
+          "partial": [],
+          "n_prompt_tokens_decoded": [
+            0
+          ]
+        }
+      },
+      "error": null,
+      "elapsed_seconds": 1.4563038750000032,
+      "cycles_delta": 8047363903
+    }
+  ],
+  "upload": {
+    "cycles_delta": 3023982348623,
+    "elapsed_seconds": 321.000747541,
+    "chunks": 641,
+    "result": {
+      "filename": "models/model.gguf",
+      "filesize": 1280835840,
+      "filesha256": "aaf42c8b7c3cab2bf3d69c355048d4a0ee9973d48f16c731c0520ee914699223"
+    }
+  },
+  "output": "<think>\nThinking Process:\n\n1.  **Analyze the Request:**\n    *   Input: \"Reply OK.\"\n    *   Intent: The",
+  "generated_tokens": 32
+}

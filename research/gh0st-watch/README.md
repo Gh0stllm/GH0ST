@@ -2,9 +2,9 @@
 
 Research checkpoint: 3 November 2026. Branch: `research/gh0st-watch`, based on `main` at `ba894be88a230685ba310d8500eb77a156f4a855`.
 
-**Status: proposed design and operating-cost model. Watch has not been implemented, deployed or benchmarked end to end.** A small synthetic native-model screen is now available; it is not a Watch or ICP cost benchmark. This checkpoint creates no paid service, chain transaction, recurring monitor or spending authorization.
+**Status: proposed design and operating-cost model. Watch has not been implemented, deployed or benchmarked end to end.** Native-model screens and a separate local ICP audit-model/cost experiment are available; neither is an end-to-end Watch benchmark. This checkpoint creates no paid service, chain transaction, recurring monitor or spending authorization.
 
-Research updates: [optimization and cost controls](OPTIMIZATION.md), [alert model tests](MODEL-SELECTION.md), and [contract-audit model recommendation](CONTRACT-AUDIT-MODELS.md). Contract auditing is a separate workload from generating short alert text.
+Research updates: [optimization and cost controls](OPTIMIZATION.md), [alert model tests](MODEL-SELECTION.md), and [contract-audit model recommendation](CONTRACT-AUDIT-MODELS.md), and [downloadable models: measured ICP results and costs](ICP-AUDIT-RESULTS.md). Contract auditing is a separate workload from generating short alert text.
 
 GH0ST Watch would monitor selected public contracts, publish factual alerts with transaction evidence, and optionally explain selected alerts using a dedicated ICP model deployment. The first product should be useful even when AI is disabled or unavailable.
 

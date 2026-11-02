@@ -1,5 +1,7 @@
 # Models for contract auditing
 
+**Follow-up:** [downloadable models tested on local ICP, including costs and failed audit checks](ICP-AUDIT-RESULTS.md). Qwen3.5-2B runs in the pinned canister; Qwen3-4B IQ3 loads but exceeds the inference instruction limit. No tested configuration qualifies as a dependable contract auditor.
+
 Checked 3 November 2026. Recommendation and evaluation plan, not a completed GH0ST audit or an API deployment. The small Qwen alert-writing experiment is not evidence of contract-auditing ability.
 
 ## Downloading and running on ICP / ICPP
@@ -16,7 +18,7 @@ The user clarified that the model should be downloadable and run through the exi
 
 Model sources: [Qwen3-1.7B](https://huggingface.co/Qwen/Qwen3-1.7B), [Qwen3-0.6B](https://huggingface.co/Qwen/Qwen3-0.6B). Tested third-party GGUF downloads: [pinned 1.7B Q4_K_M](https://huggingface.co/unsloth/Qwen3-1.7B-GGUF/resolve/d7f544eead698dbd1f15126ef60b45a1e1933222/Qwen3-1.7B-Q4_K_M.gguf), [pinned 0.6B Q4_K_M](https://huggingface.co/unsloth/Qwen3-0.6B-GGUF/resolve/50968a4468ef4233ed78cd7c3de230dd1d61a56b/Qwen3-0.6B-Q4_K_M.gguf). Verify hashes in [benchmark_local.py](benchmark_local.py). File size excludes runtime, activation, KV-cache and canister overhead.
 
-Downloadability does not establish ICPP compatibility or security quality. A larger open-weight coding/reasoning model is a separate research candidate: first test exact architecture and GGUF support in the pinned Wasm runtime, then memory/context fit, held-out vulnerability detection and false findings, and finally bounded cycle costs. Do not assume that arbitrary GGUF files load or that scaling parameters produces a practical on-chain auditor. No larger model has been selected, downloaded or deployed as part of this audit-model research.
+Downloadability does not establish ICPP compatibility or security quality. A larger open-weight coding/reasoning model is a separate research candidate: first test exact architecture and GGUF support in the pinned Wasm runtime, then memory/context fit, held-out vulnerability detection and false findings, and finally bounded cycle costs. Do not assume that arbitrary GGUF files load or that scaling parameters produces a practical on-chain auditor. This was the initial selection boundary. The linked follow-up downloads and tests 2B and 4B candidates locally; no production deployment occurred.
 
 ## Hosted alternative if off-chain auditing is acceptable
 

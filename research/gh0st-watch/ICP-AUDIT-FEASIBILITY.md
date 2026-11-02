@@ -1,6 +1,6 @@
 # Downloadable contract-audit models on ICP
 
-3 November 2026. Research in progress; no paid inference or production change.
+3 November 2026. Initial feasibility checkpoint; superseded by [measured results and costs](ICP-AUDIT-RESULTS.md). No paid inference or production change.
 
 ## First checkpoint: feasibility before model ranking
 
@@ -32,4 +32,4 @@ Measure load/generation feasibility locally before spending real cycles. Keep na
 
 [ICP cycle pricing](https://docs.internetcomputer.org/references/cycle-costs/) fixes 1T cycles at 1 XDR. Use explicit cycle totals and a clearly labeled USD planning conversion rather than treating a dated USD example as today's exchange quote. A 13-node subnet charges 5,000,000 cycles per update plus instruction charges, and 127,000 cycles per GiB-second for storage; larger subnet costs differ.
 
-Next checkpoint: inspect exact architecture support, test feasible downloadable candidates, and publish bounded audit-workload scenarios. No candidate is yet a validated replacement for an expert contract audit.
+Completed follow-up: [local execution, failures, audit screens and costs](ICP-AUDIT-RESULTS.md). It also reconciles a storage-rate discrepancy between the documentation quoted above and the tested runtime. No candidate qualifies as a dependable auditor.

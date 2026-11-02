@@ -1,0 +1,126 @@
+{
+  "scope": "local ICP replica only; cycle balance deltas include storage during elapsed time; no mainnet deployment",
+  "model": "Qwen3-4B-Instruct-2507-UD-IQ3_XXS.gguf",
+  "bytes": 1674376800,
+  "sha256": "c886effc2f09e63bbf9419a8136fab49dba22a578c24885f63c5f483de75ad3e",
+  "canister_wasm_sha256": "964787ece3a98badb85493839ad77a372295ca7b8ded9f87ac8222a616d3edb5",
+  "runtime": "onicai/llama_cpp_canister v0.23.0rc4",
+  "calls": [
+    {
+      "method": "load_model",
+      "args": {
+        "args": [
+          "--model",
+          "models/model.gguf",
+          "--no-warmup",
+          "-c",
+          "2048",
+          "--batch-size",
+          "4",
+          "--ubatch-size",
+          "4",
+          "--cache-type-k",
+          "q8_0",
+          "--cache-type-v",
+          "q8_0"
+        ]
+      },
+      "result": {
+        "Ok": {
+          "n_prompt_tokens": [],
+          "output": "Model succesfully loaded into memory.",
+          "n_tokens_generated": [],
+          "conversation": "",
+          "error": "",
+          "n_prompt_tokens_remaining": [],
+          "n_prompt_tokens_cached": [],
+          "status_code": 200,
+          "prompt_remaining": "",
+          "generated_eog": false,
+          "partial": [],
+          "n_prompt_tokens_decoded": []
+        }
+      },
+      "error": null,
+      "elapsed_seconds": 8.68728516699997,
+      "cycles_delta": 10614167692
+    },
+    {
+      "method": "set_max_tokens",
+      "args": {
+        "max_tokens_update": 1,
+        "max_tokens_query": 1
+      },
+      "result": {
+        "Ok": {
+          "status_code": 200
+        }
+      },
+      "error": null,
+      "elapsed_seconds": 2.4230168750000303,
+      "cycles_delta": 8144613
+    },
+    {
+      "method": "new_chat",
+      "args": {
+        "args": [
+          "--prompt-cache",
+          "audit-probe.cache"
+        ]
+      },
+      "result": {
+        "Ok": {
+          "n_prompt_tokens": [],
+          "output": "Ready to start a new chat for cache file .canister_cache/2vxsx-fae/sessions/audit-probe.cache",
+          "n_tokens_generated": [],
+          "conversation": "",
+          "error": "",
+          "n_prompt_tokens_remaining": [],
+          "n_prompt_tokens_cached": [],
+          "status_code": 200,
+          "prompt_remaining": "",
+          "generated_eog": false,
+          "partial": [],
+          "n_prompt_tokens_decoded": []
+        }
+      },
+      "error": null,
+      "elapsed_seconds": 0.2125166669999885,
+      "cycles_delta": 18214367
+    },
+    {
+      "method": "run_update",
+      "args": {
+        "args": [
+          "--prompt-cache",
+          "audit-probe.cache",
+          "--prompt-cache-all",
+          "--simple-io",
+          "--no-display-prompt",
+          "-n",
+          "128",
+          "--seed",
+          "42",
+          "--temp",
+          "0",
+          "-p",
+          "<|im_start|>user\nReply OK.<|im_end|>\n<|im_start|>assistant\n"
+        ]
+      },
+      "result": null,
+      "error": "Replica Reject (Code 5): Error from Canister 4caro-hl777-77775-aaaba-cai: Canister exceeded the limit of 40000000000 instructions for single message execution..\nTry optimizing this method to consume fewer instructions or split the work across multiple messages. See documentation: https://docs.internetcomputer.org/references/execution-errors#instruction-limit-exceeded [error_code=IC0522]",
+      "elapsed_seconds": 3.6943754999999783,
+      "cycles_delta": 40034253018
+    }
+  ],
+  "upload": {
+    "cycles_delta": 3953238995662,
+    "elapsed_seconds": 393.723457125,
+    "chunks": 838,
+    "result": {
+      "filename": "models/model.gguf",
+      "filesize": 1674376800,
+      "filesha256": "c886effc2f09e63bbf9419a8136fab49dba22a578c24885f63c5f483de75ad3e"
+    }
+  }
+}
