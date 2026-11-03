@@ -1,4 +1,8 @@
+mod interpretation;
+mod suite;
+use candid::Principal;
 use candid::{CandidType, Deserialize};
+use interpretation::Interpretation;
 use revm::primitives::{Address, Bytes, ExecutionResult, Output, SpecId, TxKind, U256};
 use revm::{Evm, InMemoryDB};
 
@@ -29,12 +33,23 @@ fn execute(
     data: Vec<u8>,
     commit: bool,
 ) -> Result<ExecutionResult, String> {
+    execute_value(db, sender, target, data, commit, 0)
+}
+fn execute_value(
+    db: &mut InMemoryDB,
+    sender: Address,
+    target: TxKind,
+    data: Vec<u8>,
+    commit: bool,
+    value: u64,
+) -> Result<ExecutionResult, String> {
     let mut evm = Evm::builder()
         .with_db(db)
         .with_spec_id(SpecId::SHANGHAI)
         .modify_cfg_env(|cfg| cfg.chain_id = 31337)
         .modify_tx_env(|tx| {
             tx.caller = sender;
+            tx.value = U256::from(value);
             tx.transact_to = target;
             tx.data = Bytes::from(data);
             tx.gas_limit = GAS_LIMIT;
@@ -78,8 +93,7 @@ fn balance(
     }
 }
 
-#[ic_cdk::query]
-fn check_mint(creation_hex: String, use_balance_of: bool) -> Check {
+fn decode_hex(creation_hex: &str) -> Result<Vec<u8>, String> {
     let hex = creation_hex
         .trim()
         .strip_prefix("0x")
@@ -93,11 +107,15 @@ fn check_mint(creation_hex: String, use_balance_of: bool) -> Check {
             "Expected hex EVM creation bytecode, 1 to {MAX_BYTES} bytes"
         ));
     }
-    let init = hex
+    Ok(hex
         .as_bytes()
         .chunks_exact(2)
         .map(|pair| u8::from_str_radix(std::str::from_utf8(pair).unwrap(), 16).unwrap())
-        .collect();
+        .collect())
+}
+#[ic_cdk::query]
+fn check_mint(creation_hex: String, use_balance_of: bool) -> Check {
+    let init = decode_hex(&creation_hex)?;
     let mut db = InMemoryDB::default();
     let owner = Address::repeat_byte(0x11);
     let user = Address::repeat_byte(0x22);
@@ -191,4 +209,5 @@ mod tests {
         assert!(check_mint("00".into(), false).is_err());
     }
 }
+use suite::{Rule, RuleResult};
 ic_cdk::export_candid!();

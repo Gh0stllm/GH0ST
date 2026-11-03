@@ -8,7 +8,11 @@ type Evidence = record {
   control_after : text;
 };
 type Check = variant { Ok : Evidence; Err : text };
+type Rule = variant { Mint : record {balance_of : bool}; Authorization; Withdraw : record {takes_amount : bool}; Replay; TokenReturn : record {credit_slot : opt nat64}; Underflow };
+type RuleResult = record {reproduced : bool; observed : vec record {text; text}};
 service : {
+  interpret : (Rule, text, principal) -> (variant {Ok : record {evidence : RuleResult; model_answer : opt text; status : text}; Err : text});
+  check_contract : (Rule, text) -> (variant {Ok : RuleResult; Err : text}) query;
   check_mint : (text, bool) -> (Check) query;
   demo : () -> (record { open_mint : Check; protected_mint : Check }) query;
 }

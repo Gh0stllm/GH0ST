@@ -1,0 +1,14 @@
+# Dedicated checker and Qwen3.5-2B on ICP
+
+The playground checker runs all six contract checks. Its controller-only interpret endpoint can call a separate Qwen3.5-2B canister. Both simulation and inference execute on ICP in the dedicated design. The model's conclusion is supplementary to the recorded execution. Benchmark quality and inference measurements are in [the audit study](../AUDIT-IMPROVEMENTS.md). A mainnet end-to-end Qwen answer for this new interface still requires a funded dedicated backend.
+
+Proposed initial funding is **8 trillion cycles** across two new canisters. Allocate 1T to the checker and 7T to the model, inclusive of standard creation costs. At the observed 3 November 2026 rate of 1.7786T cycles per ICP this is about **4.50 ICP** before small ledger fees. A proposed **4.55 ICP ceiling** applies to initial funding including fees. Check the live conversion rate and remaining balance immediately before conversion. Allocating these cycles prepays resources. It does not represent a recurring monthly commitment.
+
+Prior measurements suggest about 3.64T for the model's creation, upload, installation allowance and loading, 2.29T for 30 days of model idle storage and 0.45T per short mint interpretation. Checker storage, calls, other families, failed attempts and actual target-subnet burn vary. With 7T assigned to the model, setup and a full month idle would leave about 1.07T for inference under those assumptions. As a result this allocation is sized for initial verification, not sustained volume.
+
+Use fresh canisters and verify the intended deployer is their controller. Keep model access restricted to controllers and explicitly authorize only the dedicated checker and deployment identity for model control. Public access is limited to deterministic checker queries. The configurable model destination on interpret is available only to the checker controller. Use a single operator call at a time when metering and avoid automatic retries.
+
+1. Build the checker using the locked toolchain and install the tested Wasm with Candid metadata. Verify all six queries against the example set.
+2. Install the pinned llama_cpp_canister release Wasm and upload the pinned GGUF in chunks of at most 2,000,000 bytes. Verify the uploaded SHA-256 before loading the model. Deployment parameters and raw artifacts are in [the model report](../ICP-AUDIT-RESULTS.md).
+3. Use context 2048, batch/ubatch 4, q8_0 KV cache and no warmup. Set max_tokens_update to zero to let the canister use instruction-budget continuations. The checker supplies an overall one-token generation limit.
+4. Call interpret from the controller on the open and protected mint bytecodes. Verify the Qwen labels, one-token counts, execution evidence, change in both canister balances and actual daily idle burn. Confirm the anonymous caller is refused. Keep malformed or disagreeing model responses distinct from the witness result.
