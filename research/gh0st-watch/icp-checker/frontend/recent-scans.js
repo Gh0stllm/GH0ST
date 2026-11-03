@@ -89,25 +89,16 @@ export function createRecentScans(storage) {
     return true;
   }
   function get(network,address) {return list().find(e => same(e,network,address)) ?? null;}
-  function save({network,address,name,report=null,trace=[]}) {
-    const old=get(network,address);
-    const scannedAt=Math.max(Date.now(),old ? old.scannedAt+1 : 0);
-    const entry={network,address,name:String(name || address).slice(0,90),report,trace,scannedAt,openedAt:scannedAt,details:{}};
+  function remember(entry) {
     if (!validEntry(entry)) return null;
-    return write([entry,...rows.filter(x => !same(x,network,address))]) ? entry : null;
-  }
-  function touch(network,address) {
-    const entry=get(network,address);
-    if (!entry) return null;
-    const opened={...entry,openedAt:Math.max(Date.now(),entry.scannedAt)};
-    write([opened,...rows.filter(x => x!==entry)]);
+    const existing=get(entry.network,entry.address);
+    // Two tabs may receive different generations out of order. Reopening
+    // updates the list position, while scan time belongs to the saved result.
+    const opened={...entry,shared:true,openedAt:Date.now(),details:safeDetails(entry.details)};
+    const latest=existing?.shared && existing.scannedAt>entry.scannedAt ? {...existing,openedAt:opened.openedAt} : opened;
+    write([latest,...rows.filter(x=>x!==existing)]);
+    // The displayed shared report must always come from this server response.
     return opened;
   }
-  function attach(network,address,blockHash,details,scannedAt) {
-    const entry=get(network,address);
-    if (!entry?.report || entry.report.blockHash !== blockHash || entry.scannedAt !== scannedAt) return null;
-    const updated={...entry,details:{...entry.details,...safeDetails(details)}};
-    return write(rows.map(x => x===entry ? updated : x)) ? updated : null;
-  }
-  return {list,get,save,touch,attach};
+  return {list,get,remember};
 }

@@ -5,12 +5,11 @@ import {compass} from './compass.js';
 import {mountClaims} from './claims.js';
 import {mountDiscovery} from './discover.js';
 import {assess} from './assessment.js';
-import {fetchMarket} from './market.js';
 import {resolveInput} from './input.js';
 import {isPlatformToken} from './platform-token.js';
-import {createRecentScans, RECENTS_KEY} from './recent-scans.js';
-import {scan,networks,rpc,qwenSummary} from './scan.js';
-import {enrich} from './intelligence.js';
+import {createRecentScans} from './recent-scans.js';
+import {listSharedScans,openSharedScan} from './shared-client.js';
+import {networks} from './scan.js';
 import coverage from './coverage.json';
 import notes from './rule-notes.json';
 const $=s=>document.querySelector(s);
@@ -95,20 +94,40 @@ function drawSaved(){
   if(activeCoin&&saveButton){const has=saved.some(x=>isSame(x,activeCoin));saveButton.textContent=has?'★ Saved':'☆ Watch';saveButton.setAttribute('aria-pressed',String(has))}
 }
 const recentScans=createRecentScans();
-function drawRecent(){
-  const panel=$('#recent-list'),entries=recentScans.list();
+function drawRecent(entries){
+  const panel=$('#recent-list');
   panel.replaceChildren();
-  if(!entries.length){panel.append(el('li','Coins you open will appear here.','recent-empty'));return}
+  if(!entries.length){panel.append(el('li','The first completed scan will appear here.','recent-empty'));return}
   for(const entry of entries){
     const row=el('li'),button=action('',()=>openCoin(entry.address,entry.network));
     button.className='recent-item';
     button.title=entry.address;
     button.append(el('strong',entry.name),el('span','RH '+networks[entry.network].label+' · '+entry.address.slice(0,8)+'…'+entry.address.slice(-6)),
-      el('small',entry.report?'Scanned '+new Date(entry.scannedAt).toLocaleString():'Platform token'));
+      el('small',!isPlatformToken(entry.network,entry.address)?'Scanned '+new Date(entry.scannedAt).toLocaleString():'Platform token'));
     row.append(button);panel.append(row);
   }
 }
-window.addEventListener('storage',e=>{if(!e.key||e.key===listKey)drawSaved();if(!e.key||e.key===RECENTS_KEY)drawRecent()});
+let listVersion=0,lastListRead=0,lastSharedList=null;
+async function refreshRecent(){
+  const version=++listVersion;
+  lastListRead=Date.now();
+  const note=$('#recent-note');
+  try{
+    const entries=await listSharedScans();
+    if(version!==listVersion)return;
+    lastSharedList=entries;drawRecent(entries);
+    note.textContent='One entry per coin and network. Select a coin to open its shared report.';
+  }catch{
+    if(version!==listVersion)return;
+    const entries=lastSharedList??recentScans.list();
+    drawRecent(entries);
+    note.textContent=lastSharedList?'The shared list could not be refreshed. Showing the last list received.':
+      entries.length?'The shared list is unavailable. Showing saved entries from this browser.':'The shared list is temporarily unavailable.';
+    if(!entries.length)$('#recent-list').replaceChildren();
+  }
+}
+document.addEventListener('visibilitychange',()=>{if(!document.hidden && Date.now()-lastListRead>15000)refreshRecent()});
+window.addEventListener('storage',e=>{if(!e.key||e.key===listKey)drawSaved()});
 function marketPanel(market){
   const panel=el('section');panel.append(el('p','Looking up RH trading pools…'));
   market.then(m=>{
@@ -159,44 +178,16 @@ function identityOf(r){
   const symbol=r.overview.fields.find(([k])=>k==='Symbol')?.[1],name=r.overview.fields.find(([k])=>k==='Name')?.[1]||r.name||'RH contract';
   return {name,coin:{address:r.address,network:r.network,name:String(symbol||name).slice(0,90)}};
 }
-const pendingDetails=new Map();
-function reportDetails(r,entry,reused){
-  const key=r.network+'/'+r.address.toLowerCase();
-  const pending=pendingDetails.get(key);
-  if(reused){
-    if(pending && pending.scannedAt===entry.scannedAt && pending.blockHash===r.blockHash)return pending.sources;
-    const saved=entry.details||{};
-    return {
-      intel:Promise.resolve(saved.intel??null),
-      market:Promise.resolve(saved.market??{available:false,reason:'Market data was unavailable in this saved scan.'}),
-      note:Promise.resolve(saved.note??null),
-    };
-  }
-  function capture(field,promise,fallback){
-    return promise.catch(()=>fallback).then(value=>{
-      if(entry)recentScans.attach(r.network,r.address,r.blockHash,{[field]:value},entry.scannedAt);
-      return value;
-    });
-  }
-  const sources={
-    intel:capture('intel',enrich(networks[r.network],r,rpc),null),
-    market:capture('market',fetchMarket(r.network,r.address),{available:false,reason:'Market data unavailable.'}),
-    note:capture('note',qwenSummary(r),null),
-  };
-  const generation={sources,scannedAt:entry?.scannedAt,blockHash:r.blockHash};
-  pendingDetails.set(key,generation);
-  Promise.allSettled(Object.values(sources)).then(()=>{if(pendingDetails.get(key)===generation)pendingDetails.delete(key)});
-  return sources;
-}
-function render(r,trace,initialView,entry,reused){
+function render(entry,initialView,source,reused){
+  const {report:r,trace,details,scannedAt}=entry;
   const {name,coin}=identityOf(r);
   const body=reportHeader(coin,name,'COIN REPORT','RH '+networks[r.network].label.toUpperCase()+' / '+r.block.toLocaleString());
   const scanBar=el('div',null,'scan-origin');
-  const scannedAt=entry?.scannedAt??Date.now();
-  scanBar.append(el('span',(reused?'Saved scan':'Scanned')+' · '+new Date(scannedAt).toLocaleString()+' · Block '+r.block.toLocaleString()),
+  scanBar.append(el('span',source+' · '+new Date(scannedAt).toLocaleString()+' · Block '+r.block.toLocaleString()),
     action('Scan again',()=>analyze(new URL(location.href).searchParams.get('view'),true)));
   body.append(scanBar);
-  const {intel,market,note}=reportDetails(r,entry,reused);
+  const intel=Promise.resolve(details?.intel??null),note=Promise.resolve(details?.note??null);
+  const market=Promise.resolve(details?.market??{available:false,reason:'Market data was unavailable in this scan.'});
   const claims=el('section');mountClaims(claims,r);
   const score=el('section'),bundles=el('section'),timeline=el('section');
   const brief=readPanel(r,intel,market,trace,note),scorePreview=el('div',null,'score-preview');
@@ -227,36 +218,36 @@ function render(r,trace,initialView,entry,reused){
 async function analyze(initialView,force=false){
   if(submit.disabled)return;submit.disabled=true;network.disabled=true;address.readOnly=true;$('#example').disabled=true;
   if(!force)report.hidden=true;idle.hidden=false;
-  const started=performance.now(),trace=[];
-  const step=text=>{status.textContent=text;trace.push(((performance.now()-started)/1000).toFixed(1)+'s · '+text)};
+  const step=text=>{status.textContent=text};
   try{
     step('Resolving coin…');
     const input=await resolveInput(address.value,network.value);
     if(network.value!==input.network){network.value=input.network;refreshDiscovery()}
     address.value=input.address;
-    if(isPlatformToken(input.network,input.address)){
-      showPlatformToken(input);
-      if(!recentScans.touch(input.network,input.address))recentScans.save({...input,name:'GH0ST',report:null,trace:[]});
-    }else{
-      async function openReport(){
-        const existing=recentScans.get(input.network,input.address);
-        if(existing?.report && !force){
-          recentScans.touch(input.network,input.address);
-          render(existing.report,existing.trace,initialView,existing,true);
-          return;
-        }
-        const r=await scan(input.network,input.address,step);
-        step('RH block hash rechecked. Behavior results ready.');
-        const entry=recentScans.save({...identityOf(r).coin,report:r,trace});
-        render(r,trace,initialView,entry,false);
-      }
-      if(navigator.locks)await navigator.locks.request('gh0st-watch:scan:'+input.network+':'+input.address.toLowerCase(),openReport);
-      else await openReport();
+    const local=recentScans.get(input.network,input.address);
+    const official=isPlatformToken(input.network,input.address);
+    if(official)showPlatformToken(input);
+    step(force?'Requesting a fresh shared scan…':'Looking for a shared report…');
+    let result;
+    try{
+      result=await openSharedScan(input,force,step);
+    }catch(error){
+      if(official){step('Shared recent scans are temporarily unavailable.');return}
+      if(!local?.report || force)throw error;
+      render(local,initialView,'Saved on this device',true);
+      step('Could not load a shared report. Showing the copy saved on this device.');
+      return;
     }
-    drawRecent();
-    status.textContent='';
+    const entry=recentScans.remember(result.entry);
+    if(!entry)throw Error('The shared scanner returned an unreadable report.');
+    if(!official){
+      const alreadyObserved=local?.report?.blockHash===entry.report.blockHash && local.scannedAt===entry.scannedAt;
+      render(entry,initialView,'Shared scan',alreadyObserved);
+    }
+    step(force && result.reused?'This shared scan is less than 10 minutes old. You can request a new block after '+new Date(entry.scannedAt+600000).toLocaleTimeString()+'.':'');
+    refreshRecent();
   }
-  catch(e){status.textContent=e.message||'Analysis could not finish. Please retry.';}
+  catch(e){step(e.message||'Analysis could not finish. Please retry.');}
   finally{submit.disabled=false;network.disabled=false;address.readOnly=false;$('#example').disabled=false}
 }
 form.addEventListener('submit',e=>{e.preventDefault();analyze()});
@@ -266,7 +257,7 @@ function reset(){activeCoin=null;saveButton=null;report.hidden=true;idle.hidden=
 address.addEventListener('input',reset);network.addEventListener('change',()=>{reset();refreshDiscovery()});
 const params=new URLSearchParams(location.search);
 if(Object.hasOwn(networks,params.get('network')))network.value=params.get('network');
-const refreshDiscovery=mountDiscovery($('#discovery'),{getNetwork:()=>network.value,onSelect:a=>openCoin(a,network.value)});drawSaved();drawRecent();
+const refreshDiscovery=mountDiscovery($('#discovery'),{getNetwork:()=>network.value,onSelect:a=>openCoin(a,network.value)});drawSaved();refreshRecent();
 for(const button of document.querySelectorAll('[data-instrument]')){
   button.onclick=()=>{if(!address.value.trim())address.value=networks[network.value].example;analyze(button.dataset.instrument)};
 }
