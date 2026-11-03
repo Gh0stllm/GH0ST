@@ -10,7 +10,13 @@ type Evidence = record {
 type Check = variant { Ok : Evidence; Err : text };
 type Rule = variant { Mint : record {balance_of : bool}; Authorization; Withdraw : record {takes_amount : bool}; Replay; TokenReturn : record {credit_slot : opt nat64}; Underflow };
 type RuleResult = record {reproduced : bool; observed : vec record {text; text}};
+type Profile = record {bytes:nat32; hash:text; selectors:vec text; delegatecall:nat32; origin:nat32; selfdestruct:nat32; external_call:nat32};
+type Headers=vec record{text;text};
+type HttpRequest=record{method:text;url:text;headers:Headers;body:blob;certificate_version:opt nat16};
+type HttpResponse=record{status_code:nat16;headers:Headers;body:blob;upgrade:opt bool};
 service : {
+  http_request : (HttpRequest) -> (HttpResponse) query;
+  inspect_runtime : (blob) -> (variant{Ok:Profile;Err:text}) query;
   interpret : (Rule, text, principal) -> (variant {Ok : record {evidence : RuleResult; model_answer : opt text; status : text}; Err : text});
   check_contract : (Rule, text) -> (variant {Ok : RuleResult; Err : text}) query;
   check_mint : (text, bool) -> (Check) query;

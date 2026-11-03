@@ -1,5 +1,11 @@
 # GH0ST Watch on ICP
 
+[Open the RH contract scanner](https://ggcey-baaaa-aaaao-bbsgq-cai.icp0.io/). Paste a Robinhood Chain mainnet or testnet address, select the network and choose **Analyze**. The **Try an example** button opens a real contract. Share the resulting URL to scan that address again at a new block.
+
+The browser pins RH RPC reads to one block and checks its hash again before presenting results. ICP disassembles the deployed runtime and returns its fingerprint. Standard implementation slots, beacon proxies and common minimal proxies are resolved when possible. Explorer ABI metadata is used only when its deployed bytecode matches. Token and ownership fields come from getters at the pinned block.
+
+Compatible mint and burn calls run through an ephemeral probe in an RH eth_call. Other compatible recipes run through the ICP fresh-deployment checker when matching verified creation input is available. Reports distinguish these evidence sources and explain untested rules. The public frontend uses anonymous read-only calls. Paid Qwen interpretation remains a controller operation.
+
 GH0ST Watch runs six EVM simulations inside an ICP canister. The hosted release accepts compiled Solidity creation bytecode and executes the selected check against a fresh deployment. All 25 research contracts were queried over ICP. The suite reproduced the expected behavior on 12 examples and found no reproduction on 13 controls. These are authored tests with the target family supplied. [Live query results](suite-results.json).
 
 Select **check_contract** and choose a recipe. Use the constructor-free fixture bytecode for Replay and TokenReturn because those recipes append their own signer or token constructor argument. The other recipes accept creation bytecode including any necessary constructor arguments.
@@ -31,8 +37,8 @@ The reported balances come from the contract's getter. Interpret a successful mi
 The hosted preview runs without any software installation for the caller. To reproduce the canister artifact, use Rust with the wasm32-unknown-unknown target and the committed Cargo.lock. The preview was built with Rust 1.99.1, revm 19.7.0 and dfx 0.32.0. The two hex files are Solidity 0.8.24 Shanghai creation bytecode for the existing mint fixtures in [the research dataset](../audit-improvement-results.json), compiled as Mint.sol with the optimizer disabled.
 
 ```sh
+sh build.sh
 cargo test --locked --lib
-cargo build --locked --release --target wasm32-unknown-unknown
 dfx deploy watch_checker --playground
 dfx canister --network playground call watch_checker demo '()'
 ```

@@ -1,10 +1,14 @@
 mod interpretation;
+mod scanner;
 mod suite;
+mod web;
 use candid::Principal;
 use candid::{CandidType, Deserialize};
+use ic_http_certification::{HttpRequest, HttpResponse};
 use interpretation::Interpretation;
 use revm::primitives::{Address, Bytes, ExecutionResult, Output, SpecId, TxKind, U256};
 use revm::{Evm, InMemoryDB};
+use scanner::CodeProfile;
 
 const GAS_LIMIT: u64 = 800_000;
 const MAX_BYTES: usize = 12_288;
