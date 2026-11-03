@@ -1,6 +1,6 @@
 # Dedicated checker and Qwen3.5-2B on ICP
 
-The playground checker runs all six contract checks. Its controller-only interpret endpoint can call a separate Qwen3.5-2B canister. Both simulation and inference execute on ICP in the dedicated design. The model's conclusion is supplementary to the recorded execution. Benchmark quality and inference measurements are in [the audit study](../AUDIT-IMPROVEMENTS.md). A mainnet end-to-end Qwen answer for this new interface still requires a funded dedicated backend.
+The dedicated mainnet deployment is complete. [Actual results and funding](MAINNET.md). The original deployment plan follows. The checker runs all six contract checks. Its controller-only interpret endpoint can call a separate Qwen3.5-2B canister. Both simulation and inference execute on ICP in the dedicated design. The model's conclusion is supplementary to the recorded execution. Benchmark quality and inference measurements are in [the audit study](../AUDIT-IMPROVEMENTS.md).
 
 Proposed initial funding is **8 trillion cycles** across two new canisters. Allocate 1T to the checker and 7T to the model, inclusive of standard creation costs. At the observed 3 November 2026 rate of 1.7786T cycles per ICP this is about **4.50 ICP** before small ledger fees. A proposed **4.55 ICP ceiling** applies to initial funding including fees. Check the live conversion rate and remaining balance immediately before conversion. Allocating these cycles prepays resources. It does not represent a recurring monthly commitment.
 

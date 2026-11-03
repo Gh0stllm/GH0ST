@@ -1,0 +1,192 @@
+{
+  "network": "Internet Computer mainnet",
+  "verified_utc": "2026-11-03T05:23:53.981016+00:00",
+  "initial_allocation_cycles": {
+    "checker": 1000000000000,
+    "model": 7000000000000
+  },
+  "icp_debited": "4.47410000",
+  "cycles_minted": 8001649000000,
+  "approved_icp_ceiling": "4.55",
+  "weight_upload": {
+    "bytes": 1280835840,
+    "sha256": "aaf42c8b7c3cab2bf3d69c355048d4a0ee9973d48f16c731c0520ee914699223",
+    "seconds": 3.845,
+    "time": 1793683146.549946,
+    "verified_chunks": 641,
+    "cycles_delta": 3061572944150
+  },
+  "load": {
+    "method": "load_model",
+    "canister": "myit3-yyaaa-aaaap-qu75a-cai",
+    "seconds": 6.477,
+    "result": {
+      "Ok": {
+        "output": "Model succesfully loaded into memory.",
+        "error": "",
+        "status_code": 200
+      }
+    }
+  },
+  "limits": {
+    "method": "set_max_tokens",
+    "canister": "myit3-yyaaa-aaaap-qu75a-cai",
+    "seconds": 6.472,
+    "result": {
+      "Ok": {
+        "status_code": 200
+      }
+    }
+  },
+  "anonymous_access_check": {
+    "method": "interpret",
+    "canister": "ggcey-baaaa-aaaao-bbsgq-cai",
+    "seconds": 1.708,
+    "result": {
+      "Err": "Paid model calls require a checker controller"
+    }
+  },
+  "loaded_status": {
+    "checker": {
+      "id": "ggcey-baaaa-aaaao-bbsgq-cai",
+      "module_hash": "0xf4b7b76b8ed2efdfdf86dc7a900d8752511a140419368d756dfcb0e26a57bb92",
+      "memory_size": "2_314_247",
+      "cycles": "494_371_774_042",
+      "idle_cycles_burned_per_day": "923_124_476",
+      "freezing_threshold_seconds": 2592000
+    },
+    "model": {
+      "id": "myit3-yyaaa-aaaap-qu75a-cai",
+      "module_hash": "0x964787ece3a98badb85493839ad77a372295ca7b8ded9f87ac8222a616d3edb5",
+      "memory_size": "2_901_175_901",
+      "cycles": "3_374_089_058_640",
+      "idle_cycles_burned_per_day": "74_983_360_480",
+      "freezing_threshold_seconds": 2592000
+    }
+  },
+  "runs": [
+    {
+      "example": "open",
+      "interpretation": {
+        "method": "interpret",
+        "canister": "ggcey-baaaa-aaaao-bbsgq-cai",
+        "seconds": 102.346,
+        "result": {
+          "Ok": {
+            "status": "agrees with execution",
+            "model_answer": [
+              "yes"
+            ],
+            "evidence": {
+              "observed": [
+                [
+                  "ordinary_receipt",
+                  "succeeded"
+                ],
+                [
+                  "before",
+                  "0"
+                ],
+                [
+                  "after",
+                  "7"
+                ],
+                [
+                  "control_before",
+                  "0"
+                ],
+                [
+                  "control_after",
+                  "7"
+                ]
+              ],
+              "reproduced": true
+            }
+          }
+        }
+      },
+      "total_observed_cycles_delta": 435102899416,
+      "model_cycles_delta": 435060478003,
+      "after": {
+        "checker": {
+          "id": "ggcey-baaaa-aaaao-bbsgq-cai",
+          "module_hash": "0xf4b7b76b8ed2efdfdf86dc7a900d8752511a140419368d756dfcb0e26a57bb92",
+          "memory_size": "2_445_319",
+          "cycles": "494_329_352_629",
+          "idle_cycles_burned_per_day": "926_473_109",
+          "freezing_threshold_seconds": 2592000
+        },
+        "model": {
+          "id": "myit3-yyaaa-aaaap-qu75a-cai",
+          "module_hash": "0x964787ece3a98badb85493839ad77a372295ca7b8ded9f87ac8222a616d3edb5",
+          "memory_size": "2_932_436_573",
+          "cycles": "2_939_028_580_637",
+          "idle_cycles_burned_per_day": "75_782_009_406",
+          "freezing_threshold_seconds": 2592000
+        }
+      }
+    },
+    {
+      "example": "protected",
+      "interpretation": {
+        "method": "interpret",
+        "canister": "ggcey-baaaa-aaaao-bbsgq-cai",
+        "seconds": 102.164,
+        "result": {
+          "Ok": {
+            "status": "agrees with execution",
+            "model_answer": [
+              "no"
+            ],
+            "evidence": {
+              "observed": [
+                [
+                  "ordinary_receipt",
+                  "reverted"
+                ],
+                [
+                  "before",
+                  "0"
+                ],
+                [
+                  "after",
+                  "0"
+                ],
+                [
+                  "control_before",
+                  "0"
+                ],
+                [
+                  "control_after",
+                  "7"
+                ]
+              ],
+              "reproduced": false
+            }
+          }
+        }
+      },
+      "total_observed_cycles_delta": 427437408848,
+      "model_cycles_delta": 427406054124,
+      "after": {
+        "checker": {
+          "id": "ggcey-baaaa-aaaao-bbsgq-cai",
+          "module_hash": "0xf4b7b76b8ed2efdfdf86dc7a900d8752511a140419368d756dfcb0e26a57bb92",
+          "memory_size": "2_445_319",
+          "cycles": "494_297_997_905",
+          "idle_cycles_burned_per_day": "926_473_109",
+          "freezing_threshold_seconds": 2592000
+        },
+        "model": {
+          "id": "myit3-yyaaa-aaaap-qu75a-cai",
+          "module_hash": "0x964787ece3a98badb85493839ad77a372295ca7b8ded9f87ac8222a616d3edb5",
+          "memory_size": "2_949_213_789",
+          "cycles": "2_511_622_526_513",
+          "idle_cycles_burned_per_day": "76_210_634_406",
+          "freezing_threshold_seconds": 2592000
+        }
+      }
+    }
+  ],
+  "model_headroom_above_estimated_freeze_reserve_cycles": 225303494333
+}
