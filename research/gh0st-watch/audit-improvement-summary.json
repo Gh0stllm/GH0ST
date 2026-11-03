@@ -1,0 +1,147 @@
+{
+  "quality": {
+    "guided": {
+      "n": 25,
+      "correct": 0,
+      "abstained": 25,
+      "positives": 12,
+      "true_positive": 0,
+      "negatives": 13,
+      "false_positive": 0
+    },
+    "narrow": {
+      "n": 25,
+      "correct": 3,
+      "abstained": 19,
+      "positives": 12,
+      "true_positive": 0,
+      "negatives": 13,
+      "false_positive": 1
+    },
+    "plain": {
+      "n": 25,
+      "correct": 14,
+      "abstained": 0,
+      "positives": 12,
+      "true_positive": 10,
+      "negatives": 13,
+      "false_positive": 9
+    },
+    "terse": {
+      "n": 25,
+      "correct": 13,
+      "abstained": 0,
+      "positives": 12,
+      "true_positive": 12,
+      "negatives": 13,
+      "false_positive": 12
+    },
+    "raw": {
+      "n": 25,
+      "correct": 20,
+      "abstained": 3,
+      "positives": 12,
+      "true_positive": 12,
+      "negatives": 13,
+      "false_positive": 2
+    },
+    "raw_missing": {
+      "n": 6,
+      "correct": 6,
+      "abstained": 6
+    },
+    "facts": {
+      "n": 25,
+      "correct": 10,
+      "abstained": 13,
+      "positives": 12,
+      "true_positive": 10,
+      "negatives": 13,
+      "false_positive": 2
+    },
+    "facts_missing": {
+      "n": 6,
+      "correct": 6,
+      "abstained": 6
+    }
+  },
+  "witness_reproduced": 12,
+  "witness_controls_reproduced": 0,
+  "local_icp": {
+    "short_mint_vulnerable": {
+      "exact_format_valid": false,
+      "expected": "A",
+      "correct_within_task": false,
+      "input": 123,
+      "output_tokens": 3,
+      "answer": "AA",
+      "cycles": 772181423771,
+      "usd": 1.0810539932793999,
+      "seconds": 81.45943016700001,
+      "reduction_vs_prior_open_mint": 0.5215970942142176
+    },
+    "short_mint_fixed": {
+      "exact_format_valid": true,
+      "expected": "B",
+      "correct_within_task": false,
+      "input": 128,
+      "output_tokens": 2,
+      "answer": "A",
+      "cycles": 793144690922,
+      "usd": 1.1104025672908,
+      "seconds": 82.45985424999999,
+      "reduction_vs_prior_open_mint": 0.5086093589345664
+    },
+    "trace_mint_vulnerable": {
+      "exact_format_valid": true,
+      "expected": "yes",
+      "correct_within_task": true,
+      "input": 73,
+      "output_tokens": 1,
+      "answer": "yes",
+      "cycles": 451232011658,
+      "usd": 0.6317248163211999,
+      "seconds": 46.720876542,
+      "reduction_vs_prior_open_mint": 0.7204404315937412
+    },
+    "trace_mint_fixed": {
+      "exact_format_valid": true,
+      "expected": "no",
+      "correct_within_task": true,
+      "input": 73,
+      "output_tokens": 1,
+      "answer": "no",
+      "cycles": 451680616580,
+      "usd": 0.632352863212,
+      "seconds": 44.058732792,
+      "reduction_vs_prior_open_mint": 0.720162499631604
+    }
+  },
+  "usd_per_trillion_assumption": 1.4,
+  "idle_cycles_30d_reference": 2293451597070,
+  "setup_cycles_reference": 3638898455241,
+  "monthly_scenarios": [
+    {
+      "incoming": 100,
+      "model_calls": 0,
+      "assumed_skipped": 100,
+      "steady_state_engine_usd": 3.2108322358979997,
+      "first_month_with_setup_allowance_usd": 8.3052900732354
+    },
+    {
+      "incoming": 100,
+      "model_calls": 10,
+      "assumed_skipped": 90,
+      "steady_state_engine_usd": 9.531220633563999,
+      "first_month_with_setup_allowance_usd": 14.625678470901398
+    },
+    {
+      "incoming": 100,
+      "model_calls": 100,
+      "assumed_skipped": 0,
+      "steady_state_engine_usd": 66.414716212558,
+      "first_month_with_setup_allowance_usd": 71.5091740498954
+    }
+  ],
+  "scope": "Two mint fixtures per bounded workload, fresh prompt caches. 30-day projections average the two trace jobs, assume 100 incoming events, one warm canister and no retries. Cycle deltas include elapsed idle so adding full-month idle is slightly conservative. Excludes scanner, data, RPC, storage outside the canister, human review and production overhead."
+}

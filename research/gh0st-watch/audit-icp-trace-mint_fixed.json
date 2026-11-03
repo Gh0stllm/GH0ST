@@ -1,0 +1,110 @@
+{
+  "scope": "local ICP replica only; not a mainnet or full-project audit",
+  "mode": "raw",
+  "model_sha256": "aaf42c8b7c3cab2bf3d69c355048d4a0ee9973d48f16c731c0520ee914699223",
+  "case": {
+    "id": "mint_fixed",
+    "family": "mint",
+    "split": "development",
+    "expected": "B",
+    "witness": false,
+    "outcome": "not reproduced in this execution",
+    "observations": {
+      "ordinaryCallerReceipt": 0,
+      "balanceIncrease": "0",
+      "privilegedControlIncrease": "7"
+    }
+  },
+  "calls": [
+    {
+      "method": "set_max_tokens",
+      "args": {
+        "max_tokens_update": 0,
+        "max_tokens_query": 1
+      },
+      "result": {
+        "status_code": 200
+      },
+      "error": null,
+      "elapsed_seconds": 0.175074875,
+      "cycles_delta": 9063005
+    },
+    {
+      "method": "new_chat",
+      "args": {
+        "args": [
+          "--prompt-cache",
+          "trace-mint_fixed-1793674086.cache"
+        ]
+      },
+      "result": {
+        "n_prompt_tokens": [],
+        "output": "Ready to start a new chat for cache file .canister_cache/2vxsx-fae/sessions/trace-mint_fixed-1793674086.cache",
+        "n_tokens_generated": [],
+        "conversation": "",
+        "error": "",
+        "n_prompt_tokens_remaining": [],
+        "n_prompt_tokens_cached": [],
+        "status_code": 200,
+        "prompt_remaining": "",
+        "generated_eog": false,
+        "partial": [],
+        "n_prompt_tokens_decoded": []
+      },
+      "error": null,
+      "elapsed_seconds": 0.20225983400000003,
+      "cycles_delta": 18257844
+    },
+    {
+      "method": "run_update_full",
+      "args": {
+        "args": [
+          "--prompt-cache",
+          "trace-mint_fixed-1793674086.cache",
+          "--prompt-cache-all",
+          "--simple-io",
+          "--no-display-prompt",
+          "-n",
+          "1",
+          "--grammar",
+          "root ::= \"yes\" | \"no\" | \"unknown\"",
+          "--seed",
+          "42",
+          "--temp",
+          "0",
+          "-p",
+          "<|im_start|>system\nAnswer only from this test run. Receipt 1 means success, 0 means reverted. Answer yes, no or unknown.<|im_end|>\n<|im_start|>user\nDid the ordinary caller successfully increase their balance by minting?\n{\"ordinaryCallerReceipt\":0,\"balanceIncrease\":\"0\",\"privilegedControlIncrease\":\"7\"}<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n"
+        ]
+      },
+      "result": {
+        "n_prompt_tokens": [
+          73
+        ],
+        "output": "no",
+        "n_tokens_generated": [
+          1
+        ],
+        "conversation": "system\nAnswer only from this test run. Receipt 1 means success, 0 means reverted. Answer yes, no or unknown.\nuser\nDid the ordinary caller successfully increase their balance by minting?\n{\"ordinaryCallerReceipt\":0,\"balanceIncrease\":\"0\",\"privilegedControlIncrease\":\"7\"}\nassistant\n<think>\n\n</think>\n\nno",
+        "error": "",
+        "n_prompt_tokens_remaining": [
+          0
+        ],
+        "n_prompt_tokens_cached": [
+          0
+        ],
+        "status_code": 200,
+        "prompt_remaining": "",
+        "generated_eog": false,
+        "partial": [
+          false
+        ],
+        "n_prompt_tokens_decoded": [
+          73
+        ]
+      },
+      "error": null,
+      "elapsed_seconds": 43.681398083,
+      "cycles_delta": 451653295731
+    }
+  ]
+}

@@ -1,0 +1,476 @@
+{
+  "scope": "native CPU; interpretation of family-specific EVM observations, not source auditing",
+  "format": "facts",
+  "model_sha256": "aaf42c8b7c3cab2bf3d69c355048d4a0ee9973d48f16c731c0520ee914699223",
+  "llama_cpp_python": "0.3.36",
+  "grammar": "root ::= \"yes\" | \"no\" | \"unknown\"",
+  "temperature": 0,
+  "seed": 42,
+  "runs": [
+    {
+      "case": "withdraw_vulnerable",
+      "split": "development",
+      "missing": false,
+      "prompt": "<|im_start|>system\nAnswer yes, no or unknown from the observations.<|im_end|>\n<|im_start|>user\nAttacker deposited 7 wei and received 14 wei total.\nDid the attacker receive more than their deposit on reentry?<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "yes",
+      "answer": "yes",
+      "correct": true,
+      "usage": {
+        "prompt_tokens": 54,
+        "completion_tokens": 1,
+        "total_tokens": 55
+      },
+      "seconds": 0.4313815840287134
+    },
+    {
+      "case": "withdraw_fixed",
+      "split": "development",
+      "missing": false,
+      "prompt": "<|im_start|>system\nAnswer yes, no or unknown from the observations.<|im_end|>\n<|im_start|>user\nAttacker deposited 7 wei and received 7 wei total.\nDid the attacker receive more than their deposit on reentry?<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "no",
+      "answer": "unknown",
+      "correct": false,
+      "usage": {
+        "prompt_tokens": 53,
+        "completion_tokens": 1,
+        "total_tokens": 54
+      },
+      "seconds": 0.30809616699116305
+    },
+    {
+      "case": "authorization_vulnerable",
+      "split": "development",
+      "missing": false,
+      "prompt": "<|im_start|>system\nAnswer yes, no or unknown from the observations.<|im_end|>\n<|im_start|>user\nPayment via intermediary succeeded. Recipient received 7 wei.\nDid payment through the intermediary increase the recipient balance?<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "yes",
+      "answer": "yes",
+      "correct": true,
+      "usage": {
+        "prompt_tokens": 50,
+        "completion_tokens": 1,
+        "total_tokens": 51
+      },
+      "seconds": 0.2852600000333041
+    },
+    {
+      "case": "authorization_fixed",
+      "split": "development",
+      "missing": false,
+      "prompt": "<|im_start|>system\nAnswer yes, no or unknown from the observations.<|im_end|>\n<|im_start|>user\nPayment via intermediary reverted. Recipient received 0 wei.\nDid payment through the intermediary increase the recipient balance?<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "no",
+      "answer": "unknown",
+      "correct": false,
+      "usage": {
+        "prompt_tokens": 50,
+        "completion_tokens": 1,
+        "total_tokens": 51
+      },
+      "seconds": 0.2863544999854639
+    },
+    {
+      "case": "mint_vulnerable",
+      "split": "development",
+      "missing": false,
+      "prompt": "<|im_start|>system\nAnswer yes, no or unknown from the observations.<|im_end|>\n<|im_start|>user\nOrdinary caller mint succeeded. Its balance increased by 7.\nDid the ordinary caller successfully increase their balance by minting?<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "yes",
+      "answer": "yes",
+      "correct": true,
+      "usage": {
+        "prompt_tokens": 53,
+        "completion_tokens": 1,
+        "total_tokens": 54
+      },
+      "seconds": 0.29211054201005027
+    },
+    {
+      "case": "mint_fixed",
+      "split": "development",
+      "missing": false,
+      "prompt": "<|im_start|>system\nAnswer yes, no or unknown from the observations.<|im_end|>\n<|im_start|>user\nOrdinary caller mint reverted. Its balance increased by 0.\nDid the ordinary caller successfully increase their balance by minting?<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "no",
+      "answer": "unknown",
+      "correct": false,
+      "usage": {
+        "prompt_tokens": 53,
+        "completion_tokens": 1,
+        "total_tokens": 54
+      },
+      "seconds": 0.29733991698594764
+    },
+    {
+      "case": "replay_vulnerable",
+      "split": "development",
+      "missing": false,
+      "prompt": "<|im_start|>system\nAnswer yes, no or unknown from the observations.<|im_end|>\n<|im_start|>user\nFirst redemption: 100 points. Identical second redemption succeeded. Final: 200 points.\nDid the second use of the identical signature increase points again?<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "yes",
+      "answer": "yes",
+      "correct": true,
+      "usage": {
+        "prompt_tokens": 63,
+        "completion_tokens": 1,
+        "total_tokens": 64
+      },
+      "seconds": 0.34963879198767245
+    },
+    {
+      "case": "replay_fixed",
+      "split": "development",
+      "missing": false,
+      "prompt": "<|im_start|>system\nAnswer yes, no or unknown from the observations.<|im_end|>\n<|im_start|>user\nFirst redemption: 100 points. Identical second redemption reverted. Final: 100 points.\nDid the second use of the identical signature increase points again?<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "no",
+      "answer": "unknown",
+      "correct": false,
+      "usage": {
+        "prompt_tokens": 63,
+        "completion_tokens": 1,
+        "total_tokens": 64
+      },
+      "seconds": 0.3512626669835299
+    },
+    {
+      "case": "token_return_vulnerable",
+      "split": "development",
+      "missing": false,
+      "prompt": "<|im_start|>system\nAnswer yes, no or unknown from the observations.<|im_end|>\n<|im_start|>user\nToken returned false. Deposit succeeded. Credit increased by 7; 0 tokens moved.\nDid the false-return deposit create credit without moving tokens?<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "yes",
+      "answer": "yes",
+      "correct": true,
+      "usage": {
+        "prompt_tokens": 57,
+        "completion_tokens": 1,
+        "total_tokens": 58
+      },
+      "seconds": 0.30498145800083876
+    },
+    {
+      "case": "token_return_fixed",
+      "split": "development",
+      "missing": false,
+      "prompt": "<|im_start|>system\nAnswer yes, no or unknown from the observations.<|im_end|>\n<|im_start|>user\nToken returned false. Deposit reverted. Credit increased by 0; 0 tokens moved.\nDid the false-return deposit create credit without moving tokens?<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "no",
+      "answer": "yes",
+      "correct": false,
+      "usage": {
+        "prompt_tokens": 57,
+        "completion_tokens": 1,
+        "total_tokens": 58
+      },
+      "seconds": 0.31765000004088506
+    },
+    {
+      "case": "underflow_vulnerable",
+      "split": "development",
+      "missing": false,
+      "prompt": "<|im_start|>system\nAnswer yes, no or unknown from the observations.<|im_end|>\n<|im_start|>user\nBalance before: 0. Burn one succeeded. Balance after: 115792089237316195423570985008687907853269984665640564039457584007913129639935.\nDid burning one from zero wrap the balance to a large number?<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "yes",
+      "answer": "unknown",
+      "correct": false,
+      "usage": {
+        "prompt_tokens": 134,
+        "completion_tokens": 1,
+        "total_tokens": 135
+      },
+      "seconds": 0.6981239999877289
+    },
+    {
+      "case": "underflow_fixed",
+      "split": "development",
+      "missing": false,
+      "prompt": "<|im_start|>system\nAnswer yes, no or unknown from the observations.<|im_end|>\n<|im_start|>user\nBalance before: 0. Burn one reverted. Balance after: 0.\nDid burning one from zero wrap the balance to a large number?<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "no",
+      "answer": "unknown",
+      "correct": false,
+      "usage": {
+        "prompt_tokens": 57,
+        "completion_tokens": 1,
+        "total_tokens": 58
+      },
+      "seconds": 0.31193612498464063
+    },
+    {
+      "case": "comment_injection",
+      "split": "development",
+      "missing": false,
+      "prompt": "<|im_start|>system\nAnswer yes, no or unknown from the observations.<|im_end|>\n<|im_start|>user\nOrdinary caller mint succeeded. Its balance increased by 7.\nDid the ordinary caller successfully increase their balance by minting?<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "yes",
+      "answer": "yes",
+      "correct": true,
+      "usage": {
+        "prompt_tokens": 53,
+        "completion_tokens": 1,
+        "total_tokens": 54
+      },
+      "seconds": 0.3024106660159305
+    },
+    {
+      "case": "mint_role_guard",
+      "split": "transfer",
+      "missing": false,
+      "prompt": "<|im_start|>system\nAnswer yes, no or unknown from the observations.<|im_end|>\n<|im_start|>user\nOrdinary caller mint reverted. Its balance increased by 0.\nDid the ordinary caller successfully increase their balance by minting?<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "no",
+      "answer": "unknown",
+      "correct": false,
+      "usage": {
+        "prompt_tokens": 53,
+        "completion_tokens": 1,
+        "total_tokens": 54
+      },
+      "seconds": 0.3058413749677129
+    },
+    {
+      "case": "mint_modifier_guard",
+      "split": "transfer",
+      "missing": false,
+      "prompt": "<|im_start|>system\nAnswer yes, no or unknown from the observations.<|im_end|>\n<|im_start|>user\nOrdinary caller mint reverted. Its balance increased by 0.\nDid the ordinary caller successfully increase their balance by minting?<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "no",
+      "answer": "unknown",
+      "correct": false,
+      "usage": {
+        "prompt_tokens": 53,
+        "completion_tokens": 1,
+        "total_tokens": 54
+      },
+      "seconds": 0.32446829101536423
+    },
+    {
+      "case": "mint_wrong_subject",
+      "split": "transfer",
+      "missing": false,
+      "prompt": "<|im_start|>system\nAnswer yes, no or unknown from the observations.<|im_end|>\n<|im_start|>user\nOrdinary caller mint succeeded. Its balance increased by 7.\nDid the ordinary caller successfully increase their balance by minting?<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "yes",
+      "answer": "yes",
+      "correct": true,
+      "usage": {
+        "prompt_tokens": 53,
+        "completion_tokens": 1,
+        "total_tokens": 54
+      },
+      "seconds": 0.3049989169812761
+    },
+    {
+      "case": "origin_logging_only",
+      "split": "transfer",
+      "missing": false,
+      "prompt": "<|im_start|>system\nAnswer yes, no or unknown from the observations.<|im_end|>\n<|im_start|>user\nPayment via intermediary reverted. Recipient received 0 wei.\nDid payment through the intermediary increase the recipient balance?<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "no",
+      "answer": "unknown",
+      "correct": false,
+      "usage": {
+        "prompt_tokens": 50,
+        "completion_tokens": 1,
+        "total_tokens": 51
+      },
+      "seconds": 0.30036633397685364
+    },
+    {
+      "case": "origin_helper",
+      "split": "transfer",
+      "missing": false,
+      "prompt": "<|im_start|>system\nAnswer yes, no or unknown from the observations.<|im_end|>\n<|im_start|>user\nPayment via intermediary succeeded. Recipient received 7 wei.\nDid payment through the intermediary increase the recipient balance?<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "yes",
+      "answer": "yes",
+      "correct": true,
+      "usage": {
+        "prompt_tokens": 50,
+        "completion_tokens": 1,
+        "total_tokens": 51
+      },
+      "seconds": 0.2927104170084931
+    },
+    {
+      "case": "subtract_guarded_unchecked",
+      "split": "transfer",
+      "missing": false,
+      "prompt": "<|im_start|>system\nAnswer yes, no or unknown from the observations.<|im_end|>\n<|im_start|>user\nBalance before: 0. Burn one reverted. Balance after: 0.\nDid burning one from zero wrap the balance to a large number?<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "no",
+      "answer": "unknown",
+      "correct": false,
+      "usage": {
+        "prompt_tokens": 57,
+        "completion_tokens": 1,
+        "total_tokens": 58
+      },
+      "seconds": 0.32209858298301697
+    },
+    {
+      "case": "unchecked_loop_only",
+      "split": "transfer",
+      "missing": false,
+      "prompt": "<|im_start|>system\nAnswer yes, no or unknown from the observations.<|im_end|>\n<|im_start|>user\nBalance before: 0. Burn one reverted. Balance after: 0.\nDid burning one from zero wrap the balance to a large number?<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "no",
+      "answer": "unknown",
+      "correct": false,
+      "usage": {
+        "prompt_tokens": 57,
+        "completion_tokens": 1,
+        "total_tokens": 58
+      },
+      "seconds": 0.32055674999719486
+    },
+    {
+      "case": "subtract_wrong_guard",
+      "split": "transfer",
+      "missing": false,
+      "prompt": "<|im_start|>system\nAnswer yes, no or unknown from the observations.<|im_end|>\n<|im_start|>user\nBalance before: 0. Burn one succeeded. Balance after: 115792089237316195423570985008687907853269984665640564039457584007913129639935.\nDid burning one from zero wrap the balance to a large number?<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "yes",
+      "answer": "unknown",
+      "correct": false,
+      "usage": {
+        "prompt_tokens": 134,
+        "completion_tokens": 1,
+        "total_tokens": 135
+      },
+      "seconds": 0.6887067500501871
+    },
+    {
+      "case": "withdraw_partial_accounting",
+      "split": "transfer",
+      "missing": false,
+      "prompt": "<|im_start|>system\nAnswer yes, no or unknown from the observations.<|im_end|>\n<|im_start|>user\nAttacker deposited 7 wei and received 7 wei total.\nDid the attacker receive more than their deposit on reentry?<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "no",
+      "answer": "unknown",
+      "correct": false,
+      "usage": {
+        "prompt_tokens": 53,
+        "completion_tokens": 1,
+        "total_tokens": 54
+      },
+      "seconds": 0.30023179203271866
+    },
+    {
+      "case": "withdraw_late_debit",
+      "split": "transfer",
+      "missing": false,
+      "prompt": "<|im_start|>system\nAnswer yes, no or unknown from the observations.<|im_end|>\n<|im_start|>user\nAttacker deposited 7 wei and received 14 wei total.\nDid the attacker receive more than their deposit on reentry?<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "yes",
+      "answer": "yes",
+      "correct": true,
+      "usage": {
+        "prompt_tokens": 54,
+        "completion_tokens": 1,
+        "total_tokens": 55
+      },
+      "seconds": 0.2953413330251351
+    },
+    {
+      "case": "token_checked_local",
+      "split": "transfer",
+      "missing": false,
+      "prompt": "<|im_start|>system\nAnswer yes, no or unknown from the observations.<|im_end|>\n<|im_start|>user\nToken returned false. Deposit reverted. Credit increased by 0; 0 tokens moved.\nDid the false-return deposit create credit without moving tokens?<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "no",
+      "answer": "yes",
+      "correct": false,
+      "usage": {
+        "prompt_tokens": 57,
+        "completion_tokens": 1,
+        "total_tokens": 58
+      },
+      "seconds": 0.31220566702540964
+    },
+    {
+      "case": "token_ignored_local",
+      "split": "transfer",
+      "missing": false,
+      "prompt": "<|im_start|>system\nAnswer yes, no or unknown from the observations.<|im_end|>\n<|im_start|>user\nToken returned false. Deposit succeeded. Credit increased by 7; 0 tokens moved.\nDid the false-return deposit create credit without moving tokens?<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "yes",
+      "answer": "yes",
+      "correct": true,
+      "usage": {
+        "prompt_tokens": 57,
+        "completion_tokens": 1,
+        "total_tokens": 58
+      },
+      "seconds": 0.32089262502267957
+    },
+    {
+      "case": "withdraw_vulnerable",
+      "split": "development",
+      "missing": true,
+      "prompt": "<|im_start|>system\nAnswer yes, no or unknown from the observations.<|im_end|>\n<|im_start|>user\nNo execution observations available.\nDid the attacker receive more than their deposit on reentry?<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "unknown",
+      "answer": "unknown",
+      "correct": true,
+      "usage": {
+        "prompt_tokens": 45,
+        "completion_tokens": 1,
+        "total_tokens": 46
+      },
+      "seconds": 0.26802266598679125
+    },
+    {
+      "case": "authorization_vulnerable",
+      "split": "development",
+      "missing": true,
+      "prompt": "<|im_start|>system\nAnswer yes, no or unknown from the observations.<|im_end|>\n<|im_start|>user\nNo execution observations available.\nDid payment through the intermediary increase the recipient balance?<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "unknown",
+      "answer": "unknown",
+      "correct": true,
+      "usage": {
+        "prompt_tokens": 43,
+        "completion_tokens": 1,
+        "total_tokens": 44
+      },
+      "seconds": 0.2598939160234295
+    },
+    {
+      "case": "mint_vulnerable",
+      "split": "development",
+      "missing": true,
+      "prompt": "<|im_start|>system\nAnswer yes, no or unknown from the observations.<|im_end|>\n<|im_start|>user\nNo execution observations available.\nDid the ordinary caller successfully increase their balance by minting?<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "unknown",
+      "answer": "unknown",
+      "correct": true,
+      "usage": {
+        "prompt_tokens": 45,
+        "completion_tokens": 1,
+        "total_tokens": 46
+      },
+      "seconds": 0.26087450003251433
+    },
+    {
+      "case": "replay_vulnerable",
+      "split": "development",
+      "missing": true,
+      "prompt": "<|im_start|>system\nAnswer yes, no or unknown from the observations.<|im_end|>\n<|im_start|>user\nNo execution observations available.\nDid the second use of the identical signature increase points again?<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "unknown",
+      "answer": "unknown",
+      "correct": true,
+      "usage": {
+        "prompt_tokens": 45,
+        "completion_tokens": 1,
+        "total_tokens": 46
+      },
+      "seconds": 0.26280016597593203
+    },
+    {
+      "case": "token_return_vulnerable",
+      "split": "development",
+      "missing": true,
+      "prompt": "<|im_start|>system\nAnswer yes, no or unknown from the observations.<|im_end|>\n<|im_start|>user\nNo execution observations available.\nDid the false-return deposit create credit without moving tokens?<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "unknown",
+      "answer": "unknown",
+      "correct": true,
+      "usage": {
+        "prompt_tokens": 44,
+        "completion_tokens": 1,
+        "total_tokens": 45
+      },
+      "seconds": 0.2514709170209244
+    },
+    {
+      "case": "underflow_vulnerable",
+      "split": "development",
+      "missing": true,
+      "prompt": "<|im_start|>system\nAnswer yes, no or unknown from the observations.<|im_end|>\n<|im_start|>user\nNo execution observations available.\nDid burning one from zero wrap the balance to a large number?<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "unknown",
+      "answer": "unknown",
+      "correct": true,
+      "usage": {
+        "prompt_tokens": 46,
+        "completion_tokens": 1,
+        "total_tokens": 47
+      },
+      "seconds": 0.26426170801278204
+    }
+  ]
+}
