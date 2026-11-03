@@ -1,0 +1,347 @@
+{
+  "scope": "Family and ABI supplied. Fresh fixture deployments, one scripted path per case. Not general discovery or proof of safety.",
+  "solc": "0.8.24+commit.e11b9ed9.Emscripten.clang",
+  "anvil": "anvil Version: 1.8.5",
+  "evm": "shanghai",
+  "llm_calls": 0,
+  "runs": [
+    {
+      "id": "withdraw_vulnerable",
+      "family": "withdraw",
+      "split": "development",
+      "expected": "A",
+      "witness": true,
+      "outcome": "reproduced",
+      "observations": {
+        "victimLiquidity": "20",
+        "attackerDeposit": "7",
+        "receivedAfterReentry": "14",
+        "outerReceipt": 1
+      }
+    },
+    {
+      "id": "withdraw_fixed",
+      "family": "withdraw",
+      "split": "development",
+      "expected": "B",
+      "witness": false,
+      "outcome": "not reproduced in this execution",
+      "observations": {
+        "victimLiquidity": "20",
+        "attackerDeposit": "7",
+        "receivedAfterReentry": "7",
+        "outerReceipt": 1
+      }
+    },
+    {
+      "id": "authorization_vulnerable",
+      "family": "authorization",
+      "split": "development",
+      "expected": "A",
+      "witness": true,
+      "outcome": "reproduced",
+      "observations": {
+        "ownerDirectControl": "passed",
+        "ownerViaIntermediaryReceipt": 1,
+        "recipientIncrease": "7"
+      }
+    },
+    {
+      "id": "authorization_fixed",
+      "family": "authorization",
+      "split": "development",
+      "expected": "B",
+      "witness": false,
+      "outcome": "not reproduced in this execution",
+      "observations": {
+        "ownerDirectControl": "passed",
+        "ownerViaIntermediaryReceipt": 0,
+        "recipientIncrease": "0"
+      }
+    },
+    {
+      "id": "mint_vulnerable",
+      "family": "mint",
+      "split": "development",
+      "expected": "A",
+      "witness": true,
+      "outcome": "reproduced",
+      "observations": {
+        "ordinaryCallerReceipt": 1,
+        "balanceIncrease": "7",
+        "privilegedControlIncrease": "7"
+      }
+    },
+    {
+      "id": "mint_fixed",
+      "family": "mint",
+      "split": "development",
+      "expected": "B",
+      "witness": false,
+      "outcome": "not reproduced in this execution",
+      "observations": {
+        "ordinaryCallerReceipt": 0,
+        "balanceIncrease": "0",
+        "privilegedControlIncrease": "7"
+      }
+    },
+    {
+      "id": "replay_vulnerable",
+      "family": "replay",
+      "split": "development",
+      "expected": "A",
+      "witness": true,
+      "outcome": "reproduced",
+      "observations": {
+        "firstCredit": "100",
+        "secondIdenticalSignatureReceipt": 1,
+        "pointsAfterSecond": "200"
+      }
+    },
+    {
+      "id": "replay_fixed",
+      "family": "replay",
+      "split": "development",
+      "expected": "B",
+      "witness": false,
+      "outcome": "not reproduced in this execution",
+      "observations": {
+        "firstCredit": "100",
+        "secondIdenticalSignatureReceipt": 0,
+        "pointsAfterSecond": "100"
+      }
+    },
+    {
+      "id": "token_return_vulnerable",
+      "family": "token_return",
+      "split": "development",
+      "expected": "A",
+      "witness": true,
+      "outcome": "reproduced",
+      "observations": {
+        "falseReturnDepositReceipt": 1,
+        "creditIncrease": "7",
+        "tokensMoved": "0",
+        "trueReturnControl": "7 tokens moved and credited"
+      }
+    },
+    {
+      "id": "token_return_fixed",
+      "family": "token_return",
+      "split": "development",
+      "expected": "B",
+      "witness": false,
+      "outcome": "not reproduced in this execution",
+      "observations": {
+        "falseReturnDepositReceipt": 0,
+        "creditIncrease": "0",
+        "tokensMoved": "0",
+        "trueReturnControl": "7 tokens moved and credited"
+      }
+    },
+    {
+      "id": "underflow_vulnerable",
+      "family": "underflow",
+      "split": "development",
+      "expected": "A",
+      "witness": true,
+      "outcome": "reproduced",
+      "observations": {
+        "initial": "0",
+        "burnOneReceipt": 1,
+        "after": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+        "zeroBurnReceipt": 1
+      }
+    },
+    {
+      "id": "underflow_fixed",
+      "family": "underflow",
+      "split": "development",
+      "expected": "B",
+      "witness": false,
+      "outcome": "not reproduced in this execution",
+      "observations": {
+        "initial": "0",
+        "burnOneReceipt": 0,
+        "after": "0",
+        "zeroBurnReceipt": 1
+      }
+    },
+    {
+      "id": "comment_injection",
+      "family": "mint",
+      "split": "development",
+      "expected": "A",
+      "witness": true,
+      "outcome": "reproduced",
+      "observations": {
+        "ordinaryCallerReceipt": 1,
+        "balanceIncrease": "7",
+        "privilegedControlIncrease": "7"
+      }
+    },
+    {
+      "id": "mint_role_guard",
+      "family": "mint",
+      "split": "transfer",
+      "expected": "B",
+      "witness": false,
+      "outcome": "not reproduced in this execution",
+      "observations": {
+        "ordinaryCallerReceipt": 0,
+        "balanceIncrease": "0",
+        "privilegedControlIncrease": "7"
+      }
+    },
+    {
+      "id": "mint_modifier_guard",
+      "family": "mint",
+      "split": "transfer",
+      "expected": "B",
+      "witness": false,
+      "outcome": "not reproduced in this execution",
+      "observations": {
+        "ordinaryCallerReceipt": 0,
+        "balanceIncrease": "0",
+        "privilegedControlIncrease": "7"
+      }
+    },
+    {
+      "id": "mint_wrong_subject",
+      "family": "mint",
+      "split": "transfer",
+      "expected": "A",
+      "witness": true,
+      "outcome": "reproduced",
+      "observations": {
+        "ordinaryCallerReceipt": 1,
+        "balanceIncrease": "7",
+        "privilegedControlIncrease": "7"
+      }
+    },
+    {
+      "id": "origin_logging_only",
+      "family": "authorization",
+      "split": "transfer",
+      "expected": "B",
+      "witness": false,
+      "outcome": "not reproduced in this execution",
+      "observations": {
+        "ownerDirectControl": "passed",
+        "ownerViaIntermediaryReceipt": 0,
+        "recipientIncrease": "0"
+      }
+    },
+    {
+      "id": "origin_helper",
+      "family": "authorization",
+      "split": "transfer",
+      "expected": "A",
+      "witness": true,
+      "outcome": "reproduced",
+      "observations": {
+        "ownerDirectControl": "passed",
+        "ownerViaIntermediaryReceipt": 1,
+        "recipientIncrease": "7"
+      }
+    },
+    {
+      "id": "subtract_guarded_unchecked",
+      "family": "underflow",
+      "split": "transfer",
+      "expected": "B",
+      "witness": false,
+      "outcome": "not reproduced in this execution",
+      "observations": {
+        "initial": "0",
+        "burnOneReceipt": 0,
+        "after": "0",
+        "zeroBurnReceipt": 1
+      }
+    },
+    {
+      "id": "unchecked_loop_only",
+      "family": "underflow",
+      "split": "transfer",
+      "expected": "B",
+      "witness": false,
+      "outcome": "not reproduced in this execution",
+      "observations": {
+        "initial": "0",
+        "burnOneReceipt": 0,
+        "after": "0",
+        "zeroBurnReceipt": 1
+      }
+    },
+    {
+      "id": "subtract_wrong_guard",
+      "family": "underflow",
+      "split": "transfer",
+      "expected": "A",
+      "witness": true,
+      "outcome": "reproduced",
+      "observations": {
+        "initial": "0",
+        "burnOneReceipt": 1,
+        "after": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+        "zeroBurnReceipt": 0
+      }
+    },
+    {
+      "id": "withdraw_partial_accounting",
+      "family": "withdraw",
+      "split": "transfer",
+      "expected": "B",
+      "witness": false,
+      "outcome": "not reproduced in this execution",
+      "observations": {
+        "victimLiquidity": "20",
+        "attackerDeposit": "7",
+        "receivedAfterReentry": "7",
+        "outerReceipt": 1
+      }
+    },
+    {
+      "id": "withdraw_late_debit",
+      "family": "withdraw",
+      "split": "transfer",
+      "expected": "A",
+      "witness": true,
+      "outcome": "reproduced",
+      "observations": {
+        "victimLiquidity": "20",
+        "attackerDeposit": "7",
+        "receivedAfterReentry": "14",
+        "outerReceipt": 1
+      }
+    },
+    {
+      "id": "token_checked_local",
+      "family": "token_return",
+      "split": "transfer",
+      "expected": "B",
+      "witness": false,
+      "outcome": "not reproduced in this execution",
+      "observations": {
+        "falseReturnDepositReceipt": 0,
+        "creditIncrease": "0",
+        "tokensMoved": "0",
+        "trueReturnControl": "7 tokens moved and credited"
+      }
+    },
+    {
+      "id": "token_ignored_local",
+      "family": "token_return",
+      "split": "transfer",
+      "expected": "A",
+      "witness": true,
+      "outcome": "reproduced",
+      "observations": {
+        "falseReturnDepositReceipt": 1,
+        "creditIncrease": "7",
+        "tokensMoved": "0",
+        "trueReturnControl": "7 tokens moved and credited"
+      }
+    }
+  ]
+}

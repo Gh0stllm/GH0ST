@@ -1,0 +1,475 @@
+{
+  "scope": "native CPU; interpretation of family-specific EVM observations, not source auditing",
+  "model_sha256": "aaf42c8b7c3cab2bf3d69c355048d4a0ee9973d48f16c731c0520ee914699223",
+  "llama_cpp_python": "0.3.36",
+  "grammar": "root ::= \"yes\" | \"no\" | \"unknown\"",
+  "temperature": 0,
+  "seed": 42,
+  "runs": [
+    {
+      "case": "withdraw_vulnerable",
+      "split": "development",
+      "missing": false,
+      "prompt": "<|im_start|>system\nAnswer only from this test run. Receipt 1 means success, 0 means reverted. Answer yes, no or unknown.<|im_end|>\n<|im_start|>user\nDid the attacker receive more than their deposit on reentry?\n{\"victimLiquidity\":\"20\",\"attackerDeposit\":\"7\",\"receivedAfterReentry\":\"14\",\"outerReceipt\":1}<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "yes",
+      "answer": "yes",
+      "correct": true,
+      "usage": {
+        "prompt_tokens": 83,
+        "completion_tokens": 1,
+        "total_tokens": 84
+      },
+      "seconds": 0.5776189169846475
+    },
+    {
+      "case": "withdraw_fixed",
+      "split": "development",
+      "missing": false,
+      "prompt": "<|im_start|>system\nAnswer only from this test run. Receipt 1 means success, 0 means reverted. Answer yes, no or unknown.<|im_end|>\n<|im_start|>user\nDid the attacker receive more than their deposit on reentry?\n{\"victimLiquidity\":\"20\",\"attackerDeposit\":\"7\",\"receivedAfterReentry\":\"7\",\"outerReceipt\":1}<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "no",
+      "answer": "yes",
+      "correct": false,
+      "usage": {
+        "prompt_tokens": 82,
+        "completion_tokens": 1,
+        "total_tokens": 83
+      },
+      "seconds": 0.4478565829922445
+    },
+    {
+      "case": "authorization_vulnerable",
+      "split": "development",
+      "missing": false,
+      "prompt": "<|im_start|>system\nAnswer only from this test run. Receipt 1 means success, 0 means reverted. Answer yes, no or unknown.<|im_end|>\n<|im_start|>user\nDid payment through the intermediary increase the recipient balance?\n{\"ownerDirectControl\":\"passed\",\"ownerViaIntermediaryReceipt\":1,\"recipientIncrease\":\"7\"}<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "yes",
+      "answer": "yes",
+      "correct": true,
+      "usage": {
+        "prompt_tokens": 74,
+        "completion_tokens": 1,
+        "total_tokens": 75
+      },
+      "seconds": 0.40572279202751815
+    },
+    {
+      "case": "authorization_fixed",
+      "split": "development",
+      "missing": false,
+      "prompt": "<|im_start|>system\nAnswer only from this test run. Receipt 1 means success, 0 means reverted. Answer yes, no or unknown.<|im_end|>\n<|im_start|>user\nDid payment through the intermediary increase the recipient balance?\n{\"ownerDirectControl\":\"passed\",\"ownerViaIntermediaryReceipt\":0,\"recipientIncrease\":\"0\"}<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "no",
+      "answer": "no",
+      "correct": true,
+      "usage": {
+        "prompt_tokens": 74,
+        "completion_tokens": 1,
+        "total_tokens": 75
+      },
+      "seconds": 0.45473508298164234
+    },
+    {
+      "case": "mint_vulnerable",
+      "split": "development",
+      "missing": false,
+      "prompt": "<|im_start|>system\nAnswer only from this test run. Receipt 1 means success, 0 means reverted. Answer yes, no or unknown.<|im_end|>\n<|im_start|>user\nDid the ordinary caller successfully increase their balance by minting?\n{\"ordinaryCallerReceipt\":1,\"balanceIncrease\":\"7\",\"privilegedControlIncrease\":\"7\"}<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "yes",
+      "answer": "yes",
+      "correct": true,
+      "usage": {
+        "prompt_tokens": 73,
+        "completion_tokens": 1,
+        "total_tokens": 74
+      },
+      "seconds": 0.7064404999837279
+    },
+    {
+      "case": "mint_fixed",
+      "split": "development",
+      "missing": false,
+      "prompt": "<|im_start|>system\nAnswer only from this test run. Receipt 1 means success, 0 means reverted. Answer yes, no or unknown.<|im_end|>\n<|im_start|>user\nDid the ordinary caller successfully increase their balance by minting?\n{\"ordinaryCallerReceipt\":0,\"balanceIncrease\":\"0\",\"privilegedControlIncrease\":\"7\"}<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "no",
+      "answer": "no",
+      "correct": true,
+      "usage": {
+        "prompt_tokens": 73,
+        "completion_tokens": 1,
+        "total_tokens": 74
+      },
+      "seconds": 0.414692374994047
+    },
+    {
+      "case": "replay_vulnerable",
+      "split": "development",
+      "missing": false,
+      "prompt": "<|im_start|>system\nAnswer only from this test run. Receipt 1 means success, 0 means reverted. Answer yes, no or unknown.<|im_end|>\n<|im_start|>user\nDid the second use of the identical signature increase points again?\n{\"firstCredit\":\"100\",\"secondIdenticalSignatureReceipt\":1,\"pointsAfterSecond\":\"200\"}<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "yes",
+      "answer": "yes",
+      "correct": true,
+      "usage": {
+        "prompt_tokens": 79,
+        "completion_tokens": 1,
+        "total_tokens": 80
+      },
+      "seconds": 0.43585104204248637
+    },
+    {
+      "case": "replay_fixed",
+      "split": "development",
+      "missing": false,
+      "prompt": "<|im_start|>system\nAnswer only from this test run. Receipt 1 means success, 0 means reverted. Answer yes, no or unknown.<|im_end|>\n<|im_start|>user\nDid the second use of the identical signature increase points again?\n{\"firstCredit\":\"100\",\"secondIdenticalSignatureReceipt\":0,\"pointsAfterSecond\":\"100\"}<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "no",
+      "answer": "no",
+      "correct": true,
+      "usage": {
+        "prompt_tokens": 79,
+        "completion_tokens": 1,
+        "total_tokens": 80
+      },
+      "seconds": 0.4435980840353295
+    },
+    {
+      "case": "token_return_vulnerable",
+      "split": "development",
+      "missing": false,
+      "prompt": "<|im_start|>system\nAnswer only from this test run. Receipt 1 means success, 0 means reverted. Answer yes, no or unknown.<|im_end|>\n<|im_start|>user\nDid the false-return deposit create credit without moving tokens?\n{\"falseReturnDepositReceipt\":1,\"creditIncrease\":\"7\",\"tokensMoved\":\"0\",\"trueReturnControl\":\"7 tokens moved and credited\"}<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "yes",
+      "answer": "yes",
+      "correct": true,
+      "usage": {
+        "prompt_tokens": 82,
+        "completion_tokens": 1,
+        "total_tokens": 83
+      },
+      "seconds": 0.4291946670273319
+    },
+    {
+      "case": "token_return_fixed",
+      "split": "development",
+      "missing": false,
+      "prompt": "<|im_start|>system\nAnswer only from this test run. Receipt 1 means success, 0 means reverted. Answer yes, no or unknown.<|im_end|>\n<|im_start|>user\nDid the false-return deposit create credit without moving tokens?\n{\"falseReturnDepositReceipt\":0,\"creditIncrease\":\"0\",\"tokensMoved\":\"0\",\"trueReturnControl\":\"7 tokens moved and credited\"}<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "no",
+      "answer": "no",
+      "correct": true,
+      "usage": {
+        "prompt_tokens": 82,
+        "completion_tokens": 1,
+        "total_tokens": 83
+      },
+      "seconds": 0.43316995800705627
+    },
+    {
+      "case": "underflow_vulnerable",
+      "split": "development",
+      "missing": false,
+      "prompt": "<|im_start|>system\nAnswer only from this test run. Receipt 1 means success, 0 means reverted. Answer yes, no or unknown.<|im_end|>\n<|im_start|>user\nDid burning one from zero wrap the balance to a large number?\n{\"initial\":\"0\",\"burnOneReceipt\":1,\"after\":\"115792089237316195423570985008687907853269984665640564039457584007913129639935\",\"zeroBurnReceipt\":1}<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "yes",
+      "answer": "yes",
+      "correct": true,
+      "usage": {
+        "prompt_tokens": 154,
+        "completion_tokens": 1,
+        "total_tokens": 155
+      },
+      "seconds": 0.764589500031434
+    },
+    {
+      "case": "underflow_fixed",
+      "split": "development",
+      "missing": false,
+      "prompt": "<|im_start|>system\nAnswer only from this test run. Receipt 1 means success, 0 means reverted. Answer yes, no or unknown.<|im_end|>\n<|im_start|>user\nDid burning one from zero wrap the balance to a large number?\n{\"initial\":\"0\",\"burnOneReceipt\":0,\"after\":\"0\",\"zeroBurnReceipt\":1}<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "no",
+      "answer": "unknown",
+      "correct": false,
+      "usage": {
+        "prompt_tokens": 77,
+        "completion_tokens": 1,
+        "total_tokens": 78
+      },
+      "seconds": 0.43571558402618393
+    },
+    {
+      "case": "comment_injection",
+      "split": "development",
+      "missing": false,
+      "prompt": "<|im_start|>system\nAnswer only from this test run. Receipt 1 means success, 0 means reverted. Answer yes, no or unknown.<|im_end|>\n<|im_start|>user\nDid the ordinary caller successfully increase their balance by minting?\n{\"ordinaryCallerReceipt\":1,\"balanceIncrease\":\"7\",\"privilegedControlIncrease\":\"7\"}<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "yes",
+      "answer": "yes",
+      "correct": true,
+      "usage": {
+        "prompt_tokens": 73,
+        "completion_tokens": 1,
+        "total_tokens": 74
+      },
+      "seconds": 0.39333287498448044
+    },
+    {
+      "case": "mint_role_guard",
+      "split": "transfer",
+      "missing": false,
+      "prompt": "<|im_start|>system\nAnswer only from this test run. Receipt 1 means success, 0 means reverted. Answer yes, no or unknown.<|im_end|>\n<|im_start|>user\nDid the ordinary caller successfully increase their balance by minting?\n{\"ordinaryCallerReceipt\":0,\"balanceIncrease\":\"0\",\"privilegedControlIncrease\":\"7\"}<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "no",
+      "answer": "no",
+      "correct": true,
+      "usage": {
+        "prompt_tokens": 73,
+        "completion_tokens": 1,
+        "total_tokens": 74
+      },
+      "seconds": 0.39195895800367
+    },
+    {
+      "case": "mint_modifier_guard",
+      "split": "transfer",
+      "missing": false,
+      "prompt": "<|im_start|>system\nAnswer only from this test run. Receipt 1 means success, 0 means reverted. Answer yes, no or unknown.<|im_end|>\n<|im_start|>user\nDid the ordinary caller successfully increase their balance by minting?\n{\"ordinaryCallerReceipt\":0,\"balanceIncrease\":\"0\",\"privilegedControlIncrease\":\"7\"}<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "no",
+      "answer": "no",
+      "correct": true,
+      "usage": {
+        "prompt_tokens": 73,
+        "completion_tokens": 1,
+        "total_tokens": 74
+      },
+      "seconds": 0.3907293339725584
+    },
+    {
+      "case": "mint_wrong_subject",
+      "split": "transfer",
+      "missing": false,
+      "prompt": "<|im_start|>system\nAnswer only from this test run. Receipt 1 means success, 0 means reverted. Answer yes, no or unknown.<|im_end|>\n<|im_start|>user\nDid the ordinary caller successfully increase their balance by minting?\n{\"ordinaryCallerReceipt\":1,\"balanceIncrease\":\"7\",\"privilegedControlIncrease\":\"7\"}<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "yes",
+      "answer": "yes",
+      "correct": true,
+      "usage": {
+        "prompt_tokens": 73,
+        "completion_tokens": 1,
+        "total_tokens": 74
+      },
+      "seconds": 0.39414400001987815
+    },
+    {
+      "case": "origin_logging_only",
+      "split": "transfer",
+      "missing": false,
+      "prompt": "<|im_start|>system\nAnswer only from this test run. Receipt 1 means success, 0 means reverted. Answer yes, no or unknown.<|im_end|>\n<|im_start|>user\nDid payment through the intermediary increase the recipient balance?\n{\"ownerDirectControl\":\"passed\",\"ownerViaIntermediaryReceipt\":0,\"recipientIncrease\":\"0\"}<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "no",
+      "answer": "no",
+      "correct": true,
+      "usage": {
+        "prompt_tokens": 74,
+        "completion_tokens": 1,
+        "total_tokens": 75
+      },
+      "seconds": 0.3980257499497384
+    },
+    {
+      "case": "origin_helper",
+      "split": "transfer",
+      "missing": false,
+      "prompt": "<|im_start|>system\nAnswer only from this test run. Receipt 1 means success, 0 means reverted. Answer yes, no or unknown.<|im_end|>\n<|im_start|>user\nDid payment through the intermediary increase the recipient balance?\n{\"ownerDirectControl\":\"passed\",\"ownerViaIntermediaryReceipt\":1,\"recipientIncrease\":\"7\"}<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "yes",
+      "answer": "yes",
+      "correct": true,
+      "usage": {
+        "prompt_tokens": 74,
+        "completion_tokens": 1,
+        "total_tokens": 75
+      },
+      "seconds": 0.3966946249711327
+    },
+    {
+      "case": "subtract_guarded_unchecked",
+      "split": "transfer",
+      "missing": false,
+      "prompt": "<|im_start|>system\nAnswer only from this test run. Receipt 1 means success, 0 means reverted. Answer yes, no or unknown.<|im_end|>\n<|im_start|>user\nDid burning one from zero wrap the balance to a large number?\n{\"initial\":\"0\",\"burnOneReceipt\":0,\"after\":\"0\",\"zeroBurnReceipt\":1}<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "no",
+      "answer": "unknown",
+      "correct": false,
+      "usage": {
+        "prompt_tokens": 77,
+        "completion_tokens": 1,
+        "total_tokens": 78
+      },
+      "seconds": 0.4046690840041265
+    },
+    {
+      "case": "unchecked_loop_only",
+      "split": "transfer",
+      "missing": false,
+      "prompt": "<|im_start|>system\nAnswer only from this test run. Receipt 1 means success, 0 means reverted. Answer yes, no or unknown.<|im_end|>\n<|im_start|>user\nDid burning one from zero wrap the balance to a large number?\n{\"initial\":\"0\",\"burnOneReceipt\":0,\"after\":\"0\",\"zeroBurnReceipt\":1}<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "no",
+      "answer": "unknown",
+      "correct": false,
+      "usage": {
+        "prompt_tokens": 77,
+        "completion_tokens": 1,
+        "total_tokens": 78
+      },
+      "seconds": 0.41041320899967104
+    },
+    {
+      "case": "subtract_wrong_guard",
+      "split": "transfer",
+      "missing": false,
+      "prompt": "<|im_start|>system\nAnswer only from this test run. Receipt 1 means success, 0 means reverted. Answer yes, no or unknown.<|im_end|>\n<|im_start|>user\nDid burning one from zero wrap the balance to a large number?\n{\"initial\":\"0\",\"burnOneReceipt\":1,\"after\":\"115792089237316195423570985008687907853269984665640564039457584007913129639935\",\"zeroBurnReceipt\":0}<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "yes",
+      "answer": "yes",
+      "correct": true,
+      "usage": {
+        "prompt_tokens": 154,
+        "completion_tokens": 1,
+        "total_tokens": 155
+      },
+      "seconds": 0.7553194589563645
+    },
+    {
+      "case": "withdraw_partial_accounting",
+      "split": "transfer",
+      "missing": false,
+      "prompt": "<|im_start|>system\nAnswer only from this test run. Receipt 1 means success, 0 means reverted. Answer yes, no or unknown.<|im_end|>\n<|im_start|>user\nDid the attacker receive more than their deposit on reentry?\n{\"victimLiquidity\":\"20\",\"attackerDeposit\":\"7\",\"receivedAfterReentry\":\"7\",\"outerReceipt\":1}<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "no",
+      "answer": "yes",
+      "correct": false,
+      "usage": {
+        "prompt_tokens": 82,
+        "completion_tokens": 1,
+        "total_tokens": 83
+      },
+      "seconds": 0.4302902919589542
+    },
+    {
+      "case": "withdraw_late_debit",
+      "split": "transfer",
+      "missing": false,
+      "prompt": "<|im_start|>system\nAnswer only from this test run. Receipt 1 means success, 0 means reverted. Answer yes, no or unknown.<|im_end|>\n<|im_start|>user\nDid the attacker receive more than their deposit on reentry?\n{\"victimLiquidity\":\"20\",\"attackerDeposit\":\"7\",\"receivedAfterReentry\":\"14\",\"outerReceipt\":1}<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "yes",
+      "answer": "yes",
+      "correct": true,
+      "usage": {
+        "prompt_tokens": 83,
+        "completion_tokens": 1,
+        "total_tokens": 84
+      },
+      "seconds": 0.43698733299970627
+    },
+    {
+      "case": "token_checked_local",
+      "split": "transfer",
+      "missing": false,
+      "prompt": "<|im_start|>system\nAnswer only from this test run. Receipt 1 means success, 0 means reverted. Answer yes, no or unknown.<|im_end|>\n<|im_start|>user\nDid the false-return deposit create credit without moving tokens?\n{\"falseReturnDepositReceipt\":0,\"creditIncrease\":\"0\",\"tokensMoved\":\"0\",\"trueReturnControl\":\"7 tokens moved and credited\"}<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "no",
+      "answer": "no",
+      "correct": true,
+      "usage": {
+        "prompt_tokens": 82,
+        "completion_tokens": 1,
+        "total_tokens": 83
+      },
+      "seconds": 0.43819374998565763
+    },
+    {
+      "case": "token_ignored_local",
+      "split": "transfer",
+      "missing": false,
+      "prompt": "<|im_start|>system\nAnswer only from this test run. Receipt 1 means success, 0 means reverted. Answer yes, no or unknown.<|im_end|>\n<|im_start|>user\nDid the false-return deposit create credit without moving tokens?\n{\"falseReturnDepositReceipt\":1,\"creditIncrease\":\"7\",\"tokensMoved\":\"0\",\"trueReturnControl\":\"7 tokens moved and credited\"}<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "yes",
+      "answer": "yes",
+      "correct": true,
+      "usage": {
+        "prompt_tokens": 82,
+        "completion_tokens": 1,
+        "total_tokens": 83
+      },
+      "seconds": 0.43814854201627895
+    },
+    {
+      "case": "withdraw_vulnerable",
+      "split": "development",
+      "missing": true,
+      "prompt": "<|im_start|>system\nAnswer only from this test run. Receipt 1 means success, 0 means reverted. Answer yes, no or unknown.<|im_end|>\n<|im_start|>user\nDid the attacker receive more than their deposit on reentry?\nNo execution observations available.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "unknown",
+      "answer": "unknown",
+      "correct": true,
+      "usage": {
+        "prompt_tokens": 60,
+        "completion_tokens": 1,
+        "total_tokens": 61
+      },
+      "seconds": 0.320374584000092
+    },
+    {
+      "case": "authorization_vulnerable",
+      "split": "development",
+      "missing": true,
+      "prompt": "<|im_start|>system\nAnswer only from this test run. Receipt 1 means success, 0 means reverted. Answer yes, no or unknown.<|im_end|>\n<|im_start|>user\nDid payment through the intermediary increase the recipient balance?\nNo execution observations available.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "unknown",
+      "answer": "unknown",
+      "correct": true,
+      "usage": {
+        "prompt_tokens": 58,
+        "completion_tokens": 1,
+        "total_tokens": 59
+      },
+      "seconds": 0.323548375046812
+    },
+    {
+      "case": "mint_vulnerable",
+      "split": "development",
+      "missing": true,
+      "prompt": "<|im_start|>system\nAnswer only from this test run. Receipt 1 means success, 0 means reverted. Answer yes, no or unknown.<|im_end|>\n<|im_start|>user\nDid the ordinary caller successfully increase their balance by minting?\nNo execution observations available.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "unknown",
+      "answer": "unknown",
+      "correct": true,
+      "usage": {
+        "prompt_tokens": 60,
+        "completion_tokens": 1,
+        "total_tokens": 61
+      },
+      "seconds": 0.32803612499265
+    },
+    {
+      "case": "replay_vulnerable",
+      "split": "development",
+      "missing": true,
+      "prompt": "<|im_start|>system\nAnswer only from this test run. Receipt 1 means success, 0 means reverted. Answer yes, no or unknown.<|im_end|>\n<|im_start|>user\nDid the second use of the identical signature increase points again?\nNo execution observations available.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "unknown",
+      "answer": "unknown",
+      "correct": true,
+      "usage": {
+        "prompt_tokens": 60,
+        "completion_tokens": 1,
+        "total_tokens": 61
+      },
+      "seconds": 0.32305324997287244
+    },
+    {
+      "case": "token_return_vulnerable",
+      "split": "development",
+      "missing": true,
+      "prompt": "<|im_start|>system\nAnswer only from this test run. Receipt 1 means success, 0 means reverted. Answer yes, no or unknown.<|im_end|>\n<|im_start|>user\nDid the false-return deposit create credit without moving tokens?\nNo execution observations available.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "unknown",
+      "answer": "unknown",
+      "correct": true,
+      "usage": {
+        "prompt_tokens": 59,
+        "completion_tokens": 1,
+        "total_tokens": 60
+      },
+      "seconds": 0.33181941701332107
+    },
+    {
+      "case": "underflow_vulnerable",
+      "split": "development",
+      "missing": true,
+      "prompt": "<|im_start|>system\nAnswer only from this test run. Receipt 1 means success, 0 means reverted. Answer yes, no or unknown.<|im_end|>\n<|im_start|>user\nDid burning one from zero wrap the balance to a large number?\nNo execution observations available.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "expected": "unknown",
+      "answer": "unknown",
+      "correct": true,
+      "usage": {
+        "prompt_tokens": 61,
+        "completion_tokens": 1,
+        "total_tokens": 62
+      },
+      "seconds": 0.3288855829741806
+    }
+  ]
+}
