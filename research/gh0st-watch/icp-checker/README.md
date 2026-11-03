@@ -6,7 +6,7 @@ Bundle Lens visualizes the first ten launch blocks, links sample receipts and di
 
 The generated armillary artwork and licensed, self-hosted typefaces are in [frontend/assets](frontend/assets).
 
-[Open the GH0ST Watch coin scout](https://ggcey-baaaa-aaaao-bbsgq-cai.icp0.io/). Paste a Robinhood Chain address, RH explorer token/address link, or RH DexScreener pair link and choose **Open dossier**. Pair links select the base token. The RH mainnet landing page lists 24-hour trending pools in GeckoTerminal order. Selecting a pool scans its base token. Browse the token directory by name or ticker, save a coin to this browser’s watchlist, and copy its scan link to share. The example button opens a real contract. Share the resulting URL to scan that address again at a new block.
+[Open the GH0ST Watch coin scout](https://gh0st.fyi/watcher/). Paste a Robinhood Chain address, RH explorer token/address link, or RH DexScreener pair link and choose **Open dossier**. Pair links select the base token. The RH mainnet landing page lists 24-hour trending pools in GeckoTerminal order. Selecting a pool scans its base token. Browse the token directory by name or ticker, save a coin to this browser’s watchlist, and copy its scan link to share. The example button opens a real contract. Share the resulting URL to scan that address again at a new block.
 
 Reports group the Watch assessment, contract tests, deployer and holder history, market data, and project claims. DexScreener metrics describe the deepest indexed base-token pool at lookup time. The Claims section checks verifiable statements and can look for the exact address in a public GitHub repository’s default-branch README. A matching address is evidence of a mention, not proof of project ownership.
 
@@ -54,3 +54,7 @@ dfx canister --network playground call watch_checker demo '()'
 ```
 
 The playground reservation is temporary. A persistent deployment needs a dedicated funded ICP canister. Operating costs depend on its subnet, memory and workload.
+
+## Netlify frontend
+
+The Observatory is served at [gh0st.fyi/watcher](https://gh0st.fyi/watcher). Its backend calls go to the dedicated ICP checker. To prepare the static directory, run `npm ci`, `npm run build`, then `node export-watcher.mjs /path/to/publish/watcher` from `frontend/`. Add the resulting directory to the existing GH0ST site deployment. The watchlist and scan history use browser storage scoped to the site origin.
