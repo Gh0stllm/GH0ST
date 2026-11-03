@@ -1,4 +1,5 @@
 import {getAddress,formatEther,formatUnits,id} from 'ethers';
+import {readLaunchWindow} from './bundles.js';
 const zero='0x'+'0'.repeat(40), transfer=id('Transfer(address,address,uint256)');
 const addr=x=>typeof x==='string'&&/^0x[\da-f]{40}$/i.test(x)?getAddress(x.toLowerCase()):null;
 const hash=x=>typeof x==='string'&&/^0x[\da-f]{64}$/i.test(x)?x:null;
@@ -42,43 +43,6 @@ async function previous(net,wallet,creator,entry,block,index,subject){
   });
   return {items:[...found.values()].sort((a,b)=>b.block-a.block).slice(0,10),direct:direct?.length??null,internal:internal?.length??null,traced:traces.filter(Boolean).length};
 }
-const swaps=new Set(['Swap(address,uint256,uint256,uint256,uint256,address)','Swap(address,address,int256,int256,uint160,uint128,int24)','Swap(bytes32,address,int128,int128,uint160,uint128,int24,uint24)'].map(id));
-async function earlySwaps(target,origin,block,receipt,rpc){
-  const end=Math.min(origin+9,block);
-  const logs=await rpc('eth_getLogs',[{address:target,fromBlock:hex(origin),toBlock:hex(end),topics:[transfer]}]);
-  const byTx=new Map();
-  for(const l of logs){
-    if(l.removed||!same(l.address,target)||l.topics?.length!==3||!hash(l.transactionHash)||!longWord(l.data))continue;
-    const from=addr('0x'+l.topics[1].slice(-40)),to=addr('0x'+l.topics[2].slice(-40));if(!from||!to||same(from,zero)||same(to,zero))continue;
-    if(!byTx.has(l.transactionHash))byTx.set(l.transactionHash,new Set());
-    byTx.get(l.transactionHash).add(from.toLowerCase()).add(to.toLowerCase());
-  }
-  const sample=[...byTx].slice(0,12), heights=new Map(),senders=new Set();let checked=0,matches=0,example=null;
-  for(let i=0;i<sample.length;i+=3){
-    const batch=sample.slice(i,i+3);const records=await Promise.all(batch.map(([tx])=>tx===receipt.transactionHash?receipt:optional(rpc('eth_getTransactionReceipt',[tx]))));
-    records.forEach((r,j)=>{
-      if(!r?.logs||r.status!=='0x1')return;checked++;
-      if(!r.logs.some(l=>swaps.has(l.topics?.[0])&&batch[j][1].has(l.address.toLowerCase())))return;
-      matches++;senders.add(r.from.toLowerCase());example??=r.transactionHash;heights.set(r.blockNumber,1+(heights.get(r.blockNumber)||0));
-    });
-  }
-  return {end,origin,eligible:byTx.size,checked,matches,wallets:senders.size,max:Math.max(0,...heights.values()),example};
-}
-async function launch(net,target,origin,receipt,rpc,block){
-  const out={privateStatus:'Unknown · public chain data does not identify private trading bundles.'};
-  const early=optional(earlySwaps(target,origin,block,receipt,rpc));
-  const all=await optional(rpc('eth_getLogs',[{address:target,fromBlock:hex(origin),toBlock:hex(origin),topics:[transfer]}]));
-  if(!Array.isArray(all))return {...out,early:await early};
-  const grouped=new Map(),unique=new Set();
-  for(const log of all){
-    if(log.removed||!same(log.blockHash,receipt.blockHash)||!same(log.address,target)||log.topics?.length!==3||!/^0x0{24}[a-f\d]{40}$/i.test(log.topics[2])||longWord(log.data)===null||longWord(log.data)===0n)continue;
-    const recipient=addr('0x'+log.topics[2].slice(-40));
-    if(!recipient||same(recipient,zero))continue;
-    unique.add(recipient);if(!grouped.has(log.transactionHash))grouped.set(log.transactionHash,new Set());grouped.get(log.transactionHash).add(recipient);
-  }
-  const largest=[...grouped].sort((a,b)=>b[1].size-a[1].size)[0];
-  return {...out,early:await early,transactions:grouped.size,recipients:unique.size,maxRecipients:largest?.[1].size||0,tx:largest?.[0]};
-}
 async function provenance(net,target,block,erc,rpc){
   const lookup=await api(net,'/api/v2/addresses/'+target),txid=hash(lookup.creation_transaction_hash||lookup.creation_tx_hash);
   if(!txid)throw Error('No indexed creation transaction');
@@ -90,7 +54,7 @@ async function provenance(net,target,block,erc,rpc){
   const creator=direct?wallet:addr(lookup.creator_address_hash);
   const entry=addr(receipt.to);
   if(!creator)throw Error('Explorer did not identify the creating account');
-  const [history,native,nonce,bundle,creatorCode]=await Promise.all([previous(net,wallet,creator,entry,h,Number(receipt.transactionIndex),target),optional(rpc('eth_getBalance',[wallet,hex(block)])),optional(rpc('eth_getTransactionCount',[wallet,hex(block)])),erc?launch(net,target,h,receipt,rpc,block):null,optional(rpc('eth_getCode',[creator,hex(block)]))]);
+  const [history,native,nonce,bundle,creatorCode]=await Promise.all([previous(net,wallet,creator,entry,h,Number(receipt.transactionIndex),target),optional(rpc('eth_getBalance',[wallet,hex(block)])),optional(rpc('eth_getTransactionCount',[wallet,hex(block)])),erc?optional(readLaunchWindow(net,target,h,receipt,rpc,block)):null,optional(rpc('eth_getCode',[creator,hex(block)]))]);
   return {wallet,creator,tx:txid,block:h,direct,creatorKind:creatorCode==null?'Unknown':creatorCode==='0x'?'No deployed code':'Contract',balance:native==null?null:formatEther(native),nonce:nonce==null?null:BigInt(nonce).toString(),history,bundle};
 }
 async function coin(net,target,block,rpc,deployment){

@@ -1,3 +1,7 @@
+import {scoreReport,mountScore} from './score.js';
+import {mountBundles} from './bundles.js';
+import {mountTimeMachine} from './time-machine.js';
+import {compass} from './compass.js';
 import {mountClaims} from './claims.js';
 import {mountDiscovery} from './discover.js';
 import {assess} from './assessment.js';
@@ -38,12 +42,7 @@ function intelPanel(r,lookup){
     }else panel.append(el('p','Creation attribution unavailable. Previous deployments cannot be attributed to a wallet for this scan.'));
     if(r.erc20){
       panel.append(el('h3','ERC-20 coin checks'),facts([['Explorer holder count',t?.holders??'Unavailable'],['Explorer-listed top holders',t?.top? t.top+' across '+t.count+' accounts':'Unavailable'],['Deployment sender’s share',t?.walletShare??'Unavailable'],['Deployment sender’s token balance',t?.walletUnits??'Unavailable']]),el('p','Holder rankings are from the explorer at lookup time. Balances and supply are read at the scan block. Contract and pool accounts may be included.'));
-      const b=o?.bundle;panel.append(el('h3','Launch and bundling'),el('p','Private bundle status: unknown. Public transfers alone cannot establish a private bundle or common wallet ownership.'));
-      if(b?.transactions!=null){
-        panel.append(facts([['Launch-block transfer transactions',b.transactions],['Distinct recipients',b.recipients],['Most recipients in one transaction',b.maxRecipients]]));
-        if(b.tx)panel.append(external('Inspect distribution transaction',r.explorer+'/tx/'+b.tx));
-      }else panel.append(el('p','Launch-block transfer evidence unavailable.'));
-      if(b?.early){const e=b.early;panel.append(facts([['Early blocks examined',e.origin.toLocaleString()+' – '+e.end.toLocaleString()],['Transfer receipts sampled',e.checked+' of '+e.eligible],['Swap-linked transactions',e.matches],['Distinct swap transaction senders',e.wallets],['Most swap transactions in one block',e.max]]),el('p','A match requires a recognized swap event from an address involved in the token transfer. Same-block swaps are a public signal; relay membership is unknown.'));if(e.example)panel.append(external('Example swap receipt',r.explorer+'/tx/'+e.example));}
+
     }
   }).catch(()=>{if(panel.isConnected)panel.replaceChildren(el('h3','Deployer and token checks'),el('p','Chain or explorer evidence unavailable. Run the scan again.'));});
   return panel;
@@ -120,7 +119,7 @@ function readPanel(r,intel,market,trace){
   for(const step of trace)list.append(el('li',step));log.append(list);
   panel.append(overview,quote,summaryPanel(r),log);return panel;
 }
-function render(r,trace){
+function render(r,trace,initialView){
   const symbol=r.overview.fields.find(([k])=>k==='Symbol')?.[1],name=r.overview.fields.find(([k])=>k==='Name')?.[1]||r.name||'RH contract';
   activeCoin={address:r.address,network:r.network,name:String(symbol||name).slice(0,90)};
   report.replaceChildren();report.hidden=false;
@@ -131,20 +130,38 @@ function render(r,trace){
   saveButton=action('☆ Watch',()=>toggleSaved(activeCoin));actions.append(saveButton,share);hero.append(identity,actions);body.append(hero);
   const intel=enrich(networks[r.network],r,rpc),market=fetchMarket(r.network,r.address);
   const claims=el('section');mountClaims(claims,r);
-  const views=[['Overview',readPanel(r,intel,market,trace)],['Contract',contractPanel(r)],['Deployer & holders',intelPanel(r,intel)],['Market',marketPanel(market)],['Claims',claims]];
+  const score=el('section'),bundles=el('section'),timeline=el('section');
+  const brief=readPanel(r,intel,market,trace),scorePreview=el('div',null,'score-preview');
+  scorePreview.textContent='Reading evidence for the concern index…';brief.prepend(scorePreview);
+  score.append(el('p','Calculating the measured score and coverage…'));
+  bundles.append(el('p','Inspecting launch receipts…'));
+  function showInstruments(data){
+    mountScore(score,r,data);
+    const measured=scoreReport(r,data);
+    score.prepend(compass(measured));
+    mountBundles(bundles,r,data);
+    const caption=el('div');caption.append(el('div','CONCERN INDEX','eyebrow'),el('p',measured.coverage+'% of the rubric measured · higher means more observed concern'));
+    scorePreview.replaceChildren(el('strong',measured.score==null?'—':measured.score+' / 100'),caption,action('Explore score →',()=>choose(1)));
+  }
+  intel.then(showInstruments,()=>showInstruments(null));
+  mountTimeMachine(timeline,r,intel);
+  const views=[['Overview',brief],['Score',score],['Bundles',bundles],['Time machine',timeline],['Contract',contractPanel(r)],['Deployer & holders',intelPanel(r,intel)],['Market',marketPanel(market)],['Claims',claims]];
   const nav=el('div',null,'report-nav');nav.setAttribute('role','group');nav.setAttribute('aria-label','Report sections');
   function choose(index){
+    const url=new URL(location.href);url.hash='';url.search=new URLSearchParams({network:r.network,address:r.address});
+    if(index>0)url.searchParams.set('view',views[index][0]);history.replaceState(null,'',url);
+
     views.forEach(([,panel],i)=>{panel.hidden=i!==index;nav.children[i].setAttribute('aria-pressed',String(i===index));});
   }
   views.forEach(([label,panel],i)=>{nav.append(action(label,()=>choose(i)));panel.classList.add('report-page')});
-  body.append(nav,...views.map(x=>x[1]));report.append(head,body);choose(0);drawSaved();report.scrollIntoView({block:'start'});
+  body.append(nav,...views.map(x=>x[1]));report.append(head,body);choose(Math.max(0,views.findIndex(([label])=>label===initialView)));drawSaved();report.scrollIntoView({block:'start'});
 }
-async function analyze(){
+async function analyze(initialView){
   if(submit.disabled)return;submit.disabled=true;network.disabled=true;address.readOnly=true;$('#example').disabled=true;
   report.hidden=true;idle.hidden=false;
   const started=performance.now(),trace=[];
   const step=text=>{status.textContent=text;trace.push(((performance.now()-started)/1000).toFixed(1)+'s · '+text)};
-  try{step('Resolving coin…');const input=await resolveInput(address.value,network.value);if(network.value!==input.network){network.value=input.network;refreshDiscovery()}address.value=input.address;const r=await scan(input.network,input.address,step);step('RH block hash rechecked. Behavior results ready.');render(r,trace);status.textContent='';const url=new URL(location.href);url.search=new URLSearchParams({network:r.network,address:r.address});history.replaceState(null,'',url)}
+  try{step('Resolving coin…');const input=await resolveInput(address.value,network.value);if(network.value!==input.network){network.value=input.network;refreshDiscovery()}address.value=input.address;const r=await scan(input.network,input.address,step);step('RH block hash rechecked. Behavior results ready.');render(r,trace,initialView);status.textContent=''}
   catch(e){status.textContent=e.message||'Analysis could not finish. Please retry.';}
   finally{submit.disabled=false;network.disabled=false;address.readOnly=false;$('#example').disabled=false}
 }
@@ -156,4 +173,7 @@ address.addEventListener('input',reset);network.addEventListener('change',()=>{r
 const params=new URLSearchParams(location.search);
 if(Object.hasOwn(networks,params.get('network')))network.value=params.get('network');
 const refreshDiscovery=mountDiscovery($('#discovery'),{getNetwork:()=>network.value,onSelect:a=>openCoin(a,network.value)});drawSaved();
-if(params.get('address')){address.value=params.get('address');analyze()}
+for(const button of document.querySelectorAll('[data-instrument]')){
+  button.onclick=()=>{if(!address.value.trim())address.value=networks[network.value].example;analyze(button.dataset.instrument)};
+}
+if(params.get('address')){address.value=params.get('address');analyze(params.get('view'))}
