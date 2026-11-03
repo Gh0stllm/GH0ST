@@ -3,7 +3,7 @@ use ic_http_certification::{HttpRequest, HttpResponse, StatusCode};
 use std::cell::RefCell;
 thread_local! {static ROUTER:RefCell<AssetRouter<'static>> = RefCell::new(AssetRouter::default());}
 fn setup() {
-    let files: [(&str, &str, &[u8]); 7] = [
+    let files: [(&str, &str, &[u8]); 9] = [
         (
             "index.html",
             "text/html; charset=utf-8",
@@ -18,6 +18,16 @@ fn setup() {
             "watch.js",
             "application/javascript",
             include_bytes!("frontend/dist/watch.js"),
+        ),
+        (
+            "assets/gh0st-watch-mark.svg",
+            "image/svg+xml",
+            include_bytes!("frontend/assets/gh0st-watch-mark.svg"),
+        ),
+        (
+            "assets/gh0st-watch-icon.svg",
+            "image/svg+xml",
+            include_bytes!("frontend/assets/gh0st-watch-icon.svg"),
         ),
         (
             "assets/armillary.jpg",
