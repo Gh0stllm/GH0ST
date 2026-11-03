@@ -1,0 +1,14 @@
+type Evidence = record {
+  finding : text;
+  simulated_address : text;
+  ordinary_mint : text;
+  ordinary_before : text;
+  ordinary_after : text;
+  control_before : text;
+  control_after : text;
+};
+type Check = variant { Ok : Evidence; Err : text };
+service : {
+  check_mint : (text, bool) -> (Check) query;
+  demo : () -> (record { open_mint : Check; protected_mint : Check }) query;
+}

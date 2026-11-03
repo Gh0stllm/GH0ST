@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "canisters": {
+    "watch_checker": {
+      "type": "custom",
+      "candid": "watch.did",
+      "wasm": "target/wasm32-unknown-unknown/release/watch_checker.wasm",
+      "build": "cargo build --locked --release --target wasm32-unknown-unknown",
+      "metadata": [
+        {
+          "name": "candid:service",
+          "path": "watch.did"
+        }
+      ]
+    }
+  }
+}
