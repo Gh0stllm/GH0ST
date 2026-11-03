@@ -7,6 +7,7 @@ import {mountDiscovery} from './discover.js';
 import {assess} from './assessment.js';
 import {fetchMarket} from './market.js';
 import {resolveInput} from './input.js';
+import {isPlatformToken} from './platform-token.js';
 import {scan,networks,rpc,qwenSummary} from './scan.js';
 import {enrich} from './intelligence.js';
 import coverage from './coverage.json';
@@ -119,15 +120,26 @@ function readPanel(r,intel,market,trace){
   for(const step of trace)list.append(el('li',step));log.append(list);
   panel.append(overview,quote,summaryPanel(r),log);return panel;
 }
-function render(r,trace,initialView){
-  const symbol=r.overview.fields.find(([k])=>k==='Symbol')?.[1],name=r.overview.fields.find(([k])=>k==='Name')?.[1]||r.name||'RH contract';
-  activeCoin={address:r.address,network:r.network,name:String(symbol||name).slice(0,90)};
+function reportHeader(coin,title,label,context){
+  activeCoin=coin;
   report.replaceChildren();report.hidden=false;
-  const head=el('div',null,'strip');head.append(el('span','COIN REPORT'),el('span','RH '+networks[r.network].label.toUpperCase()+' / '+r.block.toLocaleString()));
+  const head=el('div',null,'strip');head.append(el('span',label),el('span',context));
   const body=el('div',null,'body'),hero=el('div',null,'token-head'),identity=el('div'),actions=el('div',null,'report-actions');
-  identity.append(el('h2',name),external(r.address,r.explorer+'/address/'+r.address));
+  identity.append(el('h2',title),external(coin.address,networks[coin.network].explorer+'/address/'+coin.address));
   const share=action('Copy scan link',async()=>{try{await navigator.clipboard.writeText(location.href);share.textContent='Copied'}catch{status.textContent='Copy the URL from your address bar to share this scan.'}});
   saveButton=action('☆ Watch',()=>toggleSaved(activeCoin));actions.append(saveButton,share);hero.append(identity,actions);body.append(hero);
+  report.append(head,body);drawSaved();
+  return body;
+}
+function showPlatformToken(input){
+  reportHeader({...input,name:'GH0ST'},'We own and trust this token.','GH0ST · PLATFORM TOKEN','ROBINHOOD MAINNET');
+  const url=new URL(location.href);url.hash='';url.search=new URLSearchParams(input);
+  history.replaceState(null,'',url);idle.hidden=true;report.scrollIntoView({block:'start'});
+}
+function render(r,trace,initialView){
+  const symbol=r.overview.fields.find(([k])=>k==='Symbol')?.[1],name=r.overview.fields.find(([k])=>k==='Name')?.[1]||r.name||'RH contract';
+  const coin={address:r.address,network:r.network,name:String(symbol||name).slice(0,90)};
+  const body=reportHeader(coin,name,'COIN REPORT','RH '+networks[r.network].label.toUpperCase()+' / '+r.block.toLocaleString());
   const intel=enrich(networks[r.network],r,rpc),market=fetchMarket(r.network,r.address);
   const claims=el('section');mountClaims(claims,r);
   const score=el('section'),bundles=el('section'),timeline=el('section');
@@ -154,14 +166,26 @@ function render(r,trace,initialView){
     views.forEach(([,panel],i)=>{panel.hidden=i!==index;nav.children[i].setAttribute('aria-pressed',String(i===index));});
   }
   views.forEach(([label,panel],i)=>{nav.append(action(label,()=>choose(i)));panel.classList.add('report-page')});
-  body.append(nav,...views.map(x=>x[1]));report.append(head,body);choose(Math.max(0,views.findIndex(([label])=>label===initialView)));drawSaved();report.scrollIntoView({block:'start'});
+  body.append(nav,...views.map(x=>x[1]));choose(Math.max(0,views.findIndex(([label])=>label===initialView)));report.scrollIntoView({block:'start'});
 }
 async function analyze(initialView){
   if(submit.disabled)return;submit.disabled=true;network.disabled=true;address.readOnly=true;$('#example').disabled=true;
   report.hidden=true;idle.hidden=false;
   const started=performance.now(),trace=[];
   const step=text=>{status.textContent=text;trace.push(((performance.now()-started)/1000).toFixed(1)+'s · '+text)};
-  try{step('Resolving coin…');const input=await resolveInput(address.value,network.value);if(network.value!==input.network){network.value=input.network;refreshDiscovery()}address.value=input.address;const r=await scan(input.network,input.address,step);step('RH block hash rechecked. Behavior results ready.');render(r,trace,initialView);status.textContent=''}
+  try{
+    step('Resolving coin…');
+    const input=await resolveInput(address.value,network.value);
+    if(network.value!==input.network){network.value=input.network;refreshDiscovery()}
+    address.value=input.address;
+    if(isPlatformToken(input.network,input.address)){
+      showPlatformToken(input);
+    }else{
+      const r=await scan(input.network,input.address,step);
+      step('RH block hash rechecked. Behavior results ready.');render(r,trace,initialView);
+    }
+    status.textContent='';
+  }
   catch(e){status.textContent=e.message||'Analysis could not finish. Please retry.';}
   finally{submit.disabled=false;network.disabled=false;address.readOnly=false;$('#example').disabled=false}
 }

@@ -2,6 +2,8 @@
 
 The Observatory works with Robinhood Chain mainnet and testnet. The Overview pairs an evidence-weighted **concern index** (higher means more concern) with measured coverage. Score Lab exposes each factor, its weight and the full range implied by missing evidence. Its what-if controls change a hypothetical scenario while the observed score stays fixed.
 
+The Robinhood mainnet entry for GH0ST (`0x2eb2849cDE7957b86d0dFD4B59e450a9F9D15559`) displays the team's statement “We own and trust this token.” Watcher skips the automated scan and score for this address on this network.
+
 Bundle Lens visualizes the first ten launch blocks, links sample receipts and distinguishes swap-linked activity, same-block senders and verified prior ETH transfers where available. Public activity cannot establish private bundle membership. Time Machine keeps up to 12 real observations per address for 24 addresses on the same device. Scan twice to compare code fingerprints, control state, holder concentration and the six behavior checks at different blocks. The backend retains the existing Qwen coverage cache across frontend upgrades.
 
 The generated armillary artwork and licensed, self-hosted typefaces are in [frontend/assets](frontend/assets).
