@@ -8,6 +8,7 @@ import {assess} from './assessment.js';
 import {fetchMarket} from './market.js';
 import {resolveInput} from './input.js';
 import {isPlatformToken} from './platform-token.js';
+import {createRecentScans, RECENTS_KEY} from './recent-scans.js';
 import {scan,networks,rpc,qwenSummary} from './scan.js';
 import {enrich} from './intelligence.js';
 import coverage from './coverage.json';
@@ -16,8 +17,12 @@ const $=s=>document.querySelector(s);
 const form=$('#form'),address=$('#address'),network=$('#network'),submit=$('#submit'),status=$('#status'),report=$('#report'),idle=$('#idle');
 function el(tag,text,cls){const n=document.createElement(tag);if(text!=null)n.textContent=text;if(cls)n.className=cls;return n}
 function facts(items){const list=el('dl',null,'facts');for(const [key,value] of items){const pair=el('div');pair.append(el('dt',key),el('dd',String(value)));list.append(pair)}return list}
-function external(label,url){const a=el('a',label+' ↗','address break');a.href=url;a.rel='noreferrer';a.target='_blank';return a;}
-function summaryPanel(r){
+function external(label,url){
+  let target;try{target=new URL(url)}catch{}
+  if(!target||!['http:','https:'].includes(target.protocol)||target.username||target.password)return el('span',label,'break');
+  const a=el('a',label+' ↗','address break');a.href=target.href;a.rel='noreferrer';a.target='_blank';return a;
+}
+function summaryPanel(r,explanation){
   const panel=el('section',null,'note-panel');panel.append(el('h3','Qwen explanation'));
   const hits=r.rules.filter(x=>x.status==='Reproduced').length,untested=r.rules.filter(x=>x.status==='Untested');
   const line=el('p',coverage[hits+'/'+untested.length]);
@@ -26,7 +31,7 @@ function summaryPanel(r){
   for(const x of r.rules.filter(x=>x.status!=='Untested'))panel.append(el('p',x.title+' — '+notes[x.key][x.status==='Reproduced'?1:0]+' '+x.detail));
   const reasons=new Map();for(const x of untested){const list=reasons.get(x.detail)||[];list.push(x.title);reasons.set(x.detail,list);}
   for(const [why,names] of reasons)panel.append(el('p','Untested: '+names.join(', ')+'. '+why));
-  qwenSummary(r).then(note=>{if(note&&panel.isConnected){line.textContent=note.text;source.textContent='Qwen3.5-2B · '+note.source;}}).catch(()=>{});
+  explanation.then(note=>{if(note&&panel.isConnected){line.textContent=note.text;source.textContent='Qwen3.5-2B · '+note.source;}}).catch(()=>{});
   return panel;
 }
 function intelPanel(r,lookup){
@@ -89,7 +94,21 @@ function drawSaved(){
   }
   if(activeCoin&&saveButton){const has=saved.some(x=>isSame(x,activeCoin));saveButton.textContent=has?'★ Saved':'☆ Watch';saveButton.setAttribute('aria-pressed',String(has))}
 }
-window.addEventListener('storage',e=>{if(e.key===listKey)drawSaved()});
+const recentScans=createRecentScans();
+function drawRecent(){
+  const panel=$('#recent-list'),entries=recentScans.list();
+  panel.replaceChildren();
+  if(!entries.length){panel.append(el('li','Coins you open will appear here.','recent-empty'));return}
+  for(const entry of entries){
+    const row=el('li'),button=action('',()=>openCoin(entry.address,entry.network));
+    button.className='recent-item';
+    button.title=entry.address;
+    button.append(el('strong',entry.name),el('span','RH '+networks[entry.network].label+' · '+entry.address.slice(0,8)+'…'+entry.address.slice(-6)),
+      el('small',entry.report?'Scanned '+new Date(entry.scannedAt).toLocaleString():'Platform token'));
+    row.append(button);panel.append(row);
+  }
+}
+window.addEventListener('storage',e=>{if(!e.key||e.key===listKey)drawSaved();if(!e.key||e.key===RECENTS_KEY)drawRecent()});
 function marketPanel(market){
   const panel=el('section');panel.append(el('p','Looking up RH trading pools…'));
   market.then(m=>{
@@ -102,7 +121,7 @@ function marketPanel(market){
   }).catch(()=>panel.replaceChildren(el('p','Market data unavailable.')));
   return panel;
 }
-function readPanel(r,intel,market,trace){
+function readPanel(r,intel,market,trace,explanation){
   const panel=el('section'),overview=el('div',null,'readout');
   function update(data){
     const read=assess(r,data);overview.replaceChildren(el('div','WATCH READ','eyebrow'),el('h3',read.title),el('p',read.description));
@@ -118,7 +137,7 @@ function readPanel(r,intel,market,trace){
   }).catch(()=>quote.textContent='Market data unavailable.');
   const log=el('details');log.append(el('summary','Scan trace'));const list=el('ol');
   for(const step of trace)list.append(el('li',step));log.append(list);
-  panel.append(overview,quote,summaryPanel(r),log);return panel;
+  panel.append(overview,quote,summaryPanel(r,explanation),log);return panel;
 }
 function reportHeader(coin,title,label,context){
   activeCoin=coin;
@@ -136,14 +155,51 @@ function showPlatformToken(input){
   const url=new URL(location.href);url.hash='';url.search=new URLSearchParams(input);
   history.replaceState(null,'',url);idle.hidden=true;report.scrollIntoView({block:'start'});
 }
-function render(r,trace,initialView){
+function identityOf(r){
   const symbol=r.overview.fields.find(([k])=>k==='Symbol')?.[1],name=r.overview.fields.find(([k])=>k==='Name')?.[1]||r.name||'RH contract';
-  const coin={address:r.address,network:r.network,name:String(symbol||name).slice(0,90)};
+  return {name,coin:{address:r.address,network:r.network,name:String(symbol||name).slice(0,90)}};
+}
+const pendingDetails=new Map();
+function reportDetails(r,entry,reused){
+  const key=r.network+'/'+r.address.toLowerCase();
+  const pending=pendingDetails.get(key);
+  if(reused){
+    if(pending && pending.scannedAt===entry.scannedAt && pending.blockHash===r.blockHash)return pending.sources;
+    const saved=entry.details||{};
+    return {
+      intel:Promise.resolve(saved.intel??null),
+      market:Promise.resolve(saved.market??{available:false,reason:'Market data was unavailable in this saved scan.'}),
+      note:Promise.resolve(saved.note??null),
+    };
+  }
+  function capture(field,promise,fallback){
+    return promise.catch(()=>fallback).then(value=>{
+      if(entry)recentScans.attach(r.network,r.address,r.blockHash,{[field]:value},entry.scannedAt);
+      return value;
+    });
+  }
+  const sources={
+    intel:capture('intel',enrich(networks[r.network],r,rpc),null),
+    market:capture('market',fetchMarket(r.network,r.address),{available:false,reason:'Market data unavailable.'}),
+    note:capture('note',qwenSummary(r),null),
+  };
+  const generation={sources,scannedAt:entry?.scannedAt,blockHash:r.blockHash};
+  pendingDetails.set(key,generation);
+  Promise.allSettled(Object.values(sources)).then(()=>{if(pendingDetails.get(key)===generation)pendingDetails.delete(key)});
+  return sources;
+}
+function render(r,trace,initialView,entry,reused){
+  const {name,coin}=identityOf(r);
   const body=reportHeader(coin,name,'COIN REPORT','RH '+networks[r.network].label.toUpperCase()+' / '+r.block.toLocaleString());
-  const intel=enrich(networks[r.network],r,rpc),market=fetchMarket(r.network,r.address);
+  const scanBar=el('div',null,'scan-origin');
+  const scannedAt=entry?.scannedAt??Date.now();
+  scanBar.append(el('span',(reused?'Saved scan':'Scanned')+' · '+new Date(scannedAt).toLocaleString()+' · Block '+r.block.toLocaleString()),
+    action('Scan again',()=>analyze(new URL(location.href).searchParams.get('view'),true)));
+  body.append(scanBar);
+  const {intel,market,note}=reportDetails(r,entry,reused);
   const claims=el('section');mountClaims(claims,r);
   const score=el('section'),bundles=el('section'),timeline=el('section');
-  const brief=readPanel(r,intel,market,trace),scorePreview=el('div',null,'score-preview');
+  const brief=readPanel(r,intel,market,trace,note),scorePreview=el('div',null,'score-preview');
   scorePreview.textContent='Reading evidence for the concern index…';brief.prepend(scorePreview);
   score.append(el('p','Calculating the measured score and coverage…'));
   bundles.append(el('p','Inspecting launch receipts…'));
@@ -156,7 +212,7 @@ function render(r,trace,initialView){
     scorePreview.replaceChildren(el('strong',measured.score==null?'—':measured.score+' / 100'),caption,action('Explore score →',()=>choose(1)));
   }
   intel.then(showInstruments,()=>showInstruments(null));
-  mountTimeMachine(timeline,r,intel);
+  mountTimeMachine(timeline,r,intel,{observed:scannedAt,reused});
   const views=[['Overview',brief],['Score',score],['Bundles',bundles],['Time machine',timeline],['Contract',contractPanel(r)],['Deployer & holders',intelPanel(r,intel)],['Market',marketPanel(market)],['Claims',claims]];
   const nav=el('div',null,'report-nav');nav.setAttribute('role','group');nav.setAttribute('aria-label','Report sections');
   function choose(index){
@@ -168,9 +224,9 @@ function render(r,trace,initialView){
   views.forEach(([label,panel],i)=>{nav.append(action(label,()=>choose(i)));panel.classList.add('report-page')});
   body.append(nav,...views.map(x=>x[1]));choose(Math.max(0,views.findIndex(([label])=>label===initialView)));report.scrollIntoView({block:'start'});
 }
-async function analyze(initialView){
+async function analyze(initialView,force=false){
   if(submit.disabled)return;submit.disabled=true;network.disabled=true;address.readOnly=true;$('#example').disabled=true;
-  report.hidden=true;idle.hidden=false;
+  if(!force)report.hidden=true;idle.hidden=false;
   const started=performance.now(),trace=[];
   const step=text=>{status.textContent=text;trace.push(((performance.now()-started)/1000).toFixed(1)+'s · '+text)};
   try{
@@ -180,10 +236,24 @@ async function analyze(initialView){
     address.value=input.address;
     if(isPlatformToken(input.network,input.address)){
       showPlatformToken(input);
+      if(!recentScans.touch(input.network,input.address))recentScans.save({...input,name:'GH0ST',report:null,trace:[]});
     }else{
-      const r=await scan(input.network,input.address,step);
-      step('RH block hash rechecked. Behavior results ready.');render(r,trace,initialView);
+      async function openReport(){
+        const existing=recentScans.get(input.network,input.address);
+        if(existing?.report && !force){
+          recentScans.touch(input.network,input.address);
+          render(existing.report,existing.trace,initialView,existing,true);
+          return;
+        }
+        const r=await scan(input.network,input.address,step);
+        step('RH block hash rechecked. Behavior results ready.');
+        const entry=recentScans.save({...identityOf(r).coin,report:r,trace});
+        render(r,trace,initialView,entry,false);
+      }
+      if(navigator.locks)await navigator.locks.request('gh0st-watch:scan:'+input.network+':'+input.address.toLowerCase(),openReport);
+      else await openReport();
     }
+    drawRecent();
     status.textContent='';
   }
   catch(e){status.textContent=e.message||'Analysis could not finish. Please retry.';}
@@ -196,7 +266,7 @@ function reset(){activeCoin=null;saveButton=null;report.hidden=true;idle.hidden=
 address.addEventListener('input',reset);network.addEventListener('change',()=>{reset();refreshDiscovery()});
 const params=new URLSearchParams(location.search);
 if(Object.hasOwn(networks,params.get('network')))network.value=params.get('network');
-const refreshDiscovery=mountDiscovery($('#discovery'),{getNetwork:()=>network.value,onSelect:a=>openCoin(a,network.value)});drawSaved();
+const refreshDiscovery=mountDiscovery($('#discovery'),{getNetwork:()=>network.value,onSelect:a=>openCoin(a,network.value)});drawSaved();drawRecent();
 for(const button of document.querySelectorAll('[data-instrument]')){
   button.onclick=()=>{if(!address.value.trim())address.value=networks[network.value].example;analyze(button.dataset.instrument)};
 }

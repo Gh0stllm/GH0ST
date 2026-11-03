@@ -57,26 +57,35 @@ async function trending(signal) {
   const response = await fetch(TRENDING, {signal, credentials:'omit'});
   if (!response.ok) throw Error('Pool feed unavailable');
   const pools = await response.json();
+  return rankedBaseTokens(pools);
+}
+
+export function rankedBaseTokens(pools) {
   if (!Array.isArray(pools?.data) || !Array.isArray(pools.included)) throw Error('Missing pool data');
   const assets = new Map(pools.included.filter(asset => asset?.type === 'token').map(asset => [asset.id,asset.attributes]));
   const tokens = [];
+  const seen = new Set();
   for (const pool of pools.data) {
     if (pool?.type !== 'pool') continue;
     // A V4 pool ID can be 32 bytes. Always resolve the base-token relationship to its address.
     const baseId = pool.relationships?.base_token?.data?.id;
     const base = assets.get(baseId);
     if (!/^0x[\da-f]{40}$/i.test(base?.address) || baseId?.toLowerCase() !== 'robinhood_'+base.address.toLowerCase()) continue;
+    const address = getAddress(base.address.toLowerCase());
+    // Provider order is the pool ranking. The first eligible pool supplies this token's displayed volume.
+    if (seen.has(address)) continue;
+    seen.add(address);
     const rawVolume = pool.attributes?.volume_usd?.h24;
     const volume = rawVolume == null || rawVolume === '' ? NaN : Number(rawVolume);
     tokens.push({
-      address:getAddress(base.address.toLowerCase()),
+      address,
       symbol:cleanLabel(base.symbol, 24) || 'Token',
       name:cleanLabel(pool.attributes?.name, 80) || cleanLabel(base.name,80) || 'Unnamed pool',
-      metric:Number.isFinite(volume) && volume >= 0 ? usd.format(volume)+' vol · 24h' : 'Volume unavailable',
+      metric:Number.isFinite(volume) && volume >= 0 ? usd.format(volume)+' pool vol · 24h' : 'Volume unavailable',
     });
     if (tokens.length === LIST_LIMIT) break;
   }
-  return {tokens, status: tokens.length ? '24h trending pools in GeckoTerminal order. Select a pair to scan its base token.' : 'No ranked pools with a scannable base token.'};
+  return {tokens, status: tokens.length ? 'One entry per base token, ordered by its highest-ranked pool. Volume covers that pool over 24 hours.' : 'No ranked pools with a scannable base token.'};
 }
 
 function tokenButton(token, onSelect) {
@@ -102,7 +111,7 @@ export function mountDiscovery(container, {getNetwork, onSelect}) {
   const modes = element('div','discover-modes');
   modes.setAttribute('role','group');
   modes.setAttribute('aria-label','Discovery feed');
-  const trendsButton = element('button','discover-mode','Trending pools');
+  const trendsButton = element('button','discover-mode','Trending tokens');
   const directoryButton = element('button','discover-mode','Directory');
   for (const button of [trendsButton,directoryButton]) { button.type='button'; modes.append(button); }
   const input = element('input', 'discover-input');
@@ -140,13 +149,13 @@ export function mountDiscovery(container, {getNetwork, onSelect}) {
     trendsButton.title = trendsButton.disabled ? 'Available on RH Mainnet' : '';
     trendsButton.setAttribute('aria-pressed',String(hot));
     directoryButton.setAttribute('aria-pressed',String(!hot));
-    title.textContent = hot ? 'Trending pools' : 'Token directory';
+    title.textContent = hot ? 'Trending tokens' : 'Token directory';
     source.textContent = (hot ? 'GeckoTerminal' : 'Blockscout')+' · RH '+network.label;
     if (query.length === 1) {
       status.textContent = 'Type at least two characters to search.';
       return;
     }
-    status.textContent = hot ? 'Loading 24h trending pools…' : query ? 'Searching indexed tokens…' : 'Loading indexed tokens…';
+    status.textContent = hot ? 'Loading tokens from 24h trending pools…' : query ? 'Searching indexed tokens…' : 'Loading indexed tokens…';
     debounce = setTimeout(async () => {
       const controller = new AbortController();
       pending = controller;

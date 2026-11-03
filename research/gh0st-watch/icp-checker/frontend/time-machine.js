@@ -164,14 +164,16 @@ function render(container,current,history,saved) {
   select.onchange=draw;draw();
 }
 let memoryHistory=[];
-export function mountTimeMachine(container, r, intel) {
-  const observed=Date.now();const draw=data=>{
+export function mountTimeMachine(container, r, intel, {observed=Date.now(),reused=false}={}) {
+  const draw=data=>{
     const current=evidenceSnapshot(r,data,observed);
     if(!current){container.replaceChildren(node('p','A confirmed contract scan is needed to create a timeline.'));return;}
     let history=memoryHistory,saved=false;
-    try {const stored=JSON.parse(localStorage.getItem(STORE)||'[]');if(Array.isArray(stored))history=stored;}catch{}
-    history=saveObservation(history,current);memoryHistory=history;
-    try{localStorage.setItem(STORE,JSON.stringify(history));saved=true;}catch{}
+    try {const stored=JSON.parse(localStorage.getItem(STORE)||'[]');if(Array.isArray(stored)){history=stored.filter(valid);saved=true;}}catch{}
+    if(!reused){
+      history=saveObservation(history,current);memoryHistory=history;
+      try{localStorage.setItem(STORE,JSON.stringify(history));saved=true;}catch{saved=false;}
+    }
     const snapshot=history.find(s=>sameCoin(s,current)&&s.block===current.block&&s.blockHash===current.blockHash);
     render(container,snapshot||current,history,saved);
   };
