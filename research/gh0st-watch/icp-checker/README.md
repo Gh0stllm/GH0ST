@@ -1,6 +1,8 @@
 # GH0ST Watch on ICP
 
-[Open the RH contract scanner](https://ggcey-baaaa-aaaao-bbsgq-cai.icp0.io/). Paste a Robinhood Chain mainnet or testnet address, select the network and choose **Analyze**. The **Try an example** button opens a real contract. Share the resulting URL to scan that address again at a new block.
+[Open the GH0ST Watch coin scout](https://ggcey-baaaa-aaaao-bbsgq-cai.icp0.io/). Paste a Robinhood Chain address, RH explorer token/address link, or RH DexScreener pair link and choose **Check coin**. Pair links select the base token. The RH mainnet landing page lists 24-hour trending pools in GeckoTerminal order. Selecting a pool scans its base token. Browse the token directory by name or ticker, save a coin to this browser’s watchlist, and copy its scan link to share. The **Try an example** button opens a real contract. Share the resulting URL to scan that address again at a new block.
+
+Reports group the Watch assessment, contract tests, deployer and holder history, market data, and project claims. DexScreener metrics describe the deepest indexed base-token pool at lookup time. The Claims section checks verifiable statements and can look for the exact address in a public GitHub repository’s default-branch README. A matching address is evidence of a mention, not proof of project ownership.
 
 The browser pins RH RPC reads to one block and checks its hash again before presenting results. ICP disassembles the deployed runtime and returns its fingerprint. Standard implementation slots, beacon proxies and common minimal proxies are resolved when possible. Explorer ABI metadata is used only when its deployed bytecode matches. Token and ownership fields come from getters at the pinned block.
 

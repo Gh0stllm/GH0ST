@@ -26,7 +26,7 @@ fn setup() {
             assets.push(Asset::new(name,bytes));
             configs.push(AssetConfig::File{path:name.into(),content_type:Some(mime.into()),headers:vec![
                 ("Cache-Control".into(),"no-cache".into()),("X-Content-Type-Options".into(),"nosniff".into()),("Referrer-Policy".into(),"no-referrer".into()),
-                ("Content-Security-Policy".into(),"default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://icp-api.io https://rpc.mainnet.chain.robinhood.com https://rpc.testnet.chain.robinhood.com https://robinhoodchain.blockscout.com https://explorer.testnet.chain.robinhood.com; base-uri 'none'; form-action 'none'; frame-ancestors 'none'".into())],
+                ("Content-Security-Policy".into(),"default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.dexscreener.com https://api.geckoterminal.com https://api.github.com https://icp-api.io https://rpc.mainnet.chain.robinhood.com https://rpc.testnet.chain.robinhood.com https://robinhoodchain.blockscout.com https://explorer.testnet.chain.robinhood.com; base-uri 'none'; form-action 'none'; frame-ancestors 'none'".into())],
                 fallback_for:if name=="index.html"{vec![AssetFallbackConfig{scope:"/".into(),status_code:Some(StatusCode::NOT_FOUND)}]}else{vec![]},
                 aliased_by:if name=="index.html"{vec!["/".into()]}else{vec![]},encodings:vec![]});
         }
