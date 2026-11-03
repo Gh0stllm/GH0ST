@@ -144,8 +144,6 @@ async fn interpret(
 #[derive(CandidType, Deserialize, Default)]
 struct PublicCache {
     notes: std::collections::BTreeMap<Vec<u8>, String>,
-    day: u64,
-    attempts: u8,
     retry_after: u64,
 }
 thread_local! {
@@ -307,26 +305,16 @@ async fn explain_scan(states: Vec<u8>) -> Result<String, String> {
         return Ok(line);
     }
     let now = ic_cdk::api::time() / 1_000_000_000;
-    if BUSY.with(|b| b.get())
-        || CACHE.with_borrow(|c| now < c.retry_after || (c.day == now / 86400 && c.attempts >= 2))
-    {
+    if BUSY.with(|b| b.get()) || CACHE.with_borrow(|c| now < c.retry_after) {
         return Err("Cached explanation available".into());
     }
     BUSY.with(|b| b.set(true));
     let model = Principal::from_text("myit3-yyaaa-aaaap-qu75a-cai").unwrap();
     let result = async {
-        CACHE.with_borrow_mut(|c| c.retry_after = now + 300);
         if !has_headroom(model).await? {
             CACHE.with_borrow_mut(|c| c.retry_after = now + 1800);
             return Err("Model reserve protected".into());
         }
-        CACHE.with_borrow_mut(|c| {
-            if c.day != now / 86400 {
-                c.day = now / 86400;
-                c.attempts = 0;
-            }
-            c.attempts += 1;
-        });
         let line = generate_public(&states, model, now).await?;
         CACHE.with_borrow_mut(|c| {
             c.notes.insert(states, line.clone());
@@ -334,6 +322,11 @@ async fn explain_scan(states: Vec<u8>) -> Result<String, String> {
         Ok(line)
     }
     .await;
+    if result.is_err() {
+        // Delay failed retries; a successful generation leaves the next profile eligible immediately.
+        let retry = ic_cdk::api::time() / 1_000_000_000 + 300;
+        CACHE.with_borrow_mut(|c| c.retry_after = c.retry_after.max(retry));
+    }
     BUSY.with(|b| b.set(false));
     result
 }
@@ -357,13 +350,40 @@ fn summary_state(states: Vec<u8>) -> SummaryState {
         note: c.notes.get(&states).cloned(),
         can_generate: !c.notes.contains_key(&states)
             && !BUSY.with(|b| b.get())
-            && now >= c.retry_after
-            && (c.day != now / 86400 || c.attempts < 2),
+            && now >= c.retry_after,
     })
 }
 #[cfg(test)]
 mod coverage_tests {
     use super::*;
+    #[test]
+    fn upgrade_preserves_notes_from_a_quota_exhausted_cache() {
+        #[derive(CandidType)]
+        struct PreviousCache {
+            notes: std::collections::BTreeMap<Vec<u8>, String>,
+            day: u64,
+            attempts: u8,
+            retry_after: u64,
+        }
+        let profile = vec![2, 0, 2, 2, 2, 2];
+        let previous = PreviousCache {
+            notes: [(
+                profile.clone(),
+                "Underflow: not reproduced; 5 untested.".to_owned(),
+            )]
+            .into(),
+            day: 123,
+            attempts: 2,
+            retry_after: 100,
+        };
+        let bytes = candid::encode_args((previous,)).unwrap();
+        let (restored,): (PublicCache,) = candid::decode_args(&bytes).unwrap();
+        assert_eq!(
+            restored.notes[&profile],
+            "Underflow: not reproduced; 5 untested."
+        );
+        assert_eq!(restored.retry_after, 100);
+    }
     #[test]
     fn all_profiles_produce_supported_claims() {
         assert!(!valid_profile(&[0, 1, 2]));
