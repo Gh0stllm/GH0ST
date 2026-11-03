@@ -5,7 +5,7 @@ mod web;
 use candid::Principal;
 use candid::{CandidType, Deserialize};
 use ic_http_certification::{HttpRequest, HttpResponse};
-use interpretation::Interpretation;
+use interpretation::{Interpretation, SummaryState};
 use revm::primitives::{Address, Bytes, ExecutionResult, Output, SpecId, TxKind, U256};
 use revm::{Evm, InMemoryDB};
 use scanner::CodeProfile;

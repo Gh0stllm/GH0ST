@@ -15,6 +15,9 @@ type Headers=vec record{text;text};
 type HttpRequest=record{method:text;url:text;headers:Headers;body:blob;certificate_version:opt nat16};
 type HttpResponse=record{status_code:nat16;headers:Headers;body:blob;upgrade:opt bool};
 service : {
+  explain_scan : (vec nat8) -> (variant {Ok:text; Err:text});
+  summary_state : (vec nat8) -> (record {note:opt text;can_generate:bool}) query;
+  cached_summary : (vec nat8) -> (opt text) query;
   http_request : (HttpRequest) -> (HttpResponse) query;
   inspect_runtime : (blob) -> (variant{Ok:Profile;Err:text}) query;
   interpret : (Rule, text, principal) -> (variant {Ok : record {evidence : RuleResult; model_answer : opt text; status : text}; Err : text});

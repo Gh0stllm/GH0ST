@@ -138,3 +138,251 @@ async fn interpret(
     }
     Ok(result)
 }
+
+// The anonymous endpoint accepts only six enumerated outcomes. No caller controls the
+// prompt, canister, output length or file path. Cached notes concern a pattern, not an address.
+#[derive(CandidType, Deserialize, Default)]
+struct PublicCache {
+    notes: std::collections::BTreeMap<Vec<u8>, String>,
+    day: u64,
+    attempts: u8,
+    retry_after: u64,
+}
+thread_local! {
+    static CACHE:std::cell::RefCell<PublicCache>=Default::default();
+    static BUSY:std::cell::Cell<bool>=const{std::cell::Cell::new(false)};
+}
+pub fn save_cache() {
+    CACHE.with_borrow(|c| ic_cdk::storage::stable_save((c,)).expect("save coverage cache"));
+}
+pub fn restore_cache() {
+    if ic_cdk::api::stable_size() > 0 {
+        let (old,): (PublicCache,) =
+            ic_cdk::storage::stable_restore().expect("restore coverage cache");
+        CACHE.with_borrow_mut(|c| *c = old)
+    }
+}
+fn valid_profile(states: &[u8]) -> bool {
+    states.len() == 6 && states.iter().all(|x| *x <= 2)
+}
+#[ic_cdk::query]
+fn cached_summary(states: Vec<u8>) -> Option<String> {
+    if !valid_profile(&states) {
+        return None;
+    }
+    CACHE.with_borrow(|c| c.notes.get(&states).cloned())
+}
+#[derive(CandidType, Deserialize)]
+struct BalanceStatus {
+    cycles: candid::Nat,
+    idle_cycles_burned_per_day: candid::Nat,
+    settings: ReserveSettings,
+}
+#[derive(CandidType, Deserialize)]
+struct ReserveSettings {
+    freezing_threshold: candid::Nat,
+}
+#[derive(CandidType)]
+struct Target {
+    canister_id: Principal,
+}
+async fn has_headroom(model: Principal) -> Result<bool, String> {
+    let response = Call::bounded_wait(Principal::management_canister(), "canister_status")
+        .with_arg(Target { canister_id: model })
+        .await
+        .map_err(|_| "Model balance unavailable")?;
+    let s: BalanceStatus = response.candid().map_err(|_| "Model reserve unavailable")?;
+    let reserve = s.idle_cycles_burned_per_day.0 * s.settings.freezing_threshold.0 / 86400u64;
+    Ok(s.cycles.0 >= reserve + 500_000_000_000u64)
+}
+fn grounded_lines(states: &[u8]) -> (String, String) {
+    const NAMES: [&str; 6] = [
+        "Mint",
+        "Underflow",
+        "Reentry",
+        "Origin payment",
+        "Replay",
+        "False transfer credit",
+    ];
+    let remaining = states.iter().filter(|x| **x == 2).count();
+    let first = states
+        .iter()
+        .position(|x| *x == 1)
+        .or_else(|| states.iter().position(|x| *x == 0));
+    match first {
+        Some(i) => {
+            let status = if states[i] == 1 {
+                "reproduced"
+            } else {
+                "not reproduced"
+            };
+            (
+                format!("{} {status}. {remaining} untested.", NAMES[i]),
+                format!("{}: {status}; {remaining} untested.", NAMES[i]),
+            )
+        }
+        None => (
+            "All six checks remain untested.".into(),
+            "None of the six checks ran.".into(),
+        ),
+    }
+}
+async fn generate_public(states: &[u8], model: Principal, now: u64) -> Result<String, String> {
+    let (a, b) = grounded_lines(states);
+    let cache = format!("public-note-{now}.cache");
+    model_call(
+        model,
+        "new_chat",
+        vec!["--prompt-cache".into(), cache.clone()],
+    )
+    .await?;
+    // The runtime reinitializes its sampler after each instruction-budget yield.
+    // Constrain each continuation to the ungenerated suffix, not the start of the note.
+    let mut prompt = format!(
+        "Summary: {}",
+        states
+            .iter()
+            .map(|v| char::from(b'0' + *v))
+            .collect::<String>()
+    );
+    let mut output = String::new();
+    let mut remaining = 24u64;
+    for _ in 0..10 {
+        let choices: Vec<String> = [&a, &b]
+            .iter()
+            .filter_map(|line| line.strip_prefix(&output))
+            .map(|suffix| format!("\"{suffix}\""))
+            .collect();
+        if choices.is_empty() || remaining == 0 {
+            break;
+        }
+        let grammar = format!("root ::= {}", choices.join(" | "));
+        let cap = remaining.to_string();
+        let args = [
+            "--prompt-cache",
+            &cache,
+            "--prompt-cache-all",
+            "--simple-io",
+            "--no-display-prompt",
+            "-n",
+            &cap,
+            "--grammar",
+            &grammar,
+            "--seed",
+            "42",
+            "--temp",
+            "0",
+            "-p",
+            &prompt,
+        ];
+        let r = model_call(
+            model,
+            "run_update",
+            args.iter().map(|s| s.to_string()).collect(),
+        )
+        .await?;
+        let generated = r.n_tokens_generated.ok_or("Missing model token count")?;
+        remaining = remaining
+            .checked_sub(generated)
+            .ok_or("Model output exceeded its limit")?;
+        output.push_str(&r.output);
+        if r.n_prompt_tokens_remaining == Some(0) {
+            prompt.clear();
+            if output == a || output == b {
+                return Ok(output);
+            }
+            if generated == 0 && r.output.is_empty() && !output.is_empty() {
+                break;
+            }
+        }
+    }
+    Err("Model did not return a complete evidence-matched sentence".into())
+}
+#[ic_cdk::update]
+async fn explain_scan(states: Vec<u8>) -> Result<String, String> {
+    if !valid_profile(&states) {
+        return Err("Expected six coverage outcomes".into());
+    }
+    if let Some(line) = cached_summary(states.clone()) {
+        return Ok(line);
+    }
+    let now = ic_cdk::api::time() / 1_000_000_000;
+    if BUSY.with(|b| b.get())
+        || CACHE.with_borrow(|c| now < c.retry_after || (c.day == now / 86400 && c.attempts >= 2))
+    {
+        return Err("Cached explanation available".into());
+    }
+    BUSY.with(|b| b.set(true));
+    let model = Principal::from_text("myit3-yyaaa-aaaap-qu75a-cai").unwrap();
+    let result = async {
+        CACHE.with_borrow_mut(|c| c.retry_after = now + 300);
+        if !has_headroom(model).await? {
+            CACHE.with_borrow_mut(|c| c.retry_after = now + 1800);
+            return Err("Model reserve protected".into());
+        }
+        CACHE.with_borrow_mut(|c| {
+            if c.day != now / 86400 {
+                c.day = now / 86400;
+                c.attempts = 0;
+            }
+            c.attempts += 1;
+        });
+        let line = generate_public(&states, model, now).await?;
+        CACHE.with_borrow_mut(|c| {
+            c.notes.insert(states, line.clone());
+        });
+        Ok(line)
+    }
+    .await;
+    BUSY.with(|b| b.set(false));
+    result
+}
+
+#[derive(CandidType, Deserialize)]
+pub struct SummaryState {
+    note: Option<String>,
+    can_generate: bool,
+}
+
+#[ic_cdk::query]
+fn summary_state(states: Vec<u8>) -> SummaryState {
+    if !valid_profile(&states) {
+        return SummaryState {
+            note: None,
+            can_generate: false,
+        };
+    }
+    let now = ic_cdk::api::time() / 1_000_000_000;
+    CACHE.with_borrow(|c| SummaryState {
+        note: c.notes.get(&states).cloned(),
+        can_generate: !c.notes.contains_key(&states)
+            && !BUSY.with(|b| b.get())
+            && now >= c.retry_after
+            && (c.day != now / 86400 || c.attempts < 2),
+    })
+}
+#[cfg(test)]
+mod coverage_tests {
+    use super::*;
+    #[test]
+    fn all_profiles_produce_supported_claims() {
+        assert!(!valid_profile(&[0, 1, 2]));
+        assert!(!valid_profile(&[3, 0, 0, 0, 0, 0]));
+        for mut n in 0u16..729 {
+            let mut states = [0; 6];
+            for state in &mut states {
+                *state = (n % 3) as u8;
+                n /= 3;
+            }
+            assert!(valid_profile(&states));
+            let (line, _) = grounded_lines(&states);
+            if states.contains(&1) {
+                assert!(line.contains(" reproduced.") && !line.contains("not reproduced"))
+            } else if states.contains(&0) {
+                assert!(line.contains("not reproduced"))
+            } else {
+                assert_eq!(line, "All six checks remain untested.")
+            }
+        }
+    }
+}

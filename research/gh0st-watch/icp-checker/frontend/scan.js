@@ -15,12 +15,12 @@ function makeIdl({IDL:I}) {
   const P=I.Record({bytes:I.Nat32,hash:I.Text,selectors:I.Vec(I.Text),...Object.fromEntries(Object.keys(opc).map(k=>[k,I.Nat32]))});
   const rule=I.Variant({Mint:I.Record({balance_of:I.Bool}),Authorization:I.Null,Withdraw:I.Record({takes_amount:I.Bool}),Replay:I.Null,TokenReturn:I.Record({credit_slot:I.Opt(I.Nat64)}),Underflow:I.Null});
   const result=I.Record({reproduced:I.Bool,observed:I.Vec(I.Tuple(I.Text,I.Text))});
-  return I.Service({inspect_runtime:I.Func([I.Vec(I.Nat8)],[I.Variant({Ok:P,Err:I.Text})],['query']),check_contract:I.Func([rule,I.Text],[I.Variant({Ok:result,Err:I.Text})],['query'])});
+  return I.Service({summary_state:I.Func([I.Vec(I.Nat8)],[I.Record({note:I.Opt(I.Text),can_generate:I.Bool})],['query']),cached_summary:I.Func([I.Vec(I.Nat8)],[I.Opt(I.Text)],['query']),explain_scan:I.Func([I.Vec(I.Nat8)],[I.Variant({Ok:I.Text,Err:I.Text})],[]),inspect_runtime:I.Func([I.Vec(I.Nat8)],[I.Variant({Ok:P,Err:I.Text})],['query']),check_contract:I.Func([rule,I.Text],[I.Variant({Ok:result,Err:I.Text})],['query'])});
 }
 let actor;
 async function checker(){if(!actor)actor=Actor.createActor(makeIdl,{agent:await HttpAgent.create({host:'https://icp-api.io'}),canisterId:CANISTER});return actor;}
 const limit=(ms)=>AbortSignal.timeout(ms);
-async function rpc(net,method,params){
+export async function rpc(net,method,params){
   const r=await fetch(net.rpc,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({jsonrpc:'2.0',id:1,method,params}),signal:limit(12000)});
   if(!r.ok)throw Error('Robinhood RPC returned HTTP '+r.status);
   const b=await r.json();if(b.error||b.result==null)throw Error(b.error?.message||'Missing RPC result');return b.result;
@@ -143,6 +143,16 @@ export async function scan(network,raw,progress=()=>{}){
   const overview=await overviewTask;
   const confirm=await rpc(net,'eth_getBlockByNumber',[height,false]);
   if(confirm.hash!==block.hash)throw Error('Robinhood Chain reorganized during this scan. Run it again.');
-  return {address,network,overview,block:Number(height),blockHash:block.hash,hash:target.profile.hash,size:target.profile.bytes,verified,name:m?.name||'',proxy,proxyError,logicHash:logic.profile.hash,
+  const erc20=['totalSupply()','balanceOf(address)','allowance(address,address)','transfer(address,uint256)','transferFrom(address,address,uint256)','approve(address,uint256)'].every(has);
+  return {address,network,erc20,overview,block:Number(height),blockHash:block.hash,hash:target.profile.hash,size:target.profile.bytes,verified,name:m?.name||'',proxy,proxyError,logicHash:logic.profile.hash,
     indicators:Object.entries(opc).map(([key,label])=>({label,count:logic.profile[key]})),rules:rows,explorer:net.explorer};
+}
+
+export async function qwenSummary(r){
+  const states=Uint8Array.from(r.rules.map(x=>({'Not reproduced':0,Reproduced:1,Untested:2})[x.status]));
+  const client=await checker();const state=await client.summary_state(states);const existing=state.note;
+  if(existing.length)return {text:existing[0],source:'ICP · previously generated for these outcomes'};
+  if(!state.can_generate)return null;
+  const response=await client.explain_scan(states);
+  return response.Ok?{text:response.Ok,source:'ICP · generated for these outcomes'}:null;
 }

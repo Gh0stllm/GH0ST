@@ -38,8 +38,13 @@ fn setup() {
 fn init() {
     setup();
 }
+#[ic_cdk::pre_upgrade]
+fn before_upgrade() {
+    crate::interpretation::save_cache();
+}
 #[ic_cdk::post_upgrade]
 fn upgraded() {
+    crate::interpretation::restore_cache();
     setup();
 }
 #[ic_cdk::query]

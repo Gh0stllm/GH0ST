@@ -1,0 +1,26 @@
+{
+  "mint": [
+    "The account did not gain the seven units targeted by the mint test.",
+    "The caller created tokens for itself. Compare this behavior with the token's mint policy."
+  ],
+  "underflow": [
+    "The zero-balance caller did not gain tokens through the tested arithmetic wrap.",
+    "The burn changed zero into the maximum unsigned balance, giving the tester a large recorded balance."
+  ],
+  "withdraw": [
+    "The test did not demonstrate an extra payout from withdrawing again during the first withdrawal.",
+    "The tester received more than it deposited after entering the withdrawal again."
+  ],
+  "authorization": [
+    "The tested payment path did not demonstrate the intermediary receiving authority from the original caller.",
+    "The intermediary could direct a payment when called by the owner. Check the authorization predicate."
+  ],
+  "replay": [
+    "The repeated signature did not reproduce another credit in this test.",
+    "The account gained points a second time from an identical signature."
+  ],
+  "token": [
+    "The test did not demonstrate an unbacked credit after a failed token transfer.",
+    "The deposit credited the caller even though the token moved nothing."
+  ]
+}
