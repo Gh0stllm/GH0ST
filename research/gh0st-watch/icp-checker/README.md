@@ -15,7 +15,7 @@ Select **check_contract** and choose a recipe. Use the constructor-free fixture 
 
 Results describe the selected call path and test state. Contracts with different ABIs, proxy wiring, role setup or signature domains require adapted recipes. A negative result covers only the executed input.
 
-[Open the temporary ICP preview](https://a4gq6-oaaaa-aaaab-qaa4q-cai.raw.icp0.io/?id=6cajv-qqaaa-aaaab-qactq-cai). Select **Query** under **demo**. The hosted playground can recycle this canister ID when its reservation expires. The recorded 3 November 2026 run is in [preview-result.json](preview-result.json).
+[Open the dedicated checker on ICP mainnet](https://a4gq6-oaaaa-aaaab-qaa4q-cai.raw.icp0.io/?id=ggcey-baaaa-aaaao-bbsgq-cai). Select **Query** under **demo** for the mint pair or **check_contract** for a selected rule. All 25 cases were rerun against this dedicated canister. [Dedicated checker results](mainnet-suite-results.json).
 
 | ICP demo | Ordinary mint | Ordinary balance | Deployer control |
 |---|---|---|---|
@@ -24,7 +24,7 @@ Results describe the selected call path and test state. Contracts with different
 
 To check compatible code, open **check_mint**, paste hexadecimal EVM creation bytecode into the first field and choose the balance getter with the second field. Use true for `balanceOf(address)` or false for `balance(address)`. The target must expose `mint(address,uint256)`. Constructor arguments, if required, must already be ABI-encoded after the creation bytecode. The simulation uses Shanghai rules, an isolated empty chain, zero deployment value, a 12 KiB input limit and an 800,000 EVM gas limit per simulated transaction. The two [open](open.hex) and [protected](protected.hex) examples use the false setting.
 
-The reported balances come from the contract's getter. Interpret a successful mint against the protocol's intended mint policy. A reverted call describes that account and input. Missing getters, failed deployments and unsuccessful deployer controls produce an error. Public checks return simulation evidence. An optional controller-only update called interpret accepts a rule, creation bytecode and the dedicated Qwen canister principal. It reruns the test on ICP and sends only the resulting observations to the model. The result preserves both the execution evidence and whether the one-token answer agreed, abstained or failed validation. This preview has no funded Qwen backend. See [full deployment budget](FULL-DEPLOYMENT.md).
+The reported balances come from the contract's getter. Interpret a successful mint against the protocol's intended mint policy. A reverted call describes that account and input. Missing getters, failed deployments and unsuccessful deployer controls produce an error. Public checks return simulation evidence. An optional controller-only update called interpret accepts a rule, creation bytecode and the dedicated Qwen canister principal. It reruns the test on ICP and sends only the resulting observations to the model. The result preserves both the execution evidence and whether the one-token answer agreed, abstained or failed validation. The dedicated Qwen backend is myit3-yyaaa-aaaap-qu75a-cai. Deployment progress is recorded in [mainnet status](MAINNET.md). See [full deployment budget](FULL-DEPLOYMENT.md).
 
 ## Build and verify
 

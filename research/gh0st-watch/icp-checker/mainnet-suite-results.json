@@ -1,0 +1,655 @@
+{
+  "network": "ICP mainnet dedicated",
+  "canister": "ggcey-baaaa-aaaao-bbsgq-cai",
+  "checked_at_utc": "2026-11-03T04:28:31Z",
+  "rows": [
+    {
+      "case": "withdraw_vulnerable",
+      "rule": "withdraw",
+      "expected": true,
+      "result": {
+        "Ok": {
+          "observed": [
+            {
+              "0": "deposit_wei",
+              "1": "7"
+            },
+            {
+              "0": "received_wei",
+              "1": "14"
+            }
+          ],
+          "reproduced": true
+        }
+      }
+    },
+    {
+      "case": "withdraw_fixed",
+      "rule": "withdraw",
+      "expected": false,
+      "result": {
+        "Ok": {
+          "observed": [
+            {
+              "0": "deposit_wei",
+              "1": "7"
+            },
+            {
+              "0": "received_wei",
+              "1": "7"
+            }
+          ],
+          "reproduced": false
+        }
+      }
+    },
+    {
+      "case": "authorization_vulnerable",
+      "rule": "authorization",
+      "expected": true,
+      "result": {
+        "Ok": {
+          "observed": [
+            {
+              "0": "indirect_success",
+              "1": "true"
+            },
+            {
+              "0": "recipient_before",
+              "1": "1"
+            },
+            {
+              "0": "recipient_after",
+              "1": "8"
+            }
+          ],
+          "reproduced": true
+        }
+      }
+    },
+    {
+      "case": "authorization_fixed",
+      "rule": "authorization",
+      "expected": false,
+      "result": {
+        "Ok": {
+          "observed": [
+            {
+              "0": "indirect_success",
+              "1": "false"
+            },
+            {
+              "0": "recipient_before",
+              "1": "1"
+            },
+            {
+              "0": "recipient_after",
+              "1": "1"
+            }
+          ],
+          "reproduced": false
+        }
+      }
+    },
+    {
+      "case": "mint_vulnerable",
+      "rule": "mint",
+      "expected": true,
+      "result": {
+        "Ok": {
+          "observed": [
+            {
+              "0": "ordinary_receipt",
+              "1": "succeeded"
+            },
+            {
+              "0": "before",
+              "1": "0"
+            },
+            {
+              "0": "after",
+              "1": "7"
+            },
+            {
+              "0": "control_before",
+              "1": "0"
+            },
+            {
+              "0": "control_after",
+              "1": "7"
+            }
+          ],
+          "reproduced": true
+        }
+      }
+    },
+    {
+      "case": "mint_fixed",
+      "rule": "mint",
+      "expected": false,
+      "result": {
+        "Ok": {
+          "observed": [
+            {
+              "0": "ordinary_receipt",
+              "1": "reverted"
+            },
+            {
+              "0": "before",
+              "1": "0"
+            },
+            {
+              "0": "after",
+              "1": "0"
+            },
+            {
+              "0": "control_before",
+              "1": "0"
+            },
+            {
+              "0": "control_after",
+              "1": "7"
+            }
+          ],
+          "reproduced": false
+        }
+      }
+    },
+    {
+      "case": "replay_vulnerable",
+      "rule": "replay",
+      "expected": true,
+      "result": {
+        "Ok": {
+          "observed": [
+            {
+              "0": "first_points",
+              "1": "100"
+            },
+            {
+              "0": "same_signature_success",
+              "1": "true"
+            },
+            {
+              "0": "final_points",
+              "1": "200"
+            }
+          ],
+          "reproduced": true
+        }
+      }
+    },
+    {
+      "case": "replay_fixed",
+      "rule": "replay",
+      "expected": false,
+      "result": {
+        "Ok": {
+          "observed": [
+            {
+              "0": "first_points",
+              "1": "100"
+            },
+            {
+              "0": "same_signature_success",
+              "1": "false"
+            },
+            {
+              "0": "final_points",
+              "1": "100"
+            }
+          ],
+          "reproduced": false
+        }
+      }
+    },
+    {
+      "case": "token_return_vulnerable",
+      "rule": "token_return",
+      "expected": true,
+      "result": {
+        "Ok": {
+          "observed": [
+            {
+              "0": "deposit_success",
+              "1": "true"
+            },
+            {
+              "0": "credit_before",
+              "1": "0"
+            },
+            {
+              "0": "credit_after",
+              "1": "7"
+            },
+            {
+              "0": "tokens_moved",
+              "1": "0"
+            }
+          ],
+          "reproduced": true
+        }
+      }
+    },
+    {
+      "case": "token_return_fixed",
+      "rule": "token_return",
+      "expected": false,
+      "result": {
+        "Ok": {
+          "observed": [
+            {
+              "0": "deposit_success",
+              "1": "false"
+            },
+            {
+              "0": "credit_before",
+              "1": "0"
+            },
+            {
+              "0": "credit_after",
+              "1": "0"
+            },
+            {
+              "0": "tokens_moved",
+              "1": "0"
+            }
+          ],
+          "reproduced": false
+        }
+      }
+    },
+    {
+      "case": "underflow_vulnerable",
+      "rule": "underflow",
+      "expected": true,
+      "result": {
+        "Ok": {
+          "observed": [
+            {
+              "0": "burn_success",
+              "1": "true"
+            },
+            {
+              "0": "before",
+              "1": "0"
+            },
+            {
+              "0": "after",
+              "1": "115792089237316195423570985008687907853269984665640564039457584007913129639935"
+            }
+          ],
+          "reproduced": true
+        }
+      }
+    },
+    {
+      "case": "underflow_fixed",
+      "rule": "underflow",
+      "expected": false,
+      "result": {
+        "Ok": {
+          "observed": [
+            {
+              "0": "burn_success",
+              "1": "false"
+            },
+            {
+              "0": "before",
+              "1": "0"
+            },
+            {
+              "0": "after",
+              "1": "0"
+            }
+          ],
+          "reproduced": false
+        }
+      }
+    },
+    {
+      "case": "comment_injection",
+      "rule": "mint",
+      "expected": true,
+      "result": {
+        "Ok": {
+          "observed": [
+            {
+              "0": "ordinary_receipt",
+              "1": "succeeded"
+            },
+            {
+              "0": "before",
+              "1": "0"
+            },
+            {
+              "0": "after",
+              "1": "7"
+            },
+            {
+              "0": "control_before",
+              "1": "0"
+            },
+            {
+              "0": "control_after",
+              "1": "7"
+            }
+          ],
+          "reproduced": true
+        }
+      }
+    },
+    {
+      "case": "mint_role_guard",
+      "rule": "mint",
+      "expected": false,
+      "result": {
+        "Ok": {
+          "observed": [
+            {
+              "0": "ordinary_receipt",
+              "1": "reverted"
+            },
+            {
+              "0": "before",
+              "1": "0"
+            },
+            {
+              "0": "after",
+              "1": "0"
+            },
+            {
+              "0": "control_before",
+              "1": "0"
+            },
+            {
+              "0": "control_after",
+              "1": "7"
+            }
+          ],
+          "reproduced": false
+        }
+      }
+    },
+    {
+      "case": "mint_modifier_guard",
+      "rule": "mint",
+      "expected": false,
+      "result": {
+        "Ok": {
+          "observed": [
+            {
+              "0": "ordinary_receipt",
+              "1": "reverted"
+            },
+            {
+              "0": "before",
+              "1": "0"
+            },
+            {
+              "0": "after",
+              "1": "0"
+            },
+            {
+              "0": "control_before",
+              "1": "0"
+            },
+            {
+              "0": "control_after",
+              "1": "7"
+            }
+          ],
+          "reproduced": false
+        }
+      }
+    },
+    {
+      "case": "mint_wrong_subject",
+      "rule": "mint",
+      "expected": true,
+      "result": {
+        "Ok": {
+          "observed": [
+            {
+              "0": "ordinary_receipt",
+              "1": "succeeded"
+            },
+            {
+              "0": "before",
+              "1": "0"
+            },
+            {
+              "0": "after",
+              "1": "7"
+            },
+            {
+              "0": "control_before",
+              "1": "0"
+            },
+            {
+              "0": "control_after",
+              "1": "7"
+            }
+          ],
+          "reproduced": true
+        }
+      }
+    },
+    {
+      "case": "origin_logging_only",
+      "rule": "authorization",
+      "expected": false,
+      "result": {
+        "Ok": {
+          "observed": [
+            {
+              "0": "indirect_success",
+              "1": "false"
+            },
+            {
+              "0": "recipient_before",
+              "1": "1"
+            },
+            {
+              "0": "recipient_after",
+              "1": "1"
+            }
+          ],
+          "reproduced": false
+        }
+      }
+    },
+    {
+      "case": "origin_helper",
+      "rule": "authorization",
+      "expected": true,
+      "result": {
+        "Ok": {
+          "observed": [
+            {
+              "0": "indirect_success",
+              "1": "true"
+            },
+            {
+              "0": "recipient_before",
+              "1": "1"
+            },
+            {
+              "0": "recipient_after",
+              "1": "8"
+            }
+          ],
+          "reproduced": true
+        }
+      }
+    },
+    {
+      "case": "subtract_guarded_unchecked",
+      "rule": "underflow",
+      "expected": false,
+      "result": {
+        "Ok": {
+          "observed": [
+            {
+              "0": "burn_success",
+              "1": "false"
+            },
+            {
+              "0": "before",
+              "1": "0"
+            },
+            {
+              "0": "after",
+              "1": "0"
+            }
+          ],
+          "reproduced": false
+        }
+      }
+    },
+    {
+      "case": "unchecked_loop_only",
+      "rule": "underflow",
+      "expected": false,
+      "result": {
+        "Ok": {
+          "observed": [
+            {
+              "0": "burn_success",
+              "1": "false"
+            },
+            {
+              "0": "before",
+              "1": "0"
+            },
+            {
+              "0": "after",
+              "1": "0"
+            }
+          ],
+          "reproduced": false
+        }
+      }
+    },
+    {
+      "case": "subtract_wrong_guard",
+      "rule": "underflow",
+      "expected": true,
+      "result": {
+        "Ok": {
+          "observed": [
+            {
+              "0": "burn_success",
+              "1": "true"
+            },
+            {
+              "0": "before",
+              "1": "0"
+            },
+            {
+              "0": "after",
+              "1": "115792089237316195423570985008687907853269984665640564039457584007913129639935"
+            }
+          ],
+          "reproduced": true
+        }
+      }
+    },
+    {
+      "case": "withdraw_partial_accounting",
+      "rule": "withdraw",
+      "expected": false,
+      "result": {
+        "Ok": {
+          "observed": [
+            {
+              "0": "deposit_wei",
+              "1": "7"
+            },
+            {
+              "0": "received_wei",
+              "1": "7"
+            }
+          ],
+          "reproduced": false
+        }
+      }
+    },
+    {
+      "case": "withdraw_late_debit",
+      "rule": "withdraw",
+      "expected": true,
+      "result": {
+        "Ok": {
+          "observed": [
+            {
+              "0": "deposit_wei",
+              "1": "7"
+            },
+            {
+              "0": "received_wei",
+              "1": "14"
+            }
+          ],
+          "reproduced": true
+        }
+      }
+    },
+    {
+      "case": "token_checked_local",
+      "rule": "token_return",
+      "expected": false,
+      "result": {
+        "Ok": {
+          "observed": [
+            {
+              "0": "deposit_success",
+              "1": "false"
+            },
+            {
+              "0": "credit_before",
+              "1": "0"
+            },
+            {
+              "0": "credit_after",
+              "1": "0"
+            },
+            {
+              "0": "tokens_moved",
+              "1": "0"
+            }
+          ],
+          "reproduced": false
+        }
+      }
+    },
+    {
+      "case": "token_ignored_local",
+      "rule": "token_return",
+      "expected": true,
+      "result": {
+        "Ok": {
+          "observed": [
+            {
+              "0": "deposit_success",
+              "1": "true"
+            },
+            {
+              "0": "credit_before",
+              "1": "0"
+            },
+            {
+              "0": "credit_after",
+              "1": "7"
+            },
+            {
+              "0": "tokens_moved",
+              "1": "0"
+            }
+          ],
+          "reproduced": true
+        }
+      }
+    }
+  ]
+}
