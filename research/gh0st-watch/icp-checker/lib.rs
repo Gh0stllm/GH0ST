@@ -1,5 +1,8 @@
 mod interpretation;
 mod scanner;
+mod spawn;
+use spawn::{SpawnActivity, SpawnConfig, SpawnProject};
+use ic_management_canister_types::{TransformArgs, HttpRequestResult};
 mod suite;
 mod web;
 use candid::Principal;

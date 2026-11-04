@@ -143,6 +143,7 @@ async fn interpret(
 // prompt, canister, output length or file path. Cached notes concern a pattern, not an address.
 #[derive(CandidType, Deserialize, Default)]
 struct PublicCache {
+    spawn_v1: Option<Vec<u8>>,
     notes: std::collections::BTreeMap<Vec<u8>, String>,
     retry_after: u64,
 }
@@ -151,12 +152,17 @@ thread_local! {
     static BUSY:std::cell::Cell<bool>=const{std::cell::Cell::new(false)};
 }
 pub fn save_cache() {
-    CACHE.with_borrow(|c| ic_cdk::storage::stable_save((c,)).expect("save coverage cache"));
+    CACHE.with_borrow_mut(|c| {
+        c.spawn_v1 = Some(crate::spawn::snapshot());
+        ic_cdk::storage::stable_save((&*c,)).expect("save coverage and Spawn state");
+        c.spawn_v1 = None;
+    });
 }
 pub fn restore_cache() {
     if ic_cdk::api::stable_size() > 0 {
-        let (old,): (PublicCache,) =
+        let (mut old,): (PublicCache,) =
             ic_cdk::storage::stable_restore().expect("restore coverage cache");
+        crate::spawn::restore(old.spawn_v1.take());
         CACHE.with_borrow_mut(|c| *c = old)
     }
 }
@@ -383,6 +389,29 @@ mod coverage_tests {
             "Underflow: not reproduced; 5 untested."
         );
         assert_eq!(restored.retry_after, 100);
+    }
+    #[test]
+    fn current_production_cache_migrates_and_spawn_roundtrips() {
+        #[derive(CandidType)]
+        struct Published {
+            notes: std::collections::BTreeMap<Vec<u8>, String>,
+            retry_after: u64,
+        }
+        let current = Published {
+            notes: [(vec![2; 6], "All six checks remain untested.".to_owned())].into(),
+            retry_after: 4242,
+        };
+        let bytes = candid::encode_args((current,)).unwrap();
+        let (mut migrated,): (PublicCache,) = candid::decode_args(&bytes).unwrap();
+        assert!(migrated.spawn_v1.is_none());
+        crate::spawn::restore(migrated.spawn_v1.take());
+        migrated.spawn_v1 = Some(crate::spawn::snapshot());
+        let bytes = candid::encode_args((&migrated,)).unwrap();
+        let (mut after,): (PublicCache,) = candid::decode_args(&bytes).unwrap();
+        assert_eq!(after.notes[&vec![2; 6]], "All six checks remain untested.");
+        assert_eq!(after.retry_after, 4242);
+        crate::spawn::restore(Some(after.spawn_v1.take().unwrap()));
+        assert_eq!(crate::spawn::snapshot(), migrated.spawn_v1.unwrap());
     }
     #[test]
     fn all_profiles_produce_supported_claims() {

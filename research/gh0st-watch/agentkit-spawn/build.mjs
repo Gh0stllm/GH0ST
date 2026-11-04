@@ -1,0 +1,11 @@
+import {createRequire} from 'node:module';
+import {fileURLToPath} from 'node:url';
+import path from 'node:path';
+import {mkdir,copyFile} from 'node:fs/promises';
+const here=path.dirname(fileURLToPath(import.meta.url));
+const modules=path.resolve(here,'../icp-checker/frontend/node_modules');
+const require=createRequire(path.join(modules,'../package.json'));
+const {build}=require('esbuild');
+await mkdir(path.join(here,'dist'),{recursive:true});
+await build({entryPoints:[path.join(here,'app.js')],outfile:path.join(here,'dist/spawn.js'),format:'esm',bundle:true,minify:true,legalComments:'none',target:'es2022',nodePaths:[modules]});
+await Promise.all(['index.html','spawn.css','signal.svg'].map(file=>copyFile(path.join(here,file),path.join(here,'dist',file))));

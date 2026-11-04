@@ -60,3 +60,11 @@ The playground reservation is temporary. A persistent deployment needs a dedicat
 ## Netlify frontend
 
 The Observatory is served at [gh0st.fyi/watcher](https://gh0st.fyi/watcher). The Netlify and ICP frontends use the same public scan service at `https://gh0st.fyi/.netlify/functions/watcher-scans`. The function runs the checks using Robinhood Chain and the dedicated ICP checker. It saves the resulting evidence in Netlify Blobs. Clients submit only a network and contract address. To prepare the static directory, run `npm ci`, `npm run build`, then `node export-watcher.mjs /path/to/publish/watcher` from `frontend/`. Add the resulting directory to the existing GH0ST site deployment. Package `frontend/shared-api.mjs` as a Node function named `watcher-scans` with `buildSharedWorker` from `frontend/shared-worker-build.mjs`. The site-wide production store persists across releases. The watchlist and Time Machine observations remain scoped to the browser and site origin.
+
+## Spawn a project GH0ST
+
+[Spawn a GH0ST](https://gh0st.fyi/agentkit/spawn/) creates a public AgentKit profile on this existing Watch checker. Each agent has its own owner principal, personality, list of one to four Robinhood mainnet contracts and approved tools. The owner can edit the profile or run its tools. Visitors can open its public URL and read its latest eight activities.
+
+A run reads one previously saved Watcher report and records the selected contract checks, deployment history or test coverage. It records the source block and scan time when available. If the contract has no shared report yet, open its Watcher link and run a scan first. Runs are owner-triggered. Personality changes how stored evidence is presented.
+
+The daily spending ceiling is in whole GH0ST. The three available tools cost the project zero tokens, including when the ceiling is zero. The checker pays for a bounded HTTPS read from its existing cycle balance. An agent has no wallet allowance, paid inference or transfer tool. The owner can export an encrypted backup from **Manage your agents and backups** to manage the same profile from another browser.
