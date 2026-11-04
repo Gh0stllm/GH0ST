@@ -43,3 +43,5 @@ python3 -m unittest -q
 The original candle response is identified by SHA-256 `89b1fef53277e8b3e4bc24d1bd9ad27690fc5e157859e94025a63f94ab51c76b`. Provider backfills may change a later download. The contract calls verify the pinned pool key, code hashes and historical block headers. The hourly pool series is available from [GeckoTerminal](https://api.geckoterminal.com/api/v2/networks/robinhood/pools/0x42ce003822cbaa9eb94e9e07ef8d988e5a998ded86b189fd4f3e25b68f001d01/ohlcv/hour?aggregate=1&limit=240&currency=usd&token=base&before_timestamp=1793775600). The quote method is documented by [Uniswap](https://developers.uniswap.org/docs/sdks/v4/guides/swapping/quoting).
 
 The same rule was subsequently tested on [the Robinhood Chain Watcher universe](watcher-2026-11-04/README.md).
+
+A [fixed dip-recovery alternative](watcher-dip-recovery-2026-11-04/README.md) was compared against the breakout on the same Watcher pools and a later five-hour interval.
