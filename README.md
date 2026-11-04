@@ -6,6 +6,14 @@ Research into language models and agents with model weights, inference and execu
 
 [Provenance and verification](docs/PROVENANCE.md) · [Research index](docs/RESEARCH.md) · [Repository map](docs/REPOSITORY-MAP.md) · [Recovery record](docs/recovery/RECOVERY.md) · [Website](website/) · [Contributing](CONTRIBUTING.md)
 
+## Protocol roadmap
+
+![GH0ST roadmap with completed foundations and eight planned protocols](research/gh0st-watch/protocol-roadmap/assets/gh0st-protocol-roadmap.png)
+
+[Open the roadmap](https://gh0st.fyi/roadmap/) · [Upcoming protocols infographic](research/gh0st-watch/protocol-roadmap/assets/gh0st-upcoming-protocols.png) · [Separate logos, page source and build instructions](research/gh0st-watch/protocol-roadmap/README.md)
+
+Dead Drop, Bounties, Memory, Jury, Intent Escrow, Passport, Experiments and Worlds are planned protocol modules. The completed checklist records capabilities verified on 4 November 2026.
+
 ## Project status and repository history
 
 **Early-stage, single-maintainer research.** Public source and execution records are available; broad adoption and an independent security audit are not established by this repository.
