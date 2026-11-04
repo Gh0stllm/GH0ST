@@ -18,6 +18,7 @@ const BLOCKSCOUT='https://robinhoodchain.blockscout.com/api';
 const POOL='0x42ce003822cbaa9eb94e9e07ef8d988e5a998ded86b189fd4f3e25b68f001d01';
 const KEY=['0x0000000000000000000000000000000000000000','0x2eb2849cde7957b86d0dfd4b59e450a9f9d15559',0,200,'0xe5e702641ea86f4ae6cc3cdaed2b886f976be044'];
 const MANAGER='0x8366a39cc670b4001a1121b8f6a443a643e40951';
+const MANAGER_HASH='0xbd3881180b547f5fe817545743cfb4343e96b1bc6640dcd70c106b0066e95626';
 const QUOTER='0x8dc178efb8111bb0973dd9d722ebeff267c98f94';
 const QUOTER_HASH='0xd707b1da8cb165e5ea35a3b4450d971eb562ec171e23492aa117036b78a868f6';
 const HOOK_HASH='0xc21b1e6c1b45403e81a581f22ed6d9c747997af1cfdac1b1dc9f4b1d346a10db';
@@ -26,6 +27,7 @@ if(keccak256(AbiCoder.defaultAbiCoder().encode([keyType],[KEY]))!==POOL)throw Er
 const iface=new Interface([
   'function quoteExactInputSingle(('+keyType+',bool,uint128,bytes)) returns (uint256,uint256)',
   'function poolManager() view returns (address)',
+  'function poolKeys(bytes25) view returns (address,address,uint24,int24,address)',
   'function launches(bytes32) view returns (bool registered,bool memecoinIsCurrency0,address memecoin,address quoteToken,address creator,address buybackCreatorRecipient,address protocolFeeRecipient,uint16 creatorTaxBps,uint16 protocolFeeShareBps,uint16 buybackBurnBps,uint16 hookFeeBps,uint16 maxInternalPriceImpactBps,bool buybackEnabled)',
 ]);
 const inputWei=5_000_000_000_000_000n, gasUnits=200_000n;
@@ -48,7 +50,7 @@ function normalizedBlock(b){
   if(!Number.isSafeInteger(h)||!Number.isSafeInteger(ts)||!/^0x[\da-f]{64}$/i.test(b.hash))throw Error('Invalid RH block header');
   return {number:h,time:ts,hash:b.hash,baseFeeWei:b.baseFeePerGas==null?null:BigInt(b.baseFeePerGas).toString()};
 }
-async function historicReader(){
+async function historicalMarket(){
   if(Number(await rpc(RH,'eth_chainId',[]))!==4663)throw Error('Unexpected RH header chain');
   const providers=[];
   for(const url of [ARCHIVE,RH]){
@@ -98,26 +100,30 @@ async function historicReader(){
     const raw=await rpc(url,'eth_call',[{to,data:iface.encodeFunctionData(fn,args),gas:'0x1c9c380'},hex(b.number)]);
     return iface.decodeFunctionResult(fn,raw);
   }
-  async function pinned(url,b){
-    const key=url+'/'+b.hash;
-    if(metadata.has(key))return metadata.get(key);
-    const [code,hook,manager,launch]=await Promise.all([
-      rpc(url,'eth_getCode',[QUOTER,hex(b.number)]),rpc(url,'eth_getCode',[KEY[4],hex(b.number)]),
-      call(url,b,QUOTER,'poolManager',[]),call(url,b,KEY[4],'launches',[POOL])]);
-    if(keccak256(code)!==QUOTER_HASH||keccak256(hook)!==HOOK_HASH||manager[0].toLowerCase()!==MANAGER||
-       !launch.registered||launch.memecoinIsCurrency0||launch.memecoin.toLowerCase()!==KEY[1]||launch.quoteToken.toLowerCase()!==KEY[0])
+  async function pinned(url,b,route){
+    const pin=url+'/'+b.hash;
+    if(!metadata.has(pin)){
+      const [code,managerCode,manager]=await Promise.all([
+        rpc(url,'eth_getCode',[QUOTER,hex(b.number)]),rpc(url,'eth_getCode',[MANAGER,hex(b.number)]),call(url,b,QUOTER,'poolManager',[])]);
+      if(keccak256(code)!==QUOTER_HASH||keccak256(managerCode)!==MANAGER_HASH||manager[0].toLowerCase()!==MANAGER)
+        throw Error('Historical manager or quoter does not match pinned RH Uniswap v4 deployment.');
+      metadata.set(pin,true);
+    }
+    if(route.poolId!==POOL)return {};
+    const [hook,launch]=await Promise.all([
+      rpc(url,'eth_getCode',[KEY[4],hex(b.number)]),call(url,b,KEY[4],'launches',[POOL])]);
+    if(keccak256(hook)!==HOOK_HASH||!launch.registered||launch.memecoinIsCurrency0||launch.memecoin.toLowerCase()!==KEY[1]||launch.quoteToken.toLowerCase()!==KEY[0])
       throw Error('Historical Pons contract or pool registration does not match pinned route.');
-    const rates={hookFeeBps:Number(launch.hookFeeBps),creatorTaxBps:Number(launch.creatorTaxBps)};
-    metadata.set(key,rates);return rates;
+    return {hookFeeBps:Number(launch.hookFeeBps),creatorTaxBps:Number(launch.creatorTaxBps)};
   }
-  async function quote(b,buy,amount){
+  async function quote(b,buy,amount,route){
     if(amount<=0n||amount>=1n<<128n)throw Error('Quoted input is outside uint128 range.');
     let reasons=[];
     for(const url of providers){
       try{
-        const rates=await pinned(url,b);
-        const [output,quotedGas]=await call(url,b,QUOTER,'quoteExactInputSingle',[[KEY,buy,amount,'0x']]);
-        if(output<=0n)throw Error('Pons quoter returned no output.');
+        const rates=await pinned(url,b,route);
+        const [output,quotedGas]=await call(url,b,QUOTER,'quoteExactInputSingle',[[route.key,buy,amount,'0x']]);
+        if(output<=0n)throw Error('The v4 quoter returned no output.');
         const end=normalizedBlock(await rpc(url,'eth_getBlockByNumber',[hex(b.number),false]));
         if(end.hash!==b.hash||end.time!==b.time||end.baseFeeWei!==b.baseFeeWei)throw Error('Historical block mismatch between providers.');
         return {block:b.number,blockHash:b.hash,blockTime:b.time,stateRpc:url,input:amount.toString(),output:output.toString(),quoterGasUnits:quotedGas.toString(),
@@ -126,18 +132,27 @@ async function historicReader(){
     }
     throw Error('Historical quote unavailable. '+reasons.join(' / '));
   }
-  return async ({entry,exit,kind})=>{
+  async function roundTrip(route,{entry,exit,kind}){
+    if(route.key[0]!==KEY[0]||keccak256(AbiCoder.defaultAbiCoder().encode([keyType],[route.key]))!==route.poolId)throw Error('Expected a native ETH / token pool with matching ID.');
     if(!Number.isSafeInteger(entry)||!Number.isSafeInteger(exit)||exit<=entry)throw Error('Use increasing UNIX seconds for entry and exit.');
-    const entryBlock=await firstAt(entry),exitBlock=await firstAt(exit);
-    const buy=await quote(entryBlock,true,inputWei);
-    const sell=await quote(exitBlock,false,BigInt(buy.output));
+    const common={entry,exit,kind,poolId:route.poolId,paperStakeWei:inputWei.toString()};
+    let buy,sell;
+    try{buy=await quote(await firstAt(entry),true,inputWei,route);}
+    catch(e){return {...common,status:'entry-unavailable',reason:e.message};}
+    try{sell=await quote(await firstAt(exit),false,BigInt(buy.output),route);}
+    catch(e){return {...common,status:'exit-unavailable',buy,reason:e.message};}
     const beforeGas=BigInt(sell.output)-inputWei;
     const gasWei=buy.estimatedGasWei===null||sell.estimatedGasWei===null?null:BigInt(buy.estimatedGasWei)+BigInt(sell.estimatedGasWei);
-    return {status:'quoted',entry,exit,kind,poolId:POOL,paperStakeWei:inputWei.toString(),buy,sell,pnlBeforeGasWei:beforeGas.toString(),estimatedGasWei:gasWei?.toString()??null,
+    return {...common,status:'quoted',buy,sell,pnlBeforeGasWei:beforeGas.toString(),estimatedGasWei:gasWei?.toString()??null,
       pnlAfterEstimatedGasWei:gasWei===null?null:(beforeGas-gasWei).toString(),model:'Independent block-end exact-input quotes, inclusive of hook effects. Estimated gas assumes 200000 units per leg at block base fee, zero priority fee and existing allowance. No fill, submission or persistent market impact from the paper order.'};
-  };
+  }
+  return {firstAt,header,tip,call,roundTrip};
 }
-export {historicReader};
+async function historicReader(){
+  const market=await historicalMarket();
+  return trade=>market.roundTrip({poolId:POOL,key:KEY},trade);
+}
+export {historicReader,historicalMarket,rpc,normalizedBlock,RH,ARCHIVE,MANAGER,QUOTER,keyType};
 async function main(){
   const argv=process.argv.slice(2),arrayMode=argv[0]==='--file';
   let pairs=[];
@@ -157,6 +172,7 @@ async function main(){
     let record;
     try{if(session.error)throw session.error;record=await session.reader({entry,exit,kind});}
     catch(e){record={status:'unavailable',entry,exit,kind,reason:e.message};process.exitCode=2;}
+    if(record.status!=='quoted')process.exitCode=2;
     if(arrayMode)results.push(record);else console.log(JSON.stringify(record,serial));
   }
   if(arrayMode)console.log(JSON.stringify(results,serial,2));
