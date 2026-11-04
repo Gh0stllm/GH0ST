@@ -48,7 +48,7 @@ def candle_url(pool, start, end):
             f"&token=base&include_empty_intervals=false&before_timestamp={end}")
 
 
-def evaluate(raw, token, start, end):
+def evaluate(raw, token, start, end, build_windows=quote_windows):
     payload = json.loads(raw)
     meta = payload.get("meta", {})
     if str(meta.get("base", {}).get("address", "")).lower() != token.lower():
@@ -59,7 +59,7 @@ def evaluate(raw, token, start, end):
     rows = payload["data"]["attributes"]["ohlcv_list"]
     if not isinstance(rows, list):
         raise ValueError("GeckoTerminal did not return a candle list")
-    result = quote_windows(rows, start, end)
+    result = build_windows(rows, start, end)
     # Observe the holding bar only after the signal has been selected. The two
     # marks are this pool's first/last recorded prices, rather than fill quotes.
     marks = {r[0]: r[1:] for r in rows if start <= r[0] < end}
@@ -125,7 +125,7 @@ def atomic_write(path, data):
     tmp.replace(path)
 
 
-def scan_row(row, end, source):
+def scan_row(row, end, source, *, first_entry=None, build_windows=quote_windows):
     keys = ("name", "address", "network", "pool", "observed", "side", "baseSymbol", "quoteSymbol", "liquidityUsd")
     out = {key: row.get(key) for key in keys}
     out.update(windows=[], flat=0, missing=0, opportunities=0, end=end)
@@ -137,6 +137,10 @@ def scan_row(row, end, source):
         if not ADDRESS.fullmatch(row.get("address") or "") or not POOL.fullmatch(row.get("pool") or ""):
             raise ValueError("Missing or invalid Watcher address or pool identifier")
         start = window_start(row["observed"], end)
+        if first_entry is not None:
+            if type(first_entry) is not int or first_entry % HOUR:
+                raise ValueError("Minimum entry must be an hourly boundary")
+            start = max(start, first_entry)
         out["start"] = start
         if start >= end:
             return dict(out, status="outside_window", reason="No completed holding hour after Watcher observation")
@@ -146,12 +150,23 @@ def scan_row(row, end, source):
         out["candleUrl"] = url
         path, raw = source.read(pool, url)
         out.update(candleFile=path.name, payloadSha256=hashlib.sha256(raw).hexdigest())
-        result = evaluate(raw, row["address"], start, end)
+        result = evaluate(raw, row["address"], start, end, build_windows)
         out.update(result, status="evaluated", reason=None)
         return out
     except (KeyError, IndexError, TypeError, ValueError, OSError) as error:
         out.update(status="unavailable", reason=f"{type(error).__name__}: {error}", missing=out["opportunities"])
         return out
+
+
+def signal_counts(entries):
+    directional = [w["holdingCandleReturnPct"] for r in entries for w in r["windows"]
+                   if w["holdingCandleReturnPct"] is not None]
+    counts = {"assets": len(entries), "eligibleBoundaries":sum(r["opportunities"] for r in entries),
+                        "long":sum(len(r["windows"]) for r in entries), "flat":sum(r["flat"] for r in entries),
+                        "missing":sum(r["missing"] for r in entries)}
+    counts.update(holdingCandlePositive=sum(value > 0 for value in directional),
+                            holdingCandleObserved=len(directional))
+    return counts
 
 
 def main():
@@ -178,13 +193,7 @@ def main():
         atomic_write(args.output_dir / "signals.partial.json", (json.dumps(result, indent=2)+"\n").encode())
         print(f"{out['name']} {out['status']}: {len(out['windows'])} long, {out['flat']} flat, {out['missing']} missing", flush=True)
     result["complete"] = True
-    directional = [w["holdingCandleReturnPct"] for r in result["entries"] for w in r["windows"]
-                   if w["holdingCandleReturnPct"] is not None]
-    result["counts"] = {"assets": len(entries), "eligibleBoundaries":sum(r["opportunities"] for r in result["entries"]),
-                        "long":sum(len(r["windows"]) for r in result["entries"]), "flat":sum(r["flat"] for r in result["entries"]),
-                        "missing":sum(r["missing"] for r in result["entries"])}
-    result["counts"].update(holdingCandlePositive=sum(value > 0 for value in directional),
-                            holdingCandleObserved=len(directional))
+    result["counts"] = signal_counts(result["entries"])
     atomic_write(args.output_dir / "signals.json", (json.dumps(result, indent=2)+"\n").encode())
     (args.output_dir / "signals.partial.json").unlink(missing_ok=True)
     print(json.dumps(result["counts"]))

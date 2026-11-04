@@ -12,7 +12,12 @@ POOL = "0x42ce003822cbaa9eb94e9e07ef8d988e5a998ded86b189fd4f3e25b68f001d01"
 BASE = "https://api.geckoterminal.com/api/v2/networks/robinhood/pools/" + POOL
 
 
-def quote_windows(rows, start, end):
+def breakout(history):
+    _, close, volume = history[-1]
+    return volume >= 1000 and close > max(high for high, _, _ in history[:-1])
+
+
+def quote_windows(rows, start, end, decision=breakout):
     """At boundary t, use only candles whose end is at or before t."""
     by_hour = {}
     for stamp, opening, high, low, close, volume in rows:
@@ -30,8 +35,7 @@ def quote_windows(rows, start, end):
         if None in history:
             missing += 1
             continue
-        _, close, volume = history[-1]
-        if volume >= 1000 and close > max(high for high, _, _ in history[:-1]):
+        if decision(history):
             signals.append({"entry": entry, "exit": entry + HOUR})
         else:
             flat += 1
