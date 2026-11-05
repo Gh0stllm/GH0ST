@@ -1,7 +1,7 @@
 import { createService, BountyError } from './service.js';
 import {
   addressLink, amountInBaseUnits, createRewardWallet, displayAmount, supportsRewards,
-  transactionHash, transactionLink, WalletError, walletAddress,
+  transactionHash, transactionLink, verifySponsorAddress, WalletError, walletAddress,
 } from './wallet.js';
 
 const useFixture = BOUNTIES_FIXTURE && ['127.0.0.1', 'localhost'].includes(location.hostname);
@@ -235,19 +235,35 @@ function prepareReward(bounty) {
   amount.maxLength = 97;
   amount.required = true;
   amountLabel.append(amount);
-  const creator = node('output', 'Sponsor wallet not connected', 'wallet-address');
-  const connect = walletConnection('Connect sponsor wallet', address => { creator.value = address; }, statusId, true);
+  const creatorLabel = node('label', 'Sponsor wallet address');
+  const creator = node('input');
+  creator.required = true;
+  creator.maxLength = 42;
+  creator.autocomplete = 'off';
+  creator.spellcheck = false;
+  creator.placeholder = '0x…';
+  creatorLabel.append(creator);
+  let connectedAddress;
+  creator.addEventListener('input', () => { connectedAddress = undefined; });
+  const connect = walletConnection('Connect sponsor wallet', address => {
+    connectedAddress = address;
+    creator.value = address;
+  }, statusId, true);
   const prepare = node('button', 'Prepare reward', 'primary');
   prepare.type = 'submit';
   prepare.dataset.write = '';
-  form.append(amountLabel, creator, connect, prepare);
+  form.append(amountLabel, creatorLabel, connect, prepare);
   form.addEventListener('submit', event => {
     event.preventDefault();
     const sponsor = principal;
     void writeAction(async () => {
-      const address = await wallet.directSponsor();
-      if (address !== creator.value) throw new WalletError('Connect and confirm the sponsor wallet shown here first.');
       const baseUnits = amountInBaseUnits(amount.value.trim());
+      const address = walletAddress(creator.value.trim());
+      if (connectedAddress === address) {
+        if (await wallet.directSponsor() !== address) throw new WalletError('Reconnect the sponsor wallet shown here.');
+      } else {
+        await verifySponsorAddress(address);
+      }
       if (!confirm(`Prepare a ${displayAmount(baseUnits)} GH0ST reward with sponsor wallet ${address}? The amount and wallet will be fixed on this bounty.`)) {
         return undefined;
       }
@@ -256,7 +272,7 @@ function prepareReward(bounty) {
       if (!updated) { message(statusId, 'Reward preparation cancelled.'); return; }
       upsert(updated);
       message('action-status', 'Reward prepared. Approve the exact allowance, fund it, then verify the funding transaction.');
-    }, statusId);
+    }, statusId, 'Checking the sponsor address on Robinhood Chain…');
   });
   section.append(form);
   return section;

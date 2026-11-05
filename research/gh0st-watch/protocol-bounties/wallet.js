@@ -33,6 +33,35 @@ export function walletAddress(value) {
   }
   throw new WalletError('Choose a valid Robinhood wallet address.');
 }
+function assertEmptyAccountCode(code) {
+  if (code !== '0x') {
+    throw new WalletError('Use a direct EVM account for sponsorship. Smart and delegated accounts are unavailable for reward transactions.');
+  }
+}
+async function readRobinhood(method, params) {
+  try {
+    const response = await fetch(RPC, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ jsonrpc: '2.0', id: 1, method, params }),
+      credentials: 'omit', redirect: 'error', signal: AbortSignal.timeout(8000),
+    });
+    const reply = await response.json();
+    if (response.ok && reply.jsonrpc === '2.0' && reply.id === 1 && !reply.error && typeof reply.result === 'string') {
+      return reply.result;
+    }
+  } catch {
+    // The board cannot bind an address when the chain check is unavailable.
+  }
+  throw new WalletError('Could not verify the sponsor address on Robinhood Chain. Try again.');
+}
+export async function verifySponsorAddress(value) {
+  const address = walletAddress(value);
+  if (await readRobinhood('eth_chainId', []) !== CHAIN_HEX) {
+    throw new WalletError('The public RPC did not identify Robinhood Chain.');
+  }
+  assertEmptyAccountCode(await readRobinhood('eth_getCode', [address, 'latest']));
+  return address;
+}
 export function amountInBaseUnits(text) {
   if (!/^\d{1,78}(?:\.\d{1,18})?$/.test(text)) {
     throw new WalletError('Enter a GH0ST amount with at most 18 decimal places.');
@@ -105,9 +134,7 @@ export function createRewardWallet({
     return walletAddress(current[0]);
   }
   async function assertDirectAccount(address, block) {
-    if (await rpc('eth_getCode', [address, block]) !== '0x') {
-      throw new WalletError('Use a direct EVM account for sponsorship. Smart and delegated accounts are unavailable for reward transactions.');
-    }
+    assertEmptyAccountCode(await rpc('eth_getCode', [address, block]));
   }
   async function directSponsor(prompt = false) {
     const address = await selected(prompt);
