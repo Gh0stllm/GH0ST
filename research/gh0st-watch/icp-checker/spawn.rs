@@ -303,6 +303,9 @@ fn inspect_ingress() {
     if matches!(method.as_str(), "spawn_save" | "spawn_run") && owner_payload_guard().is_err() {
         return;
     }
+    if crate::bounties::inspect(&method).is_err() {
+        return;
+    }
     ic_cdk::api::accept_message();
 }
 

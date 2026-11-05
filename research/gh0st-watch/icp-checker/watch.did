@@ -18,7 +18,19 @@ type SpawnConfig = record {name:text;personality:text;addresses:vec text;tools:v
 type SpawnActivity = record {id:nat64;at:nat64;address:text;status:text;source_block:opt nat64;source_at:opt nat64;lines:vec text;fee:nat32};
 type SpawnProject = record {owner:principal;config:SpawnConfig;created_at:nat64;updated_at:nat64;activity:vec SpawnActivity};
 type SpawnHttp = record {status:nat;headers:vec record {name:text;value:text};body:blob};
+type BountyInput = record {title:text;description:text;category:text;deadline:opt nat64};
+type BountySubmission = record {id:nat64;submitter:principal;proof_url:text;note:text;status:text;created_at:nat64;reviewed_at:opt nat64};
+type Bounty = record {id:nat64;owner:principal;title:text;description:text;category:text;deadline:opt nat64;status:text;created_at:nat64;updated_at:nat64;submissions:vec BountySubmission};
+type BountySummary = record {id:nat64;owner:principal;title:text;category:text;deadline:opt nat64;status:text;created_at:nat64;updated_at:nat64;submission_count:nat32};
+type BountyPage = record {items:vec BountySummary;next:opt nat64};
 service : {
+  bounty_list : (opt nat64, nat32) -> (BountyPage) query;
+  bounty_get : (nat64) -> (opt Bounty) query;
+  bounty_create : (BountyInput) -> (variant {Ok:Bounty;Err:text});
+  bounty_submit : (nat64, text, text) -> (variant {Ok:Bounty;Err:text});
+  bounty_review : (nat64, nat64, bool) -> (variant {Ok:Bounty;Err:text});
+  bounty_cancel : (nat64) -> (variant {Ok:Bounty;Err:text});
+  bounty_moderate : (nat64, bool) -> (variant {Ok;Err:text});
   spawn_save : (SpawnConfig) -> (variant {Ok:SpawnProject;Err:text});
   spawn_get : (principal) -> (opt SpawnProject) query;
   spawn_run : (text) -> (variant {Ok:SpawnActivity;Err:text});

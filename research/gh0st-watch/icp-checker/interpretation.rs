@@ -144,6 +144,7 @@ async fn interpret(
 #[derive(CandidType, Deserialize, Default)]
 struct PublicCache {
     spawn_v1: Option<Vec<u8>>,
+    bounties_v1: Option<Vec<u8>>,
     notes: std::collections::BTreeMap<Vec<u8>, String>,
     retry_after: u64,
 }
@@ -154,8 +155,10 @@ thread_local! {
 pub fn save_cache() {
     CACHE.with_borrow_mut(|c| {
         c.spawn_v1 = Some(crate::spawn::snapshot());
-        ic_cdk::storage::stable_save((&*c,)).expect("save coverage and Spawn state");
+        c.bounties_v1 = Some(crate::bounties::snapshot());
+        ic_cdk::storage::stable_save((&*c,)).expect("save coverage, Spawn and Bounties state");
         c.spawn_v1 = None;
+        c.bounties_v1 = None;
     });
 }
 pub fn restore_cache() {
@@ -163,6 +166,7 @@ pub fn restore_cache() {
         let (mut old,): (PublicCache,) =
             ic_cdk::storage::stable_restore().expect("restore coverage cache");
         crate::spawn::restore(old.spawn_v1.take());
+        crate::bounties::restore(old.bounties_v1.take());
         CACHE.with_borrow_mut(|c| *c = old)
     }
 }
@@ -404,6 +408,7 @@ mod coverage_tests {
         let bytes = candid::encode_args((current,)).unwrap();
         let (mut migrated,): (PublicCache,) = candid::decode_args(&bytes).unwrap();
         assert!(migrated.spawn_v1.is_none());
+        assert!(migrated.bounties_v1.is_none());
         crate::spawn::restore(migrated.spawn_v1.take());
         migrated.spawn_v1 = Some(crate::spawn::snapshot());
         let bytes = candid::encode_args((&migrated,)).unwrap();
@@ -412,6 +417,39 @@ mod coverage_tests {
         assert_eq!(after.retry_after, 4242);
         crate::spawn::restore(Some(after.spawn_v1.take().unwrap()));
         assert_eq!(crate::spawn::snapshot(), migrated.spawn_v1.unwrap());
+    }
+    #[test]
+    fn live_spawn_envelope_adds_empty_bounties_without_losing_fields() {
+        #[derive(CandidType, Deserialize)]
+        struct PublishedSpawnCache {
+            spawn_v1: Option<Vec<u8>>,
+            notes: std::collections::BTreeMap<Vec<u8>, String>,
+            retry_after: u64,
+        }
+        // The current live envelope contains Spawn but no bounty field. Preserve
+        // its opaque payload byte-for-byte, then prove backward readability too.
+        crate::spawn::restore(None);
+        let spawn = crate::spawn::snapshot();
+        let previous = PublishedSpawnCache {
+            spawn_v1: Some(spawn.clone()),
+            notes: [(vec![0; 6], "Existing coverage note".to_owned())].into(),
+            retry_after: 123_456,
+        };
+        let bytes = candid::encode_args((previous,)).unwrap();
+        let (mut current,): (PublicCache,) = candid::decode_args(&bytes).unwrap();
+        assert!(current.bounties_v1.is_none());
+        assert_eq!(current.spawn_v1, Some(spawn.clone()));
+        assert_eq!(current.notes[&vec![0; 6]], "Existing coverage note");
+        crate::bounties::restore(current.bounties_v1.take());
+        current.bounties_v1 = Some(crate::bounties::snapshot());
+        let bytes = candid::encode_args((&current,)).unwrap();
+        let (after,): (PublicCache,) = candid::decode_args(&bytes).unwrap();
+        assert_eq!(after.bounties_v1, current.bounties_v1);
+        assert_eq!(after.spawn_v1, Some(spawn.clone()));
+        let (older_reader,): (PublishedSpawnCache,) = candid::decode_args(&bytes).unwrap();
+        assert_eq!(older_reader.spawn_v1, Some(spawn));
+        assert_eq!(older_reader.notes[&vec![0; 6]], "Existing coverage note");
+        assert_eq!(older_reader.retry_after, 123_456);
     }
     #[test]
     fn all_profiles_produce_supported_claims() {

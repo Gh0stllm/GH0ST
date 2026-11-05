@@ -12,7 +12,7 @@ Research into language models and agents with model weights, inference and execu
 
 [Open the roadmap](https://gh0st.fyi/roadmap/) · [Upcoming protocols infographic](research/gh0st-watch/protocol-roadmap/assets/gh0st-upcoming-protocols.png) · [Separate logos, page source and build instructions](research/gh0st-watch/protocol-roadmap/README.md)
 
-Dead Drop, Bounties, Memory, Jury, Intent Escrow, Passport, Experiments and Worlds are planned protocol modules. The completed checklist records capabilities verified on 4 November 2026.
+The artwork records the roadmap as of 4 November 2026. [GH0ST Bounties](https://gh0st.fyi/bounties/) now has a public preview for posting tasks, submitting evidence and recording creator reviews on ICP. [Bounties source and build instructions](research/gh0st-watch/protocol-bounties/README.md). Reward escrow and the seven other modules are still planned.
 
 ## Project status and repository history
 

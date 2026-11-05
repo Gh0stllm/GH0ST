@@ -2,6 +2,8 @@ mod interpretation;
 mod scanner;
 mod spawn;
 use spawn::{SpawnActivity, SpawnConfig, SpawnProject};
+mod bounties;
+use bounties::{Bounty, BountyInput, BountyPage};
 use ic_management_canister_types::{TransformArgs, HttpRequestResult};
 mod suite;
 mod web;

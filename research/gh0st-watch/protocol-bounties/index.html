@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#10110e">
+  <meta name="description" content="Post a task, submit public proof, and follow the decision on the GH0ST community bounty board.">
+  <title>GH0ST Bounties</title>
+  <link rel="canonical" href="https://gh0st.fyi/bounties/">
+  <link rel="icon" href="/watcher/assets/gh0st-watch-mark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./style.css">
+  <script type="module" src="./app.js"></script>
+</head>
+<body>
+  <a class="skip" href="#board">Skip to the bounty board</a>
+  <header class="wrap mast">
+    <a class="brand" href="/" aria-label="GH0ST home">
+      <img src="/watcher/assets/gh0st-watch-mark.svg" alt="" width="42" height="42">
+      <span>GH0ST</span>
+    </a>
+    <nav aria-label="Main">
+      <a href="/roadmap/">Roadmap</a>
+      <a href="/watcher/">Watcher</a>
+      <a href="/agentkit/spawn/">Spawn</a>
+    </nav>
+    <div class="session">
+      <span id="principal" hidden></span>
+      <button id="session-action" type="button">Sign in</button>
+    </div>
+  </header>
+  <main class="wrap">
+    <section class="hero" aria-labelledby="page-title">
+      <div>
+        <p class="eyebrow"><span></span> COMMUNITY PROTOCOL / PUBLIC BETA</p>
+        <h1 id="page-title">GH0ST<br><em>Bounties.</em></h1>
+        <p class="intro">Post a task. Submit proof. See the creator’s decision. A public board for people building, testing, and documenting GH0ST.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#board">Explore bounties <span aria-hidden="true">↓</span></a>
+          <button id="post-shortcut" type="button">Post a bounty <span aria-hidden="true">↗</span></button>
+        </div>
+      </div>
+      <figure class="hero-art">
+        <img src="/roadmap/assets/gh0st-bounties.png" alt="GH0ST Bounties dot-matrix mark" width="1254" height="1254" fetchpriority="high">
+        <figcaption><span>PROTOCOL 02</span><span>PROOF OF WORK</span></figcaption>
+      </figure>
+    </section>
+
+    <ol class="steps" aria-label="How Bounties works">
+      <li><span>01 / POST</span><p>Describe the task and spell out what counts as proof.</p></li>
+      <li><span>02 / SUBMIT</span><p>Link public evidence of your work and explain what it shows.</p></li>
+      <li><span>03 / REVIEW</span><p>The creator reviews submissions and records a decision on the board.</p></li>
+    </ol>
+
+    <p class="notice">This preview records tasks, evidence, and sponsor decisions. No escrow or payouts in this preview. Anyone can read the board. Sign in with Internet Identity to participate.</p>
+    <p id="session-status" class="message" role="status"></p>
+
+    <section id="compose" class="panel compose" aria-labelledby="compose-title" hidden>
+      <div class="section-heading">
+        <div><p class="eyebrow">CONTRIBUTE / 01</p><h2 id="compose-title">Post a bounty</h2></div>
+        <button type="button" id="compose-close">Close</button>
+      </div>
+      <form id="compose-form">
+        <label>Title<input name="title" required minlength="3" maxlength="100" autocomplete="off"></label>
+        <label>Description<textarea name="description" required minlength="20" maxlength="4000" rows="5" placeholder="Describe the work and what the sponsor should be able to verify."></textarea></label>
+        <div class="form-grid">
+          <label>Category
+            <select name="category">
+              <option value="research">Research</option>
+              <option value="build">Build</option>
+              <option value="content">Content</option>
+              <option value="other">Other</option>
+            </select>
+          </label>
+          <label>Submission deadline (optional, your local time)<input type="datetime-local" name="deadline"></label>
+        </div>
+        <p class="form-note">Your bounty and Internet Identity principal will be public.</p>
+        <button class="primary" type="submit">Publish bounty</button>
+        <p id="compose-status" class="message" role="status"></p>
+      </form>
+    </section>
+
+    <section id="board" class="board" aria-labelledby="board-title">
+      <div class="section-heading">
+        <div><p class="eyebrow">BOARD / PUBLIC RECORD</p><h2 id="board-title">The bounty board</h2></div>
+        <div class="board-controls">
+          <label for="status-filter">Status</label>
+          <select id="status-filter">
+            <option value="all">All bounties</option>
+            <option value="open">Open</option>
+            <option value="completed">Completed</option>
+            <option value="cancelled">Cancelled</option>
+            <option value="expired">Deadline passed</option>
+          </select>
+          <button id="refresh" type="button">Refresh</button>
+        </div>
+      </div>
+      <p id="action-status" class="message" role="status"></p>
+      <p id="board-status" class="message" role="status">Loading the bounty board…</p>
+      <div id="bounty-list" class="bounty-list"></div>
+      <button id="more" type="button" hidden>Load more</button>
+    </section>
+  </main>
+  <footer class="wrap footer">
+    <a class="brand" href="/">GH0ST</a>
+    <span>BOUNTIES / PUBLIC BETA</span>
+    <a href="https://github.com/Gh0stllm/GH0ST">GitHub ↗</a>
+  </footer>
+</body>
+</html>
