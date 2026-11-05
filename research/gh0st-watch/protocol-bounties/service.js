@@ -2,6 +2,18 @@ import { AuthClient } from '@icp-sdk/auth/client';
 import { Actor, HttpAgent } from '@icp-sdk/core/agent';
 
 export function idlFactory({ IDL }) {
+  const Reward = IDL.Record({
+    creator_wallet: IDL.Text,
+    amount_wei: IDL.Text,
+    bounty_key: IDL.Text,
+    status: IDL.Text,
+    tx_hash: IDL.Opt(IDL.Text),
+  });
+  const RewardConfig = IDL.Record({
+    chain_id: IDL.Nat64,
+    token_address: IDL.Text,
+    escrow_address: IDL.Text,
+  });
   const fields = {
     id: IDL.Nat64,
     owner: IDL.Principal,
@@ -11,6 +23,7 @@ export function idlFactory({ IDL }) {
     status: IDL.Text,
     created_at: IDL.Nat64,
     updated_at: IDL.Nat64,
+    reward: IDL.Opt(Reward),
   };
   const Submission = IDL.Record({
     id: IDL.Nat64,
@@ -20,6 +33,7 @@ export function idlFactory({ IDL }) {
     status: IDL.Text,
     created_at: IDL.Nat64,
     reviewed_at: IDL.Opt(IDL.Nat64),
+    payout_wallet: IDL.Opt(IDL.Text),
   });
   const Summary = IDL.Record({ ...fields, submission_count: IDL.Nat32 });
   const Bounty = IDL.Record({ ...fields, description: IDL.Text, submissions: IDL.Vec(Submission) });
@@ -35,6 +49,10 @@ export function idlFactory({ IDL }) {
     bounty_submit: IDL.Func([IDL.Nat64, IDL.Text, IDL.Text], [Result], []),
     bounty_review: IDL.Func([IDL.Nat64, IDL.Nat64, IDL.Bool], [Result], []),
     bounty_cancel: IDL.Func([IDL.Nat64], [Result], []),
+    bounty_reward_config: IDL.Func([], [IDL.Opt(RewardConfig)], ['query']),
+    bounty_prepare_reward: IDL.Func([IDL.Nat64, IDL.Text, IDL.Text], [Result], []),
+    bounty_submit_reward: IDL.Func([IDL.Nat64, IDL.Text, IDL.Text, IDL.Text], [Result], []),
+    bounty_sync_reward: IDL.Func([IDL.Nat64, IDL.Text], [Result], []),
   });
 }
 
@@ -101,5 +119,17 @@ export function createService() {
       return update('bounty_review', [id, submission, approve], principal);
     },
     cancel(id, principal) { return update('bounty_cancel', [id], principal); },
+    async rewardConfig() {
+      return (await publicActor.bounty_reward_config())[0];
+    },
+    prepareReward(id, wallet, amount, principal) {
+      return update('bounty_prepare_reward', [id, wallet, amount], principal);
+    },
+    submitReward(id, url, note, wallet, principal) {
+      return update('bounty_submit_reward', [id, url, note, wallet], principal);
+    },
+    syncReward(id, hash, principal) {
+      return update('bounty_sync_reward', [id, hash], principal);
+    },
   };
 }

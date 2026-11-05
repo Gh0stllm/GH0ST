@@ -1,8 +1,12 @@
-//! A bounded public evidence board. This module holds no funds and performs no
-//! outcalls, inference, token approvals or payments. All submitted text and links
-//! are unverified user content and must be rendered as plain text by clients.
+//! A bounded public evidence board. Only the Robinhood escrow holds funds.
+//! Submitted text and links are unverified and must be rendered as plain text.
 use candid::{CandidType, Deserialize, Principal};
 use std::{cell::RefCell, collections::BTreeMap};
+
+#[path = "bounty_rewards.rs"]
+mod rewards;
+use rewards::Action as RewardAction;
+pub use rewards::{BountyReward, BountyRewardConfig};
 
 const SECOND: u64 = 1_000;
 const MINUTE: u64 = 60 * SECOND;
@@ -13,6 +17,9 @@ const MAX_OWNER_BOUNTIES: usize = 8;
 const MAX_SUBMISSIONS: usize = 16;
 const MAX_SNAPSHOT_BYTES: usize = 16 * 1024 * 1024;
 const MAX_ARGUMENT_BYTES: usize = 6_144;
+const SYNC_COOLDOWN: u64 = 30 * SECOND;
+const SYNC_LEASE: u64 = 2 * MINUTE;
+const MAX_DAILY_SYNCS: usize = 72;
 
 #[derive(CandidType, Deserialize, Clone, Debug, PartialEq)]
 pub struct BountyInput {
@@ -30,6 +37,7 @@ pub struct BountySubmission {
     pub status: String,
     pub created_at: u64,
     pub reviewed_at: Option<u64>,
+    pub payout_wallet: Option<String>,
 }
 #[derive(CandidType, Deserialize, Clone, Debug, PartialEq)]
 pub struct Bounty {
@@ -43,6 +51,7 @@ pub struct Bounty {
     pub created_at: u64,
     pub updated_at: u64,
     pub submissions: Vec<BountySubmission>,
+    pub reward: Option<BountyReward>,
 }
 #[derive(CandidType, Deserialize, Clone, Debug, PartialEq)]
 pub struct BountySummary {
@@ -55,6 +64,7 @@ pub struct BountySummary {
     pub created_at: u64,
     pub updated_at: u64,
     pub submission_count: u32,
+    pub reward: Option<BountyReward>,
 }
 #[derive(CandidType, Deserialize, Clone, Debug, PartialEq)]
 pub struct BountyPage {
@@ -73,6 +83,7 @@ impl Bounty {
             created_at: self.created_at,
             updated_at: self.updated_at,
             submission_count: self.submissions.len() as u32,
+            reward: self.reward.clone(),
         }
     }
     fn close_pending(&mut self, at: u64) {
@@ -96,8 +107,61 @@ struct Board {
     submission_sequence: u64,
     creates: Vec<(Principal, u64)>,
     writes: Vec<(Principal, u64)>,
+    reward_config: Option<BountyRewardConfig>,
+    reward_syncs: Option<Vec<(Principal, u64, u64)>>,
 }
-thread_local! { static BOARD: RefCell<Board> = RefCell::default(); }
+thread_local! {
+    static BOARD: RefCell<Board> = RefCell::default();
+    static ACTIVE_SYNCS: RefCell<BTreeMap<u64, (Principal, u64)>> = RefCell::default();
+}
+
+struct SyncLease {
+    id: u64,
+    caller: Principal,
+    started: u64,
+}
+
+impl SyncLease {
+    fn acquire(id: u64, caller: Principal, at: u64) -> Result<Self, String> {
+        ACTIVE_SYNCS.with_borrow_mut(|active| {
+            active.retain(|_, (_, started)| at.saturating_sub(*started) < SYNC_LEASE);
+            if active.len() >= 4
+                || active.contains_key(&id)
+                || active.values().any(|(owner, _)| *owner == caller)
+            {
+                return Err("Reward verification is already in progress. Retry later.".into());
+            }
+            active.insert(id, (caller, at));
+            Ok(Self {
+                id,
+                caller,
+                started: at,
+            })
+        })
+    }
+
+    fn recheck(&self, reward: &BountyReward) -> Result<(), String> {
+        let active = now().saturating_sub(self.started) < SYNC_LEASE
+            && ACTIVE_SYNCS
+                .with_borrow(|active| active.get(&self.id) == Some(&(self.caller, self.started)));
+        if !active {
+            return Err(
+                "The verification attempt expired. Retry with the same transaction hash.".into(),
+            );
+        }
+        BOARD.with_borrow(|b| b.check_sync(self.caller, self.id, reward))
+    }
+}
+
+impl Drop for SyncLease {
+    fn drop(&mut self) {
+        ACTIVE_SYNCS.with_borrow_mut(|active| {
+            if active.get(&self.id) == Some(&(self.caller, self.started)) {
+                active.remove(&self.id);
+            }
+        });
+    }
+}
 
 fn authenticated(caller: Principal) -> Result<(), String> {
     if caller == Principal::anonymous() || caller == Principal::management_canister() {
@@ -297,6 +361,7 @@ impl Board {
             created_at: at,
             updated_at: at,
             submissions: vec![],
+            reward: None,
         };
         self.bounties.insert(
             id,
@@ -315,6 +380,17 @@ impl Board {
         note: String,
         at: u64,
     ) -> Result<Bounty, String> {
+        self.submit_proof(caller, id, url, note, None, at)
+    }
+    fn submit_proof(
+        &mut self,
+        caller: Principal,
+        id: u64,
+        url: String,
+        note: String,
+        payout_wallet: Option<String>,
+        at: u64,
+    ) -> Result<Bounty, String> {
         authenticated(caller)?;
         let url = proof_url(&url)?;
         let note = plain(&note, 0, 1_000, true)?;
@@ -324,6 +400,25 @@ impl Board {
         }
         if bounty.status != "open" || bounty.deadline.is_some_and(|d| at >= d) {
             return Err("This bounty is closed to new submissions.".into());
+        }
+        match (&bounty.reward, &payout_wallet) {
+            (None, None) => {}
+            (Some(reward), Some(wallet)) if reward.status == "funded" => {
+                if self
+                    .reward_config
+                    .as_ref()
+                    .is_some_and(|c| c.escrow_address == *wallet)
+                {
+                    return Err("The escrow address cannot receive a reward.".into());
+                }
+            }
+            (Some(_), Some(_)) => {
+                return Err("Wait for the creator to verify escrow funding.".into())
+            }
+            (Some(_), None) => {
+                return Err("A reward bounty requires a Robinhood payout wallet.".into())
+            }
+            (None, Some(_)) => return Err("This is a proof-only bounty.".into()),
         }
         if bounty.submissions.len() >= MAX_SUBMISSIONS {
             return Err("This bounty has reached its submission limit.".into());
@@ -346,6 +441,7 @@ impl Board {
             status: "pending".into(),
             created_at: at,
             reviewed_at: None,
+            payout_wallet,
         });
         bounty.updated_at = at;
         Ok(bounty.clone())
@@ -365,6 +461,11 @@ impl Board {
         }
         if bounty.status != "open" {
             return Err("This bounty is already closed.".into());
+        }
+        if approve && bounty.reward.is_some() {
+            return Err(
+                "Approve and pay the submission in escrow, then sync the transaction.".into(),
+            );
         }
         let index = bounty
             .submissions
@@ -395,11 +496,163 @@ impl Board {
         if bounty.status != "open" {
             return Err("This bounty is already closed.".into());
         }
+        if bounty.reward.is_some() {
+            return Err("Cancel in escrow, then sync the transaction.".into());
+        }
         self.admit(caller, at, false)?;
         let bounty = &mut self.bounties.get_mut(&id).unwrap().bounty;
         bounty.status = "cancelled".into();
         bounty.updated_at = at;
         bounty.close_pending(at);
+        Ok(bounty.clone())
+    }
+    fn configure_reward(&mut self, address: &str) -> Result<BountyRewardConfig, String> {
+        if self.reward_config.is_some() {
+            return Err("The reward escrow is already configured.".into());
+        }
+        let config = BountyRewardConfig::new(address)?;
+        self.reward_config = Some(config.clone());
+        Ok(config)
+    }
+    fn prepare_reward(
+        &mut self,
+        caller: Principal,
+        id: u64,
+        reward: BountyReward,
+        at: u64,
+    ) -> Result<Bounty, String> {
+        authenticated(caller)?;
+        let config = self
+            .reward_config
+            .as_ref()
+            .ok_or("Rewards are not enabled on this board.")?;
+        if reward.creator_wallet == config.escrow_address {
+            return Err("Use the wallet that will fund the reward.".into());
+        }
+        let bounty = self.visible(id)?;
+        if bounty.owner != caller {
+            return Err("Only the bounty creator can prepare a reward.".into());
+        }
+        if bounty.status != "open"
+            || bounty.deadline.is_some_and(|d| at >= d)
+            || !bounty.submissions.is_empty()
+        {
+            return Err("A reward requires an open, unexpired bounty with no submissions.".into());
+        }
+        if bounty.reward.is_some() {
+            return Err("This bounty already has a reward setup.".into());
+        }
+        self.admit(caller, at, false)?;
+        let bounty = &mut self.bounties.get_mut(&id).unwrap().bounty;
+        bounty.reward = Some(reward);
+        bounty.updated_at = at;
+        Ok(bounty.clone())
+    }
+    fn sync_bounty(&self, caller: Principal, id: u64) -> Result<&Bounty, String> {
+        // Moderation controls public visibility. The owner can still record a
+        // payout or refund on an escrow they opened before a listing was hidden.
+        self.bounties
+            .get(&id)
+            .filter(|b| b.bounty.owner == caller)
+            .map(|b| &b.bounty)
+            .ok_or_else(|| "Only the bounty creator can sync its reward.".into())
+    }
+    fn check_sync(
+        &self,
+        caller: Principal,
+        id: u64,
+        expected: &BountyReward,
+    ) -> Result<(), String> {
+        let bounty = self.sync_bounty(caller, id)?;
+        if bounty.status != "open" || bounty.reward.as_ref() != Some(expected) {
+            return Err(
+                "The bounty changed while verifying this transaction. Reload and retry.".into(),
+            );
+        }
+        Ok(())
+    }
+    fn admit_sync(&mut self, caller: Principal, id: u64, at: u64) -> Result<(), String> {
+        let syncs = self.reward_syncs.get_or_insert_with(Vec::new);
+        syncs.retain(|(_, _, t)| at.saturating_sub(*t) < DAY);
+        if syncs.len() >= MAX_DAILY_SYNCS
+            || syncs
+                .iter()
+                .filter(|(_, _, t)| at.saturating_sub(*t) < HOUR)
+                .count()
+                >= 24
+            || syncs
+                .iter()
+                .filter(|(_, _, t)| at.saturating_sub(*t) < MINUTE)
+                .count()
+                >= 4
+        {
+            return Err("Reward verification has reached its shared capacity. Retry later.".into());
+        }
+        if syncs.iter().any(|(p, bounty_id, t)| {
+            (*p == caller || *bounty_id == id) && at.saturating_sub(*t) < SYNC_COOLDOWN
+        }) {
+            return Err("Wait thirty seconds between reward verification attempts.".into());
+        }
+        syncs.push((caller, id, at));
+        Ok(())
+    }
+    fn check_action(
+        &self,
+        caller: Principal,
+        id: u64,
+        reward: &BountyReward,
+        action: &RewardAction,
+    ) -> Result<(), String> {
+        self.check_sync(caller, id, reward)?;
+        match action {
+            RewardAction::Funded { amount } if *amount != reward.amount_wei => Err("The escrow deposit differs from the advertised reward. Cancel it in escrow and sync the refund.".into()),
+            _ => Ok(()),
+        }
+    }
+    fn apply_reward(
+        &mut self,
+        caller: Principal,
+        id: u64,
+        expected: &BountyReward,
+        action: RewardAction,
+        tx_hash: String,
+        at: u64,
+    ) -> Result<Bounty, String> {
+        self.check_action(caller, id, expected, &action)?;
+        let bounty = &mut self.bounties.get_mut(&id).unwrap().bounty;
+        let reward = bounty.reward.as_mut().unwrap();
+        reward.tx_hash = Some(tx_hash);
+        match action {
+            RewardAction::Funded { .. } => reward.status = "funded".into(),
+            RewardAction::Paid {
+                amount,
+                submission_id,
+                recipient,
+            } => {
+                let submission = bounty.submissions.iter_mut().find(|s| {
+                    amount == reward.amount_wei
+                        && s.id == submission_id
+                        && s.payout_wallet.as_ref() == Some(&recipient)
+                });
+                if let Some(submission) = submission {
+                    reward.status = "paid".into();
+                    bounty.status = "completed".into();
+                    submission.status = "approved".into();
+                    submission.reviewed_at = Some(at);
+                } else {
+                    // Escrow transfers are terminal even if sent outside the board's UI.
+                    reward.status = "paid_unmatched".into();
+                    bounty.status = "cancelled".into();
+                }
+                bounty.close_pending(at);
+            }
+            RewardAction::Cancelled => {
+                reward.status = "cancelled".into();
+                bounty.status = "cancelled".into();
+                bounty.close_pending(at);
+            }
+        }
+        bounty.updated_at = at;
         Ok(bounty.clone())
     }
     fn moderate(&mut self, id: u64, hidden: bool) -> Result<(), String> {
@@ -408,9 +661,18 @@ impl Board {
         Ok(())
     }
     fn check_bounds(&self) -> Result<(), String> {
-        if self.bounties.len() > MAX_BOUNTIES || self.writes.len() > 240 || self.creates.len() > 100
+        if self.bounties.len() > MAX_BOUNTIES
+            || self.writes.len() > 240
+            || self.creates.len() > 100
+            || self
+                .reward_syncs
+                .as_ref()
+                .is_some_and(|s| s.len() > MAX_DAILY_SYNCS)
         {
             return Err("Bounty storage exceeds its version-one bounds.".into());
+        }
+        if let Some(config) = &self.reward_config {
+            config.validate()?;
         }
         for (&id, s) in &self.bounties {
             let b = &s.bounty;
@@ -429,6 +691,23 @@ impl Board {
             {
                 return Err("Invalid stored bounty state.".into());
             }
+            if let Some(reward) = &b.reward {
+                let config = self
+                    .reward_config
+                    .as_ref()
+                    .ok_or("Missing saved reward configuration.")?;
+                reward.validate(&b.status)?;
+                if config.escrow_address == reward.creator_wallet
+                    || (reward.status == "awaiting_funding" && !b.submissions.is_empty())
+                    || b.submissions
+                        .iter()
+                        .filter(|s| s.status == "approved")
+                        .count()
+                        != usize::from(reward.status == "paid")
+                {
+                    return Err("Invalid saved bounty reward.".into());
+                }
+            }
             for sub in &b.submissions {
                 authenticated(sub.submitter)?;
                 proof_url(&sub.proof_url)?;
@@ -439,6 +718,11 @@ impl Board {
                         .contains(&sub.status.as_str())
                 {
                     return Err("Invalid stored submission state.".into());
+                }
+                match (&b.reward, &sub.payout_wallet) {
+                    (None, None) => {}
+                    (Some(_), Some(wallet)) if rewards::wallet(wallet).as_ref() == Ok(wallet) => {}
+                    _ => return Err("Invalid saved submission payout wallet.".into()),
                 }
             }
         }
@@ -480,13 +764,18 @@ fn request_guard() -> Result<(), String> {
 fn controller_guard() -> Result<(), String> {
     request_guard()?;
     if !ic_cdk::api::is_controller(&ic_cdk::api::msg_caller()) {
-        return Err("Only a canister controller can moderate the board.".into());
+        return Err("Only a canister controller can perform this board action.".into());
     }
     Ok(())
 }
 pub fn inspect(method: &str) -> Result<(), String> {
     match method {
-        "bounty_create" | "bounty_submit" | "bounty_review" | "bounty_cancel" => {
+        "bounty_create"
+        | "bounty_submit"
+        | "bounty_review"
+        | "bounty_cancel"
+        | "bounty_prepare_reward"
+        | "bounty_submit_reward" => {
             request_guard()?;
             // A cheap, nonmutating rejection before argument decoding. Update
             // handlers repeat the authoritative limits after validation, so
@@ -495,7 +784,8 @@ pub fn inspect(method: &str) -> Result<(), String> {
                 b.check_rate(ic_cdk::api::msg_caller(), now(), method == "bounty_create")
             })
         }
-        "bounty_moderate" => controller_guard(),
+        "bounty_sync_reward" => request_guard(),
+        "bounty_moderate" | "bounty_configure_reward_escrow" => controller_guard(),
         _ => Ok(()),
     }
 }
@@ -507,6 +797,10 @@ fn bounty_list(cursor: Option<u64>, limit: u32) -> BountyPage {
 fn bounty_get(id: u64) -> Option<Bounty> {
     BOARD.with_borrow(|b| b.visible(id).ok().cloned())
 }
+#[ic_cdk::query]
+fn bounty_reward_config() -> Option<BountyRewardConfig> {
+    BOARD.with_borrow(|b| b.reward_config.clone())
+}
 #[ic_cdk::update(guard = "request_guard")]
 fn bounty_create(input: BountyInput) -> Result<Bounty, String> {
     BOARD.with_borrow_mut(|b| b.create(ic_cdk::api::msg_caller(), input, now()))
@@ -514,6 +808,77 @@ fn bounty_create(input: BountyInput) -> Result<Bounty, String> {
 #[ic_cdk::update(guard = "request_guard")]
 fn bounty_submit(id: u64, proof_url: String, note: String) -> Result<Bounty, String> {
     BOARD.with_borrow_mut(|b| b.submit(ic_cdk::api::msg_caller(), id, proof_url, note, now()))
+}
+#[ic_cdk::update(guard = "request_guard")]
+fn bounty_prepare_reward(
+    id: u64,
+    creator_wallet: String,
+    amount_wei: String,
+) -> Result<Bounty, String> {
+    let reward = BountyReward::new(
+        ic_cdk::api::canister_self(),
+        id,
+        &creator_wallet,
+        &amount_wei,
+    )?;
+    BOARD.with_borrow_mut(|b| b.prepare_reward(ic_cdk::api::msg_caller(), id, reward, now()))
+}
+#[ic_cdk::update(guard = "request_guard")]
+fn bounty_submit_reward(
+    id: u64,
+    proof_url: String,
+    note: String,
+    payout_wallet: String,
+) -> Result<Bounty, String> {
+    let wallet = rewards::wallet(&payout_wallet)?;
+    BOARD.with_borrow_mut(|b| {
+        b.submit_proof(
+            ic_cdk::api::msg_caller(),
+            id,
+            proof_url,
+            note,
+            Some(wallet),
+            now(),
+        )
+    })
+}
+#[ic_cdk::update(guard = "request_guard")]
+async fn bounty_sync_reward(id: u64, tx_hash: String) -> Result<Bounty, String> {
+    let caller = ic_cdk::api::msg_caller();
+    let tx_hash = rewards::tx_hash(&tx_hash)?;
+    let (config, bounty) = BOARD.with_borrow(|b| -> Result<_, String> {
+        Ok((
+            b.reward_config
+                .clone()
+                .ok_or("Rewards are not enabled on this board.")?,
+            b.sync_bounty(caller, id)?.clone(),
+        ))
+    })?;
+    let reward = bounty
+        .reward
+        .as_ref()
+        .ok_or("This bounty has no reward setup.")?;
+    if bounty.status != "open" {
+        if reward.tx_hash.as_ref() == Some(&tx_hash) {
+            return Ok(bounty);
+        }
+        return Err("This bounty's reward already has a final receipt.".into());
+    }
+    let at = now();
+    let lease = SyncLease::acquire(id, caller, at)?;
+    BOARD.with_borrow_mut(|b| b.admit_sync(caller, id, at))?;
+    let receipt = rewards::read_receipt(&config, reward, &tx_hash).await?;
+    lease.recheck(reward)?;
+    BOARD.with_borrow(|b| b.check_action(caller, id, reward, &receipt.action))?;
+    rewards::check_finalized(&receipt).await?;
+    lease.recheck(reward)?;
+    rewards::check_canonical(&receipt).await?;
+    lease.recheck(reward)?;
+    if matches!(receipt.action, RewardAction::Funded { .. }) {
+        rewards::check_funded(&config, reward).await?;
+        lease.recheck(reward)?;
+    }
+    BOARD.with_borrow_mut(|b| b.apply_reward(caller, id, reward, receipt.action, tx_hash, now()))
 }
 #[ic_cdk::update(guard = "request_guard")]
 fn bounty_review(id: u64, submission_id: u64, approve: bool) -> Result<Bounty, String> {
@@ -528,10 +893,19 @@ fn bounty_cancel(id: u64) -> Result<Bounty, String> {
 fn bounty_moderate(id: u64, hidden: bool) -> Result<(), String> {
     BOARD.with_borrow_mut(|b| b.moderate(id, hidden))
 }
+#[ic_cdk::update(guard = "controller_guard")]
+fn bounty_configure_reward_escrow(escrow_address: String) -> Result<BountyRewardConfig, String> {
+    BOARD.with_borrow_mut(|b| b.configure_reward(&escrow_address))
+}
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    const CREATOR_WALLET: &str = "0x1111111111111111111111111111111111111111";
+    const ESCROW: &str = "0x2222222222222222222222222222222222222222";
+    const PAYOUT_WALLET: &str = "0x3333333333333333333333333333333333333333";
+    const TX: &str = "0x4444444444444444444444444444444444444444444444444444444444444444";
+    const PAY_TX: &str = "0x5555555555555555555555555555555555555555555555555555555555555555";
     fn person(n: u8) -> Principal {
         Principal::self_authenticating([n; 32])
     }
@@ -545,6 +919,221 @@ mod tests {
     }
     fn proof() -> String {
         "https://github.com/Gh0stllm/GH0ST/issues/1".into()
+    }
+    #[test]
+    fn rewards_require_confirmed_funding_and_exact_payment_for_approval() {
+        let mut b = Board::default();
+        let owner = person(1);
+        let hunter = person(2);
+        let id = b.create(owner, input(), 0).unwrap().id;
+        let reward = BountyReward::new(person(3), id, CREATOR_WALLET, "50").unwrap();
+        assert!(b.prepare_reward(owner, id, reward.clone(), MINUTE).is_err());
+        b.configure_reward(ESCROW).unwrap();
+        assert!(b.configure_reward(PAYOUT_WALLET).is_err());
+        assert!(b
+            .prepare_reward(hunter, id, reward.clone(), MINUTE)
+            .is_err());
+        b.prepare_reward(owner, id, reward.clone(), MINUTE).unwrap();
+        assert!(b.submit(hunter, id, proof(), "".into(), MINUTE).is_err());
+        assert!(b
+            .submit_proof(
+                hunter,
+                id,
+                proof(),
+                "".into(),
+                Some(PAYOUT_WALLET.into()),
+                MINUTE
+            )
+            .is_err());
+        assert!(b.cancel(owner, id, 2 * MINUTE).is_err());
+        let funded = RewardAction::Funded {
+            amount: "50".into(),
+        };
+        assert!(b.check_action(hunter, id, &reward, &funded).is_err());
+        assert!(b
+            .check_action(
+                owner,
+                id,
+                &reward,
+                &RewardAction::Funded {
+                    amount: "51".into()
+                }
+            )
+            .is_err());
+        let live = b
+            .apply_reward(owner, id, &reward, funded, TX.into(), 2 * MINUTE)
+            .unwrap()
+            .reward
+            .unwrap();
+        assert!(b.check_sync(owner, id, &reward).is_err());
+        assert!(b
+            .submit(hunter, id, proof(), "".into(), 3 * MINUTE)
+            .is_err());
+        let sid = b
+            .submit_proof(
+                hunter,
+                id,
+                proof(),
+                "".into(),
+                Some(PAYOUT_WALLET.into()),
+                3 * MINUTE,
+            )
+            .unwrap()
+            .submissions[0]
+            .id;
+        assert!(b.review(owner, id, sid, true, 4 * MINUTE).is_err());
+        let funded_board = candid::encode_one(&b).unwrap();
+        for (amount, submission_id, recipient) in [
+            ("51", sid, PAYOUT_WALLET),
+            ("50", sid + 1, PAYOUT_WALLET),
+            ("50", sid, CREATOR_WALLET),
+        ] {
+            let mut copy: Board = candid::decode_one(&funded_board).unwrap();
+            let unmatched = copy
+                .apply_reward(
+                    owner,
+                    id,
+                    &live,
+                    RewardAction::Paid {
+                        amount: amount.into(),
+                        submission_id,
+                        recipient: recipient.into(),
+                    },
+                    PAY_TX.into(),
+                    5 * MINUTE,
+                )
+                .unwrap();
+            assert_eq!(unmatched.status, "cancelled");
+            assert_eq!(unmatched.submissions[0].status, "not_selected");
+            let reward = unmatched.reward.unwrap();
+            assert_eq!(reward.status, "paid_unmatched");
+            assert_eq!(reward.tx_hash.as_deref(), Some(PAY_TX));
+            assert!(copy.check_sync(owner, id, &live).is_err());
+            copy.check_bounds().unwrap();
+        }
+        b.review(owner, id, sid, false, 4 * MINUTE).unwrap();
+        let payment = RewardAction::Paid {
+            amount: "50".into(),
+            submission_id: sid,
+            recipient: PAYOUT_WALLET.into(),
+        };
+        let paid = b
+            .apply_reward(owner, id, &live, payment, PAY_TX.into(), 5 * MINUTE)
+            .unwrap();
+        assert_eq!(paid.status, "completed");
+        assert_eq!(paid.submissions[0].status, "approved");
+        assert_eq!(paid.reward.unwrap().tx_hash.as_deref(), Some(PAY_TX));
+        assert!(b
+            .check_action(owner, id, &live, &RewardAction::Cancelled)
+            .is_err());
+        b.check_bounds().unwrap();
+    }
+    #[test]
+    fn finalized_refund_can_close_an_unverified_or_hidden_offer() {
+        let mut b = Board::default();
+        b.configure_reward(ESCROW).unwrap();
+        let owner = person(1);
+        let id = b.create(owner, input(), 0).unwrap().id;
+        let reward = BountyReward::new(person(3), id, CREATOR_WALLET, "50").unwrap();
+        b.prepare_reward(owner, id, reward.clone(), MINUTE).unwrap();
+        b.moderate(id, true).unwrap();
+        let result = b
+            .apply_reward(
+                owner,
+                id,
+                &reward,
+                RewardAction::Cancelled,
+                TX.into(),
+                2 * MINUTE,
+            )
+            .unwrap();
+        assert_eq!(result.status, "cancelled");
+        assert_eq!(result.reward.unwrap().status, "cancelled");
+        assert!(b.visible(id).is_err());
+        assert!(b.check_sync(owner, id, &reward).is_err());
+        b.check_bounds().unwrap();
+    }
+    #[test]
+    fn older_proof_board_snapshot_decodes_with_optional_reward_fields() {
+        #[derive(CandidType)]
+        struct OldSubmission {
+            id: u64,
+            submitter: Principal,
+            proof_url: String,
+            note: String,
+            status: String,
+            created_at: u64,
+            reviewed_at: Option<u64>,
+        }
+        #[derive(CandidType)]
+        struct OldBounty {
+            id: u64,
+            owner: Principal,
+            title: String,
+            description: String,
+            category: String,
+            deadline: Option<u64>,
+            status: String,
+            created_at: u64,
+            updated_at: u64,
+            submissions: Vec<OldSubmission>,
+        }
+        #[derive(CandidType)]
+        struct OldStored {
+            bounty: OldBounty,
+            hidden: bool,
+        }
+        #[derive(CandidType)]
+        struct OldBoard {
+            bounties: BTreeMap<u64, OldStored>,
+            bounty_sequence: u64,
+            submission_sequence: u64,
+            creates: Vec<(Principal, u64)>,
+            writes: Vec<(Principal, u64)>,
+        }
+        let owner = person(1);
+        let hunter = person(2);
+        let input = input();
+        let old = OldBoard {
+            bounties: BTreeMap::from([(
+                1,
+                OldStored {
+                    hidden: false,
+                    bounty: OldBounty {
+                        id: 1,
+                        owner,
+                        title: input.title,
+                        description: input.description,
+                        category: input.category,
+                        deadline: None,
+                        status: "open".into(),
+                        created_at: 0,
+                        updated_at: MINUTE,
+                        submissions: vec![OldSubmission {
+                            id: 1,
+                            submitter: hunter,
+                            proof_url: proof(),
+                            note: "Existing proof".into(),
+                            status: "pending".into(),
+                            created_at: MINUTE,
+                            reviewed_at: None,
+                        }],
+                    },
+                },
+            )]),
+            bounty_sequence: 1,
+            submission_sequence: 1,
+            creates: vec![(owner, 0)],
+            writes: vec![(owner, 0), (hunter, MINUTE)],
+        };
+        restore(Some(candid::encode_one(&old).unwrap()));
+        BOARD.with_borrow_mut(|board| {
+            assert!(board.reward_config.is_none() && board.reward_syncs.is_none());
+            let bounty = board.visible(1).unwrap();
+            assert!(bounty.reward.is_none() && bounty.submissions[0].payout_wallet.is_none());
+            assert_eq!(bounty.submissions[0].note, "Existing proof");
+            assert!(board.review(owner, 1, 1, true, 2 * MINUTE).is_ok());
+        });
     }
     #[test]
     fn permissions_and_lifecycle_are_enforced_by_caller() {
