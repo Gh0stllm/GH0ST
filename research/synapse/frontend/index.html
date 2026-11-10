@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#090a09">
+  <meta name="description" content="GH0ST SYNAPSE. Compose neural modules, inspect the exact computation, and run paid inference on Robinhood Chain.">
+  <title>SYNAPSE · GH0ST</title>
+  <link rel="icon" type="image/png" href="./synapse.png">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div class="page-noise" aria-hidden="true"></div>
+  <header class="topbar wrap">
+    <a class="brand" href="https://gh0st.fyi" aria-label="GH0ST home"><span class="brand-face">[∶]</span> GH0ST <span class="slash">/</span> <span>SYNAPSE</span></a>
+    <nav aria-label="Main navigation"><a href="#network">The network</a><a id="source-link" href="https://github.com/Gh0stllm/GH0ST/tree/main/research/synapse">Source ↗</a><button id="connect" class="button small">Connect wallet</button></nav>
+  </header>
+  <main>
+    <section class="hero wrap">
+      <div class="hero-copy"><div class="eyebrow"><span class="status-dot"></span> A MODULAR NEURAL NETWORK</div><h1>Small pieces.<br>One <em>shared mind.</em></h1><p>One backbone. Swappable experts. A prediction you can follow, from its first activation to its final token.</p><div class="hero-meta"><span id="chain-status" class="chip">Checking deployment</span><span>ROBINHOOD IS HOME</span></div></div>
+      <div class="hero-art"><img src="./synapse.png" alt="GH0ST SYNAPSE neural face, drawn in amber and ivory dots" fetchpriority="high"><span class="art-coordinate">SYN / 001</span></div>
+    </section>
+
+    <section class="lab wrap" id="lab" aria-labelledby="lab-title">
+      <div class="section-heading"><div><div class="eyebrow">01 / INFERENCE LAB</div><h2 id="lab-title">Watch a thought take shape.</h2></div><p id="model-description">Loading the published research model…</p></div>
+      <div id="notice" class="notice" role="status" aria-live="polite">Loading the published configuration.</div>
+      <div class="workspace">
+        <section class="input-panel panel" aria-label="Inference controls">
+          <div class="panel-label"><span>COMPOSE YOUR GRAPH</span><span class="muted">01 → 02</span></div>
+          <div class="graph-switch" role="group" aria-label="Expert composition"><button class="selected" id="graph-base" data-graph="base">Original experts<span>Shared backbone</span></button><button id="graph-alternate" data-graph="alternate">Swap an expert<span>Same representation space</span></button></div>
+          <div class="graph-note" id="graph-note">Both expert variants are trained by GH0ST. Compatibility is demonstrated; independent authorship is not.</div>
+          <label class="field-label" for="prompt">START WITH A PHRASE</label>
+          <div class="prompt-field"><input id="prompt" value="ghost checks" autocomplete="off" spellcheck="false" aria-describedby="context-help"><button id="apply-prompt" aria-label="Use phrase">↗</button></div>
+          <p class="field-help" id="context-help">Only the last context tokens are used. Shorter inputs begin with &lt;bos&gt;.</p>
+          <div class="presets" aria-label="Example prompts"><button data-prompt="ghost checks">ghost checks</button><button data-prompt="ghost builds">ghost builds</button><button data-prompt="robinhood is">robinhood is</button><button data-prompt="">from the start</button></div>
+          <details class="advanced"><summary>Choose exact token IDs <span>+</span></summary><div id="token-selectors" class="token-selectors"></div><p class="field-help">This is the complete vocabulary. There is no hidden tokenizer or text model behind the interface.</p><div id="vocab" class="vocab"></div></details>
+          <div class="actions"><button id="preview" class="button primary">Preview next token <span>↗</span></button><button id="generate" class="button">Continue for free <span>↗</span></button></div>
+          <p class="field-help action-help">Preview uses a public read call. It needs no wallet, sends no transaction, and pays no module fee.</p>
+        </section>
+        <section class="output-panel panel" aria-label="Inference result">
+          <div class="panel-label"><span>THE NEXT TOKEN</span><span id="trace-origin" class="chip mini">Local reference</span></div>
+          <div class="result" aria-live="polite"><div id="context-display" class="context-display">ghost · checks →</div><div id="prediction" class="prediction">proof</div><div id="token-id" class="token-id">TOKEN 21</div></div>
+          <div class="result-bottom"><div><span class="tiny-label">GENERATED SEQUENCE</span><p id="sequence" class="sequence">ghost checks <strong>proof</strong></p></div><button id="reset" class="text-button">Reset ↺</button></div>
+          <div class="paid-area"><div class="fee-line"><div><span class="tiny-label">PAID INFERENCE</span><p><span id="fee-total">—</span> <small>+ network gas</small></p></div><button id="refresh" class="text-button">Refresh ↻</button></div><p class="field-help">A paid call records this next token and credits the selected modules. Every token requires your own confirmation.</p><div class="paid-buttons"><button id="approve" class="button" disabled>Approve exact fee</button><button id="infer" class="button primary" disabled>Run paid inference ↗</button></div><div id="wallet-status" class="wallet-status">Connect a wallet to use the paid path.</div><button id="resolve-pending" class="text-button hidden">Check pending transaction ↗</button></div>
+        </section>
+      </div>
+      <div id="receipt" class="receipt hidden" aria-live="polite"></div>
+    </section>
+
+    <section class="network wrap" id="network" aria-labelledby="network-title">
+      <div class="section-heading"><div><div class="eyebrow">02 / INSIDE THE GRAPH</div><h2 id="network-title">Nothing behind the curtain.</h2></div><p>Choose a module to inspect the exact integer values from the latest preview.</p></div>
+      <div class="architecture panel">
+        <div class="flow" role="group" aria-label="Inspect neural computation"><button class="flow-node selected" data-stage="hidden"><span class="node-index">01 / BACKBONE</span><strong>Encode</strong><span id="encode-shape">context → hidden</span><div class="node-dots" aria-hidden="true"></div></button><div class="flow-line" aria-hidden="true"></div><div class="expert-stack"><button class="flow-node" data-stage="expert0"><span class="node-index">02 / EXPERT A</span><strong>Transform</strong><span>trained module</span><div class="node-dots" aria-hidden="true"></div></button><button class="flow-node" data-stage="expert1"><span class="node-index" id="expert-b-label">03 / EXPERT B</span><strong id="expert-b-name">Transform</strong><span>swappable module</span><div class="node-dots" aria-hidden="true"></div></button></div><div class="flow-line" aria-hidden="true"></div><button class="flow-node" data-stage="merged"><span class="node-index">04 / COMPOSITION</span><strong>Mean</strong><span>integer average</span><div class="node-dots" aria-hidden="true"></div></button><div class="flow-line" aria-hidden="true"></div><button class="flow-node" data-stage="logits"><span class="node-index">05 / BACKBONE</span><strong>Project</strong><span id="project-shape">hidden → vocabulary</span><div class="node-dots" aria-hidden="true"></div></button></div>
+        <div class="trace-inspector"><div class="trace-heading"><div><span class="tiny-label" id="stage-label">SHARED BACKBONE / ENCODE</span><h3 id="stage-title">The context becomes a vector.</h3></div><span id="trace-scale" class="chip mini">Q8 / SCALE 256</span></div><p id="stage-explanation" class="field-help"></p><div id="activation-bars" class="activation-bars"></div><div id="exact-values" class="exact-values"></div></div>
+      </div>
+    </section>
+
+    <section class="economics wrap" aria-labelledby="economics-title">
+      <div class="section-heading"><div><div class="eyebrow">03 / FOLLOW THE VALUE</div><h2 id="economics-title">The graph pays its parts.</h2></div><p>Every paid call accrues the displayed fee to each module’s beneficiary. Beneficiaries claim their own credits.</p></div>
+      <div class="panel fee-panel"><div class="table-scroll"><table><thead><tr><th>MODULE</th><th>BENEFICIARY</th><th>PER TOKEN</th><th>YOUR CLAIM</th></tr></thead><tbody id="fee-rows"><tr><td colspan="4">Module fees appear after the mainnet manifest is verified.</td></tr></tbody></table></div><div class="claim-footer"><span id="credits-label">No wallet connected.</span><button id="claim" class="button small" disabled>Claim my credits ↗</button></div></div>
+    </section>
+
+    <section class="notes wrap"><div><span class="eyebrow">A RESEARCH PRIMITIVE</span><h2>Composable.<br><em>Deliberately small.</em></h2></div><div><p id="research-note">This is a small original research model. Its purpose is to make module composition and fee routing inspectable on-chain.</p><p>It is trained on a small synthetic corpus. It is not a general chatbot, and training accuracy does not establish generalization. Both original and alternate experts are published by the same project.</p><details class="advanced"><summary>Deployment & verification <span>+</span></summary><div id="deployment-details" class="deployment-details">Awaiting a verified deployment.</div><div id="proof-links" class="proof-links"></div></details></div></section>
+  </main>
+  <footer class="wrap"><a class="brand" href="https://gh0st.fyi"><span class="brand-face">[∶]</span> GH0ST</a><span>ROBINHOOD IS HOME.</span><a href="#lab">BACK TO THE LAB ↑</a></footer>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

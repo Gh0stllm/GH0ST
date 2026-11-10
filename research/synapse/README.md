@@ -1,10 +1,12 @@
 # GH0ST SYNAPSE
 
-A research prototype for composing a tiny neural model from separately deployed Solidity modules. A shared backbone supplies positional embeddings and the language-model head. Two expert contracts process the intermediate activations. An immutable graph combines their outputs and credits module beneficiaries for paid inference.
+A research prototype for composing a neural model from separately deployed Solidity modules. A shared backbone supplies positional embeddings and the language-model head. Two expert contracts process the intermediate activations. An immutable graph combines their outputs and credits module beneficiaries for paid inference.
 
 ## Current status
 
-The 894-parameter model is trained on an original synthetic corpus. The local EVM proof passes 63 exact Python/Solidity trace comparisons, 73 paid inference transactions and 16 accounting/security checks. The harness uses an in-memory chain and a mock ERC20. Public deployment is a later milestone.
+Robinhood mainnet and frontend release preparation is in progress. The selected [domain V2 model](candidates/domain/README.md) has 22,720 parameters, a 128-word vocabulary and four-token context. Its weights run directly in the [V2 Solidity modules](contracts/v2/SynapseModulesV2.sol), including two bounded bytecode shards for the shared backbone. The [frontend](frontend/README.md) remains explicitly unconfigured until the deployed addresses and receipts are verified.
+
+The preserved V1 proof uses an 894-parameter model and passes 63 exact Python/Solidity trace comparisons, 73 paid inference transactions and 16 accounting/security checks. Its harness uses an in-memory chain and a mock ERC20. The measured V1 results below remain a record of that first proof.
 
 The model and experts are authored by the GH0ST project. Separate deployment accounts demonstrate different fee recipients. An external contributor integration remains a later milestone.
 

@@ -1,0 +1,168 @@
+{
+  "modelSha256": "8f73b378ce5159d7c861740f96788d254e9a9ecb82946d6098526c4560f5e6f0",
+  "metrics": {
+    "parameterCount": 22720,
+    "vocabularySize": 128,
+    "contextSize": 4,
+    "hiddenSize": 32,
+    "matrixMACsPerToken": 6144,
+    "trainingSentences": 159,
+    "heldOutSentences": 31,
+    "train": {
+      "examples": 1599,
+      "integerTop1Accuracy": 0.7310819262038775,
+      "floatTop1Accuracy": 0.7310819262038775,
+      "floatCrossEntropyNats": 0.6174402832984924,
+      "floatPerplexity": 1.854175797485142,
+      "integerFloatAgreement": 0.9906191369606003,
+      "unseenContextExamples": 0,
+      "unseenContextIntegerAccuracy": null,
+      "maximumHiddenActivation": 2634,
+      "maximumExpertActivation": 5963
+    },
+    "heldOut": {
+      "examples": 307,
+      "integerTop1Accuracy": 0.6123778501628665,
+      "floatTop1Accuracy": 0.6091205211726385,
+      "floatCrossEntropyNats": 2.547666549682617,
+      "floatPerplexity": 12.777253882450552,
+      "integerFloatAgreement": 0.9804560260586319,
+      "unseenContextExamples": 49,
+      "unseenContextIntegerAccuracy": 0.40816326530612246,
+      "maximumHiddenActivation": 1629,
+      "maximumExpertActivation": 4291
+    },
+    "limitation": "Held-out sentences use the same authored grammar and vocabulary; this is narrow-domain recombination, not general reasoning."
+  },
+  "samples": [
+    {
+      "prompt": "a source receipt does",
+      "continuation": "not prove delivery",
+      "newTokenIds": [
+        69,
+        77,
+        28,
+        1
+      ]
+    },
+    {
+      "prompt": "a local test",
+      "continuation": "proves local behavior",
+      "newTokenIds": [
+        78,
+        61,
+        13,
+        1
+      ]
+    },
+    {
+      "prompt": "a queued job is",
+      "continuation": "not a completed job",
+      "newTokenIds": [
+        69,
+        3,
+        23,
+        55,
+        1
+      ]
+    },
+    {
+      "prompt": "the model reads",
+      "continuation": "tokens and the worker reads the journal",
+      "newTokenIds": [
+        112,
+        6,
+        109,
+        126,
+        82,
+        109,
+        56,
+        1
+      ]
+    },
+    {
+      "prompt": "the expert reads",
+      "continuation": "context and the worker reads the journal",
+      "newTokenIds": [
+        25,
+        6,
+        109,
+        126,
+        82,
+        109,
+        56,
+        1
+      ]
+    },
+    {
+      "prompt": "integer division",
+      "continuation": "rounds toward zero",
+      "newTokenIds": [
+        90,
+        113,
+        127,
+        1
+      ]
+    },
+    {
+      "prompt": "icp runs inference and",
+      "continuation": "ghost",
+      "newTokenIds": [
+        45,
+        1
+      ]
+    },
+    {
+      "prompt": "the chain stores weights and the expert reads",
+      "continuation": "context and the worker reads the journal",
+      "newTokenIds": [
+        25,
+        6,
+        109,
+        126,
+        82,
+        109,
+        56,
+        1
+      ]
+    },
+    {
+      "prompt": "check the destination receipt",
+      "continuation": "before claiming delivery",
+      "newTokenIds": [
+        12,
+        19,
+        28,
+        1
+      ]
+    },
+    {
+      "prompt": "robinhood is",
+      "continuation": "home for ghost",
+      "newTokenIds": [
+        50,
+        42,
+        45,
+        1
+      ]
+    }
+  ],
+  "alternateDemonstration": {
+    "tokens": [
+      0,
+      109,
+      38,
+      82
+    ],
+    "words": [
+      "<bos>",
+      "the",
+      "expert",
+      "reads"
+    ],
+    "baseToken": 25,
+    "baseWord": "context",
+    "alternateToken": 112,
+    "alternateWord": "tokens"
+  }
+}
