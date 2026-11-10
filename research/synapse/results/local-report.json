@@ -1,0 +1,458 @@
+{
+  "status": "PASS",
+  "scope": "Deterministic local EVM research prototype only",
+  "chain": {
+    "chainId": 31337,
+    "hardfork": "shanghai",
+    "provider": "in-memory Ganache",
+    "publicNetwork": false,
+    "fundedWalletUsed": false
+  },
+  "versions": {
+    "node": "v24.22.1",
+    "solc": "0.8.30",
+    "ethers": "6.13.5",
+    "ganache": "7.9.2"
+  },
+  "pythonReference": "PASS: 63 exact integer fixtures; model and alternate SHA-256 verified",
+  "modelManifest": {
+    "schema": "gh0st-synapse-artifacts-v1",
+    "files": {
+      "corpus.json": "d9f2c199fff67cf2c29901b3061d043020c6f12e2c5228d470303d609bb342bb",
+      "model.json": "6a6d27c21fbabd1280d55f70456b3f976b1f8bcc2abf1245eb542d86cc8660ed",
+      "alternate-expert.json": "c8d17a7a0e037e30d2752e9883599eb7d4ee636c0ebd7309d2be15e434c7ee15",
+      "fixtures.json": "3921bffd1667206a251b44ad0cb25e4a975295c52a8dded3c32a80c24804605e"
+    }
+  },
+  "sourceHashes": {
+    "contracts/SynapseGraph.sol": "f3009de367b3804c56a049cf469d611680ef6328090e7c619c48841185dc13a3",
+    "contracts/SynapseModules.sol": "01f370ac80ef734cd40ccd8baff3739d82c7c23176906eeb13f142ad6ece872c",
+    "scripts/fixtures.sol": "fb71c187327df9f853c1ca5a414062669fee43a8c0363c0c3468abeb5f18cee2"
+  },
+  "harnessHashes": {
+    "scripts/lib.mjs": "35bd9c0d55a1453fbfbfebf4323f85985ceb31cbb238428a190974bf98ea45cf",
+    "scripts/compile.mjs": "bfc3ddec455406745f520fb2d88fd877c94e578e0170dd79c1e3339eefca3bbc",
+    "scripts/test-local.mjs": "03b3e33f66d0d4d3a8f19ec8c0f6130c33b3113bf035aa2bbbe12ba2a0ab1003"
+  },
+  "authorship": "All model components trained by the same GH0ST project; distinct local deployment accounts do not prove independent authorship.",
+  "architecture": {
+    "context": 2,
+    "hiddenSize": 8,
+    "experts": 2,
+    "vocabulary": 30,
+    "scale": 256,
+    "merge": "elementwise integer mean"
+  },
+  "fees": {
+    "token": "test-only ERC20, raw 18-decimal units",
+    "backbone": "1000000000000000000",
+    "expert0": "2000000000000000000",
+    "expert1": "3000000000000000000",
+    "totalPerInference": "6000000000000000000"
+  },
+  "deployments": {
+    "token": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+    "backbone": {
+      "address": "0x8464135c8F25Da09e49BC8782676a84730C318bC",
+      "deployer": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+      "beneficiary": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
+    },
+    "expert0": {
+      "address": "0x663F3ad617193148711d28f5334eE4Ed07016602",
+      "deployer": "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
+      "beneficiary": "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC"
+    },
+    "expert1": {
+      "address": "0x057ef64E23666F000b34aE31332854aCBd1c8544",
+      "deployer": "0x90F79bf6EB2c4f870365E785982E1f101E93b906",
+      "beneficiary": "0x90F79bf6EB2c4f870365E785982E1f101E93b906"
+    },
+    "alternateExpert1": {
+      "address": "0x0116686E2291dbd5e317F47faDBFb43B599786Ef",
+      "deployer": "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc",
+      "beneficiary": "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc"
+    },
+    "baseGraph": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
+    "alternateGraph": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0"
+  },
+  "graphIds": {
+    "base": "0x9e5e105d7db95e3fd73f338c084afd60216e6ed3c282fd1b95eefbeff3e06ea2",
+    "alternate": "0x5933d6f74cce16139907305c2303b528a14bd2318c2cb477290684eae35fd20e"
+  },
+  "fixtures": {
+    "count": 63,
+    "base": 55,
+    "alternate": 8,
+    "everyIntermediateMatchesPython": true,
+    "everyFixturePaidTransactionMined": true
+  },
+  "checks": [
+    {
+      "label": "all fixture transactions debit exact total fee and credit all used module beneficiaries",
+      "passed": true,
+      "baseCount": 55,
+      "alternateCount": 8
+    },
+    {
+      "label": "eight-step greedy sequence matches independently rerun Python at every intermediate and uses actual paid transactions",
+      "passed": true,
+      "steps": 8
+    },
+    {
+      "label": "maxFee below quote",
+      "passed": true,
+      "expectedName": null,
+      "message": "transaction execution reverted",
+      "receipt": {
+        "label": "maxFee below quote",
+        "transactionHash": "0x02de66f75980b2035e24c892fb235a26c9fc1c63c6d3b478e1590b828407fe11",
+        "blockNumber": 82,
+        "status": 0,
+        "from": "0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65",
+        "to": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
+        "contractAddress": null,
+        "gasUsed": "44779",
+        "gasPrice": "26092",
+        "fee": "1168373668",
+        "logs": []
+      },
+      "accountingUnchanged": true
+    },
+    {
+      "label": "stale graph ID",
+      "passed": true,
+      "expectedName": null,
+      "message": "transaction execution reverted",
+      "receipt": {
+        "label": "stale graph ID",
+        "transactionHash": "0x2a837a159683f504316e421ffd7148bbc2c77339aefd627558e40f0017f1f111",
+        "blockNumber": 83,
+        "status": 0,
+        "from": "0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65",
+        "to": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
+        "contractAddress": null,
+        "gasUsed": "44345",
+        "gasPrice": "22835",
+        "fee": "1012618075",
+        "logs": []
+      },
+      "accountingUnchanged": true
+    },
+    {
+      "label": "expired deadline",
+      "passed": true,
+      "expectedName": null,
+      "message": "transaction execution reverted",
+      "receipt": {
+        "label": "expired deadline",
+        "transactionHash": "0xa33dd936061b5253c7632fd16f81d6adc3097fb5b12944f8ab467ae25d29510d",
+        "blockNumber": 84,
+        "status": 0,
+        "from": "0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65",
+        "to": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
+        "contractAddress": null,
+        "gasUsed": "44642",
+        "gasPrice": "19984",
+        "fee": "892125728",
+        "logs": []
+      },
+      "accountingUnchanged": true
+    },
+    {
+      "label": "invalid token ID",
+      "passed": true,
+      "expectedName": null,
+      "message": "transaction execution reverted",
+      "receipt": {
+        "label": "invalid token ID",
+        "transactionHash": "0x1544ed49ee4ddf40b83472f370bed7c50203ea49d03071d9412130cdc9a5f38d",
+        "blockNumber": 85,
+        "status": 0,
+        "from": "0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65",
+        "to": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
+        "contractAddress": null,
+        "gasUsed": "61942",
+        "gasPrice": "17491",
+        "fee": "1083427522",
+        "logs": []
+      },
+      "accountingUnchanged": true
+    },
+    {
+      "label": "fee-on-transfer ingress rejected atomically",
+      "passed": true,
+      "expectedName": null,
+      "message": "transaction execution reverted",
+      "receipt": {
+        "label": "fee-on-transfer ingress rejected atomically",
+        "transactionHash": "0x5bfe3cfe5724a89896011bc1ec2b410bc0260c9f11079efd764dfb0e99706ecb",
+        "blockNumber": 87,
+        "status": 0,
+        "from": "0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65",
+        "to": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
+        "contractAddress": null,
+        "gasUsed": "354689",
+        "gasPrice": "13399",
+        "fee": "4752477911",
+        "logs": []
+      },
+      "accountingUnchanged": true
+    },
+    {
+      "label": "funded and approved token callback cannot reenter paid inference",
+      "passed": true,
+      "error": "Reentrancy",
+      "revertData": "0xab143c06"
+    },
+    {
+      "label": "foreign reverting expert rejected before execution",
+      "passed": true,
+      "expectedName": null,
+      "message": "transaction execution reverted",
+      "receipt": {
+        "label": "foreign reverting expert rejected before execution",
+        "transactionHash": "0xa30cf17846bacb2346e9a15da9426e35fdb4e0c7c09ef031b1d1f767882e6be9",
+        "blockNumber": 95,
+        "status": 0,
+        "from": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+        "to": null,
+        "contractAddress": "0x610178dA211FEF7D417bC0e6FeD39F05609AD788",
+        "gasUsed": "378933",
+        "gasPrice": "4639",
+        "fee": "1757870187",
+        "logs": []
+      },
+      "hostileCalls": 0,
+      "scope": "Foreign runtime rejected at graph construction; hostile body is never executed."
+    },
+    {
+      "label": "foreign oversized-return expert rejected before execution",
+      "passed": true,
+      "expectedName": null,
+      "message": "transaction execution reverted",
+      "receipt": {
+        "label": "foreign oversized-return expert rejected before execution",
+        "transactionHash": "0x2ce4f9aa61f66bf01a4e87e397bfd0ffe9dc162530aabb3045323f01442aabba",
+        "blockNumber": 97,
+        "status": 0,
+        "from": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+        "to": null,
+        "contractAddress": "0xB7f8BC63BbcaD18155201308C8f3540b07f84F5e",
+        "gasUsed": "378933",
+        "gasPrice": "3565",
+        "fee": "1350896145",
+        "logs": []
+      },
+      "hostileCalls": 0,
+      "scope": "Foreign runtime rejected at graph construction; hostile body is never executed."
+    },
+    {
+      "label": "foreign state-writing expert rejected before execution",
+      "passed": true,
+      "expectedName": null,
+      "message": "transaction execution reverted",
+      "receipt": {
+        "label": "foreign state-writing expert rejected before execution",
+        "transactionHash": "0x9be5c3675b96b6638376a7abadad2e7129303f174507b4c9ba3fa8caab7bde24",
+        "blockNumber": 99,
+        "status": 0,
+        "from": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+        "to": null,
+        "contractAddress": "0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0",
+        "gasUsed": "378933",
+        "gasPrice": "2739",
+        "fee": "1037897487",
+        "logs": []
+      },
+      "hostileCalls": 0,
+      "scope": "Foreign runtime rejected at graph construction; hostile body is never executed."
+    },
+    {
+      "label": "canonical backbone runtime without valid constructor storage rejected",
+      "passed": true,
+      "expectedName": null,
+      "message": "transaction execution reverted",
+      "receipt": {
+        "label": "canonical backbone runtime without valid constructor storage rejected",
+        "transactionHash": "0x6c9ca598487fe59b540777a51ec562720ad532c5aeded47ecf892c436a7d8102",
+        "blockNumber": 101,
+        "status": 0,
+        "from": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+        "to": null,
+        "contractAddress": "0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82",
+        "gasUsed": "208972",
+        "gasPrice": "2107",
+        "fee": "440304004",
+        "logs": []
+      },
+      "runtimeMatchesCanonical": true,
+      "invalidVocabulary": 0
+    },
+    {
+      "label": "module runtime, model digests, fee, beneficiary and activation space unchanged after inference",
+      "passed": true
+    },
+    {
+      "label": "failed withdrawal preserves all credit and balances",
+      "passed": true,
+      "expectedName": null,
+      "message": "transaction execution reverted",
+      "receipt": {
+        "label": "failed withdrawal preserves all credit and balances",
+        "transactionHash": "0xfdd30d39659baf15b60be7385a162326dd1faa8be2ca9dc6a74998e580f006a3",
+        "blockNumber": 103,
+        "status": 0,
+        "from": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+        "to": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
+        "contractAddress": null,
+        "gasUsed": "65752",
+        "gasPrice": "1615",
+        "fee": "106189480",
+        "logs": []
+      },
+      "accountingUnchanged": true
+    },
+    {
+      "label": "all base and alternate graph beneficiaries withdraw exact credits; no residual liability",
+      "passed": true
+    },
+    {
+      "label": "repeated beneficiary aggregates all module fees exactly once and withdraws exact total",
+      "passed": true
+    }
+  ],
+  "withdrawals": [
+    {
+      "graph": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
+      "beneficiary": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+      "amount": "64000000000000000000",
+      "transactionHash": "0x01e412921d3659f3b5b19c4dd342da3d06911339ac78ebb720eb93d27dc3dd0a"
+    },
+    {
+      "graph": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
+      "beneficiary": "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
+      "amount": "128000000000000000000",
+      "transactionHash": "0xe8187590ada8200dc1e39c8aa33ee3c0a8b5725d242aa6c204f1328747c94b96"
+    },
+    {
+      "graph": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
+      "beneficiary": "0x90F79bf6EB2c4f870365E785982E1f101E93b906",
+      "amount": "192000000000000000000",
+      "transactionHash": "0x432e79a50f4b66764decec7c3f7bcf6e640d36da82508a322d9674907cceddf2"
+    },
+    {
+      "graph": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
+      "beneficiary": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+      "amount": "8000000000000000000",
+      "transactionHash": "0xc0de068226fd555c88dc1edf3bf1f6a2df862230bf838edcff0350351cf7d455"
+    },
+    {
+      "graph": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
+      "beneficiary": "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
+      "amount": "16000000000000000000",
+      "transactionHash": "0xa8cf7026b78140c02a37c78b1a1f5c62767c620c1d3d2cf3c0cccacda09f106c"
+    },
+    {
+      "graph": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
+      "beneficiary": "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc",
+      "amount": "24000000000000000000",
+      "transactionHash": "0xb8e4b94c9a66dc2e3b0309e47c1dc2002d78f6ad7e48129e395213042366611a"
+    }
+  ],
+  "greedySequence": [
+    {
+      "step": 0,
+      "context": [
+        0,
+        0
+      ],
+      "token": 7,
+      "word": "ghost",
+      "transactionHash": "0x4efcbda816dfd8a949e7705124cfe1a357dafde7718811eb931f7f2afef36112",
+      "gasUsed": "386412"
+    },
+    {
+      "step": 1,
+      "context": [
+        0,
+        7
+      ],
+      "token": 25,
+      "word": "runs",
+      "transactionHash": "0x30eba1f9f90bf35ae58bb30fb778368b78d737046eb508a5787ada7a0a0325e1",
+      "gasUsed": "386475"
+    },
+    {
+      "step": 2,
+      "context": [
+        7,
+        25
+      ],
+      "token": 12,
+      "word": "inference",
+      "transactionHash": "0xc1762ec9576cd400c22bf283414ebc9de9accd2b540e35ada7f94fe41158b873",
+      "gasUsed": "386569"
+    },
+    {
+      "step": 3,
+      "context": [
+        25,
+        12
+      ],
+      "token": 18,
+      "word": "on",
+      "transactionHash": "0xb9abbe7fd66f7b71b3e8670bdb620b7fcb99d2f6e6024605879a5ff0cfa44b9f",
+      "gasUsed": "386382"
+    },
+    {
+      "step": 4,
+      "context": [
+        12,
+        18
+      ],
+      "token": 11,
+      "word": "icp",
+      "transactionHash": "0x79d9617ae102fb1e1dbd96f913f8d59528bd85c853d1e685e4796385c38ed154",
+      "gasUsed": "386572"
+    },
+    {
+      "step": 5,
+      "context": [
+        18,
+        11
+      ],
+      "token": 1,
+      "word": "<eos>",
+      "transactionHash": "0x095d6efa141ea2961a0dac29e6f03b8c7f297b0630496c571a5c95496f48f9a9",
+      "gasUsed": "386498"
+    },
+    {
+      "step": 6,
+      "context": [
+        11,
+        1
+      ],
+      "token": 17,
+      "word": "models",
+      "transactionHash": "0x51a00e77ba04757ccff07466f7529fec1bf146ad24c4f2adf0e8d5a6d21dcff7",
+      "gasUsed": "386484"
+    },
+    {
+      "step": 7,
+      "context": [
+        1,
+        17
+      ],
+      "token": 1,
+      "word": "<eos>",
+      "transactionHash": "0x067491d4bc40b519a2ebc88f02dcd551e29e5b3631f9dfe7d380ac084452bf0d",
+      "gasUsed": "386532"
+    }
+  ],
+  "limitations": [
+    "This run contains no mainnet/testnet deployment, live GH0ST token transfer, funded wallet, external network RPC, or independent contributor submission.",
+    "The v1 graph accepts only the exact audited-in-source module runtime. Hostile foreign kernels are rejected before execution; arbitrary EVM plugin execution is outside this prototype.",
+    "Training-corpus fit and a 30-word micro-model do not establish useful language quality or generalization.",
+    "The configurable test token is a harness fixture, not a production asset or token security review."
+  ]
+}

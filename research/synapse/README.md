@@ -4,9 +4,39 @@ A research prototype for composing a tiny neural model from separately deployed 
 
 ## Current status
 
-The 894-parameter model is trained on an original synthetic corpus. Its exact integer reference and 63 trace fixtures are available in [model/](model/README.md). The Solidity modules compile with Solidity 0.8.30. Local EVM integration, payment accounting and gas measurements are in progress.
+The 894-parameter model is trained on an original synthetic corpus. The local EVM proof passes 63 exact Python/Solidity trace comparisons, 73 paid inference transactions and 16 accounting/security checks. The harness uses an in-memory chain and a mock ERC20. Public deployment is a later milestone.
 
-The model and experts are authored by the GH0ST project. Separate deployment accounts will demonstrate different fee recipients. An external contributor integration remains a later milestone.
+The model and experts are authored by the GH0ST project. Separate deployment accounts demonstrate different fee recipients. An external contributor integration remains a later milestone.
+
+## Reproduce
+
+Use Node.js 24, Python 3 and the pinned dependency lock. Run these commands from this directory.
+
+```sh
+npm ci
+npm test
+```
+
+The tests compile the modules with Solidity 0.8.30, run the independent Python integer reference, deploy an isolated in-memory Ganache chain, execute paid inference and check every intermediate activation and logit. The chain is closed after the run. An existing sibling GH0ST research dependency installation can also satisfy the exact package versions, which the harness checks before compiling. To retrain the model, install the NumPy version recorded in [model/model.json](model/model.json) and follow [model/README.md](model/README.md).
+
+## Measured local result
+
+| Measurement | Result |
+| --- | --- |
+| Exact intermediate/output comparisons | 63 of 63 |
+| Paid inference transactions | 73 |
+| Accounting and adversarial checks | 16 |
+| Core deployment, including mock token | 4,038,301 gas |
+| Fixture inference | 386,378 to 472,041 gas per token |
+| Fixture inference mean | 389,228.92 gas per token |
+
+The default greedy sequence through its first end token is `ghost runs inference on icp`. That text is a generated synthetic-corpus sample. It describes the corpus topic, while this proof's model computation executes in the local EVM.
+
+Replacing only expert 1 changes `ghost checks → proof` into `ghost checks → models`. Both graphs use the same backbone and expert 0. The replacement is a trained change of behavior, with no general quality improvement claim.
+
+Each paid call credits 1, 2 and 3 test tokens to the backbone, expert 0 and expert 1 beneficiaries respectively. These illustrative fees are test settings. Credits are verified against exact payer/escrow balance changes, then withdrawn by the recipients.
+
+The security checks cover invalid contexts, deadlines, price caps, wrong graph IDs, taxed transfers, reentrancy callbacks, rejected foreign kernels, a forged canonical kernel with invalid initialization, withdrawal rollback and repeated beneficiaries. Source/artifact hashes and local transaction evidence are in [results/local-report.json](results/local-report.json), [results/gas-report.json](results/gas-report.json) and [results/receipts.json](results/receipts.json). These receipts and gas measurements come from the local simulator.
 
 ## Architecture
 
