@@ -4,9 +4,11 @@ A research prototype for composing a neural model from separately deployed Solid
 
 ## Current status
 
-Robinhood mainnet and frontend release preparation is in progress. The selected [domain V2 model](candidates/domain/README.md) has 22,720 parameters, a 128-word vocabulary and four-token context. Its weights run directly in the [V2 Solidity modules](contracts/v2/SynapseModulesV2.sol), including two bounded bytecode shards for the shared backbone. The [frontend](frontend/README.md) remains explicitly unconfigured until the deployed addresses and receipts are verified.
+SYNAPSE is live on Robinhood mainnet at [gh0st.fyi/synapse](https://gh0st.fyi/synapse/). The selected [domain V2 model](candidates/domain/README.md) has 22,720 parameters, a 128-word vocabulary and four-token context. Its weights run directly in the [V2 Solidity modules](contracts/v2/SynapseModulesV2.sol), including two bounded bytecode shards for the shared backbone.
 
-V2 passes 52 exact Python/EVM traces, 65 paid test inferences and 32 accounting/security checks. Fixture inference uses 1,331,016 to 1,417,003 gas in simulation. The canonical GH0ST token fork also passes all 52 reference traces and an exact six-GH0ST approve/infer/withdraw flow. [V2 evidence](results/v2/local-report.json) and [deployment/signing instructions](deploy/README.md) record the release gates.
+All nine release transactions and all 52 live Python/EVM reference traces are verified. The paid example `the expert reads` returns token 25, `context`; the alternate expert returns `tokens` in free preview. Paid inference costs six GH0ST per next token plus network gas. Public read-only previews require no wallet or module payment. In the release smoke test, six GH0ST was credited and withdrawn back to the same project wallet, leaving zero allowance, escrow balance and credits. Total deployment and smoke-test network fees were 0.000370609438888 ETH. [Public deployment](deployments/robinhood-mainnet.json) and [canonical receipts, traces and payment evidence](results/v2/robinhood-mainnet-verification.json) record the live result.
+
+V2 also passes 65 paid simulated inferences and 32 accounting/security checks. Fixture inference uses 1,331,016 to 1,417,003 gas in simulation; the live paid example used 1,364,214 gas. The canonical GH0ST token fork passed all 52 reference traces and the exact six-GH0ST approve/infer/withdraw flow before mainnet release. [Local V2 evidence](results/v2/local-report.json), [fork evidence](results/v2/robinhood-fork-report.json) and [deployment/signing instructions](deploy/README.md) distinguish those runs from mainnet receipts.
 
 The preserved V1 proof uses an 894-parameter model and passes 63 exact Python/Solidity trace comparisons, 73 paid inference transactions and 16 accounting/security checks. Its harness uses an in-memory chain and a mock ERC20. The measured V1 results below remain a record of that first proof.
 
@@ -44,11 +46,11 @@ The security checks cover invalid contexts, deadlines, price caps, wrong graph I
 
 ## Architecture
 
-- [SynapseModules.sol](contracts/SynapseModules.sol) stores signed int16 weights in immutable bytecode shards and runs the Q8 embedding, expert and projection operations.
-- [SynapseGraph.sol](contracts/SynapseGraph.sol) composes one backbone and two compatible experts, selects the next token and accounts for exact ERC20 payments.
-- [reference.py](model/reference.py) independently computes every intermediate activation and logit with matching signed integer division.
+- [SynapseModulesV2.sol](contracts/v2/SynapseModulesV2.sol) stores signed int16 weights in immutable bytecode shards and runs the Q8 embedding, expert and projection operations.
+- [SynapseGraphV2.sol](contracts/v2/SynapseGraphV2.sol) composes one backbone and two compatible experts, selects the next token and accounts for exact ERC20 payments.
+- [reference.py](candidates/domain/reference.py) independently computes every intermediate activation and logit with matching signed integer division.
 
-The v1 graph accepts the specific published neural kernels. Contributors can publish new weights against the same backbone representation. Tensor dimensions alone do not demonstrate useful compatibility. Module quality must be measured against the resulting model.
+The graphs accept the specific published neural kernels. Contributors can publish new weights against the same backbone representation. Tensor dimensions alone do not demonstrate useful compatibility. Module quality must be measured against the resulting model.
 
 The payment token is fixed when a graph is deployed. Robinhood's GH0ST token is `0x2eb2849cDE7957b86d0dFD4B59e450a9F9D15559`. The local proof uses a mock token. Module prices and recipients are fixed, fees are credited only after successful computation and exact funding, and beneficiaries withdraw their credits separately. Public weights can be copied, so payment accounting applies to use through a paid graph.
 

@@ -22,7 +22,7 @@ test('context padding, truncation, unknown tokens, and generalized positional em
   assert.throws(() => forward(m, [0, 0]), /exactly 3/);
 });
 test('unconfigured / wrong-chain / private RPC manifests fail closed', () => {
-  const config = read('./deployment.json');
+  const config = { ...read('./deployment.json'), status: 'unconfigured' };
   assert.throws(() => assertDeployment(config), /not configured/);
   assert.throws(() => assertDeployment({ ...config, status: 'live', chainId: 1 }), /Unexpected network/);
   assert.throws(() => assertDeployment({ ...config, status: 'live', rpcUrl: 'https://private.example' }), /public Robinhood/);

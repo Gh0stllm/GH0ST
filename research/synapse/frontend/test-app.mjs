@@ -27,7 +27,7 @@ const experts = [];
 for (const [index, expert] of [...model.experts, alternate].entries()) experts.push(await deploy('SynapseExpertV2', [beneficiary, ethers.parseEther(String(index + 2)), spaceId, model.hiddenSize, packed([...expert.weights, ...expert.bias])]));
 const graphs = [await deploy('SynapseGraphV2', [TOKEN_ADDRESS, backbone.target, [experts[0].target, experts[1].target]]), await deploy('SynapseGraphV2', [TOKEN_ADDRESS, backbone.target, [experts[0].target, experts[2].target]])];
 async function moduleConfig(contract, id) { return { id, address: contract.target, spaceId: await contract.spaceId(), weightsHash: await contract.weightsHash(), codeHash: ethers.keccak256(await provider.getCode(contract.target)), beneficiary, fee: (await contract.fee()).toString() }; }
-const config = { ...read('./deployment.json'), status: 'live', token: { address: TOKEN_ADDRESS, symbol: 'TEST', decimals: 18 }, backbone: await moduleConfig(backbone, 'backbone'), experts: await Promise.all(experts.map((expert, i) => moduleConfig(expert, `expert${i}`))), graphs: await Promise.all(graphs.map(async (graph, i) => ({ id: i ? 'alternate' : 'base', address: graph.target, graphId: await graph.graphId(), totalFee: (await graph.totalFee()).toString(), expertIds: ['expert0', i ? 'expert2' : 'expert1'], codeHash: ethers.keccak256(await provider.getCode(graph.target)) }))) };
+const config = { ...read('./deployment.json'), status: 'live', confirmations: 1, token: { address: TOKEN_ADDRESS, symbol: 'TEST', decimals: 18 }, backbone: await moduleConfig(backbone, 'backbone'), experts: await Promise.all(experts.map((expert, i) => moduleConfig(expert, `expert${i}`))), graphs: await Promise.all(graphs.map(async (graph, i) => ({ id: i ? 'alternate' : 'base', address: graph.target, graphId: await graph.graphId(), totalFee: (await graph.totalFee()).toString(), expertIds: ['expert0', i ? 'expert2' : 'expert1'], codeHash: ethers.keccak256(await provider.getCode(graph.target)) }))) };
 const abi = { graph: v2.SynapseGraphV2.abi, backbone: v2.SynapseBackboneV2.abi, expert: v2.SynapseExpertV2.abi };
 
 class Element {
@@ -55,7 +55,7 @@ globalThis.window = { ethereum: { on: () => {}, request: async request => {
   if (request.method === 'eth_sendTransaction') { if (reject) throw Object.assign(new Error('User rejected request'), { code: 4001 }); sends++; }
   return provider1193.request(request);
 } } };
-const assets = { 'deployment.json': JSON.stringify(config), 'model.json': readFileSync(new URL('../candidates/domain/model.json', import.meta.url), 'utf8'), 'alternate-expert.json': JSON.stringify(alternate), 'abi.json': JSON.stringify(abi) };
+const assets = { 'deployment.json': JSON.stringify(config), 'model.json': readFileSync(new URL('../candidates/domain/model.json', import.meta.url), 'utf8'), 'alternate-expert.json': readFileSync(new URL('../candidates/domain/alternate-expert.json', import.meta.url), 'utf8'), 'abi.json': JSON.stringify(abi) };
 const nativeFetch = globalThis.fetch;
 globalThis.fetch = async (url, options = {}) => {
   if (String(url).startsWith('./')) return new Response(assets[String(url).slice(2)], { status: 200 });
