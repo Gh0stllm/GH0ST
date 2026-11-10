@@ -6,7 +6,7 @@ import { createServer } from 'node:http';
 import { createRequire } from 'node:module';
 import { dirname, isAbsolute, join, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { executeActions, executionMessage, validateSigned } from '../../../../rh-icp-live/rh-icp-inference/scripts/execute-rh.mjs';
+import { executeActions, executionMessage, validateSigned } from './vendor/execute-rh.mjs';
 import { ROOT, SPONSOR, ethers, options, privateOutput, providerFor, readRpc, safeError, save, sha256 } from './lib.mjs';
 import { createFreshCheck, validateDeployPlan } from './guards.mjs';
 import { verifyCompleted } from './verify.mjs';

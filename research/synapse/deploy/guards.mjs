@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { CHAIN_ID, PAYMENT_TOKEN, SPONSOR, TOKEN_ABI, assertChain, ethers, modelData, normalizedTrace, productionCompile } from './lib.mjs';
+import { assertReviewedFeeBounds } from './fee-guards.mjs';
 
 const labels = ['backbone', 'expert0', 'expert1', 'alternateExpert1', 'baseGraph', 'alternateGraph'];
 function sameAddress(actual, expected, message) { assert.equal(ethers.getAddress(actual), ethers.getAddress(expected), message); }
@@ -135,9 +136,8 @@ export function createFreshCheck(plan) {
     for (const instance of action.requiredContracts) await verifyInstance(provider, instance);
     if (action.kind === 'deploy') assert.equal(await provider.getCode(plan.transactions[action.id].predictedAddress), '0x', 'Planned deployment address already has code');
     const tx = action.transaction;
-    const [fees, block] = await Promise.all([provider.getFeeData(), provider.getBlock('latest')]);
-    const priority = BigInt(tx.maxPriorityFeePerGas), maximum = BigInt(tx.maxFeePerGas);
-    assert.ok(block.baseFeePerGas != null && fees.maxPriorityFeePerGas != null && block.baseFeePerGas + priority <= maximum && fees.maxPriorityFeePerGas <= priority, 'Current fees exceed the reviewed cap');
+    const block = await provider.getBlock('latest');
+    assertReviewedFeeBounds(tx, block?.baseFeePerGas);
     const token = new ethers.Contract(PAYMENT_TOKEN, TOKEN_ABI, provider);
     const totalFee = BigInt(plan.feePolicy.totalFeeRaw);
     if (action.kind === 'approve' || action.kind === 'infer') assert.ok(await token.balanceOf(SPONSOR) >= totalFee, 'Insufficient GH0ST for exact smoke inference');

@@ -71,6 +71,30 @@ submission stops execution; preserve its signed evidence and reconcile the exact
 hashes before starting anything else. This entry point has no automatic restart
 or replacement flow.
 
+## Reconcile an interrupted signed batch
+
+`resume-signed.mjs` accepts only the existing plan, saved signed batch and its
+journal. Its default mode is read-only. It requires a contiguous prefix of
+canonical confirmed receipts, no unresolved journal entry, absent remaining
+hashes and an exact latest/pending nonce before checking the next action.
+Only an explicit `--execute` can continue those original saved bytes. It accepts
+no key or password and cannot create a replacement, new signature or fee quote.
+
+```sh
+node deploy/resume-signed.mjs \
+  --plan /absolute/private/output/plan.json \
+  --batch /absolute/private/signing-session/signed-batch.json \
+  --journal /absolute/private/signing-session/signed-journal.json \
+  --output /absolute/private/signing-session \
+  --env-file /absolute/private/.env.local
+```
+
+The fee guard compares the observed base fee plus the signed priority fee with
+the signed maximum. A node's suggested tip is advisory; it cannot increase the
+signed spending cap. Pure guard tests cover actual overshoots and malformed
+bounds. The [vendored execution helpers](vendor/README.md) record their original
+workspace provenance and exact hashes.
+
 ## Verify saved execution read-only
 
 ```sh
