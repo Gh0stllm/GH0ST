@@ -6,6 +6,7 @@ Standalone static application for `https://gh0st.fyi/synapse/`. Build output is 
 npm install
 npm test
 npm run build
+npm run test:app
 npm run preview
 ```
 
@@ -31,4 +32,4 @@ The original and alternate experts are both authored by the same project. Module
 
 ## Verification
 
-`npm test` checks exact integer fixtures, arbitrary context sizes, vocabulary rejection, manifest/quote constraints, and receipt validation failures. Browser QA uses the unconfigured build and a separately identified simulated RPC/wallet fixture; simulated transaction hashes never establish public deployment or payment.
+`npm test` checks the original fixtures plus all 52 final domain V2 fixtures, arbitrary context sizes, vocabulary rejection, manifest/quote constraints, and receipt validation failures. `npm run test:app` drives the actual production bundle with a simulated DOM, wallet, and intercepted RPC against locally deployed V2 contracts. It covers verification, the alternate expert, wrong-network blocking, wallet rejection, resetting nonexact allowance, exact approval, paid inference/trace/payment receipts, beneficiary withdrawal, and free continuation. It requires the parent research dependencies and compiled V2 artifacts. Its report is saved under the ignored `test-results/` directory. Browser QA covers the unconfigured desktop and 400-pixel layout. Simulated transaction hashes never establish public deployment or payment.

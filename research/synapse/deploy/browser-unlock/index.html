@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer">
+<title>Deploy GH0ST Synapse</title>
+<style>
+:root{color-scheme:dark;background:#0c0d0b;color:#f3eee2;font:16px/1.5 system-ui,sans-serif}body{margin:0;padding:clamp(20px,5vw,60px)}main{max-width:850px;margin:auto}.eyebrow,dt,label{color:#e8bc7b}.eyebrow{font:13px ui-monospace,monospace;letter-spacing:.1em}h1{font:400 clamp(35px,7vw,62px)/1.07 Georgia,serif;letter-spacing:-.04em;margin:14px 0 22px}p{color:#c8c3b7}h2{font-size:19px}dl,section{border:1px solid #3c3d33;padding:20px}dl{display:grid;gap:3px}dt{font-size:13px}dd{margin:0 0 12px;overflow-wrap:anywhere}code{font:12px/1.5 ui-monospace,monospace;overflow-wrap:anywhere}input,button{display:block;font:inherit;padding:11px 13px;margin:9px 0}input{background:#11120f;color:#fff;border:1px solid #70654e;width:min(330px,100% - 28px)}button{border:0;background:#e8bc7b;color:#11120f;font-weight:650;cursor:pointer}button:disabled{opacity:.5;cursor:default}.action{padding:16px 0;border-top:1px solid #34362e}.action p{margin:6px 0}.action strong{color:#eee9db}.muted{font-size:13px}.progress{color:#e8bc7b}#status{overflow-wrap:anywhere}[hidden]{display:none!important}:focus-visible{outline:2px solid #e8bc7b;outline-offset:3px}
+</style>
+<script defer src="./ethers.umd.min.js"></script><script defer src="./unlock.js"></script>
+</head>
+<body><main>
+<p class="eyebrow">GH0ST SYNAPSE / LOCAL WALLET</p><h1>Deploy the trained model</h1>
+<p>Review the nine Robinhood Chain transactions below. Unlock the deployment wallet in this tab to sign this exact plan. Your password stays in this tab.</p>
+<dl id="plan" hidden><dt>Network</dt><dd>Robinhood Chain · 4663</dd><dt>Deployment wallet</dt><dd><code id="owner"></code></dd><dt>Model</dt><dd id="model"></dd><dt>ETH sent</dt><dd>0 ETH</dd><dt>Maximum execution fees</dt><dd id="fee"></dd><dt>Model payment demonstration</dt><dd>Approve exactly 6 GH0ST, run one inference, then withdraw the same 6 GH0ST to this wallet.</dd><dt>Plan SHA-256</dt><dd><code id="plan-hash"></code></dd></dl>
+<section id="actions-section" hidden><h2>Exact transactions</h2><div id="actions"></div></section>
+<section style="margin-top:22px"><h2>Unlock deployment wallet</h2><label for="password">Keystore password</label><input id="password" type="password" autocomplete="new-password" spellcheck="false" disabled><button id="unlock" type="button" disabled>Unlock, sign &amp; deploy all nine</button><p id="status" role="status">Loading the reviewed deployment…</p><p class="progress" id="progress"></p><div id="proof" hidden><h2>Transaction proofs</h2><div id="hashes"></div></div></section>
+</main></body></html>

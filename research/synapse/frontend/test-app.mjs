@@ -47,7 +47,7 @@ const presetButtons = Array.from({ length: 4 }, (_, i) => element(`preset${i}`))
 const flowButtons = ['hidden', 'expert0', 'expert1', 'merged', 'logits'].map(stage => { const node = element(stage); node.dataset.stage = stage; return node; });
 globalThis.document = { getElementById: element, createElement: () => new Element(), body: element('body'), querySelectorAll: selector => selector === '[data-graph]' ? graphButtons : selector === '[data-prompt]' ? presetButtons : selector === '[data-stage]' || selector === '.flow-node' ? flowButtons : selector === '#token-selectors select' ? selectors : selector.includes(',') ? [...graphButtons, ...presetButtons, ...flowButtons, ...selectors, element('reset'), element('apply-prompt')] : [] };
 const local = new Map(); globalThis.localStorage = { getItem: key => local.get(key) || null, setItem: (key, value) => local.set(key, value), removeItem: key => local.delete(key) };
-let sends = 0, reject = false, wrongNetwork = false;
+let sends = 0, reject = false, wrongNetwork = false, tamperPreview = false;
 globalThis.window = { ethereum: { on: () => {}, request: async request => {
   if (request.method === 'eth_requestAccounts' || request.method === 'eth_accounts') return [beneficiary];
   if (request.method === 'eth_chainId' && wrongNetwork) return '0x1';
@@ -60,7 +60,14 @@ const nativeFetch = globalThis.fetch;
 globalThis.fetch = async (url, options = {}) => {
   if (String(url).startsWith('./')) return new Response(assets[String(url).slice(2)], { status: 200 });
   assert.equal(String(url), PUBLIC_RPC, 'Production bundle attempted an unexpected network request');
-  const requests = JSON.parse(typeof options.body === 'string' ? options.body : new TextDecoder().decode(options.body)); const run = async request => { try { return { jsonrpc: '2.0', id: request.id, result: await provider1193.request({ method: request.method, params: request.params }) }; } catch (error) { return { jsonrpc: '2.0', id: request.id, error: { code: error.code || -32000, message: error.message, data: error.data } }; } };
+  const requests = JSON.parse(typeof options.body === 'string' ? options.body : new TextDecoder().decode(options.body)); const run = async request => { try {
+    let result = await provider1193.request({ method: request.method, params: request.params });
+    if (tamperPreview && request.method === 'eth_call' && request.params[0].data?.startsWith(graphs[0].interface.getFunction('preview').selector)) {
+      const trace = graphs[0].interface.decodeFunctionResult('preview', result)[0];
+      result = graphs[0].interface.encodeFunctionResult('preview', [{ hidden: trace.hidden, expertActivations: trace.expertActivations, merged: trace.merged, logits: trace.logits, token: (Number(trace.token) + 1) % model.vocab.length }]);
+    }
+    return { jsonrpc: '2.0', id: request.id, result };
+  } catch (error) { return { jsonrpc: '2.0', id: request.id, error: { code: error.code || -32000, message: error.message, data: error.data } }; } };
   return new Response(JSON.stringify(Array.isArray(requests) ? await Promise.all(requests.map(run)) : await run(requests)), { status: 200, headers: { 'Content-Type': 'application/json' } });
 };
 const wait = async predicate => { const started = Date.now(); while (!predicate()) { if (Date.now() - started > 20000) throw new Error(`Timeout: ${element('notice').textContent}`); await new Promise(resolve => setTimeout(resolve, 20)); } };
@@ -75,11 +82,15 @@ try {
   wrongNetwork = true; await element('connect').click(); assert.equal(element('connect').textContent, 'Switch to Robinhood'); assert.equal(element('infer').disabled, true);
   await element('connect').click(); assert.equal(element('approve').disabled, false); assert.equal(element('infer').disabled, true);
   reject = true; await element('approve').click(); assert.match(element('notice').textContent, /declined/); assert.equal(sends, 0); reject = false;
-  await element('approve').click(); assert.equal(sends, 1); assert.equal(await token.allowance(beneficiary, graphs[0].target), ethers.parseEther('6')); assert.equal(element('infer').disabled, false);
-  await element('infer').click(); assert.equal(sends, 2); assert.equal(await token.allowance(beneficiary, graphs[0].target), 0n); assert.equal(await graphs[0].credits(beneficiary), ethers.parseEther('6')); assert.match(element('trace-origin').textContent, /Confirmed paid/); assert.match(element('notice').textContent, /receipt checked/);
-  await element('claim').click(); assert.equal(sends, 3); assert.equal(await graphs[0].credits(beneficiary), 0n); assert.equal(await token.balanceOf(beneficiary), ethers.parseEther('100'));
-  await element('generate').click(); assert.match(element('notice').textContent, /<eos>|12 free read/); assert.equal(sends, 3);
-  const report = { simulation: true, publicTransactions: 0, model: model.id, checks: ['actual production bundle initializes and verifies local V2 contracts', '128-vocabulary/4-context/32-hidden UI', 'alternate expert context→tokens', 'wrong network blocks payment', 'wallet rejection sends nothing', 'exact6TEST approval requires own click', 'paid next token validates dynamic full trace and3module credits', 'allowance consumed', 'beneficiary withdrawal receipt and balance verified', 'free continuation emits no transaction'], localTransactionsFromUi: sends, finalBalance: (await token.balanceOf(beneficiary)).toString() };
+  await (await token.approve(graphs[0].target, ethers.parseEther('9'))).wait();
+  await element('refresh').click(); assert.equal(element('approve').textContent, 'Reset old allowance'); assert.equal(element('infer').disabled, true);
+  await element('approve').click(); assert.equal(sends, 1); assert.equal(await token.allowance(beneficiary, graphs[0].target), 0n); assert.equal(element('infer').disabled, true);
+  await element('approve').click(); assert.equal(sends, 2); assert.equal(await token.allowance(beneficiary, graphs[0].target), ethers.parseEther('6')); assert.equal(element('infer').disabled, false);
+  await element('infer').click(); assert.equal(sends, 3); assert.equal(await token.allowance(beneficiary, graphs[0].target), 0n); assert.equal(await graphs[0].credits(beneficiary), ethers.parseEther('6')); assert.match(element('trace-origin').textContent, /Confirmed paid/); assert.match(element('notice').textContent, /receipt checked/);
+  await element('claim').click(); assert.equal(sends, 4); assert.equal(await graphs[0].credits(beneficiary), 0n); assert.equal(await token.balanceOf(beneficiary), ethers.parseEther('100'));
+  await element('generate').click(); assert.match(element('notice').textContent, /<eos>|12 free read/); assert.equal(sends, 4);
+  tamperPreview = true; await element('preview').click(); assert.equal(element('chain-status').textContent, 'Trace verification failed'); assert.equal(element('infer').disabled, true); assert.equal(element('approve').disabled, true); assert.equal(sends, 4);
+  const report = { simulation: true, publicTransactions: 0, model: model.id, checks: ['actual production bundle initializes and verifies local V2 contracts', '128-vocabulary/4-context/32-hidden UI', 'alternate expert context → tokens', 'wrong network blocks payment', 'wallet rejection sends nothing', 'old nonexact allowance resets through its own click', 'exact 6 TEST approval requires a separate click', 'paid next token validates dynamic full trace and 3 module credits', 'allowance consumed', 'beneficiary withdrawal receipt and balance verified', 'free continuation emits no transaction', 'tampered preview disables paid actions'], localTransactionsFromUi: sends, finalBalance: (await token.balanceOf(beneficiary)).toString() };
   mkdirSync(new URL('./test-results/', import.meta.url), { recursive: true }); writeFileSync(new URL('./test-results/app-integration.json', import.meta.url), JSON.stringify(report, null, 2) + '\n');
   console.log(JSON.stringify(report, null, 2));
 } finally { globalThis.fetch = nativeFetch; provider.destroy(); await provider1193.disconnect(); }

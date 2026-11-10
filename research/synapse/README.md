@@ -6,9 +6,11 @@ A research prototype for composing a neural model from separately deployed Solid
 
 Robinhood mainnet and frontend release preparation is in progress. The selected [domain V2 model](candidates/domain/README.md) has 22,720 parameters, a 128-word vocabulary and four-token context. Its weights run directly in the [V2 Solidity modules](contracts/v2/SynapseModulesV2.sol), including two bounded bytecode shards for the shared backbone. The [frontend](frontend/README.md) remains explicitly unconfigured until the deployed addresses and receipts are verified.
 
+V2 passes 52 exact Python/EVM traces, 65 paid test inferences and 32 accounting/security checks. Fixture inference uses 1,331,016 to 1,417,003 gas in simulation. The canonical GH0ST token fork also passes all 52 reference traces and an exact six-GH0ST approve/infer/withdraw flow. [V2 evidence](results/v2/local-report.json) and [deployment/signing instructions](deploy/README.md) record the release gates.
+
 The preserved V1 proof uses an 894-parameter model and passes 63 exact Python/Solidity trace comparisons, 73 paid inference transactions and 16 accounting/security checks. Its harness uses an in-memory chain and a mock ERC20. The measured V1 results below remain a record of that first proof.
 
-The model and experts are authored by the GH0ST project. Separate deployment accounts demonstrate different fee recipients. An external contributor integration remains a later milestone.
+The model and experts are authored by the GH0ST project. The initial mainnet V2 configuration directs all three module fees to the same sponsor beneficiary. Separate accounts in the local tests demonstrate distinct fee recipients; they do not establish independent authorship. An external contributor integration remains a later milestone.
 
 ## Reproduce
 
@@ -16,12 +18,12 @@ Use Node.js 24, Python 3 and the pinned dependency lock. Run these commands from
 
 ```sh
 npm ci
-npm test
+npm run test:v2
 ```
 
-The tests compile the modules with Solidity 0.8.30, run the independent Python integer reference, deploy an isolated in-memory Ganache chain, execute paid inference and check every intermediate activation and logit. The chain is closed after the run. An existing sibling GH0ST research dependency installation can also satisfy the exact package versions, which the harness checks before compiling. To retrain the model, install the NumPy version recorded in [model/model.json](model/model.json) and follow [model/README.md](model/README.md).
+The V2 tests compile the modules with Solidity 0.8.30, run the independent Python integer reference, deploy an isolated in-memory Ganache chain, execute paid inference and check every intermediate activation and logit. The chain is closed after the run. An existing sibling GH0ST research dependency installation can also satisfy the exact package versions, which the harness checks before compiling. [Domain V2 training instructions](candidates/domain/README.md) describe its synthetic corpus and held-out measurements. The original V1 reproduction remains available through `npm test`.
 
-## Measured local result
+## Preserved local V1 result
 
 | Measurement | Result |
 | --- | --- |
@@ -52,6 +54,6 @@ The payment token is fixed when a graph is deployed. Robinhood's GH0ST token is 
 
 ## Research scope
 
-This is a small two-token-context neural language model with a 30-token vocabulary. The reported accuracy concerns its synthetic training corpus. A new expert and a new graph can demonstrate a different output while preserving the backbone.
+The selected V2 model has 22,720 parameters, a four-token context and a 128-word vocabulary. Its reported training and held-out measurements concern an authored synthetic corpus with shared grammar and vocabulary; they do not establish broad language understanding or general reasoning. The preserved V1 model has a two-token context and 30-token vocabulary. A new expert and a new graph can demonstrate a different output while preserving the matching backbone, without establishing a general quality improvement.
 
 Existing relevant work includes [Microsoft's onchain model training](https://github.com/microsoft/0xDeCA10B), [Zirconium's composable neural proofs](https://ethglobal.com/showcase/zirconium-3632e), [SMART's inference framework](https://huangjunqin.com/assets/pdf/HuangWWW2024Advancing.pdf), and [ML2SC's Solidity neural-network generation](https://arxiv.org/abs/2404.16967). The research question here concerns actual EVM tensor computation across separately published weight modules with atomic payment accounting. Global novelty remains unestablished.

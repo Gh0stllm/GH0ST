@@ -90,7 +90,8 @@ async function previewContext(context) {
   if (!state.verified) throw new Error('The deployment must pass verification before public preview.');
   const trace = normalizeTrace(await graphContract(currentGraph()).preview(context));
   const reference = forward(state.model, context, state.graphIndex === 1 ? state.alternate : null);
-  assertTrace(trace, reference);
+  try { assertTrace(trace, reference); }
+  catch (error) { state.verified = false; $('chain-status').textContent = 'Trace verification failed'; $('chain-status').classList.remove('live'); renderButtons(); throw error; }
   return trace;
 }
 

@@ -1,0 +1,15 @@
+# Aurora-80K screening
+
+Source: [AuroraAI-Research/Aurora-80K](https://huggingface.co/AuroraAI-Research/Aurora-80K), pinned revision `f4b2435cb572c815972302c0a4a7ad3d4b9c2d8b`. The model card labels the model Apache-2.0 and reports FineWeb-Edu training. These training and license statements are upstream claims; this screen did not reproduce training. `download-manifest.json` records every downloaded URL, byte size, and SHA-256. Upstream files are preserved unchanged.
+
+All 190 lines of `Inference.py` were inspected before execution. It defines PyTorch layers and a local CLI without networking or shell actions. `benchmark.py` verifies all file hashes and loads the checkpoint with `torch.load(..., weights_only=True)`, without Hugging Face remote-code loading. The checkpoint contains exactly 80,000 parameters. Shapes are independently recorded in `results.json`.
+
+The actual architecture is a two-block width-64 transformer, not the parallel expert architecture of SYNAPSE. It has rank-48, four-head attention, a 256-token attention window, ALiBi, RMSNorm, and width-122 SwiGLU feed-forward layers. Its 4,096-token vocabulary factors into 64 clusters and 64 sub-tokens, sharing embeddings with the hierarchical output head.
+
+The tokenizer uses a ByteLevel pre-tokenizer but has `decoder: null`; the upstream inference script therefore displays raw `Ġ` markers and spurious token-separating spaces. The benchmark fixes only text presentation with a local ByteLevel decoder. It does not change encoding, IDs, or weights. Both upstream cluster-first generation and the complete 4,096-way joint distribution were tested, greedily and with temperature 0.6, on five prompts, for 20 recorded runs of up to 48 new tokens each.
+
+Actual greedy completions collapse into repetitions. For example, `The sun is` produces `the the the ...`, `Robinhood is` produces `a a a ...`, and `Paris is the capital of` produces `the the the ...`. The full joint argmax has the same behavior. Sampling produces fragments such as `ow the the a the ais` rather than coherent answers. This is observed generation evidence, not a replication of the upstream benchmark suite.
+
+The estimated cached next-token matrix work is 79,616 multiply-accumulates plus 192 per context token, reaching 128,768 at a context of 256. The upstream script recomputes the context without a KV cache and does more work. Exact joint-vocabulary scoring adds 258,048 MACs over the native hierarchical head. These counts exclude RMSNorm, attention softmax, sigmoid, positional biases, caching, and Solidity overhead, and are not measured gas estimates. Feed-forward neurons could be divided into two additive modules, but those modules are jointly trained fragments, and the surrounding transformer operations still require an integer port and validation.
+
+Recommendation: preserve this as a rejected candidate. Its larger tokenizer does not deliver useful observed completions, while its nonlinearities, attention, and higher compute make the on-chain port substantially more involved than the domain candidate. No transaction, signing, deployment, or paid inference occurred during screening.
