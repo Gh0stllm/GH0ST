@@ -4,7 +4,7 @@ A creator interface for small numerical models that can execute directly on Robi
 
 ## Building
 
-Implementation is in progress on `research/gh0st-forge`. Intended release: browser CSV import, private in-browser training, held-out evaluation and baseline comparison, integer inference preview, portable model export, gas estimates and explicit creator-wallet deployment.
+Implementation is in progress on `research/gh0st-forge`. The Solidity runtime passes 44 independent Python/EVM full-trace comparisons and 36 focused validation, payment and adversarial checks on an isolated chain. [Runtime evidence](runtime/test-report.json) is simulation evidence, not a public model deployment. Intended release: browser CSV import, private in-browser training, held-out evaluation and baseline comparison, integer inference preview, portable model export, gas estimates and explicit creator-wallet deployment.
 
 The first version has up to eight numerical features, one small hidden layer and two to four output classes. It does not train or deploy arbitrary language models. Training occurs in the browser; no new ICP training service or model deployment is claimed. Creator deployments require their own wallet approval and native network gas. Creation is free for this first release; creators can optionally charge GH0ST per paid prediction through their deployed model.
 
