@@ -1,0 +1,16 @@
+import { build } from 'esbuild';
+import { mkdirSync, rmSync, copyFileSync, readFileSync, writeFileSync } from 'node:fs';
+import { dirname, resolve, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+const root = dirname(fileURLToPath(import.meta.url));
+const out = join(root, 'dist/forge');
+rmSync(out, { recursive: true, force: true });
+mkdirSync(join(out, 'assets'), { recursive: true });
+await build({ entryPoints: [join(root, 'app.mjs')], outfile: join(out, 'app.js'), bundle: true, minify: true, format: 'esm', platform: 'browser', target: 'es2022', legalComments: 'none' });
+await build({ entryPoints: [resolve(root, '../training/train-worker.mjs')], outfile: join(out, 'worker.js'), bundle: true, minify: true, format: 'esm', platform: 'browser', target: 'es2022', legalComments: 'none' });
+for (const file of ['index.html', 'style.css']) copyFileSync(join(root, file), join(out, file));
+for (const file of ['gh0st.svg', 'manrope.woff2', 'editorial-italic.woff2', 'LICENSE-manrope.txt', 'LICENSE-fraunces.txt']) copyFileSync(join(root, 'assets', file), join(out, 'assets', file.toLowerCase()));
+copyFileSync(resolve(root, '../runtime/artifacts.json'), join(out, 'artifacts.json'));
+copyFileSync(resolve(root, '../contracts/ForgeModel.sol'), join(out, 'forgemodel.sol'));
+writeFileSync(join(root, 'build-report.json'), JSON.stringify({ output: out, route: '/forge/', chainId: 4663, publicRPC: 'https://rpc.mainnet.chain.robinhood.com', generatedAt: new Date().toISOString() }, null, 2));
+console.log(`Built GH0ST Forge: ${out}`);

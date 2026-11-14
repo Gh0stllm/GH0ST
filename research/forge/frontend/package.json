@@ -1,0 +1,12 @@
+{
+  "name": "gh0st-forge-frontend",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "test": "node --test test.mjs && node test-wallet.mjs && node build.mjs && node test-app.mjs",
+    "test:wallet": "node test-wallet.mjs",
+    "test:app": "node build.mjs && node test-app.mjs",
+    "preview": "python3 -m http.server 4180 --directory dist"
+  }
+}
