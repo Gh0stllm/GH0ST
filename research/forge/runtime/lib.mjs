@@ -9,7 +9,6 @@ export const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const require = createRequire(join(ROOT, 'package.json'));
 export const solc = require('solc');
 export const ethers = require('ethers');
-export const ganache = require('ganache');
 export const versions = Object.fromEntries(['solc', 'ethers', 'ganache'].map(name => {
   let directory = dirname(require.resolve(name));
   while (directory !== dirname(directory)) {
@@ -68,6 +67,7 @@ export function compile(includeTests = false) {
 }
 
 export async function localChain() {
+  const ganache = require('ganache');
   const eip1193 = ganache.provider({
     logging: { quiet: true },
     wallet: { mnemonic: 'test test test test test test test test test test test junk', totalAccounts: 8, defaultBalance: 1000 },
