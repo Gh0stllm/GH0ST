@@ -1,6 +1,6 @@
 # GH0ST Forge
 
-[Open Forge](https://gh0st.fyi/forge/) · [Synapse foundation](../synapse/README.md)
+[Open Forge](https://gh0st.fyi/forge/) · [Synapse foundation](../synapse/README.md) · [Verified web release](results/web-release.json)
 
 Train a small numerical classifier in your browser, inspect its measured results, export it, and deploy one immutable model from your wallet on Robinhood Chain. Uploaded CSV rows stay on your device. Creation is free in this first release; a creator pays native network gas for their own deployment and can optionally charge GH0ST to record a prediction. Public read-only predictions remain available without a module payment.
 
