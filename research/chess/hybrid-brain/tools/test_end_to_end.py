@@ -13,9 +13,9 @@ from pocket_ic.pocket_ic_server import PocketICServer
 from pocket_ic.subnet_config import SubnetConfig,SubnetKind
 
 ROOT=Path(__file__).resolve().parents[1];CHESS=ROOT.parent;ENGINE=CHESS/'engine'
-WORK=ROOT/'target/end-to-end';WORK.mkdir(parents=True,exist_ok=True)
+WORK=ROOT/('target/signing-recovery' if '--signing-recovery'in sys.argv else 'target/full-integration');WORK.mkdir(parents=True,exist_ok=True)
 B=Types.Vec(Types.Nat8);T=Types.Text;N32=Types.Nat32;N64=Types.Nat64
-CONFIG=Types.Record({'engine_canister':Types.Principal,'engine_module_hash':B,'game_contract':B,'game_runtime_hash':B,'rpc_url':T,'confirmations':N64,'key_name':T,'reviewed_release':Types.Bool})
+CONFIG=Types.Record({'engine_canister':Types.Principal,'relay_canister':Types.Principal,'engine_module_hash':B,'game_contract':B,'game_runtime_hash':B,'rpc_url':T,'confirmations':N64,'key_name':T,'reviewed_release':Types.Bool})
 BINDING=Types.Record({'game_contract':B,'game_runtime_hash':B})
 MOVE=Types.Record({'game_id':B,'player':B,'ply':N32,'position_hash':B,'transcript_hash':B,'encoded_move':Types.Nat16,'engine_config_hash':B,'valid_until':N64})
 SIGNED=Types.Record({'move':MOVE,'signature':B})
@@ -23,7 +23,7 @@ JOB=Types.Record({'job_id':B,'game_id':B,'ply':N32,'position_hash':B,'step':N32,
 JR=Types.Variant({'Ok':JOB,'Err':T});TR=Types.Variant({'Ok':T,'Err':T});RR=Types.Variant({'Ok':Types.Reserved,'Err':T})
 REQUEST=Types.Record({'game_id':B,'expected_ply':N32,'expected_position_hash':B,'request_id':B,'moves':Types.Vec(T)})
 ADVANCE=Types.Record({'job_id':B,'expected_step':N32})
-STATUS=Types.Record({'production_ready':Types.Bool,'paid_entries_enabled':Types.Bool,'engine_config_hash':B,'attestor_address':T,'game_contract':T,'nodes':N64})
+STATUS=Types.Record({'relay_canister':Types.Principal,'production_ready':Types.Bool,'paid_entries_enabled':Types.Bool,'engine_config_hash':B,'attestor_address':T,'game_contract':T,'nodes':N64})
 SR=Types.Variant({'Ok':STATUS,'Err':T})
 def enc(t,v):return ic.encode([{'type':t,'value':v}])
 def dec(raw,t):return ic.decode(bytes(raw),[t])[0]['value']
@@ -43,9 +43,10 @@ recovery_mode='--signing-recovery'in sys.argv
 output_name='signing-recovery.json' if recovery_mode else 'quorum-transport.json' if quorum_only else 'end-to-end.json'
 genuine=None
 if recovery_mode:
- source=(ROOT/'evidence/end-to-end.json').read_bytes();genuine=json.loads(source);assert genuine['passed']
+ source=(ROOT/'evidence/end-to-end-optimized-pre-isolation.json').read_bytes();genuine=json.loads(source);assert genuine['passed']
  report['scope']='actual coordinator Signing retry with replayed genuine completed24m engine reply; no fresh inference'
  report['mocked'].append('separate TEST-ONLY engine fixture replays genuine recorded completed search metadata')
+ report['genuine_source_evidence']='end-to-end-optimized-pre-isolation.json'
  report['fresh_inference']=False;report['genuine_source_sha256']=hashlib.sha256(source).hexdigest()
 def save():(ROOT/'evidence'/output_name).write_text(json.dumps(plain(report),indent=2)+'\n')
 def check(name,yes):
@@ -84,12 +85,14 @@ try:
  pic.set_time(int(datetime.datetime(2026,1,1,tzinfo=datetime.timezone.utc).timestamp())*1_000_000_000)
  app=next(s for s,k in pic.topology().items() if k==SubnetKind.APPLICATION)
  controller=ic.Principal.self_authenticating(b'gh0st-hybrid-e2e-admin');pic.set_sender(controller)
- coordinator=pic.create_canister(subnet=app);engine=pic.create_canister(subnet=app);store=pic.create_canister(subnet=app)
+ coordinator=pic.create_canister(subnet=app);engine=pic.create_canister(subnet=app);store=pic.create_canister(subnet=app);relay=pic.create_canister(subnet=app)
  report['topology']=pic._instance_get('read/topology')
  report['engine_subnet']=pic.get_subnet(engine).to_str();report['coordinator_subnet']=pic.get_subnet(coordinator).to_str()
  report['application_subnet']=app.to_str()
  assert report['engine_subnet']==report['coordinator_subnet']==report['application_subnet']
- for c in [coordinator,engine,store]:pic.add_cycles(c,100_000_000_000_000)
+ for c in [coordinator,engine,store,relay]:pic.add_cycles(c,100_000_000_000_000)
+ relay_wasm=(ROOT/'tests/relay-driver/target/wasm32-unknown-unknown/release/gh0st_chess_test_relay_driver.wasm').read_bytes()
+ pic.install_code(relay,relay_wasm,[{'type':Types.Principal,'value':coordinator.bytes}])
  engine_path=ROOT/'tests/frozen-engine/target/wasm32-unknown-unknown/release/gh0st_chess_frozen_engine_fixture.wasm' if recovery_mode else ENGINE/'.cache/optimized-engine/engine.asyncify.wasm'
  engine_wasm=engine_path.read_bytes();engine_hash=hashlib.sha256(engine_wasm).digest()
  report['engine_wasm_sha256']=engine_hash.hex();report['engine_wasm_bytes']=len(engine_wasm)
@@ -104,7 +107,7 @@ try:
   init_args.append({'type':reply_type,'value':{k:genuine['search'][k] for k in ['bestmove','actual_nodes','depth','instructions']}})
  engine_args=ic.encode(init_args)
  pic.update_call_with_effective_principal(None,{'CanisterId':base64.b64encode(engine.bytes).decode()},'install_chunked_code',enc(install,{'mode':{'install':None},'target_canister':engine.bytes,'store_canister':[store.bytes],'chunk_hashes_list':hashes,'wasm_module_hash':engine_hash,'arg':engine_args}))
- c={'engine_canister':engine.bytes,'engine_module_hash':engine_hash,'game_contract':bytes(20),'game_runtime_hash':bytes(32),'rpc_url':'https://rpc.mainnet.chain.robinhood.com','confirmations':12,'key_name':'key_1','reviewed_release':False}
+ c={'engine_canister':engine.bytes,'relay_canister':relay.bytes,'engine_module_hash':engine_hash,'game_contract':bytes(20),'game_runtime_hash':bytes(32),'rpc_url':'https://rpc.mainnet.chain.robinhood.com','confirmations':12,'key_name':'key_1','reviewed_release':False}
  wasm=(ROOT/'target/wasm32-unknown-unknown/release/gh0st_chess_hybrid_brain.wasm').read_bytes();gz=gzip.compress(wasm,mtime=0)
  report['coordinator_raw_sha256']=hashlib.sha256(wasm).hexdigest();report['coordinator_installed_gzip_sha256']=hashlib.sha256(gz).hexdigest()
  pic.install_code(coordinator,gz,[{'type':CONFIG,'value':c}])
@@ -119,20 +122,26 @@ try:
  stage('installed_before_signer_or_deployment')
  signer=dec(pic.update_call(coordinator,'prepare_signer',ic.encode([])),TR);assert 'Ok'in signer,signer
  status=dec(pic.query_call(coordinator,'get_status',ic.encode([])),STATUS)
- check('real coordinator derives local management ECDSA signer and matches independent retained24m config hash',bytes(status['engine_config_hash'])==config_hash and status['attestor_address']==signer['Ok'] and not status['production_ready'])
+ check('real coordinator derives local management ECDSA signer and matches independent retained24m config hash',status['relay_canister'].bytes==relay.bytes and bytes(status['engine_config_hash'])==config_hash and status['attestor_address']==signer['Ok'] and not status['production_ready'])
  bridge_log=(WORK/'evm-bridge.log').open('w')
  bridge=subprocess.Popen(['node',str(ROOT/'tools/evm-bridge.mjs')],stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=bridge_log,text=True,bufsize=1,cwd=CHESS)
  def evm(command,**kwargs):
   bridge.stdin.write(json.dumps({'command':command,**kwargs})+'\n');bridge.stdin.flush();line=bridge.stdout.readline();assert line,'EVM bridge exited';r=json.loads(line);assert r['ok'],r;return r.get('result')
  deployment=evm('setup',attestor=signer['Ok'],engine_config_hash='0x'+config_hash.hex());report['local_evm_deployment']=deployment
  pic.set_time(int(deployment['block']['timestamp'],16)*1_000_000_000)
- http_calls=[];bad_quorum_once=True;bad_signing_once=recovery_mode
+ http_calls=[];bad_quorum_once=True;bad_signing_once=recovery_mode;use_relay=False
  def call(method,payload,typ):
-  body={'sender':base64.b64encode(pic.sender.bytes).decode(),'effective_principal':'None','canister_id':base64.b64encode(coordinator.bytes).decode(),'method':method,'payload':base64.b64encode(payload).decode()}
+  target=relay if use_relay else coordinator
+  wire=ic.encode([{'type':T,'value':method},{'type':B,'value':payload}]) if use_relay else payload
+  body={'sender':base64.b64encode(pic.sender.bytes).decode(),'effective_principal':'None','canister_id':base64.b64encode(target.bytes).decode(),'method':'drive' if use_relay else method,'payload':base64.b64encode(wire).decode()}
   mid=pic._get_ok(pic._instance_post('update/submit_ingress_message',body))
   for _ in range(2000):
    pic.tick();result=pic._ingress_status(mid)
-   if result:return dec(pic._get_ok_data(result),typ)
+   if result:
+    raw=pic._get_ok_data(result)
+    if use_relay:
+     forwarded=dec(raw,Types.Variant({'Ok':B,'Err':T}));assert 'Ok'in forwarded,forwarded;raw=forwarded['Ok']
+    return dec(raw,typ)
    for pending in pic._instance_get('read/get_canister_http'):
     assert pending['url']==c['rpc_url'],'outcall target changed'
     request=json.loads(base64.b64decode(pending['body']));response=evm('rpc',body=request)
@@ -180,6 +189,22 @@ try:
   report['passed']=True;report['check_count']=len(report['checks']);report['http_outcalls']=http_calls
   print(json.dumps({'passed':True,'scope':'actual flexible13/9head and static replicated batch normalization only','checks':len(report['checks'])},indent=2),flush=True)
   raise SystemExit(0)
+ if recovery_mode:
+  pic.set_anonymous_sender()
+  report['public_budget_drain_caller']='anonymous'
+  # Spend only synthetic local outcall cycles while paused; force the real public
+  # lane to its configured limit without adding a production budget-seed endpoint.
+  for attempts in range(1500):
+   advanced=evm('mine',seconds=35)['block'];pic.set_time(int(advanced['timestamp'],16)*1_000_000_000)
+   exhausted=call('refresh_status',ic.encode([]),SR)
+   if attempts%40==0:print('public quota drain',attempts+1,flush=True)
+   if 'Err'in exhausted and 'daily public'in exhausted['Err']:break
+  else:raise AssertionError('public quota did not exhaust in bounded local test')
+  report['public_budget_drain_attempts']=attempts+1
+  check('anonymous callers exhaust only their public canonical quota','daily public'in exhausted['Err'])
+ use_relay=True
+ protected=call('refresh_status',ic.encode([]),SR)
+ check('actual pinned relay can refresh independently of public quota and lease','Ok'in protected and protected['Ok']['production_ready'])
  state=evm('fund_enter');report['local_entry']=state;pic.set_time(int(state['block']['timestamp'],16)*1_000_000_000)
  # The public lease is30s. Advance only local chain/ICP test time between independent admission stages.
  state_block=evm('mine',seconds=35)['block'];pic.set_time(int(state_block['timestamp'],16)*1_000_000_000)
@@ -233,6 +258,22 @@ try:
  check('native service-timeout refunds exactly25k and releases full1m collateral independently of ICP',int(timed['refund'])==25_000*10**18 and int(timed['reserved'])==0 and int(timed['game']['result'])==6)
  advanced=evm('mine')['block'];pic.set_time(int(advanced['timestamp'],16)*1_000_000_000)
  reopened=call('refresh_status',ic.encode([]),SR)
+ if recovery_mode:
+  check('TEST engine commits terminal release but unavailable acknowledgement leaves jobs unpruned', 'Err'in reopened and 'reply is unavailable'in reopened['Err'] and dec(pic.query_call(coordinator,'get_job',ic.encode([{'type':B,'value':request['game_id']},{'type':N32,'value':1}])),Types.Opt(JOB)))
+  closed_status=dec(pic.query_call(coordinator,'get_status',ic.encode([])),STATUS)
+  check('unacknowledged terminal cleanup closes readiness and old-game inference',not closed_status['production_ready'] and 'Err'in call('request_bot',enc(REQUEST,request),JR))
+  # The engine already released; only coordinator upgrades. Its durable intent
+  # must survive and permit a fresh canonical terminal check, never a new search.
+  pic.set_sender(controller)
+  upgrade=Types.Record({'wasm_module':B,'canister_id':Types.Principal,'arg':B,'mode':Types.Variant({'upgrade':Types.Null})})
+  pic.update_call_with_effective_principal(None,{'CanisterId':base64.b64encode(coordinator.bytes).decode()},'install_code',enc(upgrade,{'wasm_module':gz,'canister_id':coordinator.bytes,'arg':ic.encode([]),'mode':{'upgrade':None}}))
+  pic.set_anonymous_sender()
+  advanced=evm('mine',seconds=35)['block'];pic.set_time(int(advanced['timestamp'],16)*1_000_000_000)
+  reopened=call('refresh_status',ic.encode([]),SR)
+  pruned=dec(pic.query_call(coordinator,'get_job',ic.encode([{'type':B,'value':request['game_id']},{'type':N32,'value':1}])),Types.Opt(JOB))
+  stats=dec(pic.query_call(engine,'stats',ic.encode([])),Types.Record({'release_calls':N32}))
+  check('durable cleanup survives coordinator upgrade and prunes only canonically terminal already-released game', 'Ok'in reopened and not pruned and stats['release_calls']==1)
+  check('closed-game tombstone rejects replayed old request after cleanup','Err'in call('request_bot',enc(REQUEST,request),JR))
  check('canonical terminal acknowledgement releases retained engine and permits a new funded round', 'Ok'in reopened and reopened['Ok']['production_ready'] and reopened['Ok']['paid_entries_enabled'])
  report['http_outcalls']=http_calls;report['passed']=True;report['check_count']=len(report['checks']);save();print(json.dumps({'passed':True,'checks':len(report['checks']),'search':report['search']},indent=2),flush=True)
 finally:

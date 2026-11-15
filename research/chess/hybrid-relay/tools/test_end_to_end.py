@@ -18,9 +18,9 @@ MOVE=Types.Record({'game_id':B,'player':B,'ply':N32,'position_hash':B,'transcrip
 SIGNED=Types.Record({'move':MOVE,'signature':B})
 GAME=Types.Record({'player':B,'nonce':B,'opened_at':N64,'turn_deadline':N64,'result':Types.Nat8,'ply':N32,'position_hash':B,'transcript_hash':B,'board':B,'castling':Types.Nat8,'en_passant':Types.Nat8,'halfmove_clock':Types.Nat16,'black_to_move':Types.Bool})
 JOB=Types.Record({'job_id':B,'game_id':B,'ply':N32,'position_hash':B,'step':N32,'phase':T,'error':Types.Opt(T),'actual_nodes':N64,'requested_nodes':N64,'depth':N32,'instructions':N64,'stop_reason':T,'bestmove':T,'signed_move':Types.Opt(SIGNED),'engine_job_id':B,'moves':Types.Vec(T),'game':Types.Opt(GAME),'in_flight':Types.Bool,'created_at':N64,'updated_at':N64})
-FIXTURE=Types.Record({'job':JOB,'game_contract':B,'bot_attestor':B,'search_steps':Types.Opt(N32)})
+FIXTURE=Types.Record({'relay_canister':Types.Principal,'job':JOB,'game_contract':B,'bot_attestor':B,'search_steps':Types.Opt(N32)})
 CONFIG=Types.Record({'coordinator':Types.Principal,'coordinator_module_hash':B,'engine_config_hash':B,'game_contract':B,'game_runtime_hash':B,'bot_attestor':B,'rpc_url':T,'key_name':T,'confirmations':N64,'idle_poll_seconds':N64,'max_gas_limit':N64,'max_fee_per_gas_wei':N64,'max_tx_cost_wei':Types.Nat,'lifetime_gas_budget_wei':Types.Nat})
-STATUS=Types.Record({'ready':Types.Bool,'enabled':Types.Bool,'blockers':Types.Vec(T),'relayer_address':T,'pending':Types.Bool,'in_flight':Types.Bool,'remaining_gas_budget_wei':Types.Nat,'completed_transactions':N64,'last_error':Types.Opt(T),'pending_hash':T,'gas_balance_wei':Types.Nat,'last_checked_at':N64,'advisory_last_checked_at':N64,'rpc_cycles_booked_today':Types.Nat,'last_http_prepayment_cycles':Types.Nat,'last_http_reserve_cycles':Types.Nat,'last_http_booked_cycles':Types.Nat,'last_flexible_reserve_cycles':Types.Nat,'last_flexible_booked_cycles':Types.Nat})
+STATUS=Types.Record({'ready':Types.Bool,'enabled':Types.Bool,'blockers':Types.Vec(T),'relayer_address':T,'pending':Types.Bool,'in_flight':Types.Bool,'configured_lifetime_gas_budget_wei':Types.Nat,'maximum_supported_lifetime_gas_budget_wei':Types.Nat,'remaining_gas_budget_wei':Types.Nat,'completed_transactions':N64,'last_error':Types.Opt(T),'pending_hash':T,'gas_balance_wei':Types.Nat,'last_checked_at':N64,'advisory_last_checked_at':N64,'rpc_cycle_limit_per_day':Types.Nat,'rpc_cycles_booked_today':Types.Nat,'last_http_prepayment_cycles':Types.Nat,'last_http_reserve_cycles':Types.Nat,'last_http_booked_cycles':Types.Nat,'last_flexible_reserve_cycles':Types.Nat,'last_flexible_booked_cycles':Types.Nat})
 PENDING=Types.Record({'phase':T,'raw':B,'hash':B,'broadcasts':N32,'created_at':N64,'broadcast_at':N64})
 RESULT=Types.Variant({'Ok':STATUS,'Err':T});TR=Types.Variant({'Ok':T,'Err':T})
 def enc(t,v):return ic.encode([{'type':t,'value':v}])
@@ -61,7 +61,7 @@ try:
  ms={k:(blob(v) if k in ['game_id','player','position_hash','transcript_hash','engine_config_hash'] else int(v)) for k,v in m.items()}
  job={'job_id':hashlib.sha256(b'GH0ST_HYBRID_JOB_V1'+ms['game_id']+ms['ply'].to_bytes(4,'big')+ms['position_hash']+ms['engine_config_hash']).digest(),'game_id':ms['game_id'],'ply':ms['ply'],'position_hash':ms['position_hash'],'step':frozen['search']['engine_steps'],'phase':'Completed','error':[],'actual_nodes':frozen['search']['actual_nodes'],'requested_nodes':24_000_000,'depth':frozen['search']['depth'],'instructions':frozen['search']['instructions'],'stop_reason':frozen['search']['stop_reason'],'bestmove':frozen['search']['bestmove'],'signed_move':[{'move':ms,'signature':blob(signed['signature'])}],'engine_job_id':b'','moves':['e2e4'],'game':[],'in_flight':False,'created_at':int(frozen['local_entry']['game']['opened_at']),'updated_at':int(frozen['local_entry']['game']['opened_at'])+60}
  fixture_wasm=(ROOT/'tests/fixture-coordinator/target/wasm32-unknown-unknown/release/gh0st_chess_frozen_coordinator_fixture.wasm').read_bytes();fixture_gz=gzip.compress(fixture_wasm,mtime=0)
- pic.install_code(fixture,fixture_gz,[{'type':FIXTURE,'value':{'job':job,'game_contract':blob(deployment['contract']),'bot_attestor':blob(attestor),'search_steps':[SEARCH_STEPS]}}])
+ pic.install_code(fixture,fixture_gz,[{'type':FIXTURE,'value':{'relay_canister':relay.bytes,'job':job,'game_contract':blob(deployment['contract']),'bot_attestor':blob(attestor),'search_steps':[SEARCH_STEPS]}}])
  wasm=(Path(os.environ['RELAY_TEST_WASM'])if os.environ.get('RELAY_TEST_WASM')else ROOT/'target/wasm32-unknown-unknown/release/gh0st_chess_hybrid_relay.wasm').read_bytes();gz=gzip.compress(wasm,mtime=0)
  c={'coordinator':fixture.bytes,'coordinator_module_hash':hashlib.sha256(fixture_gz).digest(),'engine_config_hash':ms['engine_config_hash'],'game_contract':blob(deployment['contract']),'game_runtime_hash':blob(deployment['runtime_hash']),'bot_attestor':blob(attestor),'rpc_url':'https://rpc.mainnet.chain.robinhood.com','key_name':'key_1','confirmations':12,'idle_poll_seconds':30,'max_gas_limit':4_000_000,'max_fee_per_gas_wei':100_000_000,'max_tx_cost_wei':200_000_000_000_000,'lifetime_gas_budget_wei':2_500_000_000_000_000}
  report.update({'relay_wasm_raw_sha256':hashlib.sha256(wasm).hexdigest(),'relay_installed_gzip_sha256':hashlib.sha256(gz).hexdigest(),'fixture_coordinator_gzip_sha256':hashlib.sha256(fixture_gz).hexdigest(),'relay_subnet':pic.get_subnet(relay).to_str(),'source_policy':{'max_gas_limit':c['max_gas_limit'],'max_fee_per_gas_wei':c['max_fee_per_gas_wei'],'max_tx_cost_wei':c['max_tx_cost_wei'],'lifetime_gas_budget_wei':c['lifetime_gas_budget_wei']}})
@@ -70,12 +70,12 @@ try:
  signer=dec(pic.update_call(relay,'prepare_signer',ic.encode([])),TR);assert 'Ok'in signer,signer;relayer=signer['Ok'];report['relayer_address']=relayer
  check('independent relay key differs from the brain move-attestor key',relayer.lower()!=attestor.lower())
  evm('fund_relayer',address=relayer)
- broadcasts=[];lost_response=False;did_upgrade=False;nonce_conflict_injected=False;receipt_recovered=False;bad_quorum_once=True;http_calls=[];false_advisory=False;false_advisory_injected=False;false_search_hint=bool(SEARCH_STEPS)and not BASELINE;false_search_hint_injected=False;turn_before_booked=0;turn_first_call=0
+ broadcasts=[];lost_response=False;did_upgrade=False;nonce_conflict_injected=False;receipt_recovered=False;bad_quorum_once=True;http_calls=[];false_advisory=False;false_advisory_injected=False;false_search_hint=bool(SEARCH_STEPS)and not BASELINE;false_search_hint_injected=False;disabled_resend_attempted=False;disabled_resend_proved=False;vacant_nonce_supplied=False;resend_wait_ticks=0;turn_before_booked=0;turn_first_call=0
  def status():return dec(pic.query_call(relay,'get_status',ic.encode([])),STATUS)
  def pending():return dec(pic.query_call(relay,'get_pending',ic.encode([])),Types.Opt(PENDING))
  def pump():
   pic.tick()
-  global lost_response,nonce_conflict_injected,bad_quorum_once,false_advisory,false_advisory_injected,false_search_hint,false_search_hint_injected
+  global lost_response,nonce_conflict_injected,bad_quorum_once,false_advisory,false_advisory_injected,false_search_hint,false_search_hint_injected,disabled_resend_attempted,vacant_nonce_supplied
   for q in pic._instance_get('read/get_canister_http'):
    assert q['url']==c['rpc_url'];request=json.loads(base64.b64decode(q['body']));response=evm('rpc',body=request)
    advisory=isinstance(request,list) and any((x.get('params')or[None])[-1]=='latest'for x in request) and all(x['method']in['eth_chainId','eth_call','eth_getBalance']for x in request)
@@ -97,12 +97,26 @@ try:
      lost_response=True;mock={'CanisterHttpReject':{'reject_code':2,'message':'TEST: reply lost after actual local EVM inclusion'}}
     else:mock={'CanisterHttpReply':{'status':200,'headers':[],'body':base64.b64encode(json.dumps(response).encode()).decode()}}
    else:
-    if did_upgrade and not nonce_conflict_injected and isinstance(request,list) and any(x.get('method')=='eth_getTransactionReceipt' for x in request):
-     # Model a lagging/inconsistent provider: the real local receipt exists, but one
-     # observation returns no transaction while reporting its nonce already consumed.
+    if did_upgrade and not disabled_resend_attempted and isinstance(request,list) and any(x.get('method')=='eth_getTransactionReceipt' for x in request):
+     # A stop arrives while the earlier reconcile awaits its receipt. Model a
+     # lagging provider's absent tx/vacant nonce so that old continuation would
+     # otherwise reach the identical-byte retry branch after this await.
+     stopped=dec(pic.update_call(relay,'set_enabled',enc(Types.Bool,False)),RESULT);assert 'Ok'in stopped
+     pic.advance_time(40_000_000_000);disabled_resend_attempted=True
      for row in response:
-      if row['id'] in [1,2]:row['result']=None
+      if row['id']in[1,2]:row['result']=None
+    elif did_upgrade and disabled_resend_proved and not nonce_conflict_injected and isinstance(request,list) and any(x.get('method')=='eth_getTransactionReceipt' for x in request):
+     for row in response:
+      if row['id']in[1,2]:row['result']=None
      nonce_conflict_injected=True
+    reqs=request if isinstance(request,list)else[request]
+    replies=response if isinstance(response,list)else[response]
+    if disabled_resend_attempted and not disabled_resend_proved and any(x.get('method')=='eth_getTransactionCount'for x in reqs):
+     for req in reqs:
+      if req['method']=='eth_getTransactionCount':
+       for row in replies:
+        if row['id']==req['id']:row['result']='0x0'
+       if req['params'][1].startswith('0x'):vacant_nonce_supplied=True
     mock={'CanisterHttpReply':{'status':200,'headers':[],'body':base64.b64encode(json.dumps(response).encode()).decode()}}
    flexible=isinstance(q.get('replication'),dict) and 'Flexible'in q['replication']
    methods=[x['method']for x in request]if isinstance(request,list)else[request['method']]
@@ -140,12 +154,23 @@ try:
      extra=[rev for _ in range(6)]+[norm for _ in range(6)]
     pic._instance_post('update/mock_canister_http',{'subnet_id':q['subnet_id'],'request_id':q['request_id'],'response':mock,'additional_responses':extra})
 
- def call(method,payload,typ):
-  body={'sender':base64.b64encode(pic.sender.bytes).decode(),'effective_principal':'None','canister_id':base64.b64encode(relay.bytes).decode(),'method':method,'payload':base64.b64encode(payload).decode()};mid=pic._get_ok(pic._instance_post('update/submit_ingress_message',body))
+ def call(method,payload,typ,target=None):
+  target=target or relay
+  body={'sender':base64.b64encode(pic.sender.bytes).decode(),'effective_principal':'None','canister_id':base64.b64encode(target.bytes).decode(),'method':method,'payload':base64.b64encode(payload).decode()};mid=pic._get_ok(pic._instance_post('update/submit_ingress_message',body))
   for _ in range(500):
    pump();r=pic._ingress_status(mid)
    if r:return dec(pic._get_ok_data(r),typ)
   raise TimeoutError('relay '+method)
+ # The fixture itself immutably binds its relay at install. A second relay,
+ # even with matching modules/game/policy, must reject another relay's binding.
+ wrong_fixture=pic.create_canister(subnet=app);wrong_relay=pic.create_canister(subnet=app)
+ for x in [wrong_fixture,wrong_relay]:pic.add_cycles(x,10_000_000_000_000)
+ pic.install_code(wrong_fixture,fixture_gz,[{'type':FIXTURE,'value':{'relay_canister':relay.bytes,'job':job,'game_contract':blob(deployment['contract']),'bot_attestor':blob(attestor),'search_steps':[SEARCH_STEPS]}}])
+ wrong_config=dict(c,coordinator=wrong_fixture.bytes)
+ pic.install_code(wrong_relay,gz,[{'type':CONFIG,'value':wrong_config}])
+ wrong_signer=dec(pic.update_call(wrong_relay,'prepare_signer',ic.encode([])),TR);assert 'Ok'in wrong_signer
+ wrong=call('set_enabled',enc(Types.Bool,True),RESULT,target=wrong_relay)
+ check('matching code and game cannot enable a relay with another immutable admission principal','Err'in wrong and 'coordinator policy/deployment mismatch'in wrong['Err'])
  rejected=call('set_enabled',enc(Types.Bool,True),RESULT)
  check('only eight valid committee heads cannot enable sending', 'Err'in rejected and '9 valid'in rejected['Err'] and not status()['enabled']and not pending())
  enabled=call('set_enabled',enc(Types.Bool,True),RESULT);assert 'Ok'in enabled,enabled
@@ -162,6 +187,13 @@ try:
    pic.update_call_with_effective_principal(None,{'CanisterId':base64.b64encode(relay.bytes).decode()},'install_code',enc(upgrade,{'mode':{'upgrade':None},'canister_id':relay.bytes,'wasm_module':gz,'arg':ic.encode([])}));after=pending()[0]
    check('same-source upgrade preserves submitted raw transaction hash and nonce intent',bytes(after['raw'])==bytes(prior['raw']) and bytes(after['hash'])==bytes(prior['hash']) and after['phase']=='Submitted')
    did_upgrade=True
+  if vacant_nonce_supplied and not disabled_resend_proved:
+   resend_wait_ticks+=1
+   if resend_wait_ticks>=5 and not pic._instance_get('read/get_canister_http'):
+    dur=pending()[0]
+    check('disable during awaited reconciliation suppresses an otherwise eligible identicalraw resend',not s['enabled']and s['pending']and len(broadcasts)==1 and dur['broadcasts']==1 and dur['phase']=='Submitted')
+    disabled_resend_proved=True
+    resumed_stop=call('set_enabled',enc(Types.Bool,True),RESULT);assert 'Ok'in resumed_stop,resumed_stop
   if nonce_conflict_injected and not receipt_recovered and s['last_error'] and 'nonce conflict'in s['last_error'][0]:
    check('ambiguous consumed nonce halts new work without replacing the durable transaction',not s['enabled'] and s['pending'] and len(broadcasts)==1)
    pic.advance_time(4_000_000_000)
@@ -210,8 +242,8 @@ try:
  refresh_calls=http_calls[prior_calls:];report['confirmed_refresh_calls']=refresh_calls
  advisory=max(x['prepayment_cycles']for x in report['idle_interval']['calls'])
  refresh=sum(x['prepayment_cycles']for x in refresh_calls)
- report['idle_budget_projection']={'scope':'conservative maximum attached prepayment; asynchronous refunds excluded; no gameplay or execution overhead','advisory_interval_seconds':30,'confirmed_refresh_interval_seconds':300,'max_advisory_prepayment_cycles':advisory,'complete_confirmed_refresh_prepayment_cycles':refresh,'daily_advisory_prepayment_cycles':advisory*2880,'daily_confirmed_refresh_prepayment_cycles':refresh*288,'daily_total_upper_bound_cycles':advisory*2880+refresh*288,'daily_cap_cycles':10**12,'gameplay_prepayment_headroom_cycles':10**12-advisory*2880-refresh*288}
- check('complete24hour idle prepayment projection leaves at least350B cycles gameplay headroom',report['idle_budget_projection']['gameplay_prepayment_headroom_cycles']>=350_000_000_000)
+ report['idle_budget_projection']={'scope':'conservative maximum attached prepayment; asynchronous refunds excluded; no gameplay or execution overhead','advisory_interval_seconds':30,'confirmed_refresh_interval_seconds':300,'max_advisory_prepayment_cycles':advisory,'complete_confirmed_refresh_prepayment_cycles':refresh,'daily_advisory_prepayment_cycles':advisory*2880,'daily_confirmed_refresh_prepayment_cycles':refresh*288,'daily_total_upper_bound_cycles':advisory*2880+refresh*288,'daily_cap_cycles':last['rpc_cycle_limit_per_day'],'gameplay_prepayment_headroom_cycles':last['rpc_cycle_limit_per_day']-advisory*2880-refresh*288}
+ check('complete24hour idle prepayment projection leaves at least1350B cycles gameplay headroom',report['idle_budget_projection']['gameplay_prepayment_headroom_cycles']>=1_350_000_000_000)
 
 
  report['passed']=True;report['check_count']=len(report['checks']);save();print(json.dumps({'passed':True,'checks':len(report['checks']),'tx_hash':broadcasts[0]['hash'],'gas_cost_wei':gas_cost,'relay_cycles_debit':report['relay_cycles_debit']},indent=2),flush=True)

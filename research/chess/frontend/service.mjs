@@ -8,7 +8,7 @@ export function idlFactory({IDL}){
   const Signed=IDL.Record({move:Move,signature:Blob});
   const Job=IDL.Record({job_id:Blob,game_id:Blob,ply:IDL.Nat32,position_hash:Blob,step:IDL.Nat32,phase:IDL.Text,error:IDL.Opt(IDL.Text),actual_nodes:IDL.Nat64,requested_nodes:IDL.Nat64,depth:IDL.Nat32,instructions:IDL.Nat64,stop_reason:IDL.Text,bestmove:IDL.Text,signed_move:IDL.Opt(Signed),in_flight:IDL.Bool,updated_at:IDL.Nat64});
   const Result=IDL.Variant({Ok:Job,Err:IDL.Text});
-  const Status=IDL.Record({production_ready:IDL.Bool,paid_entries_enabled:IDL.Bool,blockers:IDL.Vec(IDL.Text),engine_config_hash:Blob,engine_canister:IDL.Principal,stockfish_commit:IDL.Text,nnue_sha256:IDL.Text,nodes:IDL.Nat64,hash_mb:IDL.Nat32,cache_policy:IDL.Text,attestor_address:IDL.Text,chain_id:IDL.Nat64,game_contract:IDL.Text});
+  const Status=IDL.Record({production_ready:IDL.Bool,paid_entries_enabled:IDL.Bool,blockers:IDL.Vec(IDL.Text),engine_config_hash:Blob,engine_canister:IDL.Principal,relay_canister:IDL.Principal,stockfish_commit:IDL.Text,nnue_sha256:IDL.Text,nodes:IDL.Nat64,hash_mb:IDL.Nat32,cache_policy:IDL.Text,attestor_address:IDL.Text,chain_id:IDL.Nat64,game_contract:IDL.Text});
   return IDL.Service({
     get_status:IDL.Func([],[Status],['query']),refresh_status:IDL.Func([],[IDL.Variant({Ok:Status,Err:IDL.Text})],[]),
     get_job:IDL.Func([Blob,IDL.Nat32],[IDL.Opt(Job)],['query']),
@@ -16,7 +16,24 @@ export function idlFactory({IDL}){
     advance_job:IDL.Func([IDL.Record({job_id:Blob,expected_step:IDL.Nat32})],[Result],[]),
   });
 }
-export function relayIdlFactory({IDL}){return IDL.Service({get_status:IDL.Func([],[IDL.Record({ready:IDL.Bool,enabled:IDL.Bool,blockers:IDL.Vec(IDL.Text),chain_id:IDL.Nat64,game_contract:IDL.Text,coordinator:IDL.Principal,coordinator_module_hash:IDL.Vec(IDL.Nat8),bot_attestor_address:IDL.Text,relayer_address:IDL.Text,gas_balance_wei:IDL.Nat,last_checked_at:IDL.Nat64,cycles:IDL.Nat,pending:IDL.Bool,remaining_gas_budget_wei:IDL.Nat})],['query'])});}
+export function relayIdlFactory({IDL}){return IDL.Service({get_status:IDL.Func([],[IDL.Record({ready:IDL.Bool,enabled:IDL.Bool,blockers:IDL.Vec(IDL.Text),chain_id:IDL.Nat64,game_contract:IDL.Text,coordinator:IDL.Principal,coordinator_module_hash:IDL.Vec(IDL.Nat8),bot_attestor_address:IDL.Text,relayer_address:IDL.Text,gas_balance_wei:IDL.Nat,last_checked_at:IDL.Nat64,cycles:IDL.Nat,pending:IDL.Bool,remaining_gas_budget_wei:IDL.Nat,configured_lifetime_gas_budget_wei:IDL.Nat,maximum_supported_lifetime_gas_budget_wei:IDL.Nat})],['query'])});}
+export function assertProtectedRelay(c,brain,relay){
+  if(brain.relay_canister?.toText?.()!==c.relayCanisterId)throw new Error('The brain does not reserve admission for this reviewed relay.');
+  if(relay.configured_lifetime_gas_budget_wei!==BigInt(c.relayLifetimeGasBudgetWei)||relay.maximum_supported_lifetime_gas_budget_wei!==9_500_000_000_000_000n)throw new Error('The configured relay gas authority differs from this release.');
+}
+export async function readBrainReadiness(actor,{refresh=false}={}){
+  let status=await actor.get_status();
+  const stale=!status.production_ready&&status.blockers.length===1&&status.blockers[0]==='canonical deployment readiness needs refresh_status';
+  if(refresh||stale){
+    try{unwrap(await actor.refresh_status());}catch{
+      const latest=await actor.get_status();
+      if(!latest.production_ready||latest.blockers.length)throw new Error('Waiting for the autonomous relay to confirm readiness. Public status refresh is unavailable.');
+      return latest;
+    }
+    status=await actor.get_status();
+  }
+  return status;
+}
 const KEY='gh0st-chess-hybrid-brain-intent-v2';
 const unwrap=r=>{if('Err'in r)throw new Error(`ICP brain: ${typeof r.Err==='string'?r.Err:variant(r.Err)}`);return r.Ok;};
 export function signedEnvelope(job){const signed=job?.signed_move?.[0];if(!signed)return null;const m=signed.move;return{move:{gameId:hex(m.game_id),player:hex(m.player),ply:m.ply,positionHash:hex(m.position_hash),transcriptHash:hex(m.transcript_hash),encodedMove:m.encoded_move,engineConfigHash:hex(m.engine_config_hash),validUntil:String(m.valid_until)},signature:hex(signed.signature)};}
@@ -26,9 +43,8 @@ export class ChessService{
   async verify({refresh=false}={}){
     this.verified=false;validateConfig(this.config);const c=this.config,agent=HttpAgent.createSync({host:c.icHost});
     for(const[id,expected,controllers]of[[c.authorityCanisterId,c.authorityModuleHash,c.authorityControllers],[c.engineCanisterId,c.engineModuleHash,c.engineControllers],[c.relayCanisterId,c.relayModuleHash,c.relayControllers]]){const principal=Principal.fromText(id);if(principal.isAnonymous())throw new Error('Anonymous canister identity is invalid.');const status=await CanisterStatus.request({agent,canisterId:principal,paths:['module_hash','controllers']});const actual=status.get('module_hash');const digest=typeof actual==='string'?actual.replace(/^0x/,''):hex(new Uint8Array(actual||[])).slice(2);if(!same(digest,expected))throw new Error('A certified brain module hash differs from the reviewed release.');const actualControllers=status.get('controllers');if(!Array.isArray(actualControllers)||JSON.stringify(actualControllers.map(x=>x.toText()).sort())!==JSON.stringify([...controllers].sort()))throw new Error('The certified brain controller set differs from the reviewed release.');}
-    if(refresh)unwrap(await this.publicActor().refresh_status());
-    let s=await this.publicActor().get_status();if(!refresh&&!s.production_ready&&s.blockers.length===1&&s.blockers[0]==='canonical deployment readiness needs refresh_status'){unwrap(await this.publicActor().refresh_status());s=await this.publicActor().get_status();}if(!s.production_ready||s.blockers.length)throw new Error(s.blockers.join(' ')||'The brain is not accepting paid games.');
-    if(!same(hex(s.engine_config_hash),c.engineConfigHash)||s.engine_canister.toText()!==c.engineCanisterId||s.stockfish_commit!==c.engineCommit||!same(s.nnue_sha256,c.nnueSha256)||s.nodes!==BigInt(c.nodes)||s.hash_mb!==c.hashMb||s.cache_policy!==c.cachePolicy||!same(s.attestor_address,c.attestorAddress)||s.chain_id!==4663n||!same(s.game_contract,c.vaultAddress))throw new Error('The ICP brain policy, signer, game contract or chain differs from this release.');const relay=Actor.createActor(relayIdlFactory,{canisterId:c.relayCanisterId,agent});const rs=await relay.get_status();if(!rs.ready||!rs.enabled||rs.blockers.length||rs.last_checked_at>BigInt(Math.floor(Date.now()/1000)+30)||BigInt(Math.floor(Date.now()/1000))-rs.last_checked_at>BigInt(c.relayReadinessTTLSeconds)||rs.gas_balance_wei<BigInt(c.relayMinimumGasWei)||rs.remaining_gas_budget_wei<BigInt(c.relayMinimumGasWei))throw new Error(rs.blockers.join(' ')||'The autonomous bot relay is stale, disabled or lacks its gas reserve.');if(rs.chain_id!==4663n||!same(rs.game_contract,c.vaultAddress)||rs.coordinator.toText()!==c.authorityCanisterId||!same(hex(rs.coordinator_module_hash),c.authorityModuleHash)||!same(rs.bot_attestor_address,c.attestorAddress)||!same(rs.relayer_address,c.relayAddress))throw new Error('The autonomous relay differs from the reviewed chain, game, brain or signer.');this.relayStatus=rs;this.verified=true;this.status=s;this.changed();return s;
+    const s=await readBrainReadiness(this.publicActor(),{refresh});if(!s.production_ready||s.blockers.length)throw new Error(s.blockers.join(' ')||'The brain is not accepting paid games.');
+    if(!same(hex(s.engine_config_hash),c.engineConfigHash)||s.engine_canister.toText()!==c.engineCanisterId||s.stockfish_commit!==c.engineCommit||!same(s.nnue_sha256,c.nnueSha256)||s.nodes!==BigInt(c.nodes)||s.hash_mb!==c.hashMb||s.cache_policy!==c.cachePolicy||!same(s.attestor_address,c.attestorAddress)||s.chain_id!==4663n||!same(s.game_contract,c.vaultAddress))throw new Error('The ICP brain policy, signer, game contract or chain differs from this release.');const relay=Actor.createActor(relayIdlFactory,{canisterId:c.relayCanisterId,agent});const rs=await relay.get_status();assertProtectedRelay(c,s,rs);if(!rs.ready||!rs.enabled||rs.blockers.length||rs.last_checked_at>BigInt(Math.floor(Date.now()/1000)+30)||BigInt(Math.floor(Date.now()/1000))-rs.last_checked_at>BigInt(c.relayReadinessTTLSeconds)||rs.gas_balance_wei<BigInt(c.relayMinimumGasWei)||rs.remaining_gas_budget_wei<BigInt(c.relayMinimumGasWei))throw new Error(rs.blockers.join(' ')||'The autonomous bot relay is stale, disabled or lacks its gas reserve.');if(rs.chain_id!==4663n||!same(rs.game_contract,c.vaultAddress)||rs.coordinator.toText()!==c.authorityCanisterId||!same(hex(rs.coordinator_module_hash),c.authorityModuleHash)||!same(rs.bot_attestor_address,c.attestorAddress)||!same(rs.relayer_address,c.relayAddress))throw new Error('The autonomous relay differs from the reviewed chain, game, brain or signer.');this.relayStatus=rs;this.verified=true;this.status=s;this.changed();return s;
   }
   persist(p){if(p)localStorage.setItem(KEY,JSON.stringify(p));else localStorage.removeItem(KEY);this.pending=p;this.changed();}
   async getJob(gameId,ply){const result=await this.publicActor().get_job(bytes(gameId),Number(ply));this.job=result[0]||null;this.changed();return this.job;}

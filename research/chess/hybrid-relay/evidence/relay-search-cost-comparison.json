@@ -1,9 +1,9 @@
 {
   "scope": "Actual isolated relay executions of35 synthetic advancing transitions at10seconds between bounded actions; frozen genuine24m result, no new inference, no mainnet",
   "baseline_source": "temporary same-source crate with only prior full-head search polling restored by tools/build_cost_baseline.py",
-  "optimized_source": "current production-candidate relay; additionally tested a false cancellation hint",
+  "optimized_source": "current production-candidate relay with2T daily booking cap, immutable relay binding and stop/profile regressions; frozen genuine job replay",
   "baseline_wasm_sha256": "fe43a7353e4fc2666aaae4fdf5fdb3215b2aa5908eac564ca6b4004c3a054027",
-  "optimized_wasm_sha256": "a7a675465bab885751152ec665fdd115bbaaba8bf135bc8097d0d359e8a245f0",
+  "optimized_wasm_sha256": "b7d6c638d76bdae5ee93ecf9191b7bd06a6ab011ed607f3f99446d4ae1a19fe1",
   "http_booked_until_first_broadcast": {
     "before_cycles": 16087671197,
     "after_cycles": 8680772568,
@@ -15,19 +15,19 @@
   },
   "full_execution_balance_debit": {
     "before_cycles": 35475425747,
-    "after_cycles": 35020639899,
-    "caveat": "Includes signature, execution and lost-reply/upgrade/nonce-conflict recovery; asynchronous V2 refunds make booking savings different from net burn savings."
+    "after_cycles": 37343176982,
+    "caveat": "Current proof adds disable-during-await and immutable-principal checks; full recovery traces differ from the old baseline, so this is not a matched net-burn savings claim. V2 refunds are asynchronous."
   },
   "complete_scenario_http_booked": {
     "before_cycles": 22610640377,
-    "after_cycles": 15203741748,
-    "includes": "bootstrap/failed8validenable and successful enable plus full turn, lost reply, upgrade, nonce conflict and receipt-only recovery; a conservative bound, not healthy-turn-only cost"
+    "after_cycles": 20242358994,
+    "includes": "Current trace additionally tests disable-during-await/resume and immutable wrong-relay rejection; repeated bootstrap/fault costs are conservative, not healthy-turn-only costs."
   },
   "full_idle_upper_bound_cycles_per_day": 645990355296,
   "full_idle_plus_complete_scenario_copies": {
-    "10": 798027772776,
-    "20": 950065190256,
-    "40": 1254140025216
+    "10": 848413945236,
+    "20": 1050837535176,
+    "40": 1455684715056
   },
   "full_idle_plus_turns_until_broadcast": {
     "10": 732798080976,
@@ -36,5 +36,6 @@
   },
   "forecast_caveat": "Forecasts intentionally count a full day of idle polling in addition to gameplay, and complete scenario copies repeatedly count bootstrap/fault recovery. They do not guarantee an arbitrary-length game within daily quota. Receipt/reconciliation costs follow the first broadcast.",
   "passed": true,
-  "all_owned_processes_stopped": true
+  "all_owned_processes_stopped": true,
+  "daily_http_booking_cap_cycles": 2000000000000
 }

@@ -25,7 +25,7 @@ ENGINE = ROOT.parent / "engine"
 WORK = ROOT / "target/pocketic-gate"
 WORK.mkdir(parents=True, exist_ok=True)
 BLOB = Types.Vec(Types.Nat8)
-CONFIG = Types.Record({"engine_canister": Types.Principal, "engine_module_hash": BLOB,
+CONFIG = Types.Record({"engine_canister": Types.Principal, "relay_canister": Types.Principal, "engine_module_hash": BLOB,
     "game_contract": BLOB, "game_runtime_hash": BLOB, "rpc_url": Types.Text,
     "confirmations": Types.Nat64, "key_name": Types.Text, "reviewed_release": Types.Bool})
 STATUS = Types.Record({"production_ready": Types.Bool, "paid_entries_enabled": Types.Bool,
@@ -81,8 +81,9 @@ try:
     pic.set_sender(controller)
     coordinator = pic.create_canister()
     engine = pic.create_canister()
+    relay = pic.create_canister()
     pic.add_cycles(coordinator, 10_000_000_000_000)  # Synthetic local cycles, no ICP converted.
-    config = {"engine_canister": engine.bytes, "engine_module_hash": bytes([3] * 32),
+    config = {"engine_canister": engine.bytes, "relay_canister": relay.bytes, "engine_module_hash": bytes([3] * 32),
         "game_contract": bytes([0] * 20), "game_runtime_hash": bytes([0] * 32),
         "rpc_url": "https://rpc.mainnet.chain.robinhood.com", "confirmations": 12,
         "key_name": "key_1", "reviewed_release": False}

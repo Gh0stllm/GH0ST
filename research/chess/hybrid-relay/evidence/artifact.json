@@ -1,17 +1,17 @@
 {
   "scope": "Frozen autonomous relay source and actual isolated local execution; not public deployment or funding",
-  "generated_at": "2026-11-15T13:47:51.423257+00:00",
-  "raw_wasm_sha256": "a7a675465bab885751152ec665fdd115bbaaba8bf135bc8097d0d359e8a245f0",
-  "raw_wasm_bytes": 2713824,
-  "installed_gzip_sha256": "4eb4aa985853fa895415ab726ec64e8d84bbd22f9231d1c1a278b199ae9baf05",
-  "installed_gzip_bytes": 482160,
+  "generated_at": "2026-11-15T14:19:12.949106+00:00",
+  "raw_wasm_sha256": "b7d6c638d76bdae5ee93ecf9191b7bd06a6ab011ed607f3f99446d4ae1a19fe1",
+  "raw_wasm_bytes": 2715335,
+  "installed_gzip_sha256": "f95dd4504d04ff7ea6b2927f12ed1639e4492e860e1f39569dc659d00cb23207",
+  "installed_gzip_bytes": 482719,
   "compiler": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
   "policy": {
     "chain_id": 4663,
     "fixed_target": "reviewed HybridChessGame only",
     "value_wei": "0",
     "allowed_method": "playBotMove",
-    "lifetime_gas_budget_cap_wei": "2500000000000000",
+    "lifetime_gas_budget_cap_wei": "9500000000000000",
     "max_transaction_cost_cap_wei": "200000000000000",
     "automatic_funding": false,
     "required_subnet_nodes": 13,
@@ -24,19 +24,29 @@
     "launch_advisory_interval_seconds": 30,
     "confirmed_refresh_interval_seconds": 300,
     "confirmed_ready_ttl_seconds": 360,
-    "daily_http_prepayment_limit_cycles": 1000000000000,
-    "idle_projection_upper_bound_cycles": 645990355296
+    "daily_http_prepayment_limit_cycles": 2000000000000,
+    "idle_projection_upper_bound_cycles": 645990355296,
+    "maximum_supported_lifetime_gas_budget_wei": "9500000000000000",
+    "tested_configured_pilot_lifetime_gas_budget_wei": "2500000000000000",
+    "proposed_larger_profile_approval_required": true,
+    "immutable_coordinator_relay_principal_required": true,
+    "disabled_resends_forbidden": true
   },
   "validation": {
-    "core_and_ethers_tests": 15,
-    "pocketic_gates": 15,
-    "relay_end_to_end_checks": 21,
+    "core_and_ethers_tests": 21,
+    "pocketic_gates": 16,
+    "relay_end_to_end_checks": 23,
     "independent_receipt_verification": true,
     "strict_clippy": "optional earlier strict style check was not passed; required build and functional tests passed",
-    "search_progress_cost_comparison": "21checks on both same-source prior polling and optimized35step replay"
+    "search_progress_cost_comparison": "21checks on both same-source prior polling and optimized35step replay",
+    "both_lifetime_profiles_tested": true,
+    "http_exact_boundary_and_rollover_tests": true,
+    "disabled_await_resend_suppression_test": true
   },
   "brain_evidence": "../hybrid-brain/evidence/end-to-end.json",
   "genuine_frozen_input": "../hybrid-brain/evidence/end-to-end-pre-quorum.json",
   "relay_evidence": "evidence/relay-end-to-end.json",
-  "scope_boundary": "Relay execution consumes a frozen genuine24m job from a local fixture coordinator; fresh full Stockfish execution is separately verified in the brain lane. No mainnet latency, funds or win probability is established."
+  "scope_boundary": "Relay execution consumes a frozen genuine24m job from a local fixture coordinator; fresh full Stockfish execution is separately verified in the brain lane. No mainnet latency, funds or win probability is established.",
+  "init_profiles": "evidence/init-profiles.json",
+  "init_profiles_sha256": "175d74e72b19b8d93613fd9c74db0c4a9ec2979194eb0caf32d381374aa37378"
 }

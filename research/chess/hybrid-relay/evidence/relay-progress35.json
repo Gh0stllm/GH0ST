@@ -11,17 +11,19 @@
     "a second Stockfish inference run",
     "human win odds"
   ],
-  "generated_at": "2026-11-15T13:46:07.516924+00:00",
+  "generated_at": "2026-11-15T14:17:53.260526+00:00",
   "genuine_result_source_sha256": "3d41ac69e16c9136321668fc501b476195a22663b7b6b30bc67e5b25867688e9",
   "checks": [
     "recreated native game address exactly matches the genuine captured signed domain",
     "independent relay key differs from the brain move-attestor key",
+    "matching code and game cannot enable a relay with another immutable admission principal",
     "only eight valid committee heads cannot enable sending",
     "controller enables the funded relay while native entries remain paused",
     "recreated paid game matches genuine signature game and position",
     "timer signs fixed-chain zero-value exact-target EIP1559 transaction",
     "raw transaction and exact hash are durable before broadcast reply",
     "same-source upgrade preserves submitted raw transaction hash and nonce intent",
+    "disable during awaited reconciliation suppresses an otherwise eligible identicalraw resend",
     "ambiguous consumed nonce halts new work without replacing the durable transaction",
     "receipt-only recovery resolves the exact confirmed transaction while keeping sending disabled",
     "35synthetic meaningful transitions preserve genuine move despite false cancellation hint",
@@ -34,7 +36,7 @@
     "dynamic head fee and nonce reads use13nodeflexible committee while authorization state reads are fixedheight",
     "false Black advisory triggers fresh fixed verification without a new transaction",
     "300second timer refresh restores confirmed readiness independently of advisory freshness",
-    "complete24hour idle prepayment projection leaves at least350B cycles gameplay headroom"
+    "complete24hour idle prepayment projection leaves at least1350B cycles gameplay headroom"
   ],
   "local_evm_deployment": {
     "contract": "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
@@ -97,9 +99,9 @@
       }
     ]
   },
-  "relay_wasm_raw_sha256": "a7a675465bab885751152ec665fdd115bbaaba8bf135bc8097d0d359e8a245f0",
-  "relay_installed_gzip_sha256": "4eb4aa985853fa895415ab726ec64e8d84bbd22f9231d1c1a278b199ae9baf05",
-  "fixture_coordinator_gzip_sha256": "4b7a55432368eaa3825cbb199ed0f41370d8fb3b6c72e5d39f697a68fbc6fee8",
+  "relay_wasm_raw_sha256": "b7d6c638d76bdae5ee93ecf9191b7bd06a6ab011ed607f3f99446d4ae1a19fe1",
+  "relay_installed_gzip_sha256": "f95dd4504d04ff7ea6b2927f12ed1639e4492e860e1f39569dc659d00cb23207",
+  "fixture_coordinator_gzip_sha256": "ec3246eb342834387d1f0a3efafcd90a99eaafe6f791e06f37860a045e665c24",
   "relay_subnet": "sgier-p6fyz-ejpwm-jghgc-4ypgv-6ft53-5hns6-ojhae-wvlic-ifcah-eqe",
   "source_policy": {
     "max_gas_limit": 4000000,
@@ -169,8 +171,8 @@
     "player_balance": "75000000000000000000000",
     "paused": false,
     "block": {
-      "hash": "0xa98f517db1323fd401cf20becbd195af57c33c3daa676d6e1c4f5d0d395119d1",
-      "parentHash": "0x47230730ac44cfe31aca012f1cfd8bf7cdf4e172eb88e694fa6b5af55c79d5ec",
+      "hash": "0x218e5f9c6396ffcf3e4e95fbf32e26097a05d0c6d997c887366259a2e9927cf5",
+      "parentHash": "0x30027c0f99f907bd308d0bbb00ff0d1eeb91c8726a0feb6cdd69687aa1c09ae1",
       "sha3Uncles": "0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347",
       "miner": "0x0000000000000000000000000000000000000000",
       "stateRoot": "0xcfe7d4bf077df4b3db310cf0470c31dd11e768503c22fbf65751ed79bbdd2125",
@@ -178,12 +180,12 @@
       "receiptsRoot": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
       "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
       "difficulty": "0x0",
-      "number": "0xa8",
+      "number": "0xc3",
       "gasLimit": "0x1c9c380",
       "gasUsed": "0x0",
-      "timestamp": "0x6955bb04",
+      "timestamp": "0x6955bb9a",
       "extraData": "0x",
-      "mixHash": "0xd6dfb1854a1653efcc5509279cf19a4277d5deb4c339c1ee1e366b030caf32fc",
+      "mixHash": "0x5fc7c6d2dda2e2982c1378a1bb555d25f62c64ffd13728fa7115068be33ce111",
       "nonce": "0x0000000000000000",
       "totalDifficulty": "0x0",
       "baseFeePerGas": "0x7",
@@ -261,25 +263,28 @@
     "last_error": [],
     "relayer_address": "0x94bbc0802957051507338583f7013b30c82e7264",
     "last_flexible_reserve_cycles": 1082056547,
-    "rpc_cycles_booked_today": 15203741748,
+    "rpc_cycles_booked_today": 20242358994,
     "blockers": [
       "relay is disabled"
     ],
     "pending_hash": "",
-    "gas_balance_wei": 999999999995531380,
+    "gas_balance_wei": 999999999991062760,
     "pending": false,
     "remaining_gas_budget_wei": 2499999995531380,
     "last_http_prepayment_cycles": 79628120,
-    "last_checked_at": 1767226070,
+    "configured_lifetime_gas_budget_wei": 2500000000000000,
+    "last_checked_at": 1767226240,
     "enabled": false,
     "last_flexible_booked_cycles": 1082056547,
     "last_http_reserve_cycles": 79628120,
     "in_flight": false,
+    "maximum_supported_lifetime_gas_budget_wei": 9500000000000000,
     "advisory_last_checked_at": 1767226040,
     "ready": false,
+    "rpc_cycle_limit_per_day": 2000000000000,
     "completed_transactions": 1
   },
-  "relay_cycles_debit": 35020639899,
+  "relay_cycles_debit": 37343176982,
   "confirmed_receipt": {
     "transactionHash": "0xcd34296f11d912dc50726dc7510c325de69ae92e6cf18c008f5c54a359a749ca",
     "transactionIndex": "0x0",
@@ -682,6 +687,92 @@
     {
       "flexible": false,
       "methods": [
+        "eth_chainId",
+        "eth_call",
+        "eth_getBalance",
+        "eth_call"
+      ],
+      "max_response_bytes": 4096,
+      "prepayment_cycles": 105511120,
+      "advisory": false
+    },
+    {
+      "flexible": false,
+      "methods": [
+        "eth_getBlockByNumber",
+        "eth_getCode",
+        "eth_call",
+        "eth_call",
+        "eth_call",
+        "eth_call",
+        "eth_call",
+        "eth_call"
+      ],
+      "max_response_bytes": 131072,
+      "prepayment_cycles": 1561708720,
+      "advisory": false
+    },
+    {
+      "flexible": false,
+      "methods": [
+        "eth_getBlockByNumber"
+      ],
+      "max_response_bytes": 2048,
+      "prepayment_cycles": 79628120,
+      "advisory": false
+    },
+    {
+      "flexible": true,
+      "methods": [
+        "eth_chainId",
+        "eth_blockNumber"
+      ],
+      "max_response_bytes": 4096,
+      "prepayment_cycles": 1082056547,
+      "advisory": false
+    },
+    {
+      "flexible": false,
+      "methods": [
+        "eth_getTransactionReceipt",
+        "eth_getTransactionByHash"
+      ],
+      "max_response_bytes": 8192,
+      "prepayment_cycles": 151082360,
+      "advisory": false
+    },
+    {
+      "flexible": true,
+      "methods": [
+        "eth_getTransactionCount",
+        "eth_getTransactionCount"
+      ],
+      "max_response_bytes": 4096,
+      "prepayment_cycles": 1082147352,
+      "advisory": false
+    },
+    {
+      "flexible": false,
+      "methods": [
+        "eth_getTransactionCount"
+      ],
+      "max_response_bytes": 2048,
+      "prepayment_cycles": 79868360,
+      "advisory": false
+    },
+    {
+      "flexible": true,
+      "methods": [
+        "eth_chainId",
+        "eth_blockNumber"
+      ],
+      "max_response_bytes": 4096,
+      "prepayment_cycles": 1082056547,
+      "advisory": false
+    },
+    {
+      "flexible": false,
+      "methods": [
         "eth_getTransactionReceipt",
         "eth_getTransactionByHash"
       ],
@@ -865,7 +956,7 @@
   "idle_interval": {
     "virtual_seconds": 180,
     "http_booked_cycles": 474058000,
-    "full_cycles": 732305008,
+    "full_cycles": 732367027,
     "calls": [
       {
         "flexible": false,
@@ -928,9 +1019,9 @@
         "advisory": true
       }
     ],
-    "confirmed_last_checked_at_before": 1767226104,
-    "confirmed_last_checked_at_after": 1767226104,
-    "advisory_last_checked_at_after": 1767226284,
+    "confirmed_last_checked_at_before": 1767226254,
+    "confirmed_last_checked_at_after": 1767226254,
+    "advisory_last_checked_at_after": 1767226434,
     "last_replicated_reserve_cycles": 105545440,
     "last_replicated_booked_cycles": 94811600,
     "last_flexible_reserve_cycles": 1082056547,
@@ -941,20 +1032,23 @@
     "last_error": [],
     "relayer_address": "0x94bbc0802957051507338583f7013b30c82e7264",
     "last_flexible_reserve_cycles": 1082056547,
-    "rpc_cycles_booked_today": 20792968989,
+    "rpc_cycles_booked_today": 25831586235,
     "blockers": [],
     "pending_hash": "",
     "gas_balance_wei": 999999999995531380,
     "pending": false,
     "remaining_gas_budget_wei": 2499999995531380,
     "last_http_prepayment_cycles": 105511120,
-    "last_checked_at": 1767226624,
+    "configured_lifetime_gas_budget_wei": 2500000000000000,
+    "last_checked_at": 1767226774,
     "enabled": true,
     "last_flexible_booked_cycles": 1082056547,
     "last_http_reserve_cycles": 105511120,
     "in_flight": false,
-    "advisory_last_checked_at": 1767226317,
+    "maximum_supported_lifetime_gas_budget_wei": 9500000000000000,
+    "advisory_last_checked_at": 1767226467,
     "ready": true,
+    "rpc_cycle_limit_per_day": 2000000000000,
     "completed_transactions": 1
   },
   "synthetic_progress_transitions": 35,
@@ -992,10 +1086,10 @@
     "daily_advisory_prepayment_cycles": 303970867200,
     "daily_confirmed_refresh_prepayment_cycles": 342019488096,
     "daily_total_upper_bound_cycles": 645990355296,
-    "daily_cap_cycles": 1000000000000,
-    "gameplay_prepayment_headroom_cycles": 354009644704
+    "daily_cap_cycles": 2000000000000,
+    "gameplay_prepayment_headroom_cycles": 1354009644704
   },
   "passed": true,
-  "check_count": 21,
+  "check_count": 23,
   "all_owned_processes_stopped": true
 }

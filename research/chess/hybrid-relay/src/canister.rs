@@ -113,6 +113,8 @@ struct Status {
     pending: bool,
     in_flight: bool,
     remaining_gas_budget_wei: candid::Nat,
+    configured_lifetime_gas_budget_wei: candid::Nat,
+    maximum_supported_lifetime_gas_budget_wei: candid::Nat,
     next_tick_at: u64,
     completed_transactions: u64,
     last_error: Option<String>,
@@ -191,6 +193,8 @@ fn get_status() -> Status {
         pending: s.pending.is_some(),
         in_flight: s.in_flight,
         remaining_gas_budget_wei: s.remaining(&c).into(),
+        configured_lifetime_gas_budget_wei: c.lifetime_gas_budget_wei.into(),
+        maximum_supported_lifetime_gas_budget_wei: MAX_SUPPORTED_LIFETIME_GAS_WEI.into(),
         next_tick_at: s.next_tick_at,
         completed_transactions: s.completed_transactions,
         last_error: s.error,
@@ -320,6 +324,7 @@ async fn set_enabled(enabled: bool) -> R<Status> {
 
 #[derive(Clone, Debug, CandidType, Deserialize)]
 struct BrainStatus {
+    relay_canister: Principal,
     production_ready: bool,
     engine_config_hash: Hash,
     game_contract: String,
@@ -347,6 +352,7 @@ async fn verify_coordinator(c: &Config) -> R<()> {
         .candid::<Result<BrainStatus, String>>()
         .map_err(|_| "coordinator readiness decode failed")??;
     if !r.production_ready
+        || r.relay_canister != ic_cdk::api::canister_self()
         || r.engine_config_hash != c.engine_config_hash
         || r.game_contract.to_ascii_lowercase() != hex(&c.game_contract)
         || r.attestor_address.to_ascii_lowercase() != hex(&c.bot_attestor)
@@ -431,15 +437,7 @@ fn reserve_rpc(debit: u128) -> R<u64> {
     }
     let mut s = state();
     let day = now() / 86400;
-    if s.rpc_day != day {
-        s.rpc_day = day;
-        s.rpc_spent = 0;
-    }
-    if s.rpc_spent.saturating_add(debit) > MAX_RPC_DAY {
-        return Err("relay daily HTTP budget exhausted".into());
-    }
-    s.rpc_spent += debit;
-    s.rpc_last_reserved = Some(debit);
+    s.book_http(day, debit)?;
     save(s);
     Ok(day)
 }
@@ -771,6 +769,7 @@ async fn recheck(c: &Config, s: &Snapshot) -> R<()> {
 }
 fn verify_game(c: &Config, g: &Game, id: Hash, moves: &[String]) -> R<()> {
     let b = gh0st_chess_hybrid_brain::Config {
+        relay_canister: ic_cdk::api::canister_self(),
         engine_canister: c.coordinator,
         engine_module_hash: [1; 32],
         game_contract: c.game_contract,
@@ -987,6 +986,9 @@ async fn handle_pending(c: &Config) -> R<()> {
 }
 async fn broadcast(c: &Config) -> R<()> {
     let mut s = state();
+    // Recheck after every preceding await: an operator stop must suppress even
+    // an identical-byte retry that an earlier reconciliation was about to send.
+    s.require_broadcast_enabled()?;
     let i = s.pending.as_mut().ok_or("no intent")?;
     if i.raw.is_empty() || keccak(&i.raw) != i.hash {
         return Err("durable raw transaction/hash mismatch".into());
@@ -1061,6 +1063,7 @@ async fn reconcile(c: &Config, allow_rebroadcast: bool) -> R<()> {
         }
         if allow_rebroadcast && now() > i.broadcast_at.saturating_add(30) && i.broadcasts < 3 {
             let mut s = state();
+            s.require_broadcast_enabled()?;
             s.pending.as_mut().unwrap().phase = "Signed".into();
             save(s)
         }

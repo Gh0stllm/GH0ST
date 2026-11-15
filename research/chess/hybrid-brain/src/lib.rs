@@ -26,6 +26,7 @@ pub const BOT_MOVE_TYPE: &str = "BotMove(bytes32 gameId,address player,uint32 pl
 #[derive(Clone, Debug, CandidType, Deserialize, Serialize)]
 pub struct Config {
     pub engine_canister: Principal,
+    pub relay_canister: Principal,
     pub engine_module_hash: Hash,
     pub game_contract: Address,
     pub game_runtime_hash: Hash,
@@ -41,6 +42,9 @@ impl Config {
             (self.game_contract == [0; 20]) != (self.game_runtime_hash == [0; 32]);
         if self.engine_canister == Principal::anonymous()
             || self.engine_canister == Principal::management_canister()
+            || self.relay_canister == Principal::anonymous()
+            || self.relay_canister == Principal::management_canister()
+            || self.relay_canister == self.engine_canister
             || self.engine_module_hash == [0; 32]
             || partially_bound
             || (unbound && self.reviewed_release)

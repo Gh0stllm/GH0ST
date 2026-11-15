@@ -1,14 +1,16 @@
 {
   "scope": "isolated frozen-genuine-result autonomous relay; no fresh Stockfish inference, no mainnet gas quote",
-  "source_evidence_sha256": "e198a1782d017677829bd2c217c1c570c3ff81dc0e04ce715b66071e6631888d",
-  "local_relay_cycles_debit": 35020639899,
+  "source_evidence_sha256": "bddb1bf0eca707e60845f4fe34471869d66a881057afc58d3c3e658c6dcc55d1",
+  "local_relay_cycles_debit": 37343176982,
   "includes": [
     "local management ECDSA EIP1559 signature",
     "timer polling and native-state/outcall verification",
     "13/9 flexible HTTPS committee and fixed-block state reads",
     "lost-response and same-source upgrade recovery",
     "nonce-conflict and receipt-only recovery",
-    "35 synthetic progressing search steps and false cancellation hint; no fresh model execution"
+    "35 synthetic progressing search steps and false cancellation hint; no fresh model execution",
+    "controller disable during pending receipt await suppresses retry eligibility/broadcast",
+    "immutable protected-admission relay principal mismatch rejection"
   ],
   "excludes": [
     "fresh brain inference",
@@ -20,7 +22,7 @@
   "idle_measured_interval": {
     "virtual_seconds": 180,
     "http_booked_cycles": 474058000,
-    "full_cycles": 732305008,
+    "full_cycles": 732367027,
     "calls": [
       {
         "flexible": false,
@@ -83,9 +85,9 @@
         "advisory": true
       }
     ],
-    "confirmed_last_checked_at_before": 1767226104,
-    "confirmed_last_checked_at_after": 1767226104,
-    "advisory_last_checked_at_after": 1767226284,
+    "confirmed_last_checked_at_before": 1767226254,
+    "confirmed_last_checked_at_after": 1767226254,
+    "advisory_last_checked_at_after": 1767226434,
     "last_replicated_reserve_cycles": 105545440,
     "last_replicated_booked_cycles": 94811600,
     "last_flexible_reserve_cycles": 1082056547,
@@ -100,8 +102,8 @@
     "daily_advisory_prepayment_cycles": 303970867200,
     "daily_confirmed_refresh_prepayment_cycles": 342019488096,
     "daily_total_upper_bound_cycles": 645990355296,
-    "daily_cap_cycles": 1000000000000,
-    "gameplay_prepayment_headroom_cycles": 354009644704
+    "daily_cap_cycles": 2000000000000,
+    "gameplay_prepayment_headroom_cycles": 1354009644704
   },
   "accounting_caveat": "Daily booking is maximum attached cycles minus immediate callback refunds. V2 unused per-node budgets arrive asynchronously and are not rebated to the booking counter. Observed canister-balance debit includes execution and journal overhead; it is separate from prepayment booking. Projection double-counts advisory calls at confirmed refreshes and omits later refunds.",
   "official_refund_semantics": "https://docs.internetcomputer.org/references/ic-interface-spec/canister-interface/#cycle-cost-calculation",

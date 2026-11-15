@@ -15,7 +15,9 @@ mod canister;
 pub use canister::candid_service;
 pub const CHAIN_ID: u64 = 4663;
 pub const NODE_BUDGET: u64 = 24_000_000;
-pub const MAX_RPC_DAY: u128 = 1_000_000_000_000;
+pub const MAX_RPC_DAY: u128 = 2_000_000_000_000;
+pub const MAX_SUPPORTED_LIFETIME_GAS_WEI: u128 = 9_500_000_000_000_000;
+pub const PILOT_LIFETIME_GAS_WEI: u128 = 2_500_000_000_000_000;
 pub const MIN_CYCLES: u128 = 2_000_000_000_000;
 pub const TOKEN: &str = "0x2eb2849cde7957b86d0dfd4b59e450a9f9d15559";
 pub const BOT_MOVE_CALL: &str =
@@ -57,7 +59,7 @@ impl Config {
             || self.max_tx_cost_wei == 0
             || self.max_tx_cost_wei > 200_000_000_000_000
             || self.lifetime_gas_budget_wei < self.max_tx_cost_wei
-            || self.lifetime_gas_budget_wei > 2_500_000_000_000_000
+            || self.lifetime_gas_budget_wei > MAX_SUPPORTED_LIFETIME_GAS_WEI
         {
             return Err("invalid immutable relay configuration".into());
         }
@@ -354,6 +356,30 @@ pub struct RpcAccounting {
     pub net: u128,
 }
 impl State {
+    pub fn require_broadcast_enabled(&self) -> R<()> {
+        if !self.enabled || self.halted {
+            return Err("relay disabled or halted; no broadcast permitted".into());
+        }
+        Ok(())
+    }
+    /// Atomically book one bounded HTTP reservation in the current UTC-day lane.
+    /// Immediate callback refunds are handled separately; asynchronous V2 credits
+    /// deliberately never expand this conservative quota.
+    pub fn book_http(&mut self, day: u64, debit: u128) -> R<()> {
+        let spent = if self.rpc_day == day {
+            self.rpc_spent
+        } else {
+            0
+        };
+        let total = spent
+            .checked_add(debit)
+            .filter(|v| *v <= MAX_RPC_DAY)
+            .ok_or("relay daily HTTP budget exhausted")?;
+        self.rpc_day = day;
+        self.rpc_spent = total;
+        self.rpc_last_reserved = Some(debit);
+        Ok(())
+    }
     pub fn remaining(&self, c: &Config) -> u128 {
         c.lifetime_gas_budget_wei
             .saturating_sub(self.spent_gas_wei)

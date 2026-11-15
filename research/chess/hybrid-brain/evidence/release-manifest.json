@@ -1,29 +1,32 @@
 {
   "scope": "source and actual locally installed optimized coordinator release; no mainnet deployment",
-  "rawWasmSHA256": "f95582a81c49be95816f180b95db564deb32ca7520d40a3dd3e520b7bb06bc5a",
-  "rawWasmBytes": 2647501,
-  "installedGzipModuleSHA256": "5fbde10f4c62446ee51f8d94a76134777ab98dff2bb9f0f6048b09a1601d779a",
+  "rawWasmSHA256": "bc72ea67536b4ac3ede093bb320ddfe8c93228001dea0d57f4729c5537fed4b7",
+  "rawWasmBytes": 2678790,
+  "installedGzipModuleSHA256": "9bdbbc55c35bafdbaa8fb4b60e8fa819dd89c36da7f3a9871c9859003b13cadb",
   "engineRawModuleSHA256": "725dc0c795262be21f1ffafec60f50aae3e9d00140add77e791a89eece0f417b",
   "compiler": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
   "sourceSHA256": {
     "Cargo.toml": "6a864cb67eb3c3d21770ecbaeecc23e027e2b0bd2aa94ba1447ce696129c2b59",
     "Cargo.lock": "5eb30a6c237cd6dba4b9dbb9c2ede42e0b83c89f8b19d1175e3a86a78d766612",
-    "brain.did": "5e5c22dc6b00d7d74a8f3dd77fb6cb9b430b284820f520f161ecfc11996eeabc",
-    "src/lib.rs": "f1ec43c75fd5dc0feb33fa0ec4cf4e48f135cb2c4966c0965143e86f8c485526",
-    "src/canister.rs": "88ad2cde1cf68d3b0c5d29188c329e9cc3ad60b0ffc1ef93b30064451086d4b0",
+    "brain.did": "c0e3f99ad9e41dd08685839f675566faaf5aeefa079f0da33c3530e94a6d5bd3",
+    "src/lib.rs": "00a6cbf04e5af3e44705718ceeefaf9204ddb01bbde52fd45f83759787902829",
+    "src/canister.rs": "9cab6321edc941732853fe5f3bd5d5820ea8566dcccccf50cdf7d53c91f3a4e4",
     "src/rpc_consensus.rs": "af92d2df343ab59a7c811775259f07c5bc0ceaf8f4fe5dbb83fbf528ab1fa667",
-    "tests/interop.rs": "947ad75d9e3bc4d95a11880ab17bd9c026f304810419db8e334e9c7e3fe1ab01",
+    "tests/interop.rs": "ee911dbbf19bb5687acd7ccf6846eb8fdd3a94ec6aa1e74de9298029c0a98263",
     "examples/export_candid.rs": "171ba4963820ea253929984131bbd1bf6cde34f0f852fe464d108de3fbb85391",
-    "tools/test_end_to_end.py": "4afdf7c6c4bf4480539af5ccdc004797f51ed26e9341b423593be5a63fc0272e",
-    "tools/test_pocketic.py": "b4503b640274b182a2b654f184b80d1611146f096fb333dd95347239c9201301",
+    "tools/test_end_to_end.py": "8b93757aa038fc873f5f6034a843c2119da24d233ee7fdc8fb9e114b927780d1",
+    "tools/test_pocketic.py": "4fbc611e64ca278467533a774239123a4e7b0ed510a22d895f1995e6fd37ae56",
     "tests/frozen-engine/Cargo.toml": "66fb717bf2c6c3b0eb1ca40d4ec68bca62b76a13d91c85eb78d50d9b2bd6ee12",
     "tests/frozen-engine/Cargo.lock": "1691be95174b29c33413e22fd35c7058defe17aa6e1b30b7da64c1dbe56129af",
-    "tests/frozen-engine/src/lib.rs": "652b2b9fedebe576f766e1e3baac07c86b0721355e83d8d06869cd701fcb612d"
+    "tests/frozen-engine/src/lib.rs": "f7f1f975025b0ee5115225c39be152f1572860430eef187fc27d393188301a8d",
+    "tests/relay-driver/Cargo.toml": "4b7c6128f5289615e96970ea5e38a0f5dfdc5da7ba964eaac531fb23fe972e2c",
+    "tests/relay-driver/Cargo.lock": "58a5ea4dabf1e3c1c7b5819b92df836417b50b47509b82414ff178e4f350a41c",
+    "tests/relay-driver/src/lib.rs": "6571885b8c345ff47ea3bd8c1f8220756a60ff7370f951c3617bead3a0d31f4c"
   },
   "gateChecks": 10,
-  "coreAndInteropTests": 26,
-  "actualEndToEndChecks": 14,
-  "signingRecoveryFixtureChecks": 17,
+  "coreAndInteropTests": 29,
+  "actualEndToEndChecks": 15,
+  "signingRecoveryFixtureChecks": 23,
   "signingRecoveryFreshInference": false,
   "adaptivePolicy": {
     "quantum": 0,
@@ -36,5 +39,32 @@
     "full_pinned_nnue": true,
     "retained_state_per_game": true
   },
-  "paidMainnetActive": false
+  "paidMainnetActive": false,
+  "immutableRelayBinding": true,
+  "rpcLaneDailyCaps": {
+    "public": 1000000000000,
+    "protectedRelay": 1000000000000,
+    "protectedSigning": 2000000000000
+  },
+  "terminalCleanup": {
+    "durableIntent": true,
+    "canonicalTerminalReverification": true,
+    "engineEmptyReservationAcknowledgement": true,
+    "lateCallbackWriteSuppression": true,
+    "closedGameTombstones": 4096
+  },
+  "anonymousPublicQuotaIsolation": {
+    "passed": true,
+    "actualPublicDrainCalls": 370,
+    "actualInterCanisterCaller": true,
+    "sourceEvidence": "signing-recovery.json",
+    "sourceEvidenceSHA256": "2ffa153d9e9b3d683fbc24a5a7b1800dc1094ac9bb552216e06773ced55cdebd"
+  },
+  "evidenceSHA256": {
+    "end-to-end.json": "77c6da8112b67608fd95d15f1cce60a5f069298e66918299c135234b2a64d434",
+    "end-to-end-costs.json": "176ad66ab8dc2126be79e075a710c0c6d56c44918473adb336ed56cdd6cb6ab5",
+    "signing-recovery.json": "2ffa153d9e9b3d683fbc24a5a7b1800dc1094ac9bb552216e06773ced55cdebd",
+    "pocketic-coordinator-gates.json": "7c66792c1692b62226ae0eaf37b87867c22ad232e5e7e40e6ac3bb127abc02f8",
+    "interop.json": "69c2d199b7d9c817ff0d10c61da25fa13d18fd84506b24e06abb0c56c95229b3"
+  }
 }

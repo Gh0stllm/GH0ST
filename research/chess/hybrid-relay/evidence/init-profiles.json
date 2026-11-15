@@ -1,0 +1,45 @@
+{
+  "scope": "Reviewable immutable relay initialization profiles; a supported ceiling is not funding authorization or proof of deployment",
+  "chain_id": 4663,
+  "rpc_url": "https://rpc.mainnet.chain.robinhood.com",
+  "key_name": "key_1",
+  "confirmations": 12,
+  "idle_poll_seconds": 30,
+  "daily_http_booking_cap_cycles": "2000000000000",
+  "fixed_transaction_value_wei": "0",
+  "allowed_method": "playBotMove on verified pinned game only",
+  "max_transaction_cost_wei": "200000000000000",
+  "maximum_supported_lifetime_gas_budget_wei": "9500000000000000",
+  "profiles": {
+    "initial_paused_pilot": {
+      "configured_lifetime_gas_budget_wei": "2500000000000000",
+      "within_existing_total_ETH_cap": "0.003",
+      "larger_budget_approval_required": false,
+      "note": "Actual deployment/funding still follows operator receipt journal and approved total cap."
+    },
+    "proposed_twenty_game_capital": {
+      "configured_lifetime_gas_budget_wei": "9500000000000000",
+      "proposed_total_ETH_cap": "0.01",
+      "proposed_other_gas_allowance_ETH": "0.0005",
+      "larger_budget_approval_required": true,
+      "funding_or_initialization_authorized_by_this_file": false
+    }
+  },
+  "actual_binding_fields_required": [
+    "coordinator principal",
+    "actual installed coordinator module SHA256",
+    "engine_config_hash blob32",
+    "actual Robinhood game address",
+    "Keccak complete runtime including immutables",
+    "coordinator-derived bot attestor address"
+  ],
+  "operator_checks": [
+    "All3 actual canisters certified on selected13node App subnet",
+    "Coordinator immutable relay_canister equals this actual relay canister",
+    "prepare_signer derives distinct relay public wallet, no private key export",
+    "Fresh native/coordinator identity and funding checks pass before enable",
+    "Larger supported ceiling never changes existing configured lifetime authority",
+    "No automatic topup or withdrawal endpoint"
+  ],
+  "capacity_caveat": "Profiles are gas authority bounds, not a promise of20 arbitrary-length games; ICP capital, daily quotas, one active game and prize replenishment are separate."
+}

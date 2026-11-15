@@ -232,3 +232,85 @@ fn unchanged_concurrent_driver_replies_cannot_exhaust_turn_progress() {
     assert!(turn.record_job(&job).is_err());
     assert_eq!(turn.job.as_ref().unwrap().step, 2);
 }
+
+#[test]
+fn http_daily_quota_accepts_exact_limit_and_rejects_one_more_atomically() {
+    assert_eq!(MAX_RPC_DAY, 2_000_000_000_000);
+    let mut s = State::default();
+    s.book_http(71, MAX_RPC_DAY - 1).unwrap();
+    s.book_http(71, 1).unwrap();
+    assert_eq!(s.rpc_spent, MAX_RPC_DAY);
+    assert_eq!(s.rpc_day, 71);
+    let before = candid::encode_one(s.clone()).unwrap();
+    assert!(s.book_http(71, 1).is_err());
+    assert_eq!(candid::encode_one(s).unwrap(), before);
+}
+#[test]
+fn http_quota_utc_rollover_does_not_carry_prior_day_spend() {
+    let mut s = State::default();
+    s.book_http(71, MAX_RPC_DAY).unwrap();
+    s.book_http(72, 17).unwrap();
+    assert_eq!(
+        (s.rpc_day, s.rpc_spent, s.rpc_last_reserved),
+        (72, 17, Some(17))
+    );
+    s.book_http(72, MAX_RPC_DAY - 17).unwrap();
+    assert!(s.book_http(72, 1).is_err());
+}
+#[test]
+fn overflowing_or_oversized_http_reservation_never_mutates_journal() {
+    let mut s = State::default();
+    s.book_http(71, 1).unwrap();
+    let before = candid::encode_one(s.clone()).unwrap();
+    assert!(s.book_http(71, u128::MAX).is_err());
+    assert!(s.book_http(72, MAX_RPC_DAY + 1).is_err());
+    assert_eq!(candid::encode_one(s).unwrap(), before);
+}
+
+#[test]
+fn reviewed_lifetime_profiles_are_bounded_and_max_tx_authority_does_not_expand() {
+    let v = fixture();
+    let mut c = cfg(&v);
+    assert_eq!(c.lifetime_gas_budget_wei, PILOT_LIFETIME_GAS_WEI);
+    c.validate().unwrap();
+    c.lifetime_gas_budget_wei = MAX_SUPPORTED_LIFETIME_GAS_WEI;
+    assert_eq!(MAX_SUPPORTED_LIFETIME_GAS_WEI, 9_500_000_000_000_000);
+    c.validate().unwrap();
+    c.lifetime_gas_budget_wei += 1;
+    assert!(c.validate().is_err());
+    c.lifetime_gas_budget_wei = MAX_SUPPORTED_LIFETIME_GAS_WEI;
+    c.max_tx_cost_wei = 200_000_000_000_001;
+    assert!(c.validate().is_err());
+}
+#[test]
+fn funding_cannot_expand_the_configured_lifetime_profile() {
+    let v = fixture();
+    let c = cfg(&v);
+    let mut s = State {
+        public_key: vec![],
+        gas_balance_wei: MAX_SUPPORTED_LIFETIME_GAS_WEI,
+        spent_gas_wei: PILOT_LIFETIME_GAS_WEI,
+        ..State::default()
+    };
+    assert_eq!(s.remaining(&c), 0);
+    assert!(s.reserve(&c, intent(&v)).is_err());
+    let mut proposed = c;
+    proposed.lifetime_gas_budget_wei = MAX_SUPPORTED_LIFETIME_GAS_WEI;
+    assert_eq!(
+        s.remaining(&proposed),
+        MAX_SUPPORTED_LIFETIME_GAS_WEI - PILOT_LIFETIME_GAS_WEI
+    );
+}
+
+#[test]
+fn disabled_or_halted_state_forbids_even_existing_raw_transaction_resends() {
+    let mut s = State::default();
+    assert!(s.require_broadcast_enabled().is_err());
+    s.enabled = true;
+    s.require_broadcast_enabled().unwrap();
+    s.enabled = false;
+    assert!(s.require_broadcast_enabled().is_err());
+    s.enabled = true;
+    s.halted = true;
+    assert!(s.require_broadcast_enabled().is_err());
+}

@@ -1,6 +1,6 @@
 # Hybrid launch review
 
-Three dedicated chess canisters have now been created on the same certified13-node application subnet. Creation converted13ICP, with0.0003ICP ledger fees; the full engine is installed and its mainnet module hash is certified. Coordinator/relay installs await final integration checks. No Robinhood game transaction or prize transfer has occurred. The public `/chess/` page keeps paid entry disabled. See [current progress and receipts](mainnet-progress.json).
+Three dedicated chess canisters have now been created on the same certified13-node application subnet. Creation converted13ICP, with0.0003ICP ledger fees; the full engine is installed and its mainnet module hash is certified. The coordinator is also installed and certified, with its actual signer derived; it remains unbound and closed. The relay canister is still empty while its configured gas budget is selected. No Robinhood game transaction or prize transfer has occurred. The public `/chess/` page keeps paid entry disabled. See [current progress and receipts](mainnet-progress.json).
 
 ## Fixed terms
 
@@ -23,11 +23,11 @@ Controller upgrades remain a disclosed trust boundary. The engine faults an acti
 
 `preflight.mjs` only reads RH chain identity, token identity, wallet balances, current gas and constructor estimate. The constructor signer/config are explicit nonzero **pricing stand-ins** until actual ICP derivation. Refresh the exact real constructor estimate before broadcast.
 
-`costs.mjs` combines the actual optimized 24m engine/coordinator debit with the separately tested autonomous relay. At the saved certified rate, the representative turn is about **0.626 ICP**; a 40-bot-decision scenario is about **25.05 ICP** plus deployment, idle hosting/reserves, RH gas and position/retry variation. This is not a measured full-game or mainnet bill.
+`costs.mjs` combines the actual optimized 24m engine/coordinator debit with the separately tested autonomous relay. At the saved certified rate, the representative turn is about **0.636 ICP**; a 40-bot-decision scenario is about **25.44 ICP** plus deployment, idle hosting/reserves, RH gas and position/retry variation. This is not a measured full-game or mainnet bill.
 
 The same-strength paired engine/coordinator test reduced cycles by 21.32% and engine updates from 240 to 35. The full model, 24m nodes, Hash128 and retained state remain unchanged. Exact native comparisons, arithmetic checks and source review support equivalence; mainnet timing still needs the paid pilot.
 
-The [frozen optimized release plan](optimized-release-plan.json) records exact module hashes, verification scopes, measured costs and activation gates. The [published preview proof](site-preview.json) records the preserved site manifest and deployment.
+The [pre-approval optimized release plan](optimized-release-plan.json) records exact module hashes, verification scopes, measured costs and activation gates. The [published preview proof](site-preview.json) records the preserved site manifest and deployment.
 
 The user approved these initial launch limits; the [twenty-game expansion](TWENTY_GAMES.md) remains a separate funding proposal:
 

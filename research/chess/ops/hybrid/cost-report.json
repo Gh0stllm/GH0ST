@@ -1,6 +1,6 @@
 {
   "scope": "Planning scenarios using clean 13-node local engine/coordinator execution and actual frozen-result autonomous relay execution; not measured whole-game or complete relay spending",
-  "generatedAt": "2026-11-15T13:56:06.930Z",
+  "generatedAt": "2026-11-15T14:31:10.431Z",
   "policy": {
     "stockfish": "19",
     "nodes": 24000000,
@@ -10,78 +10,78 @@
     "fixedPrizeGH0ST": "1000000",
     "winnerAutoPausesNewEntries": true
   },
-  "cmcRateAt": "2026-11-15T13:48:00.000Z",
-  "cyclesPerICP": "1660800000000",
+  "cmcRateAt": "2026-11-15T14:29:00.000Z",
+  "cyclesPerICP": "1638900000000",
   "measuredSearch": {
     "initialPosition": "Standard starting FEN and complete e2e4 history, actual coordinator plus full Stockfish",
     "nodes": 24000033,
     "depth": 38,
-    "cycles": "972755112817",
-    "ICP": 0.5857147837289258,
+    "cycles": "972754508186",
+    "ICP": 0.5935410996314602,
     "steps": 35,
-    "localWallSeconds": 59.53313100000014,
+    "localWallSeconds": 62.09251049999875,
     "includes": "warm full-budget engine updates; reserved-cycle increase was zero",
     "excludes": "cold reservation, separately measured coordinator and additional relay costs"
   },
   "coordinatorAndMoveSignature": {
-    "cycles": "32171717650",
-    "ICP": 0.019371217274807322,
+    "cycles": "32095715090",
+    "ICP": 0.019583693385807555,
     "includes": "verified RH requests, progress calls, one threshold move signature and active-readiness refresh"
   },
   "coldReservation": {
     "cycles": "5535903987",
-    "ICP": 0.003333275522037572
+    "ICP": 0.003377816820428336
   },
   "autonomousRelay": {
-    "cycles": "35020639899",
-    "ICP": 0.021086608802384395,
+    "cycles": "37343176982",
+    "ICP": 0.02278551283299774,
     "includes": "second threshold signature, polling and scoped fault/receipt recovery; frozen genuine model result",
     "sourceEvidence": "../../hybrid-relay/evidence/relay-end-to-end.json"
   },
-  "perRepresentativeTurnICP": 0.6261726098061176,
+  "perRepresentativeTurnICP": 0.6359103058502654,
   "scenarios": [
     {
       "botDecisions": 40,
-      "warmSearchCycles": "38910204512680",
-      "coordinatorAndMoveSignatureCycles": "1286868706000",
-      "autonomousRelayCycles": "1400825595960",
+      "warmSearchCycles": "38910180327440",
+      "coordinatorAndMoveSignatureCycles": "1283828603600",
+      "autonomousRelayCycles": "1493727079280",
       "oneColdReservationCycles": "5535903987",
-      "modeledICP": 25.05023766776674
+      "modeledICP": 25.439790050831046
     },
     {
       "botDecisions": 60,
-      "warmSearchCycles": "58365306769020",
-      "coordinatorAndMoveSignatureCycles": "1930303059000",
-      "autonomousRelayCycles": "2101238393940",
+      "warmSearchCycles": "58365270491160",
+      "coordinatorAndMoveSignatureCycles": "1925742905400",
+      "autonomousRelayCycles": "2240590618920",
       "oneColdReservationCycles": "5535903987",
-      "modeledICP": 37.573689863889086
+      "modeledICP": 38.15799616783635
     },
     {
       "botDecisions": 80,
-      "warmSearchCycles": "77820409025360",
-      "coordinatorAndMoveSignatureCycles": "2573737412000",
-      "autonomousRelayCycles": "2801651191920",
+      "warmSearchCycles": "77820360654880",
+      "coordinatorAndMoveSignatureCycles": "2567657207200",
+      "autonomousRelayCycles": "2987454158560",
       "oneColdReservationCycles": "5535903987",
-      "modeledICP": 50.09714206001144
+      "modeledICP": 50.87620228484166
     },
     {
       "botDecisions": 100,
-      "warmSearchCycles": "97275511281700",
-      "coordinatorAndMoveSignatureCycles": "3217171765000",
-      "autonomousRelayCycles": "3502063989900",
+      "warmSearchCycles": "97275450818600",
+      "coordinatorAndMoveSignatureCycles": "3209571509000",
+      "autonomousRelayCycles": "3734317698200",
       "oneColdReservationCycles": "5535903987",
-      "modeledICP": 62.62059425613379
+      "modeledICP": 63.59440840184697
     }
   ],
   "rhDeployment": {
     "estimateGas": "3170836",
-    "estimateETH": "0.0000640508872",
-    "at": "2026-11-15T12:57:44.182Z",
+    "estimateETH": "0.000064266504048",
+    "at": "2026-11-15T14:05:01.397Z",
     "pricingSignerIsStandIn": true
   },
   "creationOnly": {
     "three13NodeCanistersCycles": "1500000000000",
-    "ICP": 0.903179190751445,
+    "ICP": 0.9152480322167308,
     "excludes": "chunk upload, installation, freezing/operating reserves, ledger fees"
   },
   "proposedFunding": {
@@ -92,14 +92,14 @@
     "prizeEscrowGH0ST": "1000000",
     "pilotEntryGH0ST": "25000",
     "automaticTopups": false,
-    "spendingApproved": false
+    "spendingApproved": true
   },
   "notes": [
     "Search debit is position-dependent; a fixed node budget does not fix its instruction count.",
     "ICP local wall time is not a public-network latency guarantee.",
     "Runtime memory exceeds the Wasm file size; operating reserves and storage must be funded.",
     "Whole-game costs also include position/retry variation, installation, storage, idle hosting and RH transactions; these scenarios are not a measured complete game.",
-    "Proposed caps are reviewable planning, not authorization or a transfer.",
+    "Initial caps follow the recorded user approval; receipts establish amounts allocated. Larger twenty-game caps remain unapproved.",
     "The public page remains unconfigured and paid entry closed."
   ]
 }

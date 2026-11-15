@@ -16,6 +16,7 @@ type Config = record {
   game_contract : blob;
   reviewed_release : bool;
   rpc_url : text;
+  relay_canister : principal;
   engine_canister : principal;
   key_name : text;
 };
@@ -103,6 +104,7 @@ type Status = record {
   cache_policy : text;
   nnue_sha256 : text;
   chain_id : nat64;
+  relay_canister : principal;
   engine_canister : principal;
   nodes : nat64;
   attestor_address : text;

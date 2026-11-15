@@ -1,0 +1,14 @@
+[package]
+name = "gh0st_chess_test_relay_driver"
+version = "0.1.0"
+edition = "2024"
+publish = false
+[lib]
+crate-type = ["cdylib"]
+[dependencies]
+ic-cdk = "=0.20.3"
+candid = "=0.10.40"
+[profile.release]
+opt-level = "z"
+lto = true
+panic = "abort"

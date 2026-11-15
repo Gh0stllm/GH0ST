@@ -15,6 +15,45 @@ thread_local! {
  static CONFIG:RefCell<StableCell<Vec<u8>,Memory>>=RefCell::new(StableCell::init(MM.with(|m|m.borrow().get(MemoryId::new(0))),vec![]));
  static JOBS:RefCell<StableBTreeMap<Hash,Vec<u8>,Memory>>=RefCell::new(StableBTreeMap::init(MM.with(|m|m.borrow().get(MemoryId::new(1)))));
  static META:RefCell<StableCell<Vec<u8>,Memory>>=RefCell::new(StableCell::init(MM.with(|m|m.borrow().get(MemoryId::new(2))),vec![]));
+ static TERMINAL_RELEASE:RefCell<StableCell<Vec<u8>,Memory>>=RefCell::new(StableCell::init(MM.with(|m|m.borrow().get(MemoryId::new(3))),vec![]));
+ static CLOSED_GAMES:RefCell<StableBTreeMap<Hash,u8,Memory>>=RefCell::new(StableBTreeMap::init(MM.with(|m|m.borrow().get(MemoryId::new(4)))));
+ static RELAY_RPC:RefCell<StableCell<Vec<u8>,Memory>>=RefCell::new(StableCell::init(MM.with(|m|m.borrow().get(MemoryId::new(5))),vec![]));
+}
+#[derive(Clone, Debug, Default, CandidType, Deserialize)]
+struct RelayRpc {
+    last_at: u64,
+    lease_until: u64,
+    generation: u64,
+    day: u64,
+    spent: u128,
+}
+fn relay_rpc() -> RelayRpc {
+    RELAY_RPC.with(|s| {
+        if s.borrow().get().is_empty() {
+            RelayRpc::default()
+        } else {
+            candid::decode_one(s.borrow().get()).expect("relay RPC accounting")
+        }
+    })
+}
+fn put_relay_rpc(s: RelayRpc) {
+    RELAY_RPC.with(|v| v.borrow_mut().set(candid::encode_one(s).unwrap()));
+}
+const MAX_CLOSED_GAMES: u64 = 4096;
+fn pending_release() -> Option<Hash> {
+    TERMINAL_RELEASE.with(|s| {
+        let b = s.borrow();
+        (!b.get().is_empty()).then(|| fixed(b.get()).expect("terminal release schema"))
+    })
+}
+fn set_pending_release(game: Option<Hash>) {
+    TERMINAL_RELEASE.with(|s| {
+        s.borrow_mut()
+            .set(game.map_or_else(Vec::new, |g| g.to_vec()))
+    });
+}
+fn terminal_job(game: Hash) -> bool {
+    pending_release() == Some(game) || CLOSED_GAMES.with(|s| s.borrow().contains_key(&game))
 }
 #[derive(Clone, Debug, Default, CandidType, Deserialize, Serialize)]
 struct Meta {
@@ -50,6 +89,11 @@ fn now() -> u64 {
     ic_cdk::api::time() / 1_000_000_000
 }
 fn put(j: &Job) {
+    // A callback from an old advance can arrive after canonical terminal cleanup.
+    // It must never resurrect a pruned job or a discarded retained continuation.
+    if terminal_job(j.game_id) {
+        return;
+    }
     JOBS.with(|s| {
         s.borrow_mut()
             .insert(j.job_id, candid::encode_one(j).unwrap())
@@ -76,6 +120,11 @@ fn path() -> Vec<Vec<u8>> {
 #[init]
 fn init(c: Config) {
     c.validate().expect("invalid config");
+    assert_ne!(
+        c.relay_canister,
+        ic_cdk::api::canister_self(),
+        "relay must be a distinct canister"
+    );
     assert!(
         !c.reviewed_release,
         "initial release must remain closed until reviewed sealing"
@@ -107,10 +156,14 @@ fn upgraded() {
     m.ready_at = 0;
     m.rpc_lease_until = 0;
     put_meta(m);
+    let mut relay = relay_rpc();
+    relay.lease_until = 0;
+    put_relay_rpc(relay);
 }
 
 #[derive(Debug, CandidType, Deserialize)]
 struct Status {
+    relay_canister: Principal,
     production_ready: bool,
     paid_entries_enabled: bool,
     blockers: Vec<String>,
@@ -139,11 +192,15 @@ fn get_status() -> Status {
     if m.ready_at == 0 || now() > m.ready_at + 120 {
         blockers.push("canonical deployment readiness needs refresh_status".into())
     }
+    if pending_release().is_some() {
+        blockers.push("canonical terminal cleanup requires refresh_status".into())
+    }
     let ready = blockers.is_empty();
     let prize =
         unhex("0x00000000000000000000000000000000000000000000d3c21bcecceda1000000").unwrap();
     let funded = m.free_pool.len() == 32 && m.free_pool >= prize;
     Status {
+        relay_canister: c.relay_canister,
         production_ready: ready,
         paid_entries_enabled: ready && !m.paused && funded && m.active_game == [0; 32],
         blockers,
@@ -209,7 +266,7 @@ async fn seal_release(binding: DeploymentBinding) -> R<Status> {
     if meta().public_key.is_empty() {
         return Err("derive and review the threshold signer before sealing".into());
     }
-    let lease = rpc_lease()?;
+    let lease = rpc_lease(RpcLane::Public)?;
     let result = async {
         let info = engine_info(&candidate).await?;
         if info.faulted || !info.reserved_game.is_empty() || !info.active_job.is_empty() {
@@ -237,7 +294,7 @@ async fn seal_release(binding: DeploymentBinding) -> R<Status> {
         Ok(get_status())
     }
     .await;
-    unlock_rpc(lease);
+    unlock_rpc(lease, RpcLane::Public);
     result
 }
 
@@ -343,16 +400,39 @@ fn transform(args: TransformArgs) -> HttpRequestResult {
         body,
     }
 }
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Debug, PartialEq)]
 enum RpcLane {
     Public,
+    Relay,
     Signing,
 }
-const PUBLIC_RPC_DAILY_CAP: u128 = 500_000_000_000;
+fn caller_lane(c: &Config) -> RpcLane {
+    if ic_cdk::api::msg_caller() == c.relay_canister {
+        RpcLane::Relay
+    } else {
+        RpcLane::Public
+    }
+}
+const PUBLIC_RPC_DAILY_CAP: u128 = 1_000_000_000_000;
+const RELAY_RPC_DAILY_CAP: u128 = 1_000_000_000_000;
 const SIGNING_RPC_DAILY_CAP: u128 = 2_000_000_000_000;
 fn charge_rpc_budget(debit: u128, lane: RpcLane) -> R<()> {
     if ic_cdk::api::canister_cycle_balance() < 2_000_000_000_000 + debit {
         return Err("RPC operating reserve is low".into());
+    }
+    if lane == RpcLane::Relay {
+        let mut r = relay_rpc();
+        let day = now() / 86400;
+        if r.day != day {
+            r.day = day;
+            r.spent = 0;
+        }
+        if r.spent.saturating_add(debit) > RELAY_RPC_DAILY_CAP {
+            return Err("daily protected relay verification budget reached".into());
+        }
+        r.spent += debit;
+        put_relay_rpc(r);
+        return Ok(());
     }
     let mut m = meta();
     let day = now() / 86400;
@@ -363,6 +443,7 @@ fn charge_rpc_budget(debit: u128, lane: RpcLane) -> R<()> {
             &mut m.signing_rpc_spent,
             SIGNING_RPC_DAILY_CAP,
         ),
+        RpcLane::Relay => unreachable!(),
     };
     if *epoch != day {
         *epoch = day;
@@ -372,6 +453,7 @@ fn charge_rpc_budget(debit: u128, lane: RpcLane) -> R<()> {
         return Err(match lane {
             RpcLane::Public => "daily public canonical verification budget reached",
             RpcLane::Signing => "daily protected signing verification budget reached",
+            RpcLane::Relay => unreachable!(),
         }
         .into());
     }
@@ -566,7 +648,22 @@ async fn recheck_block_for(c: &Config, s: &Snapshot, lane: RpcLane) -> R<()> {
     }
     Ok(())
 }
-fn rpc_lease() -> R<u64> {
+fn rpc_lease(lane: RpcLane) -> R<u64> {
+    if lane == RpcLane::Relay {
+        let mut r = relay_rpc();
+        if now() < r.lease_until || now() < r.last_at.saturating_add(30) {
+            return Err("protected relay verification busy; retry later".into());
+        }
+        r.last_at = now();
+        r.lease_until = now() + 120;
+        r.generation = r
+            .generation
+            .checked_add(1)
+            .ok_or("relay verification generation exhausted")?;
+        let generation = r.generation;
+        put_relay_rpc(r);
+        return Ok(generation);
+    }
     let mut m = meta();
     if now() < m.rpc_lease_until || now() < m.last_rpc_at.saturating_add(30) {
         return Err("canonical verification busy; query existing job and retry later".into());
@@ -581,7 +678,15 @@ fn rpc_lease() -> R<u64> {
     put_meta(m);
     Ok(generation)
 }
-fn unlock_rpc(generation: u64) {
+fn unlock_rpc(generation: u64, lane: RpcLane) {
+    if lane == RpcLane::Relay {
+        let mut r = relay_rpc();
+        if r.generation == generation {
+            r.lease_until = 0;
+        }
+        put_relay_rpc(r);
+        return;
+    }
     let mut m = meta();
     if m.rpc_generation == generation {
         m.rpc_lease_until = 0;
@@ -605,41 +710,83 @@ fn prune_game(old: Hash) {
         }
     });
 }
-async fn release_terminal(c: &Config, info: EngineInfo, active: Hash) -> R<EngineInfo> {
-    if info.reserved_game.is_empty() || info.reserved_game == active {
+async fn release_terminal(
+    c: &Config,
+    info: EngineInfo,
+    active: Hash,
+    lane: RpcLane,
+) -> R<EngineInfo> {
+    if pending_release().is_none()
+        && (info.reserved_game.is_empty() || info.reserved_game == active)
+    {
         return Ok(info);
     }
-    let old: Hash = fixed(&info.reserved_game)?;
-    let s = canonical(c, Some(old)).await?;
-    if s.game.as_ref().ok_or("missing prior game")?.result == 0 {
+    let old = match pending_release() {
+        Some(old) => old,
+        None => fixed(&info.reserved_game)?,
+    };
+    let s = canonical_for(c, Some(old), lane).await?;
+    let game = s.game.as_ref().ok_or("missing prior game")?;
+    if game.result == 0 || game.id(c.game_contract) != old || s.active == old {
         return Err("another retained game is still active".into());
     }
-    recheck_block(c, &s).await?;
-    let released = Call::bounded_wait(c.engine_canister, "release_game")
-        .with_arg(old)
-        .await
-        .map_err(|_| "prior reservation release uncertain")?
-        .candid::<Result<EngineInfo, EngineError>>()
-        .map_err(|_| "release decode")?
-        .map_err(|e| e.message)?;
+    recheck_block_for(c, &s, lane).await?;
+    if CLOSED_GAMES.with(|s| s.borrow().contains_key(&old)) {
+        return engine_info(c).await;
+    }
+    if let Some(pending) = pending_release() {
+        if pending != old {
+            return Err("another terminal cleanup is pending".into());
+        }
+    } else {
+        if CLOSED_GAMES.with(|s| s.borrow().len()) >= MAX_CLOSED_GAMES {
+            return Err("terminal game archive capacity reached".into());
+        }
+        // Persist before the release await. A committed release with a lost/error
+        // response can then be recovered from its now-empty reservation.
+        set_pending_release(Some(old));
+    }
+    let current = engine_info(c).await?;
+    let released = if current.reserved_game.is_empty() {
+        current
+    } else if current.reserved_game == old {
+        Call::bounded_wait(c.engine_canister, "release_game")
+            .with_arg(old)
+            .await
+            .map_err(|_| "prior reservation release uncertain; retry terminal cleanup")?
+            .candid::<Result<EngineInfo, EngineError>>()
+            .map_err(|_| "release decode; retry terminal cleanup")?
+            .map_err(|e| e.message)?;
+        engine_info(c).await?
+    } else {
+        return Err("terminal cleanup reservation changed; no pruning permitted".into());
+    };
+    if !released.reserved_game.is_empty() || pending_release() != Some(old) {
+        return Err("terminal release is not acknowledged; no pruning permitted".into());
+    }
+    // Tombstone precedes pruning in the same atomic message. Late callbacks and
+    // replayed old requests cannot recreate jobs after a successful cleanup.
+    CLOSED_GAMES.with(|s| s.borrow_mut().insert(old, 1));
     prune_game(old);
+    set_pending_release(None);
     Ok(released)
 }
 #[update]
 async fn refresh_status() -> R<Status> {
     let c = cfg();
+    let lane = caller_lane(&c);
     if !c.reviewed_release {
         return Err("reviewed release gate closed".into());
     }
-    let lease = rpc_lease()?;
+    let lease = rpc_lease(lane)?;
     let r = async {
         let info = engine_info(&c).await?;
         if info.cycle_balance < candid::Nat::from(3_500_000_000_000u64) {
             return Err("engine lacks fixed-budget operating reserve".into());
         }
-        let s = canonical(&c, None).await?;
-        recheck_block(&c, &s).await?;
-        let info = release_terminal(&c, info, s.active).await?;
+        let s = canonical_for(&c, None, lane).await?;
+        recheck_block_for(&c, &s, lane).await?;
+        let info = release_terminal(&c, info, s.active, lane).await?;
         if info.faulted && !info.reserved_game.is_empty() {
             return Err("active engine fault requires native bot-timeout refund".into());
         }
@@ -652,15 +799,19 @@ async fn refresh_status() -> R<Status> {
         Ok(get_status())
     }
     .await;
-    unlock_rpc(lease);
+    unlock_rpc(lease, lane);
     r
 }
 
 #[update]
 async fn request_bot(r: Request) -> R<Job> {
     let c = cfg();
+    let lane = caller_lane(&c);
     if !c.reviewed_release {
         return Err("reviewed release gate closed".into());
+    }
+    if terminal_job(r.game_id) || pending_release().is_some() {
+        return Err("terminal cleanup pending or game already closed; refresh readiness".into());
     }
     if r.request_id == [0; 32] || r.expected_ply as usize != r.moves.len() {
         return Err("invalid request".into());
@@ -675,23 +826,26 @@ async fn request_bot(r: Request) -> R<Job> {
         }
         return Ok(j);
     }
-    let lease = rpc_lease()?;
+    let lease = rpc_lease(lane)?;
     let result = async {
         let info = engine_info(&c).await?;
         if info.cycle_balance < candid::Nat::from(3_500_000_000_000u64) {
             return Err("engine lacks fixed-budget operating reserve".into());
         }
-        let s = canonical(&c, Some(r.game_id)).await?;
+        let s = canonical_for(&c, Some(r.game_id), lane).await?;
         if s.active != r.game_id {
             return Err("not the active canonical game".into());
         }
         let g = s.game.clone().ok_or("missing game")?;
         verify_game(&c, r.game_id, &g, &r.moves, now())?;
-        recheck_block(&c, &s).await?;
+        recheck_block_for(&c, &s, lane).await?;
         if info.reserved_game != r.game_id && g.ply != 1 {
             return Err("retained game state is missing; refund on native bot timeout".into());
         }
-        let info = release_terminal(&c, info, s.active).await?;
+        let info = release_terminal(&c, info, s.active, lane).await?;
+        if pending_release().is_some() || terminal_job(r.game_id) {
+            return Err("terminal cleanup pending or requested game closed".into());
+        }
         if info.faulted && !info.reserved_game.is_empty() {
             return Err("active engine fault requires native bot-timeout refund".into());
         }
@@ -719,7 +873,7 @@ async fn request_bot(r: Request) -> R<Job> {
         Ok(j)
     }
     .await;
-    unlock_rpc(lease);
+    unlock_rpc(lease, lane);
     result
 }
 
@@ -765,6 +919,9 @@ fn absorb(c: &Config, j: &mut Job, p: EngineProgress) -> R<()> {
 async fn advance_job(a: Advance) -> R<Job> {
     let c = cfg();
     let mut j = get(a.job_id)?;
+    if terminal_job(j.game_id) {
+        return Err("terminal game cleanup has closed this job".into());
+    }
     if j.phase == "Completed" || j.phase == "Faulted" {
         return Ok(j);
     }
@@ -874,6 +1031,11 @@ async fn advance_job(a: Advance) -> R<Job> {
     .await;
     j.in_flight = false;
     j.updated_at = now();
+    if terminal_job(j.game_id) {
+        j.phase = "Faulted".into();
+        j.error = Some("canonical terminal cleanup discarded this late callback".into());
+        return Ok(j);
+    }
     match r {
         Ok(()) => j.error = None,
         Err(e) => j.record_failure(e),
@@ -884,4 +1046,65 @@ async fn advance_job(a: Advance) -> R<Job> {
 ic_cdk::export_candid!();
 pub fn candid_service() -> String {
     __export_service()
+}
+
+#[cfg(test)]
+mod terminal_tests {
+    use super::*;
+    fn job(game_id: Hash, ply: u32) -> Job {
+        let c = Config {
+            engine_canister: Principal::from_slice(&[1]),
+            relay_canister: Principal::from_slice(&[2]),
+            engine_module_hash: [1; 32],
+            game_contract: [2; 20],
+            game_runtime_hash: [3; 32],
+            rpc_url: "https://rpc.mainnet.chain.robinhood.com".into(),
+            confirmations: 12,
+            key_name: "key_1".into(),
+            reviewed_release: true,
+        };
+        Job::new(
+            &c,
+            &Request {
+                game_id,
+                expected_ply: ply,
+                expected_position_hash: [4; 32],
+                request_id: [5; 32],
+                moves: vec![],
+            },
+            0,
+        )
+    }
+    #[test]
+    fn pending_and_closed_terminal_games_cannot_receive_late_callback_writes() {
+        let j = job([101; 32], 1);
+        put(&j);
+        assert!(get(j.job_id).is_ok());
+        set_pending_release(Some(j.game_id));
+        prune_game(j.game_id);
+        put(&j);
+        assert!(get(j.job_id).is_err());
+        CLOSED_GAMES.with(|s| s.borrow_mut().insert(j.game_id, 1));
+        set_pending_release(None);
+        put(&j);
+        assert!(get(j.job_id).is_err());
+    }
+    #[test]
+    fn twenty_sequential_eighty_decision_games_do_not_consume_lifetime_job_capacity() {
+        for n in 0..20u8 {
+            let game = [n + 1; 32];
+            for p in 0..80 {
+                put(&job(game, p * 2 + 1));
+            }
+            assert_eq!(JOBS.with(|s| s.borrow().len()), 80);
+            set_pending_release(Some(game));
+            CLOSED_GAMES.with(|s| s.borrow_mut().insert(game, 1));
+            prune_game(game);
+            set_pending_release(None);
+            assert_eq!(JOBS.with(|s| s.borrow().len()), 0);
+            put(&job(game, 1));
+            assert_eq!(JOBS.with(|s| s.borrow().len()), 0);
+        }
+        assert_eq!(CLOSED_GAMES.with(|s| s.borrow().len()), 20);
+    }
 }

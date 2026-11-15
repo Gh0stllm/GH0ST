@@ -11,6 +11,7 @@ fn bytes<const N: usize>(s: &str) -> [u8; N] {
 fn config() -> Config {
     Config {
         engine_canister: Principal::self_authenticating(b"synthetic engine fixture"),
+        relay_canister: Principal::self_authenticating(b"synthetic relay fixture"),
         engine_module_hash: [3; 32],
         game_contract: [0x11; 20],
         game_runtime_hash: [4; 32],
@@ -19,6 +20,31 @@ fn config() -> Config {
         key_name: "dfx_test_key".into(),
         reviewed_release: false,
     }
+}
+#[test]
+fn relay_binding_is_nonanonymous_distinct_and_preserved_by_one_time_sealing() {
+    let c = config();
+    assert!(c.validate().is_ok());
+    for relay in [
+        Principal::anonymous(),
+        Principal::management_canister(),
+        c.engine_canister,
+    ] {
+        let mut invalid = c.clone();
+        invalid.relay_canister = relay;
+        assert!(invalid.validate().is_err());
+    }
+    let mut unbound = c.clone();
+    unbound.game_contract = [0; 20];
+    unbound.game_runtime_hash = [0; 32];
+    let sealed = unbound
+        .seal(&DeploymentBinding {
+            game_contract: [7; 20],
+            game_runtime_hash: [8; 32],
+        })
+        .unwrap();
+    assert_eq!(sealed.relay_canister, c.relay_canister);
+    assert_eq!(sealed.engine_hash(), c.engine_hash());
 }
 fn e4() -> Vec<String> {
     vec!["e2e4".into()]

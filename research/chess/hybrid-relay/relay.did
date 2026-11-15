@@ -76,6 +76,7 @@ type Status = record {
   game_contract : text;
   remaining_gas_budget_wei : nat;
   last_http_prepayment_cycles : nat;
+  configured_lifetime_gas_budget_wei : nat;
   last_checked_at : nat64;
   enabled : bool;
   last_flexible_booked_cycles : nat;
@@ -84,6 +85,7 @@ type Status = record {
   chain_id : nat64;
   coordinator_module_hash : blob;
   in_flight : bool;
+  maximum_supported_lifetime_gas_budget_wei : nat;
   advisory_last_checked_at : nat64;
   ready : bool;
   rpc_cycle_limit_per_day : nat;
