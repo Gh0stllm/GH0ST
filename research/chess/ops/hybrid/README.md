@@ -27,6 +27,8 @@ Controller upgrades remain a disclosed trust boundary. The engine faults an acti
 
 The same-strength paired engine/coordinator test reduced cycles by 21.32% and engine updates from 240 to 35. The full model, 24m nodes, Hash128 and retained state remain unchanged. Exact native comparisons, arithmetic checks and source review support equivalence; mainnet timing still needs the paid pilot.
 
+The [frozen optimized release plan](optimized-release-plan.json) records exact module hashes, verification scopes, measured costs and activation gates. The [published preview proof](site-preview.json) records the preserved site manifest and deployment.
+
 Reviewable proposed launch caps (not authorization):
 
 - Up to **40 ICP** converted for dedicated canister creation, uploads, installation and operating cycles; no automatic top-ups. Funding a balance does not mean all cycles are immediately spent.
