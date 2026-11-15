@@ -2,7 +2,9 @@
 
 **ICP brain. Robinhood game. Fixed 1,000,000 GH0ST checkmate prize.**
 
-The interface is being released at [gh0st.fyi/chess](https://gh0st.fyi/chess/). It is an **unfunded preview**: no public chess engine, deployed game or prize pool is configured, and paid entry stays closed. Local testing, native engine matches and mainnet deployment are separate evidence categories.
+The [chess page](https://gh0st.fyi/chess/) keeps paid entry closed. The full engine, coordinator and disabled relay are installed on ICP, and the native Robinhood game is deployed and paused. The prize pool is not funded. [Mainnet records](ops/hybrid/mainnet-progress.json) separate installation and deployment from fresh inference or a completed public game.
+
+The current user-approved maximum is **100 ICP total**, including **13 ICP already converted** and **0.0003 ICP ledger fees**. ETH remains capped at0.003; GH0ST at1M prize plus25k pilot. The larger allocation proposal was rejected. No automatic top-ups. [Current budget analysis](ops/hybrid/BUDGET_100.md).
 
 ## Selected game
 
@@ -39,6 +41,16 @@ The selected [optimized engine](engine/optimized/) preserves full Stockfish19, t
 This is **21.32% lower paired compute/coordination cost** and **6.86× fewer engine updates** for the measured opening decision. Fewer updates do not imply the same factor in mainnet wall time. A second consecutive retained search also matched native exactly: Nc6 /24,000,311 /depth39,33updates. Actual local integration elapsed about60seconds; mainnet timing remains unmeasured.
 
 Derived small affine integer layouts and wider Wasm accumulator tiling preserve exact arithmetic. An independent review verified every model byte, all 32,768 sparse weight coordinates and 5 million Wasm/scalar output comparisons. The maximal journal test completed under the 40B instruction ceiling; its all-in debit was around 30.35B cycles, a different quantity. [Quality review](engine/optimized/QUALITY.md) and [paired integration evidence](hybrid-brain/evidence/end-to-end-costs.json).
+
+## Further work within100ICP
+
+Five isolated engine variants found only a1.97% best instruction reduction on equal400,538-node prefixes. None was promoted. The full released model,24m budget,Hash128 and playing policy remain unchanged. [Measurements](engine/budget100/README.md).
+
+The exact-state checkpoint prototype saved163MB of retained logical state, restored it in an independent native engine and matched two subsequent full24m searches, including complete retained-state hashes. New-game reset also matched. A separate synthetic160MiB ICP restore used27.49B cycles; actual engine integration remains a review gate. [Checkpoint proof](engine/prefix-cache/README.md).
+
+The [cached-reply proposal](engine/prefix-cache/CACHE_CERTIFICATE.md) lets Robinhood reuse an ICP-certified reply for an identical full history without a fresh search or pair of signatures. Its illustrative20 identical80-decision paths model about82.36ICP with stated allowances. Twenty independent histories do not inherit that estimate. The reusable native certificate, durable direct restore and deployed integration are not implemented.
+
+[GH0ST L3 research](ops/hybrid/L3_AI_RESEARCH.md) covers Robinhood settlement, native GH0ST gas, current Stylus limits and a possible custom deterministic AI execution layer. It is a separate research path, with no L3 resources provisioned.
 
 ## Implementation and checks
 

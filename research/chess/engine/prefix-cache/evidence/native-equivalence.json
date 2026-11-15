@@ -1,0 +1,54 @@
+{
+  "scope": "Test-only native logical retained-state checkpoint and future-search equivalence; no ICP cache or real funds",
+  "generated_at": "2026-11-15T15:25:30.320720+00:00",
+  "source_commit": "edb0d9db6731067ec50ce619ff372b463bc4dd5d",
+  "nnue_sha256": "1a298aa575a085434d29027978dc36867fe9c5bcea9376654b7a8eba1e52dfc2",
+  "binary_sha256": "2f6d974c9a02299832ecee40ff7e02861375198dee4c02af0ae6dfc0403c5e1e",
+  "identity_schema": "native64 little-endian, exact binary SHA256 and fixed strength identity",
+  "rows": [
+    {
+      "event": "checkpoint",
+      "bytes": 163086838,
+      "initial_bestmove": "e7e5",
+      "nodes": 24000033,
+      "depth": 38,
+      "search_seconds": 15.2292,
+      "save_seconds": 0.310721,
+      "restore_seconds": 0.606654,
+      "negative_cases": 5,
+      "post_state_sha256": "a47b3db825ac8f10b05918859712ed50aba3036f87456ad4f164fd1744782e40"
+    },
+    {
+      "event": "future_search",
+      "step": 0,
+      "bestmove": "b8c6",
+      "nodes": 24000311,
+      "depth": 39,
+      "state_sha256": "272f17f037142db4a6f09f2bd636452b8b6bcbf9b2cfe8a0f67f6487c7d885e6",
+      "exact": true
+    },
+    {
+      "event": "future_search",
+      "step": 1,
+      "bestmove": "g8f6",
+      "nodes": 24000558,
+      "depth": 37,
+      "state_sha256": "cb4b4ced690cf233dcf3c4c35e0c8987be1d9b98dff7ad9303cd1dc6c42188e3",
+      "exact": true
+    },
+    {
+      "event": "new_game_reset",
+      "canonical_incoming_state": true
+    },
+    {
+      "event": "complete",
+      "passed": true,
+      "full24m_searches": 5,
+      "restored_future_decisions": 2,
+      "scope": "native test-only logical retained state; no ICP cache or spend"
+    }
+  ],
+  "passed": true,
+  "all_owned_native_processes_stopped": true,
+  "direct_arbitrary_idle_state_restore_not_tested": true
+}

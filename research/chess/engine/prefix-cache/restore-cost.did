@@ -1,0 +1,2 @@
+type Cost = record { ok:bool; phase:text; bytes:nat32; checksum:text; read_instructions:nat64; hash_instructions:nat64; copy_instructions:nat64; verify_instructions:nat64; total_instructions:nat64 };
+service : () -> { seed:(nat32)->(Cost);restore:()->(Cost);corrupt:()->(Cost);inspect:()->(Cost); }

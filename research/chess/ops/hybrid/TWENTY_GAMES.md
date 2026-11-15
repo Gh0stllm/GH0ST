@@ -1,5 +1,7 @@
 # Twenty-game operating plan
 
+> Superseded proposal: the user rejected these larger caps and set a100ICP total maximum. See [the current100ICP plan](BUDGET_100.md). This historical scenario is not authorization.
+
 **Twenty sequential full-strength games need substantially more than the approved 40 ICP launch cap.** The reviewable 80-decision scenario proposes **1,250 ICP total and 0.01 ETH total**, with the existing **1,000,000 GH0ST prize pool**. These larger caps are **not approved**. The earlier paused pilot remains bounded by its original approval.
 
 Full Stockfish 19, its complete pinned NNUE, 24m nodes, Hash128, maximum skill and retained state are preserved. Only one game runs at a time. This is twenty games total, not twenty concurrent games or twenty games per day.

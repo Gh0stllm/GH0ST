@@ -1,6 +1,8 @@
 # Hybrid launch review
 
-Three dedicated chess canisters have now been created on the same certified13-node application subnet. Creation converted13ICP, with0.0003ICP ledger fees; the full engine is installed and its mainnet module hash is certified. The coordinator is also installed and certified, with its actual signer derived; it remains unbound and closed. The relay canister is still empty while its configured gas budget is selected. No Robinhood game transaction or prize transfer has occurred. The public `/chess/` page keeps paid entry disabled. See [current progress and receipts](mainnet-progress.json).
+The full engine, coordinator and disabled relay are installed on the same certified13-node ICP application subnet. The native Robinhood game is deployed and paused; its actual runtime, owner, signer and fixed terms are verified. Creation converted13ICP and paid0.0003ICP ledger fees; RH deployment cost0.000064114367868ETH. No GH0ST prize or pilot entry has been funded. See [mainnet progress](mainnet-progress.json).
+
+**Current hard cap:100ICP total, including the13 already converted and paid fees.** The1,250ICP proposal was rejected. ETH remains capped at0.003 total; actual relay lifetime authority is0.0025ETH. Token limits remain1M prize plus25k pilot. No automatic top-ups. [100ICP feasibility and tested optimizations](BUDGET_100.md).
 
 ## Fixed terms
 
@@ -29,15 +31,15 @@ The same-strength paired engine/coordinator test reduced cycles by 21.32% and en
 
 The [pre-approval optimized release plan](optimized-release-plan.json) records exact module hashes, verification scopes, measured costs and activation gates. The [published preview proof](site-preview.json) records the preserved site manifest and deployment.
 
-The user approved these initial launch limits; the [twenty-game expansion](TWENTY_GAMES.md) remains a separate funding proposal:
+The latest user-approved limits are:
 
-- Up to **40 ICP** converted for dedicated canister creation, uploads, installation and operating cycles; no automatic top-ups. Funding a balance does not mean all cycles are immediately spent.
+- Up to **100 ICP** converted for dedicated canister creation, uploads, installation and operating cycles; no automatic top-ups. Funding a balance does not mean all cycles are immediately spent.
 - Up to **0.003 ETH** for deployment, exact token approvals, manual prize funding, one bounded pilot and entry activation. This includes a 0.0025 ETH reserve for the dedicated autonomous relay; unused gas remains in that canister-controlled wallet.
 - **1,000,000 GH0ST** placed in prize escrow, plus at most **25,000 GH0ST** for the project's pilot entry. Pilot proceeds after one genuine full-budget Black reply, then the original wallet resigns; entry remains in the project-owned pool. A real human checkmate is not fabricated for a public pilot.
 
-The deployment account started with15.13196820ICP. After the three reconciled creations it holds2.13166820ICP;13ICP was converted and0.0003ICP paid in fees. This is within the14.5ICP paused-pilot allocation and40ICP overall approved cap. No existing service balance was used. The ICP funding account is `44b41592844fd20127283d0ac8382ae5df0f9536f944e4519fdc19bebbc695fe`.
+The deployment account started with15.13196820ICP. After three reconciled creations it holds2.13166820ICP;13ICP was converted and0.0003ICP paid in fees. This is within the14.5ICP paused-pilot allocation and the new100ICP overall hard cap. No existing service balance was used. The ICP funding account is `44b41592844fd20127283d0ac8382ae5df0f9536f944e4519fdc19bebbc695fe`.
 
-The requested20fullgames need a larger reviewed operating budget, not a weaker engine. The current planning proposal is1,250ICP total and0.01ETH total for20×80Black-decision scenarios with stated allowances; it is not a guarantee for arbitrary game length. Neither larger cap has been approved.
+The requested20fullgames do not yet fit the verified100ICP budget. Five additional exact engine variants produced only a1.97% best partial-prefix saving; none was promoted. Exact retained-state reuse is being tested, with cache hits dependent on repeated histories. The [older twenty-game allocation proposal](TWENTY_GAMES.md) is superseded, not a spending instruction. Search on a hosted CPU is an explicit alternative requiring the user's architecture choice and separate hosting approval; it is not deployed.
 
 ## Deployment sequence after approval
 
@@ -49,4 +51,4 @@ The requested20fullgames need a larger reviewed operating budget, not a weaker e
 6. Fund the exact 1M reserve manually using a bounded approval, derive/fund the dedicated relay gas wallet, verify browser-independent bot progress, run the approved real pilot, reconcile native moves/transfers, and verify independent timeout path remains callable. Keep new entry paused on any inconsistency.
 7. Publish the receipt-backed config into the existing full Netlify manifest. Check all prior routes/functions/security rules. Open entries only after dependencies, cycles and full reserve verify.
 
-Canister creation is established by the linked mainnet records. Game deployment, pool funding, live inference, claim payout and public game completion still require their own receipts.
+Canister installation and the paused native-game deployment are established by linked mainnet records. Prize funding, fresh mainnet inference, payout and public game completion still require their own receipts.

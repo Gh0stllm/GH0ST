@@ -1,0 +1,113 @@
+{
+  "status": "No validated unchanged-strength, fully-on-chain twenty-game solution within 100 ICP",
+  "scope": "Research measurements and explicitly hypothetical cost scenarios; no production promotion",
+  "budgetICP": 100,
+  "priorConvertedICP": 13,
+  "priorLedgerFeesICP": 0.0003,
+  "allocationAccounting": "Converted ICP is not identical to burned cycles. Existing funded cycles count toward work; do not add 13 ICP to their consumption again. Existing creation/install/fees/reserves still count toward the cap.",
+  "cyclesPerICP": "1612400000000",
+  "certifiedRateAt": "2026-11-15T18:54:00.000Z",
+  "measuredEngineCyclesPerRepresentativeSearch": "972754508186",
+  "measurementLimit": "Saved local actual-IC/PocketIC representative search, not a measured mainnet whole game or universal per-position bound",
+  "scenarios": [
+    {
+      "games": 20,
+      "blackMovesPerGame": 40,
+      "turns": 800,
+      "engineOnlyICP": 482.63681874770526,
+      "existingEngineAndOrchestrationICP": 517.0892583765815,
+      "engineReductionNeededBeforeAllOtherCostsPercent": 79.28048666915439
+    },
+    {
+      "games": 20,
+      "blackMovesPerGame": 80,
+      "turns": 1600,
+      "engineOnlyICP": 965.2736374954105,
+      "existingEngineAndOrchestrationICP": 1034.178516753163,
+      "engineReductionNeededBeforeAllOtherCostsPercent": 89.64024333457718
+    }
+  ],
+  "affineMemoizationProbe": {
+    "source": "../exact-savings-20261116/evidence/probe.json",
+    "scope": "Bounded native measurement; not promoted and not a full-budget cost test",
+    "details": {
+      "baseline": {
+        "bestmove": "e7e5",
+        "nodes": 400080,
+        "depth": 19,
+        "score": "score cp -28",
+        "pv": "e7e5 g1f3 b8c6 f1b5 g8f6 e1g1 f6e4 f1e1 e4d6 f3e5 f8e7 b5f1 c6e5 e1e5 e8g8 d2d4 e7f6 e5e1 d6f5 d4d5",
+        "scope": "400k-node native probe, not full24m strength proof or IC execution"
+      },
+      "probe": {
+        "bestmove": "e7e5",
+        "nodes": 400080,
+        "depth": 19,
+        "score": "score cp -28",
+        "pv": "e7e5 g1f3 b8c6 f1b5 g8f6 e1g1 f6e4 f1e1 e4d6 f3e5 f8e7 b5f1 c6e5 e1e5 e8g8 d2d4 e7f6 e5e1 d6f5 d4d5",
+        "scope": "400k-node native probe, not full24m strength proof or IC execution",
+        "probe": {
+          "capacity": 16384,
+          "entry_bytes": 1036,
+          "evaluations": 209226,
+          "hits": 260,
+          "mismatches": 0
+        }
+      },
+      "matchingSearchFields": [
+        "bestmove",
+        "nodes",
+        "depth",
+        "score",
+        "pv"
+      ],
+      "affineCacheHitFraction": 0.0012426753845124411,
+      "scope": "Native reuse measurement only; all affine calls execute; no optimization promoted"
+    }
+  },
+  "signedQueryTransport": {
+    "source": "./public-query-probe.json",
+    "distinctSigners": 9,
+    "requests": 17,
+    "sameRequestAndReply": true,
+    "fullSearchesExecuted": 0,
+    "consensusCommitsExecuted": 0
+  },
+  "customQuorumEconomics": {
+    "status": "Custom application-quorum research; not standard replicated update execution",
+    "maximumOfficialQueryInstructions": 5000000000,
+    "hypotheticalEngineInstructionsPerQuery": "4000000000",
+    "chunksPerRepresentativeTurn": 244,
+    "commitsForTwentyEightyMoveGames": 390400,
+    "ingressCyclesPerByte": 2000,
+    "illustrativeDeltaBytes": 793461,
+    "inputLimit": "Completed short-search retained-state payload is NOT a measured mid-search query continuation; this substitution is only a rejection/sensitivity indicator, not a rigorous lower bound",
+    "hypotheticalIngressOnlyICP": 384.2311763830315,
+    "excludes": [
+      "signature/certificate verification",
+      "continuation capture/restore/serialization",
+      "query capacity and delays",
+      "coordination",
+      "creation/install/storage/fees/reserves",
+      "Robinhood gas"
+    ],
+    "productionReady": false
+  },
+  "decisions": {
+    "noWeakerEngine": true,
+    "noOffchainInference": true,
+    "noDedicatedL3Spend": true,
+    "noPublicTwentyGameGuarantee": true,
+    "noAdditionalSpending": true,
+    "nextExperiment": "Only a real mid-search continuation/log and actual-IC quorum verifier benchmark can qualify the query design; current measured payload indicators do not meet its target"
+  },
+  "sourceSHA256": {
+    "./cmc-rate.json": "be4a65b6c1ef5960dafba82d1f57b57056850a3fb0e0c6828881a1e58603fd21",
+    "./cmc-witness.json": "f6cf3b7d4c9bf42109463a46733378b0a7a2d6b8fe4df64b18f2df78c7b473d9",
+    "./public-query-probe.json": "a827760bdb3634f60bae01a3690ec2bc5d500283546736f30f16de1cd03349fe",
+    "../exact-savings-20261116/evidence/retained-delta.json": "c59926b95fdf000003e570c9d7ab5d67ae7c57b311e808d09e04bb571dc178ce",
+    "../exact-savings-20261116/evidence/probe.json": "a1d0925ba7ccf150f62e095f3f423d2d2c3e15083045862f319e6f246052baac",
+    "../quorum-query-20261116/test-results.json": "91cbf8005063154bee140ad15d2f5cd48b17e5cdecf0cc54c24c21421d5c8399",
+    "../../ops/hybrid/BUDGET_100.json": "62dd2cc813ef357e0bb72c9cfb4f495888aa11fa78e16bb9778ad78eb5f98c75"
+  }
+}
