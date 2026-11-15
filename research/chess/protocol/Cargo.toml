@@ -1,0 +1,32 @@
+[package]
+name = "gh0st-chess-protocol"
+version = "0.1.0"
+edition = "2024"
+license = "GPL-3.0-or-later"
+publish = false
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[[example]]
+name = "export_candid"
+required-features = ["canister"]
+
+[features]
+default = []
+canister = ["dep:ic-cdk", "dep:ic-stable-structures"]
+
+[dependencies]
+candid = "=0.10.40"
+serde = { version = "=1.0.228", features = ["derive"] }
+sha2 = "=0.10.9"
+sha3 = "=0.10.8"
+shakmaty = "=0.30.2"
+ic-cdk = { version = "=0.20.3", optional = true }
+ic-stable-structures = { version = "=0.7.2", optional = true }
+
+[profile.release]
+lto = true
+codegen-units = 1
+opt-level = "z"
+panic = "abort"

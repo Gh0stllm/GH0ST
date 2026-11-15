@@ -1,0 +1,31 @@
+// Both caller authorization and fixed configuration must be enforced by the engine canister.
+// Blob lengths are validated at the authority boundary; each hash is exactly 32 bytes.
+type SearchRequest = record {
+  job_id : blob;
+  config_hash : blob;
+  initial_fen : text;
+  moves : vec text;
+  nodes : nat64;
+  hash_mb : nat32;
+};
+type SearchResponse = record {
+  job_id : blob;
+  config_hash : blob;
+  bestmove : text;
+  actual_nodes : nat64;
+  depth : nat32;
+  instructions : nat64;
+  engine_commit : text;
+  nnue_sha256 : text;
+};
+service : (text, blob, nat64, nat32) -> {
+  search : (SearchRequest) -> (variant { Ok : SearchResponse; Err : text });
+  identity : () -> (record {
+    engine_commit : text;
+    nnue_sha256 : text;
+    config_hash : blob;
+    nodes : nat64;
+    hash_mb : nat32;
+    authority : text;
+  }) query;
+};

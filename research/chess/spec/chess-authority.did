@@ -1,0 +1,145 @@
+type Config = record {
+  entry_attestor : principal;
+  rh_vault : blob;
+  engine : EngineConfig;
+};
+type EngineAudit = record {
+  actual_nodes : nat64;
+  requested_nodes : nat64;
+  bestmove : text;
+  instructions : nat64;
+  nnue_sha256 : text;
+  job_id : blob;
+  depth : nat32;
+  engine_commit : text;
+};
+type EngineConfig = record {
+  cycles_per_search : nat64;
+  hash_mb : nat32;
+  stockfish_commit : text;
+  nnue_sha256 : text;
+  engine_canister : principal;
+  nodes : nat64;
+};
+type Error = variant {
+  SearchAlreadyRunning;
+  EntryAlreadyUsed;
+  Anonymous;
+  RequestConflict;
+  StalePosition;
+  UnknownGame;
+  IllegalMove;
+  NoDrawClaim;
+  ChallengeInactive;
+  WrongPhase;
+  Unauthorized;
+  Capacity;
+  InvalidConfiguration;
+  InvalidEngineResponse;
+  InvalidEntry;
+  Expired;
+};
+type Game = record {
+  fen : text;
+  moves : vec MoveRecord;
+  transcript_hash : blob;
+  pending : opt PendingSearch;
+  entry : VerifiedEntry;
+  requests : vec record { blob; blob };
+  phase : Phase;
+  position_hash : blob;
+  repetition_keys : vec text;
+  terminal : opt Terminal;
+  engine : EngineConfig;
+};
+type GameResult = variant {
+  Draw;
+  BotCheckmate;
+  HumanCheckmate;
+  HumanResigned;
+  ServiceFault;
+  PlayerTimeout;
+  EngineAbort;
+};
+type MoveRecord = record {
+  ply : nat32;
+  uci : text;
+  transcript_hash : blob;
+  position_hash : blob;
+  engine : opt EngineAudit;
+};
+type MoveRequest = record {
+  uci : text;
+  request_id : blob;
+  expected_position_hash : blob;
+  game_id : blob;
+  expected_ply : nat32;
+};
+type PendingSearch = record {
+  requested_at : nat64;
+  job_id : blob;
+  in_flight : bool;
+  position_hash : blob;
+};
+type Phase = variant { WaitingBot; Terminal; WaitingHuman };
+type Result = variant { Ok : Game; Err : Error };
+// Unsigned material for the EIP-712 attestor. Export alone cannot release RH funds.
+type ResultMaterial = record {
+  result : nat8;
+  transcript_hash : blob;
+  engine_config_hash : blob;
+  final_position_hash : blob;
+  player : blob;
+  principal_hash : blob;
+  game_id : blob;
+  nonce : blob;
+  completed_at : nat64;
+};
+type Result_1 = variant { Ok : vec text; Err : Error };
+type Result_2 = variant { Ok : opt ResultMaterial; Err : Error };
+type Status = record {
+  blockers : vec text;
+  engine_config_hash : blob;
+  production_ready : bool;
+  schema_version : nat32;
+  paid_entries_enabled : bool;
+  engine_config : EngineConfig;
+};
+type Terminal = record {
+  result : GameResult;
+  completed_at : nat64;
+  reason : text;
+};
+// This is an authenticated attestor assertion, NOT a cryptographic EVM receipt proof.
+// The canister review build refuses entry admission until a canonical verifier is implemented.
+type VerifiedEntry = record {
+  transaction_hash : blob;
+  engine_config_hash : blob;
+  vault : blob;
+  player : blob;
+  log_index : nat32;
+  reconciliation_deadline : nat64;
+  opened_at : nat64;
+  game_deadline : nat64;
+  principal_hash : blob;
+  player_principal : principal;
+  game_id : blob;
+  chain_id : nat64;
+  nonce : blob;
+};
+service : (Config) -> {
+  accept_entry : (VerifiedEntry) -> (Result);
+  claim_draw : (blob, opt text) -> (Result);
+  expire : (blob) -> (Result);
+  // Recovery for a callback lost during an upgrade or a trapped callee. Refund-only result.
+  fault_stuck_search : (blob) -> (Result);
+  get_game : (blob) -> (opt Game) query;
+  get_status : () -> (Status) query;
+  legal_moves : (blob) -> (Result_1) query;
+  resign : (blob) -> (Result);
+  result_material : (blob) -> (Result_2) query;
+  // Permissionless bounded crank. Human move has already committed in a separate update.
+  // It never accepts a bestmove supplied by the browser and never calls an off-chain LLM.
+  run_bot : (blob) -> (Result);
+  submit_move : (MoveRequest) -> (Result);
+}

@@ -1,0 +1,31 @@
+{
+  "scope": "local source tests, compiler, static lint and isolated PocketIC only",
+  "generated_at": "2026-11-15T05:46:37.240039+00:00",
+  "productionReady": false,
+  "paidEntriesEnabled": false,
+  "publicDeployment": false,
+  "wasmBytes": 2037800,
+  "wasmSha256": "1ae18245ad72a7017a3c778e167e824ad87f69bcee23d56b36ad22d954df71f4",
+  "nativeTestsPassed": 18,
+  "nativeSessionRuleTests": 16,
+  "nativeEip712InteropTests": 2,
+  "perft": {
+    "initialDepth4": 197281,
+    "kiwipeteDepth3": 97862,
+    "rookEndgameEnPassantDepth4": 43238
+  },
+  "checks": [
+    "cargo test --locked",
+    "cargo fmt --check",
+    "cargo clippy --features canister --all-targets -- -D warnings",
+    "cargo build --locked --release --target wasm32-unknown-unknown --features canister",
+    "PocketIC closed gate/config hash/same-source upgrade"
+  ],
+  "notVerified": [
+    "canonical RH receipt verifier and replay-index integration",
+    "result attestor signing/relay",
+    "fully integrated authority-to-engine game admitted on ICP",
+    "paid full-strength node budget",
+    "public deployment/funding/settlement"
+  ]
+}
