@@ -2,7 +2,9 @@
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { Chess } from 'chess.js';
-const root = new URL('./results/baseline-3m/', import.meta.url);
+const runId = process.argv[2] || 'baseline-3m';
+if (!/^[a-z0-9-]+$/.test(runId)) throw new Error('Invalid local run ID');
+const root = new URL('./results/' + runId + '/', import.meta.url);
 const config = JSON.parse(readFileSync(new URL('config.json', root), 'utf8'));
 const sha = value => createHash('sha256').update(value).digest('hex');
 const report = { scope: 'Independent chess.js legal replay of completed native CPU proxy games, not Solidity/ICP execution or a strength rating', checkedAt: new Date().toISOString(), library: 'chess.js 1.4.0', completedOnly: true, games: [] };

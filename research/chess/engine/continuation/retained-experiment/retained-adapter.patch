@@ -1,0 +1,36 @@
+--- a/src/gh0st_engine.cpp
++++ b/src/gh0st_engine.cpp
+@@ -13,6 +13,7 @@
+ 
+ namespace {
+ std::unique_ptr<Stockfish::Engine> engine;
++bool retained_game_ready=false;
+ void set_option(Stockfish::OptionsMap& options, const std::string& name, const std::string& value) {
+     std::istringstream command("name " + name + " value " + value);
+     options.setoption(command);
+@@ -41,6 +42,14 @@
+ }
+ }
+ 
++extern "C" int gh0st_stockfish_new_game(void) {
++    auto& e=get_engine();
++    if (int(e.get_options()["Hash"]) != 128) set_option(e.get_options(), "Hash", "128");
++    e.search_clear();
++    retained_game_ready=true;
++    return 0;
++}
++
+ extern "C" const char* gh0st_stockfish_commit(void) {
+     return "edb0d9db6731067ec50ce619ff372b463bc4dd5d";
+ }
+@@ -65,8 +74,8 @@
+         moves.push_back(move);
+     }
+     auto& e = get_engine();
+-    set_option(e.get_options(), "Hash", std::to_string(hash_mb));
+-    e.search_clear();
++    if (!retained_game_ready || hash_mb != 128) return 5;
++    // Per-game policy: retain TT and worker histories between decisions.
+     if (e.set_position(fen, moves))
+         return 2;
+     std::string best;

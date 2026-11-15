@@ -74,24 +74,40 @@ The superseded incomplete run is preserved under `results/superseded-white-claim
 
 ## Conditional repair experiment
 
-`run_repair.py` refuses an unfinished/drawn baseline and is now running against the actual Larsen checkmate. If a
+`run_repair.py` refuses an unfinished/drawn baseline was run against the actual Larsen checkmate; its optional full-game comparison was later stopped as unfinished when the user requested faster completion. If a
 legal White checkmate is found, it independently compares a 10m-node native defence
 with the direct C ABI on that opening, replays the known attack only until the first
 new Black move, and starts a separate fresh full game against the 24m challenger.
 It preserves the baseline and does not alter an engine/canister/configuration in
 production. A first divergence is explicitly **not** a repair proof, and a single
 fresh game is not a prize-safety guarantee. It should run only after a real mate,
-with worker capacity coordinated separately. Two separate native candidates are in progress:
+with worker capacity coordinated separately. Repair experiments are stored separately:
 
 - `results/repair-10m-larsen/`: Black 10m with per-decision clear, against White
   24m retained. The direct C ABI 10m reference matched exactly; the old attack first
-  diverged at Black ply 6 (`...Nf6` instead of `...d5`).
+  diverged at Black ply 6 (`...Nf6` instead of `...d5`). The fresh 10m-vs-24m
+  game was stopped at 136 plies as unfinished at the user's request;
+  no full-game repair result is assigned.
 - `results/repair-retained3m-vs12m-larsen/`: Black still 3m, but retaining its own
   TT and histories **within one isolated game**, against White 12m retained. The
   original first empty-cache response matched exactly; the old attack first
-  diverged at Black ply 8 (`...Bd6` instead of `...e4`). This is a changed cache
+  diverged at Black ply 8 (`...Bd6` instead of `...e4`). The fresh full game
+  completed in a legal Black threefold-claim draw after 63 plies. This is a changed cache
   policy that has not been implemented or equivalence-tested on ICP or Solidity.
 
-Both old-line divergences are preliminary mechanism observations. The full new
-matches are required before reporting even a case-specific repair outcome. Neither
-candidate is selected for production, and neither establishes general prize safety.
+- `results/repair-retained3m-vs24m-larsen/`: a further fresh native-only game
+  against the 24m challenger completed in a legal Black threefold-claim draw
+  after 57 plies, with the same per-game retained Black cache policy.
+
+Old-line divergences alone are preliminary mechanism observations. The completed
+63-ply and 57-ply draws are two case-specific outcomes from the same starting
+choice, not a general repair or win-rate proof.
+Neither candidate is selected for production or establishes general prize safety.
+
+Retained-cache porting detail: in pinned Stockfish 19, assigning `Hash=128` again
+invokes the option callback and reallocates/clears the TT even when the value is
+unchanged. The retained native candidate configures Hash/Threads/NumaPolicy once
+per game, and uses a stable UCI game token for all Black turns. A canister port
+must skip both per-decision `search_clear` and option resets that rebuild the
+worker/TT, while preserving isolation between games. This benchmark has not
+implemented that production memory/queue/controller policy.

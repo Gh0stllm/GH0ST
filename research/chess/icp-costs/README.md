@@ -19,6 +19,17 @@ both signature assumptions; they do not cost A while claiming to describe B.
 
 ## Actual ICP-to-cycles conversion
 
+Strength and cost are separate gates. The original 3m-cleared reference has one
+known checkmate in six completed games and remains unsuitable for unchanged
+repeat prizes. A retained-per-game-cache candidate drew fresh games against both
+12m and 24m challengers in the losing opening. Its first four decisions and an
+explicit reset also matched native execution on local ICP; see the
+[retained-cache experiment](../engine/continuation/retained-experiment/README.md).
+The four opening search debits were 150.777B, 149.741B, 137.597B and 127.137B cycles:
+about $0.17–$0.20 per decision at the saved rate. This small changed-policy sample
+is not a complete game bill or a universal repair. The detailed tables below
+retain their original measured cleared-cache 3m/10m basis.
+
 An anonymous query to the official CMC canister
 `rkp4c-7iaaa-aaaaa-aaaca-cai` returned **1 ICP = 1.6026 XDR = 1.6026 trillion cycles**
 for the **2026-11-15 08:24 UTC** rate. The query was verified at 08:28 UTC using

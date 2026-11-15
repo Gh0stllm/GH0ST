@@ -25,6 +25,14 @@ search state within one game. A changed early move is not proof of a fixed game;
 the candidate must finish against the stronger challenger. Full results and
 uncompleted records remain separate in the [benchmark evidence](benchmarks/results/).
 
+The retained-3m candidate subsequently completed fresh games against both 12m
+and 24m challengers as legal Black threefold draws, at 63 and 57 plies. Its first
+four decisions and explicit reset also matched native execution in a separate
+local ICP experiment. This is limited repair evidence, not a general win-rate
+guarantee or production activation. The optional 10m-cleared trial was stopped
+unfinished at 136 plies on the user's request to finish faster. All owned runs
+were stopped, and unfinished games are excluded from the completed fractions.
+
 ## What is being tested
 
 1. [Full games against stronger challengers](benchmarks/README.md) use an optimized

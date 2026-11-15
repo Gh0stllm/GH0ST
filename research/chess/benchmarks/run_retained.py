@@ -70,6 +70,9 @@ def main():
     save(out/'config.json',config)
     started=time.monotonic()
     run_game_cached(job,out,started+args.minutes*60,1024)
-    print(json.dumps(summary(out,[job],started),indent=2),flush=True)
+    report=summary(out,[job],started)
+    report['scope']='Full native CPU game of a changed retained-cache policy; not ICP/Solidity gameplay or a deployed policy'
+    save(out/'summary.json',report)
+    print(json.dumps(report,indent=2),flush=True)
 
 if __name__=='__main__': main()
