@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "status": "unconfigured",
   "chainId": 4663,
   "publicRpc": "https://rpc.mainnet.chain.robinhood.com",
@@ -11,11 +11,11 @@
   "engineCanisterId": null,
   "engineModuleHash": null,
   "engineControllers": null,
-  "engineCommit": null,
-  "nnueSha256": null,
+  "engineCommit": "edb0d9db6731067ec50ce619ff372b463bc4dd5d",
+  "nnueSha256": "1a298aa575a085434d29027978dc36867fe9c5bcea9376654b7a8eba1e52dfc2",
   "engineConfigHash": null,
-  "nodes": null,
-  "hashMb": null,
+  "nodes": 24000000,
+  "hashMb": 128,
   "cyclesPerSearch": null,
   "vaultAddress": null,
   "vaultDeploymentTransaction": null,
@@ -24,9 +24,13 @@
   "attestorAddress": null,
   "releaseEvidence": null,
   "blockers": [
-    "No verified ICP game authority or engine deployment.",
-    "Canonical Robinhood entry verification is not implemented.",
-    "No deployed vault or funded prize pool.",
-    "Engine strength calibration is pending."
-  ]
+    "ICP brain and canonical Robinhood game deployment are not configured.",
+    "No reviewed per-move signer and relay are configured.",
+    "The full 1,000,000 GH0ST prize reserve must be funded before entry.",
+    "The stronger 24m-node retained policy is a candidate; broad strength testing is incomplete."
+  ],
+  "architecture": "icp-brain-robinhood-game",
+  "cachePolicy": "retained-per-game",
+  "entryGH0ST": "25000",
+  "prizeGH0ST": "1000000"
 }

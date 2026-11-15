@@ -1,91 +1,33 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {createHash,webcrypto} from 'node:crypto';
-import {Principal} from '@icp-sdk/core/principal';
+import {webcrypto} from 'node:crypto';
 import {IDL} from '@icp-sdk/core/candid';
-import {Interface,keccak256} from 'ethers';
-import {validateConfig,fenBoard,INITIAL_FEN,principalHash,bytes,hex,matchRuntime,ENTRY_FEE,TOTAL_PRIZE,TOKEN_ADDRESS} from './core.mjs';
-import {ChessService,idlFactory} from './service.mjs';
+import {AbiCoder,Wallet,keccak256,id,Interface} from 'ethers';
+import {validateConfig,fenBoard,INITIAL_FEN,bytes,hex,matchRuntime,ENTRY_FEE,TOTAL_PRIZE,TOKEN_ADDRESS,encodeMove,decodeMove,boardFen,botMoveDomain,BOT_MOVE_TYPES} from './core.mjs';
+import {ChessService,idlFactory,signedEnvelope} from './service.mjs';
 import {ChessWallet} from './wallet.mjs';
 const config=JSON.parse(readFileSync(new URL('./public-config.json',import.meta.url)));
-const artifact=JSON.parse(readFileSync(new URL('../evm/artifacts.json',import.meta.url))).contracts.RHChessChallengeVault;
+const artifact=JSON.parse(readFileSync(new URL('../evm/hybrid-artifacts/hybridchessgame.json',import.meta.url)));
 if(!globalThis.crypto)Object.defineProperty(globalThis,'crypto',{value:webcrypto});
 globalThis.localStorage={map:new Map(),getItem(k){return this.map.get(k)||null;},setItem(k,v){this.map.set(k,String(v));},removeItem(k){this.map.delete(k);}};
 const player='0x1111111111111111111111111111111111111111',vault='0x2222222222222222222222222222222222222222';
-const hash='0x'+'ab'.repeat(32),principal='0x'+'cd'.repeat(32),gameId='0x'+'ef'.repeat(32);
+const hash='0x'+'ab'.repeat(32),gameId='0x'+'ef'.repeat(32);
+const abi=AbiCoder.defaultAbiCoder();
 function wallet(options={}){return new ChessWallet({...config,vaultAddress:vault},artifact,options);}
-test('staged configuration rejects paid readiness before any external read',async()=>{
-  assert.throws(()=>validateConfig(config),/Paid entries are closed/);
-  const s=new ChessService(config);await assert.rejects(()=>s.verify(),/Paid entries are closed/);assert.equal(s.verified,false);
-});
-test('canonical chain, token and endpoint cannot be replaced by public configuration',()=>{
-  for(const change of [{chainId:1},{publicRpc:'https://example.com'},{tokenAddress:vault},{icHost:'http://localhost:4943'}])assert.throws(()=>validateConfig({...config,...change}),/canonical/);
-});
-test('principal binding hashes the raw principal bytes, not displayed text',async()=>{
-  const p=Principal.fromText('rrkah-fqaaa-aaaaa-aaaaq-cai');const expected='0x'+createHash('sha256').update(p.toUint8Array()).digest('hex');assert.equal(await principalHash(p),expected);assert.notEqual(expected,'0x'+createHash('sha256').update(p.toText()).digest('hex'));
-});
-test('board FEN parser yields exactly 64 squares and rejects malformed positions',()=>{
-  const board=fenBoard(INITIAL_FEN);assert.equal(board.length,64);assert.equal(board[0].square,'a8');assert.equal(board[60].piece,'K');assert.equal(board[63].square,'h1');assert.throws(()=>fenBoard('8/8/8/8/8/8/8/9 w - - 0 1'));assert.throws(()=>bytes('0x1234'));
-});
-test('Candid service carries current position hash, instruction receipt, bounded move request',()=>{
-  const service=idlFactory({IDL});const methods=Object.fromEntries(service._fields);assert.ok(methods.submit_move);assert.ok(methods.run_bot);assert.ok(methods.get_game);assert.ok(!methods.search);assert.ok(!methods.accept_entry);
-  const text=methods.get_game.retTypes[0].display();assert.match(text,/position_hash/);assert.match(text,/instructions/);assert.match(text,/requested_nodes/);assert.match(text,/stop_reason/);
-  const input=methods.submit_move.argTypes[0].display();assert.match(input,/expected_position_hash/);assert.match(input,/request_id/);assert.doesNotMatch(input,/fen/);
-});
-test('reviewed runtime accepts immutables only and rejects instruction corruption',()=>{
-  const expected=artifact.deployedBytecode;assert.equal(matchRuntime(expected,artifact),keccak256(expected));
-  const corrupted='0x'+(expected[2]==='0'?'1':'0')+expected.slice(3);assert.throws(()=>matchRuntime(corrupted,artifact),/runtime differs/);
-  assert.throws(()=>matchRuntime(expected+'00',artifact),/runtime does not match/);
-});
-test('direct approval and entry require a fresh authority verification gate',async()=>{
-  const w=wallet();await assert.rejects(()=>w.approveExact(),/verification gate/);await assert.rejects(()=>w.enter(principal),/verification gate/);assert.equal(w.pending,null);
-  let checks=0;const guarded=wallet({verifyAuthority:async()=>{checks++;throw new Error('canonical entry verifier unavailable');}});
-  await assert.rejects(()=>guarded.approveExact(),/canonical entry verifier/);await assert.rejects(()=>guarded.enter(principal),/canonical entry verifier/);assert.equal(checks,2);assert.equal(guarded.pending,null);
-});
-test('full prize must be free before approval; entry fee cannot fund its own prize',async()=>{
-  const w=wallet({verifyAuthority:async()=>{}});w.assertWallet=async()=>{};w.balance=ENTRY_FEE;w.solvent=true;w.paused=false;w.freePool=TOTAL_PRIZE-1n;
-  await assert.rejects(()=>w.assertEntry(),/100,000 unreserved/);w.freePool=TOTAL_PRIZE;await w.assertEntry();w.paused=true;await assert.rejects(()=>w.assertEntry(),/Entry is closed/);
-});
-test('ambiguous wallet send persists intent before broadcast and blocks new sends',async()=>{
-  const w=wallet();w.wallet=player;w.provider={estimateGas:async()=>50000n};w.walletProvider={getTransactionCount:async()=>7};let sawPersisted=false;
-  w.signer={sendTransaction:async()=>{sawPersisted=!!JSON.parse(localStorage.getItem('gh0st-chess-unresolved-transaction-v1'));throw new Error('transport lost after wallet submission');}};
-  const method={populateTransaction:async()=>({to:vault,data:'0x1234'})};
-  await assert.rejects(()=>w.send('Enter challenge',{enterGame:method},'enterGame',[],{}),/transport lost/);assert.equal(sawPersisted,true);assert.equal(w.pending.nonce,7);assert.equal(w.pending.hash,null);
-  await assert.rejects(()=>w.assertWallet(),/Connect your Robinhood wallet|Resolve the saved transaction/);w.persist(null);
-});
-test('explicit wallet rejection clears unsent intent; network ambiguity does not',async()=>{
-  const w=wallet();w.wallet=player;w.provider={estimateGas:async()=>50000n};w.walletProvider={getTransactionCount:async()=>7};w.signer={sendTransaction:async()=>{throw Object.assign(new Error('rejected'),{code:'ACTION_REJECTED'});}};
-  await assert.rejects(()=>w.send('Approve 25,000 GH0ST',{approve:{populateTransaction:async()=>({to:TOKEN_ADDRESS,data:'0x1234'})}},'approve',[],{}));assert.equal(w.pending,null);
-});
-test('receipt reconciliation rejects mismatched original calldata before accepting events',async()=>{
-  const w=wallet();w.pending={kind:'Enter challenge',wallet:player,target:vault,data:'0x1234',nonce:7,hash,expected:{gameId,principalHash:principal,nonce:'9',engineConfigHash:hash}};
-  w.provider={getTransaction:async()=>({from:player,to:vault,data:'0x5678',nonce:7})};
-  await assert.rejects(()=>w.accept({hash,from:player,to:vault,status:1,confirmations:async()=>1,logs:[]}),/original transaction/);assert.ok(w.pending);w.persist(null);
-});
-test('forged entry principal cannot be reconciled as the players paid entry',async()=>{
-  const w=wallet();w.pending={kind:'Enter challenge',wallet:player,target:vault,data:'0x1234',nonce:7,hash,expected:{gameId,principalHash:principal,nonce:'9',engineConfigHash:hash}};
-  w.provider={getTransaction:async()=>({from:player,to:vault,data:'0x1234',nonce:7})};
-  const iface=new Interface(artifact.abi);const encoded=iface.encodeEventLog('EntryAccepted',[gameId,player,'0x'+'11'.repeat(32),9n,hash,1n,2n,3n]);
-  await assert.rejects(()=>w.accept({hash,from:player,to:vault,status:1,confirmations:async()=>1,logs:[{address:vault,...encoded}]}),/Entry event differs/);assert.ok(w.pending);w.persist(null);
-});
-test('unresolved authority move is persisted and reconciled without automatic retry',async()=>{
-  const s=new ChessService(config);s.principal=Principal.fromText('rrkah-fqaaa-aaaaa-aaaaq-cai');let updates=0;
-  s.authenticatedActor=async()=>({submit_move:async()=>{updates++;throw new Error('response lost');}});s.legalMoves=async()=>['e2e4'];
-  const game={position_hash:bytes(hash),moves:[]};await assert.rejects(()=>s.submit(gameId,game,'e2e4'),/response lost/);assert.equal(updates,1);assert.ok(s.pendingMove);
-  await assert.rejects(()=>s.submit(gameId,game,'e2e4'),/Reconcile/);assert.equal(updates,1);
-  s.game=async()=>({requests:[]});await assert.rejects(()=>s.reconcileMove(),/unresolved/);assert.equal(updates,1);
-  const request=bytes(s.pendingMove.requestId);s.game=async()=>({requests:[[request,bytes(hash)]]});await s.reconcileMove();assert.equal(s.pendingMove,null);assert.equal(updates,1);
-});
-test('definitive authority rejection clears only the rejected move intent',async()=>{
-  const s=new ChessService(config);s.principal=Principal.fromText('rrkah-fqaaa-aaaaa-aaaaq-cai');s.authenticatedActor=async()=>({submit_move:async()=>({Err:{StalePosition:null}})});s.legalMoves=async()=>['e2e4'];
-  await assert.rejects(()=>s.submit(gameId,{position_hash:bytes(hash),moves:[]},'e2e4'),/StalePosition/);assert.equal(s.pendingMove,null);
-});
-test('settlement reconciliation requires exact amount and canonical token payout transfer',async()=>{
-  const w=wallet();w.pending={kind:'Settle result',wallet:player,target:vault,data:'0x1234',nonce:7,hash,expected:{gameId,result:1,paid:String(TOTAL_PRIZE),finalPositionHash:principal,transcriptHash:hash}};
-  w.provider={getTransaction:async()=>({from:player,to:vault,data:'0x1234',nonce:7})};const iface=new Interface(artifact.abi);
-  const wrong=iface.encodeEventLog('GameSettled',[gameId,player,1,ENTRY_FEE,principal,hash,hash]);
-  await assert.rejects(()=>w.accept({hash,from:player,to:vault,status:1,confirmations:async()=>1,logs:[{address:vault,...wrong}]}),/outcome, amount/);
-  const exact=iface.encodeEventLog('GameSettled',[gameId,player,1,TOTAL_PRIZE,principal,hash,hash]);
-  await assert.rejects(()=>w.accept({hash,from:player,to:vault,status:1,confirmations:async()=>1,logs:[{address:vault,...exact}]}),/canonical token payout/);assert.ok(w.pending);w.persist(null);
-});
+test('unconfigured release cannot perform any paid verification network read',async()=>{assert.throws(()=>validateConfig(config),/Paid entries are closed/);const s=new ChessService(config);await assert.rejects(()=>s.verify(),/Paid entries are closed/);assert.equal(s.verified,false);});
+test('canonical chain, token and RPC cannot be replaced',()=>{for(const change of[{chainId:1},{publicRpc:'https://example.com'},{tokenAddress:vault},{icHost:'http://localhost:4943'}])assert.throws(()=>validateConfig({...config,...change}),/canonical/);});
+test('new fixed prize is exactly 1M total, 975k net and fullreserve independent of fee',()=>{assert.equal(TOTAL_PRIZE,1000000n*10n**18n);assert.equal(TOTAL_PRIZE-ENTRY_FEE,975000n*10n**18n);});
+test('board renders all64 squares; packed native board agrees with initialFEN',()=>{const g={board:0xcabedbac99999999000000000000000000000000000000001111111142365324n,castling:15,enPassant:64,halfmoveClock:0,ply:0,blackToMove:false};assert.equal(boardFen(g),INITIAL_FEN);assert.equal(fenBoard(INITIAL_FEN).length,64);assert.throws(()=>fenBoard('8/8/8/8/8/8/8/9 w - - 0 1'));});
+test('native move encoding roundtrips all promotions without autoqueen',()=>{for(const m of['e2e4','e1g1','e5d6','a7a8q','a7a8n','a7a8r','a7a8b','h2h1n'])assert.equal(decodeMove(encodeMove(m)),m);assert.notEqual(encodeMove('a7a8n'),encodeMove('a7a8q'));assert.throws(()=>encodeMove('e9e4'));assert.throws(()=>decodeMove(0xf000));});
+test('brain interface accepts fullhistory and canonicalgame; no browserFEN or winner assertion',()=>{const m=Object.fromEntries(idlFactory({IDL})._fields);assert.ok(m.get_job&&m.request_bot&&m.advance_job);assert.ok(!m.submit_move&&!m.result_material&&!m.accept_entry);const input=m.request_bot.argTypes[0].display();assert.match(input,/moves/);assert.match(input,/expected_position_hash/);assert.doesNotMatch(input,/fen|winner|result/);assert.match(m.advance_job.argTypes[0].display(),/expected_step/);});
+test('runtime comparison only masks consistent immutable slots',()=>{assert.equal(matchRuntime(artifact.deployedBytecode,artifact),keccak256(artifact.deployedBytecode));const x='0x'+(artifact.deployedBytecode[2]==='0'?'1':'0')+artifact.deployedBytecode.slice(3);assert.throws(()=>matchRuntime(x,artifact),/runtime differs/);});
+test('direct paid methods call fresh verifiedbrain gate, before wallet mutation',async()=>{const w=wallet();await assert.rejects(()=>w.approveExact(),/verification gate/);await assert.rejects(()=>w.enter(),/verification gate/);let calls=0;const v=wallet({verifyAuthority:async()=>{calls++;throw new Error('brain unready');}});await assert.rejects(()=>v.approveExact(),/brain unready/);await assert.rejects(()=>v.enter(),/brain unready/);assert.equal(calls,2);assert.equal(v.pending,null);});
+test('full1M freepool and idle retainedengine required before feeapproval',async()=>{const w=wallet({verifyAuthority:async()=>{}});w.assertWallet=async()=>{};w.balance=ENTRY_FEE;w.solvent=true;w.paused=false;w.freePool=TOTAL_PRIZE-1n;await assert.rejects(()=>w.assertEntry(),/1,000,000 unreserved/);w.freePool=TOTAL_PRIZE;await w.assertEntry();w.activeGameId=gameId;await assert.rejects(()=>w.assertEntry(),/another game/);});
+test('ambiguous wallet broadcast savesexact originalintent and blocksrepeat',async()=>{const w=wallet();w.wallet=player;w.provider={estimateGas:async()=>50000n};w.walletProvider={getTransactionCount:async()=>7};let saved=false;w.signer={sendTransaction:async()=>{saved=!!JSON.parse(localStorage.getItem('gh0st-chess-hybrid-unresolved-transaction-v2'));throw new Error('response lost');}};const method={populateTransaction:async()=>({to:vault,data:'0x1234'})};await assert.rejects(()=>w.send('Play White move',{playHumanMove:method},'playHumanMove',[],{}),/response lost/);assert.equal(saved,true);assert.equal(w.pending.nonce,7);await assert.rejects(()=>w.send('Play White move',{},'',[],{}),/Resolve/);w.persist(null);});
+test('explicit wallet rejection clears intent; different receipt calldata is refused',async()=>{const w=wallet();w.wallet=player;w.provider={estimateGas:async()=>50000n};w.walletProvider={getTransactionCount:async()=>7};w.signer={sendTransaction:async()=>{throw Object.assign(new Error('no'),{code:'ACTION_REJECTED'});}};await assert.rejects(()=>w.send('Approve 25,000 GH0ST',{approve:{populateTransaction:async()=>({to:TOKEN_ADDRESS,data:'0x1234'})}},'approve',[],{}));assert.equal(w.pending,null);w.pending={kind:'Play White move',wallet:player,target:vault,data:'0x1234',nonce:7,hash,expected:{gameId}};w.provider={getTransaction:async()=>({from:player,to:vault,data:'0x5678',nonce:7})};await assert.rejects(()=>w.accept({hash,from:player,to:vault,status:1,confirmations:async()=>1,logs:[]}),/original transaction/);w.persist(null);});
+test('canonicalhistory independently replays and commitsboard andtranscript',async()=>{const w=wallet();w.verified=true;const g={player,nonce:1n,openedAt:1n,turnDeadline:2n,result:0n,ply:0n,positionHash:'',transcriptHash:id('GH0ST_CHESS_INITIAL_V1'),board:0xcabedbac99999999000000000000000000000000000000001111111142365324n,castling:15n,enPassant:64n,halfmoveClock:0n,blackToMove:false};g.positionHash=keccak256(abi.encode(['uint256','uint8','uint8','bool'],[g.board,g.castling,g.enPassant,g.blackToMove]));w.provider={getBlock:async()=>({number:4,hash})};w.vault=()=>({getGame:async()=>g,getMoves:async()=>[]});assert.equal((await w.game(gameId)).fen,INITIAL_FEN);w.vault=()=>({getGame:async()=>g,getMoves:async()=>[encodeMove('e2e4')]});await assert.rejects(()=>w.game(gameId),/does not match/);});
+test('lost brain request is queried ratherthan automaticallysenttwice',async()=>{const s=new ChessService(config);s.verified=true;let updates=0;s.publicActor=()=>({request_bot:async()=>{updates++;throw new Error('lost reply');}});const g={gameId,ply:1,positionHash:hash,moves:[{uci:'e2e4'}],blackToMove:true,result:0};await assert.rejects(()=>s.request(g),/lost reply/);await assert.rejects(()=>s.request(g),/saved brain/);assert.equal(updates,1);s.getJob=async()=>null;await assert.rejects(()=>s.reconcile(),/not yet recorded/);s.getJob=async()=>({position_hash:bytes(hash),step:0,phase:'queued'});await s.reconcile();assert.equal(s.pending,null);assert.equal(updates,1);});
+test('lost advance cannotreconcile from an unchanged unfinishedstep',async()=>{const s=new ChessService(config);s.persist({gameId,ply:1,positionHash:hash,requestId:gameId,kind:'advance',phase:'searching',expectedStep:2});s.getJob=async()=>({position_hash:bytes(hash),step:2,phase:'searching'});await assert.rejects(()=>s.reconcile(),/remains unresolved/);s.getJob=async()=>({position_hash:bytes(hash),step:3,phase:'searching'});await s.reconcile();assert.equal(s.pending,null);});
+test('signed Blackmove binds chain/game/player/position/ply/config, never terminalresult',async()=>{const signer=Wallet.createRandom(),w=wallet();w.config.attestorAddress=signer.address;w.config.engineConfigHash=hash;const g={player,ply:1,positionHash:hash,transcriptHash:gameId,blackToMove:true};w.assertGame=async()=>g;w.send=async(kind,c,method,args,expected)=>({kind,method,args,expected});w.vault=()=>({});const move={gameId,player,ply:1,positionHash:hash,transcriptHash:gameId,encodedMove:encodeMove('e7e5'),engineConfigHash:hash,validUntil:Math.floor(Date.now()/1000)+600};const signature=await signer.signTypedData(botMoveDomain(w.config),BOT_MOVE_TYPES,move);assert.equal((await w.botMove(gameId,{move,signature})).method,'playBotMove');await assert.rejects(()=>w.botMove(gameId,{move:{...move,gameId:hash},signature}),/gameId differs/);await assert.rejects(()=>w.botMove(gameId,{move:{...move,encodedMove:encodeMove('e7e6')},signature}),/not signed/);});
+test('receipt settlement checks exact1M transfer to originalwallet',async()=>{const w=wallet();w.pending={kind:'Play White move',wallet:player,target:vault,data:'0x1234',nonce:7,hash,expected:{gameId,ply:3,encodedMove:encodeMove('f1c4')}};w.provider={getTransaction:async()=>({from:player,to:vault,data:'0x1234',nonce:7})};const iface=new Interface(artifact.abi);const move=iface.encodeEventLog('MovePlayed',[gameId,3,encodeMove('f1c4'),hash,hash]);const settle=iface.encodeEventLog('GameSettled',[gameId,player,1,TOTAL_PRIZE,hash,hash]);await assert.rejects(()=>w.accept({hash,from:player,to:vault,status:1,confirmations:async()=>1,logs:[{address:vault,...move},{address:vault,...settle}]}),/canonical GH0ST payout/);assert.ok(w.pending);w.persist(null);});

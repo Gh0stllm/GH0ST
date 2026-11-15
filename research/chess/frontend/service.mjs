@@ -1,103 +1,37 @@
-import { AuthClient } from '@icp-sdk/auth/client';
 import { Actor, HttpAgent, CanisterStatus } from '@icp-sdk/core/agent';
 import { Principal } from '@icp-sdk/core/principal';
-import { bytes, hex, principalHash, validateConfig, same, randomBytes, variant } from './core.mjs';
-
-// Exact interface from spec/chess-authority.did. Browser positions are never accepted.
-export function idlFactory({IDL}) {
+import { bytes,hex,validateConfig,same,randomBytes,variant } from './core.mjs';
+// Browser requests only a paid Robinhood game and its canonical full history. No chosen FEN or result is accepted.
+export function idlFactory({IDL}){
   const Blob=IDL.Vec(IDL.Nat8);
-  const EngineConfig=IDL.Record({cycles_per_search:IDL.Nat64,hash_mb:IDL.Nat32,stockfish_commit:IDL.Text,nnue_sha256:IDL.Text,engine_canister:IDL.Principal,nodes:IDL.Nat64});
-  const EngineAudit=IDL.Record({actual_nodes:IDL.Nat64,requested_nodes:IDL.Nat64,bestmove:IDL.Text,nnue_sha256:IDL.Text,job_id:Blob,depth:IDL.Nat32,engine_commit:IDL.Text,instructions:IDL.Nat64,stop_reason:IDL.Text});
-  const VerifiedEntry=IDL.Record({transaction_hash:Blob,engine_config_hash:Blob,vault:Blob,player:Blob,log_index:IDL.Nat32,reconciliation_deadline:IDL.Nat64,opened_at:IDL.Nat64,game_deadline:IDL.Nat64,principal_hash:Blob,player_principal:IDL.Principal,game_id:Blob,chain_id:IDL.Nat64,nonce:Blob});
-  const GameResult=IDL.Variant(Object.fromEntries(['Draw','BotCheckmate','HumanCheckmate','HumanResigned','ServiceFault','PlayerTimeout','EngineAbort'].map(x=>[x,IDL.Null])));
-  const MoveRecord=IDL.Record({ply:IDL.Nat32,uci:IDL.Text,transcript_hash:Blob,position_hash:Blob,engine:IDL.Opt(EngineAudit)});
-  const PendingSearch=IDL.Record({requested_at:IDL.Nat64,job_id:Blob,in_flight:IDL.Bool,position_hash:Blob});
-  const Terminal=IDL.Record({result:GameResult,completed_at:IDL.Nat64,reason:IDL.Text});
-  const Game=IDL.Record({fen:IDL.Text,position_hash:Blob,moves:IDL.Vec(MoveRecord),transcript_hash:Blob,pending:IDL.Opt(PendingSearch),entry:VerifiedEntry,requests:IDL.Vec(IDL.Tuple(Blob,Blob)),phase:IDL.Variant({WaitingBot:IDL.Null,Terminal:IDL.Null,WaitingHuman:IDL.Null}),repetition_keys:IDL.Vec(IDL.Text),terminal:IDL.Opt(Terminal),engine:EngineConfig});
-  const Err=IDL.Variant(Object.fromEntries(['SearchAlreadyRunning','EntryAlreadyUsed','Anonymous','RequestConflict','StalePosition','UnknownGame','IllegalMove','NoDrawClaim','ChallengeInactive','WrongPhase','Unauthorized','Capacity','InvalidConfiguration','InvalidEngineResponse','InvalidEntry','Expired'].map(x=>[x,IDL.Null])));
-  const Result=IDL.Variant({Ok:Game,Err});
-  const ResultMaterial=IDL.Record({result:IDL.Nat8,transcript_hash:Blob,engine_config_hash:Blob,final_position_hash:Blob,player:Blob,principal_hash:Blob,game_id:Blob,nonce:Blob,completed_at:IDL.Nat64});
+  const Move=IDL.Record({game_id:Blob,player:Blob,ply:IDL.Nat32,position_hash:Blob,transcript_hash:Blob,encoded_move:IDL.Nat16,engine_config_hash:Blob,valid_until:IDL.Nat64});
+  const Signed=IDL.Record({move:Move,signature:Blob});
+  const Job=IDL.Record({job_id:Blob,game_id:Blob,ply:IDL.Nat32,position_hash:Blob,step:IDL.Nat32,phase:IDL.Text,error:IDL.Opt(IDL.Text),actual_nodes:IDL.Nat64,requested_nodes:IDL.Nat64,depth:IDL.Nat32,instructions:IDL.Nat64,stop_reason:IDL.Text,bestmove:IDL.Text,signed_move:IDL.Opt(Signed),in_flight:IDL.Bool,updated_at:IDL.Nat64});
+  const Result=IDL.Variant({Ok:Job,Err:IDL.Text});
+  const Status=IDL.Record({production_ready:IDL.Bool,paid_entries_enabled:IDL.Bool,blockers:IDL.Vec(IDL.Text),engine_config_hash:Blob,engine_canister:IDL.Principal,stockfish_commit:IDL.Text,nnue_sha256:IDL.Text,nodes:IDL.Nat64,hash_mb:IDL.Nat32,cache_policy:IDL.Text,attestor_address:IDL.Text,chain_id:IDL.Nat64,game_contract:IDL.Text});
   return IDL.Service({
-    get_status:IDL.Func([],[IDL.Record({blockers:IDL.Vec(IDL.Text),engine_config_hash:Blob,production_ready:IDL.Bool,schema_version:IDL.Nat32,paid_entries_enabled:IDL.Bool,engine_config:EngineConfig})],['query']),
-    get_game:IDL.Func([Blob],[IDL.Opt(Game)],['query']),
-    legal_moves:IDL.Func([Blob],[IDL.Variant({Ok:IDL.Vec(IDL.Text),Err})],['query']),
-    submit_move:IDL.Func([IDL.Record({uci:IDL.Text,request_id:Blob,expected_position_hash:Blob,game_id:Blob,expected_ply:IDL.Nat32})],[Result],[]),
-    run_bot:IDL.Func([Blob],[Result],[]),resign:IDL.Func([Blob],[Result],[]),claim_draw:IDL.Func([Blob,IDL.Opt(IDL.Text)],[Result],[]),
-    expire:IDL.Func([Blob],[Result],[]),fault_stuck_search:IDL.Func([Blob],[Result],[]),
-    result_material:IDL.Func([Blob],[IDL.Variant({Ok:IDL.Opt(ResultMaterial),Err})],['query']),
+    get_status:IDL.Func([],[Status],['query']),refresh_status:IDL.Func([],[IDL.Variant({Ok:Status,Err:IDL.Text})],[]),
+    get_job:IDL.Func([Blob,IDL.Nat32],[IDL.Opt(Job)],['query']),
+    request_bot:IDL.Func([IDL.Record({game_id:Blob,expected_ply:IDL.Nat32,expected_position_hash:Blob,request_id:Blob,moves:IDL.Vec(IDL.Text)})],[Result],[]),
+    advance_job:IDL.Func([IDL.Record({job_id:Blob,expected_step:IDL.Nat32})],[Result],[]),
   });
 }
-const unwrap=result=>{if('Err'in result)throw new Error(`Authority: ${variant(result.Err)}. Refresh the game before continuing.`);return result.Ok;};
-const MOVE_KEY='gh0st-chess-unresolved-move-v1';
-export class ChessService {
-  constructor(config,{changed=()=>{}}={}) {
-    this.config=config;this.changed=changed;this.auth=null;this.principal=null;this.actor=null;this.verified=false;this.pendingMove=null;
-    try{const p=JSON.parse(localStorage.getItem(MOVE_KEY));if(p?.gameId&&p?.requestId)this.pendingMove=p;}catch{}
+const KEY='gh0st-chess-hybrid-brain-intent-v2';
+const unwrap=r=>{if('Err'in r)throw new Error(`ICP brain: ${typeof r.Err==='string'?r.Err:variant(r.Err)}`);return r.Ok;};
+export function signedEnvelope(job){const signed=job?.signed_move?.[0];if(!signed)return null;const m=signed.move;return{move:{gameId:hex(m.game_id),player:hex(m.player),ply:m.ply,positionHash:hex(m.position_hash),transcriptHash:hex(m.transcript_hash),encodedMove:m.encoded_move,engineConfigHash:hex(m.engine_config_hash),validUntil:String(m.valid_until)},signature:hex(signed.signature)};}
+export class ChessService{
+  constructor(config,{changed=()=>{}}={}){this.config=config;this.changed=changed;this.verified=false;this.pending=null;this.job=null;try{const p=JSON.parse(localStorage.getItem(KEY));if(p?.gameId&&p?.requestId)this.pending=p;}catch{}}
+  publicActor(){if(!this.config.authorityCanisterId)throw new Error('The ICP brain coordinator has not been configured.');if(!this.public)this.public=Actor.createActor(idlFactory,{canisterId:this.config.authorityCanisterId,agent:HttpAgent.createSync({host:this.config.icHost})});return this.public;}
+  async verify({refresh=false}={}){
+    this.verified=false;validateConfig(this.config);const c=this.config,agent=HttpAgent.createSync({host:c.icHost});
+    for(const[id,expected,controllers]of[[c.authorityCanisterId,c.authorityModuleHash,c.authorityControllers],[c.engineCanisterId,c.engineModuleHash,c.engineControllers]]){const principal=Principal.fromText(id);if(principal.isAnonymous())throw new Error('Anonymous canister identity is invalid.');const status=await CanisterStatus.request({agent,canisterId:principal,paths:['module_hash','controllers']});const actual=status.get('module_hash');const digest=typeof actual==='string'?actual.replace(/^0x/,''):hex(new Uint8Array(actual||[])).slice(2);if(!same(digest,expected))throw new Error('A certified brain module hash differs from the reviewed release.');const actualControllers=status.get('controllers');if(!Array.isArray(actualControllers)||JSON.stringify(actualControllers.map(x=>x.toText()).sort())!==JSON.stringify([...controllers].sort()))throw new Error('The certified brain controller set differs from the reviewed release.');}
+    if(refresh)unwrap(await this.publicActor().refresh_status());
+    const s=await this.publicActor().get_status();if(!s.production_ready||s.blockers.length)throw new Error(s.blockers.join(' ')||'The brain is not accepting paid games.');
+    if(!same(hex(s.engine_config_hash),c.engineConfigHash)||s.engine_canister.toText()!==c.engineCanisterId||s.stockfish_commit!==c.engineCommit||!same(s.nnue_sha256,c.nnueSha256)||s.nodes!==BigInt(c.nodes)||s.hash_mb!==c.hashMb||s.cache_policy!==c.cachePolicy||!same(s.attestor_address,c.attestorAddress)||s.chain_id!==4663n||!same(s.game_contract,c.vaultAddress))throw new Error('The ICP brain policy, signer, game contract or chain differs from this release.');this.verified=true;this.status=s;this.changed();return s;
   }
-  getAuth(){
-    if(!this.auth){this.auth=new AuthClient({namespace:'gh0st-chess',agentOptions:{host:this.config.icHost}});this.auth.subscribe(()=>{this.principal=this.auth.getPrincipal();this.actor=null;this.changed();});}
-    return this.auth;
-  }
-  async restore(){await this.getAuth().getIdentity();this.principal=this.auth.getPrincipal();this.changed();return this.principal;}
-  async signIn(){await this.getAuth().signIn();return this.restore();}
-  async signOut(){await this.getAuth().signOut();this.principal=null;this.actor=null;this.changed();}
-  signedIn(){return !!this.principal&&!this.principal.isAnonymous();}
-  async hash(){if(!this.signedIn())throw new Error('Sign in with Internet Identity first.');return principalHash(this.principal);}
-  publicActor(){
-    if(!this.config.authorityCanisterId)throw new Error('The ICP authority has not been configured.');
-    if(!this.public)this.public=Actor.createActor(idlFactory,{canisterId:this.config.authorityCanisterId,agent:HttpAgent.createSync({host:this.config.icHost})});
-    return this.public;
-  }
-  async verify(){
-    this.verified=false;validateConfig(this.config);
-    const c=this.config;const agent=HttpAgent.createSync({host:c.icHost});
-    for(const [id,expected,controllers] of [[c.authorityCanisterId,c.authorityModuleHash,c.authorityControllers],[c.engineCanisterId,c.engineModuleHash,c.engineControllers]]){
-      const principal=Principal.fromText(id);if(principal.isAnonymous())throw new Error('Anonymous canister identity is invalid.');
-      const status=await CanisterStatus.request({agent,canisterId:principal,paths:['module_hash','controllers']});
-      const actual=status.get('module_hash');
-      const digest=typeof actual==='string'?actual.replace(/^0x/,''):hex(new Uint8Array(actual||[])).slice(2);
-      if(!same(digest,expected))throw new Error('A certified canister module hash differs from the reviewed release.');
-      const actualControllers=status.get('controllers');
-      if(!Array.isArray(actualControllers)||JSON.stringify(actualControllers.map(x=>x.toText()).sort())!==JSON.stringify([...controllers].sort()))throw new Error('The certified canister controller set differs from the reviewed release.');
-    }
-    const status=await this.publicActor().get_status();const e=status.engine_config;
-    if(!status.production_ready||!status.paid_entries_enabled||status.schema_version!==1||status.blockers.length)throw new Error(status.blockers.join(' ')||'The authority is not accepting paid games.');
-    if(!same(hex(status.engine_config_hash),c.engineConfigHash)||e.engine_canister.toText()!==c.engineCanisterId||e.stockfish_commit!==c.engineCommit||!same(e.nnue_sha256,c.nnueSha256)||e.nodes!==BigInt(c.nodes)||e.hash_mb!==c.hashMb||e.cycles_per_search!==BigInt(c.cyclesPerSearch))throw new Error('The authority search configuration differs from this release.');
-    const engine=Actor.createActor(({IDL})=>IDL.Service({identity:IDL.Func([],[IDL.Record({engine_commit:IDL.Text,nnue_sha256:IDL.Text,config_hash:IDL.Vec(IDL.Nat8),nodes:IDL.Nat64,hash_mb:IDL.Nat32,authority:IDL.Text})],['query'])}),{canisterId:c.engineCanisterId,agent});
-    const identity=await engine.identity();
-    if(identity.authority!==c.authorityCanisterId||identity.engine_commit!==c.engineCommit||!same(identity.nnue_sha256,c.nnueSha256)||!same(hex(identity.config_hash),c.engineConfigHash)||identity.nodes!==BigInt(c.nodes)||identity.hash_mb!==c.hashMb)throw new Error('Engine identity or authorized game authority differs from the reviewed release.');
-    this.verified=true;this.status=status;this.changed();return status;
-  }
-  async authenticatedActor(){
-    if(!this.verified)throw new Error('Verify the release before using the onchain game.');
-    const identity=await this.getAuth().getIdentity();const current=identity.getPrincipal();
-    if(current.isAnonymous()||current.toText()!==this.principal?.toText())throw new Error('Your Internet Identity session changed. Sign in again.');
-    return Actor.createActor(idlFactory,{canisterId:this.config.authorityCanisterId,agent:HttpAgent.createSync({host:this.config.icHost,identity})});
-  }
-  async game(gameId){const result=await this.publicActor().get_game(bytes(gameId));return result[0]||null;}
-  async legalMoves(gameId){return unwrap(await this.publicActor().legal_moves(bytes(gameId)));}
-  persistMove(value){if(value)localStorage.setItem(MOVE_KEY,JSON.stringify(value));else localStorage.removeItem(MOVE_KEY);this.pendingMove=value;this.changed();}
-  async submit(gameId,game,uci){
-    if(this.pendingMove)throw new Error('Reconcile the saved move before submitting another.');
-    if(!/^[a-h][1-8][a-h][1-8][qrbn]?$/.test(uci))throw new Error('Choose a valid move.');
-    const actor=await this.authenticatedActor();const legal=await this.legalMoves(gameId);if(!legal.includes(uci))throw new Error('This move is not legal in the authoritative position.');
-    const pending={gameId,requestId:hex(randomBytes()),positionHash:hex(game.position_hash),expectedPly:game.moves.length,uci,principal:this.principal.toText()};
-    // Persist intent before the update. An uncertain response must be reconciled, never re-sent automatically.
-    this.persistMove(pending);
-    try{const response=await actor.submit_move({game_id:bytes(gameId),request_id:bytes(pending.requestId),expected_position_hash:bytes(pending.positionHash),expected_ply:pending.expectedPly,uci});if('Err'in response){this.persistMove(null);return unwrap(response);}const result=unwrap(response);this.persistMove(null);return result;}
-    catch(error){this.changed();throw error;}
-  }
-  async reconcileMove(){
-    const p=this.pendingMove;if(!p)return null;const game=await this.game(p.gameId);
-    if(!game)throw new Error('The saved move cannot yet be reconciled. No move was re-sent.');
-    const recorded=game.requests.some(([request])=>same(hex(request),p.requestId));
-    if(recorded){this.persistMove(null);return game;}
-    throw new Error('The authority has not recorded the saved request. Its outcome is unresolved; no new move was sent.');
-  }
-  async action(method,gameId,intendedMove){
-    if(this.pendingMove)throw new Error('Reconcile the saved move before another update.');
-    if(!['run_bot','resign','claim_draw','expire','fault_stuck_search'].includes(method))throw new Error('Unsupported authority action.');
-    const actor=await this.authenticatedActor();return unwrap(await actor[method](bytes(gameId),...(method==='claim_draw'?[intendedMove?[intendedMove]:[]]:[])));
-  }
-  async resultMaterial(gameId){return unwrap(await this.publicActor().result_material(bytes(gameId)))[0]||null;}
+  persist(p){if(p)localStorage.setItem(KEY,JSON.stringify(p));else localStorage.removeItem(KEY);this.pending=p;this.changed();}
+  async getJob(gameId,ply){const result=await this.publicActor().get_job(bytes(gameId),Number(ply));this.job=result[0]||null;this.changed();return this.job;}
+  async request(game){if(!this.verified)throw new Error('Verify the brain before requesting a search.');if(!game.blackToMove||Number(game.result)!==0)throw new Error('No Black search is due.');if(this.pending)throw new Error('Check the saved brain action before another update.');const p={gameId:game.gameId,ply:Number(game.ply),positionHash:game.positionHash,requestId:hex(randomBytes()),kind:'request',expectedStep:null};this.persist(p);try{const r=await this.publicActor().request_bot({game_id:bytes(p.gameId),expected_ply:p.ply,expected_position_hash:bytes(p.positionHash),request_id:bytes(p.requestId),moves:game.moves.map(m=>m.uci)});if('Err'in r){this.persist(null);return unwrap(r);}this.job=unwrap(r);this.persist(null);return this.job;}catch(e){this.changed();throw e;}}
+  async advance(job){if(!this.verified)throw new Error('Verify the brain before advancing a search.');if(this.pending)throw new Error('Check the saved brain action before another update.');const p={gameId:hex(job.game_id),ply:job.ply,positionHash:hex(job.position_hash),requestId:hex(randomBytes()),kind:'advance',phase:job.phase,previousUpdatedAt:String(job.updated_at||0),expectedStep:job.step,jobId:hex(job.job_id)};this.persist(p);try{const r=await this.publicActor().advance_job({job_id:bytes(p.jobId),expected_step:p.expectedStep});if('Err'in r){this.persist(null);return unwrap(r);}this.job=unwrap(r);this.persist(null);return this.job;}catch(e){this.changed();throw e;}}
+  async reconcile(){const p=this.pending;if(!p)return this.job;const job=await this.getJob(p.gameId,p.ply);if(!job||!same(hex(job.position_hash),p.positionHash))throw new Error('The saved brain request is not yet recorded. No update was re-sent.');if(p.kind==='advance'&&(job.in_flight||(job.step<=p.expectedStep&&job.phase===p.phase&&BigInt(job.updated_at||0)<=BigInt(p.previousUpdatedAt||0)&&!['completed','failed','faulted','signed'].includes(job.phase.toLowerCase()))))throw new Error('The saved step outcome remains unresolved. No update was re-sent.');this.persist(null);return job;}
 }
