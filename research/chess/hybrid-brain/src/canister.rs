@@ -1,4 +1,5 @@
 use super::*;
+use crate::rpc_consensus as quorum;
 use ic_cdk::call::Call;
 use ic_cdk::{init, post_upgrade, query, update};
 use ic_management_canister_types::*;
@@ -260,6 +261,8 @@ struct EngineInfo {
     nodes: u64,
     hash_mb: u32,
     quantum: u32,
+    yield_policy: String,
+    instruction_target: u64,
     engine_commit: String,
     nnue_sha256: String,
     cycle_balance: candid::Nat,
@@ -315,7 +318,9 @@ async fn engine_info(c: &Config) -> R<EngineInfo> {
         || r.nodes != NODES
         || r.hash_mb != HASH_MB
         || r.capacity != 1
-        || r.quantum != 100_000
+        || r.quantum != 0
+        || r.yield_policy != "instruction-budget"
+        || r.instruction_target != 28_000_000_000
         || r.engine_commit != STOCKFISH_COMMIT
         || r.nnue_sha256 != NNUE_SHA256
     {
@@ -329,6 +334,7 @@ async fn engine_info(c: &Config) -> R<EngineInfo> {
 fn transform(args: TransformArgs) -> HttpRequestResult {
     let response = args.response;
     let body = serde_json::from_slice::<Value>(&response.body)
+        .map(quorum::normalize_batch)
         .and_then(|v| serde_json::to_vec(&v))
         .unwrap_or_else(|_| b"null".to_vec());
     HttpRequestResult {
@@ -344,28 +350,7 @@ enum RpcLane {
 }
 const PUBLIC_RPC_DAILY_CAP: u128 = 500_000_000_000;
 const SIGNING_RPC_DAILY_CAP: u128 = 2_000_000_000_000;
-async fn rpc_for(c: &Config, body: Value, lane: RpcLane) -> R<Value> {
-    let b = serde_json::to_vec(&body).unwrap();
-    let max = 65_536;
-    let args = HttpRequestArgs {
-        url: c.rpc_url.clone(),
-        max_response_bytes: Some(max),
-        method: HttpMethod::POST,
-        headers: vec![HttpHeader {
-            name: "Content-Type".into(),
-            value: "application/json".into(),
-        }],
-        body: Some(b.clone()),
-        transform: Some(TransformContext {
-            function: TransformFunc(candid::Func {
-                principal: ic_cdk::api::canister_self(),
-                method: "transform".into(),
-            }),
-            context: vec![],
-        }),
-    };
-    let cost = ic_cdk::api::cost_http_request((b.len() + c.rpc_url.len() + 256) as u64, max);
-    let debit = cost + cost / 10;
+fn charge_rpc_budget(debit: u128, lane: RpcLane) -> R<()> {
     if ic_cdk::api::canister_cycle_balance() < 2_000_000_000_000 + debit {
         return Err("RPC operating reserve is low".into());
     }
@@ -392,6 +377,31 @@ async fn rpc_for(c: &Config, body: Value, lane: RpcLane) -> R<Value> {
     }
     *spent += debit;
     put_meta(m);
+    Ok(())
+}
+async fn rpc_for(c: &Config, body: Value, lane: RpcLane) -> R<Value> {
+    let b = serde_json::to_vec(&body).unwrap();
+    let max = 65_536;
+    let args = HttpRequestArgs {
+        url: c.rpc_url.clone(),
+        max_response_bytes: Some(max),
+        method: HttpMethod::POST,
+        headers: vec![HttpHeader {
+            name: "Content-Type".into(),
+            value: "application/json".into(),
+        }],
+        body: Some(b.clone()),
+        transform: Some(TransformContext {
+            function: TransformFunc(candid::Func {
+                principal: ic_cdk::api::canister_self(),
+                method: "transform".into(),
+            }),
+            context: vec![],
+        }),
+    };
+    let cost = ic_cdk::api::cost_http_request((b.len() + c.rpc_url.len() + 256) as u64, max);
+    let debit = cost + cost / 10;
+    charge_rpc_budget(debit, lane)?;
     let response = management("http_request")
         .with_arg(args)
         .with_cycles(cost + cost / 10)
@@ -404,6 +414,49 @@ async fn rpc_for(c: &Config, body: Value, lane: RpcLane) -> R<Value> {
     }
     serde_json::from_slice(&response.body).map_err(|_| "invalid canonical RPC JSON".into())
 }
+async fn quorum_head(c: &Config, lane: RpcLane) -> R<u64> {
+    // A committee of13 is safe only on the reviewed13-node execution subnet.
+    quorum::ensure_reviewed_subnet(ic_cdk::api::subnet_self_node_count())?;
+    let body = serde_json::to_vec(&json!([
+        {"jsonrpc":"2.0","id":1,"method":"eth_chainId","params":[]},
+        {"jsonrpc":"2.0","id":2,"method":"eth_blockNumber","params":[]}
+    ]))
+    .unwrap();
+    let max = 4096;
+    let args = quorum::FlexibleArgs {
+        url: c.rpc_url.clone(),
+        max_response_bytes: Some(max),
+        method: quorum::Method::Post,
+        headers: vec![quorum::Header {
+            name: "Content-Type".into(),
+            value: "application/json".into(),
+        }],
+        body: Some(body.clone()),
+        transform: None,
+        replication: Some(quorum::Replication::default()),
+    };
+    let cost_args = candid::encode_one(quorum::CostParams::flexible(
+        (body.len() + c.rpc_url.len() + 256) as u64,
+        max,
+    ))
+    .map_err(|_| "flexible cost encoding failed")?;
+    let cost = ic_cdk::api::cost_http_request_v2(&cost_args);
+    let debit = cost + cost / 10;
+    charge_rpc_budget(debit, lane)?;
+    let response = management("flexible_http_request")
+        .with_arg(args)
+        .with_cycles(debit)
+        .await
+        .map_err(|_| "quorum head outcall unavailable")?
+        .candid::<quorum::FlexibleResponse>()
+        .map_err(|_| "quorum head response decoding failed")?;
+    match response {
+        quorum::FlexibleResponse::Ok(responses) => quorum::head_median(&responses),
+        quorum::FlexibleResponse::Err(_) => {
+            Err("quorum head outcall did not reach its committee bounds".into())
+        }
+    }
+}
 fn call_data(s: &str, arg: Option<Hash>) -> String {
     let mut b = keccak(s.as_bytes())[..4].to_vec();
     if let Some(a) = arg {
@@ -412,28 +465,10 @@ fn call_data(s: &str, arg: Option<Hash>) -> String {
     hex(&b)
 }
 fn result(v: &Value, id: u64) -> R<&Value> {
-    let row = if v.is_array() {
-        v.as_array()
-            .unwrap()
-            .iter()
-            .find(|r| r["id"] == id)
-            .ok_or("missing RPC response")?
-    } else {
-        v
-    };
-    if row["id"] != id || !row["error"].is_null() {
-        return Err("canonical RPC returned error".into());
-    }
-    row.get("result").ok_or("missing RPC result".into())
+    quorum::result(v, id)
 }
 fn number(v: &Value) -> R<u64> {
-    u64::from_str_radix(
-        v.as_str()
-            .ok_or("missing hex number")?
-            .trim_start_matches("0x"),
-        16,
-    )
-    .map_err(|_| "invalid hex number".into())
+    quorum::quantity(v)
 }
 fn bytes(v: &Value) -> R<Vec<u8>> {
     unhex(v.as_str().ok_or("missing hex bytes")?)
@@ -452,19 +487,8 @@ async fn canonical(c: &Config, id: Option<Hash>) -> R<Snapshot> {
 }
 async fn canonical_for(c: &Config, id: Option<Hash>, lane: RpcLane) -> R<Snapshot> {
     // One immutable official RPC. This is provider/subnet-consensus trust, not an EVM state proof.
-    let head = rpc_for(
-        c,
-        json!([
-            {"jsonrpc":"2.0","id":1,"method":"eth_chainId","params":[]},
-            {"jsonrpc":"2.0","id":2,"method":"eth_blockNumber","params":[]}
-        ]),
-        lane,
-    )
-    .await?;
-    if number(result(&head, 1)?)? != 4663 {
-        return Err("canonical RPC is not Robinhood chain4663".into());
-    }
-    let n = number(result(&head, 2)?)?
+    let n = quorum_head(c, lane)
+        .await?
         .checked_sub(c.confirmations)
         .ok_or("chain too short")?;
     let block = format!("0x{n:x}");
@@ -850,18 +874,9 @@ async fn advance_job(a: Advance) -> R<Job> {
     .await;
     j.in_flight = false;
     j.updated_at = now();
-    if let Err(e) = r {
-        j.error = Some(e.clone());
-        if e.contains("uncertain") || e.contains("decode") {
-            j.phase = "RecoverEngine".into()
-        } else if e.contains("busy")
-            || e.contains("signature request failed")
-            || e.contains("budget")
-            || e.contains("reserve is low")
-        { /* retry same state without a weaker search */
-        } else {
-            j.phase = "Faulted".into();
-        }
+    match r {
+        Ok(()) => j.error = None,
+        Err(e) => j.record_failure(e),
     }
     put(&j);
     Ok(j)

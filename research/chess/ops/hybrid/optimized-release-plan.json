@@ -1,0 +1,109 @@
+{
+  "scope": "Reviewable optimized release and proposed bounded deployment; no spending authorization, public backend or mainnet execution established",
+  "preparedAt": "2026-11-15T13:56:44.203057+00:00",
+  "readyForSpendingReview": true,
+  "paidMainnetActive": false,
+  "spendingApproved": false,
+  "mainnetTransactionsBroadcast": 0,
+  "source": "https://github.com/Gh0stllm/GH0ST/tree/research/gh0st-chess/research/chess",
+  "preview": "https://gh0st.fyi/chess/",
+  "strengthPolicy": {
+    "engine": "Stockfish 19",
+    "engineCommit": "edb0d9db6731067ec50ce619ff372b463bc4dd5d",
+    "nnueSHA256": "1a298aa575a085434d29027978dc36867fe9c5bcea9376654b7a8eba1e52dfc2",
+    "nodes": 24000000,
+    "hashMiB": 128,
+    "threads": 1,
+    "skillLevel": 20,
+    "limitStrength": false,
+    "multiPV": 1,
+    "cachePolicy": "TT and all search histories retained within each game; explicit new-game reset"
+  },
+  "executionPolicy": {
+    "yieldPolicy": "instruction-budget",
+    "instructionTarget": 28000000000,
+    "same13NodeApplicationSubnet": true,
+    "freshRHHeadQuorum": "at least 9 of 13 valid node responses, then fully replicated fixed-block financial state"
+  },
+  "artifacts": {
+    "engineRawWasm": "725dc0c795262be21f1ffafec60f50aae3e9d00140add77e791a89eece0f417b",
+    "coordinatorRawWasm": "f95582a81c49be95816f180b95db564deb32ca7520d40a3dd3e520b7bb06bc5a",
+    "coordinatorInstalledGzip": "5fbde10f4c62446ee51f8d94a76134777ab98dff2bb9f0f6048b09a1601d779a",
+    "relayRawWasm": "a7a675465bab885751152ec665fdd115bbaaba8bf135bc8097d0d359e8a245f0",
+    "relayInstalledGzip": "4eb4aa985853fa895415ab726ec64e8d84bbd22f9231d1c1a278b199ae9baf05"
+  },
+  "verifiedLocally": {
+    "nativeExactConsecutive24mSearches": 2,
+    "engineQualityReviewComparisons": 5000000,
+    "coordinatorRealEngineIntegrationChecks": 14,
+    "coordinatorSigningRecoveryFixtureChecks": 17,
+    "relayIntegrationChecks": 21,
+    "frontendUnitChecks": 16,
+    "isolatedDOMPassed": true,
+    "nativeGameChecks": 280,
+    "nativeGameReceipts": 56,
+    "complete48mOpponentGames": {
+      "draws": 2,
+      "humanCheckmates": 0,
+      "populationWinOddsEstablished": false
+    },
+    "savedCompleteGamesReplayedOnNativeContract": 2
+  },
+  "measuredRepresentativeOptimization": {
+    "pairedCyclesBefore": "1277172971194",
+    "pairedCyclesAfter": "1004926830467",
+    "pairedCyclesReductionPercent": 21.3163,
+    "engineUpdatesBefore": 240,
+    "engineUpdatesAfter": 35,
+    "actualMainnetMoveTimeMeasured": false,
+    "mainnetWallTimeSpeedupClaim": null
+  },
+  "costEstimate": {
+    "scope": "Planning scenarios using clean 13-node local engine/coordinator execution and actual frozen-result autonomous relay execution; not measured whole-game or complete relay spending",
+    "certifiedRateAt": "2026-11-15T13:48:00.000Z",
+    "cyclesPerICP": "1660800000000",
+    "representativeTurnICP": 0.6261726098061176,
+    "fortyBotDecisionsICP": 25.05023766776674,
+    "extraCosts": "Installation, storage, idle hosting/reserves, position/retry variation and RH gas"
+  },
+  "proposedFunding": {
+    "capICP": "40",
+    "initialPausedPilotCapICP": "14.5",
+    "capETHGasAndRelayFunding": "0.003",
+    "relayGasReserveETH": "0.0025",
+    "prizeEscrowGH0ST": "1000000",
+    "pilotEntryGH0ST": "25000",
+    "automaticTopups": false,
+    "spendingApproved": false,
+    "fundingWalletRH": "0x8D6B11CFdF079e27C17e05Cb7Ea81235887691c6",
+    "lastObservedICPBalance": "15.13196820",
+    "full40ICPAllocationNeedsApproximatelyAdditionalICP": "25",
+    "existingServiceBalancesUntouched": true
+  },
+  "pilot": {
+    "newDedicatedCanisters": 3,
+    "publicEntriesPaused": true,
+    "maxInitialICPAllocation": "14.5",
+    "genuineFull24mBlackRepliesRequired": 1,
+    "projectWalletResignsAfterReply": true,
+    "pilotEntryGH0ST": "25000",
+    "noFabricatedCheckmatePayout": true
+  },
+  "activationGates": [
+    "Explicit spending approval and reconciled balances",
+    "Exact certified canister hashes/controllers and threshold signer",
+    "Receipt-backed Robinhood constructor/runtime and canonical GH0ST identity",
+    "Full fixed 1M prize reserve before fee admission",
+    "Browser-independent real24m pilot with measured mainnet move time, autonomous RH submission and token receipts",
+    "Operating reserves and review of pilot transport/latency before opening entries"
+  ],
+  "evidenceSHA256": {
+    "engine/optimized/evidence/independent-quality-review.json": "5b86cbae211eefb85005c593ba5bd8af8cef3fab6aca127ab6abfe6e48e27350",
+    "engine/optimized/evidence/comparison.json": "7ae4f6247cf524774284b340134491b62471127c0539b33d108eaec09bf5c9a1",
+    "hybrid-brain/evidence/end-to-end.json": "f8708bf77ec5cf19b40cb1f56969e644199417f820d9db1a75db9be635032c99",
+    "hybrid-brain/evidence/end-to-end-costs.json": "0bd3238d2ced239ad7563dcf9fcaa8c99927b471df1ab3f19dc940f39e6990f7",
+    "hybrid-relay/evidence/relay-search-cost-comparison.json": "137c2c67eb767a42bd1c78b04593d07b866bf44a56044a3413eba662b1fdfa40",
+    "hybrid-relay/evidence/relay-end-to-end.json": "e198a1782d017677829bd2c217c1c570c3ff81dc0e04ce715b66071e6631888d",
+    "ops/hybrid/cost-report.json": "2775ef6921207070d065ca9e7d36300ec477c214768c3a913e81a7078bdb587c"
+  }
+}

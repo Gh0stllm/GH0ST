@@ -237,3 +237,65 @@ fn bootstrap_binding_is_one_time_and_does_not_change_engine_or_key_policy() {
     assert!(invalid.validate().is_err());
     assert!(config().seal(&binding).is_err());
 }
+
+#[test]
+fn completed_genuine_search_survives_transient_signing_verification_errors() {
+    let c = config();
+    let g = valid_game();
+    let r = Request {
+        game_id: g.id(c.game_contract),
+        expected_ply: 1,
+        expected_position_hash: g.position_hash,
+        request_id: [1; 32],
+        moves: e4(),
+    };
+    let genuine: Value = serde_json::from_str(include_str!("../evidence/end-to-end.json")).unwrap();
+    let mut j = Job::new(&c, &r, 1_010);
+    j.phase = "Signing".into();
+    j.actual_nodes = genuine["search"]["actual_nodes"].as_u64().unwrap();
+    j.depth = genuine["search"]["depth"].as_u64().unwrap() as u32;
+    j.bestmove = genuine["search"]["bestmove"].as_str().unwrap().into();
+    j.stop_reason = "node_budget".into();
+    j.step = 240;
+    j.engine_job_id = vec![7; 32];
+    for message in [
+        "fewerthan9 valid Robinhood head responses",
+        "quorum head outcall unavailable",
+        "canonical RPC outcall failed",
+        "canonical block changed; retry verification",
+        "signature request failed",
+        "signature decode failed",
+    ] {
+        let before = j.clone();
+        j.record_failure(message.into());
+        assert_eq!(j.phase, "Signing");
+        assert_eq!(j.actual_nodes, before.actual_nodes);
+        assert_eq!(j.bestmove, before.bestmove);
+        assert_eq!(j.step, before.step);
+        assert_eq!(j.engine_job_id, before.engine_job_id);
+        assert!(j.signed_move.is_none());
+    }
+    j.record_failure("engine module hash mismatch; no search permitted".into());
+    assert_eq!(j.phase, "Faulted");
+}
+
+#[test]
+fn an_under_budget_or_unbound_search_cannot_enter_signing_retry() {
+    let c = config();
+    let g = valid_game();
+    let r = Request {
+        game_id: g.id(c.game_contract),
+        expected_ply: 1,
+        expected_position_hash: g.position_hash,
+        request_id: [1; 32],
+        moves: e4(),
+    };
+    let mut j = Job::new(&c, &r, 1_010);
+    j.phase = "Signing".into();
+    j.actual_nodes = 100;
+    j.record_failure("fewerthan9 valid Robinhood head responses".into());
+    assert_eq!(j.phase, "Faulted");
+    j.phase = "Searching".into();
+    j.record_failure("engine response uncertain; reconcile durable journal".into());
+    assert_eq!(j.phase, "RecoverEngine");
+}

@@ -15,7 +15,7 @@ node frontend/test-dom.mjs
 python3 -m http.server 8767 --bind 127.0.0.1 --directory frontend/dist
 ```
 
-Output is `frontend/dist/chess/`, with lower-case public filenames, local fonts and GH0ST assets. The build includes exact native game/rules sources, the compiled game artifact and the coordinator Candid contract.
+Output is `frontend/dist/chess/`, with lower-case public filenames, local fonts and GH0ST assets. The build includes exact native game/rules sources, the compiled game artifact, and the coordinator and relay Candid interfaces.
 
 `wallet.mjs` pins chain4663, canonical GH0ST code/decimals, the original native-game deployment receipt and exact constructor, reviewed runtime/immutables, owner, attestor, policy hash, fixed entry/prize terms, reserve solvency and engine occupancy. Paid methods independently refresh the brain gate. Exactly25k approval and entry are separate user actions; a different nonzero allowance must first be reset. No funding/owner methods appear in the UI.
 
@@ -29,4 +29,6 @@ The local rules board is explicitly both-human chess.js on this device, with no 
 
 16 focused unit tests and an isolated DOM test cover reserve/custody guards, all four promotions, canonical history commitments, signer/game binding, persisted uncertain sends and search steps, exact payout transfer verification,64 squares and explicit local-only interactions. These checks do not replace a full contract audit or public end-to-end deployment evidence.
 
-A single search action can drive up to 300 bounded coordinator updates, enough for the fixed 24m/100k-quantum turn plus signing. Pause progress stops the browser after the current step; it preserves the onchain continuation and does not refund or abandon the game. Stale-only readiness is refreshed once before an explicitly requested action; uncertain updates are still reconciled without automatic resends.
+A single search action can drive up to 300 bounded coordinator updates. The optimized fixed 24m-node search yields near 28B instructions per engine update; the representative first turn used 35 engine updates plus signing. Stop helping stops the browser after the current step; it preserves the onchain continuation and does not refund or abandon the game. Stale-only readiness is refreshed once before an explicitly requested action; uncertain updates are still reconciled without automatic resends.
+
+The promoted execution profile preserves 24m nodes, full NNUE and Hash128 while yielding near 28B instructions per update. Runtime identities and controllers for coordinator, optimized engine and autonomous relay all gate entry. Confirmed relay readiness lasts 360s; every authorizing Black-turn check remains fresh. Stopping the browser helper does not stop the autonomous relay.

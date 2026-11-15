@@ -26,20 +26,34 @@ The tougher 24m retained candidate passed actual local ICP search/coordinator te
 
 At 25,000 entry and 1,000,000 payout, entry fees cover prizes at a **2.5% player win rate before execution costs**. That arithmetic is not an estimated win rate or profitability claim. Players may use engines and automation. A repeatable winning strategy could be reused, so stronger search alone does not establish pool safety.
 
+## Measured optimization — same bot
+
+The selected [optimized engine](engine/optimized/) preserves full Stockfish19, the complete NNUE, 24m nodes, Hash128 and per-game retained state. It changes integer implementation and update scheduling, not the chess policy.
+
+| Representative full24m local test | Previous | Optimized |
+| --- | ---: | ---: |
+| Engine updates | 240 | 35 |
+| Warm engine + coordinator cycles | 1.277173T | 1.004927T |
+| Best move / actual nodes / depth | e7e5 / 24,000,033 / 38 | identical |
+
+This is **21.32% lower paired compute/coordination cost** and **6.86× fewer engine updates** for the measured opening decision. Fewer updates do not imply the same factor in mainnet wall time. A second consecutive retained search also matched native exactly: Nc6 /24,000,311 /depth39,33updates. Actual local integration elapsed about60seconds; mainnet timing remains unmeasured.
+
+Derived small affine integer layouts and wider Wasm accumulator tiling preserve exact arithmetic. An independent review verified every model byte, all 32,768 sparse weight coordinates and 5 million Wasm/scalar output comparisons. The maximal journal test completed under the 40B instruction ceiling; its all-in debit was around 30.35B cycles, a different quantity. [Quality review](engine/optimized/QUALITY.md) and [paired integration evidence](hybrid-brain/evidence/end-to-end-costs.json).
+
 ## Implementation and checks
 
 - [Native game and custody](spec/hybrid-game.md): new HybridChessGame and independent packed-board HybridChessRules. 280 local checks/56 receipts passed, including 4,510 differential/perft positions, all promotion choices, en-passant/castling, 195-ply historical mate replay, simulated 1M payout and hostile token rollback. This is not an external audit.
 - [Hybrid architecture and trust](spec/HYBRID.md): RH is authoritative; ICP, RPC and controllers have explicit roles.
-- [Retained ICP engine API](engine/hybrid/): authenticated arbitrary requests, bounded continuation steps, cached retry replies, one-game reservation and upgrade fault policy.
+- [Selected retained ICP engine API](engine/optimized/): authenticated arbitrary requests, bounded continuation steps, cached retry replies, one-game reservation and upgrade fault policy.
 - [ICP coordinator](hybrid-brain/): independently replays canonical RH history, binds engine jobs and signs only the engine's legal Black move.
 - [Frontend](frontend/): native wallet moves, canonical board/history, resumable ICP progress, exact fee approval, saved uncertain transaction recovery and independent timeout refund.
 - [Read-only deployment preflight](ops/hybrid/): current RH pricing, token identity, CMC rate and launch planning. Preflight sends no transaction.
 
-The full NNUE file is 98,511,183 bytes; warm 3m ICP execution used about 608 MiB resident memory. Wasm file size is not live memory. Large model/tool/build files are ignored; pinned sources, GPL notices, patches, manifests and test evidence are retained.
+The full NNUE file is 98,511,183 bytes; the optimized warm 24m ICP engine snapshot occupies 647,773,966 bytes (about 618 MiB). Wasm file size is not live memory. Large model/tool/build files are ignored; pinned sources, GPL notices, patches, manifests and test evidence are retained.
 
-**Current public-network blocker:** dynamic `latest` RPC responses must be reconciled safely across ICP HTTPS replicas. Local deterministic RPC mocks do not prove that agreement. Paid deployment/activation stays gated while the request strategy is hardened.
+**Public transport is locally hardened:** flexible 13-node/9-valid-response head discovery feeds fully replicated fixed-block state checks. Actual PocketIC tests cover divergent heads and reordered batches. Live ICP-to-Robinhood operation and latency still require the funded mainnet pilot.
 
-Launch requires completed 24m integration and broader strength checks, reviewed canister hashes/controllers/signer, exact paid deployment approval, receipt-backed RH deployment, operating cycles, full prize funding and an end-to-end paid pilot/refund. A preview page does not satisfy these gates.
+Launch requires reviewed canister hashes/controllers/signer, exact paid deployment approval, receipt-backed RH deployment, operating cycles, full prize funding and an end-to-end paid pilot/refund. A preview page does not satisfy these gates.
 
 ## Historical alternatives
 

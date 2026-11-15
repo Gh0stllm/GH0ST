@@ -1,0 +1,71 @@
+{
+  "scope": "Transient actual-PocketIC prefix profiles with counter probes; different28B instruction stop positions make these directional, not full-search cycle comparisons",
+  "baseline_fraction": {
+    "feature_transform": 0.4687596742981643,
+    "affine": 0.3595045978086194
+  },
+  "variants": [
+    {
+      "variant": "optimized-profile",
+      "registers": 12,
+      "expanded_affine": false,
+      "generic_extmul_dot": false,
+      "artifact_sha256": "61eea95593b661d19663e1f2ffc8124e03f7acbc36e39ca81c86909db05ba053",
+      "evaluations": 621867,
+      "observed_nodes": 1225103,
+      "instructions": 56018679293,
+      "feature_transform_instructions": 26259297860,
+      "affine_instructions": 20138972769,
+      "feature_transform_per_eval": 42226.549824962574,
+      "affine_per_eval": 32384.69442662177,
+      "instructions_per_node": 45725.68942611356
+    },
+    {
+      "variant": "optimized-profile-dot",
+      "registers": 12,
+      "expanded_affine": false,
+      "generic_extmul_dot": true,
+      "artifact_sha256": "67f37cfcd6ba4d82484ac7d6a574b6d78868250cce94a1220633aaf01a341f6a",
+      "evaluations": 487131,
+      "observed_nodes": 973266,
+      "instructions": 56040625428,
+      "feature_transform_instructions": 20916824451,
+      "affine_instructions": 27492019573,
+      "feature_transform_per_eval": 42938.80794077979,
+      "affine_per_eval": 56436.60447189771,
+      "instructions_per_node": 57579.96830054682
+    },
+    {
+      "variant": "optimized-profile-expanded",
+      "registers": 12,
+      "expanded_affine": true,
+      "generic_extmul_dot": false,
+      "artifact_sha256": "f03a829c56bb10e1e98a3f00dadcacb685c0b4a47601245fc371e07f9b0621a3",
+      "evaluations": 690948,
+      "observed_nodes": 1358965,
+      "instructions": 56015524749,
+      "feature_transform_instructions": 29052308557,
+      "affine_instructions": 16319653356,
+      "feature_transform_per_eval": 42047.02605261177,
+      "affine_per_eval": 23619.220774935307,
+      "instructions_per_node": 41219.25491017061
+    },
+    {
+      "variant": "optimized-profile-expanded32",
+      "registers": 32,
+      "expanded_affine": true,
+      "generic_extmul_dot": false,
+      "artifact_sha256": "ce73bd205f417a07cb3e77f5bbe8a5ed11d3721c9d16548245b3009e42409a90",
+      "evaluations": 775746,
+      "observed_nodes": 1499703,
+      "instructions": 56039799475,
+      "feature_transform_instructions": 25924013921,
+      "affine_instructions": 18347343202,
+      "feature_transform_per_eval": 33418.17285683716,
+      "affine_per_eval": 23651.225016951426,
+      "instructions_per_node": 37367.265035143624
+    }
+  ],
+  "generic_extmul_dot_rejected": "slower on actual ICP instruction meter; absent selected artifact",
+  "asyncify_analysis": "Named pre-optimization Binaryen116 analysis shows NNUE evaluate/accumulator/affine compute paths are not marked canChangeState. Their dominant work already lacks Asyncify state checks, so no unsafe ignore-indirect relaxation was applied. Default indirect instrumentation retained."
+}

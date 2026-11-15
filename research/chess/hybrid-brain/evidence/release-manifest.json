@@ -1,20 +1,40 @@
 {
-  "scope": "Source and actual locally installed coordinator release; no mainnet deployment",
-  "rawWasmSHA256": "4eb5aa4e0488a3961bf701dbede5ab2a7b8d538a52a7c952969e0c9c390d0a4d",
-  "installedGzipModuleSHA256": "c728f2bd5ab5584cbc8fc307b538fe1f808e250b2d7aef37bcad9c00f13d25ff",
-  "engineRawModuleSHA256": "4ed393570169b4a068182031c59acdc8171238205b720e57d8f0915a1e5d252e",
+  "scope": "source and actual locally installed optimized coordinator release; no mainnet deployment",
+  "rawWasmSHA256": "f95582a81c49be95816f180b95db564deb32ca7520d40a3dd3e520b7bb06bc5a",
+  "rawWasmBytes": 2647501,
+  "installedGzipModuleSHA256": "5fbde10f4c62446ee51f8d94a76134777ab98dff2bb9f0f6048b09a1601d779a",
+  "engineRawModuleSHA256": "725dc0c795262be21f1ffafec60f50aae3e9d00140add77e791a89eece0f417b",
   "compiler": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
   "sourceSHA256": {
     "Cargo.toml": "6a864cb67eb3c3d21770ecbaeecc23e027e2b0bd2aa94ba1447ce696129c2b59",
     "Cargo.lock": "5eb30a6c237cd6dba4b9dbb9c2ede42e0b83c89f8b19d1175e3a86a78d766612",
     "brain.did": "5e5c22dc6b00d7d74a8f3dd77fb6cb9b430b284820f520f161ecfc11996eeabc",
-    "src/lib.rs": "b649bfce820f2571c55d3968a6c48a750585ce0709c53ca5b0e451f8f469050d",
-    "src/canister.rs": "8e360d95ad483c24da75a06b4b15c891203ecb15dfc6e4513b2dd7c9cc61d46d",
-    "tests/interop.rs": "d5371778dafec963c34d281d42783995b8c56a8a76c98de94e3da2f8479b2be4",
-    "examples/export_candid.rs": "171ba4963820ea253929984131bbd1bf6cde34f0f852fe464d108de3fbb85391"
+    "src/lib.rs": "f1ec43c75fd5dc0feb33fa0ec4cf4e48f135cb2c4966c0965143e86f8c485526",
+    "src/canister.rs": "88ad2cde1cf68d3b0c5d29188c329e9cc3ad60b0ffc1ef93b30064451086d4b0",
+    "src/rpc_consensus.rs": "af92d2df343ab59a7c811775259f07c5bc0ceaf8f4fe5dbb83fbf528ab1fa667",
+    "tests/interop.rs": "947ad75d9e3bc4d95a11880ab17bd9c026f304810419db8e334e9c7e3fe1ab01",
+    "examples/export_candid.rs": "171ba4963820ea253929984131bbd1bf6cde34f0f852fe464d108de3fbb85391",
+    "tools/test_end_to_end.py": "4afdf7c6c4bf4480539af5ccdc004797f51ed26e9341b423593be5a63fc0272e",
+    "tools/test_pocketic.py": "b4503b640274b182a2b654f184b80d1611146f096fb333dd95347239c9201301",
+    "tests/frozen-engine/Cargo.toml": "66fb717bf2c6c3b0eb1ca40d4ec68bca62b76a13d91c85eb78d50d9b2bd6ee12",
+    "tests/frozen-engine/Cargo.lock": "1691be95174b29c33413e22fd35c7058defe17aa6e1b30b7da64c1dbe56129af",
+    "tests/frozen-engine/src/lib.rs": "652b2b9fedebe576f766e1e3baac07c86b0721355e83d8d06869cd701fcb612d"
   },
   "gateChecks": 10,
-  "coreAndInteropTests": 16,
-  "actualEndToEndChecks": 12,
+  "coreAndInteropTests": 26,
+  "actualEndToEndChecks": 14,
+  "signingRecoveryFixtureChecks": 17,
+  "signingRecoveryFreshInference": false,
+  "adaptivePolicy": {
+    "quantum": 0,
+    "yield_policy": "instruction-budget",
+    "instruction_target": 28000000000
+  },
+  "engineStrengthPolicy": {
+    "nodes": 24000000,
+    "hash_mb": 128,
+    "full_pinned_nnue": true,
+    "retained_state_per_game": true
+  },
   "paidMainnetActive": false
 }

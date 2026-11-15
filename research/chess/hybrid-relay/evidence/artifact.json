@@ -1,10 +1,10 @@
 {
   "scope": "Frozen autonomous relay source and actual isolated local execution; not public deployment or funding",
-  "generated_at": "2026-11-15T12:59:54.756961+00:00",
-  "raw_wasm_sha256": "f0b66473885c223e11f2fef48efc888ae264e921bdef6ac836d1d062b6a9c10a",
-  "raw_wasm_bytes": 2548818,
-  "installed_gzip_sha256": "0a7645d5cd27edd3c67edfd2d070875dd789653c7d620398e412c2bfbd399fd5",
-  "installed_gzip_bytes": 455546,
+  "generated_at": "2026-11-15T13:47:51.423257+00:00",
+  "raw_wasm_sha256": "a7a675465bab885751152ec665fdd115bbaaba8bf135bc8097d0d359e8a245f0",
+  "raw_wasm_bytes": 2713824,
+  "installed_gzip_sha256": "4eb4aa985853fa895415ab726ec64e8d84bbd22f9231d1c1a278b199ae9baf05",
+  "installed_gzip_bytes": 482160,
   "compiler": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
   "policy": {
     "chain_id": 4663,
@@ -13,16 +13,30 @@
     "allowed_method": "playBotMove",
     "lifetime_gas_budget_cap_wei": "2500000000000000",
     "max_transaction_cost_cap_wei": "200000000000000",
-    "automatic_funding": false
+    "automatic_funding": false,
+    "required_subnet_nodes": 13,
+    "flexible_replication": {
+      "total_requests": 13,
+      "min_responses": 9,
+      "max_responses": 13
+    },
+    "flexible_http_resource_time_ms": 60000,
+    "launch_advisory_interval_seconds": 30,
+    "confirmed_refresh_interval_seconds": 300,
+    "confirmed_ready_ttl_seconds": 360,
+    "daily_http_prepayment_limit_cycles": 1000000000000,
+    "idle_projection_upper_bound_cycles": 645990355296
   },
   "validation": {
-    "core_and_ethers_tests": 11,
-    "pocketic_gates": 14,
-    "relay_end_to_end_checks": 14,
+    "core_and_ethers_tests": 15,
+    "pocketic_gates": 15,
+    "relay_end_to_end_checks": 21,
     "independent_receipt_verification": true,
-    "strict_clippy": "optional strict style check reported collapsible_if, unnecessary_unwrap, manual_is_multiple_of and chunks_exact_to_as_chunks suggestions; no functional build/test failure"
+    "strict_clippy": "optional earlier strict style check was not passed; required build and functional tests passed",
+    "search_progress_cost_comparison": "21checks on both same-source prior polling and optimized35step replay"
   },
   "brain_evidence": "../hybrid-brain/evidence/end-to-end.json",
+  "genuine_frozen_input": "../hybrid-brain/evidence/end-to-end-pre-quorum.json",
   "relay_evidence": "evidence/relay-end-to-end.json",
-  "scope_boundary": "Relay execution consumes a frozen genuine 24m job from a local fixture coordinator; fresh full Stockfish execution is separately verified in the brain lane."
+  "scope_boundary": "Relay execution consumes a frozen genuine24m job from a local fixture coordinator; fresh full Stockfish execution is separately verified in the brain lane. No mainnet latency, funds or win probability is established."
 }

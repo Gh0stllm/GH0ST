@@ -4,6 +4,8 @@ Robinhood is the game authority. This ICP canister verifies the native game's st
 
 The fixed candidate policy is 24,000,000 nodes, Hash 128 MiB, one thread, full pinned NNUE, maximum skill and retained TT/history within each game. The engine/config hash uses the distinct `GH0ST_ENGINE_CONFIG_V2_RETAINED` domain. A caller cannot choose a smaller search, alternate model, FEN, bestmove, recipient or result. A missing retained reservation after the first Black turn is a refundable fault, never a cleared-cache restart.
 
+The optimized engine retains that search policy and changes exact arithmetic/layout and message slicing. The coordinator additionally requires `quantum=0`, `yield_policy="instruction-budget"` and a 28B-instruction target, plus the immutable approved module hash. An instruction-budget yield pauses the same search; it does not lower its24m-node allowance or discard retained state.
+
 ## Bootstrap and one-time deployment binding
 
 1. Allocate the engine and coordinator IDs. Install the engine with the coordinator principal and independently calculated V2 policy hash. Install the coordinator with the exact engine module hash, `reviewed_release=false`, and both native-game binding fields zero.
@@ -20,6 +22,8 @@ The standard starting position and every historical move must reproduce the nati
 
 Jobs are deterministic for the canonical game/ply/position/config. Another request ID cannot purchase another search for the same turn. A durable per-job lock is written before each asynchronous call. Expected-step retries read the cached engine journal, and uncertain callbacks reconcile instead of blindly restarting. A verified terminal native game permits reservation release and bounded old-job pruning. An engine upgrade that loses retained state remains refund-only for that active game.
 
+A completed full-budget result remains in `Signing` after transient HTTPS/quorum, canonical-read or signature-request failures. A later retry must reverify the still-active native game before signing that same stored result. It never reruns the expensive search to repair a transport failure. Wrong code/model/history/binding or an expired native game still fails closed. `evidence/signing-recovery.json` proves this path using a separate test-only engine fixture that replays a genuine recorded24m result; it explicitly performs no fresh inference.
+
 Only a completed full-budget search can reach threshold signing. Its EIP712 material binds the exact game, original wallet, ply, position, transcript, legal encoded move, engine policy and native deadline. Duplicate completed jobs return the same cached signature. The signature can be relayed by anyone; Robinhood independently checks its legality and adjudicates checkmate/payment.
 
 ## Operating bounds and trust
@@ -30,6 +34,8 @@ Public readiness/admission HTTPS verification has a 500B-cycle daily allowance a
 
 The official RPC is pinned, queries use at least 12 L2 confirmations, and the selected block hash is checked again. HTTPS subnet consensus and confirmations are **provider/data-availability trust**, not an EVM state proof or a claim of L1 finality. Native Solidity remains authoritative for legal moves and payments. ICP controllers remain trusted to run the promised engine honestly; a threshold signature is not a cryptographic proof of Stockfish execution. Disclose and verify controller/module sets before a funded release.
 
+Dynamic chain/head discovery uses a replicated flexible HTTPS committee of13, requiring at least9 valid Robinhood-chain responses and selecting their median head. Execution rejects a subnet whose node count is not13; it never silently samples13 nodes from a larger subnet under the same four-fault assumption. All subsequent canonical reads use the selected confirmed block, fully replicated HTTPS consensus and a sorted JSON-RPC batch transform. Fewer than9 valid responses fail closed; there is no single-response fallback. CostV2 outcall prepayment is charged against conservative daily allowances; asynchronous unused-budget credits mean that booked prepayment is not identical to net spend.
+
 ## Verification
 
 From `research/chess`:
@@ -39,6 +45,7 @@ cargo test --locked --manifest-path hybrid-brain/Cargo.toml --features canister
 cargo build --locked --manifest-path hybrid-brain/Cargo.toml --features canister --release --target wasm32-unknown-unknown
 engine/.cache/venv/bin/python hybrid-brain/tools/test_pocketic.py
 engine/.cache/venv/bin/python hybrid-brain/tools/test_end_to_end.py
+engine/.cache/venv/bin/python hybrid-brain/tools/test_end_to_end.py --signing-recovery
 ```
 
 The core and interoperability suite checks native ABI/board/transcript/EIP712 agreement, signer recovery, tampered canonical state rejection, immutable policy and one-time binding. `evidence/pocketic-coordinator-gates.json` covers actual Wasm installation, controller/anonymous gates, local management key derivation, HTTP normalization and a stable same-source upgrade.
@@ -47,8 +54,12 @@ The core and interoperability suite checks native ABI/board/transcript/EIP712 ag
 
 `evidence/subnet-sizing.json` connects the saved local topology to the pinned PocketIC 16.1 source defaults: 13-node Application execution and 34-node Fiduciary `key_1` signing. This is local test configuration, not a claim about a future mainnet canister's placement.
 
-The final clean end-to-end run passed **12 checks**. Stockfish searched the standard initial FEN plus the full `e2e4` history and exactly matched fresh native execution: **`e7e5`, 24,000,033 nodes, depth 38**, over 240 engine steps. Its locally derived management signature executed through native Solidity legality, preserved the full 1M reserve, and a later simulated service timeout refunded exactly 25k. Canonical terminal acknowledgement then cleared the retained reservation and restored funded admission.
+`evidence/end-to-end-consensus-baseline.json` preserves the full consensus-aware baseline run: **14 checks**, exact **`e7e5`, 24,000,033 nodes, depth38**, over240 engine steps. After65virtualseconds for HTTP credits, warm engine debit was1.239085T cycles and coordinator debit0.038088T. This is the historical fixed100k-node slicing baseline; the current coordinator requires the optimized adaptive engine. `evidence/end-to-end.json` is the current optimized integration evidence when `passed=true`; the harness records exact engine/coordinator hashes and measured costs rather than treating the baseline as the new artifact's proof.
 
-For that one tested Black decision, engine debit including cold reservation was **1.244600T cycles** and coordinator debit **0.039999T**, including canonical mocked-HTTPS checks, progress, one management ECDSA signature and a readiness refresh. Warm engine plus coordinator was **1.279069T cycles**. `evidence/end-to-end-costs.json` separates these components and exclusions. Creation/upload/install, autonomous relay signing, RH gas, hosting, failures and position-dependent search variance remain additional costs.
+`evidence/signing-recovery.json` passed **17 checks** with the actual coordinator, local management signer and native game, while replaying a genuine stored engine result. It proves an insufficient Signing quorum preserves completed work, makes no new engine advance, and later signs only after successful verification. This fixture run is never a fresh full-engine performance measurement.
+
+The current optimized `end-to-end.json` passed **14 actual integration checks** on the exact release hashes in `release-manifest.json`. It independently matched fresh native **`e7e5`,24,000,033nodes,depth38**, using35 engine updates and36 coordinator updates. After65virtualseconds to settle HTTP credits, warm engine debit was **0.972755T cycles**, and coordinator debit **0.032172T**: **1.004927T paired** for this one decision. The comparable consensus baseline used1.277173T paired, so this measured pair used **21.32% fewer cycles**, with **6.86× fewer engine update hops**. Full-strength policy and actual output remained identical for this position. `engine/optimized` records the separate second retained-decision equality test; no universal position saving or win-probability claim follows from these examples.
+
+Creation/upload/install, autonomous relay signing, RH gas, hosting, failures and position-dependent search variance remain additional costs. Local elapsed time depends on host load and PocketIC; it is not a measured mainnet move latency.
 
 No local test is a mainnet deployment, real GH0ST transfer, public gameplay receipt, Elo rating, calibrated win probability or guarantee that the pool is safe. Paid launch still requires public module/controller/source verification, native receipts, manual operating and prize funding, and the improved policy's broader strength checks.

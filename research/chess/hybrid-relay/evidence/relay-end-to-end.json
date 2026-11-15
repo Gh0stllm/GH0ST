@@ -1,7 +1,7 @@
 {
   "scope": "isolated ICP autonomous timer/transaction-relay execution using captured genuine realStockfish24m signed move",
   "mocked": [
-    "fixture coordinator replays one recorded genuine signed result; no fresh inference",
+    "fixture coordinator replays one recorded genuine signed result; no fresh inference; 35 meaningful synthetic progress transitions",
     "HTTPS replies from isolated EVM chain4663",
     "synthetic ERC20 and relay ETH"
   ],
@@ -11,11 +11,12 @@
     "a second Stockfish inference run",
     "human win odds"
   ],
-  "generated_at": "2026-11-15T12:58:36.314412+00:00",
+  "generated_at": "2026-11-15T13:46:07.516924+00:00",
   "genuine_result_source_sha256": "3d41ac69e16c9136321668fc501b476195a22663b7b6b30bc67e5b25867688e9",
   "checks": [
     "recreated native game address exactly matches the genuine captured signed domain",
     "independent relay key differs from the brain move-attestor key",
+    "only eight valid committee heads cannot enable sending",
     "controller enables the funded relay while native entries remain paused",
     "recreated paid game matches genuine signature game and position",
     "timer signs fixed-chain zero-value exact-target EIP1559 transaction",
@@ -23,11 +24,17 @@
     "same-source upgrade preserves submitted raw transaction hash and nonce intent",
     "ambiguous consumed nonce halts new work without replacing the durable transaction",
     "receipt-only recovery resolves the exact confirmed transaction while keeping sending disabled",
+    "35synthetic meaningful transitions preserve genuine move despite false cancellation hint",
     "timers alone applied the genuine Black move without browser or crank calls",
     "lost broadcast reply and upgrade reconcile one receipt without a second transaction",
     "approved lifetime budget deducts exactly confirmed gas rather than its maximum reserve",
     "relay sends no token value and preserves the complete native prize reserve",
-    "White-turn polling does not replay the signed move or consume a new nonce"
+    "White-turn polling does not replay the signed move or consume a new nonce",
+    "advisory polling cannot masquerade as confirmed freshness or continuously consume flexible HTTP",
+    "dynamic head fee and nonce reads use13nodeflexible committee while authorization state reads are fixedheight",
+    "false Black advisory triggers fresh fixed verification without a new transaction",
+    "300second timer refresh restores confirmed readiness independently of advisory freshness",
+    "complete24hour idle prepayment projection leaves at least350B cycles gameplay headroom"
   ],
   "local_evm_deployment": {
     "contract": "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
@@ -90,9 +97,9 @@
       }
     ]
   },
-  "relay_wasm_raw_sha256": "f0b66473885c223e11f2fef48efc888ae264e921bdef6ac836d1d062b6a9c10a",
-  "relay_installed_gzip_sha256": "0a7645d5cd27edd3c67edfd2d070875dd789653c7d620398e412c2bfbd399fd5",
-  "fixture_coordinator_gzip_sha256": "1416f23a41756aaf92455c5c04e79156e96530cecd93718a054f1c660fa6f9b9",
+  "relay_wasm_raw_sha256": "a7a675465bab885751152ec665fdd115bbaaba8bf135bc8097d0d359e8a245f0",
+  "relay_installed_gzip_sha256": "4eb4aa985853fa895415ab726ec64e8d84bbd22f9231d1c1a278b199ae9baf05",
+  "fixture_coordinator_gzip_sha256": "4b7a55432368eaa3825cbb199ed0f41370d8fb3b6c72e5d39f697a68fbc6fee8",
   "relay_subnet": "sgier-p6fyz-ejpwm-jghgc-4ypgv-6ft53-5hns6-ojhae-wvlic-ifcah-eqe",
   "source_policy": {
     "max_gas_limit": 4000000,
@@ -100,7 +107,27 @@
     "max_tx_cost_wei": 200000000000000,
     "lifetime_gas_budget_wei": 2500000000000000
   },
+  "flexible_prepayment_quotes": [
+    [
+      1000,
+      828989447
+    ],
+    [
+      5000,
+      846149447
+    ],
+    [
+      10000,
+      867599447
+    ],
+    [
+      60000,
+      1082099447
+    ]
+  ],
   "relayer_address": "0x94bbc0802957051507338583f7013b30c82e7264",
+  "turn_until_first_broadcast_http_booked_cycles": 8680772568,
+  "turn_until_first_broadcast_http_prepayment_cycles": 9127652248,
   "broadcast_transactions": [
     {
       "hash": "0xcd34296f11d912dc50726dc7510c325de69ae92e6cf18c008f5c54a359a749ca",
@@ -121,8 +148,8 @@
     "game": {
       "player": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
       "nonce": "7",
-      "opened_at": "1767225625",
-      "turn_deadline": "1767312041",
+      "opened_at": "1767225655",
+      "turn_deadline": "1767312491",
       "result": "0",
       "ply": "2",
       "position_hash": "0x204f70c2dcb5cacffde8628709a0fedb847b48ac93f8c779c88dd885dfe6bd0f",
@@ -142,26 +169,26 @@
     "player_balance": "75000000000000000000000",
     "paused": false,
     "block": {
-      "hash": "0x16b9acd9bba9e175c2c2b92367b7904b61cdc077f9922c1016007a7a253b21fb",
-      "parentHash": "0x60f7fdef36f2d546d3256cfbb96b7edf65ffdf2e30b46c3530809231ae37a5ca",
+      "hash": "0xa98f517db1323fd401cf20becbd195af57c33c3daa676d6e1c4f5d0d395119d1",
+      "parentHash": "0x47230730ac44cfe31aca012f1cfd8bf7cdf4e172eb88e694fa6b5af55c79d5ec",
       "sha3Uncles": "0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347",
       "miner": "0x0000000000000000000000000000000000000000",
-      "stateRoot": "0x5580c2f04382b19215448b149b360b462f34501d30251ebfd285ba0c9f291de2",
+      "stateRoot": "0xcfe7d4bf077df4b3db310cf0470c31dd11e768503c22fbf65751ed79bbdd2125",
       "transactionsRoot": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
       "receiptsRoot": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
       "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
       "difficulty": "0x0",
-      "number": "0x37",
+      "number": "0xa8",
       "gasLimit": "0x1c9c380",
       "gasUsed": "0x0",
-      "timestamp": "0x6955b937",
+      "timestamp": "0x6955bb04",
       "extraData": "0x",
-      "mixHash": "0xb09b780548e20efb1664fa87bb2e2cb3b1d4ab3489ea72d9229c15ff6939fd74",
+      "mixHash": "0xd6dfb1854a1653efcc5509279cf19a4277d5deb4c339c1ee1e366b030caf32fc",
       "nonce": "0x0000000000000000",
       "totalDifficulty": "0x0",
-      "baseFeePerGas": "0xa5ac7",
+      "baseFeePerGas": "0x7",
       "withdrawalsRoot": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
-      "size": "0x223",
+      "size": "0x221",
       "transactions": [],
       "uncles": [],
       "withdrawals": []
@@ -193,62 +220,71 @@
       },
       {
         "label": "explicit synthetic pool approval",
-        "hash": "0x10c94cc448c36a8d8df7f58c51b87eff5a05bc4ea194e9df702550a3ff92e804",
+        "hash": "0xf98fa49f073f1ff2d6d5a7cb1b35d66764314c0d19705e86c04852baadda601f",
         "gasUsed": "44114",
-        "blockNumber": 21
+        "blockNumber": 51
       },
       {
         "label": "fund full synthetic1m reserve",
-        "hash": "0xd5313354cc6c5757cf0c460de1f0e6b36535bf1cce608329d59860a52b6ec3fe",
+        "hash": "0xfcdcf45abfbfb15bdd9af22a9f83a3c714b6e5cfc424aefd0ed16ceb5d82959e",
         "gasUsed": "69037",
-        "blockNumber": 22
+        "blockNumber": 52
       },
       {
         "label": "open fixture entries",
-        "hash": "0xc74c7ab86084895847732cc7fadddea97f679a85658ecb9c6dd63b7208870a01",
+        "hash": "0xf45f95794a5630d4040cc53e76775663c122b65b2fed9e298ee88f883dc2f8b5",
         "gasUsed": "22752",
-        "blockNumber": 23
+        "blockNumber": 53
       },
       {
         "label": "exact synthetic25k approval",
-        "hash": "0x52d83213aebc85f875436587a9da9b00fa58b5df0bb00f827aed93249b976b35",
+        "hash": "0x6f350a2f7b289976f25a1810264e67410d11770c3ae11d07c8a7163295de2106",
         "gasUsed": "44126",
-        "blockNumber": 24
+        "blockNumber": 54
       },
       {
         "label": "reserve1m and enter25k",
-        "hash": "0x88643af49b7508b856f41956bc9be849b8bac628f3a396e11f78d0aa859fcb7e",
+        "hash": "0x1fd97aecdf582cbf90a93f398ccc2f7613a63e91b1a9b8b0c420b84d2cc47b3e",
         "gasUsed": "300576",
-        "blockNumber": 25
+        "blockNumber": 55
       },
       {
         "label": "human e2e4",
-        "hash": "0x0b2f0943e561844ef7a39cb1d5aab6d32fd5212f6532590b1d1eba7625500e8f",
+        "hash": "0xdbf048e2a6f7c2db668de110b4eee192fa81cf997091cbf070722f18d2b30dfb",
         "gasUsed": "276895",
-        "blockNumber": 26
+        "blockNumber": 56
       }
     ]
   },
   "relay_final_status": {
+    "last_http_booked_cycles": 71250400,
     "last_error": [],
     "relayer_address": "0x94bbc0802957051507338583f7013b30c82e7264",
+    "last_flexible_reserve_cycles": 1082056547,
+    "rpc_cycles_booked_today": 15203741748,
     "blockers": [
       "relay is disabled"
     ],
     "pending_hash": "",
-    "gas_balance_wei": 999998692775525288,
+    "gas_balance_wei": 999999999995531380,
     "pending": false,
-    "remaining_gas_budget_wei": 2498692775525288,
+    "remaining_gas_budget_wei": 2499999995531380,
+    "last_http_prepayment_cycles": 79628120,
+    "last_checked_at": 1767226070,
     "enabled": false,
+    "last_flexible_booked_cycles": 1082056547,
+    "last_http_reserve_cycles": 79628120,
+    "in_flight": false,
+    "advisory_last_checked_at": 1767226040,
     "ready": false,
     "completed_transactions": 1
   },
-  "relay_cycles_debit": 31288547702,
+  "relay_cycles_debit": 35020639899,
   "confirmed_receipt": {
     "transactionHash": "0xcd34296f11d912dc50726dc7510c325de69ae92e6cf18c008f5c54a359a749ca",
     "transactionIndex": "0x0",
-    "blockNumber": "0x29",
-    "blockHash": "0x7b9a1646f6be68838806bdff7a91463e67947b71cfd83a25b66d5b74c7800cc9",
+    "blockNumber": "0x89",
+    "blockHash": "0xcfe33e007aebcbc8a2e9d86c5fd7e8e8afc2bcda54cfe438d2164e557d46bc6d",
     "from": "0x94bbc0802957051507338583f7013b30c82e7264",
     "to": "0xcf7ed3acca5a467e9e704c703e8d87f634fb0fc9",
     "cumulativeGasUsed": "0x48bb4",
@@ -257,8 +293,8 @@
     "logs": [
       {
         "address": "0xcf7ed3acca5a467e9e704c703e8d87f634fb0fc9",
-        "blockHash": "0x7b9a1646f6be68838806bdff7a91463e67947b71cfd83a25b66d5b74c7800cc9",
-        "blockNumber": "0x29",
+        "blockHash": "0xcfe33e007aebcbc8a2e9d86c5fd7e8e8afc2bcda54cfe438d2164e557d46bc6d",
+        "blockNumber": "0x89",
         "data": "0x0000000000000000000000000000000000000000000000000000000000000d24204f70c2dcb5cacffde8628709a0fedb847b48ac93f8c779c88dd885dfe6bd0fbe0289e68ebd666ec6d2280f790b75be13b9b883da845aa41f1421ef7d4b647d",
         "logIndex": "0x0",
         "removed": false,
@@ -273,10 +309,693 @@
     ],
     "logsBloom": "0x04000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000001000000000000000000000000000000000000000000000000000000400000000000000000000020000000000000040000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000000000000000000000000000008000000000000000000008",
     "status": "0x1",
-    "effectiveGasPrice": "0x42f4ae",
+    "effectiveGasPrice": "0xf",
     "type": "0x2"
   },
+  "http_calls": [
+    {
+      "flexible": true,
+      "methods": [
+        "eth_chainId",
+        "eth_blockNumber"
+      ],
+      "max_response_bytes": 4096,
+      "prepayment_cycles": 1082056547,
+      "advisory": false
+    },
+    {
+      "flexible": true,
+      "methods": [
+        "eth_chainId",
+        "eth_blockNumber"
+      ],
+      "max_response_bytes": 4096,
+      "prepayment_cycles": 1082056547,
+      "advisory": false
+    },
+    {
+      "flexible": false,
+      "methods": [
+        "eth_chainId",
+        "eth_call",
+        "eth_getBalance"
+      ],
+      "max_response_bytes": 2048,
+      "prepayment_cycles": 80943720,
+      "advisory": false
+    },
+    {
+      "flexible": false,
+      "methods": [
+        "eth_getBlockByNumber",
+        "eth_getCode",
+        "eth_call",
+        "eth_call",
+        "eth_call",
+        "eth_call"
+      ],
+      "max_response_bytes": 49152,
+      "prepayment_cycles": 622255920,
+      "advisory": false
+    },
+    {
+      "flexible": false,
+      "methods": [
+        "eth_getBlockByNumber"
+      ],
+      "max_response_bytes": 2048,
+      "prepayment_cycles": 79628120,
+      "advisory": false
+    },
+    {
+      "flexible": false,
+      "methods": [
+        "eth_chainId",
+        "eth_call",
+        "eth_getBalance"
+      ],
+      "max_response_bytes": 2048,
+      "prepayment_cycles": 80966600,
+      "advisory": true
+    },
+    {
+      "flexible": false,
+      "methods": [
+        "eth_chainId",
+        "eth_call",
+        "eth_getBalance"
+      ],
+      "max_response_bytes": 2048,
+      "prepayment_cycles": 80966600,
+      "advisory": true
+    },
+    {
+      "flexible": true,
+      "methods": [
+        "eth_chainId",
+        "eth_blockNumber"
+      ],
+      "max_response_bytes": 4096,
+      "prepayment_cycles": 1082056547,
+      "advisory": false
+    },
+    {
+      "flexible": false,
+      "methods": [
+        "eth_chainId",
+        "eth_call",
+        "eth_getBalance"
+      ],
+      "max_response_bytes": 2048,
+      "prepayment_cycles": 80943720,
+      "advisory": false
+    },
+    {
+      "flexible": false,
+      "methods": [
+        "eth_getBlockByNumber",
+        "eth_getCode",
+        "eth_call",
+        "eth_call",
+        "eth_call",
+        "eth_call",
+        "eth_call",
+        "eth_call"
+      ],
+      "max_response_bytes": 131072,
+      "prepayment_cycles": 1561708720,
+      "advisory": false
+    },
+    {
+      "flexible": false,
+      "methods": [
+        "eth_getBlockByNumber"
+      ],
+      "max_response_bytes": 2048,
+      "prepayment_cycles": 79628120,
+      "advisory": false
+    },
+    {
+      "flexible": false,
+      "methods": [
+        "eth_chainId",
+        "eth_call",
+        "eth_getBalance",
+        "eth_call"
+      ],
+      "max_response_bytes": 4096,
+      "prepayment_cycles": 105545440,
+      "advisory": true
+    },
+    {
+      "flexible": false,
+      "methods": [
+        "eth_chainId",
+        "eth_call",
+        "eth_getBalance",
+        "eth_call"
+      ],
+      "max_response_bytes": 4096,
+      "prepayment_cycles": 105545440,
+      "advisory": true
+    },
+    {
+      "flexible": false,
+      "methods": [
+        "eth_chainId",
+        "eth_call",
+        "eth_getBalance",
+        "eth_call"
+      ],
+      "max_response_bytes": 4096,
+      "prepayment_cycles": 105545440,
+      "advisory": true
+    },
+    {
+      "flexible": false,
+      "methods": [
+        "eth_chainId",
+        "eth_call",
+        "eth_getBalance",
+        "eth_call"
+      ],
+      "max_response_bytes": 4096,
+      "prepayment_cycles": 105545440,
+      "advisory": true
+    },
+    {
+      "flexible": false,
+      "methods": [
+        "eth_chainId",
+        "eth_call",
+        "eth_getBalance",
+        "eth_call"
+      ],
+      "max_response_bytes": 4096,
+      "prepayment_cycles": 105545440,
+      "advisory": true
+    },
+    {
+      "flexible": false,
+      "methods": [
+        "eth_chainId",
+        "eth_call",
+        "eth_getBalance",
+        "eth_call"
+      ],
+      "max_response_bytes": 4096,
+      "prepayment_cycles": 105545440,
+      "advisory": true
+    },
+    {
+      "flexible": true,
+      "methods": [
+        "eth_chainId",
+        "eth_blockNumber"
+      ],
+      "max_response_bytes": 4096,
+      "prepayment_cycles": 1082056547,
+      "advisory": false
+    },
+    {
+      "flexible": false,
+      "methods": [
+        "eth_chainId",
+        "eth_call",
+        "eth_getBalance",
+        "eth_call"
+      ],
+      "max_response_bytes": 4096,
+      "prepayment_cycles": 105511120,
+      "advisory": false
+    },
+    {
+      "flexible": false,
+      "methods": [
+        "eth_chainId",
+        "eth_call",
+        "eth_getBalance",
+        "eth_call"
+      ],
+      "max_response_bytes": 4096,
+      "prepayment_cycles": 105545440,
+      "advisory": true
+    },
+    {
+      "flexible": false,
+      "methods": [
+        "eth_chainId",
+        "eth_call",
+        "eth_getBalance",
+        "eth_call"
+      ],
+      "max_response_bytes": 4096,
+      "prepayment_cycles": 105545440,
+      "advisory": true
+    },
+    {
+      "flexible": true,
+      "methods": [
+        "eth_chainId",
+        "eth_blockNumber"
+      ],
+      "max_response_bytes": 4096,
+      "prepayment_cycles": 1082056547,
+      "advisory": false
+    },
+    {
+      "flexible": false,
+      "methods": [
+        "eth_chainId",
+        "eth_call",
+        "eth_getBalance",
+        "eth_call"
+      ],
+      "max_response_bytes": 4096,
+      "prepayment_cycles": 105511120,
+      "advisory": false
+    },
+    {
+      "flexible": false,
+      "methods": [
+        "eth_getBlockByNumber",
+        "eth_getCode",
+        "eth_call",
+        "eth_call",
+        "eth_call",
+        "eth_call",
+        "eth_call",
+        "eth_call"
+      ],
+      "max_response_bytes": 131072,
+      "prepayment_cycles": 1561708720,
+      "advisory": false
+    },
+    {
+      "flexible": false,
+      "methods": [
+        "eth_getBlockByNumber"
+      ],
+      "max_response_bytes": 2048,
+      "prepayment_cycles": 79628120,
+      "advisory": false
+    },
+    {
+      "flexible": true,
+      "methods": [
+        "eth_getTransactionCount",
+        "eth_getTransactionCount",
+        "eth_gasPrice"
+      ],
+      "max_response_bytes": 4096,
+      "prepayment_cycles": 1082190967,
+      "advisory": false
+    },
+    {
+      "flexible": false,
+      "methods": [
+        "eth_getTransactionCount",
+        "eth_estimateGas"
+      ],
+      "max_response_bytes": 4096,
+      "prepayment_cycles": 109257720,
+      "advisory": false
+    },
+    {
+      "flexible": false,
+      "methods": [
+        "eth_sendRawTransaction"
+      ],
+      "max_response_bytes": 4096,
+      "prepayment_cycles": 109097560,
+      "advisory": false
+    },
+    {
+      "flexible": true,
+      "methods": [
+        "eth_chainId",
+        "eth_blockNumber"
+      ],
+      "max_response_bytes": 4096,
+      "prepayment_cycles": 1082056547,
+      "advisory": false
+    },
+    {
+      "flexible": false,
+      "methods": [
+        "eth_getTransactionReceipt",
+        "eth_getTransactionByHash"
+      ],
+      "max_response_bytes": 8192,
+      "prepayment_cycles": 151082360,
+      "advisory": false
+    },
+    {
+      "flexible": true,
+      "methods": [
+        "eth_getTransactionCount",
+        "eth_getTransactionCount"
+      ],
+      "max_response_bytes": 4096,
+      "prepayment_cycles": 1082147352,
+      "advisory": false
+    },
+    {
+      "flexible": false,
+      "methods": [
+        "eth_getTransactionCount"
+      ],
+      "max_response_bytes": 2048,
+      "prepayment_cycles": 79868360,
+      "advisory": false
+    },
+    {
+      "flexible": true,
+      "methods": [
+        "eth_chainId",
+        "eth_blockNumber"
+      ],
+      "max_response_bytes": 4096,
+      "prepayment_cycles": 1082056547,
+      "advisory": false
+    },
+    {
+      "flexible": false,
+      "methods": [
+        "eth_getTransactionReceipt",
+        "eth_getTransactionByHash"
+      ],
+      "max_response_bytes": 8192,
+      "prepayment_cycles": 151082360,
+      "advisory": false
+    },
+    {
+      "flexible": false,
+      "methods": [
+        "eth_getBlockByNumber"
+      ],
+      "max_response_bytes": 2048,
+      "prepayment_cycles": 79628120,
+      "advisory": false
+    },
+    {
+      "flexible": true,
+      "methods": [
+        "eth_chainId",
+        "eth_blockNumber"
+      ],
+      "max_response_bytes": 4096,
+      "prepayment_cycles": 1082056547,
+      "advisory": false
+    },
+    {
+      "flexible": false,
+      "methods": [
+        "eth_chainId",
+        "eth_call",
+        "eth_getBalance",
+        "eth_call"
+      ],
+      "max_response_bytes": 4096,
+      "prepayment_cycles": 105511120,
+      "advisory": false
+    },
+    {
+      "flexible": false,
+      "methods": [
+        "eth_getBlockByNumber",
+        "eth_getCode",
+        "eth_call",
+        "eth_call",
+        "eth_call",
+        "eth_call",
+        "eth_call",
+        "eth_call"
+      ],
+      "max_response_bytes": 131072,
+      "prepayment_cycles": 1561708720,
+      "advisory": false
+    },
+    {
+      "flexible": false,
+      "methods": [
+        "eth_getBlockByNumber"
+      ],
+      "max_response_bytes": 2048,
+      "prepayment_cycles": 79628120,
+      "advisory": false
+    },
+    {
+      "flexible": false,
+      "methods": [
+        "eth_chainId",
+        "eth_call",
+        "eth_getBalance",
+        "eth_call"
+      ],
+      "max_response_bytes": 4096,
+      "prepayment_cycles": 105545440,
+      "advisory": true
+    },
+    {
+      "flexible": false,
+      "methods": [
+        "eth_chainId",
+        "eth_call",
+        "eth_getBalance",
+        "eth_call"
+      ],
+      "max_response_bytes": 4096,
+      "prepayment_cycles": 105545440,
+      "advisory": true
+    },
+    {
+      "flexible": false,
+      "methods": [
+        "eth_chainId",
+        "eth_call",
+        "eth_getBalance",
+        "eth_call"
+      ],
+      "max_response_bytes": 4096,
+      "prepayment_cycles": 105545440,
+      "advisory": true
+    },
+    {
+      "flexible": false,
+      "methods": [
+        "eth_chainId",
+        "eth_call",
+        "eth_getBalance",
+        "eth_call"
+      ],
+      "max_response_bytes": 4096,
+      "prepayment_cycles": 105545440,
+      "advisory": true
+    },
+    {
+      "flexible": false,
+      "methods": [
+        "eth_chainId",
+        "eth_call",
+        "eth_getBalance",
+        "eth_call"
+      ],
+      "max_response_bytes": 4096,
+      "prepayment_cycles": 105545440,
+      "advisory": true
+    },
+    {
+      "flexible": false,
+      "methods": [
+        "eth_chainId",
+        "eth_call",
+        "eth_getBalance",
+        "eth_call"
+      ],
+      "max_response_bytes": 4096,
+      "prepayment_cycles": 105545440,
+      "advisory": true
+    },
+    {
+      "flexible": true,
+      "methods": [
+        "eth_chainId",
+        "eth_blockNumber"
+      ],
+      "max_response_bytes": 4096,
+      "prepayment_cycles": 1082056547,
+      "advisory": false
+    },
+    {
+      "flexible": false,
+      "methods": [
+        "eth_chainId",
+        "eth_call",
+        "eth_getBalance",
+        "eth_call"
+      ],
+      "max_response_bytes": 4096,
+      "prepayment_cycles": 105511120,
+      "advisory": false
+    },
+    {
+      "flexible": true,
+      "methods": [
+        "eth_chainId",
+        "eth_blockNumber"
+      ],
+      "max_response_bytes": 4096,
+      "prepayment_cycles": 1082056547,
+      "advisory": false
+    },
+    {
+      "flexible": false,
+      "methods": [
+        "eth_chainId",
+        "eth_call",
+        "eth_getBalance",
+        "eth_call"
+      ],
+      "max_response_bytes": 4096,
+      "prepayment_cycles": 105511120,
+      "advisory": false
+    }
+  ],
+  "idle_interval": {
+    "virtual_seconds": 180,
+    "http_booked_cycles": 474058000,
+    "full_cycles": 732305008,
+    "calls": [
+      {
+        "flexible": false,
+        "methods": [
+          "eth_chainId",
+          "eth_call",
+          "eth_getBalance",
+          "eth_call"
+        ],
+        "max_response_bytes": 4096,
+        "prepayment_cycles": 105545440,
+        "advisory": true
+      },
+      {
+        "flexible": false,
+        "methods": [
+          "eth_chainId",
+          "eth_call",
+          "eth_getBalance",
+          "eth_call"
+        ],
+        "max_response_bytes": 4096,
+        "prepayment_cycles": 105545440,
+        "advisory": true
+      },
+      {
+        "flexible": false,
+        "methods": [
+          "eth_chainId",
+          "eth_call",
+          "eth_getBalance",
+          "eth_call"
+        ],
+        "max_response_bytes": 4096,
+        "prepayment_cycles": 105545440,
+        "advisory": true
+      },
+      {
+        "flexible": false,
+        "methods": [
+          "eth_chainId",
+          "eth_call",
+          "eth_getBalance",
+          "eth_call"
+        ],
+        "max_response_bytes": 4096,
+        "prepayment_cycles": 105545440,
+        "advisory": true
+      },
+      {
+        "flexible": false,
+        "methods": [
+          "eth_chainId",
+          "eth_call",
+          "eth_getBalance",
+          "eth_call"
+        ],
+        "max_response_bytes": 4096,
+        "prepayment_cycles": 105545440,
+        "advisory": true
+      }
+    ],
+    "confirmed_last_checked_at_before": 1767226104,
+    "confirmed_last_checked_at_after": 1767226104,
+    "advisory_last_checked_at_after": 1767226284,
+    "last_replicated_reserve_cycles": 105545440,
+    "last_replicated_booked_cycles": 94811600,
+    "last_flexible_reserve_cycles": 1082056547,
+    "last_flexible_booked_cycles": 1082056547
+  },
+  "post_idle_refresh_status": {
+    "last_http_booked_cycles": 94780400,
+    "last_error": [],
+    "relayer_address": "0x94bbc0802957051507338583f7013b30c82e7264",
+    "last_flexible_reserve_cycles": 1082056547,
+    "rpc_cycles_booked_today": 20792968989,
+    "blockers": [],
+    "pending_hash": "",
+    "gas_balance_wei": 999999999995531380,
+    "pending": false,
+    "remaining_gas_budget_wei": 2499999995531380,
+    "last_http_prepayment_cycles": 105511120,
+    "last_checked_at": 1767226624,
+    "enabled": true,
+    "last_flexible_booked_cycles": 1082056547,
+    "last_http_reserve_cycles": 105511120,
+    "in_flight": false,
+    "advisory_last_checked_at": 1767226317,
+    "ready": true,
+    "completed_transactions": 1
+  },
+  "synthetic_progress_transitions": 35,
+  "counterfactual_legacy_search_polling": false,
+  "confirmed_refresh_calls": [
+    {
+      "flexible": true,
+      "methods": [
+        "eth_chainId",
+        "eth_blockNumber"
+      ],
+      "max_response_bytes": 4096,
+      "prepayment_cycles": 1082056547,
+      "advisory": false
+    },
+    {
+      "flexible": false,
+      "methods": [
+        "eth_chainId",
+        "eth_call",
+        "eth_getBalance",
+        "eth_call"
+      ],
+      "max_response_bytes": 4096,
+      "prepayment_cycles": 105511120,
+      "advisory": false
+    }
+  ],
+  "idle_budget_projection": {
+    "scope": "conservative maximum attached prepayment; asynchronous refunds excluded; no gameplay or execution overhead",
+    "advisory_interval_seconds": 30,
+    "confirmed_refresh_interval_seconds": 300,
+    "max_advisory_prepayment_cycles": 105545440,
+    "complete_confirmed_refresh_prepayment_cycles": 1187567667,
+    "daily_advisory_prepayment_cycles": 303970867200,
+    "daily_confirmed_refresh_prepayment_cycles": 342019488096,
+    "daily_total_upper_bound_cycles": 645990355296,
+    "daily_cap_cycles": 1000000000000,
+    "gameplay_prepayment_headroom_cycles": 354009644704
+  },
   "passed": true,
-  "check_count": 14,
+  "check_count": 21,
   "all_owned_processes_stopped": true
 }

@@ -4,7 +4,7 @@
 All execution is isolated local testing. HTTPS responses are explicitly mocked from an
 isolated EVM chain4663 with a synthetic ERC20 fixture; no mainnet state, funds or signer.
 """
-import base64, datetime, gzip, hashlib, json, subprocess, time
+import base64, datetime, gzip, hashlib, json, subprocess, time,sys
 from pathlib import Path
 import requests, ic
 from ic.candid import Types
@@ -38,7 +38,16 @@ report={'scope':'isolated local end-to-end execution: real coordinator/fullStock
  'mocked':['HTTPS responses from isolated EVM chain4663','synthetic ERC20 fixture at canonical GH0ST address'],
  'not_proven':['Robinhood mainnet deployment or RPC provider access from ICP','mainnet threshold signer','public paid gameplay or real GH0ST transfer','human win probability or unbeatable engine'],
  'generated_at':datetime.datetime.now(datetime.timezone.utc).isoformat(),'checks':[]}
-def save():(ROOT/'evidence/end-to-end.json').write_text(json.dumps(plain(report),indent=2)+'\n')
+quorum_only='--quorum-only'in sys.argv
+recovery_mode='--signing-recovery'in sys.argv
+output_name='signing-recovery.json' if recovery_mode else 'quorum-transport.json' if quorum_only else 'end-to-end.json'
+genuine=None
+if recovery_mode:
+ source=(ROOT/'evidence/end-to-end.json').read_bytes();genuine=json.loads(source);assert genuine['passed']
+ report['scope']='actual coordinator Signing retry with replayed genuine completed24m engine reply; no fresh inference'
+ report['mocked'].append('separate TEST-ONLY engine fixture replays genuine recorded completed search metadata')
+ report['fresh_inference']=False;report['genuine_source_sha256']=hashlib.sha256(source).hexdigest()
+def save():(ROOT/'evidence'/output_name).write_text(json.dumps(plain(report),indent=2)+'\n')
 def check(name,yes):
  assert yes,name
  report['checks'].append(name);save();print('pass',name,flush=True)
@@ -81,14 +90,19 @@ try:
  report['application_subnet']=app.to_str()
  assert report['engine_subnet']==report['coordinator_subnet']==report['application_subnet']
  for c in [coordinator,engine,store]:pic.add_cycles(c,100_000_000_000_000)
- engine_wasm=(ENGINE/'.cache/hybrid-engine/engine.asyncify.wasm').read_bytes();engine_hash=hashlib.sha256(engine_wasm).digest()
+ engine_path=ROOT/'tests/frozen-engine/target/wasm32-unknown-unknown/release/gh0st_chess_frozen_engine_fixture.wasm' if recovery_mode else ENGINE/'.cache/optimized-engine/engine.asyncify.wasm'
+ engine_wasm=engine_path.read_bytes();engine_hash=hashlib.sha256(engine_wasm).digest()
  report['engine_wasm_sha256']=engine_hash.hex();report['engine_wasm_bytes']=len(engine_wasm)
  config_hash=hashlib.sha256(b'GH0ST_ENGINE_CONFIG_V2_RETAINED\0'+field(engine.bytes)+field(b'edb0d9db6731067ec50ce619ff372b463bc4dd5d')+field(b'1a298aa575a085434d29027978dc36867fe9c5bcea9376654b7a8eba1e52dfc2')+(24_000_000).to_bytes(8,'big')+(128).to_bytes(4,'big')+bytes([1,20,0,1,1])).digest()
  upload=Types.Record({'canister_id':Types.Principal,'chunk':B});hashes=[]
  for off in range(0,len(engine_wasm),1024*1024):
   chunk=engine_wasm[off:off+1024*1024];r=dec(pic.update_call(None,'upload_chunk',enc(upload,{'canister_id':store.bytes,'chunk':chunk})),Types.Record({'hash':B}));assert bytes(r['hash'])==hashlib.sha256(chunk).digest();hashes.append({'hash':r['hash']})
  install=Types.Record({'mode':Types.Variant({'install':Types.Null}),'target_canister':Types.Principal,'store_canister':Types.Opt(Types.Principal),'chunk_hashes_list':Types.Vec(Types.Record({'hash':B})),'wasm_module_hash':B,'arg':B})
- engine_args=ic.encode([{'type':Types.Principal,'value':coordinator.bytes},{'type':B,'value':config_hash}])
+ init_args=[{'type':Types.Principal,'value':coordinator.bytes},{'type':B,'value':config_hash}]
+ if recovery_mode:
+  reply_type=Types.Record({'bestmove':T,'actual_nodes':N64,'depth':N32,'instructions':N64})
+  init_args.append({'type':reply_type,'value':{k:genuine['search'][k] for k in ['bestmove','actual_nodes','depth','instructions']}})
+ engine_args=ic.encode(init_args)
  pic.update_call_with_effective_principal(None,{'CanisterId':base64.b64encode(engine.bytes).decode()},'install_chunked_code',enc(install,{'mode':{'install':None},'target_canister':engine.bytes,'store_canister':[store.bytes],'chunk_hashes_list':hashes,'wasm_module_hash':engine_hash,'arg':engine_args}))
  c={'engine_canister':engine.bytes,'engine_module_hash':engine_hash,'game_contract':bytes(20),'game_runtime_hash':bytes(32),'rpc_url':'https://rpc.mainnet.chain.robinhood.com','confirmations':12,'key_name':'key_1','reviewed_release':False}
  wasm=(ROOT/'target/wasm32-unknown-unknown/release/gh0st_chess_hybrid_brain.wasm').read_bytes();gz=gzip.compress(wasm,mtime=0)
@@ -112,7 +126,7 @@ try:
   bridge.stdin.write(json.dumps({'command':command,**kwargs})+'\n');bridge.stdin.flush();line=bridge.stdout.readline();assert line,'EVM bridge exited';r=json.loads(line);assert r['ok'],r;return r.get('result')
  deployment=evm('setup',attestor=signer['Ok'],engine_config_hash='0x'+config_hash.hex());report['local_evm_deployment']=deployment
  pic.set_time(int(deployment['block']['timestamp'],16)*1_000_000_000)
- http_calls=[]
+ http_calls=[];bad_quorum_once=True;bad_signing_once=recovery_mode
  def call(method,payload,typ):
   body={'sender':base64.b64encode(pic.sender.bytes).decode(),'effective_principal':'None','canister_id':base64.b64encode(coordinator.bytes).decode(),'method':method,'payload':base64.b64encode(payload).decode()}
   mid=pic._get_ok(pic._instance_post('update/submit_ingress_message',body))
@@ -122,15 +136,50 @@ try:
    for pending in pic._instance_get('read/get_canister_http'):
     assert pending['url']==c['rpc_url'],'outcall target changed'
     request=json.loads(base64.b64decode(pending['body']));response=evm('rpc',body=request)
-    http_calls.append({'method':method,'request_id':pending['request_id'],'jsonrpc_methods':[r['method'] for r in request] if isinstance(request,list) else[request['method']]})
-    pic._instance_post('update/mock_canister_http',{'subnet_id':pending['subnet_id'],'request_id':pending['request_id'],'response':{'CanisterHttpReply':{'status':200,'headers':[],'body':base64.b64encode(json.dumps(response).encode()).decode()}},'additional_responses':[]})
+    flexible=isinstance(pending.get('replication'),dict) and 'Flexible'in pending['replication']
+    http_calls.append({'method':method,'request_id':pending['request_id'],'flexible':flexible,'jsonrpc_methods':[r['method'] for r in request] if isinstance(request,list) else[request['method']]})
+    if flexible:
+     global bad_quorum_once,bad_signing_once
+     assert pending['replication']['Flexible']=={'total_requests':13,'min_responses':9,'max_responses':13},pending
+     head=int(next(x['result'] for x in response if x['id']==2),16)
+     # Independent committee observations span8successive fast-chain heads. Build those
+     # blocks locally so the later chosen fixed-height state actually exists.
+     for _ in range(8):evm('rpc',body={'jsonrpc':'2.0','id':1,'method':'evm_mine','params':[]})
+     responses=[]
+     heights=list(range(head,head+9))+[0,1,2**64-2,2**64-1]
+     inject_signing=recovery_mode and method=='advance_job' and bad_signing_once
+     for i,h in enumerate(heights):
+      chain=4663
+      if (bad_quorum_once or inject_signing) and i>=8:chain=1
+      body=[{'jsonrpc':'2.0','id':1,'result':hex(chain)},{'jsonrpc':'2.0','id':2,'result':hex(h)}]
+      responses.append({'CanisterHttpReply':{'status':200,'headers':[],'body':base64.b64encode(json.dumps(body).encode()).decode()}})
+     pic._instance_post('update/mock_flexible_canister_http',{'subnet_id':pending['subnet_id'],'request_id':pending['request_id'],'responses':responses})
+     bad_quorum_once=False
+     if inject_signing:bad_signing_once=False
+    else:
+     # Fixed-state batches can be returned in arbitrary response order. Include a
+     # different ordering from6committee nodes:7/6split lacks a quorum without normalization.
+     extra=[]
+     if isinstance(response,list):
+      reversed_body=base64.b64encode(json.dumps(list(reversed(response))).encode()).decode()
+      extra=[{'CanisterHttpReply':{'status':200,'headers':[],'body':reversed_body}}for _ in range(6)]
+      if extra:extra.extend([{'CanisterHttpReply':{'status':200,'headers':[],'body':base64.b64encode(json.dumps(response).encode()).decode()}}for _ in range(6)])
+     pic._instance_post('update/mock_canister_http',{'subnet_id':pending['subnet_id'],'request_id':pending['request_id'],'response':{'CanisterHttpReply':{'status':200,'headers':[],'body':base64.b64encode(json.dumps(response).encode()).decode()}},'additional_responses':extra})
   raise TimeoutError('coordinator '+method)
  binding={'game_contract':blob(deployment['contract']),'game_runtime_hash':blob(deployment['runtime_hash'])}
+ rejected=call('seal_release',enc(BINDING,binding),SR)
+ check('flexible committee with only8validRobinhood responses cannot seal or open entry','Err'in rejected and '9'in rejected['Err'])
+ blocked=dec(pic.query_call(coordinator,'get_status',ic.encode([])),STATUS);check('insufficient quorum leaves the immutable deployment unbound',not blocked['production_ready'] and blocked['game_contract']=='0x'+'00'*20)
+ retry_block=evm('mine',seconds=35)['block'];pic.set_time(int(retry_block['timestamp'],16)*1_000_000_000)
  sealed=call('seal_release',enc(BINDING,binding),SR);assert 'Ok'in sealed,sealed
  stage('sealed_idle_before_retained_engine_initialization')
  check('one-time sealing verifies real engine and local native EVM runtime/config/token/signer while entries stay paused',sealed['Ok']['production_ready'] and not sealed['Ok']['paid_entries_enabled'])
  second=call('seal_release',enc(BINDING,binding),RR)
  check('rebinding an already sealed deployment rejects',second=={'Err':'deployment is already bound; rebinding is forbidden'})
+ if quorum_only:
+  report['passed']=True;report['check_count']=len(report['checks']);report['http_outcalls']=http_calls
+  print(json.dumps({'passed':True,'scope':'actual flexible13/9head and static replicated batch normalization only','checks':len(report['checks'])},indent=2),flush=True)
+  raise SystemExit(0)
  state=evm('fund_enter');report['local_entry']=state;pic.set_time(int(state['block']['timestamp'],16)*1_000_000_000)
  # The public lease is30s. Advance only local chain/ICP test time between independent admission stages.
  state_block=evm('mine',seconds=35)['block'];pic.set_time(int(state_block['timestamp'],16)*1_000_000_000)
@@ -141,14 +190,19 @@ try:
  check('permissionless request verifies actual paid native game and full standardstart UCI history before reserving real engine',job['phase']=='BeginEngine' and job['requested_nodes']==24_000_000)
  duplicate=call('request_bot',enc(REQUEST,{**request,'request_id':bytes([2]*32)}),JR)
  check('duplicate canonical turn returns same durable job instead of another inference',bytes(duplicate['Ok']['job_id'])==bytes(job['job_id']))
- steps=0;started=time.monotonic();signing_lease_checked=False
+ steps=0;started=time.monotonic();signing_lease_checked=False;recovery_proved=False
  while job['phase'] not in ['Completed','Faulted']:
   r=call('advance_job',enc(ADVANCE,{'job_id':job['job_id'],'expected_step':job['step']}),JR);assert 'Ok'in r,r;job=r['Ok'];steps+=1
   if steps==1:
-   stage('first_100k_search_chunk_committed')
+   stage('first_adaptive_search_chunk_committed')
    replay=call('advance_job',enc(ADVANCE,{'job_id':job['job_id'],'expected_step':0}),JR)
    check('stale coordinator advance returns current step without repeating search work',replay['Ok']['step']==job['step'])
   if steps%20==0:print('engine progress',steps,job['step'],job['phase'],round(time.monotonic()-started,1),flush=True)
+  if recovery_mode and job['phase']=='Signing' and job['error'] and not recovery_proved:
+   check('transient insufficient Signing quorum preserves completed search and does not authorize a move',job['actual_nodes']==genuine['search']['actual_nodes'] and job['bestmove']==genuine['search']['bestmove'] and not job['signed_move'])
+   stats=dec(pic.query_call(engine,'stats',ic.encode([])),Types.Record({'begins':N32,'advances':N32}))
+   check('Signing failure does not restart or advance the frozen engine reply',stats=={'begins':1,'advances':0})
+   recovery_proved=True
   if job['phase']=='Signing' and not signing_lease_checked:
    advanced=evm('mine',seconds=35)['block'];pic.set_time(int(advanced['timestamp'],16)*1_000_000_000)
    refreshed=call('refresh_status',ic.encode([]),SR)
@@ -156,12 +210,19 @@ try:
    signing_lease_checked=True
   assert steps<260,job
  assert job['phase']=='Completed',job
+ if recovery_mode:check('retry verifies canonical quorum and signs the same full-budget result with cleared error',recovery_proved and not job['error'])
  report['search']={'bestmove':job['bestmove'],'actual_nodes':job['actual_nodes'],'depth':job['depth'],'instructions':job['instructions'],'stop_reason':job['stop_reason'],'engine_steps':job['step'],'coordinator_updates':steps,'local_wall_seconds':time.monotonic()-started,'engine_cycles_debit':before_engine-pic.get_cycles_balance(engine),'coordinator_cycles_debit':before_coordinator-pic.get_cycles_balance(coordinator)}
- final_stage=stage('full_search_and_threshold_signature_committed')
+ # Flexible outcall prepayment refunds may arrive asynchronously up to60seconds later.
+ # Settle those before quoting balance debits; no new inference is run during this wait.
+ pic.advance_time(65_000_000_000)
+ for _ in range(10):pic.tick()
+ report['search']['engine_cycles_debit']=before_engine-pic.get_cycles_balance(engine)
+ report['search']['coordinator_cycles_debit']=before_coordinator-pic.get_cycles_balance(coordinator)
+ final_stage=stage('full_search_and_threshold_signature_committed_after_http_refunds')
  report['search']['warm_engine_balance_debit']=reserved_stage['engine']['cycles']-final_stage['engine']['cycles']
  report['search']['warm_engine_reserved_cycles_increase']=final_stage['engine']['reserved_cycles']-reserved_stage['engine']['reserved_cycles']
- report['native_reference']=native_reference()
- check('actual full-budget ICP Stockfish matches fresh native standardstart plus complete e2e4 history exactly',all(report['search'][k]==report['native_reference'][k] for k in ['bestmove','actual_nodes','depth']) and job['actual_nodes']>=24_000_000)
+ report['native_reference']=genuine['native_reference'] if recovery_mode else native_reference()
+ check('frozen genuine result metadata remains exact through Signing recovery' if recovery_mode else 'actual full-budget ICP Stockfish matches fresh native standardstart plus complete e2e4 history exactly',all(report['search'][k]==report['native_reference'][k] for k in ['bestmove','actual_nodes','depth']) and job['actual_nodes']>=24_000_000)
  signed=job['signed_move'][0];m=signed['move'];m={k:('0x'+bytes(v).hex() if k in ['game_id','player','position_hash','transcript_hash','engine_config_hash'] else v) for k,v in m.items()};signature='0x'+bytes(signed['signature']).hex()
  report['signed_move']={'move':m,'signature':signature}
  result=evm('apply_bot',move=m,signature=signature);report['local_applied_bot']=result

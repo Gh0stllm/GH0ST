@@ -7,6 +7,7 @@ pub use gh0st_chess_hybrid_brain::{
 use k256::ecdsa::{RecoveryId, Signature, VerifyingKey};
 use rlp::RlpStream;
 use serde::{Deserialize, Serialize};
+pub mod rpc_policy;
 
 #[cfg(feature = "canister")]
 mod canister;
@@ -333,6 +334,24 @@ pub struct State {
     pub rpc_spent: u128,
     pub halted: bool,
     pub watched_game: Hash,
+    pub head_observation: Option<HeadObservation>,
+    pub advisory_checked_at: Option<u64>,
+    pub advisory_gas_balance_wei: Option<u128>,
+    pub rpc_last_reserved: Option<u128>,
+    pub rpc_accounting: Option<RpcAccounting>,
+    pub rpc_flexible_accounting: Option<RpcAccounting>,
+}
+#[derive(Clone, Debug, CandidType, Deserialize, Serialize)]
+pub struct HeadObservation {
+    pub height: u64,
+    pub changed_at: u64,
+}
+#[derive(Clone, Debug, CandidType, Deserialize, Serialize)]
+pub struct RpcAccounting {
+    pub kind: String,
+    pub reserve: u128,
+    pub refund: u128,
+    pub net: u128,
 }
 impl State {
     pub fn remaining(&self, c: &Config) -> u128 {

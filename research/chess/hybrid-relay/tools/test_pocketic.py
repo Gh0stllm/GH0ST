@@ -42,6 +42,13 @@ try:
  wasm=(ROOT/'target/wasm32-unknown-unknown/release/gh0st_chess_hybrid_relay.wasm').read_bytes();installed=gzip.compress(wasm,mtime=0)
  report.update(raw_wasm_sha256=hashlib.sha256(wasm).hexdigest(),raw_wasm_bytes=len(wasm),installed_gzip_sha256=hashlib.sha256(installed).hexdigest(),installed_gzip_bytes=len(installed),canister=relay.to_str(),subnet=app.to_str())
  pic.install_code(relay,installed,[{'type':CONFIG,'value':c}])
+ wrong_subnet=next(s for s,k in pic.topology().items()if k==SubnetKind.FIDUCIARY)
+ wrong=pic.create_canister(subnet=wrong_subnet);pic.add_cycles(wrong,10_000_000_000_000)
+ pic.install_code(wrong,installed,[{'type':CONFIG,'value':c}])
+ wrong_status=dec(pic.query_call(wrong,'get_status',ic.encode([])),STATUS)
+ wrong_enable=dec(pic.update_call(wrong,'set_enabled',enc(Types.Bool,True)),RES)
+ check('34node subnet cannot enable the13node committee policy or emit an HTTP request',wrong_enable=={'Err':'relay requires a 13-node application subnet'}and not wrong_status['ready']and any('13-node'in x for x in wrong_status['blockers'])and not pic._instance_get('read/get_canister_http'))
+
  before=dec(pic.query_call(relay,'get_status',ic.encode([])),STATUS)
  check('installed relay starts disabled, unready and without a pending transaction',not before['enabled']and not before['ready']and not before['pending'])
  check('fixed chain, target, coordinator hash and exact approved gas budget reported',before['chain_id']==4663 and before['game_contract']=='0x'+bytes(c['game_contract']).hex()and bytes(before['coordinator_module_hash'])==bytes(c['coordinator_module_hash'])and before['remaining_gas_budget_wei']==c['lifetime_gas_budget_wei'])

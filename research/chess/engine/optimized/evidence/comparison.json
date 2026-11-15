@@ -1,0 +1,36 @@
+{
+  "scope": "same Black-after-e4 24m decision; full selected exactness plus frozen baseline reference; local PocketIC only",
+  "selected": {
+    "result": {
+      "bestmove": "e7e5",
+      "actual_nodes": 24000033,
+      "depth": 38
+    },
+    "steps": 35,
+    "instructions_total": 972184084867,
+    "local_cycles_debited": 972560540260,
+    "largest_sampled_step": 28031599885
+  },
+  "frozen_standalone_baseline": {
+    "result": {
+      "bestmove": "e7e5",
+      "actual_nodes": 24000033,
+      "depth": 38
+    },
+    "steps": 240,
+    "instructions_total": 1235356558692,
+    "local_cycles_debited": 1237795678347,
+    "largest_sampled_step": 6452044129
+  },
+  "frozen_standalone_evidence": "../../hybrid/evidence/pocketic-full24m-pre-release-cleanup.json",
+  "frozen_clean13node_e2e_cycle_debit": 1239070157514,
+  "frozen_clean13node_e2e_evidence": "../../../hybrid-brain/evidence/end-to-end-pre-quorum.json",
+  "fraction_cycle_savings_vs_standalone": 0.21428022631425347,
+  "fraction_cycle_savings_vs_clean_e2e": 0.21508839966633508,
+  "fraction_sampled_instruction_savings": 0.2130336152532739,
+  "fraction_update_call_reduction": 0.8541666666666666,
+  "update_call_factor": 6.857142857142857,
+  "quality_scope": "full24m, same canonical NNUE and search state; first and consecutive retained second search exact native move/nodes/depth; no Elo or universal strength/cost claim",
+  "cycle_scope": "selected and standalone intervals include test retry/read calls and exclude reserve/model init; clean E2E executes coordinator calls instead. Small harness differences remain. Clock set before creation for selected/clean E2E.",
+  "timing_scope": "saved first-search wall interval starts after initial two steps. No full production-latency factor claimed."
+}

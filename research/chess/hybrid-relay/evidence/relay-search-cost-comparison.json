@@ -1,0 +1,40 @@
+{
+  "scope": "Actual isolated relay executions of35 synthetic advancing transitions at10seconds between bounded actions; frozen genuine24m result, no new inference, no mainnet",
+  "baseline_source": "temporary same-source crate with only prior full-head search polling restored by tools/build_cost_baseline.py",
+  "optimized_source": "current production-candidate relay; additionally tested a false cancellation hint",
+  "baseline_wasm_sha256": "fe43a7353e4fc2666aaae4fdf5fdb3215b2aa5908eac564ca6b4004c3a054027",
+  "optimized_wasm_sha256": "a7a675465bab885751152ec665fdd115bbaaba8bf135bc8097d0d359e8a245f0",
+  "http_booked_until_first_broadcast": {
+    "before_cycles": 16087671197,
+    "after_cycles": 8680772568,
+    "reduction_percent": 46.04083797026648
+  },
+  "attached_http_prepayment_until_first_broadcast": {
+    "before_cycles": 16515295797,
+    "after_cycles": 9127652248
+  },
+  "full_execution_balance_debit": {
+    "before_cycles": 35475425747,
+    "after_cycles": 35020639899,
+    "caveat": "Includes signature, execution and lost-reply/upgrade/nonce-conflict recovery; asynchronous V2 refunds make booking savings different from net burn savings."
+  },
+  "complete_scenario_http_booked": {
+    "before_cycles": 22610640377,
+    "after_cycles": 15203741748,
+    "includes": "bootstrap/failed8validenable and successful enable plus full turn, lost reply, upgrade, nonce conflict and receipt-only recovery; a conservative bound, not healthy-turn-only cost"
+  },
+  "full_idle_upper_bound_cycles_per_day": 645990355296,
+  "full_idle_plus_complete_scenario_copies": {
+    "10": 798027772776,
+    "20": 950065190256,
+    "40": 1254140025216
+  },
+  "full_idle_plus_turns_until_broadcast": {
+    "10": 732798080976,
+    "20": 819605806656,
+    "40": 993221258016
+  },
+  "forecast_caveat": "Forecasts intentionally count a full day of idle polling in addition to gameplay, and complete scenario copies repeatedly count bootstrap/fault recovery. They do not guarantee an arbitrary-length game within daily quota. Receipt/reconciliation costs follow the first broadcast.",
+  "passed": true,
+  "all_owned_processes_stopped": true
+}

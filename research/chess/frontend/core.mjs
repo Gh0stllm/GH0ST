@@ -39,7 +39,7 @@ export function validateConfig(c) {
   for(const key of ['vaultAddress','poolOwner','attestorAddress','relayAddress'])getAddress(c[key]);
   for(const key of ['authorityCanisterId','engineCanisterId','relayCanisterId','engineCommit'])if(!c[key])throw new Error(`Release ${key} is missing.`);
   for(const key of ['authorityControllers','engineControllers','relayControllers'])if(!Array.isArray(c[key])||c[key].some(x=>typeof x!=='string'))throw new Error('The reviewed canister controller sets are missing.');
-  if(c.nodes!==24_000_000||c.hashMb!==128||c.cachePolicy!=='retained-per-game')throw new Error('The improved retained 24m-node policy is required.');
+  if(c.nodes!==24_000_000||c.hashMb!==128||c.cachePolicy!=='retained-per-game'||c.engineExecutionPolicy!=='instruction-budget'||c.engineInstructionTarget!=='28000000000'||c.relayReadinessTTLSeconds!==360)throw new Error('The improved retained 24m-node policy is required.');
   if(!Number.isSafeInteger(c.nodes)||c.nodes<=0||!Number.isSafeInteger(c.hashMb)||c.hashMb<=0||!/^\d+$/.test(String(c.cyclesPerSearch))||BigInt(c.cyclesPerSearch)<=0n||!c.releaseEvidence)throw new Error('The pinned search budget and reviewed release evidence are missing.');
   return true;
 }

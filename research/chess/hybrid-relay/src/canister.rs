@@ -1,4 +1,5 @@
 use super::*;
+use gh0st_chess_hybrid_brain::rpc_consensus as quorum;
 use ic_cdk::call::Call;
 use ic_cdk::{init, post_upgrade, query, update};
 use ic_management_canister_types::*;
@@ -107,13 +108,22 @@ struct Status {
     relayer_address: String,
     gas_balance_wei: candid::Nat,
     last_checked_at: u64,
+    advisory_last_checked_at: u64,
     cycles: candid::Nat,
     pending: bool,
+    in_flight: bool,
     remaining_gas_budget_wei: candid::Nat,
     next_tick_at: u64,
     completed_transactions: u64,
     last_error: Option<String>,
     pending_hash: String,
+    rpc_cycles_booked_today: candid::Nat,
+    rpc_cycle_limit_per_day: candid::Nat,
+    last_http_reserve_cycles: candid::Nat,
+    last_http_prepayment_cycles: candid::Nat,
+    last_http_booked_cycles: candid::Nat,
+    last_flexible_reserve_cycles: candid::Nat,
+    last_flexible_booked_cycles: candid::Nat,
 }
 #[query]
 fn get_status() -> Status {
@@ -129,11 +139,25 @@ fn get_status() -> Status {
     if s.public_key.is_empty() {
         blockers.push("relay signer has not been derived".into())
     }
-    if s.last_checked_at == 0 || now() > s.last_checked_at.saturating_add(120) {
+    if s.last_checked_at == 0 || now() > s.last_checked_at.saturating_add(360) {
         blockers.push("relay chain readiness is stale".into())
+    }
+    if ic_cdk::api::subnet_self_node_count() != 13 {
+        blockers.push("relay requires a 13-node application subnet".into())
+    }
+    if s.head_observation
+        .as_ref()
+        .is_some_and(|h| now() > h.changed_at.saturating_add(600))
+    {
+        blockers.push("relay head has not advanced for ten minutes".into())
     }
     if s.gas_balance_wei < c.max_tx_cost_wei {
         blockers.push("relay ETH reserve is low".into())
+    }
+    if s.advisory_gas_balance_wei
+        .is_some_and(|b| b < c.max_tx_cost_wei)
+    {
+        blockers.push("latest advisory observes a low ETH reserve; confirm funding".into())
     }
     if s.remaining(&c) < c.max_tx_cost_wei {
         blockers.push("approved lifetime gas budget is exhausted".into())
@@ -162,8 +186,10 @@ fn get_status() -> Status {
             .unwrap_or_default(),
         gas_balance_wei: s.gas_balance_wei.into(),
         last_checked_at: s.last_checked_at,
+        advisory_last_checked_at: s.advisory_checked_at.unwrap_or(0),
         cycles: cycles.into(),
         pending: s.pending.is_some(),
+        in_flight: s.in_flight,
         remaining_gas_budget_wei: s.remaining(&c).into(),
         next_tick_at: s.next_tick_at,
         completed_transactions: s.completed_transactions,
@@ -174,6 +200,33 @@ fn get_status() -> Status {
             .filter(|i| i.hash != [0; 32])
             .map(|i| hex(&i.hash))
             .unwrap_or_default(),
+        rpc_cycles_booked_today: if s.rpc_day == now() / 86400 {
+            s.rpc_spent
+        } else {
+            0
+        }
+        .into(),
+        rpc_cycle_limit_per_day: MAX_RPC_DAY.into(),
+        last_http_prepayment_cycles: s.rpc_last_reserved.unwrap_or(0).into(),
+        last_http_reserve_cycles: s
+            .rpc_accounting
+            .as_ref()
+            .map(|x| x.reserve)
+            .unwrap_or(0)
+            .into(),
+        last_http_booked_cycles: s.rpc_accounting.as_ref().map(|x| x.net).unwrap_or(0).into(),
+        last_flexible_reserve_cycles: s
+            .rpc_flexible_accounting
+            .as_ref()
+            .map(|x| x.reserve)
+            .unwrap_or(0)
+            .into(),
+        last_flexible_booked_cycles: s
+            .rpc_flexible_accounting
+            .as_ref()
+            .map(|x| x.net)
+            .unwrap_or(0)
+            .into(),
     }
 }
 #[query]
@@ -215,6 +268,9 @@ async fn set_enabled(enabled: bool) -> R<Status> {
         save(s);
         arm(0);
         return Ok(get_status());
+    }
+    if ic_cdk::api::subnet_self_node_count() != 13 {
+        return Err("relay requires a 13-node application subnet".into());
     }
     if state().in_flight || state().halted {
         return Err("relay busy or halted; no reset/replacement bypass".into());
@@ -307,6 +363,9 @@ async fn verify_coordinator(c: &Config) -> R<()> {
 fn transform(args: TransformArgs) -> HttpRequestResult {
     let response = args.response;
     let mut body = serde_json::from_slice::<Value>(&response.body).unwrap_or(Value::Null);
+    if args.context == b"receipt-v1" {
+        body = crate::rpc_policy::receipt_batch(&body).unwrap_or(Value::Null);
+    }
     if args.context.len() == 32 {
         let expected = hex(&args.context);
         let known = body
@@ -327,27 +386,16 @@ fn transform(args: TransformArgs) -> HttpRequestResult {
     HttpRequestResult {
         status: response.status,
         headers: vec![],
-        body: serde_json::to_vec(&body).unwrap_or_else(|_| b"null".to_vec()),
+        body: serde_json::to_vec(&quorum::normalize_batch(body))
+            .unwrap_or_else(|_| b"null".to_vec()),
     }
 }
 async fn rpc(c: &Config, request: Value, max: u64, context: Vec<u8>) -> R<Value> {
     let body = serde_json::to_vec(&request).unwrap();
     let cost = ic_cdk::api::cost_http_request((body.len() + c.rpc_url.len() + 256) as u64, max);
     let debit = cost + cost / 10;
-    if ic_cdk::api::canister_cycle_balance() < MIN_CYCLES + debit {
-        return Err("relay cycle reserve is low".into());
-    }
-    let mut s = state();
-    if s.rpc_day != now() / 86400 {
-        s.rpc_day = now() / 86400;
-        s.rpc_spent = 0;
-    }
-    if s.rpc_spent.saturating_add(debit) > MAX_RPC_DAY {
-        return Err("relay daily HTTP budget exhausted".into());
-    }
-    s.rpc_spent += debit;
-    save(s);
-    let r = management("http_request")
+    let day = reserve_rpc(debit)?;
+    let result = management("http_request")
         .with_arg(HttpRequestArgs {
             url: c.rpc_url.clone(),
             max_response_bytes: Some(max),
@@ -366,7 +414,9 @@ async fn rpc(c: &Config, request: Value, max: u64, context: Vec<u8>) -> R<Value>
             }),
         })
         .with_cycles(debit)
-        .await
+        .await;
+    finish_rpc(day, debit, "replicated");
+    let r = result
         .map_err(|_| "relay RPC outcome unavailable")?
         .candid::<HttpRequestResult>()
         .map_err(|_| "relay RPC decode failed")?;
@@ -375,18 +425,93 @@ async fn rpc(c: &Config, request: Value, max: u64, context: Vec<u8>) -> R<Value>
     }
     serde_json::from_slice(&r.body).map_err(|_| "relay RPC JSON invalid".into())
 }
-fn row(v: &Value, id: u64) -> R<&Value> {
-    let r = if let Some(a) = v.as_array() {
-        a.iter()
-            .find(|x| x["id"] == id)
-            .ok_or("missing RPC response")?
-    } else {
-        v
-    };
-    if r["id"] != id || !r["error"].is_null() {
-        return Err("relay RPC returned an error".into());
+fn reserve_rpc(debit: u128) -> R<u64> {
+    if ic_cdk::api::canister_cycle_balance() < MIN_CYCLES + debit {
+        return Err("relay cycle reserve is low".into());
     }
-    r.get("result").ok_or("missing RPC result".into())
+    let mut s = state();
+    let day = now() / 86400;
+    if s.rpc_day != day {
+        s.rpc_day = day;
+        s.rpc_spent = 0;
+    }
+    if s.rpc_spent.saturating_add(debit) > MAX_RPC_DAY {
+        return Err("relay daily HTTP budget exhausted".into());
+    }
+    s.rpc_spent += debit;
+    s.rpc_last_reserved = Some(debit);
+    save(s);
+    Ok(day)
+}
+fn finish_rpc(day: u64, reserve: u128, kind: &str) {
+    let refund = ic_cdk::api::msg_cycles_refunded().min(reserve);
+    let mut s = state();
+    if s.rpc_day == day {
+        s.rpc_spent = s.rpc_spent.saturating_sub(refund);
+    }
+    let account = RpcAccounting {
+        kind: kind.into(),
+        reserve,
+        refund,
+        net: reserve - refund,
+    };
+    if kind == "flexible" {
+        s.rpc_flexible_accounting = Some(account.clone());
+    }
+    s.rpc_accounting = Some(account);
+    save(s);
+}
+async fn flexible(c: &Config, request: Value, max: u64) -> R<Vec<quorum::Response>> {
+    if ic_cdk::api::subnet_self_node_count() != 13 {
+        return Err("relay flexible quorum requires a 13-node subnet".into());
+    }
+    let body = serde_json::to_vec(&request).unwrap();
+    let params = quorum::CostParams::flexible((body.len() + c.rpc_url.len() + 256) as u64, max);
+    let cost = ic_cdk::api::cost_http_request_v2(&candid::encode_one(params).unwrap());
+    let debit = cost + cost / 10;
+    let day = reserve_rpc(debit)?;
+    let result = management("flexible_http_request")
+        .with_arg(quorum::FlexibleArgs {
+            url: c.rpc_url.clone(),
+            max_response_bytes: Some(max),
+            method: quorum::Method::Post,
+            headers: vec![quorum::Header {
+                name: "Content-Type".into(),
+                value: "application/json".into(),
+            }],
+            body: Some(body),
+            transform: None,
+            replication: Some(quorum::Replication::default()),
+        })
+        .with_cycles(debit)
+        .await;
+    finish_rpc(day, debit, "flexible");
+    match result
+        .map_err(|_| "relay flexible HTTP outcome unavailable")?
+        .candid::<quorum::FlexibleResponse>()
+        .map_err(|_| "relay flexible HTTP decode failed")?
+    {
+        quorum::FlexibleResponse::Ok(r) => Ok(r),
+        quorum::FlexibleResponse::Err(_) => {
+            Err("relay flexible committee could not meet replication".into())
+        }
+    }
+}
+async fn agreed_head(c: &Config) -> R<u64> {
+    let r=flexible(c,json!([{"jsonrpc":"2.0","id":1,"method":"eth_chainId","params":[]},{"jsonrpc":"2.0","id":2,"method":"eth_blockNumber","params":[]}]),4096).await?;
+    let head = quorum::head_median(&r)?;
+    let mut s = state();
+    if s.head_observation.as_ref().is_none_or(|h| h.height != head) {
+        s.head_observation = Some(HeadObservation {
+            height: head,
+            changed_at: now(),
+        });
+        save(s);
+    }
+    Ok(head)
+}
+fn row(v: &Value, id: u64) -> R<&Value> {
+    quorum::result(v, id)
 }
 fn number(v: &Value) -> R<u64> {
     u64::from_str_radix(
@@ -428,10 +553,59 @@ struct Poll {
 }
 async fn poll(c: &Config) -> R<Poll> {
     let relay = ethereum_address(&state().public_key)?;
+    let head = agreed_head(c).await?;
+    let confirmed = head.checked_sub(c.confirmations).ok_or("chain too short")?;
+    let tag = format!("0x{confirmed:x}");
     let watched_id = state().watched_game;
     let mut q = vec![
         json!({"jsonrpc":"2.0","id":1,"method":"eth_chainId","params":[]}),
-        json!({"jsonrpc":"2.0","id":2,"method":"eth_blockNumber","params":[]}),
+        json!({"jsonrpc":"2.0","id":3,"method":"eth_call","params":[{"to":hex(&c.game_contract),"data":data("activeGameId()",None)},tag]}),
+        json!({"jsonrpc":"2.0","id":4,"method":"eth_getBalance","params":[hex(&relay),tag]}),
+    ];
+    if watched_id != [0; 32] {
+        q.push(json!({"jsonrpc":"2.0","id":5,"method":"eth_call","params":[{"to":hex(&c.game_contract),"data":data("getGame(bytes32)",Some(watched_id))},tag]}));
+    }
+    let r = rpc(
+        c,
+        Value::Array(q),
+        if watched_id == [0; 32] { 2048 } else { 4096 },
+        vec![],
+    )
+    .await?;
+    if number(row(&r, 1)?)? != CHAIN_ID {
+        return Err("relay RPC is not Robinhood chain4663".into());
+    }
+    let active = fixed(&bytes(row(&r, 3)?)?)?;
+    let mut s = state();
+    s.gas_balance_wei = amount(row(&r, 4)?)?;
+    s.advisory_gas_balance_wei = Some(s.gas_balance_wei);
+    s.last_checked_at = now();
+    save(s);
+    let watched = if watched_id != [0; 32] {
+        Some(Game::decode(&bytes(row(&r, 5)?)?)?)
+    } else {
+        None
+    };
+    Ok(Poll {
+        active,
+        head,
+        watched,
+    })
+}
+// Cheap advisory discovery is never an authorization snapshot. During a rare
+// latest-state race the normal replicated call either reaches exact consensus or
+// fails closed. Every suggested new Black turn still enters poll()+snapshot()
+// at a freshly agreed, confirmed numeric block before any inference or signing.
+struct Advisory {
+    active: Hash,
+    watched: Option<Game>,
+}
+async fn advisory(c: &Config) -> R<Advisory> {
+    let s = state();
+    let watched_id = s.watched_game;
+    let relay = ethereum_address(&s.public_key)?;
+    let mut q = vec![
+        json!({"jsonrpc":"2.0","id":1,"method":"eth_chainId","params":[]}),
         json!({"jsonrpc":"2.0","id":3,"method":"eth_call","params":[{"to":hex(&c.game_contract),"data":data("activeGameId()",None)},"latest"]}),
         json!({"jsonrpc":"2.0","id":4,"method":"eth_getBalance","params":[hex(&relay),"latest"]}),
     ];
@@ -446,24 +620,76 @@ async fn poll(c: &Config) -> R<Poll> {
     )
     .await?;
     if number(row(&r, 1)?)? != CHAIN_ID {
-        return Err("relay RPC is not Robinhood chain4663".into());
+        return Err("advisory is not Robinhood chain4663".into());
     }
-    let active = fixed(&bytes(row(&r, 3)?)?)?;
-    let head = number(row(&r, 2)?)?;
-    let mut s = state();
-    s.gas_balance_wei = amount(row(&r, 4)?)?;
-    s.last_checked_at = now();
-    save(s);
+    let active: Hash = fixed(&bytes(row(&r, 3)?)?)?;
     let watched = if watched_id != [0; 32] {
         Some(Game::decode(&bytes(row(&r, 5)?)?)?)
     } else {
         None
     };
-    Ok(Poll {
-        active,
-        head,
-        watched,
-    })
+    let mut current = state();
+    current.advisory_checked_at = Some(now());
+    current.advisory_gas_balance_wei = Some(amount(row(&r, 4)?)?);
+    save(current);
+    Ok(Advisory { active, watched })
+}
+async fn idle_poll(c: &Config) -> R<Option<Poll>> {
+    if now() >= state().last_checked_at.saturating_add(300) {
+        return poll(c).await.map(Some);
+    }
+    let s = state();
+    let a = advisory(c).await?;
+    let suggests_work = crate::rpc_policy::advisory_suggests_work(
+        a.active,
+        s.watched_game,
+        a.watched.as_ref(),
+        s.last_relayed_game,
+        s.last_relayed_ply,
+    );
+    if suggests_work {
+        poll(c).await.map(Some)
+    } else {
+        Ok(None)
+    }
+}
+// While a previously verified search is running, latest values can only hint that
+// cancellation may be needed. A conflicting hint never discards the paid turn:
+// first require a fresh confirmed poll. No signature or inference is authorized here.
+async fn search_still_current(c: &Config, t: &Turn) -> R<bool> {
+    let confirmed = if now() >= state().last_checked_at.saturating_add(300) {
+        Some(poll(c).await?)
+    } else {
+        let a = advisory(c).await?;
+        let unchanged = a.active == t.game_id
+            && a.watched.as_ref().is_some_and(|g| {
+                g.result == 0
+                    && g.black_to_move
+                    && g.ply == t.ply
+                    && g.position_hash == t.position_hash
+            });
+        if unchanged {
+            None
+        } else {
+            Some(poll(c).await?)
+        }
+    };
+    if let Some(p) = confirmed {
+        let unchanged = p.active == t.game_id
+            && p.watched.as_ref().is_some_and(|g| {
+                g.result == 0
+                    && g.black_to_move
+                    && g.ply == t.ply
+                    && g.position_hash == t.position_hash
+            });
+        if !unchanged {
+            let mut s = state();
+            s.turn = None;
+            save(s);
+            return Ok(false);
+        }
+    }
+    Ok(true)
 }
 struct Snapshot {
     game: Option<Game>,
@@ -494,7 +720,13 @@ async fn snapshot(c: &Config, id: Hash, head: u64) -> R<Snapshot> {
             q.push(json!({"jsonrpc":"2.0","id":20+i,"method":"eth_call","params":[{"to":hex(&c.game_contract),"data":data(m,Some(id))},block]}));
         }
     }
-    let r = rpc(c, Value::Array(q), 131072, vec![]).await?;
+    let r = rpc(
+        c,
+        Value::Array(q),
+        if id == [0; 32] { 49152 } else { 131072 },
+        vec![],
+    )
+    .await?;
     if keccak(&bytes(row(&r, 2)?)?) != c.game_runtime_hash
         || bytes(row(&r, 10)?)? != c.engine_config_hash
         || bytes(row(&r, 11)?)? != aword(c.bot_attestor)
@@ -665,17 +897,22 @@ async fn prepare_transaction(c: &Config, job: Job) -> R<()> {
     recheck(c, &snap).await?;
     let relay = ethereum_address(&state().public_key)?;
     let payload = hex(&calldata(&signed)?);
-    let r=rpc(c,json!([
+    let dynamic=flexible(c,json!([
   {"jsonrpc":"2.0","id":1,"method":"eth_getTransactionCount","params":[hex(&relay),"latest"]},
   {"jsonrpc":"2.0","id":2,"method":"eth_getTransactionCount","params":[hex(&relay),"pending"]},
-  {"jsonrpc":"2.0","id":3,"method":"eth_gasPrice","params":[]},
-  {"jsonrpc":"2.0","id":4,"method":"eth_estimateGas","params":[{"from":hex(&relay),"to":hex(&c.game_contract),"value":"0x0","data":payload}]}
- ]),4096,vec![]).await?;
-    let nonce = number(row(&r, 1)?)?;
-    if nonce != number(row(&r, 2)?)? {
-        return Err("relay account nonce is occupied; no competing transaction".into());
-    }
-    let price = number(row(&r, 3)?)?
+  {"jsonrpc":"2.0","id":3,"method":"eth_gasPrice","params":[]}
+ ]),4096).await?;
+    let tag = format!("0x{:x}", snap.block);
+    let r=rpc(c,json!([
+      {"jsonrpc":"2.0","id":1,"method":"eth_getTransactionCount","params":[hex(&relay),tag]},
+      {"jsonrpc":"2.0","id":4,"method":"eth_estimateGas","params":[{"from":hex(&relay),"to":hex(&c.game_contract),"value":"0x0","data":payload},tag]}
+    ]),4096,vec![]).await?;
+    let nonce = crate::rpc_policy::fresh_nonce(
+        number(row(&r, 1)?)?,
+        quorum::max_quantity(&dynamic, 1)?,
+        quorum::max_quantity(&dynamic, 2)?,
+    )?;
+    let price = quorum::median_quantity(&dynamic, 3)?
         .checked_mul(2)
         .ok_or("gas price overflow")?;
     let gas = number(row(&r, 4)?)?
@@ -790,13 +1027,17 @@ fn verify_transaction(c: &Config, i: &Intent, t: &Value, relay: Address) -> R<()
 async fn reconcile(c: &Config, allow_rebroadcast: bool) -> R<()> {
     let i = state().pending.ok_or("no transaction intent")?;
     let relay = ethereum_address(&state().public_key)?;
-    let r=rpc(c,json!([
-  {"jsonrpc":"2.0","id":1,"method":"eth_getTransactionReceipt","params":[hex(&i.hash)]},
-  {"jsonrpc":"2.0","id":2,"method":"eth_getTransactionByHash","params":[hex(&i.hash)]},
-  {"jsonrpc":"2.0","id":3,"method":"eth_blockNumber","params":[]},
-  {"jsonrpc":"2.0","id":4,"method":"eth_getTransactionCount","params":[hex(&relay),"latest"]},
-  {"jsonrpc":"2.0","id":5,"method":"eth_getTransactionCount","params":[hex(&relay),"pending"]}
- ]),8192,vec![]).await?;
+    let head = agreed_head(c).await?;
+    let r = rpc(
+        c,
+        json!([
+         {"jsonrpc":"2.0","id":1,"method":"eth_getTransactionReceipt","params":[hex(&i.hash)]},
+         {"jsonrpc":"2.0","id":2,"method":"eth_getTransactionByHash","params":[hex(&i.hash)]}
+        ]),
+        8192,
+        b"receipt-v1".to_vec(),
+    )
+    .await?;
     let receipt = row(&r, 1)?;
     let tx = row(&r, 2)?;
     if receipt.is_null() {
@@ -804,9 +1045,18 @@ async fn reconcile(c: &Config, allow_rebroadcast: bool) -> R<()> {
             verify_transaction(c, &i, tx, relay)?;
             return Ok(());
         }
-        let latest = number(row(&r, 4)?)?;
-        let pending = number(row(&r, 5)?)?;
-        if latest != i.transaction.nonce || pending != latest {
+        let dynamic=flexible(c,json!([
+          {"jsonrpc":"2.0","id":1,"method":"eth_getTransactionCount","params":[hex(&relay),"latest"]},
+          {"jsonrpc":"2.0","id":2,"method":"eth_getTransactionCount","params":[hex(&relay),"pending"]}
+        ]),4096).await?;
+        let latest = quorum::max_quantity(&dynamic, 1)?;
+        let pending = quorum::max_quantity(&dynamic, 2)?;
+        let confirmed = head.checked_sub(c.confirmations).ok_or("chain too short")?;
+        let r=rpc(c,json!({"jsonrpc":"2.0","id":1,"method":"eth_getTransactionCount","params":[hex(&relay),format!("0x{confirmed:x}")]}),2048,vec![]).await?;
+        if latest != i.transaction.nonce
+            || pending != latest
+            || number(row(&r, 1)?)? != i.transaction.nonce
+        {
             return Err("unresolved relay nonce conflict; no replacement or new intent".into());
         }
         if allow_rebroadcast && now() > i.broadcast_at.saturating_add(30) && i.broadcasts < 3 {
@@ -824,7 +1074,7 @@ async fn reconcile(c: &Config, allow_rebroadcast: bool) -> R<()> {
         return Err("receipt identity mismatch".into());
     }
     let block = number(&receipt["blockNumber"])?;
-    if number(row(&r, 3)?)? < block.saturating_add(c.confirmations) {
+    if head < block.saturating_add(c.confirmations) {
         return Ok(());
     }
     let b=rpc(c,json!({"jsonrpc":"2.0","id":1,"method":"eth_getBlockByNumber","params":[format!("0x{block:x}"),false]}),2048,vec![]).await?;
@@ -842,7 +1092,6 @@ async fn reconcile(c: &Config, allow_rebroadcast: bool) -> R<()> {
     // A canonical transcript containing precisely that move distinguishes this from an
     // unexplained revert. It never authorizes a replacement transaction.
     let externally_applied = if status == 0 {
-        let head = number(row(&r, 3)?)?;
         let snap = snapshot(c, i.game_id, head).await?;
         let g = snap
             .game
@@ -958,21 +1207,23 @@ async fn crank_internal() -> R<Status> {
             handle_pending(&c).await
         } else if state().turn.is_some() {
             let turn = state().turn.unwrap();
+            let last_advisory = state()
+                .advisory_checked_at
+                .unwrap_or(state().last_checked_at);
             if (turn.updates > 0 && turn.updates % 8 == 0)
-                || now() > state().last_checked_at.saturating_add(60)
+                || now() > last_advisory.saturating_add(60)
+                || now() >= state().last_checked_at.saturating_add(300)
             {
-                let p = poll(&c).await?;
-                if p.active != turn.game_id {
-                    let mut s = state();
-                    s.turn = None;
-                    save(s);
+                if !search_still_current(&c, &turn).await? {
                     return Ok(());
                 }
             }
             progress(&c).await
         } else {
-            let p = poll(&c).await?;
-            fetch_turn(&c, p).await
+            if let Some(p) = idle_poll(&c).await? {
+                fetch_turn(&c, p).await?;
+            }
+            Ok(())
         }
     }
     .await;

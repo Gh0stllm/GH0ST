@@ -27,7 +27,7 @@ for await(const line of rl){if(!line.trim())continue;try{const x=JSON.parse(line
   const runtime=await chain.provider.getCode(game.target);
   result={contract:game.target,runtime_hash:ethers.keccak256(runtime),runtime_bytes:(runtime.length-2)/2,chain_id:4663,owner:chain.addresses[0],player:chain.addresses[1],token:TOKEN,synthetic_token_runtime_hash:ethers.keccak256(code),block:await mine(),receipts};
  }else if(x.command==='fund_relayer'){
-  await chain.eip1193.request({method:'evm_setAccountBalance',params:[x.address,'0xde0b6b3a7640000']});
+  await chain.eip1193.request({method:'evm_setAccountBalance',params:[x.address,'0xde0b6b3a7640000']});await mine();
   result={address:x.address,balance:await chain.eip1193.request({method:'eth_getBalance',params:[x.address,'latest']})};
  }else if(x.command==='decode_transaction'){
   const t=ethers.Transaction.from(x.raw);result={hash:t.hash,from:t.from,to:t.to,nonce:t.nonce,chainId:t.chainId,type:t.type,value:t.value,gasLimit:t.gasLimit,maxFeePerGas:t.maxFeePerGas,maxPriorityFeePerGas:t.maxPriorityFeePerGas,data:t.data};

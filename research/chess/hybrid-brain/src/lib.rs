@@ -12,6 +12,7 @@ pub use canister::candid_service;
 pub type Hash = [u8; 32];
 pub type Address = [u8; 20];
 pub type R<T> = Result<T, String>;
+pub mod rpc_consensus;
 pub const STOCKFISH_COMMIT: &str = "edb0d9db6731067ec50ce619ff372b463bc4dd5d";
 pub const NNUE_SHA256: &str = "1a298aa575a085434d29027978dc36867fe9c5bcea9376654b7a8eba1e52dfc2";
 pub const INITIAL_FEN: &str = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
@@ -401,6 +402,29 @@ pub struct Job {
     pub updated_at: u64,
 }
 impl Job {
+    /// Retain a completed search while canonical verification is temporarily unavailable.
+    /// A retry still verifies the exact chain state before issuing any signature.
+    pub fn record_failure(&mut self, error: String) {
+        let completed_budget = self.requested_nodes == NODES
+            && (self.actual_nodes >= NODES
+                || (self.depth >= 245 && self.stop_reason == "max_depth"));
+        let transient_signing =
+            self.phase == "Signing" && completed_budget && signing_transport_retryable(&error);
+        self.error = Some(error.clone());
+        if transient_signing {
+            return;
+        }
+        if error.contains("uncertain") || error.contains("decode") {
+            self.phase = "RecoverEngine".into();
+        } else if error.contains("busy")
+            || error.contains("signature request failed")
+            || error.contains("budget")
+            || error.contains("reserve is low")
+        {
+        } else {
+            self.phase = "Faulted".into();
+        }
+    }
     pub fn new(cfg: &Config, r: &Request, now: u64) -> Self {
         let id = Sha256::digest(
             [
@@ -436,6 +460,31 @@ impl Job {
             updated_at: now,
         }
     }
+}
+
+fn signing_transport_retryable(error: &str) -> bool {
+    [
+        "quorum head ",
+        "fewerthan9 valid ",
+        "flexible HTTP committee ",
+        "canonical RPC ",
+        "invalid canonical RPC JSON",
+        "canonical block is stale or inconsistent",
+        "canonical block changed",
+        "RPC response ",
+        "RPC result absent",
+        "RPC quantity ",
+        "RPC operating reserve is low",
+        "daily protected signing verification budget reached",
+        "engine module read failed",
+        "engine module decode failed",
+        "engine info failed",
+        "engine info decode failed",
+        "signature request failed",
+        "signature decode failed",
+    ]
+    .iter()
+    .any(|prefix| error.starts_with(prefix))
 }
 
 #[cfg(test)]

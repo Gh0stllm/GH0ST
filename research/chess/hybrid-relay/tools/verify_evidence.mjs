@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import { createHash } from 'node:crypto';
 import { ethers } from '../../evm/lib.mjs';
 const relay=JSON.parse(fs.readFileSync(new URL('../evidence/relay-end-to-end.json',import.meta.url)));
-const bytes=fs.readFileSync(new URL('../../hybrid-brain/evidence/end-to-end.json',import.meta.url));
+const bytes=fs.readFileSync(new URL('../../hybrid-brain/evidence/end-to-end-pre-quorum.json',import.meta.url));
 const genuine=JSON.parse(bytes);
 assert.equal(relay.passed,true);assert.equal(relay.genuine_result_source_sha256,createHash('sha256').update(bytes).digest('hex'));
 assert.equal(relay.broadcast_transactions.length,1);const tx=relay.broadcast_transactions[0];

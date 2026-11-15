@@ -1,0 +1,141 @@
+{
+  "scope": "bounded independent source/evidence review plus existing arithmetic-Wasm execution and initialized-memory inspection; no new chess inference or paid/public deployment",
+  "reviewed_at": "2026-11-15T13:44:15.414838+00:00",
+  "verdict": "No arithmetic, indexing, search-policy or retained-state weakening found in the reviewed pinned candidate. Equivalence evidence is position-bounded; this is not a formal proof of every possible game.",
+  "release_pins": {
+    "selected_engine_sha256": "725dc0c795262be21f1ffafec60f50aae3e9d00140add77e791a89eece0f417b",
+    "baseline_engine_sha256": "4ed393570169b4a068182031c59acdc8171238205b720e57d8f0915a1e5d252e",
+    "coordinator_installed_gzip_sha256": "5fbde10f4c62446ee51f8d94a76134777ab98dff2bb9f0f6048b09a1601d779a",
+    "full_nnue_sha256": "1a298aa575a085434d29027978dc36867fe9c5bcea9376654b7a8eba1e52dfc2",
+    "full_nnue_bytes": 98511183,
+    "full_nnue_found_in_actual_initialized_wasm_memory_at": 8388608
+  },
+  "source_checks": [
+    {
+      "name": "pinned matrix and activation bounds",
+      "finding": "Sparse fc_0 is exactly1024x32, eight layer buckets. Wasm transform packs each factor to0..255, multiplies unsigned, shifts product9bits, yielding0..127. Pair sums with signed i8 weights are[-32512,32258], so original signed-i16 maddubs saturation cannot fire."
+    },
+    {
+      "name": "derived packing and lane order",
+      "finding": "Original weights remain signed-i8 and are still used by network hashing/serialization. read_parameters sign-extends into deterministic even/odd i16 pairs for every bucket. Exhaustive mapping of32768 pinned matrix coordinates agrees with upstream scrambled index. Wasm raw u32 loads are little-endian; bit extraction gives[a0,a1] and[a2,a3], repeated across four output lanes. Each dot computes the corresponding pair; i32 additions preserve modulo2^32 behavior."
+    },
+    {
+      "name": "sparse processing and dimensions",
+      "finding": "NNZ bitset iterates ascending chunks with pop_lsb, as upstream.1024 is divisible by256, output32 divisible by4/16, and all padded matrix chunks are initialized. The derived kernel is architecture-specific: it is not a generic implementation for arbitrary future input dimensions."
+    },
+    {
+      "name": "dense layers preserved",
+      "finding": "Generic dense affine source and network load/save source are byte-identical to prepared pinned baseline. Selected build has expanded_affine=true, registers32, dot=false. It does not assume arbitrary dense inputs use the sparse chunk broadcast layout."
+    },
+    {
+      "name": "tiling preserves per-lane computation",
+      "finding": "Only SIMD register cap changes12to32. Existing BestRegisterCount chooses a dimension divisor; static assertions require tile heights divide half-dimensions/PSQT buckets. Output ranges are disjoint; per-lane feature order and i16/i32 vector wrap semantics remain unchanged."
+    },
+    {
+      "name": "determinism and state retention",
+      "finding": "Selected flags enable standard msimd128 with no relaxed SIMD or fast-math flag; rejected generic-dot branch is not selected. Asyncify transform is byte-identical to frozen hybrid and does not ignore indirect calls. Adapter is byte-identical: fixed24m nodes, Hash128, Skill20, full NNUE, same history replay and per-game retained state. New-game clear remains once per game. Adaptive28B slice resumes same protected stack; no shallower/fresh-cache answer is substituted."
+    }
+  ],
+  "independently_executed_checks": {
+    "existing_kernel_wasm_sha256": "1f3f7c19b82e80f8ba20b2548d8ca163dbe9c308ff17d08fd0141f86ac0f8bed",
+    "seeds": [
+      0,
+      1,
+      305419896,
+      2147483648,
+      4294967295
+    ],
+    "blocks_per_seed": 250000,
+    "output_comparisons": 5000000,
+    "mismatches": 0,
+    "coverage_note": "Reexecutes the existing four recorded seeds (4M outputs) plus degenerate zero seed (1M outputs). This is a rerun, not5M newly independent random samples. Existing Wasm checks all0..127 activation pairs against16 endpoint weight pairs and randomized full-u32 bias wraparound.",
+    "scrambled_weight_coordinates_checked": 32768,
+    "actual_selected_module_and_full_network_hashes_verified": true,
+    "actual_initialized_wasm_memory_contains_exact_full_network": true,
+    "upstream_cpp_header_changes_only": [
+      "search.cpp",
+      "nnue/simd.h",
+      "nnue/layers/affine_transform_sparse_input.h"
+    ]
+  },
+  "saved_execution_evidence": {
+    "full_engine_checks": 27,
+    "first": {
+      "result": {
+        "bestmove": "e7e5",
+        "actual_nodes": 24000033,
+        "depth": 38
+      },
+      "steps": 35,
+      "largest_sampled_step": 28031599885,
+      "instructions_total": 972184084867,
+      "local_cycles_debited": 972560540260,
+      "local_wall_seconds": 71.14762529099971
+    },
+    "second_retained": {
+      "result": {
+        "bestmove": "b8c6",
+        "actual_nodes": 24000311,
+        "depth": 39
+      },
+      "history": [
+        "e7e5",
+        "g1f3"
+      ],
+      "steps": 33,
+      "largest_sampled_step": 28033709455,
+      "instructions_total": 911840203369,
+      "local_cycles_debited": 912147778563,
+      "local_wall_seconds": 72.96918054200069
+    },
+    "reference_scope": "Two searches share one retained native process; engine harness starts from post-e4 FEN and extends[e7e5,g1f3]. Separate actual coordinator full-engine integration uses standard initial FEN plus complete[e2e4] history and independently matches native e7e5/nodes/depth.",
+    "coordinator_integration_checks": 14,
+    "coordinator_integration_evidence_sha256": "f8708bf77ec5cf19b40cb1f56969e644199417f820d9db1a75db9be635032c99",
+    "volume_test_module_sha256": "ca2af8e95869d098edb4a56cd6ba4817c1afa78161506983ad40f8cd0cc676a2",
+    "volume_is_separate_test_only_module": true,
+    "volume_shape": {
+      "jobs": 512,
+      "cached_replies_per_job": 256,
+      "moves_per_job": 1024,
+      "seed_instructions": 2372303529,
+      "seed_cycles_debited": 2378865176
+    },
+    "first_max_volume_slice": {
+      "sampled_instructions_before_persist": 28019232854,
+      "local_cycles_debited_including_persist_and_reply": 30350096903
+    },
+    "resumed_max_volume_slice": {
+      "sampled_instructions_before_persist": 28012674200,
+      "local_cycles_debited_including_persist_and_reply": 30349667650
+    },
+    "volume_conclusion": "Two real slices plus maximal synthetic journal persistence completed below40B instruction cap. Reported30.35B figures are cycle debit including persistence/reply, not exact total instruction counters; pre-persist sampled instructions are28.019B/28.013B. This is a bounded test, not every-position worst-case proof."
+  },
+  "limitations": [
+    "No formal whole-engine equivalence theorem or exhaustive chess-state evaluation was performed.",
+    "Arithmetic unit covers local four-output blocks, not direct exported invocation of every production matrix; full-coordinate source mapping and two retained native-exact searches cover different integration layers.",
+    "Future architecture changes require new activation/dimension/indexing checks; current specialized kernel has no new explicit InputDimensions%256 assertion. This is not a defect for the pinned1024-input network.",
+    "Unknown public-network timing:6.86xfewer engine update hops does not imply6.86xfaster wall time.",
+    "No Elo, human/engine checkmate odds, unbeatable-engine or prize-pool safety claim follows."
+  ],
+  "findings_requiring_source_change": [],
+  "source_sha256": {
+    "expanded_affine.py": "4d66cbf69532002e2b83a5e725c5ed15c429eef1a745107dc2e6963ea35ac7b7",
+    "kernel_exactness.cpp": "1954f745537e964347695befdae3bd10033f86fef21a272e249ec6f86e9e5e78",
+    "test_kernel.py": "2af02d38311d03e217a887d960bd7d9602d5cf1074020860fb2be611e6765954",
+    "build.py": "f0743a389605abd21cd68c382e25af2ff1b28b27521e034dc6f9919cb5d398ec",
+    "runtime.cpp": "244bae71dd1b89da50bb1f8a82fc8b669a7d02cad1d4959fe856b7c2bb76223c",
+    "adapter.cpp": "970485db9eb18665fc302ff438607b7b66ffd35c44d4a79672a1b22467c39e58",
+    "transform.py": "08c13077b1c1d5858037b274509fc6a51e47f494e95e5cfc7df04679054bf65c",
+    "engine.did": "de4325b3ab0c78d3a3736cbf165c9c5f09c7902d07e0c2fcced34d362e74f19d",
+    "test_pocketic.py": "f0c64b8d429f16644ba3f0f2315f46b293819785b5a546dd73afebf56cecbabc",
+    "test_volume.py": "4dcc5c4d396d3dca9ce63ce905e91960d7dd1ab7cb389f358b65714dba0308a9"
+  },
+  "reviewed_evidence_sha256": {
+    "kernel-exactness.json": "27446987c071269999de17e902d92fd71f2b8c90ac58e975397552a7ff1fd680",
+    "pocketic-full24m.json": "0c4e79063890aa5ff0fc932bf459489a1c3c9ce4924689035c4b28140ff18fc2",
+    "pocketic-volume.json": "5deedaca5f7a4e4162ec855b84bbe8e1fb14b6825758ef72485081c16ae636d6",
+    "pocketic-api.json": "f531dea1545e6d4f99c9b2fe8bb950780a5b8c47cb0c6aea128b247400128072",
+    "artifact.json": "7c91a7d99a2b1efb8a71df69b4264c70b8cdd5bd44caa7e5ae20645678af7e0b",
+    "rebuild.json": "53a88263327e1eaf27ad5ffb1ae44ced9ccf964526a972d78cfc4bbcc78996a3"
+  }
+}
