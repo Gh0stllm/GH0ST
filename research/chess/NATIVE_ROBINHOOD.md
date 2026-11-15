@@ -42,6 +42,31 @@ The existing frontend and attested vault remain disabled staging. Their ICP
 attestor path is preserved as prior work; it is not represented as native Solidity
 search or used to bypass the user's new target.
 
+## Measured native cost findings
+
+At the saved 2026-11-15 fee snapshot of 0.02006 gwei:
+
+| Component and evidence | Gas | Snapshot ETH |
+|---|---:|---:|
+| Lossless decoded weight data only, 1,172 shards; calculated creation total checked against local shard receipts | 24,743,045,945 | 0.49635 |
+| Rules plus board write, third-party comparison across 43 plies; local receipts | 57,156–215,795 per move | about 0.00000115–0.00000433 |
+| Dense evaluation alone, sixteen actual search vectors; local receipts | 702,424–742,525 per standalone transaction | about 0.00001409–0.00001490 |
+| Repeating those sample costs for the 1,576,430 evaluations observed in one 3m-node reference search; conditional scenario | 1.107–1.171 trillion | 22.21–23.48 |
+
+The last row is **not a measured complete move or a universal bound**. A real
+batched engine could share or remove standalone transaction/calldata/model-copy
+overhead; it also needs the missing board features and search/state operations.
+The full-game price is unknown. The [reproducible scenario and exclusions](gas/playing-scenario.json)
+make these assumptions explicit. Weight publication also excludes engine/catalog
+code, alternative layouts and future fee changes.
+
+The preferred kernels preserve exact upstream outputs. Packed dense arithmetic
+and 16-lane accumulator updates improved the measured baseline; a second dense
+variant was tested and rejected because it cost more on actual search samples.
+Even after those changes, the current component approach does not establish an
+economical native full-Stockfish product. Treat this as feasibility evidence
+before committing funds or advertising a gameplay price.
+
 ## Before prizes
 
 Finish the adversarial full-game sample, retain all PGNs and unfinished records,
@@ -49,6 +74,11 @@ and distinguish legal challenger checkmates from draws and resource stops. An
 observed fraction in a deterministic opening suite is not a public win probability
 or a guarantee about external engine assistance. Any changed GH0ST policy needs
 separate matches and, if implemented on-chain, exact execution equivalence.
+
+Because the reference search is deterministic, a known winning transcript could
+be replayed against the same policy for further prizes. Finding even one such line
+requires a policy repair and fresh full-game testing; a low suite-average mate
+fraction does not make a published repeatable win safe for an open prize pool.
 
 The native product additionally needs complete legal chess, exact evaluation and
 search, transaction-bounded continuation, capacity and retry semantics, canonical

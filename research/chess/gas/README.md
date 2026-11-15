@@ -105,6 +105,28 @@ adjudication, escrow, neural evaluation or search. Those move costs cannot be us
 as a complete bot-turn or whole-game price. See the component's own source and
 validation limits before reusing it.
 
+## Native search component scenario
+
+[playing-scenario.json](playing-scenario.json) joins the actual search invocation
+profile, sixteen independently verified real transformed-vector EVM receipts,
+and the exact fee snapshot by source/evidence hashes. Reproduce it with
+`node gas/playing-scenario.mjs` from `research/chess`.
+
+The reference Black decision after `1.e4` used 3,000,212 nodes and 1,576,430 full
+dense evaluations. The sampled standalone Solidity transactions cost
+702,424–742,525 gas each. Repeating those sample costs for the observed invocation
+count gives **1,107,322,266,320–1,170,538,685,750 gas**, or approximately
+**22.21–23.48 ETH** at the saved 0.02006-gwei price.
+
+This is conditional component arithmetic, **not a measured full Solidity move,
+game, or universal cost bound**. The standalone receipts include transaction,
+calldata and repeated model-copy work that a batched engine could share or avoid.
+The sixteen samples do not establish every call's input distribution. Feature
+extraction, PSQT, legality, search, transposition state and continuation remain
+outside that scenario. No complete native Stockfish search exists here to price.
+The [component research](../solidity-research/README.md) preserves both successful
+optimizations and a tested V2 that was slightly worse and was not selected.
+
 ## Reproduce without spending
 
 From `research/chess`, using the existing pinned Node dependencies:
