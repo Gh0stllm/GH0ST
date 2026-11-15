@@ -28,6 +28,13 @@ $0.038. An illustrative 40-bot-move game at the cold-opening count would be abou
 1.19 XDR ($1.63) in search compute alone. This is a scenario calculation, not a
 measured whole-game bill or a bound for every position.
 
+The separate test-only continuation completed a three-million-node Black search
+over 30 local ICP updates using 147.202 billion sampled instructions in total.
+At the same listed 13-node rate, that is about 0.147 XDR ($0.20) of search compute
+before the other charges below. An illustrative 40 such bot decisions would be
+about $8.05 in search compute alone. The multi-game production adapter is unfinished;
+this is a measured prototype search and a cost scenario, not a paid-game bill.
+
 This excludes authority work, continuation overhead, ingress/response bytes,
 RPC outcalls, signing, memory, installation, reservation and RH gas. Production
 `key_1` ECDSA signing is separately listed as 26,153,846,153 cycles. Canister creation

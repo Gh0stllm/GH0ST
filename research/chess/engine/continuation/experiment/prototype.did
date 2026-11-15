@@ -1,0 +1,16 @@
+// Wire API of experimental extra methods; inherited baseline metadata is unchanged.
+// No production game authority or paid-game continuation adapter is implemented.
+type Progress = record {
+ pending : bool;
+ step : nat32;
+ bestmove : text;
+ actual_nodes : nat64;
+ observed_nodes : nat64;
+ depth : nat32;
+ code : int32;
+ instructions : nat64;
+};
+service : {
+ prototype_begin : (nat32, nat32, nat32) -> (Progress);
+ prototype_advance : () -> (Progress);
+}

@@ -35,6 +35,8 @@ The final-wrapper suite ran seven position cases at each of 250k and 500k nodes:
 
 An additional [upstream threat stress suite](evidence/pocketic-threat-stress-verification.json) tested two positions deliberately containing many changed threats at both budgets, followed by start/history rechecks. All eight searches matched the native reference exactly; both caller checks passed. The largest measured cold call was **32.452 billion instructions at 500k nodes**, leaving less headroom than the ordinary opening samples. This still does not prove an instruction bound for every legal position.
 
+The [Black-side suite](evidence/pocketic-black-flow-verification.json) also verifies the intended opponent role: after a human's `1.e4` from cold initialization, a Black tactical middlegame, and an odd-ply opening history. All three Black results match native moves/nodes/depth at 500k nodes. The cold reply to `1.e4` is `e7e5` at 500,098 nodes/depth 20 and 27.869 billion instructions.
+
 Stockfish checks node exhaustion periodically, so actual nodes may slightly exceed the requested budget. A legal search may instead exhaust its maximum iterative depth: the pinned source has `MAX_PLY=246`, so completed depth 245 is a valid terminal reason. The canister emits `node_budget` only when actual nodes meet the request, or `max_depth` only for positive nodes at depth 245. Any other unexplained early stop returns a fault.
 
 ## Boundary with game authority
@@ -73,7 +75,9 @@ The harness starts and stops its own local server, creates isolated canisters wi
 
 Before paid use: complete full authority-to-engine local integration, broaden worst-case instruction calibration with ample headroom, verify timeout/refund behavior, commit the final fixed configuration, and audit the escrow/prize bridge separately. Public deployment, cycles funding and paid activation have not occurred.
 
-A stronger multi-message continuation lane is under investigation. Keeping TT between fresh searches is not the same as resuming one large search. Exact continuation requires preserving recursive Wasm state and the separate C++ linear-memory stack, a job/step journal and authenticated advance calls. The independent [continuation design review](../protocol/docs/asyncify-review.md) identifies the required safety and equivalence tests; it does not establish a working continuation engine.
+A separate [test-only continuation experiment](continuation/experiment/README.md) now proves exact full Stockfish searches across actual local ICP update calls: three 1m-node cases across 50 updates each, and a 3m-node Black response across 30 updates. The latter completes 3,000,212 nodes at depth 28, exactly matching native, using 147.202 billion instructions in aggregate and at most 10.361 billion in one update. It preserves the original recursive search and full NNUE rather than restarting smaller searches. The baseline artifact above is unchanged.
+
+That experiment is not a production service. Durable multi-game capacity/queue handling, immutable job/step IDs, retry idempotency, cancellation/upgrade recovery, removal or gating of competing engine mutations, and the paid-game authority adapter remain required. Its explicit source, limits and actual per-call evidence are separate from the synchronous baseline. Paid entry stays closed.
 
 ## Upstream sources and licenses
 
