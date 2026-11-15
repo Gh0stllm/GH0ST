@@ -1,0 +1,55 @@
+type Job = record {
+  game_id : blob;
+  position_hash : blob;
+  ply : nat32;
+  initial_fen : text;
+  moves : vec text;
+};
+type Error = record { code : text; message : text; refundable : bool };
+type Progress = record {
+  game_id : blob;
+  job_id : blob;
+  position_hash : blob;
+  config_hash : blob;
+  ply : nat32;
+  step : nat32;
+  phase : text;
+  bestmove : text;
+  actual_nodes : nat64;
+  observed_nodes : nat64;
+  depth : nat32;
+  stop_reason : text;
+  instructions : nat64;
+  instructions_total : nat64;
+  engine_commit : text;
+  nnue_sha256 : text;
+};
+type ProgressResult = variant { Ok : Progress; Err : Error };
+type Info = record {
+  coordinator : principal;
+  reserved_game : blob;
+  active_job : blob;
+  config_hash : blob;
+  faulted : bool;
+  fault_reason : text;
+  capacity : nat32;
+  cycle_balance : nat;
+  retained_jobs : nat32;
+  max_jobs : nat32;
+  nodes : nat64;
+  hash_mb : nat32;
+  quantum : nat32;
+  engine_commit : text;
+  nnue_sha256 : text;
+};
+type InfoResult = variant { Ok : Info; Err : Error };
+service : (principal, blob) -> {
+  reserve_game : (blob) -> (InfoResult);
+  begin : (Job) -> (ProgressResult);
+  advance : (blob, nat32) -> (ProgressResult);
+  release_game : (blob) -> (InfoResult);
+  read_progress : (blob) -> (ProgressResult);
+  get_info : () -> (InfoResult);
+  get_result : (blob) -> (ProgressResult) query;
+  status : () -> (InfoResult) query;
+}
