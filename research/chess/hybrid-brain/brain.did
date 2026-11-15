@@ -1,0 +1,139 @@
+type Advance = record { expected_step : nat32; job_id : blob };
+type BotMove = record {
+  ply : nat32;
+  transcript_hash : blob;
+  engine_config_hash : blob;
+  player : blob;
+  game_id : blob;
+  valid_until : nat64;
+  position_hash : blob;
+  encoded_move : nat16;
+};
+type Config = record {
+  confirmations : nat64;
+  engine_module_hash : blob;
+  game_runtime_hash : blob;
+  game_contract : blob;
+  reviewed_release : bool;
+  rpc_url : text;
+  engine_canister : principal;
+  key_name : text;
+};
+type DeploymentBinding = record {
+  game_runtime_hash : blob;
+  game_contract : blob;
+};
+type Game = record {
+  ply : nat32;
+  result : nat8;
+  transcript_hash : blob;
+  player : blob;
+  en_passant : nat8;
+  black_to_move : bool;
+  opened_at : nat64;
+  turn_deadline : nat64;
+  nonce : blob;
+  board : blob;
+  position_hash : blob;
+  castling : nat8;
+  halfmove_clock : nat16;
+};
+// # HTTP Header.
+// 
+// Represents a HTTP header.
+// 
+// See [`HttpRequestArgs::headers`] and [`HttpRequestResult::headers`].
+type HttpHeader = record {
+  // Value of the header.
+  value : text;
+  // Name of the header.
+  name : text;
+};
+// # HTTP Request Result
+// 
+// Result type of [`http_request`](https://internetcomputer.org/docs/current/references/ic-interface-spec/#ic-http_request).
+type HttpRequestResult = record {
+  // The response status (e.g. 200, 404).
+  status : nat;
+  // The response’s body.
+  body : blob;
+  // List of HTTP response headers and their corresponding values.
+  headers : vec HttpHeader;
+};
+type Job = record {
+  ply : nat32;
+  moves : vec text;
+  updated_at : nat64;
+  actual_nodes : nat64;
+  requested_nodes : nat64;
+  game : opt Game;
+  step : nat32;
+  bestmove : text;
+  created_at : nat64;
+  instructions : nat64;
+  error : opt text;
+  game_id : blob;
+  job_id : blob;
+  signed_move : opt SignedMove;
+  engine_job_id : blob;
+  phase : text;
+  in_flight : bool;
+  position_hash : blob;
+  depth : nat32;
+  stop_reason : text;
+};
+type Request = record {
+  request_id : blob;
+  moves : vec text;
+  expected_position_hash : blob;
+  game_id : blob;
+  expected_ply : nat32;
+};
+type Result = variant { Ok : Job; Err : text };
+type Result_1 = variant { Ok : text; Err : text };
+type Result_2 = variant { Ok : Status; Err : text };
+type SignedMove = record { signature : blob; move : BotMove };
+type Status = record {
+  blockers : vec text;
+  hash_mb : nat32;
+  engine_config_hash : blob;
+  game_contract : text;
+  production_ready : bool;
+  stockfish_commit : text;
+  cache_policy : text;
+  nnue_sha256 : text;
+  chain_id : nat64;
+  engine_canister : principal;
+  nodes : nat64;
+  attestor_address : text;
+  paid_entries_enabled : bool;
+};
+// # Transform Args.
+// 
+// ```text
+// record {
+// response : http_response;
+// context : blob;
+// }
+// ```
+// 
+// See [`TransformContext`].
+type TransformArgs = record {
+  // Context for response transformation
+  context : blob;
+  // Raw response from remote service, to be transformed
+  response : HttpRequestResult;
+};
+service : (Config) -> {
+  advance_job : (Advance) -> (Result);
+  get_job : (blob, nat32) -> (opt Job) query;
+  get_status : () -> (Status) query;
+  prepare_signer : () -> (Result_1);
+  refresh_status : () -> (Result_2);
+  request_bot : (Request) -> (Result);
+  // One-time controller action after signer derivation and a paused native-game deployment.
+  // No key, engine, strength, RPC or existing bound deployment can be changed by this method.
+  seal_release : (DeploymentBinding) -> (Result_2);
+  // Strips dynamic HTTP headers and normalizes JSON object ordering for subnet consensus.
+  transform : (TransformArgs) -> (HttpRequestResult) query;
+}

@@ -1,6 +1,6 @@
 {
-  "scope": "Planning scenarios using one actual local 24m search and two official threshold-ECDSA fees (move authorization and autonomous relay transaction); not measured whole-game spending",
-  "generatedAt": "2026-11-15T12:44:23.495Z",
+  "scope": "Planning scenarios using clean 13-node local engine/coordinator execution and one additional official ECDSA relay fee; not measured whole-game or complete relay spending",
+  "generatedAt": "2026-11-15T12:48:15.262Z",
   "policy": {
     "stockfish": "19",
     "nodes": 24000000,
@@ -13,46 +13,63 @@
   "cmcRateAt": "2026-11-15T12:14:00.000Z",
   "cyclesPerICP": "1677000000000",
   "measuredSearch": {
-    "initialPosition": "Black after e4 from a direct FEN; see exact engine test request",
+    "initialPosition": "Standard starting FEN and complete e2e4 history, actual coordinator plus full Stockfish",
     "nodes": 24000033,
     "depth": 38,
-    "cycles": "1237795678347",
-    "ICP": 0.7381011796940966,
+    "cycles": "1239070157514",
+    "ICP": 0.7388611553452594,
     "steps": 240,
-    "localWallSeconds": 305.20617499999935,
-    "includes": "local search plus test retry/recovery calls",
-    "excludes": "model reservation/initialization, coordinator, HTTP, signing, storage and deployment"
+    "localWallSeconds": 298.89244812499965,
+    "includes": "warm full-budget engine updates; reserved-cycle increase was zero",
+    "excludes": "cold reservation, separately measured coordinator and additional relay costs"
   },
-  "thresholdSignature": {
-    "cycles": "52307692306",
-    "ICP": 0.03119122975909362,
+  "coordinatorAndMoveSignature": {
+    "cycles": "39999232674",
+    "ICP": 0.023851659316636853,
+    "includes": "verified RH requests, progress calls, one threshold move signature and active-readiness refresh"
+  },
+  "coldReservation": {
+    "cycles": "5530082592",
+    "ICP": 0.0032976044078711986
+  },
+  "additionalRelayTransactionSignature": {
+    "cycles": "26153846153",
+    "ICP": 0.01559561487954681,
     "source": "https://docs.internetcomputer.org/references/cycle-costs/"
   },
-  "perBotDecisionSearchPlusSignatureICP": 0.7692924094531902,
+  "perBotDecisionWarmEngineCoordinatorAndAdditionalRelaySignatureICP": 0.7783084295414431,
   "scenarios": [
     {
       "botDecisions": 40,
-      "searchCycles": "49511827133880",
-      "signatureCycles": "2092307692240",
-      "searchAndSignatureICP": 30.771696378127608
+      "warmSearchCycles": "49562806300560",
+      "coordinatorAndMoveSignatureCycles": "1599969306960",
+      "additionalRelaySignatureCycles": "1046153846120",
+      "oneColdReservationCycles": "5530082592",
+      "modeledICP": 31.135634786065594
     },
     {
       "botDecisions": 60,
-      "searchCycles": "74267740700820",
-      "signatureCycles": "3138461538360",
-      "searchAndSignatureICP": 46.157544567191415
+      "warmSearchCycles": "74344209450840",
+      "coordinatorAndMoveSignatureCycles": "2399953960440",
+      "additionalRelaySignatureCycles": "1569230769180",
+      "oneColdReservationCycles": "5530082592",
+      "modeledICP": 46.70180337689445
     },
     {
       "botDecisions": 80,
-      "searchCycles": "99023654267760",
-      "signatureCycles": "4184615384480",
-      "searchAndSignatureICP": 61.543392756255216
+      "warmSearchCycles": "99125612601120",
+      "coordinatorAndMoveSignatureCycles": "3199938613920",
+      "additionalRelaySignatureCycles": "2092307692240",
+      "oneColdReservationCycles": "5530082592",
+      "modeledICP": 62.26797196772331
     },
     {
       "botDecisions": 100,
-      "searchCycles": "123779567834700",
-      "signatureCycles": "5230769230600",
-      "searchAndSignatureICP": 76.92924094531902
+      "warmSearchCycles": "123907015751400",
+      "coordinatorAndMoveSignatureCycles": "3999923267400",
+      "additionalRelaySignatureCycles": "2615384615300",
+      "oneColdReservationCycles": "5530082592",
+      "modeledICP": 77.83414055855218
     }
   ],
   "rhDeployment": {

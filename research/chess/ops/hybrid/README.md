@@ -23,7 +23,7 @@ Controller upgrades remain a disclosed trust boundary. The engine faults an acti
 
 `preflight.mjs` only reads RH chain identity, token identity, wallet balances, current gas and constructor estimate. The constructor signer/config are explicit nonzero **pricing stand-ins** until actual ICP derivation. Refresh the exact real constructor estimate before broadcast.
 
-`costs.mjs` uses actual local 24m search debit, the certified CMC conversion and two threshold-ECDSA fees for move authorization and relay transaction. At the saved rate, one measured search plus signature is about 0.769 ICP; 40 bot decisions about 30.77 ICP. This excludes coordinator/HTTPS work, deployment, storage/reserves, retries, RH moves and position-dependent variation. The old 3m/10m cost tables remain historical.
+`costs.mjs` uses actual local 24m search debit, the certified CMC conversion and clean actual engine/coordinator debit plus the additional relay-transaction threshold signature. At the saved rate, one measured search plus signature is about 0.778 ICP; 40 bot decisions about 31.14 ICP. This excludes coordinator/HTTPS work, deployment, storage/reserves, retries, RH moves and position-dependent variation. The old 3m/10m cost tables remain historical.
 
 Reviewable proposed launch caps (not authorization):
 
