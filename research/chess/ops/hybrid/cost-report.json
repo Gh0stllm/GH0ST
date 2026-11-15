@@ -1,0 +1,86 @@
+{
+  "scope": "Planning scenarios using one actual local 24m search and two official threshold-ECDSA fees (move authorization and autonomous relay transaction); not measured whole-game spending",
+  "generatedAt": "2026-11-15T12:44:23.495Z",
+  "policy": {
+    "stockfish": "19",
+    "nodes": 24000000,
+    "hashMiB": 128,
+    "cache": "retained per game",
+    "entryGH0ST": "25000",
+    "fixedPrizeGH0ST": "1000000",
+    "winnerAutoPausesNewEntries": true
+  },
+  "cmcRateAt": "2026-11-15T12:14:00.000Z",
+  "cyclesPerICP": "1677000000000",
+  "measuredSearch": {
+    "initialPosition": "Black after e4 from a direct FEN; see exact engine test request",
+    "nodes": 24000033,
+    "depth": 38,
+    "cycles": "1237795678347",
+    "ICP": 0.7381011796940966,
+    "steps": 240,
+    "localWallSeconds": 305.20617499999935,
+    "includes": "local search plus test retry/recovery calls",
+    "excludes": "model reservation/initialization, coordinator, HTTP, signing, storage and deployment"
+  },
+  "thresholdSignature": {
+    "cycles": "52307692306",
+    "ICP": 0.03119122975909362,
+    "source": "https://docs.internetcomputer.org/references/cycle-costs/"
+  },
+  "perBotDecisionSearchPlusSignatureICP": 0.7692924094531902,
+  "scenarios": [
+    {
+      "botDecisions": 40,
+      "searchCycles": "49511827133880",
+      "signatureCycles": "2092307692240",
+      "searchAndSignatureICP": 30.771696378127608
+    },
+    {
+      "botDecisions": 60,
+      "searchCycles": "74267740700820",
+      "signatureCycles": "3138461538360",
+      "searchAndSignatureICP": 46.157544567191415
+    },
+    {
+      "botDecisions": 80,
+      "searchCycles": "99023654267760",
+      "signatureCycles": "4184615384480",
+      "searchAndSignatureICP": 61.543392756255216
+    },
+    {
+      "botDecisions": 100,
+      "searchCycles": "123779567834700",
+      "signatureCycles": "5230769230600",
+      "searchAndSignatureICP": 76.92924094531902
+    }
+  ],
+  "rhDeployment": {
+    "estimateGas": "3170836",
+    "estimateETH": "0.00006354355344",
+    "at": "2026-11-15T12:28:07.956Z",
+    "pricingSignerIsStandIn": true
+  },
+  "creationOnly": {
+    "three13NodeCanistersCycles": "1500000000000",
+    "ICP": 0.8944543828264758,
+    "excludes": "chunk upload, installation, freezing/operating reserves, ledger fees"
+  },
+  "proposedFunding": {
+    "capICP": "60",
+    "capETHGasAndRelayFunding": "0.003",
+    "relayGasReserveETH": "0.0025",
+    "prizeEscrowGH0ST": "1000000",
+    "pilotEntryGH0ST": "25000",
+    "automaticTopups": false,
+    "spendingApproved": false
+  },
+  "notes": [
+    "Search debit is position-dependent; a fixed node budget does not fix its instruction count.",
+    "ICP local wall time is not a public-network latency guarantee.",
+    "Runtime memory exceeds the Wasm file size; operating reserves and storage must be funded.",
+    "Full games, retries, canister uploads, coordinator/HTTPS work and RH moves cost extra.",
+    "Proposed caps are reviewable planning, not authorization or a transfer.",
+    "The public page remains unconfigured and paid entry closed."
+  ]
+}

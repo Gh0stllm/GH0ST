@@ -7,6 +7,7 @@ Selected by the user on 2026-11-15. Human plays White from the standard starting
 - Robinhood chain 4663: immutable game contract, native move validation, board, castling/en-passant/promotion, repetition/draw adjudication, deadlines, escrow and payouts.
 - ICP engine: official Stockfish 19, full pinned NNUE, 24 million nodes, Hash 128 MiB, one thread, maximum skill. TT/history retained across decisions within one game and explicitly cleared between games. No lower-strength fallback.
 - ICP coordinator: reads canonical RH game state through its pinned HTTPS RPC, independently replays full legal UCI history and its contract transcript, drives bounded engine steps, and signs the resulting Black move using threshold ECDSA.
+- Autonomous ICP relay: watches the fixed RH game, advances the verified brain job and submits the signed Black move from a dedicated, capped ETH gas wallet. It cannot choose a move, recipient or payout. Its exact transaction/nonce journal must reconcile uncertain outcomes.
 - Browser: wallet actions, board interaction, progress and permissionless bounded cranking. It never supplies an accepted bestmove or winner.
 
 One active game at a time matches one retained engine instance. Increasing capacity requires isolated per-game engine memory and contract capacity changes, not clearing another player's cache. Chain rules and payment remain valid if the brain is offline; a missed bot deadline permits the game's entry-refund path.

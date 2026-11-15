@@ -11,6 +11,7 @@ The interface is being released at [gh0st.fyi/chess](https://gh0st.fyi/chess/). 
 - The full prize must already be free in escrow before entry. Owner withdrawals cannot touch an active reserve. Funding is manual.
 - Robinhood Solidity stores the board and complete move transcript, validates every move and decides checkmate. It pays the prize in the checkmating transaction.
 - Full Stockfish 19 on ICP plays Black. The stronger candidate uses **24,000,000 nodes**, Hash 128 MiB, one thread, maximum skill, full pinned NNUE and retained TT/history within a game. No lower-strength fallback.
+- A dedicated ICP relay advances the bot and submits its signed reply without relying on the player keeping a browser open or choosing to relay Black. The relay is a required launch dependency.
 - ICP threshold ECDSA authorizes a Black move, never a winner. The signed move binds game, player, position, transcript, ply, engine configuration, contract, chain and deadline. Native legality still applies.
 - A human checkmate pauses new entries until the owner explicitly reopens a reviewed round.
 - One active game matches one retained engine instance. White has 24 hours per turn; Black one hour. A missed Black turn refunds the 25,000 entry on Robinhood. Draw, loss, resignation or missed White turn retains entry.

@@ -34,11 +34,11 @@ export function fenBoard(fen) {
 export function validateConfig(c) {
   if(c.schemaVersion!==2||c.chainId!==CHAIN_ID||c.publicRpc!==PUBLIC_RPC||!same(c.tokenAddress,TOKEN_ADDRESS)||c.icHost!=='https://icp-api.io') throw new Error('The release configuration does not use the canonical chain, token, or ICP endpoint.');
   if(c.status!=='live') throw new Error('Paid entries are closed. This release has no verified deployment.');
-  for(const key of ['authorityModuleHash','engineModuleHash','nnueSha256']) if(!/^[0-9a-f]{64}$/i.test(c[key]||''))throw new Error(`Release ${key} is missing.`);
+  for(const key of ['authorityModuleHash','engineModuleHash','relayModuleHash','nnueSha256']) if(!/^[0-9a-f]{64}$/i.test(c[key]||''))throw new Error(`Release ${key} is missing.`);
   for(const key of ['engineConfigHash','vaultRuntimeHash','vaultDeploymentTransaction'])bytes(c[key]);
-  for(const key of ['vaultAddress','poolOwner','attestorAddress'])getAddress(c[key]);
-  for(const key of ['authorityCanisterId','engineCanisterId','engineCommit'])if(!c[key])throw new Error(`Release ${key} is missing.`);
-  for(const key of ['authorityControllers','engineControllers'])if(!Array.isArray(c[key])||c[key].some(x=>typeof x!=='string'))throw new Error('The reviewed canister controller sets are missing.');
+  for(const key of ['vaultAddress','poolOwner','attestorAddress','relayAddress'])getAddress(c[key]);
+  for(const key of ['authorityCanisterId','engineCanisterId','relayCanisterId','engineCommit'])if(!c[key])throw new Error(`Release ${key} is missing.`);
+  for(const key of ['authorityControllers','engineControllers','relayControllers'])if(!Array.isArray(c[key])||c[key].some(x=>typeof x!=='string'))throw new Error('The reviewed canister controller sets are missing.');
   if(c.nodes!==24_000_000||c.hashMb!==128||c.cachePolicy!=='retained-per-game')throw new Error('The improved retained 24m-node policy is required.');
   if(!Number.isSafeInteger(c.nodes)||c.nodes<=0||!Number.isSafeInteger(c.hashMb)||c.hashMb<=0||!/^\d+$/.test(String(c.cyclesPerSearch))||BigInt(c.cyclesPerSearch)<=0n||!c.releaseEvidence)throw new Error('The pinned search budget and reviewed release evidence are missing.');
   return true;

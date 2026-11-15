@@ -19,6 +19,10 @@ type Config = record {
   engine_canister : principal;
   key_name : text;
 };
+type DeploymentBinding = record {
+  game_runtime_hash : blob;
+  game_contract : blob;
+};
 type Game = record {
   ply : nat32;
   result : nat8;
@@ -127,6 +131,9 @@ service : (Config) -> {
   prepare_signer : () -> (Result_1);
   refresh_status : () -> (Result_2);
   request_bot : (Request) -> (Result);
+  // One-time controller action after signer derivation and a paused native-game deployment.
+  // No key, engine, strength, RPC or existing bound deployment can be changed by this method.
+  seal_release : (DeploymentBinding) -> (Result_2);
   // Strips dynamic HTTP headers and normalizes JSON object ordering for subnet consensus.
   transform : (TransformArgs) -> (HttpRequestResult) query;
 }
