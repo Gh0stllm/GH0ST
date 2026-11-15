@@ -1,0 +1,42 @@
+{
+  "scope": "One instrumented native SF19 search, not EVM execution or an end-to-end Solidity gas bill",
+  "position": "standard initial position with full history e2e4; Black to move",
+  "options": {
+    "Threads": 1,
+    "Hash": 128,
+    "SkillLevel": 20,
+    "LimitStrength": false,
+    "MultiPV": 1,
+    "clearHistoryAndTTEachDecision": true
+  },
+  "targetNodes": 3000000,
+  "runs": [
+    {
+      "binary": "official-native",
+      "binarySha256": "8738d7d5720ef805849c7f09f43e54aa3b1fc9a6c3b0e23e582106e01aa287e0",
+      "bestmove": "e7e5",
+      "nodes": 3000212,
+      "depth": 28,
+      "elapsedSeconds": 4.954693625
+    },
+    {
+      "binary": "instrumented-native",
+      "binarySha256": "19598381580ad5a6b573166cd0a1b52469f89673dbc38d98070802690d852d5f",
+      "bestmove": "e7e5",
+      "nodes": 3000212,
+      "depth": 28,
+      "elapsedSeconds": 5.194979458999999,
+      "counters": {
+        "network_evaluations": 1576430,
+        "accumulator_evaluations": 1576430,
+        "incremental_single": 280177,
+        "incremental_both": 1784636,
+        "hybrid_refresh": 36822,
+        "cache_refresh": 85660
+      }
+    }
+  ],
+  "exactSearchOutcomePreserved": true,
+  "sampledActualTransformedVectors": 16,
+  "counterCaveat": "Accumulator counters count function invocations, not individual1024-lane feature-row operations. No per-node eval-count assumption is used."
+}

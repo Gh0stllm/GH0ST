@@ -1,0 +1,454 @@
+{
+  "scope": "Isolated local EVM V2 dense component only, compared against prior actual receipt-backed baseline; not a whole chess move",
+  "generatedAt": "2026-11-15T08:07:01.453Z",
+  "sourceSha256": "ad27cb3cb552119b4b1e4ee657b87e154069c23c80c70252dc74c507624e9871",
+  "baselineSourceSha256": "7e98af3cb34b0c759f57cfea528332d68cec6e73a393a50af9721f3707358405",
+  "compiler": "0.8.30+commit.73712a01.Emscripten.clang",
+  "settings": {
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "viaIR": true,
+    "evmVersion": "shanghai",
+    "metadata": {
+      "bytecodeHash": "none"
+    },
+    "outputSelection": {
+      "*": {
+        "*": [
+          "abi",
+          "evm.bytecode.object",
+          "evm.deployedBytecode.object"
+        ]
+      }
+    }
+  },
+  "runtimeBytes": 3474,
+  "deployments": [
+    {
+      "bucket": 0,
+      "dataGas": "20059440",
+      "kernelGas": "808213",
+      "kernelTransactionHash": "0xe90b96cb891ce787602e4b235f331f88cb57142f50e3d9def65c6b677bbfe360",
+      "dataTransactionHash": "0xca03ec467a742600cc275d3bb1b67172ef2294e925623ef260a135b7c4b07e61"
+    },
+    {
+      "bucket": 3,
+      "dataGas": "20059464",
+      "kernelGas": "808213",
+      "kernelTransactionHash": "0x72094d39940fa3ec6426d2b2253ae801449e523b573cff60200e216b5eed958e",
+      "dataTransactionHash": "0x3dbdbfb502200cb44c62d9c35c051764a94a417416d047561f5e52bb767cb126"
+    },
+    {
+      "bucket": 7,
+      "dataGas": "20058216",
+      "kernelGas": "808201",
+      "kernelTransactionHash": "0x6eb1c35a3151bc765e51dbff53cfcd74408d35a3bff5b2dcc64e73ee9d490421",
+      "dataTransactionHash": "0x06f4bce3622630839e305efa61628465aad806446ef5a272d001c1d4f6e1578f"
+    },
+    {
+      "bucket": 6,
+      "dataGas": "20059380",
+      "kernelGas": "808213",
+      "kernelTransactionHash": "0x58e5076efd569a99245d29ccabf70d612c1d6d439384e944d32b6ebb322c4d1e",
+      "dataTransactionHash": "0xff3fc5a0d88cd46399c406fddf8a6b0944518164a229acfc6486fe9c3b533fa7"
+    },
+    {
+      "bucket": 5,
+      "dataGas": "20058972",
+      "kernelGas": "808213",
+      "kernelTransactionHash": "0xf1d91be0342c61d391f8c598a8cca75a4a4fb928b9d6488c3c38ea03609522a5",
+      "dataTransactionHash": "0x24e0b529ff12a2d408232897661a2946ff66574f5047f3c911fe20a29feec72d"
+    }
+  ],
+  "cases": [
+    {
+      "kind": "synthetic",
+      "bucket": 0,
+      "name": "zero",
+      "inputSha256": "5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+      "expected": "3022",
+      "actual": "3022",
+      "baselineGas": "336949",
+      "gasUsed": "601023",
+      "gasReductionPercent": -78.37,
+      "transactionHash": "0x406e8efce04feda326ce62d2b6d3c66a781956af67d38f8640c08046b4f022b0"
+    },
+    {
+      "kind": "synthetic",
+      "bucket": 0,
+      "name": "sparse",
+      "inputSha256": "0d050fc600da2435bb86e51810270f3d37c721b2d004b4ff0970c0bd401d1cea",
+      "expected": "4122",
+      "actual": "4122",
+      "baselineGas": "772225",
+      "gasUsed": "743370",
+      "gasReductionPercent": 3.73,
+      "transactionHash": "0x39eac180bad99ebdf463753cd07cd3cd60076f8159aa1b6de0c31ce37fc7c5b4"
+    },
+    {
+      "kind": "synthetic",
+      "bucket": 0,
+      "name": "half-sparse",
+      "inputSha256": "3a13376621128921ad73028e4cc22c4d1171f52302830a17ba8ec62852fafe0e",
+      "expected": "20100",
+      "actual": "20100",
+      "baselineGas": "776056",
+      "gasUsed": "747201",
+      "gasReductionPercent": 3.71,
+      "transactionHash": "0xa486ca50704cecf8cad0509ebebcf1256b8a4d2d974825028953a85ecdb5d3a3"
+    },
+    {
+      "kind": "synthetic",
+      "bucket": 0,
+      "name": "dense",
+      "inputSha256": "9137bcb898bc9574ebdb533cb76be7726eef241888ae876a0e7c656ed14e712b",
+      "expected": "39910",
+      "actual": "39910",
+      "baselineGas": "782620",
+      "gasUsed": "753765",
+      "gasReductionPercent": 3.68,
+      "transactionHash": "0x57ed71b1e86440ed544ccd72eb6ab01ff463e3554667893eb6a4740841d8c913"
+    },
+    {
+      "kind": "synthetic",
+      "bucket": 0,
+      "name": "max",
+      "inputSha256": "b7975b373ba36ffaeae620de5275af2d87e9f7bdf47988d02818b5005d27d7ef",
+      "expected": "97391",
+      "actual": "97391",
+      "baselineGas": "782814",
+      "gasUsed": "753959",
+      "gasReductionPercent": 3.68,
+      "transactionHash": "0x3d46d6e4f5056ff70f901b1a4e1dbf0c5dfb0b7f482b163ecca7e191a672d72b"
+    },
+    {
+      "kind": "synthetic",
+      "bucket": 3,
+      "name": "zero",
+      "inputSha256": "5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+      "expected": "233",
+      "actual": "233",
+      "baselineGas": "341854",
+      "gasUsed": "602561",
+      "gasReductionPercent": -76.26,
+      "transactionHash": "0xb9160e58bdc98f6681849daa63d376fe18477d8f234e2972dbe5383163b4b397"
+    },
+    {
+      "kind": "synthetic",
+      "bucket": 3,
+      "name": "sparse",
+      "inputSha256": "0d050fc600da2435bb86e51810270f3d37c721b2d004b4ff0970c0bd401d1cea",
+      "expected": "6466",
+      "actual": "6466",
+      "baselineGas": "772035",
+      "gasUsed": "743180",
+      "gasReductionPercent": 3.73,
+      "transactionHash": "0x68017d22f4b2ae567d489ff9a814c7eda7f62f03b8465edb7ccd027bc4704ed5"
+    },
+    {
+      "kind": "synthetic",
+      "bucket": 3,
+      "name": "half-sparse",
+      "inputSha256": "3a13376621128921ad73028e4cc22c4d1171f52302830a17ba8ec62852fafe0e",
+      "expected": "32970",
+      "actual": "32970",
+      "baselineGas": "776363",
+      "gasUsed": "747508",
+      "gasReductionPercent": 3.71,
+      "transactionHash": "0xbc968845e9417e2353be8defc49afcac37b96b3cb918fe2f9cfb242532659fbf"
+    },
+    {
+      "kind": "synthetic",
+      "bucket": 3,
+      "name": "dense",
+      "inputSha256": "9137bcb898bc9574ebdb533cb76be7726eef241888ae876a0e7c656ed14e712b",
+      "expected": "61913",
+      "actual": "61913",
+      "baselineGas": "782531",
+      "gasUsed": "753676",
+      "gasReductionPercent": 3.68,
+      "transactionHash": "0xbd59040264f9f6d5b1e738028faad9434d60562a8066d4d7175786e06c6f4c96"
+    },
+    {
+      "kind": "synthetic",
+      "bucket": 3,
+      "name": "max",
+      "inputSha256": "b7975b373ba36ffaeae620de5275af2d87e9f7bdf47988d02818b5005d27d7ef",
+      "expected": "131506",
+      "actual": "131506",
+      "baselineGas": "782665",
+      "gasUsed": "753810",
+      "gasReductionPercent": 3.68,
+      "transactionHash": "0x7415cf660d11b46c6294cfdfbf62ea00b5ac276301bb822bb2da2cc7ab9caedb"
+    },
+    {
+      "kind": "synthetic",
+      "bucket": 7,
+      "name": "zero",
+      "inputSha256": "5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+      "expected": "-116",
+      "actual": "-116",
+      "baselineGas": "342030",
+      "gasUsed": "602737",
+      "gasReductionPercent": -76.22,
+      "transactionHash": "0x8506e5f28f5e082e23cf2a101af7ff32dfbf53880ee39abeda8059c3e1beba02"
+    },
+    {
+      "kind": "synthetic",
+      "bucket": 7,
+      "name": "sparse",
+      "inputSha256": "0d050fc600da2435bb86e51810270f3d37c721b2d004b4ff0970c0bd401d1cea",
+      "expected": "13457",
+      "actual": "13457",
+      "baselineGas": "772230",
+      "gasUsed": "743375",
+      "gasReductionPercent": 3.73,
+      "transactionHash": "0x729f11b289421c65544901f5000f57b4a7301b744bb83119755fbabe1bedaa1f"
+    },
+    {
+      "kind": "synthetic",
+      "bucket": 7,
+      "name": "half-sparse",
+      "inputSha256": "3a13376621128921ad73028e4cc22c4d1171f52302830a17ba8ec62852fafe0e",
+      "expected": "34222",
+      "actual": "34222",
+      "baselineGas": "776079",
+      "gasUsed": "747224",
+      "gasReductionPercent": 3.71,
+      "transactionHash": "0x4e87fada503b239397b50faa4d77b690990c5e49483a7307ecb98e1d5113d9fb"
+    },
+    {
+      "kind": "synthetic",
+      "bucket": 7,
+      "name": "dense",
+      "inputSha256": "9137bcb898bc9574ebdb533cb76be7726eef241888ae876a0e7c656ed14e712b",
+      "expected": "46940",
+      "actual": "46940",
+      "baselineGas": "782344",
+      "gasUsed": "753489",
+      "gasReductionPercent": 3.68,
+      "transactionHash": "0x699a2896d6d9652c379604deaff064b045159eb6e1e8a5e8a32a144eba0be339"
+    },
+    {
+      "kind": "synthetic",
+      "bucket": 7,
+      "name": "max",
+      "inputSha256": "b7975b373ba36ffaeae620de5275af2d87e9f7bdf47988d02818b5005d27d7ef",
+      "expected": "92960",
+      "actual": "92960",
+      "baselineGas": "782543",
+      "gasUsed": "753688",
+      "gasReductionPercent": 3.68,
+      "transactionHash": "0x2527e117fa7c598889772f0c7f3236a6f81e89df7594c15ae346347c418c44e0"
+    },
+    {
+      "kind": "native-search-sample",
+      "bucket": 7,
+      "name": "0",
+      "inputSha256": "a905d5dfb577969a45820eab6c4ed39c77f52771fab46e97b736ef73cd98b391",
+      "expected": "406",
+      "actual": "406",
+      "baselineGas": "702424",
+      "gasUsed": "720707",
+      "gasReductionPercent": -2.6,
+      "transactionHash": "0xc59de88d9dacc644dbb8847047696b13f1c7f9294b5394c46e14a1ea361f301a"
+    },
+    {
+      "kind": "native-search-sample",
+      "bucket": 7,
+      "name": "1",
+      "inputSha256": "1277b9a61318273d9181bb6dfee6d759c89fbf0f89eb5a224c2c2bebbde53c5e",
+      "expected": "5490",
+      "actual": "5490",
+      "baselineGas": "712317",
+      "gasUsed": "723866",
+      "gasReductionPercent": -1.62,
+      "transactionHash": "0xebf1d544e8c5b5fa7a7446c5ac1bf37442cf8227b133de5c3ebe1937fdbdd78a"
+    },
+    {
+      "kind": "native-search-sample",
+      "bucket": 6,
+      "name": "2",
+      "inputSha256": "ece05f15206686bf3cf4a2e70dc4ae3f92afe85afba378d249d81ae742fbede0",
+      "expected": "2493",
+      "actual": "2493",
+      "baselineGas": "722601",
+      "gasUsed": "727416",
+      "gasReductionPercent": -0.66,
+      "transactionHash": "0xf05418d9289bc81c1fcf38038f54988728a63b6229fc9f581a787a448084bd63"
+    },
+    {
+      "kind": "native-search-sample",
+      "bucket": 7,
+      "name": "3",
+      "inputSha256": "ae2df1d02a1733a45a6349803d7891970157a6c165fcc5feafe2dbeb28c84b89",
+      "expected": "6937",
+      "actual": "6937",
+      "baselineGas": "732561",
+      "gasUsed": "730642",
+      "gasReductionPercent": 0.26,
+      "transactionHash": "0x5c86f2c41ac68d828809e0d41bf2d6e09902ab2bf62e06bbf6c64796db4bdc2d"
+    },
+    {
+      "kind": "native-search-sample",
+      "bucket": 7,
+      "name": "4",
+      "inputSha256": "a80cd67d189dc2eb6e6b6d5f9932bb215fc18bb352729733b5ab7b6564b4f9ba",
+      "expected": "-1448",
+      "actual": "-1448",
+      "baselineGas": "702582",
+      "gasUsed": "720865",
+      "gasReductionPercent": -2.6,
+      "transactionHash": "0xcce55cc1dd0efd87cf200e56f4b443ff8db21f56701f781ca3cedba558ddec20"
+    },
+    {
+      "kind": "native-search-sample",
+      "bucket": 6,
+      "name": "5",
+      "inputSha256": "8cd5e26f1566ece8ea549c6fd216917b019a2f7a826a074e133b7dbe6b7520b9",
+      "expected": "-558",
+      "actual": "-558",
+      "baselineGas": "742525",
+      "gasUsed": "733872",
+      "gasReductionPercent": 1.16,
+      "transactionHash": "0xe580e77873e8b2435a9e6ed8a056719793133774132892b1949f6fec517c587f"
+    },
+    {
+      "kind": "native-search-sample",
+      "bucket": 5,
+      "name": "6",
+      "inputSha256": "900117918e0322e8d7b4beccc3bede761d4de802a0ce3cdd61ee7b655f201167",
+      "expected": "13770",
+      "actual": "13770",
+      "baselineGas": "737294",
+      "gasUsed": "732008",
+      "gasReductionPercent": 0.71,
+      "transactionHash": "0xa5978de631c2a39ac430c521586f620cc3b20a08cc77191182dd9bcb30e2499b"
+    },
+    {
+      "kind": "native-search-sample",
+      "bucket": 5,
+      "name": "7",
+      "inputSha256": "e20e6cefbc4cb654438b356e533b67936e92fdb363250a8fead3ce890bc88ac9",
+      "expected": "26898",
+      "actual": "26898",
+      "baselineGas": "737744",
+      "gasUsed": "732458",
+      "gasReductionPercent": 0.71,
+      "transactionHash": "0x37adc1daa98982de785b4dfbdbcc9063c2b3c698dc6fe7912a934b93fbfbaf2d"
+    },
+    {
+      "kind": "native-search-sample",
+      "bucket": 6,
+      "name": "8",
+      "inputSha256": "c4faabc071dfb2fe488f6c5d64a18e9bda292499e88de13621304759cecbe0e6",
+      "expected": "168",
+      "actual": "168",
+      "baselineGas": "732800",
+      "gasUsed": "730881",
+      "gasReductionPercent": 0.26,
+      "transactionHash": "0x3ac3b267af0f8dba994b7cdd25d316f136acdb89a33fa1b50c65bd470c72bf67"
+    },
+    {
+      "kind": "native-search-sample",
+      "bucket": 7,
+      "name": "9",
+      "inputSha256": "6ac69e909c14ec5886bb66fa81ace4e9e5d3ac1646a71e11c7ec02a75aa989ba",
+      "expected": "15375",
+      "actual": "15375",
+      "baselineGas": "717453",
+      "gasUsed": "725635",
+      "gasReductionPercent": -1.14,
+      "transactionHash": "0x03154911810ff751f6970fd4251aea750fae1c4f9344cdeb8a7777a71a736b4f"
+    },
+    {
+      "kind": "native-search-sample",
+      "bucket": 6,
+      "name": "10",
+      "inputSha256": "a7e5870ce3d3df61bd25cd08f70d72785d0be56fdd6bd954fc9166e5d2a4ea36",
+      "expected": "1757",
+      "actual": "1757",
+      "baselineGas": "722524",
+      "gasUsed": "727339",
+      "gasReductionPercent": -0.66,
+      "transactionHash": "0xe6436e951fcdd39d2491a849a9134ed05b6c6395ff5439e2a6a7d4661e098a85"
+    },
+    {
+      "kind": "native-search-sample",
+      "bucket": 7,
+      "name": "11",
+      "inputSha256": "08aafdba1c4c8cab196ad9faee6037563ccf7f2a8410314ac3fbdfad3574a898",
+      "expected": "1408",
+      "actual": "1408",
+      "baselineGas": "727321",
+      "gasUsed": "728769",
+      "gasReductionPercent": -0.19,
+      "transactionHash": "0x7019114444027980070817d011f55956920f0fb08a3cf6a907bbf6db3a84d3e5"
+    },
+    {
+      "kind": "native-search-sample",
+      "bucket": 6,
+      "name": "12",
+      "inputSha256": "61b39d2568d2ace0daa4978c086fc3e19257268fa55a149e2698e46f3e7a79d8",
+      "expected": "5118",
+      "actual": "5118",
+      "baselineGas": "737473",
+      "gasUsed": "732187",
+      "gasReductionPercent": 0.71,
+      "transactionHash": "0x4b6ef5d7b50e6931d4c713d977b6fa5c838cfcbe17e8634d3c083c2124639073"
+    },
+    {
+      "kind": "native-search-sample",
+      "bucket": 5,
+      "name": "13",
+      "inputSha256": "c71442471499faa5c56eb46af20a475da81d1490ebaee18ce15ce50e53ded734",
+      "expected": "1249",
+      "actual": "1249",
+      "baselineGas": "732661",
+      "gasUsed": "730742",
+      "gasReductionPercent": 0.26,
+      "transactionHash": "0x30373d3db7f1721deb8581914cc46540856a5e2398d486ef883616e5b694172f"
+    },
+    {
+      "kind": "native-search-sample",
+      "bucket": 6,
+      "name": "14",
+      "inputSha256": "0c2379805c961c92e1f1d5c89275209c86d54198d8976f4c6f2ffa173b1ee868",
+      "expected": "2066",
+      "actual": "2066",
+      "baselineGas": "712605",
+      "gasUsed": "724154",
+      "gasReductionPercent": -1.62,
+      "transactionHash": "0x650e3c72f00299035427115c25aaadf8565906f28522f6cfe3703a109574f60c"
+    },
+    {
+      "kind": "native-search-sample",
+      "bucket": 6,
+      "name": "15",
+      "inputSha256": "a4c1ccbfa343db5a8285b6a0de3f0ce8a7ee62844d3c2c44908125a50788db91",
+      "expected": "-10111",
+      "actual": "-10111",
+      "baselineGas": "717232",
+      "gasUsed": "725414",
+      "gasReductionPercent": -1.14,
+      "transactionHash": "0xf0f96261f17edac0a44f741f27071d5f8852accdfcf2989be339a2a40a2b676b"
+    }
+  ],
+  "completed": true,
+  "actualSampleSummary": {
+    "sampleCount": 16,
+    "minimumReceiptGas": "720707",
+    "maximumReceiptGas": "733872",
+    "meanReceiptGas": "727934",
+    "invocationCount": "1576430",
+    "conditionalComponentScenario": {
+      "minimum": "1136144136010",
+      "maximum": "1156897836960",
+      "caveat": "Invocation count is measured. Gasperinvocation is a16sample range of standalone EVM transactions, not all1.576msearchvectors. Batching/caching/calldata change cost; FT/PSQT/search/TT/checkpoints are excluded. This is neither a measured fullmove bill nor a proven lower/upper bound."
+    }
+  },
+  "passed": true,
+  "localReceipts": 41
+}
