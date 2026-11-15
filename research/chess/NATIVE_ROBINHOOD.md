@@ -5,6 +5,26 @@ Chain**, with 25,000 GH0ST entry and 100,000 GH0ST total payout for checkmating
 the bot. Pool top-ups remain manual. No paid public launch or spending has been
 performed by this research.
 
+The additional [ICP comparison](icp-costs/) was requested after the native costs
+were measured. It prices the already tested ICP mechanism and stronger search
+budgets; it is an option under comparison, not approval to replace the native
+target or spend existing project funds.
+
+## Completed baseline finding
+
+The corrected full-game baseline completed all six 12m-node White challenges
+against 3m-node Black with per-decision cache clearing: five legal draws and one
+White checkmate, after 195 plies in the Larsen opening. White never elected an
+optional draw claim. Both independent python-chess and chess.js replays agree
+with the completed results. The six 24m-node jobs were stopped unfinished to
+prioritize a repair and contribute no wins or draws to the completed fraction.
+
+The unchanged reference has a known winning transcript and is unsuitable for
+automatic repeat prizes. Separate candidates test 10m-node defence and retaining
+search state within one game. A changed early move is not proof of a fixed game;
+the candidate must finish against the stronger challenger. Full results and
+uncompleted records remain separate in the [benchmark evidence](benchmarks/results/).
+
 ## What is being tested
 
 1. [Full games against stronger challengers](benchmarks/README.md) use an optimized

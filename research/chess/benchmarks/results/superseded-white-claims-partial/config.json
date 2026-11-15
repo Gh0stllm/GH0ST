@@ -1,0 +1,109 @@
+{
+  "scope": "Native-proxy strength benchmark only; not Solidity, ICP full-game execution, public deployment or paid play",
+  "created_at": "2026-11-15T07:45:54.668953+00:00",
+  "engine_binary_sha256": "8738d7d5720ef805849c7f09f43e54aa3b1fc9a6c3b0e23e582106e01aa287e0",
+  "stockfish_commit": "edb0d9db6731067ec50ce619ff372b463bc4dd5d",
+  "nnue_sha256": "1a298aa575a085434d29027978dc36867fe9c5bcea9376654b7a8eba1e52dfc2",
+  "options": {
+    "NumaPolicy": "none",
+    "Threads": 1,
+    "Hash": 128,
+    "Skill Level": 20,
+    "UCI_LimitStrength": false,
+    "SyzygyPath": ""
+  },
+  "gh0st_policy": "Black, fixed3m nodes, new UCI game token clears TT+histories every decision",
+  "challenger_policy": "White,12m/24m nodes with normal retained TT+histories, fullskill,1thread,128MiBhash",
+  "first_move_policy": "White first move is fixed from six disclosed legal choices; no Black move is forced; every game starts from the standard position",
+  "termination_policy": "Only legal checkmate wins. Automatic draws and valid claims separate. No score/resign/clock/maxply adjudication is recorded as a draw or checkmate.",
+  "workers": 4,
+  "work_budget_minutes": 30.0,
+  "max_plies": 1024,
+  "python_chess": "1.11.2",
+  "jobs": [
+    {
+      "id": "12m-king-pawn",
+      "opening": "king-pawn",
+      "white_first_move": "e2e4",
+      "challenger_nodes": 12000000,
+      "ghost_nodes": 3000000
+    },
+    {
+      "id": "12m-queen-pawn",
+      "opening": "queen-pawn",
+      "white_first_move": "d2d4",
+      "challenger_nodes": 12000000,
+      "ghost_nodes": 3000000
+    },
+    {
+      "id": "12m-english",
+      "opening": "english",
+      "white_first_move": "c2c4",
+      "challenger_nodes": 12000000,
+      "ghost_nodes": 3000000
+    },
+    {
+      "id": "12m-reti",
+      "opening": "reti",
+      "white_first_move": "g1f3",
+      "challenger_nodes": 12000000,
+      "ghost_nodes": 3000000
+    },
+    {
+      "id": "12m-kings-fianchetto",
+      "opening": "kings-fianchetto",
+      "white_first_move": "g2g3",
+      "challenger_nodes": 12000000,
+      "ghost_nodes": 3000000
+    },
+    {
+      "id": "12m-larsen",
+      "opening": "larsen",
+      "white_first_move": "b2b3",
+      "challenger_nodes": 12000000,
+      "ghost_nodes": 3000000
+    },
+    {
+      "id": "24m-king-pawn",
+      "opening": "king-pawn",
+      "white_first_move": "e2e4",
+      "challenger_nodes": 24000000,
+      "ghost_nodes": 3000000
+    },
+    {
+      "id": "24m-queen-pawn",
+      "opening": "queen-pawn",
+      "white_first_move": "d2d4",
+      "challenger_nodes": 24000000,
+      "ghost_nodes": 3000000
+    },
+    {
+      "id": "24m-english",
+      "opening": "english",
+      "white_first_move": "c2c4",
+      "challenger_nodes": 24000000,
+      "ghost_nodes": 3000000
+    },
+    {
+      "id": "24m-reti",
+      "opening": "reti",
+      "white_first_move": "g1f3",
+      "challenger_nodes": 24000000,
+      "ghost_nodes": 3000000
+    },
+    {
+      "id": "24m-kings-fianchetto",
+      "opening": "kings-fianchetto",
+      "white_first_move": "g2g3",
+      "challenger_nodes": 24000000,
+      "ghost_nodes": 3000000
+    },
+    {
+      "id": "24m-larsen",
+      "opening": "larsen",
+      "white_first_move": "b2b3",
+      "challenger_nodes": 24000000,
+      "ghost_nodes": 3000000
+    }
+  ]
+}

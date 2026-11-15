@@ -1,6 +1,14 @@
 # Full-game adversarial strength benchmark
 
-Status: a bounded full-game run is in progress. This tests a verified native CPU
+Status: the original clear-cache baseline is frozen after **six complete games**
+against 12m-node White: **five legal draws and one White checkmate**. The Larsen
+line checkmated GH0ST at ply 195 (`98.Qa8#`). Four active 24m games and two queued
+24m games were stopped as unfinished to prioritise repair; they are not draws.
+See [the operator stop note](results/baseline-3m/STOP-NOTE.md) and complete records.
+A single known winning line is material for a deterministic repeated-prize bot,
+regardless of a low selected-suite average. Paid activation remains closed.
+
+This tests a verified native CPU
 proxy of the current **Stockfish 19 / full NNUE / 3m-node / Black** search policy.
 It does not establish the strength, gas cost or correctness of a Solidity engine.
 It is not a public ICP game or a prize payout.
@@ -63,3 +71,27 @@ node budgets, cache policy, selected opening choices and stopping conditions.
 Large binaries/environments remain ignored; source and completed evidence are public.
 
 The superseded incomplete run is preserved under `results/superseded-white-claims-partial/`. It completed zero games and contributes no win/draw/checkmate counts. It was stopped to remove voluntary White draw claims and restart with the stronger bounty-hunter policy.
+
+## Conditional repair experiment
+
+`run_repair.py` refuses an unfinished/drawn baseline and is now running against the actual Larsen checkmate. If a
+legal White checkmate is found, it independently compares a 10m-node native defence
+with the direct C ABI on that opening, replays the known attack only until the first
+new Black move, and starts a separate fresh full game against the 24m challenger.
+It preserves the baseline and does not alter an engine/canister/configuration in
+production. A first divergence is explicitly **not** a repair proof, and a single
+fresh game is not a prize-safety guarantee. It should run only after a real mate,
+with worker capacity coordinated separately. Two separate native candidates are in progress:
+
+- `results/repair-10m-larsen/`: Black 10m with per-decision clear, against White
+  24m retained. The direct C ABI 10m reference matched exactly; the old attack first
+  diverged at Black ply 6 (`...Nf6` instead of `...d5`).
+- `results/repair-retained3m-vs12m-larsen/`: Black still 3m, but retaining its own
+  TT and histories **within one isolated game**, against White 12m retained. The
+  original first empty-cache response matched exactly; the old attack first
+  diverged at Black ply 8 (`...Bd6` instead of `...e4`). This is a changed cache
+  policy that has not been implemented or equivalence-tested on ICP or Solidity.
+
+Both old-line divergences are preliminary mechanism observations. The full new
+matches are required before reporting even a case-specific repair outcome. Neither
+candidate is selected for production, and neither establishes general prize safety.
