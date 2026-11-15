@@ -1,15 +1,18 @@
 {
   "name": "gh0st-chess-research",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
-  "description": "Strong onchain chess challenge with explicitly unfunded GH0ST entry and prize contracts.",
+  "description": "ICP Stockfish brain with authoritative Robinhood chess and reserved one-million GH0ST checkmate rewards.",
   "scripts": {
     "build:frontend": "node frontend/build.mjs",
     "test:frontend": "node --test frontend/test.mjs && node frontend/test-dom.mjs",
     "test:escrow": "node evm-tests/vault.test.mjs",
     "compile:escrow": "node evm/compile.mjs",
-    "check:token": "node ops/read-bindings.mjs"
+    "check:token": "node ops/read-bindings.mjs",
+    "compile:hybrid": "node evm/compile-hybrid.mjs",
+    "test:hybrid": "node evm-tests/hybrid.test.mjs",
+    "test:brain": "cargo test --locked --manifest-path hybrid-brain/Cargo.toml --features canister"
   },
   "devDependencies": {
     "esbuild": "0.25.12",

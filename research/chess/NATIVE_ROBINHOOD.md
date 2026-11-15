@@ -1,3 +1,5 @@
+> Historical alternative: the user selected ICP brain + Robinhood game on 2026-11-15. See [current architecture](spec/HYBRID.md). This file preserves native-engine feasibility measurements.
+
 # Native Robinhood chess target
 
 The user has selected **the game and engine natively in Solidity on Robinhood
