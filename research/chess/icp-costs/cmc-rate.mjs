@@ -3,8 +3,14 @@ import { Actor, HttpAgent, Certificate, Cbor, reconstruct, lookup_path, lookupRe
 import { IDL } from '@icp-sdk/core/candid';
 import { Principal } from '@icp-sdk/core/principal';
 import { createHash } from 'node:crypto';
-import { writeFileSync } from 'node:fs';
+import { writeFileSync, mkdirSync } from 'node:fs';
+import { resolve, join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import assert from 'node:assert/strict';
+if(process.argv.includes('--help')){console.log('Read-only certified CMC query. Usage: node cmc-rate.mjs [--out-dir directory]');process.exit(0);}
+const outputIndex=process.argv.indexOf('--out-dir');
+if(outputIndex>=0&&!process.argv[outputIndex+1])throw Error('--out-dir requires a directory');
+const outputDir=outputIndex<0?dirname(fileURLToPath(import.meta.url)):resolve(process.argv[outputIndex+1]);
 const id='rkp4c-7iaaa-aaaaa-aaaca-cai';
 const canisterId=Principal.fromText(id);
 const rateType=IDL.Record({timestamp_seconds:IDL.Nat64,xdr_permyriad_per_icp:IDL.Nat64});
@@ -26,6 +32,7 @@ const timestamp=Number(response.data.timestamp_seconds),rate=BigInt(response.dat
 assert.ok(rate>0n);assert.ok(Math.abs(Date.now()/1000-timestamp)<3600,'Conversion rate too old');
 const sha=b=>createHash('sha256').update(Buffer.from(b)).digest('hex');
 const record={scope:'Anonymous read-only CMC conversion query; BLS certificate, witness root and exact rate leaf verified against SDK-pinned mainnet root key. No mint or transfer.',checkedAt:new Date().toISOString(),cmcCanister:id,host:'https://icp-api.io',sdk:'@icp-sdk/core 6.1.1',querySignatureVerification:true,blsCertificateVerified:true,witnessRootVerified:true,returnedRateLeafVerified:true,pinnedMainnetRootKeySha256:sha(agent.rootKey),rateTimestampSeconds:timestamp,rateTimestampUTC:new Date(timestamp*1000).toISOString(),xdrPermyriadPerIcp:rate.toString(),xdrPerIcp:Number(rate)/10000,cyclesPerXdr:'1000000000000',cyclesPerIcp:(rate*1000000000000n/10000n).toString(),certificateSha256:sha(response.certificate),witnessRootSha256Hex:Buffer.from(digest).toString('hex'),sources:['https://docs.internetcomputer.org/references/system-canisters/','https://github.com/dfinity/ic/blob/master/rs/nns/cmc/cmc.did']};
-writeFileSync(new URL('./cmc-rate.json',import.meta.url),JSON.stringify(record,null,2)+'\n');
-writeFileSync(new URL('./cmc-witness.json',import.meta.url),JSON.stringify({canisterId:id,checkedAt:record.checkedAt,certificateBase64:Buffer.from(response.certificate).toString('base64'),hashTreeBase64:Buffer.from(response.hash_tree).toString('base64'),rateCandidBase64:Buffer.from(encoded).toString('base64')},null,2)+'\n');
+mkdirSync(outputDir,{recursive:true});
+writeFileSync(join(outputDir,'cmc-rate.json'),JSON.stringify(record,null,2)+'\n');
+writeFileSync(join(outputDir,'cmc-witness.json'),JSON.stringify({canisterId:id,checkedAt:record.checkedAt,certificateBase64:Buffer.from(response.certificate).toString('base64'),hashTreeBase64:Buffer.from(response.hash_tree).toString('base64'),rateCandidBase64:Buffer.from(encoded).toString('base64')},null,2)+'\n');
 console.log(JSON.stringify(record,null,2));

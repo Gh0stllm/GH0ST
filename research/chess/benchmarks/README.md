@@ -136,3 +136,22 @@ checkmate probability or guaranteed prize safety is inferred from two games.
 ```sh
 .cache/venv/bin/python run_tightest.py --openings larsen,king-pawn --workers 2
 ```
+
+Both higher-budget games have completed and all processes stopped:
+
+| White choice | Black / White nodes | Legal outcome | Plies |
+|---|---:|---|---:|
+| `1.b3` | 24m retained / 48m retained | Black current-position threefold claim, draw | 65 |
+| `1.e4` | 24m retained / 48m retained | Black current-position threefold claim, draw | 81 |
+
+Both complete records/PGNs passed offline legal replay, FEN/SAN and node-budget
+checks. The binary and all three policy-source hashes still match the initial
+configuration. Stable UCI game-token runtime assertions passed after all 144
+searched decisions; Hash128/Threads1/full skill remained fixed. See
+[legal replay validation](results/retained24m-vs48m/validation.json) and
+[policy/source evidence](results/retained24m-vs48m/policy-validation.json).
+
+The observed result is **zero White checkmates in these two selected native games**.
+It is not an Elo, calibrated public win rate, proof against all prepared lines, or
+whole-game ICP/Solidity execution. No prize configuration is deployed or activated
+by this benchmark. Prior failed and unfinished policies remain separate evidence.

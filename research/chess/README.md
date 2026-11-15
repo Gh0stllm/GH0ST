@@ -22,7 +22,7 @@ The original 3m-node, cache-cleared reference completed six games against 12m Wh
 
 The improved 3m per-game retained policy drew fresh Larsen games against 12m and 24m challengers (63/57 plies). Four consecutive decisions and a new-game reset matched native execution on actual local ICP, including the changed defence at ply 8. This is case-specific repair evidence, not a population win probability.
 
-The tougher 24m retained candidate is undergoing actual local ICP API/search validation and full native games against 48m White. In-progress games are not draws or completed strength evidence. [Benchmarks and complete records](benchmarks/README.md).
+The tougher 24m retained candidate passed actual local ICP search/coordinator tests. Two complete native games against 48m White (Larsen and e4) ended in legal Black threefold draws at 65 and 81 plies. These two selected openings do not establish public win odds. [Benchmarks and complete records](benchmarks/README.md).
 
 At 25,000 entry and 1,000,000 payout, entry fees cover prizes at a **2.5% player win rate before execution costs**. That arithmetic is not an estimated win rate or profitability claim. Players may use engines and automation. A repeatable winning strategy could be reused, so stronger search alone does not establish pool safety.
 
@@ -36,6 +36,8 @@ At 25,000 entry and 1,000,000 payout, entry fees cover prizes at a **2.5% player
 - [Read-only deployment preflight](ops/hybrid/): current RH pricing, token identity, CMC rate and launch planning. Preflight sends no transaction.
 
 The full NNUE file is 98,511,183 bytes; warm 3m ICP execution used about 608 MiB resident memory. Wasm file size is not live memory. Large model/tool/build files are ignored; pinned sources, GPL notices, patches, manifests and test evidence are retained.
+
+**Current public-network blocker:** dynamic `latest` RPC responses must be reconciled safely across ICP HTTPS replicas. Local deterministic RPC mocks do not prove that agreement. Paid deployment/activation stays gated while the request strategy is hardened.
 
 Launch requires completed 24m integration and broader strength checks, reviewed canister hashes/controllers/signer, exact paid deployment approval, receipt-backed RH deployment, operating cycles, full prize funding and an end-to-end paid pilot/refund. A preview page does not satisfy these gates.
 

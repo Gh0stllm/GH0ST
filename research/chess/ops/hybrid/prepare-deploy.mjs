@@ -24,7 +24,7 @@ try{
  const tx=await new ContractFactory(artifact.abi,artifact.bytecode).getDeployTransaction(token,owner,attestor,b.engineConfigHash);
  const estimate=BigInt(await rpc('eth_estimateGas',[{from:owner,data:tx.data,value:'0x0'}]));
  const gas=(estimate*125n+99n)/100n;const maxFee=BigInt(price)*2n;const maxCost=gas*maxFee;
- must(maxCost<=500_000_000_000_000n,'Deployment fee would exceed the entire proposed 0.0005 ETH gas cap');
+ must(maxCost<=500_000_000_000_000n,'Deployment fee would exceed the 0.0005 ETH deployment component cap');
  const out={scope:'Unsigned creation transaction for human review; no signing, broadcasting or approval implied',chainId:4663,from:owner,to:null,nonce:Number(BigInt(pending)),predictedContract:getCreateAddress({from:owner,nonce:BigInt(pending)}),constructor:{token,poolOwner:owner,attestor,engineConfigHash:b.engineConfigHash},entryGH0ST:'25000',fixedPrizeGH0ST:'1000000',automaticPauseAfterHumanCheckmate:true,startsPaused:true,creationCodeHash:keccak256(tx.data),estimateGas:estimate.toString(),maxGasCostETH:formatEther(maxCost),transaction:{type:2,chainId:4663,nonce:Number(BigInt(pending)),gasLimit:gas.toString(),maxFeePerGas:maxFee.toString(),maxPriorityFeePerGas:'0',value:'0',data:tx.data},sourceArtifact:'evm/hybrid-artifacts/hybridchessgame.json',transactionsBroadcast:0};
  console.log(JSON.stringify(out,null,2));
 }catch(e){console.error(/RPC|chain|runtime|policy|pins|nonce|fee|hash|bootstrap|signer|canister/.test(e.message)?e.message:'Unsigned preparation failed; no funds moved');process.exitCode=1;}

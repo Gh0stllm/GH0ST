@@ -23,7 +23,7 @@ Controller upgrades remain a disclosed trust boundary. The engine faults an acti
 
 `preflight.mjs` only reads RH chain identity, token identity, wallet balances, current gas and constructor estimate. The constructor signer/config are explicit nonzero **pricing stand-ins** until actual ICP derivation. Refresh the exact real constructor estimate before broadcast.
 
-`costs.mjs` uses actual local 24m search debit, the certified CMC conversion and clean actual engine/coordinator debit plus the additional relay-transaction threshold signature. At the saved rate, one measured search plus signature is about 0.778 ICP; 40 bot decisions about 31.14 ICP. This excludes coordinator/HTTPS work, deployment, storage/reserves, retries, RH moves and position-dependent variation. The old 3m/10m cost tables remain historical.
+`costs.mjs` uses actual local 24m search debit, the certified CMC conversion and clean actual engine/coordinator debit plus the separately tested autonomous relay debit. At the saved rate, one measured search plus signature is about 0.783 ICP; 40 bot decisions about 31.32 ICP. This excludes coordinator/HTTPS work, deployment, storage/reserves, retries, RH moves and position-dependent variation. The old 3m/10m cost tables remain historical.
 
 Reviewable proposed launch caps (not authorization):
 
@@ -31,7 +31,7 @@ Reviewable proposed launch caps (not authorization):
 - Up to **0.003 ETH** for deployment, exact token approvals, manual prize funding, one bounded pilot and entry activation. This includes a 0.0025 ETH reserve for the dedicated autonomous relay; unused gas remains in that canister-controlled wallet.
 - **1,000,000 GH0ST** placed in prize escrow, plus at most **25,000 GH0ST** for the project's pilot entry. Pilot proceeds after one genuine full-budget Black reply, then the original wallet resigns; entry remains in the project-owned pool. A real human checkmate is not fabricated for a public pilot.
 
-The last read-only ICP deployment-account balance was 15.13196820 ICP. A 60 ICP allocation therefore requires additional funding; refresh balances and conversion before any action. Existing Qwen funding is not a chess budget. The funding account is ICP ledger account `44b41592844fd20127283d0ac8382ae5df0f9536f944e4519fdc19bebbc695fe`.
+The last read-only ICP deployment-account balance was 15.13196820 ICP. A 60 ICP allocation therefore requires about 45 ICP of additional funding; refresh balances and conversion before any action. After approval, the current balance can cover a smaller initial deployment/pilot allocation while public entries remain paused until the intended operating balance is funded. Existing Qwen funding is not a chess budget. The funding account is ICP ledger account `44b41592844fd20127283d0ac8382ae5df0f9536f944e4519fdc19bebbc695fe`.
 
 These caps still require the user's explicit spending/custody approval after the final integration evidence is ready. No deployment action should infer that approval from a prize preference or website publication.
 

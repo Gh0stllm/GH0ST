@@ -1,0 +1,19 @@
+[package]
+name = "gh0st-chess-frozen-coordinator-fixture"
+version = "0.1.0"
+edition = "2024"
+license = "GPL-3.0-or-later"
+publish = false
+[lib]
+crate-type = ["cdylib"]
+[dependencies]
+gh0st-chess-hybrid-brain = { path = "../../../hybrid-brain" }
+gh0st-chess-hybrid-relay = { path = "../.." }
+candid = "=0.10.40"
+serde = { version = "=1.0.228", features = ["derive"] }
+ic-cdk = "=0.20.3"
+[profile.release]
+lto = true
+codegen-units = 1
+opt-level = "z"
+panic = "abort"

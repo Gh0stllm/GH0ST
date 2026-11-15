@@ -1,0 +1,27 @@
+// Independent ethers decoding of the completed isolated relay evidence.
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import { createHash } from 'node:crypto';
+import { ethers } from '../../evm/lib.mjs';
+const relay=JSON.parse(fs.readFileSync(new URL('../evidence/relay-end-to-end.json',import.meta.url)));
+const bytes=fs.readFileSync(new URL('../../hybrid-brain/evidence/end-to-end.json',import.meta.url));
+const genuine=JSON.parse(bytes);
+assert.equal(relay.passed,true);assert.equal(relay.genuine_result_source_sha256,createHash('sha256').update(bytes).digest('hex'));
+assert.equal(relay.broadcast_transactions.length,1);const tx=relay.broadcast_transactions[0];
+const abi=['function playBotMove((bytes32 gameId,address player,uint32 ply,bytes32 positionHash,bytes32 transcriptHash,uint16 encodedMove,bytes32 engineConfigHash,uint64 validUntil) m,bytes signature)'];
+const iface=new ethers.Interface(abi),decoded=iface.decodeFunctionData('playBotMove',tx.data),m=genuine.signed_move.move;
+const expected=[m.game_id,m.player,m.ply,m.position_hash,m.transcript_hash,m.encoded_move,m.engine_config_hash,m.valid_until];
+for(let i=0;i<8;i++)assert.equal(String(decoded[0][i]).toLowerCase(),String(expected[i]).toLowerCase());
+assert.equal(decoded[1],genuine.signed_move.signature);
+assert.equal(iface.encodeFunctionData('playBotMove',[expected,decoded[1]]),tx.data);
+assert.equal(BigInt(tx.value),0n);assert.equal(BigInt(tx.chainId),4663n);assert.equal(tx.type,2);assert.equal(tx.nonce,0);
+assert.equal(tx.from.toLowerCase(),relay.relayer_address.toLowerCase());assert.equal(tx.to.toLowerCase(),relay.local_evm_deployment.contract.toLowerCase());
+const receipt=relay.confirmed_receipt;
+assert.equal(receipt.transactionHash,tx.hash);assert.equal(receipt.status,'0x1');assert.equal(receipt.from.toLowerCase(),tx.from.toLowerCase());
+assert.equal(BigInt(receipt.gasUsed)*BigInt(receipt.effectiveGasPrice),BigInt(relay.source_policy.lifetime_gas_budget_wei)-BigInt(relay.relay_final_status.remaining_gas_budget_wei));
+const event=new ethers.Interface(['event MovePlayed(bytes32 indexed gameId,uint32 indexed ply,uint16 encodedMove,bytes32 positionHash,bytes32 transcriptHash)']);
+const move=receipt.logs.map(l=>{try{return event.parseLog(l);}catch{return null;}}).find(Boolean);
+assert.ok(move);assert.equal(move.args.gameId,m.game_id);assert.equal(move.args.ply,2n);assert.equal(move.args.encodedMove,3364n);
+const proof={scope:'independent ethers decoding of isolated timer-relay transaction and native MovePlayed receipt; not a public receipt',passed:true,relayEvidenceSha256:createHash('sha256').update(fs.readFileSync(new URL('../evidence/relay-end-to-end.json',import.meta.url))).digest('hex'),transactionHash:tx.hash,function:'playBotMove',chainId:4663,value:'0',nonce:0,move:'e7e5',eventPly:2,genuineSignatureAndCalldataExact:true};
+fs.writeFileSync(new URL('../evidence/relay-evidence-verification.json',import.meta.url),JSON.stringify(proof,null,2)+'\n');
+console.log(JSON.stringify(proof,null,2));

@@ -1,0 +1,118 @@
+type BotMove = record {
+  ply : nat32;
+  transcript_hash : blob;
+  engine_config_hash : blob;
+  player : blob;
+  game_id : blob;
+  valid_until : nat64;
+  position_hash : blob;
+  encoded_move : nat16;
+};
+type Config = record {
+  confirmations : nat64;
+  max_gas_limit : nat64;
+  game_runtime_hash : blob;
+  engine_config_hash : blob;
+  game_contract : blob;
+  max_tx_cost_wei : nat;
+  lifetime_gas_budget_wei : nat;
+  idle_poll_seconds : nat64;
+  rpc_url : text;
+  coordinator_module_hash : blob;
+  key_name : text;
+  bot_attestor : blob;
+  max_fee_per_gas_wei : nat64;
+  coordinator : principal;
+};
+// # HTTP Header.
+// 
+// Represents a HTTP header.
+// 
+// See [`HttpRequestArgs::headers`] and [`HttpRequestResult::headers`].
+type HttpHeader = record {
+  // Value of the header.
+  value : text;
+  // Name of the header.
+  name : text;
+};
+// # HTTP Request Result
+// 
+// Result type of [`http_request`](https://internetcomputer.org/docs/current/references/ic-interface-spec/#ic-http_request).
+type HttpRequestResult = record {
+  // The response status (e.g. 200, 404).
+  status : nat;
+  // The response’s body.
+  body : blob;
+  // List of HTTP response headers and their corresponding values.
+  headers : vec HttpHeader;
+};
+type Intent = record {
+  ply : nat32;
+  raw : blob;
+  hash : blob;
+  transaction : Transaction;
+  broadcasts : nat32;
+  created_at : nat64;
+  game_id : blob;
+  signed_move : SignedMove;
+  broadcast_at : nat64;
+  phase : text;
+};
+type Result = variant { Ok : Status; Err : text };
+type Result_1 = variant { Ok : text; Err : text };
+type SignedMove = record { signature : blob; move : BotMove };
+type Status = record {
+  last_error : opt text;
+  relayer_address : text;
+  blockers : vec text;
+  bot_attestor_address : text;
+  pending_hash : text;
+  next_tick_at : nat64;
+  gas_balance_wei : nat;
+  pending : bool;
+  game_contract : text;
+  remaining_gas_budget_wei : nat;
+  last_checked_at : nat64;
+  enabled : bool;
+  cycles : nat;
+  chain_id : nat64;
+  coordinator_module_hash : blob;
+  ready : bool;
+  completed_transactions : nat64;
+  coordinator : principal;
+};
+type Transaction = record {
+  to : blob;
+  max_priority_fee_per_gas : nat64;
+  data : blob;
+  max_fee_per_gas : nat64;
+  nonce : nat64;
+  gas_limit : nat64;
+};
+// # Transform Args.
+// 
+// ```text
+// record {
+// response : http_response;
+// context : blob;
+// }
+// ```
+// 
+// See [`TransformContext`].
+type TransformArgs = record {
+  // Context for response transformation
+  context : blob;
+  // Raw response from remote service, to be transformed
+  response : HttpRequestResult;
+};
+service : (Config) -> {
+  crank : () -> (Result);
+  get_pending : () -> (opt Intent) query;
+  get_status : () -> (Status) query;
+  prepare_signer : () -> (Result_1);
+  // Receipt-only recovery of an existing intent. It never signs, broadcasts, changes a
+  // transaction, increments a nonce or re-enables an operator-disabled relay.
+  reconcile_pending : () -> (Result);
+  set_enabled : (bool) -> (Result);
+  transform : (TransformArgs) -> (HttpRequestResult) query;
+}

@@ -1,6 +1,6 @@
 {
-  "scope": "Planning scenarios using clean 13-node local engine/coordinator execution and one additional official ECDSA relay fee; not measured whole-game or complete relay spending",
-  "generatedAt": "2026-11-15T12:48:15.262Z",
+  "scope": "Planning scenarios using clean 13-node local engine/coordinator execution and actual frozen-result autonomous relay execution; not measured whole-game or complete relay spending",
+  "generatedAt": "2026-11-15T13:04:05.766Z",
   "policy": {
     "stockfish": "19",
     "nodes": 24000000,
@@ -10,14 +10,14 @@
     "fixedPrizeGH0ST": "1000000",
     "winnerAutoPausesNewEntries": true
   },
-  "cmcRateAt": "2026-11-15T12:14:00.000Z",
-  "cyclesPerICP": "1677000000000",
+  "cmcRateAt": "2026-11-15T12:59:00.000Z",
+  "cyclesPerICP": "1674100000000",
   "measuredSearch": {
     "initialPosition": "Standard starting FEN and complete e2e4 history, actual coordinator plus full Stockfish",
     "nodes": 24000033,
     "depth": 38,
     "cycles": "1239070157514",
-    "ICP": 0.7388611553452594,
+    "ICP": 0.7401410653569082,
     "steps": 240,
     "localWallSeconds": 298.89244812499965,
     "includes": "warm full-budget engine updates; reserved-cycle increase was zero",
@@ -25,62 +25,63 @@
   },
   "coordinatorAndMoveSignature": {
     "cycles": "39999232674",
-    "ICP": 0.023851659316636853,
+    "ICP": 0.023892976927304223,
     "includes": "verified RH requests, progress calls, one threshold move signature and active-readiness refresh"
   },
   "coldReservation": {
     "cycles": "5530082592",
-    "ICP": 0.0032976044078711986
+    "ICP": 0.0033033167624395197
   },
-  "additionalRelayTransactionSignature": {
-    "cycles": "26153846153",
-    "ICP": 0.01559561487954681,
-    "source": "https://docs.internetcomputer.org/references/cycle-costs/"
+  "autonomousRelay": {
+    "cycles": "31288547702",
+    "ICP": 0.018689772237022877,
+    "includes": "second threshold signature, polling and scoped fault/receipt recovery; frozen genuine model result",
+    "sourceEvidence": "../../hybrid-relay/evidence/relay-end-to-end.json"
   },
-  "perBotDecisionWarmEngineCoordinatorAndAdditionalRelaySignatureICP": 0.7783084295414431,
+  "perRepresentativeTurnICP": 0.7827238145212353,
   "scenarios": [
     {
       "botDecisions": 40,
       "warmSearchCycles": "49562806300560",
       "coordinatorAndMoveSignatureCycles": "1599969306960",
-      "additionalRelaySignatureCycles": "1046153846120",
+      "autonomousRelayCycles": "1251541908080",
       "oneColdReservationCycles": "5530082592",
-      "modeledICP": 31.135634786065594
+      "modeledICP": 31.312255897611852
     },
     {
       "botDecisions": 60,
       "warmSearchCycles": "74344209450840",
       "coordinatorAndMoveSignatureCycles": "2399953960440",
-      "additionalRelaySignatureCycles": "1569230769180",
+      "autonomousRelayCycles": "1877312862120",
       "oneColdReservationCycles": "5530082592",
-      "modeledICP": 46.70180337689445
+      "modeledICP": 46.96673218803656
     },
     {
       "botDecisions": 80,
       "warmSearchCycles": "99125612601120",
       "coordinatorAndMoveSignatureCycles": "3199938613920",
-      "additionalRelaySignatureCycles": "2092307692240",
+      "autonomousRelayCycles": "2503083816160",
       "oneColdReservationCycles": "5530082592",
-      "modeledICP": 62.26797196772331
+      "modeledICP": 62.62120847846126
     },
     {
       "botDecisions": 100,
       "warmSearchCycles": "123907015751400",
       "coordinatorAndMoveSignatureCycles": "3999923267400",
-      "additionalRelaySignatureCycles": "2615384615300",
+      "autonomousRelayCycles": "3128854770200",
       "oneColdReservationCycles": "5530082592",
-      "modeledICP": 77.83414055855218
+      "modeledICP": 78.27568476888597
     }
   ],
   "rhDeployment": {
     "estimateGas": "3170836",
-    "estimateETH": "0.00006354355344",
-    "at": "2026-11-15T12:28:07.956Z",
+    "estimateETH": "0.0000640508872",
+    "at": "2026-11-15T12:57:44.182Z",
     "pricingSignerIsStandIn": true
   },
   "creationOnly": {
     "three13NodeCanistersCycles": "1500000000000",
-    "ICP": 0.8944543828264758,
+    "ICP": 0.8960038229496445,
     "excludes": "chunk upload, installation, freezing/operating reserves, ledger fees"
   },
   "proposedFunding": {
