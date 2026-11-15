@@ -66,6 +66,7 @@ fn response(state: &State, id: Hash, uci: &str) -> SearchResponse {
         actual_nodes: 1_000,
         depth: 10,
         instructions: 10_000,
+        stop_reason: "node_budget".into(),
         engine_commit: game.engine.stockfish_commit.clone(),
         nnue_sha256: game.engine.nnue_sha256.clone(),
     }
@@ -268,6 +269,50 @@ fn illegal_or_wrong_identity_engine_is_refundable_abort() {
         assert_eq!(game.result_material().unwrap().result, 7);
         assert_eq!(game.moves.len(), 1);
     }
+}
+
+#[test]
+fn under_budget_or_unmeasured_engine_reply_aborts_unless_pinned_max_depth_was_reached() {
+    for case in [
+        "too_few_nodes",
+        "no_instructions",
+        "false_max_depth",
+        "unknown_stop",
+    ] {
+        let (mut state, entry) = setup();
+        let id = entry.game_id;
+        human(&mut state, id, "e2e4");
+        state.begin_search(id, NOW + 2).unwrap();
+        let mut answer = response(&state, id, "e7e5");
+        match case {
+            "too_few_nodes" => answer.actual_nodes = 1,
+            "no_instructions" => answer.instructions = 0,
+            "false_max_depth" => {
+                answer.actual_nodes = 1;
+                answer.stop_reason = "max_depth".into();
+            }
+            "unknown_stop" => answer.stop_reason = "clock".into(),
+            _ => unreachable!(),
+        }
+        let game = state.complete_search(id, answer, NOW + 3).unwrap();
+        assert_eq!(game.result_material().unwrap().result, 7, "{case}");
+        assert_eq!(game.moves.len(), 1);
+    }
+    let (mut state, entry) = setup();
+    let id = entry.game_id;
+    human(&mut state, id, "e2e4");
+    state.begin_search(id, NOW + 2).unwrap();
+    let mut answer = response(&state, id, "e7e5");
+    answer.actual_nodes = 500;
+    answer.depth = STOCKFISH_MAX_DEPTH;
+    answer.stop_reason = "max_depth".into();
+    let game = state.complete_search(id, answer, NOW + 3).unwrap();
+    assert_eq!(game.phase, Phase::WaitingHuman);
+    assert_eq!(game.moves.len(), 2);
+    assert_eq!(
+        game.moves[1].engine.as_ref().unwrap().stop_reason,
+        "max_depth"
+    );
 }
 
 #[test]

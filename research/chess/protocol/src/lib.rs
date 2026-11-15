@@ -25,6 +25,7 @@ pub const PRODUCTION_READY: bool = false;
 pub const STOCKFISH_COMMIT: &str = "edb0d9db6731067ec50ce619ff372b463bc4dd5d";
 pub const NNUE_SHA256: &str = "1a298aa575a085434d29027978dc36867fe9c5bcea9376654b7a8eba1e52dfc2";
 pub const MAX_CYCLES_PER_SEARCH: u64 = 1_000_000_000_000;
+pub const STOCKFISH_MAX_DEPTH: u32 = 245;
 
 #[derive(Clone, Debug, PartialEq, Eq, CandidType, Deserialize, Serialize)]
 pub struct EngineConfig {
@@ -153,6 +154,7 @@ pub struct SearchResponse {
     pub actual_nodes: u64,
     pub depth: u32,
     pub instructions: u64,
+    pub stop_reason: String,
     pub engine_commit: String,
     pub nnue_sha256: String,
 }
@@ -164,6 +166,7 @@ pub struct EngineAudit {
     pub actual_nodes: u64,
     pub depth: u32,
     pub instructions: u64,
+    pub stop_reason: String,
     pub bestmove: String,
     pub engine_commit: String,
     pub nnue_sha256: String,
@@ -413,6 +416,7 @@ impl State {
             return if audit.actual_nodes == response.actual_nodes
                 && audit.depth == response.depth
                 && audit.instructions == response.instructions
+                && audit.stop_reason == response.stop_reason
                 && audit.bestmove == response.bestmove
                 && audit.engine_commit == response.engine_commit
                 && audit.nnue_sha256 == response.nnue_sha256
@@ -440,6 +444,13 @@ impl State {
             || response.nnue_sha256 != game.engine.nnue_sha256
             || response.actual_nodes == 0
             || response.depth == 0
+            || response.instructions == 0
+            || !((response.stop_reason == "node_budget"
+                && response.actual_nodes >= game.engine.nodes)
+                || (response.stop_reason == "max_depth"
+                    && response.depth == STOCKFISH_MAX_DEPTH
+                    && response.actual_nodes < game.engine.nodes))
+            || response.depth > STOCKFISH_MAX_DEPTH
             || response.actual_nodes > game.engine.nodes.saturating_add(65_536)
         {
             finish(
@@ -465,6 +476,7 @@ impl State {
             actual_nodes: response.actual_nodes,
             depth: response.depth,
             instructions: response.instructions,
+            stop_reason: response.stop_reason,
             bestmove: response.bestmove.clone(),
             engine_commit: response.engine_commit,
             nnue_sha256: response.nnue_sha256,
@@ -639,6 +651,7 @@ fn apply_move(
         bytes.extend(a.actual_nodes.to_be_bytes());
         bytes.extend(a.depth.to_be_bytes());
         bytes.extend(a.instructions.to_be_bytes());
+        field(&mut bytes, a.stop_reason.as_bytes());
         field(&mut bytes, a.engine_commit.as_bytes());
         field(&mut bytes, a.nnue_sha256.as_bytes());
     } else {
