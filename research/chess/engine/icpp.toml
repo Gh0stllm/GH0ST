@@ -1,0 +1,24 @@
+[build-wasm]
+canister = "gh0st_stockfish19"
+did_path = "src/engine.did"
+cpp_paths = [
+  ".cache/Stockfish-icp/src/attacks.cpp", ".cache/Stockfish-icp/src/benchmark.cpp",
+  ".cache/Stockfish-icp/src/bitboard.cpp", ".cache/Stockfish-icp/src/evaluate.cpp",
+  ".cache/Stockfish-icp/src/misc.cpp", ".cache/Stockfish-icp/src/movegen.cpp",
+  ".cache/Stockfish-icp/src/movepick.cpp", ".cache/Stockfish-icp/src/position.cpp",
+  ".cache/Stockfish-icp/src/search.cpp", ".cache/Stockfish-icp/src/thread.cpp",
+  ".cache/Stockfish-icp/src/timeman.cpp", ".cache/Stockfish-icp/src/tt.cpp",
+  ".cache/Stockfish-icp/src/uci.cpp", ".cache/Stockfish-icp/src/ucioption.cpp",
+  ".cache/Stockfish-icp/src/tune.cpp", ".cache/Stockfish-icp/src/engine.cpp",
+  ".cache/Stockfish-icp/src/score.cpp", ".cache/Stockfish-icp/src/memory.cpp",
+  ".cache/Stockfish-icp/src/syzygy/tbprobe.cpp",
+  ".cache/Stockfish-icp/src/nnue/*.cpp", ".cache/Stockfish-icp/src/nnue/features/*.cpp",
+  "src/gh0st_engine.cpp", "src/canister.cpp"
+]
+cpp_include_dirs = ["include", ".cache/generated", ".cache/emscripten-compat", ".cache/Stockfish-icp/src"]
+cpp_compile_flags = ["-DGH0ST_ICP", "-msimd128", "-DUSE_SSE2", "-DUSE_SSSE3", "-DUSE_SSE41", "-D__SSE__", "-D__SSE2__", "-D__SSE3__", "-D__SSSE3__", "-D__SSE4_1__", "-D__SSE4_2__", "-DIS_64BIT", "-DUSE_POPCNT", "-DNO_TABLEBASES", "-DARCH=icp-scalar", "-fconstexpr-steps=500000000"]
+cpp_link_flags = ["-Wl,-z,stack-size=8388608", "../.cache/generated/nnue_embed.o"]
+c_paths = []
+c_include_dirs = []
+c_compile_flags = []
+post_wasm_function = ""

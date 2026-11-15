@@ -1,0 +1,441 @@
+--- a/src/misc.cpp
++++ b/src/misc.cpp
+@@ -32,7 +32,6 @@
+ #include <iostream>
+ #include <iterator>
+ #include <limits>
+-#include <mutex>
+ #include <sstream>
+ #include <string_view>
+ 
+@@ -438,7 +437,8 @@
+ // to avoid multiple threads writing at the same time.
+ std::ostream& operator<<(std::ostream& os, SyncCout sc) {
+ 
+-    static std::mutex m;
++    struct SerialLock { void lock() {} void unlock() {} };
++    static SerialLock m;
+ 
+     if (sc == IO_LOCK)
+         m.lock();
+--- a/src/misc.h
++++ b/src/misc.h
+@@ -152,9 +152,7 @@
+ using TimePoint = std::chrono::milliseconds::rep;  // A value in milliseconds
+ static_assert(sizeof(TimePoint) == sizeof(i64), "TimePoint should be 64 bits");
+ inline TimePoint now() {
+-    return std::chrono::duration_cast<std::chrono::milliseconds>(
+-             std::chrono::steady_clock::now().time_since_epoch())
+-      .count();
++    return 0;  // GH0ST: fixed-node search never consumes a wall clock
+ }
+ 
+ inline std::vector<std::string_view> split(std::string_view s, std::string_view delimiter) {
+--- a/src/nnue/network.cpp
++++ b/src/nnue/network.cpp
+@@ -47,7 +47,12 @@
+ //     const unsigned int         gEmbeddedNNUESize;    // the size of the embedded file
+ // Note that this does not work in Microsoft Visual Studio.
+ #if !defined(UNIVERSAL_BINARY) && !defined(_MSC_VER) && !defined(NNUE_EMBEDDING_OFF)
++#if defined(GH0ST_ICP) && defined(__wasm__)
++extern "C" const unsigned char gEmbeddedNNUEData[];
++const unsigned int gEmbeddedNNUESize = 98511183;
++#else
+ INCBIN(EmbeddedNNUE, EvalFileDefaultName);
++#endif
+ #elif defined(UNIVERSAL_BINARY_MACOS_X86_SLICE)
+ // Determined at runtime, see universal/nnue_embed.cpp
+ extern const unsigned char* const gEmbeddedNNUEData;
+--- a/src/numa.h
++++ b/src/numa.h
+@@ -28,11 +28,9 @@
+ #include <limits>
+ #include <map>
+ #include <memory>
+-#include <mutex>
+ #include <set>
+ #include <sstream>
+ #include <string>
+-#include <thread>
+ #include <utility>
+ #include <vector>
+ #include <cstring>
+@@ -79,7 +77,7 @@
+ using NumaIndex = usize;
+ 
+ inline CpuIndex get_hardware_concurrency() {
+-    CpuIndex concurrency = std::thread::hardware_concurrency();
++    CpuIndex concurrency = 1;  // GH0ST: fixed serial worker
+ 
+     // Get all processors across all processor groups on windows, since
+     // hardware_concurrency() only returns the number of processors in
+@@ -1465,7 +1463,7 @@
+ 
+    private:
+     mutable std::vector<std::unique_ptr<T>> instances;
+-    mutable std::mutex                      mutex;
++    mutable Gh0stMutex                      mutex;
+ 
+     void ensure_present(NumaIndex idx) const {
+         assert(idx < instances.size());
+@@ -1475,7 +1473,7 @@
+ 
+         assert(idx != 0);
+ 
+-        std::unique_lock<std::mutex> lock(mutex);
++        Gh0stUniqueLock<Gh0stMutex> lock(mutex);
+         // Check again for races.
+         if (instances[idx] != nullptr)
+             return;
+@@ -1584,7 +1582,7 @@
+ 
+    private:
+     mutable std::vector<SystemWideSharedConstant<T>> instances;
+-    mutable std::mutex                               mutex;
++    mutable Gh0stMutex                               mutex;
+ 
+     usize get_discriminator(NumaIndex idx) const {
+         const NumaConfig& cfg     = get_numa_config();
+@@ -1604,7 +1602,7 @@
+ 
+         assert(idx != 0);
+ 
+-        std::unique_lock<std::mutex> lock(mutex);
++        Gh0stUniqueLock<Gh0stMutex> lock(mutex);
+         // Check again for races.
+         if (instances[idx] != nullptr)
+             return;
+--- a/src/shm.h
++++ b/src/shm.h
+@@ -36,8 +36,8 @@
+ #include <utility>
+ #include <variant>
+ 
+-#if (defined(__linux__) && !defined(__ANDROID__)) || defined(__APPLE__) || defined(__FreeBSD__) \
+-  || defined(__OpenBSD__) || defined(__NetBSD__) || defined(__DragonFly__)
++#if !defined(GH0ST_ICP) && ((defined(__linux__) && !defined(__ANDROID__)) || defined(__APPLE__) || defined(__FreeBSD__) \
++  || defined(__OpenBSD__) || defined(__NetBSD__) || defined(__DragonFly__))
+     #define USE_UNIX_SHM
+     #include "shm_unix.h"
+ #endif
+--- a/src/syzygy/tbprobe.cpp
++++ b/src/syzygy/tbprobe.cpp
+@@ -48,11 +48,11 @@
+ #include "../types.h"
+ #include "../ucioption.h"
+ 
+-#ifndef _WIN32
++#if !defined(_WIN32) && !defined(NO_TABLEBASES)
+     #include <fcntl.h>
+     #include <sys/mman.h>
+     #include <unistd.h>
+-#else
++#elif defined(_WIN32)
+     #define WIN32_LEAN_AND_MEAN
+     #ifndef NOMINMAX
+         #define NOMINMAX  // Disable macros min() and max()
+--- a/src/thread.cpp
++++ b/src/thread.cpp
+@@ -55,41 +55,18 @@
+     idx(n),
+     idxInNuma(numaN),
+     totalNuma(totalNumaCount),
+-    nthreads(sharedState.options["Threads"]),
+-    stdThread(
+-      create_native_thread(NativeThreadOptions{}.setLargeStack(true), &Thread::idle_loop, this)) {
+-
+-    if (!stdThread.joinable())
+-    {
+-        std::cerr << "Failed to create search thread\n";
+-        std::exit(EXIT_FAILURE);
+-    }
+-
+-    wait_for_search_finished();
+-
+-    run_custom_job([this, &binder, &sharedState, &sm, n]() {
+-        // Use the binder to [maybe] bind the threads to a NUMA node before doing
+-        // the Worker allocation. Ideally we would also allocate the SearchManager
+-        // here, but that's minor.
+-        this->numaAccessToken = binder();
+-        this->worker          = make_unique_large_page<Search::Worker>(
+-          sharedState, std::move(sm), n, idxInNuma, totalNuma, this->numaAccessToken);
+-    });
+-
+-    wait_for_search_finished();
+-}
+-
++    nthreads(sharedState.options["Threads"]) {
++    // GH0ST: ICP serial execution; run the unchanged Stockfish Worker inline.
++    if (nthreads != 1 || n != 0) std::abort();
++    searching = false;
++    numaAccessToken = binder();
++    worker = make_unique_large_page<Search::Worker>(
++      sharedState, std::move(sm), n, idxInNuma, totalNuma, numaAccessToken);
++}
+ 
+ // Destructor wakes up the thread in idle_loop() and waits
+ // for its termination. Thread should be already waiting.
+-Thread::~Thread() {
+-
+-    assert(!searching);
+-
+-    exit = true;
+-    start_searching();
+-    stdThread.join();
+-}
++Thread::~Thread() { assert(!searching); }
+ 
+ // Wakes up the thread that will start the search
+ void Thread::start_searching() {
+@@ -104,48 +81,17 @@
+ }
+ 
+ // Blocks on the condition variable until the thread has finished searching
+-void Thread::wait_for_search_finished() {
+-
+-    std::unique_lock<std::mutex> lk(mutex);
+-    cv.wait(lk, [&] { return !searching; });
+-}
+-
+-// Launching a function in the thread
++void Thread::wait_for_search_finished() { assert(!searching); }
++
+ void Thread::run_custom_job(std::function<void()> f) {
+-    {
+-        std::unique_lock<std::mutex> lk(mutex);
+-        cv.wait(lk, [&] { return !searching; });
+-        jobFunc   = std::move(f);
+-        searching = true;
+-    }
+-    cv.notify_one();
++    assert(!searching);
++    searching = true;
++    if (f) f();
++    searching = false;
+ }
+ 
+ void Thread::ensure_network_replicated() { worker->ensure_network_replicated(); }
+-
+-// Thread gets parked here, blocked on the condition variable
+-// when the thread has no work to do.
+-
+-void Thread::idle_loop() {
+-    while (true)
+-    {
+-        std::unique_lock<std::mutex> lk(mutex);
+-        searching = false;
+-        cv.notify_one();  // Wake up anyone waiting for search finished
+-        cv.wait(lk, [&] { return searching; });
+-
+-        if (exit)
+-            return;
+-
+-        std::function<void()> job = std::move(jobFunc);
+-        jobFunc                   = nullptr;
+-
+-        lk.unlock();
+-
+-        if (job)
+-            job();
+-    }
+-}
++void Thread::idle_loop() { std::abort(); }
+ 
+ Search::SearchManager* ThreadPool::main_manager() { return main_thread()->worker->main_manager(); }
+ 
+--- a/src/thread.h
++++ b/src/thread.h
+@@ -20,10 +20,8 @@
+ #define THREAD_H_INCLUDED
+ 
+ #include <atomic>
+-#include <condition_variable>
+ #include <functional>
+ #include <memory>
+-#include <mutex>
+ #include <vector>
+ 
+ #include "memory.h"
+@@ -99,11 +97,8 @@
+     std::function<void()>        jobFunc;
+ 
+    private:
+-    std::mutex                mutex;
+-    std::condition_variable   cv;
+     usize                     idx, idxInNuma, totalNuma, nthreads;
+     bool                      exit = false, searching = true;  // Set before starting std::thread
+-    NativeThread              stdThread;
+     NumaReplicatedAccessToken numaAccessToken;
+ };
+ 
+--- a/src/thread_native.h
++++ b/src/thread_native.h
+@@ -16,152 +16,26 @@
+   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+ 
+-#ifndef THREAD_NATIVE_H_INCLUDED
+-#define THREAD_NATIVE_H_INCLUDED
+-
+-#ifdef _MSC_VER
+-    #include <thread>
+-#else
+-    #include <pthread.h>
+-    #include <cstdlib>
+-    #include <cstring>
+-    #include <functional>
+-    #include <iostream>
+-    #include <tuple>
+-    #include <utility>
+-
+-    #include "misc.h"
+-#endif
+-
++// GH0ST synchronous-only runtime. There is no native/OS thread creation.
++#pragma once
++#include <functional>
++#include <utility>
+ namespace Stockfish {
+-
+ struct NativeThreadOptions {
+-    bool largeStack{};
+-
+-    NativeThreadOptions& setLargeStack(bool value) {
+-        largeStack = value;
+-        return *this;
+-    }
++    NativeThreadOptions& setLargeStack(bool) { return *this; }
+ };
+-
+-#ifdef _MSC_VER
+-
+-// MSVC-compatible toolchains use std::thread because they do not provide
+-// pthreads by default. On all other platforms, pthreads is required and used.
+-
+-using NativeThread = std::thread;
+-
++class NativeThread {
++public:
++    bool joinable() const { return true; }
++    void join() {}
++};
+ template<class Function, class... Args>
+-NativeThread create_native_thread(NativeThreadOptions options, Function&& fun, Args&&... args) {
+-    // TODO: implement fallible thread creation for MSVC
+-    (void) options;
+-    return NativeThread(std::forward<Function>(fun), std::forward<Args>(args)...);
++NativeThread create_native_thread(NativeThreadOptions, Function&& f, Args&&... args) {
++    std::invoke(std::forward<Function>(f), std::forward<Args>(args)...);
++    return {};
+ }
+-
+-#else
+-
+-struct ThreadCallableBase {  // type erase F
+-    virtual ~ThreadCallableBase() = default;
+-    virtual void run()            = 0;
++struct Gh0stMutex {};
++template<class Mutex> struct Gh0stUniqueLock {
++    explicit Gh0stUniqueLock(Mutex&) {}
+ };
+-
+-template<typename F, typename... Args>
+-struct ThreadCallable final: ThreadCallableBase {
+-    F                   func_;
+-    std::tuple<Args...> args_;
+-    ThreadCallable(F&& f, Args&&... args) :
+-        func_(std::forward<F>(f)),
+-        args_(std::make_tuple(std::forward<Args>(args)...)) {}
+-    void run() override { std::apply(func_, args_); }
+-};
+-
+-// On OSX threads other than the main thread are created with a reduced stack
+-// size of 512KB by default, this is too low for deep searches, which require
+-// somewhat more than 1MB stack, so adjust it to TH_STACK_SIZE.
+-// The implementation calls pthread_create() with the stack size parameter
+-// equal to the Linux 8MB default, on platforms that support it.
+-
+-class NativeThread {
+-    pthread_t thread;
+-    bool      running_ = false;
+-
+-    static constexpr usize TH_STACK_SIZE = 8 * 1024 * 1024;
+-
+-    void start(NativeThreadOptions options, ThreadCallableBase* func) {
+-        pthread_attr_t attr_storage, *attr = &attr_storage;
+-        pthread_attr_init(attr);
+-        if (options.largeStack)
+-        {
+-            pthread_attr_setstacksize(attr, TH_STACK_SIZE);
+-        }
+-
+-        auto start_routine = [](void* ptr) -> void* {
+-            auto f = reinterpret_cast<ThreadCallableBase*>(ptr);
+-            // Call the function
+-            f->run();
+-            delete f;
+-            return nullptr;
+-        };
+-
+-        const int rc = pthread_create(&thread, attr, start_routine, func);
+-        pthread_attr_destroy(attr);
+-
+-        if (rc != 0)
+-            delete func;
+-        else
+-            running_ = true;
+-    }
+-
+-   public:
+-    NativeThread()                               = default;
+-    NativeThread(const NativeThread&)            = delete;
+-    NativeThread& operator=(const NativeThread&) = delete;
+-
+-    NativeThread(NativeThread&& other) noexcept {
+-        thread         = other.thread;
+-        running_       = other.running_;
+-        other.running_ = false;
+-    }
+-
+-    NativeThread& operator=(NativeThread&& other) noexcept {
+-        if (&other != this)
+-        {
+-            assert(!running_ && "Thread was not joined");
+-            thread         = other.thread;
+-            running_       = other.running_;
+-            other.running_ = false;
+-        }
+-        return *this;
+-    }
+-
+-    ~NativeThread() { assert(!running_ && "Thread was not joined"); }
+-
+-    bool joinable() const { return running_; }
+-    void join() {
+-        if (running_)
+-        {
+-            pthread_join(thread, nullptr);
+-            running_ = false;
+-        }
+-    }
+-
+-    template<class Function, class... Args>
+-    friend NativeThread create_native_thread(NativeThreadOptions, Function&&, Args&&...);
+-};
+-
+-template<class Function, class... Args>
+-inline NativeThread
+-create_native_thread(NativeThreadOptions options, Function&& fun, Args&&... args) {
+-    NativeThread thread{};
+-    using Callable = ThreadCallable<std::decay_t<Function>, std::decay_t<Args>...>;
+-    if (auto func =
+-          new (std::nothrow) Callable(std::forward<Function>(fun), std::forward<Args>(args)...))
+-        thread.start(options, func);
+-    return thread;
+ }
+-
+-#endif  // _MSC_VER
+-
+-}  // namespace Stockfish
+-
+-#endif  // #ifndef THREAD_NATIVE_H_INCLUDED

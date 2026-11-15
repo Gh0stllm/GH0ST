@@ -1,0 +1,78 @@
+{
+  "stockfish": {
+    "repository": "https://github.com/official-stockfish/Stockfish",
+    "tag": "sf_19",
+    "commit": "edb0d9db6731067ec50ce619ff372b463bc4dd5d",
+    "license": "GPL-3.0-or-later"
+  },
+  "network": {
+    "name": "nn-1a298aa575a0.nnue",
+    "bytes": 98511183,
+    "sha256": "1a298aa575a085434d29027978dc36867fe9c5bcea9376654b7a8eba1e52dfc2",
+    "url": "https://tests.stockfishchess.org/api/nn/nn-1a298aa575a0.nnue"
+  },
+  "emscripten": {
+    "tag": "4.0.19",
+    "commit": "08e2de1031913e4ba7963b1c56f35f036a7d4d56",
+    "scope": "unchanged compatibility headers only; builds with WASI SDK25, not the Emscripten runtime"
+  },
+  "emscripten_compatibility_headers": [
+    {
+      "file": "emmintrin.h",
+      "url": "https://raw.githubusercontent.com/emscripten-core/emscripten/08e2de1031913e4ba7963b1c56f35f036a7d4d56/system/include/compat/emmintrin.h",
+      "sha256": "ca357b61aa173bd5e617bc0b149c0165b57d21210787eeff5367175dfe63c947"
+    },
+    {
+      "file": "xmmintrin.h",
+      "url": "https://raw.githubusercontent.com/emscripten-core/emscripten/08e2de1031913e4ba7963b1c56f35f036a7d4d56/system/include/compat/xmmintrin.h",
+      "sha256": "9d3ebd5ec58e07bc97a788cd0ef21559adcbbc5f11bb779eb1864f45f8d167b9"
+    },
+    {
+      "file": "smmintrin.h",
+      "url": "https://raw.githubusercontent.com/emscripten-core/emscripten/08e2de1031913e4ba7963b1c56f35f036a7d4d56/system/include/compat/smmintrin.h",
+      "sha256": "7b7b7f1d0754c2366903b2cf224e56f409ff70d7e73a3921042b0fcbb0d53ac3"
+    },
+    {
+      "file": "pmmintrin.h",
+      "url": "https://raw.githubusercontent.com/emscripten-core/emscripten/08e2de1031913e4ba7963b1c56f35f036a7d4d56/system/include/compat/pmmintrin.h",
+      "sha256": "a516eeb25fb87467c9758fcd7fecc3fc4f6c2acdb05284dd9a5e819b3d36fd60"
+    },
+    {
+      "file": "tmmintrin.h",
+      "url": "https://raw.githubusercontent.com/emscripten-core/emscripten/08e2de1031913e4ba7963b1c56f35f036a7d4d56/system/include/compat/tmmintrin.h",
+      "sha256": "dee25e8b78bc72d0151dc2465c4ce0bc2961a0c8c1bf360bab7c6ef8d448a35d"
+    },
+    {
+      "file": "nmmintrin.h",
+      "url": "https://raw.githubusercontent.com/emscripten-core/emscripten/08e2de1031913e4ba7963b1c56f35f036a7d4d56/system/include/compat/nmmintrin.h",
+      "sha256": "a4af1cdcf40486f96abb7107ae9c14f1cb734e55af2141cc84f081806453f98b"
+    }
+  ],
+  "toolchain": {
+    "python": "3.13.18",
+    "uv": "0.13.8",
+    "icpp-pro": "7.0.0rc4",
+    "icpp-binaryen": "116.0.1",
+    "wasi-sdk": "25.0",
+    "rust": "1.93.0",
+    "wasi2ic": "c0f5063e734f8365f1946baf2845d8322cc9bfec",
+    "ic-wasi-polyfill": "b788d8d6fe80deb0d8e27198ebeee5045204302f"
+  },
+  "full_strength_options": {
+    "Threads": 1,
+    "Skill Level": 20,
+    "UCI_LimitStrength": false,
+    "MultiPV": 1,
+    "Ponder": false,
+    "SyzygyPath": "",
+    "tt_and_histories": "cleared per decision",
+    "time": "constant0;fixed node budget",
+    "fixed_budget": "deployment configuration; paid lane inactive until calibrated"
+  },
+  "pocketic": {
+    "tag": "16.1.0",
+    "url": "https://github.com/dfinity/pocketic/releases/download/16.1.0/pocket-ic-arm64-darwin.gz",
+    "sha256_gzip": "9ae843fbb7ae6c6eb30137671c8629a80ef53b3a3652eb85b344847ac39f9fcd",
+    "sha256_binary": "2ffd9d5ae103cbb85289424056e68920459e702bf27317e38003b019a0a959d1"
+  }
+}
