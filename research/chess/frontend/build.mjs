@@ -1,0 +1,13 @@
+import { build } from 'esbuild';
+import { mkdirSync,rmSync,copyFileSync,readFileSync,writeFileSync,readdirSync } from 'node:fs';
+import { dirname,join,resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+const root=dirname(fileURLToPath(import.meta.url));const out=resolve(root,'dist/chess');
+rmSync(out,{recursive:true,force:true});mkdirSync(join(out,'assets'),{recursive:true});
+await build({entryPoints:[join(root,'app.mjs')],outfile:join(out,'app.js'),bundle:true,minify:true,format:'esm',platform:'browser',target:'es2022',legalComments:'eof'});
+for(const name of ['index.html','style.css','public-config.json'])copyFileSync(join(root,name),join(out,name));
+for(const name of readdirSync(join(root,'assets')))copyFileSync(join(root,'assets',name),join(out,'assets',name.toLowerCase()));
+for(const [source,target]of [['../evm/artifacts.json','vault-artifact.json'],['../contracts/RHChessChallengeVault.sol','rhchesschallengevault.sol'],['../spec/chess-authority.did','chess-authority.did']])copyFileSync(resolve(root,source),join(out,target));
+const config=JSON.parse(readFileSync(join(root,'public-config.json'),'utf8'));
+writeFileSync(join(root,'build-report.json'),JSON.stringify({generatedAt:new Date().toISOString(),output:'frontend/dist/chess',route:'/chess/',status:config.status,paidEntriesEnabled:false,chainId:4663,productionBrain:'ICP Stockfish canister only',localDemo:'chess.js rules board, both sides human; no engine, fee or payout'},null,2)+'\n');
+console.log(`Built staged GH0ST Chess: ${out}`);

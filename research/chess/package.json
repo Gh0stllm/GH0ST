@@ -4,7 +4,13 @@
   "private": true,
   "type": "module",
   "description": "Strong onchain chess challenge with explicitly unfunded GH0ST entry and prize contracts.",
-  "scripts": {},
+  "scripts": {
+    "build:frontend": "node frontend/build.mjs",
+    "test:frontend": "node --test frontend/test.mjs && node frontend/test-dom.mjs",
+    "test:escrow": "node evm-tests/vault.test.mjs",
+    "compile:escrow": "node evm/compile.mjs",
+    "check:token": "node ops/read-bindings.mjs"
+  },
   "devDependencies": {
     "esbuild": "0.25.12",
     "ethers": "6.13.5",
