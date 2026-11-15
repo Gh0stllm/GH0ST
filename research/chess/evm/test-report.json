@@ -1,0 +1,2419 @@
+{
+  "scope": "ISOLATED LOCAL EVM ONLY; no RPC, mainnet or financial transaction",
+  "passed": true,
+  "versions": {
+    "solc": "0.8.30",
+    "ethers": "6.13.5",
+    "ganache": "7.9.2"
+  },
+  "compilerRuntimeBytes": 6823,
+  "chainId": 31337,
+  "canonicalProductionChainId": 4663,
+  "checkCount": 87,
+  "checks": [
+    {
+      "label": "constructor rejects EOA token",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": false
+    },
+    {
+      "label": "constructor rejects non-18 decimal token",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": false
+    },
+    {
+      "label": "constructor rejects zero owner",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": false
+    },
+    {
+      "label": "constructor rejects zero attestor",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": false
+    },
+    {
+      "label": "constructor rejects zero config",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": false
+    },
+    {
+      "label": "runtime matches compiler with immutable slots masked; no fee/prize/engine/signer/owner setter or owner-close method",
+      "passed": true
+    },
+    {
+      "label": "must reserve full 100k before taking 25k even if fee would bring balance to 100k",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "atomic entry binds msg.sender, SHA256 principal commitment, per-player nonce, chain, vault and immutable deadlines",
+      "passed": true
+    },
+    {
+      "label": "same wallet entry nonce cannot replay",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "zero principal commitment cannot enter",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "second entry cannot spend an existing game reserve",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "non-owner cannot withdraw free pool",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "owner cannot withdraw one unit of reserved collateral",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "owner free-pool withdrawal preserves every active 100k reserve",
+      "passed": true
+    },
+    {
+      "label": "untrusted signer cannot forge checkmate",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "receipt rejects mismatched or invalid player",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "receipt rejects mismatched or invalid principal",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "receipt rejects mismatched or invalid nonce",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "receipt rejects mismatched or invalid engine config",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "receipt rejects mismatched or invalid empty final position",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "receipt rejects mismatched or invalid empty transcript",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "receipt rejects mismatched or invalid result None",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "receipt rejects mismatched or invalid internal-only expiry result",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "receipt rejects mismatched or invalid unknown result",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "receipt rejects mismatched or invalid completion before entry",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "receipt rejects mismatched or invalid completion after game deadline",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "receipt rejects mismatched or invalid issue before completion",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "receipt rejects mismatched or invalid future issue time",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "receipt rejects mismatched or invalid validity before issuance",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "receipt rejects mismatched or invalid validity after reconciliation deadline",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "receipt rejects mismatched or invalid tampered nonzero final position",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "receipt rejects mismatched or invalid tampered nonzero transcript",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "receipt rejects mismatched or invalid tampered valid outcome",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "EIP712 signature cannot replay across chain",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "EIP712 signature cannot replay across vault",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "EIP712 signature cannot replay across version",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "EIP712 signature cannot replay across name",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "ECDSA rejects short signature",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "ECDSA rejects long signature",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "ECDSA rejects oversized signature",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "ECDSA rejects high-s malleation signature",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "ECDSA rejects non-canonical v signature",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "ECDSA rejects zero r signature",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "ECDSA rejects zero s signature",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "expired signed receipt cannot settle",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "unknown game cannot settle",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": false
+    },
+    {
+      "label": "valid human checkmate pays exactly 100k total to bound player: net +75k before gas",
+      "passed": true,
+      "gas": "86316"
+    },
+    {
+      "label": "same valid receipt cannot double-pay",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "settled win cannot be refunded",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "result 2 is terminal and cannot become a win",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "result 2: no reward; 25k entry retained and full reserve released",
+      "passed": true
+    },
+    {
+      "label": "result 3 is terminal and cannot become a win",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "result 3: no reward; 25k entry retained and full reserve released",
+      "passed": true
+    },
+    {
+      "label": "result 4 is terminal and cannot become a win",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "result 4: no reward; 25k entry retained and full reserve released",
+      "passed": true
+    },
+    {
+      "label": "result 5 is terminal and cannot become a win",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "result 5: no reward; 25k entry retained and full reserve released",
+      "passed": true
+    },
+    {
+      "label": "result 6 is terminal and cannot become a win",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "result 6: exact 25k fee refund and full reserve released",
+      "passed": true
+    },
+    {
+      "label": "result 7 is terminal and cannot become a win",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "result 7: exact 25k fee refund and full reserve released",
+      "passed": true
+    },
+    {
+      "label": "three concurrent games cannot spend each other reserves; win/refund/draw release exactly once",
+      "passed": true
+    },
+    {
+      "label": "nonce zero is valid; identical nonce across different wallets produces independent bound game IDs",
+      "passed": true
+    },
+    {
+      "label": "non-owner cannot pause",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": false
+    },
+    {
+      "label": "paused vault rejects new entries",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "pause affects new entrants only; existing receipt settlement remains available",
+      "passed": true
+    },
+    {
+      "label": "taxed funding rolls back token balances/supply and escrow accounting",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "entry tax rolls back nonce, reservation, allowance and token effects",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "entry false return rolls back nonce, reservation, allowance and token effects",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "missing allowance cannot register game or reserve collateral",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "prize tax rolls back paid state, reserve release and token effects",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "prize false return rolls back paid state, reserve release and token effects",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "funded approved token callbacks cannot reenter entry or outgoing settlement",
+      "passed": true
+    },
+    {
+      "label": "owner withdrawal tax rolls back without touching reserves",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "owner withdrawal false return rolls back without touching reserves",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "authorized owner token callback cannot reenter withdrawal or consume active reserves",
+      "passed": true
+    },
+    {
+      "label": "insolvency blocks new entries before charging",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "insolvency blocks owner withdrawal",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "insolvency fails closed rather than racing existing claimants",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "insolvent unsupported-token state is visible and cannot be drained; manual repair allows settlement",
+      "passed": true
+    },
+    {
+      "label": "unattested refund unavailable during game",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": false
+    },
+    {
+      "label": "attested player timeout can complete exactly at gameplay deadline and retains entry",
+      "passed": true
+    },
+    {
+      "label": "refund requires strictly after reconciliation deadline",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": false
+    },
+    {
+      "label": "valid signed result remains settleable at exact reconciliation deadline while unsigned refund is blocked",
+      "passed": true
+    },
+    {
+      "label": "late signed win cannot reverse expiry refund",
+      "passed": true,
+      "rejected": true,
+      "minedRevert": true,
+      "accountingUnchanged": true
+    },
+    {
+      "label": "attestor outage refunds exactly 25k once after 24h+7d; caller never receives player funds",
+      "passed": true
+    },
+    {
+      "label": "direct token donations are free pool only; no entry exists without atomic enterGame",
+      "passed": true
+    }
+  ],
+  "receipts": [
+    {
+      "label": "deploy:ChessTestToken",
+      "hash": "0x0aba90dd6927492374b0826f276f5000810474918cf2ba4d60db98506d7817fc",
+      "blockNumber": 1,
+      "status": 1,
+      "gasUsed": "843984",
+      "contractAddress": "0x5FbDB2315678afecb367f032d93F642f64180aa3"
+    },
+    {
+      "label": "mint owner local fixture tokens",
+      "hash": "0x44c7caae1677e0a5ba3874d817f577fe49427b2ecafb5948da3f2e8366d0780f",
+      "blockNumber": 2,
+      "status": 1,
+      "gasUsed": "66422",
+      "contractAddress": null
+    },
+    {
+      "label": "mint player local fixture tokens",
+      "hash": "0x30948193b8b96a8c588ba2d3c4b8ed3b56e5c5ab86dea96689d6ac6668a32434",
+      "blockNumber": 3,
+      "status": 1,
+      "gasUsed": "49322",
+      "contractAddress": null
+    },
+    {
+      "label": "mint other player local fixture tokens",
+      "hash": "0x92efebf524f937cf01faaadbda2395c72d4b0413474766854414e4d55c3e8459",
+      "blockNumber": 4,
+      "status": 1,
+      "gasUsed": "49322",
+      "contractAddress": null
+    },
+    {
+      "label": "deploy:ChessTestToken",
+      "hash": "0x3b6c648340d780bd6d3f1146398c8257ce6ca6cc493906f4298921c3cf6011ee",
+      "blockNumber": 5,
+      "status": 1,
+      "gasUsed": "843984",
+      "contractAddress": "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9"
+    },
+    {
+      "label": "deploy:RHChessChallengeVault",
+      "hash": "0xd6dd22784f2a61b412670d1ffb50b5e07a2a86bcc566645ceb03574d94f176f1",
+      "blockNumber": 6,
+      "status": 1,
+      "gasUsed": "1559743",
+      "contractAddress": "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707"
+    },
+    {
+      "label": "explicit local test-only enable entries",
+      "hash": "0xa3fa7d27ed0df5e6a1c8f2f43ac8530f2a5df2ebb0cea569cba5e0c967b5a63b",
+      "blockNumber": 7,
+      "status": 1,
+      "gasUsed": "22738",
+      "contractAddress": null
+    },
+    {
+      "label": "explicit exact pool approval",
+      "hash": "0xa529ceb40e6c04984730262586650ed0b21f90014eafaa321fcfece88053d9dc",
+      "blockNumber": 8,
+      "status": 1,
+      "gasUsed": "44126",
+      "contractAddress": null
+    },
+    {
+      "label": "manual pool funding",
+      "hash": "0xb3a5bd7bb02e2b849f73a42045bd390e07568c651f561bc18e37572f4a96ce4d",
+      "blockNumber": 9,
+      "status": 1,
+      "gasUsed": "74893",
+      "contractAddress": null
+    },
+    {
+      "label": "approve fee before rejected unfunded entry",
+      "hash": "0x85faa1edc19f6951b3f26943851741faea6c1549d7f42ae4c2b4c8e246e77903",
+      "blockNumber": 10,
+      "status": 1,
+      "gasUsed": "44126",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:must reserve full 100k before taking 25k even if fee would bring balance to 100k",
+      "hash": "0xbbfd6d1227f64ad712b6e1f064372ff37168178af827c2625e65e5a79f6023d9",
+      "blockNumber": 11,
+      "status": 0,
+      "gasUsed": "55473",
+      "contractAddress": null
+    },
+    {
+      "label": "explicit exact pool approval",
+      "hash": "0x764d22ff44a34d54d28a5591386fa67de38f83754d84d4cd75ea6708129d9310",
+      "blockNumber": 12,
+      "status": 1,
+      "gasUsed": "44126",
+      "contractAddress": null
+    },
+    {
+      "label": "manual pool funding",
+      "hash": "0x0d7be9527b3ae773f438e632be5af8facb7e973acd3b69cf4d0813f0ffb394aa",
+      "blockNumber": 13,
+      "status": 1,
+      "gasUsed": "61213",
+      "contractAddress": null
+    },
+    {
+      "label": "exact entry approval",
+      "hash": "0x133e0755faccb97020cc40a2c97608d53c3f33b0fee5cd074595af3758853cd5",
+      "blockNumber": 14,
+      "status": 1,
+      "gasUsed": "24226",
+      "contractAddress": null
+    },
+    {
+      "label": "atomic entry + prize reservation",
+      "hash": "0x34cc06b173833b5d92103ec4938e8e2ffed1868472a63738c1bd03cdd629c04e",
+      "blockNumber": 15,
+      "status": 1,
+      "gasUsed": "212603",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:same wallet entry nonce cannot replay",
+      "hash": "0x39cf1e84c380ff009af64d86b9dd3ce3092b80af2f22e13019c61435e1a5cd8d",
+      "blockNumber": 16,
+      "status": 0,
+      "gasUsed": "46409",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:zero principal commitment cannot enter",
+      "hash": "0xd413a0ab3abd66d94841d65906e611455a23717912663b9f5b7ed051c9451ace",
+      "blockNumber": 17,
+      "status": 0,
+      "gasUsed": "43773",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:second entry cannot spend an existing game reserve",
+      "hash": "0xb44bb406b63fd0fef93eaa404b0723ab96bf3b459b2c5847caf9b60faa5e8832",
+      "blockNumber": 18,
+      "status": 0,
+      "gasUsed": "55473",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:non-owner cannot withdraw free pool",
+      "hash": "0x62e799afc11f64bc334fa4e9e0a9460ddcdcdaa7495c830f42f06347665a965c",
+      "blockNumber": 19,
+      "status": 0,
+      "gasUsed": "21652",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:owner cannot withdraw one unit of reserved collateral",
+      "hash": "0xc2b4b81687667382bb51623e90873c8fa92de985d590f47671c60ae947ed1599",
+      "blockNumber": 20,
+      "status": 0,
+      "gasUsed": "52917",
+      "contractAddress": null
+    },
+    {
+      "label": "owner withdraws only unreserved entry fee to immutable owner address",
+      "hash": "0xf9a2d56f2094ea8f61a1bd5f574e0a75c3c6ea911903d52bba47c97c0c6f486c",
+      "blockNumber": 21,
+      "status": 1,
+      "gasUsed": "60448",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:untrusted signer cannot forge checkmate",
+      "hash": "0xecbfac078f10546fc8f41c11f23b246eb55a28b8236d824bb0db66eab3343faf",
+      "blockNumber": 22,
+      "status": 0,
+      "gasUsed": "64397",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:receipt rejects mismatched or invalid player",
+      "hash": "0xeefd8600448550445bb916b385a824acb808fd4beda5db70a6716032aaebf1f0",
+      "blockNumber": 23,
+      "status": 0,
+      "gasUsed": "53758",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:receipt rejects mismatched or invalid principal",
+      "hash": "0x0a040bbb362f9fbab7352ad6adfa4568058a72937deceff7d84bf01e5a559fe6",
+      "blockNumber": 24,
+      "status": 0,
+      "gasUsed": "55905",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:receipt rejects mismatched or invalid nonce",
+      "hash": "0xc5be608b7bb56f80270f9bfa2c4b9a5ee8aaa7fbcad4adea270550f489619d01",
+      "blockNumber": 25,
+      "status": 0,
+      "gasUsed": "58028",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:receipt rejects mismatched or invalid engine config",
+      "hash": "0x7b4e4579b17161443d99203743f360d6b272a41b7925454bb48de61d7a96a5a9",
+      "blockNumber": 26,
+      "status": 0,
+      "gasUsed": "58045",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:receipt rejects mismatched or invalid empty final position",
+      "hash": "0x9ab96bf33cf842ab8b81df7750fdb5e9fe3cbeaf545c17bfb03b2f7bbfd095ad",
+      "blockNumber": 27,
+      "status": 0,
+      "gasUsed": "57696",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:receipt rejects mismatched or invalid empty transcript",
+      "hash": "0x0b6766038265f72cc64f9c40551399f4ec3369c5fbca874a2981f2d86a9703dd",
+      "blockNumber": 28,
+      "status": 0,
+      "gasUsed": "57719",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:receipt rejects mismatched or invalid result None",
+      "hash": "0x74676caf8dfb55ba505a0c90dfca04b848995a9a65663dcbb055490770771f2b",
+      "blockNumber": 29,
+      "status": 0,
+      "gasUsed": "58175",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:receipt rejects mismatched or invalid internal-only expiry result",
+      "hash": "0x3be13e96341856c9936a0318aa29256fd23e70bfbefdb74393251eae0983f281",
+      "blockNumber": 30,
+      "status": 0,
+      "gasUsed": "58274",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:receipt rejects mismatched or invalid unknown result",
+      "hash": "0xc57af9a27cf1078998866ed783d5b18ba7cec4a1e6f2099458c56000d1c3235d",
+      "blockNumber": 31,
+      "status": 0,
+      "gasUsed": "58274",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:receipt rejects mismatched or invalid completion before entry",
+      "hash": "0x84f62048c2d0fa1261e4ff1590d95c90f09e6dd144463a53569473fc44fd1a81",
+      "blockNumber": 32,
+      "status": 0,
+      "gasUsed": "58500",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:receipt rejects mismatched or invalid completion after game deadline",
+      "hash": "0x96ba0cf28beb93e25f6a72de5eb0304f960f9b3efcb8d0147949c62b55851a92",
+      "blockNumber": 33,
+      "status": 0,
+      "gasUsed": "58732",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:receipt rejects mismatched or invalid issue before completion",
+      "hash": "0x009a3743e44fe8dd2740a25c0e9672a2c4ce0f6ef9498558df12ce842f2f136f",
+      "blockNumber": 34,
+      "status": 0,
+      "gasUsed": "58922",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:receipt rejects mismatched or invalid future issue time",
+      "hash": "0x39746ed4426ed268f13df039cddedceb616384b9369dd8feb0f644a5c452ceeb",
+      "blockNumber": 35,
+      "status": 0,
+      "gasUsed": "59035",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:receipt rejects mismatched or invalid validity before issuance",
+      "hash": "0xe7bc3ff021a1a2b7cba294a70e8f22e3b74a34bbb45d698809bc21074586f451",
+      "blockNumber": 36,
+      "status": 0,
+      "gasUsed": "59225",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:receipt rejects mismatched or invalid validity after reconciliation deadline",
+      "hash": "0xd88b41611a8ae45a2572ab6451fd6cbaf52022b0912af61e1830b85bb432a23d",
+      "blockNumber": 37,
+      "status": 0,
+      "gasUsed": "59457",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:receipt rejects mismatched or invalid tampered nonzero final position",
+      "hash": "0xff0493d0ed8e5fdc467c5cdb7e8e49eb53d3bd2d50cf077d7c8a0f3e169d4a2d",
+      "blockNumber": 38,
+      "status": 0,
+      "gasUsed": "64397",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:receipt rejects mismatched or invalid tampered nonzero transcript",
+      "hash": "0x40cf68dc03b523b0a1345b22df1819ba0f2ed35a11df7684095a744be9cd1c23",
+      "blockNumber": 39,
+      "status": 0,
+      "gasUsed": "64397",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:receipt rejects mismatched or invalid tampered valid outcome",
+      "hash": "0xccfe7fc7cb968a37571541a30f58eebf73b82660ecb30b3a4bb67b33243a3047",
+      "blockNumber": 40,
+      "status": 0,
+      "gasUsed": "64397",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:EIP712 signature cannot replay across chain",
+      "hash": "0xd384ef474ea0e1a59330aebb4a0373caad6e9ec47fe2a45c73dea1192aaf45eb",
+      "blockNumber": 41,
+      "status": 0,
+      "gasUsed": "64397",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:EIP712 signature cannot replay across vault",
+      "hash": "0x5b0e516dfb81a9ee1b7f0e88e9f5bda42c19600deeca49828c49181ec8b6aa3e",
+      "blockNumber": 42,
+      "status": 0,
+      "gasUsed": "64397",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:EIP712 signature cannot replay across version",
+      "hash": "0xe37317c7fb05d4dbb08175cd44c71bf2af18b628a9d84b8ffcf69c3b6f51044d",
+      "blockNumber": 43,
+      "status": 0,
+      "gasUsed": "64411",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:EIP712 signature cannot replay across name",
+      "hash": "0xf67871dd4fb95da285ab45c65fd0a1597dc24a506599d34aa0737ffb9c114e0d",
+      "blockNumber": 44,
+      "status": 0,
+      "gasUsed": "64423",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:ECDSA rejects short signature",
+      "hash": "0x7b095defdd3eaa4f05122bedee768148a7b0a45f1f6f66b94f70694ad0d458d0",
+      "blockNumber": 45,
+      "status": 0,
+      "gasUsed": "60764",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:ECDSA rejects long signature",
+      "hash": "0xd6a4ce3392dee65c3b396a8e09a8d000c587223342999bf4f252b396e109268a",
+      "blockNumber": 46,
+      "status": 0,
+      "gasUsed": "60904",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:ECDSA rejects oversized signature",
+      "hash": "0xc65017aacb9a7a64b93fbd7e3ea5421f0aa951bd8a0c8248129566876a3181f6",
+      "blockNumber": 47,
+      "status": 0,
+      "gasUsed": "76124",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:ECDSA rejects high-s malleation signature",
+      "hash": "0xe08a808ea4f0bd16e4e9636acc2b6191009f96593a4f601b446b744677c58787",
+      "blockNumber": 48,
+      "status": 0,
+      "gasUsed": "61087",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:ECDSA rejects non-canonical v signature",
+      "hash": "0x2fce412244e4b40cac7e42af6c7e1f7a7f9cce533d549918038974d650d9c071",
+      "blockNumber": 49,
+      "status": 0,
+      "gasUsed": "61032",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:ECDSA rejects zero r signature",
+      "hash": "0x7bb43093e30116836ccada806c620c2fd7383261b690fe93f3d22c5819756fb4",
+      "blockNumber": 50,
+      "status": 0,
+      "gasUsed": "63966",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:ECDSA rejects zero s signature",
+      "hash": "0x37abfb9c3d5762123b5c61c11096a7df3af637f9d4e3621356e391fb0ce169c1",
+      "blockNumber": 51,
+      "status": 0,
+      "gasUsed": "60654",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:expired signed receipt cannot settle",
+      "hash": "0xb1f33966b5085126e30c636bf5a656a110cf0158ba662ac2aa839cb71c1fcae6",
+      "blockNumber": 52,
+      "status": 0,
+      "gasUsed": "59566",
+      "contractAddress": null
+    },
+    {
+      "label": "settle result 1",
+      "hash": "0x00ca63ef82176f1c59679854e9ff94c409cc0cf6df8f0a87de5bbd3805baefcd",
+      "blockNumber": 53,
+      "status": 1,
+      "gasUsed": "86316",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:same valid receipt cannot double-pay",
+      "hash": "0x241a680b3e8a0cd26552dfd36072da9ff11ff04fb1a05bdde1321f388088017a",
+      "blockNumber": 54,
+      "status": 0,
+      "gasUsed": "53292",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:settled win cannot be refunded",
+      "hash": "0x87780d37e91fd69bbc5aa91fe8afcb4d4a7e8959b3fa061c1cc86bd480daeecc",
+      "blockNumber": 55,
+      "status": 0,
+      "gasUsed": "48532",
+      "contractAddress": null
+    },
+    {
+      "label": "deploy:RHChessChallengeVault",
+      "hash": "0x5bc6923a8551196c81d5cb4fec860c4165035fc3ec26bc78bbaf90d3e6e5c3e0",
+      "blockNumber": 56,
+      "status": 1,
+      "gasUsed": "1559743",
+      "contractAddress": "0x9A676e781A523b5d0C0e43731313A708CB607508"
+    },
+    {
+      "label": "explicit local test-only enable entries",
+      "hash": "0x0e5b297db82886af8e1eb9d0e55ce601f2c25359f8058226c77a90b57782c3af",
+      "blockNumber": 57,
+      "status": 1,
+      "gasUsed": "22738",
+      "contractAddress": null
+    },
+    {
+      "label": "explicit exact pool approval",
+      "hash": "0xe5a108a9dfa7cb82d81a8befbe637d4cabe05969032314b4e626a4e7d09fa2c2",
+      "blockNumber": 58,
+      "status": 1,
+      "gasUsed": "44126",
+      "contractAddress": null
+    },
+    {
+      "label": "manual pool funding",
+      "hash": "0xdd4c8eaabe8e5b2a658b84694926a88d986a2c4680da3be0195deb5a0ab9db38",
+      "blockNumber": 59,
+      "status": 1,
+      "gasUsed": "74893",
+      "contractAddress": null
+    },
+    {
+      "label": "exact entry approval",
+      "hash": "0x4a1c729340a25849179b88d4b6f3c14fae807b5c79dda50c1e9a30b5619d4d8c",
+      "blockNumber": 60,
+      "status": 1,
+      "gasUsed": "44126",
+      "contractAddress": null
+    },
+    {
+      "label": "atomic entry + prize reservation",
+      "hash": "0x9b799ffb90abbdee7fa2a5f74673d21255d95d83815eef4623cef7bc90b01942",
+      "blockNumber": 61,
+      "status": 1,
+      "gasUsed": "212603",
+      "contractAddress": null
+    },
+    {
+      "label": "settle result 2",
+      "hash": "0xd653697a8f4471c6f3ae191a96d8493afd2035f8b46c7758ea99e79d8f255e48",
+      "blockNumber": 62,
+      "status": 1,
+      "gasUsed": "69454",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:result 2 is terminal and cannot become a win",
+      "hash": "0x72cf077bf7c4a7cc90c095ccf57dac950d3443e33e3ff8f016ab971b4da8da98",
+      "blockNumber": 63,
+      "status": 0,
+      "gasUsed": "53304",
+      "contractAddress": null
+    },
+    {
+      "label": "deploy:RHChessChallengeVault",
+      "hash": "0xb82b505541e989e8c50ccf919442b36b8e2dd1d1bab4e7c4458deb13ac1c7dcf",
+      "blockNumber": 64,
+      "status": 1,
+      "gasUsed": "1559743",
+      "contractAddress": "0x3Aa5ebB10DC797CAC828524e59A333d0A371443c"
+    },
+    {
+      "label": "explicit local test-only enable entries",
+      "hash": "0x2e95a19d09ba092c9f6289184669181aef0d72ffb392a643c291817b51c01533",
+      "blockNumber": 65,
+      "status": 1,
+      "gasUsed": "22738",
+      "contractAddress": null
+    },
+    {
+      "label": "explicit exact pool approval",
+      "hash": "0xef9568dd736df1f8672a82179b4879a6e1df92fc986b8ac1c8c470581493e6ac",
+      "blockNumber": 66,
+      "status": 1,
+      "gasUsed": "44126",
+      "contractAddress": null
+    },
+    {
+      "label": "manual pool funding",
+      "hash": "0xe58d1049af35adf201c7eba6183603cc15ccb315455e0668d0501df72af25a3d",
+      "blockNumber": 67,
+      "status": 1,
+      "gasUsed": "74893",
+      "contractAddress": null
+    },
+    {
+      "label": "exact entry approval",
+      "hash": "0xda296a8e436db0acce093ae4eee03cbe21ccbc70373957e15da49eee6d4c9b39",
+      "blockNumber": 68,
+      "status": 1,
+      "gasUsed": "44126",
+      "contractAddress": null
+    },
+    {
+      "label": "atomic entry + prize reservation",
+      "hash": "0xf1c5b38c530ce2900d1c2596f86e7b243ba0d67967ae77490a45f77d17ac5db7",
+      "blockNumber": 69,
+      "status": 1,
+      "gasUsed": "212603",
+      "contractAddress": null
+    },
+    {
+      "label": "settle result 3",
+      "hash": "0xf53e3ff44e3b53be0d3c922dc9d42c3338042c396005355a2edfad3e936a4fd4",
+      "blockNumber": 70,
+      "status": 1,
+      "gasUsed": "69454",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:result 3 is terminal and cannot become a win",
+      "hash": "0xf3413cc86fe64daa071c1c31703030c16f4761608716dafae35dcac44539a334",
+      "blockNumber": 71,
+      "status": 0,
+      "gasUsed": "53304",
+      "contractAddress": null
+    },
+    {
+      "label": "deploy:RHChessChallengeVault",
+      "hash": "0x440fc4291bbad53c7c120ffd7a7ba31d324077bd1063600da407efa847d84c24",
+      "blockNumber": 72,
+      "status": 1,
+      "gasUsed": "1559743",
+      "contractAddress": "0xa85233C63b9Ee964Add6F2cffe00Fd84eb32338f"
+    },
+    {
+      "label": "explicit local test-only enable entries",
+      "hash": "0xc215fafff36814d0031d93215debbff2c497b14bbe112c5e9fc3c5753400e170",
+      "blockNumber": 73,
+      "status": 1,
+      "gasUsed": "22738",
+      "contractAddress": null
+    },
+    {
+      "label": "explicit exact pool approval",
+      "hash": "0x2bc0a17bfebd6090479487a83b15c62835158729ea2f2cf5bdca0ed1c7570940",
+      "blockNumber": 74,
+      "status": 1,
+      "gasUsed": "44114",
+      "contractAddress": null
+    },
+    {
+      "label": "manual pool funding",
+      "hash": "0x51bbb1a452766c74be6e20f9a618efb49cffb7d6867c04e10409126b98232a17",
+      "blockNumber": 75,
+      "status": 1,
+      "gasUsed": "74893",
+      "contractAddress": null
+    },
+    {
+      "label": "exact entry approval",
+      "hash": "0x2113ba565050bdb79cb0af5721fb48452cd98650fbd704dee551aad2b3044977",
+      "blockNumber": 76,
+      "status": 1,
+      "gasUsed": "44114",
+      "contractAddress": null
+    },
+    {
+      "label": "atomic entry + prize reservation",
+      "hash": "0x2b85c401b28542e13d05f1c899eb6b4840abd56c6b90bb3f6fdb36313ead260b",
+      "blockNumber": 77,
+      "status": 1,
+      "gasUsed": "212603",
+      "contractAddress": null
+    },
+    {
+      "label": "settle result 4",
+      "hash": "0xa7c6e11cdb354ca0d64188de83f236b4cba464713ef17e7046add83c29742240",
+      "blockNumber": 78,
+      "status": 1,
+      "gasUsed": "69454",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:result 4 is terminal and cannot become a win",
+      "hash": "0x9003e5113b8bf70dbeba4091a13aed56217becfb138147d0b07b168ded21b6fe",
+      "blockNumber": 79,
+      "status": 0,
+      "gasUsed": "53304",
+      "contractAddress": null
+    },
+    {
+      "label": "deploy:RHChessChallengeVault",
+      "hash": "0x24c0849273d5ab225266b1ecef533dfbf670573f291015e623bf0575d608de66",
+      "blockNumber": 80,
+      "status": 1,
+      "gasUsed": "1559743",
+      "contractAddress": "0x67d269191c92Caf3cD7723F116c85e6E9bf55933"
+    },
+    {
+      "label": "explicit local test-only enable entries",
+      "hash": "0xe2bc1d77d270f6adfa61985fb3615349e056bb9620e5170a413226af2e5a92d3",
+      "blockNumber": 81,
+      "status": 1,
+      "gasUsed": "22738",
+      "contractAddress": null
+    },
+    {
+      "label": "explicit exact pool approval",
+      "hash": "0x2a79a20b2749a641c52d74f0d5164e0161b44d82bf364e88c2e2a7fc5996b5f7",
+      "blockNumber": 82,
+      "status": 1,
+      "gasUsed": "44126",
+      "contractAddress": null
+    },
+    {
+      "label": "manual pool funding",
+      "hash": "0x5760ffb9a80e36e273ef021def5807e9ef5f52ebd25e3dfdc02d4ad1c19799e7",
+      "blockNumber": 83,
+      "status": 1,
+      "gasUsed": "74893",
+      "contractAddress": null
+    },
+    {
+      "label": "exact entry approval",
+      "hash": "0xf77170d077285edbb309f3860d7a576d595cc71801244a19917b2f49312966fb",
+      "blockNumber": 84,
+      "status": 1,
+      "gasUsed": "44126",
+      "contractAddress": null
+    },
+    {
+      "label": "atomic entry + prize reservation",
+      "hash": "0x5b999e251bc69a357575297b69fa6e99746d44d5d0bba7c091de9d7757231843",
+      "blockNumber": 85,
+      "status": 1,
+      "gasUsed": "212603",
+      "contractAddress": null
+    },
+    {
+      "label": "settle result 5",
+      "hash": "0x85ae1df87631d7b32846b5d4fdfec2b6c2332a715c9a155798d264945766173b",
+      "blockNumber": 86,
+      "status": 1,
+      "gasUsed": "69444",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:result 5 is terminal and cannot become a win",
+      "hash": "0xebfdb5f532bb0872de7bcdac735744337f7456266f6e0206c8f4089359149f07",
+      "blockNumber": 87,
+      "status": 0,
+      "gasUsed": "53304",
+      "contractAddress": null
+    },
+    {
+      "label": "deploy:RHChessChallengeVault",
+      "hash": "0x23845fb35b261b4967a49532313ce2b9b1d566005eb020f1fcd2d4bd2ea2200b",
+      "blockNumber": 88,
+      "status": 1,
+      "gasUsed": "1559743",
+      "contractAddress": "0xa82fF9aFd8f496c3d6ac40E2a0F282E47488CFc9"
+    },
+    {
+      "label": "explicit local test-only enable entries",
+      "hash": "0x421638cc54fec1b1f6c05aceba0bff430d7ff5e618ac29e3b8bf9a8eb57e6906",
+      "blockNumber": 89,
+      "status": 1,
+      "gasUsed": "22738",
+      "contractAddress": null
+    },
+    {
+      "label": "explicit exact pool approval",
+      "hash": "0xfcf5da606ee0614e81fda4d9ff1f92ea7faec586581455b658d12ac15e4ca32c",
+      "blockNumber": 90,
+      "status": 1,
+      "gasUsed": "44126",
+      "contractAddress": null
+    },
+    {
+      "label": "manual pool funding",
+      "hash": "0x9c52e135f0c87ba65628406bf2e3e298a2711e4dad396aefbcae86bea10f2251",
+      "blockNumber": 91,
+      "status": 1,
+      "gasUsed": "74893",
+      "contractAddress": null
+    },
+    {
+      "label": "exact entry approval",
+      "hash": "0xef68fa594d026210713bedc6cc0a7ee05e2aee6ca5b6c9050b9157d1fa01feab",
+      "blockNumber": 92,
+      "status": 1,
+      "gasUsed": "44126",
+      "contractAddress": null
+    },
+    {
+      "label": "atomic entry + prize reservation",
+      "hash": "0xea6ee8f686b9bb39f8aa191d99802dbb817428a657cc0b31248aa619f2d1d390",
+      "blockNumber": 93,
+      "status": 1,
+      "gasUsed": "212603",
+      "contractAddress": null
+    },
+    {
+      "label": "settle result 6",
+      "hash": "0xd0863773799f3e6c959067672ad889e81f549256d8f3abb14a5801d94eb67e93",
+      "blockNumber": 94,
+      "status": 1,
+      "gasUsed": "86392",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:result 6 is terminal and cannot become a win",
+      "hash": "0x16a0d2b827744ffc48443598b7aa611fdab7104f49cb71fe0af7cbcb3f0126b4",
+      "blockNumber": 95,
+      "status": 0,
+      "gasUsed": "53304",
+      "contractAddress": null
+    },
+    {
+      "label": "deploy:RHChessChallengeVault",
+      "hash": "0xbfd2bbca9fb412ebfc9a439e0d88bb3b37696f7ba1674f9b52ac1575acc71c3d",
+      "blockNumber": 96,
+      "status": 1,
+      "gasUsed": "1559743",
+      "contractAddress": "0x998abeb3E57409262aE5b751f60747921B33613E"
+    },
+    {
+      "label": "explicit local test-only enable entries",
+      "hash": "0x89ccccc9862fb199580f98701c8939d7ca151ab08e675139b22b7ab6df687cee",
+      "blockNumber": 97,
+      "status": 1,
+      "gasUsed": "22738",
+      "contractAddress": null
+    },
+    {
+      "label": "explicit exact pool approval",
+      "hash": "0x8e4de56c99b4213d68b503567635b9868c1b0e1766fd4f0c7c1870b4c3294fa9",
+      "blockNumber": 98,
+      "status": 1,
+      "gasUsed": "44126",
+      "contractAddress": null
+    },
+    {
+      "label": "manual pool funding",
+      "hash": "0x106687478fef7ae4d6a86a49283ee27883b99e3cbb4cf61aad7acb2755e7b9e9",
+      "blockNumber": 99,
+      "status": 1,
+      "gasUsed": "74893",
+      "contractAddress": null
+    },
+    {
+      "label": "exact entry approval",
+      "hash": "0x0070c0355d5467f21fa52e3170fd9700cfd93552ff25f297b40fe005a1c16236",
+      "blockNumber": 100,
+      "status": 1,
+      "gasUsed": "44126",
+      "contractAddress": null
+    },
+    {
+      "label": "atomic entry + prize reservation",
+      "hash": "0xb27a01ef5266a755063040e800d906a60c639c96e098e5714ed9e4ea639f77c7",
+      "blockNumber": 101,
+      "status": 1,
+      "gasUsed": "212603",
+      "contractAddress": null
+    },
+    {
+      "label": "settle result 7",
+      "hash": "0x23a8c82724d50e0b942d3241b26049c0414004a4d225dd3c1221c163800d85e8",
+      "blockNumber": 102,
+      "status": 1,
+      "gasUsed": "86390",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:result 7 is terminal and cannot become a win",
+      "hash": "0x3f213ca84c91caa8692dc597ea80047412e804f864df1064400e526c0a2dde2d",
+      "blockNumber": 103,
+      "status": 0,
+      "gasUsed": "53292",
+      "contractAddress": null
+    },
+    {
+      "label": "deploy:RHChessChallengeVault",
+      "hash": "0x0cb7c017970ecfa6d38bafc8dec21c71ed903aa7c7a020a2c5f08a033058a45a",
+      "blockNumber": 104,
+      "status": 1,
+      "gasUsed": "1559743",
+      "contractAddress": "0x8f86403A4DE0BB5791fa46B8e795C547942fE4Cf"
+    },
+    {
+      "label": "explicit local test-only enable entries",
+      "hash": "0x6d587e2e83e7d14ca29a2d7205f41a233eec41a530339083f1f0f907935f598a",
+      "blockNumber": 105,
+      "status": 1,
+      "gasUsed": "22738",
+      "contractAddress": null
+    },
+    {
+      "label": "explicit exact pool approval",
+      "hash": "0x042645dd58c7ad08ccf3f67ccde85996fa9e9ce5560789d2f532e176e1102207",
+      "blockNumber": 106,
+      "status": 1,
+      "gasUsed": "44126",
+      "contractAddress": null
+    },
+    {
+      "label": "manual pool funding",
+      "hash": "0x3e4c3abf1703f9ab2ef7afe2e30c5ccb82e535f05e298c51482b1edef4a44fb9",
+      "blockNumber": 107,
+      "status": 1,
+      "gasUsed": "74893",
+      "contractAddress": null
+    },
+    {
+      "label": "exact entry approval",
+      "hash": "0x588343c715c0c9a12e3cd040c58b52d883a6e3267d00728aadb23600c24cfc66",
+      "blockNumber": 108,
+      "status": 1,
+      "gasUsed": "44126",
+      "contractAddress": null
+    },
+    {
+      "label": "atomic entry + prize reservation",
+      "hash": "0x1d569f228af06a2a3efc05f6b37dfb14d74a5326cff86910081cfcea70045155",
+      "blockNumber": 109,
+      "status": 1,
+      "gasUsed": "212603",
+      "contractAddress": null
+    },
+    {
+      "label": "exact entry approval",
+      "hash": "0x9b7b03bd95b89652ddeb5c7e8906ae92ec2b451fc9c2aed62ea0627ddd6e6c57",
+      "blockNumber": 110,
+      "status": 1,
+      "gasUsed": "44126",
+      "contractAddress": null
+    },
+    {
+      "label": "atomic entry + prize reservation",
+      "hash": "0xb1a05756e40c1fc9a6c01a99d190f7f2222305919cfcf23c8a68d18b7aad70c5",
+      "blockNumber": 111,
+      "status": 1,
+      "gasUsed": "178403",
+      "contractAddress": null
+    },
+    {
+      "label": "exact entry approval",
+      "hash": "0x882dbf906f75fc162e30fce93fb251deb973c22a711adf3ab09199cfbeaf9adc",
+      "blockNumber": 112,
+      "status": 1,
+      "gasUsed": "44126",
+      "contractAddress": null
+    },
+    {
+      "label": "atomic entry + prize reservation",
+      "hash": "0x553f0b79b5d849b5e439dadad542dff83d86bdf8fb1a22d767be03876b970689",
+      "blockNumber": 113,
+      "status": 1,
+      "gasUsed": "178403",
+      "contractAddress": null
+    },
+    {
+      "label": "withdraw accumulated unreserved entry fees",
+      "hash": "0xfd1562814449e41ab7969025e949592faffeefeb7d4bba90fabe95fe87c0c03e",
+      "blockNumber": 114,
+      "status": 1,
+      "gasUsed": "60448",
+      "contractAddress": null
+    },
+    {
+      "label": "settle result 1",
+      "hash": "0xc75e1709d591ece2fcdf973df49e89c279b5aa72f3bbcf33dd8f1ddca2105292",
+      "blockNumber": 115,
+      "status": 1,
+      "gasUsed": "88006",
+      "contractAddress": null
+    },
+    {
+      "label": "settle result 6",
+      "hash": "0xa2b2c23d15c754966e5ba66e82ed93b78f1017cfadfa26c8c7227a742bcb2769",
+      "blockNumber": 116,
+      "status": 1,
+      "gasUsed": "88040",
+      "contractAddress": null
+    },
+    {
+      "label": "settle result 3",
+      "hash": "0x05ffb9b351060811492c180612b52f6496d290c6407c3131f0627c120764b25b",
+      "blockNumber": 117,
+      "status": 1,
+      "gasUsed": "69475",
+      "contractAddress": null
+    },
+    {
+      "label": "deploy:RHChessChallengeVault",
+      "hash": "0x405958d40ff89821b37845cd98a4f40776a08310cced2305972008987c885ed3",
+      "blockNumber": 118,
+      "status": 1,
+      "gasUsed": "1559743",
+      "contractAddress": "0x4c5859f0F772848b2D91F1D83E2Fe57935348029"
+    },
+    {
+      "label": "explicit local test-only enable entries",
+      "hash": "0x6ab5bd02834f9834ca247be45d91eacad923dbee597d1ebd5185f64d40a89468",
+      "blockNumber": 119,
+      "status": 1,
+      "gasUsed": "22738",
+      "contractAddress": null
+    },
+    {
+      "label": "explicit exact pool approval",
+      "hash": "0x7fd8db5205372cba5b5854d5d449b46a973ab9ae6d78d44237c95f9265969189",
+      "blockNumber": 120,
+      "status": 1,
+      "gasUsed": "44114",
+      "contractAddress": null
+    },
+    {
+      "label": "manual pool funding",
+      "hash": "0xaca211befad394140f15623503fb6da94874916e6af959f80a5c53c6467cf5f1",
+      "blockNumber": 121,
+      "status": 1,
+      "gasUsed": "74884",
+      "contractAddress": null
+    },
+    {
+      "label": "exact entry approval",
+      "hash": "0x73ce1dc08f9bf0663c7afe5b3992e651078759f63f3354c1dc8cd18d9da8e109",
+      "blockNumber": 122,
+      "status": 1,
+      "gasUsed": "44126",
+      "contractAddress": null
+    },
+    {
+      "label": "atomic entry + prize reservation",
+      "hash": "0x0712bf5313b53839ed7cbe5143715e15c07f23b4d8bf9a41e431556f2b5cb817",
+      "blockNumber": 123,
+      "status": 1,
+      "gasUsed": "192691",
+      "contractAddress": null
+    },
+    {
+      "label": "exact entry approval",
+      "hash": "0xc73700a65efaccf067edf22d0cdb29c25348e9f1f28f80bce18a8a3f80491f52",
+      "blockNumber": 124,
+      "status": 1,
+      "gasUsed": "44126",
+      "contractAddress": null
+    },
+    {
+      "label": "atomic entry + prize reservation",
+      "hash": "0xd132578e0d0e16379045524a4ac4a98dfca9da76423420bd9f474e041b12beec",
+      "blockNumber": 125,
+      "status": 1,
+      "gasUsed": "158491",
+      "contractAddress": null
+    },
+    {
+      "label": "settle result 3",
+      "hash": "0x520c0ff9e8282da9902121876d2c5b390cb88c072d347b8e7b1b3c6aa7cce2e9",
+      "blockNumber": 126,
+      "status": 1,
+      "gasUsed": "69456",
+      "contractAddress": null
+    },
+    {
+      "label": "settle result 3",
+      "hash": "0x999dcd1bd85091df0d9ca1f0b49f082bea826c540c692b66afd98d4642efe4e4",
+      "blockNumber": 127,
+      "status": 1,
+      "gasUsed": "69444",
+      "contractAddress": null
+    },
+    {
+      "label": "deploy:RHChessChallengeVault",
+      "hash": "0x2ae23fb5300ece56dc865bf32a68b6026e4a6af36e982fe771fc8d31aa9151f6",
+      "blockNumber": 128,
+      "status": 1,
+      "gasUsed": "1559743",
+      "contractAddress": "0xCD8a1C3ba11CF5ECfa6267617243239504a98d90"
+    },
+    {
+      "label": "explicit local test-only enable entries",
+      "hash": "0x55a31a6fd0400c055a41b963d72b6989f7bcdfa37d049a24dce6787acf50f160",
+      "blockNumber": 129,
+      "status": 1,
+      "gasUsed": "22738",
+      "contractAddress": null
+    },
+    {
+      "label": "explicit exact pool approval",
+      "hash": "0xca5a4247c8f6fe45d8cfbbeed961d297aafe573436d5b6664473ef294f34103f",
+      "blockNumber": 130,
+      "status": 1,
+      "gasUsed": "44114",
+      "contractAddress": null
+    },
+    {
+      "label": "manual pool funding",
+      "hash": "0xccddfcf2f672afa4eb2a17ec5caa60a82632102b538cd88d5d4f324ba605d037",
+      "blockNumber": 131,
+      "status": 1,
+      "gasUsed": "74884",
+      "contractAddress": null
+    },
+    {
+      "label": "exact entry approval",
+      "hash": "0xd5b7317c3b1f6b8b41509c94ab86ab229a1d3b2b23accbcfb8b0edd7de03fc02",
+      "blockNumber": 132,
+      "status": 1,
+      "gasUsed": "44126",
+      "contractAddress": null
+    },
+    {
+      "label": "atomic entry + prize reservation",
+      "hash": "0x8ebcfec9d0056a5cddf13ccc436d8360701c8885a5694f4ca2264523f8281a01",
+      "blockNumber": 133,
+      "status": 1,
+      "gasUsed": "212603",
+      "contractAddress": null
+    },
+    {
+      "label": "pause new entries",
+      "hash": "0x6fa6c778a14a2adcaf176493ad06ccda200329f515211f8883e1f5d35ed79389",
+      "blockNumber": 134,
+      "status": 1,
+      "gasUsed": "44650",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:paused vault rejects new entries",
+      "hash": "0x9c0427c38bbe177436b5b6f8b615df6107be42f565f1a9656f3929a3257c722e",
+      "blockNumber": 135,
+      "status": 0,
+      "gasUsed": "27018",
+      "contractAddress": null
+    },
+    {
+      "label": "settle result 6",
+      "hash": "0x33c78857418500a7cd9cc924c9c2bfa3c5f8fcdcceb8dff83cc1896eb0cda854",
+      "blockNumber": 136,
+      "status": 1,
+      "gasUsed": "78452",
+      "contractAddress": null
+    },
+    {
+      "label": "resume new entries",
+      "hash": "0x32991fe7f2c1adb8652608ae506667a329769a5e91e9463700b5c7180cd87410",
+      "blockNumber": 137,
+      "status": 1,
+      "gasUsed": "22738",
+      "contractAddress": null
+    },
+    {
+      "label": "exact entry approval",
+      "hash": "0x1ee22228a7d416cef7561a0ee818cfcd7e1377c8f37d6b6c010a0a744426634e",
+      "blockNumber": 138,
+      "status": 1,
+      "gasUsed": "44126",
+      "contractAddress": null
+    },
+    {
+      "label": "atomic entry + prize reservation",
+      "hash": "0x9038f7f2a332d622c58769b06568910ebe21f1a36140ff05a8e8f9c76ffb9a18",
+      "blockNumber": 139,
+      "status": 1,
+      "gasUsed": "212603",
+      "contractAddress": null
+    },
+    {
+      "label": "deploy:RHChessChallengeVault",
+      "hash": "0xc0f8b36f7704c506e770afce4287f29d1e445ebf13b661564b0b88629ea88ffd",
+      "blockNumber": 140,
+      "status": 1,
+      "gasUsed": "1559743",
+      "contractAddress": "0xFD471836031dc5108809D173A067e8486B9047A3"
+    },
+    {
+      "label": "explicit local test-only enable entries",
+      "hash": "0x0557f0c23d283580756b7ba12d9d110bb9ea702d3955dbc2b33d645c839fe85f",
+      "blockNumber": 141,
+      "status": 1,
+      "gasUsed": "22738",
+      "contractAddress": null
+    },
+    {
+      "label": "approve hostile funding fixture",
+      "hash": "0xe16f89b1ee9be8293a613a2b0ac54e3176de7757a90747287786e1392c3cbe53",
+      "blockNumber": 142,
+      "status": 1,
+      "gasUsed": "44126",
+      "contractAddress": null
+    },
+    {
+      "label": "enable funding tax",
+      "hash": "0xd606156a3b4baba8df0cd5f94cc3e6ce30a38de2cec4d50c220502c270749a60",
+      "blockNumber": 143,
+      "status": 1,
+      "gasUsed": "44287",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:taxed funding rolls back token balances/supply and escrow accounting",
+      "hash": "0xc0fa672be9a54d4cca711cb9630f812e43a4ca0f49b770de339b40c6ba251c2b",
+      "blockNumber": 144,
+      "status": 0,
+      "gasUsed": "94802",
+      "contractAddress": null
+    },
+    {
+      "label": "disable funding tax",
+      "hash": "0x35abc44ee8e59028c1aaae960ccafcf24a952c78098fd0c9e307d1708dce77e3",
+      "blockNumber": 145,
+      "status": 1,
+      "gasUsed": "22375",
+      "contractAddress": null
+    },
+    {
+      "label": "explicit exact pool approval",
+      "hash": "0x267de96dca8bdfb584ce1c91657b6f67fd3a270885c8489132bcd86e771bc627",
+      "blockNumber": 146,
+      "status": 1,
+      "gasUsed": "24226",
+      "contractAddress": null
+    },
+    {
+      "label": "manual pool funding",
+      "hash": "0xb330255db5ba7fcbf3f59f41a30e2b855ce51324ca91bb6a4c1f848c75186eb7",
+      "blockNumber": 147,
+      "status": 1,
+      "gasUsed": "74893",
+      "contractAddress": null
+    },
+    {
+      "label": "approve hostile entry fixture",
+      "hash": "0x2ff66c662ecb64fd370352822f8628147cf28006cdb095c2d85f0897b84c28da",
+      "blockNumber": 148,
+      "status": 1,
+      "gasUsed": "44126",
+      "contractAddress": null
+    },
+    {
+      "label": "enable incoming tax",
+      "hash": "0x07ca9e7e9cc620b9d33aa3f850d36adfb485c6175bb8ecb7a3ee508300e73f09",
+      "blockNumber": 149,
+      "status": 1,
+      "gasUsed": "44287",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:entry tax rolls back nonce, reservation, allowance and token effects",
+      "hash": "0x265b9d4a03fac6a38b06e77297eb0a8ec5066366b8d3c02d9f5928395972741e",
+      "blockNumber": 150,
+      "status": 0,
+      "gasUsed": "236652",
+      "contractAddress": null
+    },
+    {
+      "label": "enable incoming false return",
+      "hash": "0x6c3525727f301f0051e62eba6cd6ef6ec553bde6ad77171537c1c81dde8ff0ad",
+      "blockNumber": 151,
+      "status": 1,
+      "gasUsed": "27187",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:entry false return rolls back nonce, reservation, allowance and token effects",
+      "hash": "0xa51c939d71760ae0171a6b5d589d863ec7c1c4c1080ff56daced4342d9529c5b",
+      "blockNumber": 152,
+      "status": 0,
+      "gasUsed": "231571",
+      "contractAddress": null
+    },
+    {
+      "label": "restore normal incoming",
+      "hash": "0xe8b6238791f58d9c002b4ea675f8bd63a987380f0e7920098f8684df8a04fa23",
+      "blockNumber": 153,
+      "status": 1,
+      "gasUsed": "22375",
+      "contractAddress": null
+    },
+    {
+      "label": "clear entry allowance",
+      "hash": "0xcdfcb46f8504c6976cbf523b2d2e1155aa0a231e60109cd0851a332f1c082e09",
+      "blockNumber": 154,
+      "status": 1,
+      "gasUsed": "22130",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:missing allowance cannot register game or reserve collateral",
+      "hash": "0xc141fcf93a46aa6b07e12536d4b942425ea42e96ff31c071dc572f9cb5fba36b",
+      "blockNumber": 155,
+      "status": 0,
+      "gasUsed": "214857",
+      "contractAddress": null
+    },
+    {
+      "label": "exact entry approval",
+      "hash": "0xb00e2734d4896eb255aa2e8fda201f0005e792cffba918afd75137f1216d14ca",
+      "blockNumber": 156,
+      "status": 1,
+      "gasUsed": "44126",
+      "contractAddress": null
+    },
+    {
+      "label": "atomic entry + prize reservation",
+      "hash": "0x042ad9fbc032807da22ad9accfbe0286521480d6a5278c18a47a9783c21b5e8c",
+      "blockNumber": 157,
+      "status": 1,
+      "gasUsed": "212603",
+      "contractAddress": null
+    },
+    {
+      "label": "enable outgoing tax",
+      "hash": "0xbaa235654c14fde72c5cdcdaf45df9a1dfabb31871be09b327a9c3dceedca902",
+      "blockNumber": 158,
+      "status": 1,
+      "gasUsed": "44287",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:prize tax rolls back paid state, reserve release and token effects",
+      "hash": "0x57e56566f648c04ea18dc6f4fb0cac7689eb87b477a6619bc875ad0d0b6d5181",
+      "blockNumber": 159,
+      "status": 0,
+      "gasUsed": "107458",
+      "contractAddress": null
+    },
+    {
+      "label": "enable outgoing false return",
+      "hash": "0x54740a6ccdb1746bb3ceba704b6c4c784fe3adc2eecec1dd1d9e9e4bf1a8a12d",
+      "blockNumber": 160,
+      "status": 1,
+      "gasUsed": "27187",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:prize false return rolls back paid state, reserve release and token effects",
+      "hash": "0x84eef090cc693e02c72296719423a41a604a71a3958ab8f897c3f8e3ef40f783",
+      "blockNumber": 161,
+      "status": 0,
+      "gasUsed": "102325",
+      "contractAddress": null
+    },
+    {
+      "label": "restore normal outgoing",
+      "hash": "0xd9bacf8ec45a2d91138a6156c89af8999d6f1a0a219f9d67c6e827afa7000a9a",
+      "blockNumber": 162,
+      "status": 1,
+      "gasUsed": "22375",
+      "contractAddress": null
+    },
+    {
+      "label": "explicit exact pool approval",
+      "hash": "0x28d60aa4cbe5b8a96e4a99533c6e5a81c1ad18aba764a656c8fbbcc730d8b0bf",
+      "blockNumber": 163,
+      "status": 1,
+      "gasUsed": "44126",
+      "contractAddress": null
+    },
+    {
+      "label": "manual pool funding",
+      "hash": "0xf8d85169a74996d0b1e50ebd1b4e8d05ea96b954f2ae8ff6daf079ceed527069",
+      "blockNumber": 164,
+      "status": 1,
+      "gasUsed": "61213",
+      "contractAddress": null
+    },
+    {
+      "label": "fund callback token",
+      "hash": "0xb9988eb5c5b25dfea4e4f11b8c23d6ebb00d1bbd58dfa27b51c6f66434f3328e",
+      "blockNumber": 165,
+      "status": 1,
+      "gasUsed": "49322",
+      "contractAddress": null
+    },
+    {
+      "label": "approve callback entry",
+      "hash": "0xe5d91883f21c79f8974ac2a79864b8e54fee7624364de601eaeb0694608db70e",
+      "blockNumber": 166,
+      "status": 1,
+      "gasUsed": "44230",
+      "contractAddress": null
+    },
+    {
+      "label": "enable funded entry reentry",
+      "hash": "0x53845e5787f7371fa96f624d1c0875fb2fa38ad374bb303e356269b3a7a24b3b",
+      "blockNumber": 167,
+      "status": 1,
+      "gasUsed": "158938",
+      "contractAddress": null
+    },
+    {
+      "label": "exact entry approval",
+      "hash": "0x4e6f2516713aebd8863dfa537fc03794169c0e28d7fd8813311f794cac5d2b48",
+      "blockNumber": 168,
+      "status": 1,
+      "gasUsed": "44126",
+      "contractAddress": null
+    },
+    {
+      "label": "atomic entry + prize reservation",
+      "hash": "0x37c77114ee2ac81be33b31ea2b4b6d06596b83b20e39dfdd1e4d8ea229344c6a",
+      "blockNumber": 169,
+      "status": 1,
+      "gasUsed": "213731",
+      "contractAddress": null
+    },
+    {
+      "label": "enable settlement reentry",
+      "hash": "0xff21a4b080f2d46539dcfa8c2ddba962909e0c075e23ab55146352217abbc0c7",
+      "blockNumber": 170,
+      "status": 1,
+      "gasUsed": "46834",
+      "contractAddress": null
+    },
+    {
+      "label": "settle result 1",
+      "hash": "0xc68434a8cbd1fd0b3b9beec5bfd7a0147e225532d5e5718b9d2076adfbd7b189",
+      "blockNumber": 171,
+      "status": 1,
+      "gasUsed": "121388",
+      "contractAddress": null
+    },
+    {
+      "label": "disable token callbacks",
+      "hash": "0x5af670dc460918d754ba32104004606092e6bef0e51ef6da836213b412e30323",
+      "blockNumber": 172,
+      "status": 1,
+      "gasUsed": "42535",
+      "contractAddress": null
+    },
+    {
+      "label": "enable withdrawal tax",
+      "hash": "0x9b225029e2ce604013b8c46fce510dce048516f0c8ad1e6b54d16feb2a3cfc49",
+      "blockNumber": 173,
+      "status": 1,
+      "gasUsed": "44287",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:owner withdrawal tax rolls back without touching reserves",
+      "hash": "0xf79f019c1ca93cda1fbf5b7a545c9a49d877e50cfdd9f3c3b637762ff963afee",
+      "blockNumber": 174,
+      "status": 0,
+      "gasUsed": "76756",
+      "contractAddress": null
+    },
+    {
+      "label": "enable withdrawal false return",
+      "hash": "0x3c4a0f78f0d7f5972a6d8a4060a8d68a4952c9aebd5148ca76148aab8be538ca",
+      "blockNumber": 175,
+      "status": 1,
+      "gasUsed": "27187",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:owner withdrawal false return rolls back without touching reserves",
+      "hash": "0x25eb45b60ff239a63502a5487621a529eb3ab71d41862303d44722d601f0a3c8",
+      "blockNumber": 176,
+      "status": 0,
+      "gasUsed": "71623",
+      "contractAddress": null
+    },
+    {
+      "label": "restore outgoing after withdrawal checks",
+      "hash": "0xdf7f1af6f91b06819dd8de6d1559f1f5c918e5d54098197558d66b5e466b0d82",
+      "blockNumber": 177,
+      "status": 1,
+      "gasUsed": "22375",
+      "contractAddress": null
+    },
+    {
+      "label": "deploy:RHChessChallengeVault",
+      "hash": "0xf746d56a149b7c0cc81b5947bef944a8c378a3ccdbf06f541779fdedc16f18fd",
+      "blockNumber": 178,
+      "status": 1,
+      "gasUsed": "1559743",
+      "contractAddress": "0xC9a43158891282A2B1475592D5719c001986Aaec"
+    },
+    {
+      "label": "local fixture owner explicitly enables its vault",
+      "hash": "0xba54fd15b834593e9460266506c289ef3b56dd10ce005d2829acfa25b21cbae5",
+      "blockNumber": 179,
+      "status": 1,
+      "gasUsed": "27105",
+      "contractAddress": null
+    },
+    {
+      "label": "explicit exact pool approval",
+      "hash": "0xabb40b89fc87d1705ab2261263c0f1c28ca32eebb6c13f513a30c9966b417f40",
+      "blockNumber": 180,
+      "status": 1,
+      "gasUsed": "44114",
+      "contractAddress": null
+    },
+    {
+      "label": "manual pool funding",
+      "hash": "0x7d8d31aae681cdccf28906f1d6f7952711a7cf0b6fa229b999f7a54466d60f67",
+      "blockNumber": 181,
+      "status": 1,
+      "gasUsed": "74893",
+      "contractAddress": null
+    },
+    {
+      "label": "exact entry approval",
+      "hash": "0xb421015af2e5a8ee44dd65fa2234369f7a5973869a32c843e36625a495f6466a",
+      "blockNumber": 182,
+      "status": 1,
+      "gasUsed": "44114",
+      "contractAddress": null
+    },
+    {
+      "label": "atomic entry + prize reservation",
+      "hash": "0xce3dce48cad3945eef9e82fea7f4dd83980b8a15b9a07b38bf3c7d41d2135e41",
+      "blockNumber": 183,
+      "status": 1,
+      "gasUsed": "212603",
+      "contractAddress": null
+    },
+    {
+      "label": "enable owner withdrawal callback",
+      "hash": "0x9b3d638c738ca9582e8352516d75e778ec519cf3757d21b858e7ced9076af29f",
+      "blockNumber": 184,
+      "status": 1,
+      "gasUsed": "136315",
+      "contractAddress": null
+    },
+    {
+      "label": "owner withdraws with hostile outgoing callback",
+      "hash": "0xab5fd8034c6b7f820322660408711e446130d47b70919e597a90f4a0744e2de9",
+      "blockNumber": 185,
+      "status": 1,
+      "gasUsed": "90816",
+      "contractAddress": null
+    },
+    {
+      "label": "disable withdrawal callback",
+      "hash": "0xbb65253bf95c8ac6255e87f4717163f721732ef1feed9e535764cf7ffe3e561e",
+      "blockNumber": 186,
+      "status": 1,
+      "gasUsed": "42535",
+      "contractAddress": null
+    },
+    {
+      "label": "deploy:RHChessChallengeVault",
+      "hash": "0xaf3b914c83d40bccdbdd8d3a31787239cd0d5c0403297e8908c09908495632f6",
+      "blockNumber": 187,
+      "status": 1,
+      "gasUsed": "1559743",
+      "contractAddress": "0x86A2EE8FAf9A840F7a2c64CA3d51209F9A02081D"
+    },
+    {
+      "label": "explicit local test-only enable entries",
+      "hash": "0x1432c02371ac65dcfa9e9737f83496de7aab4100146144edf82f978d7fcc5f4e",
+      "blockNumber": 188,
+      "status": 1,
+      "gasUsed": "22738",
+      "contractAddress": null
+    },
+    {
+      "label": "explicit exact pool approval",
+      "hash": "0x80bfcc9d0cac5469d4ec7987e897c2cc731d73b6f1247c3f35996644717ced27",
+      "blockNumber": 189,
+      "status": 1,
+      "gasUsed": "44126",
+      "contractAddress": null
+    },
+    {
+      "label": "manual pool funding",
+      "hash": "0x935b7bba2f95c39b3870f68e90e00a2dd60c1e53baf7cade7fdd2b56c26d7f34",
+      "blockNumber": 190,
+      "status": 1,
+      "gasUsed": "74893",
+      "contractAddress": null
+    },
+    {
+      "label": "exact entry approval",
+      "hash": "0xee0726770adad850810190c83d150401735ac56df64648dd1ae14e054c8c8f0f",
+      "blockNumber": 191,
+      "status": 1,
+      "gasUsed": "44126",
+      "contractAddress": null
+    },
+    {
+      "label": "atomic entry + prize reservation",
+      "hash": "0xe1ed15eae761117da5a80177dee801a27d5b68747c4075a43933a7a2be3d37da",
+      "blockNumber": 192,
+      "status": 1,
+      "gasUsed": "212603",
+      "contractAddress": null
+    },
+    {
+      "label": "hostile fixture destroys collateral",
+      "hash": "0x8ba7dfc0fef8480a4365bd6ef1dee076bf309afe9d23d35d2e1ad0ec68e08c54",
+      "blockNumber": 193,
+      "status": 1,
+      "gasUsed": "32410",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:insolvency blocks new entries before charging",
+      "hash": "0xac1831eac5e1b48ca19d59f28f17c90b84e1f35a5fdc857ad28a948a31df80f1",
+      "blockNumber": 194,
+      "status": 0,
+      "gasUsed": "54151",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:insolvency blocks owner withdrawal",
+      "hash": "0x964d815e58416776be3b3190a589b7ba803d73a66d389b96da47becf95772ac9",
+      "blockNumber": 195,
+      "status": 0,
+      "gasUsed": "51447",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:insolvency fails closed rather than racing existing claimants",
+      "hash": "0xc24b8ea2741dd95a4345f5a61223ceb8545b2f689db87de4637760cd7aa815a6",
+      "blockNumber": 196,
+      "status": 0,
+      "gasUsed": "72326",
+      "contractAddress": null
+    },
+    {
+      "label": "manual fixture repairs lost collateral",
+      "hash": "0x0820e945aa2e960ab3dff6796df0016c047489d5878aa7c8e1de403a423eec5c",
+      "blockNumber": 197,
+      "status": 1,
+      "gasUsed": "32138",
+      "contractAddress": null
+    },
+    {
+      "label": "settle result 6",
+      "hash": "0xb6e0be33e8419c4c9a2ac647834b1f1f4e80fa85e345d1842bf81cd48aeb9eac",
+      "blockNumber": 198,
+      "status": 1,
+      "gasUsed": "86383",
+      "contractAddress": null
+    },
+    {
+      "label": "deploy:RHChessChallengeVault",
+      "hash": "0xd7d266ecdab55c51cee7e3eb55a3cf0dd593ad8b286abdf1bc01e65aed8a2499",
+      "blockNumber": 199,
+      "status": 1,
+      "gasUsed": "1559743",
+      "contractAddress": "0x18E317A7D70d8fBf8e6E893616b52390EbBdb629"
+    },
+    {
+      "label": "explicit local test-only enable entries",
+      "hash": "0xf39dd82d304d1522e8ef191dd5eb63a65b40694aae6acaaccbf7c584c61c4b1d",
+      "blockNumber": 200,
+      "status": 1,
+      "gasUsed": "22738",
+      "contractAddress": null
+    },
+    {
+      "label": "explicit exact pool approval",
+      "hash": "0xd45faf81c7673d7a814ea7eabb65bff40c3dc6689c4ae6a8c18c3520b841d4c4",
+      "blockNumber": 201,
+      "status": 1,
+      "gasUsed": "44114",
+      "contractAddress": null
+    },
+    {
+      "label": "manual pool funding",
+      "hash": "0x6a67d305a5f18a40619849ad8cf27f7437368895b5f766efdca111b468c352b3",
+      "blockNumber": 202,
+      "status": 1,
+      "gasUsed": "74884",
+      "contractAddress": null
+    },
+    {
+      "label": "exact entry approval",
+      "hash": "0x3cf1cb1a671e1f1f991e0653b87c073fdb4bd05f343f14e678f26226492220aa",
+      "blockNumber": 203,
+      "status": 1,
+      "gasUsed": "44126",
+      "contractAddress": null
+    },
+    {
+      "label": "atomic entry + prize reservation",
+      "hash": "0xf428c492cbcee53388eb36b52afe6333a779b60461d60548621026173df27546",
+      "blockNumber": 204,
+      "status": 1,
+      "gasUsed": "212603",
+      "contractAddress": null
+    },
+    {
+      "label": "exact entry approval",
+      "hash": "0xad7cd6ac5e18b02625c8b4f3b12c24b9eb81168679c94ea2043f7d06c49dbb7b",
+      "blockNumber": 205,
+      "status": 1,
+      "gasUsed": "44126",
+      "contractAddress": null
+    },
+    {
+      "label": "atomic entry + prize reservation",
+      "hash": "0x2c28d838dd203f30d9e5fc2b570a54134ffe87a9544a8eba62e1d30f37257680",
+      "blockNumber": 206,
+      "status": 1,
+      "gasUsed": "178403",
+      "contractAddress": null
+    },
+    {
+      "label": "pause entries before existing timeout and refund",
+      "hash": "0x1dc95a96ec516fe8a832094e843b1b5b86c6c7ae7d6e2f03d3300eae2ecd284a",
+      "blockNumber": 207,
+      "status": 1,
+      "gasUsed": "44650",
+      "contractAddress": null
+    },
+    {
+      "label": "settle result 5",
+      "hash": "0x29a7c7ab6d789abce1ed757be9b869639da5161aa9094a3d9e89363fc4241103",
+      "blockNumber": 209,
+      "status": 1,
+      "gasUsed": "66943",
+      "contractAddress": null
+    },
+    {
+      "label": "permissionless missing-attestation refund after full window",
+      "hash": "0x9d41ff083573e59282234e65f9a6dc8f3b91d9b550e9e4928d545726a554ad2b",
+      "blockNumber": 211,
+      "status": 1,
+      "gasUsed": "62516",
+      "contractAddress": null
+    },
+    {
+      "label": "rejected:late signed win cannot reverse expiry refund",
+      "hash": "0x8429985fe46126641762d950c643b0b06e80e9535d77a76364b21d4339afbc0c",
+      "blockNumber": 212,
+      "status": 0,
+      "gasUsed": "36204",
+      "contractAddress": null
+    },
+    {
+      "label": "deploy:RHChessChallengeVault",
+      "hash": "0xef126d350395a96be061b936db78ca6095ada989d4cfdff6db01cfa6982fa7c5",
+      "blockNumber": 213,
+      "status": 1,
+      "gasUsed": "1559743",
+      "contractAddress": "0xc96304e3c037f81dA488ed9dEa1D8F2a48278a75"
+    },
+    {
+      "label": "explicit local test-only enable entries",
+      "hash": "0xef3426559ad95e92f6120e03e44b32f8429e7a73e40dd9f1686773e9c5260aec",
+      "blockNumber": 214,
+      "status": 1,
+      "gasUsed": "22738",
+      "contractAddress": null
+    },
+    {
+      "label": "voluntary direct donation",
+      "hash": "0x341be9bc19b68bb1990ef01d76ccafb3f3cd25d9cb7ee9925d8867df439e6a6f",
+      "blockNumber": 215,
+      "status": 1,
+      "gasUsed": "56628",
+      "contractAddress": null
+    },
+    {
+      "label": "exact entry approval",
+      "hash": "0x19d94a19e61bc6691dd699b306d13f7edc037c43cc08f40590ec20e876279ac5",
+      "blockNumber": 216,
+      "status": 1,
+      "gasUsed": "44126",
+      "contractAddress": null
+    },
+    {
+      "label": "atomic entry + prize reservation",
+      "hash": "0x2013ae6b7e51f7f41a7713e44e1d482f6bd872a3a1287204764747e8562a5a25",
+      "blockNumber": 217,
+      "status": 1,
+      "gasUsed": "212603",
+      "contractAddress": null
+    }
+  ],
+  "games": [
+    {
+      "vault": "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707",
+      "gameId": "0x1703c38980fc56ebf64029641d11bc13419ec701fc2471100072fb91dee9f38f",
+      "nonce": "1",
+      "player": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
+    },
+    {
+      "vault": "0x9A676e781A523b5d0C0e43731313A708CB607508",
+      "gameId": "0x585234ce537de4cfa01a924088d415c3f479a76901a25c200c65da7ee0bbc429",
+      "nonce": "2",
+      "player": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
+    },
+    {
+      "vault": "0x3Aa5ebB10DC797CAC828524e59A333d0A371443c",
+      "gameId": "0x94f02bce992d39fc732829a231bbd5f022d94841e33d4b011a4af5e4384457e3",
+      "nonce": "3",
+      "player": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
+    },
+    {
+      "vault": "0xa85233C63b9Ee964Add6F2cffe00Fd84eb32338f",
+      "gameId": "0x7c33c4a115d0409dd6c8d3d26635628dbb148f1b7a496df5a8263666f44852a3",
+      "nonce": "4",
+      "player": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
+    },
+    {
+      "vault": "0x67d269191c92Caf3cD7723F116c85e6E9bf55933",
+      "gameId": "0xaa6a5fd50768d948d42b960ef8dbe805e93f2d52d322a78776250c701e240d60",
+      "nonce": "5",
+      "player": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
+    },
+    {
+      "vault": "0xa82fF9aFd8f496c3d6ac40E2a0F282E47488CFc9",
+      "gameId": "0x09d9be26210a7c41f8d67c80562ac16820a51c405c700fc837cab1f3cae515bb",
+      "nonce": "6",
+      "player": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
+    },
+    {
+      "vault": "0x998abeb3E57409262aE5b751f60747921B33613E",
+      "gameId": "0x718be0770dc247996eb03ee9476c64e9f5bd8c17c97d67e8fa40a5ce8d7f4b29",
+      "nonce": "7",
+      "player": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
+    },
+    {
+      "vault": "0x8f86403A4DE0BB5791fa46B8e795C547942fE4Cf",
+      "gameId": "0x98422c7aae12e23d428113feb4a052c399b3a582e76847a8f60c099781518115",
+      "nonce": "8",
+      "player": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
+    },
+    {
+      "vault": "0x8f86403A4DE0BB5791fa46B8e795C547942fE4Cf",
+      "gameId": "0xb6505a113a2ce59b370e3f3601944fb457098a8f0df897a668739d4fe38ccaef",
+      "nonce": "9",
+      "player": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
+    },
+    {
+      "vault": "0x8f86403A4DE0BB5791fa46B8e795C547942fE4Cf",
+      "gameId": "0x5a59fb355275de48ab033f3bad884cf487cb6b7d2be971177ff1ab2d308efaa4",
+      "nonce": "10",
+      "player": "0x90F79bf6EB2c4f870365E785982E1f101E93b906"
+    },
+    {
+      "vault": "0x4c5859f0F772848b2D91F1D83E2Fe57935348029",
+      "gameId": "0x892f1a2000372dc9a80a9e7f1a57b1ed0e4da151cef44d4789349aa8c653c486",
+      "nonce": "0",
+      "player": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
+    },
+    {
+      "vault": "0x4c5859f0F772848b2D91F1D83E2Fe57935348029",
+      "gameId": "0xf505f05aa15f99c6e6fa9fe74992f7aa68530e54b65c23f680def87bf5b36c72",
+      "nonce": "0",
+      "player": "0x90F79bf6EB2c4f870365E785982E1f101E93b906"
+    },
+    {
+      "vault": "0xCD8a1C3ba11CF5ECfa6267617243239504a98d90",
+      "gameId": "0xeb974973cbcf99d89661c8f3bb6a07995dbe280704d50723b9ef8b9c44c14edc",
+      "nonce": "11",
+      "player": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
+    },
+    {
+      "vault": "0xCD8a1C3ba11CF5ECfa6267617243239504a98d90",
+      "gameId": "0x7a161044f3252a1eff85004cb5a68369ce479465c2b530372e52372985850bbc",
+      "nonce": "12",
+      "player": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
+    },
+    {
+      "vault": "0xFD471836031dc5108809D173A067e8486B9047A3",
+      "gameId": "0x698b3b1d2f3eaf636017b58c2440003c14a5b08bf948985a740861877513b84b",
+      "nonce": "13",
+      "player": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
+    },
+    {
+      "vault": "0xFD471836031dc5108809D173A067e8486B9047A3",
+      "gameId": "0xcb3787ea0177158b8721b12277addccc484b2cefd915a488fe25f00c3f9da2fa",
+      "nonce": "14",
+      "player": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
+    },
+    {
+      "vault": "0xC9a43158891282A2B1475592D5719c001986Aaec",
+      "gameId": "0x93f6bac212b4172ec6d273828cc5e987674fd96d67df75d22be9191392dfd36c",
+      "nonce": "15",
+      "player": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
+    },
+    {
+      "vault": "0x86A2EE8FAf9A840F7a2c64CA3d51209F9A02081D",
+      "gameId": "0x90302841a88157320e10cac04a51f99b7519ed077b235c819aa398d6fbe163dc",
+      "nonce": "16",
+      "player": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
+    },
+    {
+      "vault": "0x18E317A7D70d8fBf8e6E893616b52390EbBdb629",
+      "gameId": "0xc3983a5bd17addd551611e80188c46c5794dbfcf57227a7df8207de973019950",
+      "nonce": "17",
+      "player": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
+    },
+    {
+      "vault": "0x18E317A7D70d8fBf8e6E893616b52390EbBdb629",
+      "gameId": "0xf4bb835b13d30c3589c1251091baede2ec3c6e8bcc86ba68e3dca2dcc81b38d8",
+      "nonce": "18",
+      "player": "0x90F79bf6EB2c4f870365E785982E1f101E93b906"
+    },
+    {
+      "vault": "0xc96304e3c037f81dA488ed9dEa1D8F2a48278a75",
+      "gameId": "0x369a83c1fd1d0bf5e3758d94c6c2989f882767e065ffac63f5c788833b97389c",
+      "nonce": "19",
+      "player": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
+    }
+  ],
+  "fixedEconomics": {
+    "entryFee": "25000000000000000000000",
+    "totalCheckmatePayout": "100000000000000000000000",
+    "winnerNetBeforeGas": "75000000000000000000000"
+  },
+  "reviewDefaults": {
+    "gameplaySeconds": 86400,
+    "reconciliationSeconds": 604800,
+    "drawBotWinResignationPlayerTimeout": "fee retained; no reward",
+    "serviceFaultEngineAbort": "entry refunded",
+    "missingAttestationAfterReconciliation": "permissionless entry refund"
+  },
+  "trustBoundary": "Pinned attestor signature authenticates an assertion; does not prove ICP execution, RH entry proof validity, chess legality or Stockfish correctness."
+}

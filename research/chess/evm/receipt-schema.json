@@ -1,0 +1,81 @@
+{
+  "domain": {
+    "name": "GH0ST RH Chess Challenge",
+    "version": "1",
+    "chainId": "deployment chain ID",
+    "verifyingContract": "deployment vault address"
+  },
+  "types": {
+    "GameResult": [
+      {
+        "name": "gameId",
+        "type": "bytes32"
+      },
+      {
+        "name": "player",
+        "type": "address"
+      },
+      {
+        "name": "principalHash",
+        "type": "bytes32"
+      },
+      {
+        "name": "nonce",
+        "type": "uint256"
+      },
+      {
+        "name": "finalPositionHash",
+        "type": "bytes32"
+      },
+      {
+        "name": "transcriptHash",
+        "type": "bytes32"
+      },
+      {
+        "name": "result",
+        "type": "uint8"
+      },
+      {
+        "name": "engineConfigHash",
+        "type": "bytes32"
+      },
+      {
+        "name": "completedAt",
+        "type": "uint64"
+      },
+      {
+        "name": "issuedAt",
+        "type": "uint64"
+      },
+      {
+        "name": "validUntil",
+        "type": "uint64"
+      }
+    ]
+  },
+  "resultCodes": {
+    "NONE": 0,
+    "HUMAN_CHECKMATE": 1,
+    "BOT_CHECKMATE": 2,
+    "DRAW": 3,
+    "HUMAN_RESIGNED": 4,
+    "PLAYER_TIMEOUT": 5,
+    "SERVICE_FAULT": 6,
+    "ENGINE_ABORT": 7,
+    "RECONCILIATION_EXPIRED_REFUND_INTERNAL_ONLY": 8
+  },
+  "principalHash": "SHA256(raw ICP Principal bytes)",
+  "nonce": "Exactly the uint256 entry nonce, unique per player within this vault",
+  "amounts": {
+    "decimals": 18,
+    "entryFee": "25000000000000000000000",
+    "totalCheckmatePayout": "100000000000000000000000",
+    "winnerNetBeforeGas": "75000000000000000000000"
+  },
+  "expiry": {
+    "gameSeconds": 86400,
+    "reconciliationSeconds": 604800,
+    "rule": "completedAt in [openedAt,gameDeadline]; completedAt<=issuedAt<=now<=validUntil<=reconciliationDeadline; permissionless 25k refund strictly after reconciliationDeadline"
+  },
+  "trust": "Pinned ECDSA attestor trusted for ICP principal authentication, RH entry verification and chess result. EVM does not prove ICP execution or Stockfish correctness."
+}
