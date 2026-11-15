@@ -35,6 +35,7 @@ parser.add_argument("--budgets",default="10000,100000,1000000")
 parser.add_argument("--extended",action="store_true")
 parser.add_argument("--cold-tactical",action="store_true")
 parser.add_argument("--threat-stress",action="store_true")
+parser.add_argument("--black-flow",action="store_true")
 parser.add_argument("--output",default="pocketic-verification.json")
 options=parser.parse_args()
 
@@ -98,6 +99,10 @@ try:
         if options.threat_stress:
             cases=[("many-changed-threats-cold","k7/2n1n3/1nbNbn2/2NbRBn1/1nbRQR2/2NBRBN1/3N1N2/7K w - - 0 1",[]),
               ("many-changed-threats-2","K7/8/8/BNQNQNB1/N5N1/R1Q1q2r/n5n1/bnqnqnbk w - - 0 1",[])]
+        if options.black_flow:
+            cases=[("black-after-e4-cold",START,["e2e4"]),
+              ("black-tactical","4rrk1/pp1n3p/3q2pQ/2p1pb2/2PP4/2P3N1/P2B2PP/4RRK1 b - - 7 19",[]),
+              ("black-odd-ply-history",START,"e2e4 e7e5 g1f3".split())]
         cases += [("start-warm",START,[]),("opening-history",START,"e2e4 e7e5 g1f3 b8c6 f1b5 a7a6 b5a4 g8f6".split())]
         if options.extended:
             cases += [("castling-tactics",TACTICAL,[]),

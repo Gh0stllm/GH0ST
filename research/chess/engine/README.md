@@ -24,6 +24,7 @@ The current synchronous canister artifact is **101,257,329 bytes (96.567 MiB)**,
 | Explicit SIMD, 100k nodes, start cold | 9.435 billion | completes |
 | Explicit SIMD, 250k nodes, Kiwipete cold | 16.156 billion | completes |
 | Explicit SIMD, 500k nodes, Kiwipete cold | 28.022 billion | completes |
+| Explicit SIMD, 500k nodes, upstream high-threat stress position cold | 32.452 billion | completes |
 | Explicit SIMD, 500k nodes, start cold | 29.804 billion | completes on the previous wrapper artifact |
 | Explicit SIMD, 500k nodes, Ruy Lopez with full history | 24.382 billion | completes |
 | Explicit SIMD, 1m nodes, start cold | reaches the 40 billion message ceiling | traps; never substitutes a smaller search |
@@ -31,6 +32,8 @@ The current synchronous canister artifact is **101,257,329 bytes (96.567 MiB)**,
 These are local PocketIC execution counters, not public-chain receipts or mainnet latency. Counters are sampled immediately before final response encoding. The first search includes NNUE/worker initialization; later searches retain initialized network memory but clear TT and search histories. **500k is a tested candidate, not a demonstrated worst-case bound for every legal position.**
 
 The final-wrapper suite ran seven position cases at each of 250k and 500k nodes: cold tactical middlegame, warm start, Ruy Lopez history/castling, Kiwipete, mate, promotion, and a pawn endgame. All fourteen executions matched the native upstream build exactly in best move, actual nodes and completed depth; wrong callers were rejected at both budgets. [Final execution evidence](evidence/pocketic-sse-simd-final-verification.json). Separate [native verification](evidence/native-verification.json) covers repeated warm reuse, invalid FEN/history, already checkmated positions and stalemate.
+
+An additional [upstream threat stress suite](evidence/pocketic-threat-stress-verification.json) tested two positions deliberately containing many changed threats at both budgets, followed by start/history rechecks. All eight searches matched the native reference exactly; both caller checks passed. The largest measured cold call was **32.452 billion instructions at 500k nodes**, leaving less headroom than the ordinary opening samples. This still does not prove an instruction bound for every legal position.
 
 Stockfish checks node exhaustion periodically, so actual nodes may slightly exceed the requested budget. A legal search may instead exhaust its maximum iterative depth: the pinned source has `MAX_PLY=246`, so completed depth 245 is a valid terminal reason. The canister emits `node_budget` only when actual nodes meet the request, or `max_depth` only for positive nodes at depth 245. Any other unexplained early stop returns a fault.
 
