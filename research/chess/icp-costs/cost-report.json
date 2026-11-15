@@ -1,0 +1,2008 @@
+{
+  "scope": "Optional ICP cost comparison, not architecture approval or replacement of the user-requested native Solidity design, funded deployment or full-game mainnet bill.",
+  "generatedAt": "2026-11-15T08:42:40.824Z",
+  "architectures": {
+    "A": {
+      "gameRules": "ICP",
+      "engine": "ICP",
+      "feeAndPrizeEscrow": "Robinhood",
+      "signing": "One production threshold-ECDSA signature per terminal game"
+    },
+    "B": {
+      "gameRules": "Robinhood Solidity",
+      "engine": "ICP",
+      "feeAndPrizeEscrow": "Robinhood",
+      "signing": "Assumed one production threshold-ECDSA signature per bot move to authenticate the Solidity update; another proof system would have different cost",
+      "notMeasured": "Per-move RH state/RPC verification and native move gas are additional; this architecture is not implemented by the current ICP game-authority prototype"
+    }
+  },
+  "conversion": {
+    "scope": "Anonymous read-only CMC conversion query; BLS certificate, witness root and exact rate leaf verified against SDK-pinned mainnet root key. No mint or transfer.",
+    "checkedAt": "2026-11-15T08:28:00.383Z",
+    "cmcCanister": "rkp4c-7iaaa-aaaaa-aaaca-cai",
+    "host": "https://icp-api.io",
+    "sdk": "@icp-sdk/core 6.1.1",
+    "querySignatureVerification": true,
+    "blsCertificateVerified": true,
+    "witnessRootVerified": true,
+    "returnedRateLeafVerified": true,
+    "pinnedMainnetRootKeySha256": "737ba355e855bd4b61279056603e05501db5e5bad147c6eba7be8c2a13f4b6b3",
+    "rateTimestampSeconds": 1794731040,
+    "rateTimestampUTC": "2026-11-15T08:24:00.000Z",
+    "xdrPermyriadPerIcp": "16026",
+    "xdrPerIcp": 1.6026,
+    "cyclesPerXdr": "1000000000000",
+    "cyclesPerIcp": "1602600000000",
+    "certificateSha256": "a0d24871d8aed89dc784ddfd5290503edb356b28cd71ae55a40e23b18c986b4b",
+    "witnessRootSha256Hex": "ee38fb61af0c7c89c1a3366785c3284f59c41fb55c555c7cd5dff87df2959492",
+    "sources": [
+      "https://docs.internetcomputer.org/references/system-canisters/",
+      "https://github.com/dfinity/ic/blob/master/rs/nns/cmc/cmc.did"
+    ]
+  },
+  "pricing": {
+    "checkedDateUTC": "2026-11-15",
+    "source": "https://docs.internetcomputer.org/references/cycle-costs/",
+    "baseApplicationNodes": 13,
+    "cyclesPerInstruction": "1",
+    "cyclesPerUpdate": "5000000",
+    "cyclesPerCanisterCreation": "500000000000",
+    "cyclesPerGiBSecond": "127000",
+    "cyclesPerComputeAllocationPercentSecond": "10000000",
+    "cyclesPerIngressMessage": "1200000",
+    "cyclesPerIngressByte": "2000",
+    "cyclesPerXnetCall": "260000",
+    "cyclesPerXnetByte": "1000",
+    "cyclesPerProductionEcdsaSignature": "26153846153",
+    "signatureNote": "Production key_1 signature fee is determined by its signing subnet. ArchitectureA adds one per terminal game; architectureB separately assumes one per bot move. Do not rescale again with the game subnet.",
+    "illustrativeUsdPerXdrInDocs": 1.36643,
+    "marketUsdPerIcp": 2.17,
+    "marketQuoteApproxUTC": "2026-11-15 08:24 UTC",
+    "marketQuoteSource": "web.finance ICP/USD quote supplied by parent task; illustrative only",
+    "storageMonthDays": 30,
+    "targetComputeAllocationPercent": 0,
+    "computeAllocationNote": "Best-effort scheduling assumed; no paid reserved compute. Throughput and latency are not guaranteed."
+  },
+  "measuredSearchFormula": [
+    {
+      "source": "../engine/continuation/experiment/evidence/pocketic-1m-evidence.json",
+      "positionId": 0,
+      "targetNodes": 1000000,
+      "sampledInstructions": "61238557794",
+      "updates": 50,
+      "costBasis": "Sampled instructions plus update base fees only; excludes ingress, encoding tail, authority, RPC, signing and storage",
+      "subnets": [
+        {
+          "nodes": 13,
+          "cost": {
+            "cycles": "61488557794",
+            "trillionCycles": 0.061488557794,
+            "icp": 0.03836800062024211,
+            "minimumIcpE8sRoundedUp": "3836801",
+            "usdAtMarketQuote": 0.08325856134592537,
+            "usdAtDocsIllustrativeXdr": 0.08401981002645542
+          }
+        },
+        {
+          "nodes": 34,
+          "cost": {
+            "cycles": "160816228077",
+            "trillionCycles": 0.160816228077,
+            "icp": 0.10034707854548858,
+            "minimumIcpE8sRoundedUp": "10034708",
+            "usdAtMarketQuote": 0.2177531604437102,
+            "usdAtDocsIllustrativeXdr": 0.2197441185312551
+          }
+        }
+      ]
+    },
+    {
+      "source": "../engine/continuation/experiment/evidence/pocketic-1m-evidence.json",
+      "positionId": 1,
+      "targetNodes": 1000000,
+      "sampledInstructions": "56213407856",
+      "updates": 50,
+      "costBasis": "Sampled instructions plus update base fees only; excludes ingress, encoding tail, authority, RPC, signing and storage",
+      "subnets": [
+        {
+          "nodes": 13,
+          "cost": {
+            "cycles": "56463407856",
+            "trillionCycles": 0.056463407856,
+            "icp": 0.03523237729689255,
+            "minimumIcpE8sRoundedUp": "3523238",
+            "usdAtMarketQuote": 0.07645425873425682,
+            "usdAtDocsIllustrativeXdr": 0.07715329439667408
+          }
+        },
+        {
+          "nodes": 34,
+          "cost": {
+            "cycles": "147673528239",
+            "trillionCycles": 0.147673528239,
+            "icp": 0.09214621754586297,
+            "minimumIcpE8sRoundedUp": "9214622",
+            "usdAtMarketQuote": 0.19995729207452265,
+            "usdAtDocsIllustrativeXdr": 0.2017855391916168
+          }
+        }
+      ]
+    },
+    {
+      "source": "../engine/continuation/experiment/evidence/pocketic-1m-evidence.json",
+      "positionId": 2,
+      "targetNodes": 1000000,
+      "sampledInstructions": "58140412017",
+      "updates": 50,
+      "costBasis": "Sampled instructions plus update base fees only; excludes ingress, encoding tail, authority, RPC, signing and storage",
+      "subnets": [
+        {
+          "nodes": 13,
+          "cost": {
+            "cycles": "58390412017",
+            "trillionCycles": 0.058390412017,
+            "icp": 0.03643480095906652,
+            "minimumIcpE8sRoundedUp": "3643481",
+            "usdAtMarketQuote": 0.07906351808117434,
+            "usdAtDocsIllustrativeXdr": 0.07978641069238931
+          }
+        },
+        {
+          "nodes": 34,
+          "cost": {
+            "cycles": "152713385276",
+            "trillionCycles": 0.152713385276,
+            "icp": 0.09529101789342319,
+            "minimumIcpE8sRoundedUp": "9529102",
+            "usdAtMarketQuote": 0.2067815088287283,
+            "usdAtDocsIllustrativeXdr": 0.2086721510426847
+          }
+        }
+      ]
+    },
+    {
+      "source": "../engine/continuation/experiment/evidence/pocketic-3m-evidence.json",
+      "positionId": 1,
+      "targetNodes": 3000000,
+      "sampledInstructions": "147201702476",
+      "updates": 30,
+      "costBasis": "Sampled instructions plus update base fees only; excludes ingress, encoding tail, authority, RPC, signing and storage",
+      "subnets": [
+        {
+          "nodes": 13,
+          "cost": {
+            "cycles": "147351702476",
+            "trillionCycles": 0.147351702476,
+            "icp": 0.09194540276800199,
+            "minimumIcpE8sRoundedUp": "9194541",
+            "usdAtMarketQuote": 0.1995215240065643,
+            "usdAtDocsIllustrativeXdr": 0.20134578681428067
+          }
+        },
+        {
+          "nodes": 34,
+          "cost": {
+            "cycles": "385381375707",
+            "trillionCycles": 0.385381375707,
+            "icp": 0.24047259185511044,
+            "minimumIcpE8sRoundedUp": "24047260",
+            "usdAtMarketQuote": 0.5218255243255896,
+            "usdAtDocsIllustrativeXdr": 0.526596673207316
+          }
+        }
+      ]
+    }
+  ],
+  "localCycleObservations": [
+    {
+      "position": "Black after full initial history e2e4",
+      "targetNodes": 3000000,
+      "quantum": 100000,
+      "updates": 30,
+      "final": {
+        "bestmove": "e7e5",
+        "actual_nodes": 3000212,
+        "depth": 28
+      },
+      "native": {
+        "bestmove": "e7e5",
+        "actual_nodes": 3000212,
+        "depth": 28
+      },
+      "nativeExact": true,
+      "sampledInstructionsTotal": 147201702476,
+      "largestSampledUpdate": 10361296288,
+      "localCyclesDebitedTotal": 147402396353,
+      "localInstallCyclesDebited": 17592613056,
+      "coldStatus": {
+        "memory_metrics": {
+          "wasm_binary_size": 102984786,
+          "wasm_chunk_store_size": 0,
+          "stable_memory_size": 67174400,
+          "snapshots_size": 0,
+          "wasm_memory_size": 122159104,
+          "global_memory_size": 128,
+          "custom_sections_size": 820
+        },
+        "memory_size": 292331940,
+        "cycles": 199982405820944
+      },
+      "warmStatus": {
+        "memory_metrics": {
+          "wasm_binary_size": 102984786,
+          "wasm_chunk_store_size": 0,
+          "stable_memory_size": 67174400,
+          "snapshots_size": 0,
+          "wasm_memory_size": 467533824,
+          "global_memory_size": 128,
+          "custom_sections_size": 820
+        },
+        "memory_size": 637706660,
+        "cycles": 199835001858591
+      },
+      "localWallSeconds": 35.851501167000606,
+      "cost13Nodes": {
+        "cycles": "147402396353",
+        "trillionCycles": 0.147402396353,
+        "icp": 0.09197703503868714,
+        "minimumIcpE8sRoundedUp": "9197704",
+        "usdAtMarketQuote": 0.19959016603395108,
+        "usdAtDocsIllustrativeXdr": 0.2014150564486298
+      },
+      "cost34NodeScaledScenario": {
+        "cycles": "385513959693",
+        "trillionCycles": 0.385513959693,
+        "icp": 0.24055532240921004,
+        "minimumIcpE8sRoundedUp": "24055533",
+        "usdAtMarketQuote": 0.5220050496279858,
+        "usdAtDocsIllustrativeXdr": 0.526777839943306
+      },
+      "note": "13-node local cycle debits are artificial observed PocketIC charges, not a mainnet receipt. 34-node value is scaled arithmetic, not execution on that subnet."
+    },
+    {
+      "position": "Black after full initial history e2e4",
+      "targetNodes": 10000000,
+      "quantum": 100000,
+      "updates": 100,
+      "final": {
+        "bestmove": "e7e5",
+        "actual_nodes": 10000460,
+        "depth": 35
+      },
+      "native": {
+        "bestmove": "e7e5",
+        "actual_nodes": 10000460,
+        "depth": 35
+      },
+      "nativeExact": true,
+      "sampledInstructionsTotal": 488411278349,
+      "largestSampledUpdate": 10361296288,
+      "localCyclesDebitedTotal": 489080110816,
+      "localInstallCyclesDebited": 314073756,
+      "coldStatus": {
+        "memory_metrics": {
+          "wasm_binary_size": 102984786,
+          "wasm_chunk_store_size": 0,
+          "stable_memory_size": 67174400,
+          "snapshots_size": 0,
+          "wasm_memory_size": 122159104,
+          "global_memory_size": 128,
+          "custom_sections_size": 820
+        },
+        "memory_size": 292331940,
+        "cycles": 199999684360244
+      },
+      "warmStatus": {
+        "memory_metrics": {
+          "wasm_binary_size": 102984786,
+          "wasm_chunk_store_size": 0,
+          "stable_memory_size": 67174400,
+          "snapshots_size": 0,
+          "wasm_memory_size": 467533824,
+          "global_memory_size": 128,
+          "custom_sections_size": 820
+        },
+        "memory_size": 637706660,
+        "cycles": 199510602683428
+      },
+      "localWallSeconds": 112.52231512500111,
+      "cost13Nodes": {
+        "cycles": "489080110816",
+        "trillionCycles": 0.489080110816,
+        "icp": 0.30517915313615374,
+        "minimumIcpE8sRoundedUp": "30517916",
+        "usdAtMarketQuote": 0.6622387623054535,
+        "usdAtDocsIllustrativeXdr": 0.6682937358223069
+      },
+      "cost34NodeScaledScenario": {
+        "cycles": "1279132597519",
+        "trillionCycles": 1.279132597519,
+        "icp": 0.7981608620485461,
+        "minimumIcpE8sRoundedUp": "79816087",
+        "usdAtMarketQuote": 1.732009070645345,
+        "usdAtDocsIllustrativeXdr": 1.7478451552278873
+      },
+      "note": "13-node local cycle debits are artificial observed PocketIC charges, not a mainnet receipt. 34-node value is scaled arithmetic, not execution on that subnet."
+    }
+  ],
+  "preferredProjectionBasis": {
+    "kind": "Observed local PocketIC 3m search cycle debit, including ingress/tails",
+    "cyclesPerBotDecision13Nodes": "147402396353",
+    "position": "Black after 1.e4, fresh full network and cleared128MiBTT; other positions or cache policies can cost differently"
+  },
+  "gameProjections": [
+    {
+      "targetNodes": 3000000,
+      "nodes": 13,
+      "perMove": {
+        "cycles": "147402396353",
+        "trillionCycles": 0.147402396353,
+        "icp": 0.09197703503868714,
+        "minimumIcpE8sRoundedUp": "9197704",
+        "usdAtMarketQuote": 0.19959016603395108,
+        "usdAtDocsIllustrativeXdr": 0.2014150564486298
+      },
+      "architectureBPerMoveIncludingSignature": {
+        "cycles": "173556242506",
+        "trillionCycles": 0.173556242506,
+        "icp": 0.10829666947834768,
+        "minimumIcpE8sRoundedUp": "10829667",
+        "usdAtMarketQuote": 0.23500377276801446,
+        "usdAtDocsIllustrativeXdr": 0.23715245644747357
+      },
+      "games": [
+        {
+          "botMoves": 40,
+          "searchOnly": {
+            "cycles": "5896095854120",
+            "trillionCycles": 5.89609585412,
+            "icp": 3.6790814015474855,
+            "minimumIcpE8sRoundedUp": "367908141",
+            "usdAtMarketQuote": 7.983606641358043,
+            "usdAtDocsIllustrativeXdr": 8.056602257945192
+          },
+          "searchPlusOneTerminalSignature": {
+            "cycles": "5922249700273",
+            "trillionCycles": 5.922249700273,
+            "icp": 3.695401035987146,
+            "minimumIcpE8sRoundedUp": "369540104",
+            "usdAtMarketQuote": 8.019020248092106,
+            "usdAtDocsIllustrativeXdr": 8.092339657944036
+          },
+          "architectureBOneSignaturePerBotMove": {
+            "cycles": "6942249700240",
+            "trillionCycles": 6.94224970024,
+            "icp": 4.331866779133907,
+            "minimumIcpE8sRoundedUp": "433186678",
+            "usdAtMarketQuote": 9.400150910720578,
+            "usdAtDocsIllustrativeXdr": 9.486098257898943
+          }
+        },
+        {
+          "botMoves": 60,
+          "searchOnly": {
+            "cycles": "8844143781180",
+            "trillionCycles": 8.84414378118,
+            "icp": 5.518622102321228,
+            "minimumIcpE8sRoundedUp": "551862211",
+            "usdAtMarketQuote": 11.975409962037064,
+            "usdAtDocsIllustrativeXdr": 12.084903386917787
+          },
+          "searchPlusOneTerminalSignature": {
+            "cycles": "8870297627333",
+            "trillionCycles": 8.870297627333,
+            "icp": 5.534941736760889,
+            "minimumIcpE8sRoundedUp": "553494174",
+            "usdAtMarketQuote": 12.010823568771128,
+            "usdAtDocsIllustrativeXdr": 12.120640786916633
+          },
+          "architectureBOneSignaturePerBotMove": {
+            "cycles": "10413374550360",
+            "trillionCycles": 10.41337455036,
+            "icp": 6.497800168700861,
+            "minimumIcpE8sRoundedUp": "649780017",
+            "usdAtMarketQuote": 14.100226366080868,
+            "usdAtDocsIllustrativeXdr": 14.229147386848416
+          }
+        },
+        {
+          "botMoves": 80,
+          "searchOnly": {
+            "cycles": "11792191708240",
+            "trillionCycles": 11.79219170824,
+            "icp": 7.358162803094971,
+            "minimumIcpE8sRoundedUp": "735816281",
+            "usdAtMarketQuote": 15.967213282716086,
+            "usdAtDocsIllustrativeXdr": 16.113204515890384
+          },
+          "searchPlusOneTerminalSignature": {
+            "cycles": "11818345554393",
+            "trillionCycles": 11.818345554393,
+            "icp": 7.374482437534631,
+            "minimumIcpE8sRoundedUp": "737448244",
+            "usdAtMarketQuote": 16.00262688945015,
+            "usdAtDocsIllustrativeXdr": 16.14894191588923
+          },
+          "architectureBOneSignaturePerBotMove": {
+            "cycles": "13884499400480",
+            "trillionCycles": 13.88449940048,
+            "icp": 8.663733558267815,
+            "minimumIcpE8sRoundedUp": "866373356",
+            "usdAtMarketQuote": 18.800301821441156,
+            "usdAtDocsIllustrativeXdr": 18.972196515797886
+          }
+        }
+      ],
+      "volumes": [
+        {
+          "games": 100,
+          "botMovesPerGame": 60,
+          "cost": {
+            "cycles": "887029762733300",
+            "trillionCycles": 887.0297627333,
+            "icp": 553.4941736760888,
+            "minimumIcpE8sRoundedUp": "55349417368",
+            "usdAtMarketQuote": 1201.0823568771127,
+            "usdAtDocsIllustrativeXdr": 1212.064078691663
+          },
+          "architectureBCost": {
+            "cycles": "1041337455036000",
+            "trillionCycles": 1041.337455036,
+            "icp": 649.7800168700861,
+            "minimumIcpE8sRoundedUp": "64978001688",
+            "usdAtMarketQuote": 1410.0226366080867,
+            "usdAtDocsIllustrativeXdr": 1422.9147386848415
+          },
+          "note": "60-bot-move scenario, not an observed mean or forecast"
+        },
+        {
+          "games": 1000,
+          "botMovesPerGame": 60,
+          "cost": {
+            "cycles": "8870297627333000",
+            "trillionCycles": 8870.297627333,
+            "icp": 5534.9417367608885,
+            "minimumIcpE8sRoundedUp": "553494173677",
+            "usdAtMarketQuote": 12010.823568771128,
+            "usdAtDocsIllustrativeXdr": 12120.640786916632
+          },
+          "architectureBCost": {
+            "cycles": "10413374550360000",
+            "trillionCycles": 10413.37455036,
+            "icp": 6497.800168700861,
+            "minimumIcpE8sRoundedUp": "649780016871",
+            "usdAtMarketQuote": 14100.226366080868,
+            "usdAtDocsIllustrativeXdr": 14229.147386848415
+          },
+          "note": "60-bot-move scenario, not an observed mean or forecast"
+        }
+      ]
+    },
+    {
+      "targetNodes": 3000000,
+      "nodes": 34,
+      "perMove": {
+        "cycles": "385513959693",
+        "trillionCycles": 0.385513959693,
+        "icp": 0.24055532240921004,
+        "minimumIcpE8sRoundedUp": "24055533",
+        "usdAtMarketQuote": 0.5220050496279858,
+        "usdAtDocsIllustrativeXdr": 0.526777839943306
+      },
+      "architectureBPerMoveIncludingSignature": {
+        "cycles": "411667805846",
+        "trillionCycles": 0.411667805846,
+        "icp": 0.2568749568488706,
+        "minimumIcpE8sRoundedUp": "25687496",
+        "usdAtMarketQuote": 0.5574186563620491,
+        "usdAtDocsIllustrativeXdr": 0.5625152399421498
+      },
+      "games": [
+        {
+          "botMoves": 40,
+          "searchOnly": {
+            "cycles": "15420558387720",
+            "trillionCycles": 15.42055838772,
+            "icp": 9.622212896368401,
+            "minimumIcpE8sRoundedUp": "962221290",
+            "usdAtMarketQuote": 20.88020198511943,
+            "usdAtDocsIllustrativeXdr": 21.07111359773224
+          },
+          "searchPlusOneTerminalSignature": {
+            "cycles": "15446712233873",
+            "trillionCycles": 15.446712233873,
+            "icp": 9.638532530808062,
+            "minimumIcpE8sRoundedUp": "963853254",
+            "usdAtMarketQuote": 20.915615591853495,
+            "usdAtDocsIllustrativeXdr": 21.106850997731083
+          },
+          "architectureBOneSignaturePerBotMove": {
+            "cycles": "16466712233840",
+            "trillionCycles": 16.46671223384,
+            "icp": 10.274998273954823,
+            "minimumIcpE8sRoundedUp": "1027499828",
+            "usdAtMarketQuote": 22.296746254481967,
+            "usdAtDocsIllustrativeXdr": 22.50060959768599
+          }
+        },
+        {
+          "botMoves": 60,
+          "searchOnly": {
+            "cycles": "23130837581580",
+            "trillionCycles": 23.13083758158,
+            "icp": 14.433319344552602,
+            "minimumIcpE8sRoundedUp": "1443331935",
+            "usdAtMarketQuote": 31.320302977679145,
+            "usdAtDocsIllustrativeXdr": 31.60667039659836
+          },
+          "searchPlusOneTerminalSignature": {
+            "cycles": "23156991427733",
+            "trillionCycles": 23.156991427733,
+            "icp": 14.449638978992263,
+            "minimumIcpE8sRoundedUp": "1444963898",
+            "usdAtMarketQuote": 31.355716584413212,
+            "usdAtDocsIllustrativeXdr": 31.642407796597205
+          },
+          "architectureBOneSignaturePerBotMove": {
+            "cycles": "24700068350760",
+            "trillionCycles": 24.70006835076,
+            "icp": 15.412497410932236,
+            "minimumIcpE8sRoundedUp": "1541249742",
+            "usdAtMarketQuote": 33.445119381722954,
+            "usdAtDocsIllustrativeXdr": 33.750914396528984
+          }
+        },
+        {
+          "botMoves": 80,
+          "searchOnly": {
+            "cycles": "30841116775440",
+            "trillionCycles": 30.84111677544,
+            "icp": 19.244425792736802,
+            "minimumIcpE8sRoundedUp": "1924442580",
+            "usdAtMarketQuote": 41.76040397023886,
+            "usdAtDocsIllustrativeXdr": 42.14222719546448
+          },
+          "searchPlusOneTerminalSignature": {
+            "cycles": "30867270621593",
+            "trillionCycles": 30.867270621593,
+            "icp": 19.260745427176463,
+            "minimumIcpE8sRoundedUp": "1926074543",
+            "usdAtMarketQuote": 41.79581757697292,
+            "usdAtDocsIllustrativeXdr": 42.17796459546332
+          },
+          "architectureBOneSignaturePerBotMove": {
+            "cycles": "32933424467680",
+            "trillionCycles": 32.93342446768,
+            "icp": 20.549996547909647,
+            "minimumIcpE8sRoundedUp": "2054999655",
+            "usdAtMarketQuote": 44.593492508963934,
+            "usdAtDocsIllustrativeXdr": 45.00121919537198
+          }
+        }
+      ],
+      "volumes": [
+        {
+          "games": 100,
+          "botMovesPerGame": 60,
+          "cost": {
+            "cycles": "2315699142773300",
+            "trillionCycles": 2315.6991427733,
+            "icp": 1444.9638978992264,
+            "minimumIcpE8sRoundedUp": "144496389790",
+            "usdAtMarketQuote": 3135.5716584413212,
+            "usdAtDocsIllustrativeXdr": 3164.2407796597204
+          },
+          "architectureBCost": {
+            "cycles": "2470006835076000",
+            "trillionCycles": 2470.006835076,
+            "icp": 1541.2497410932235,
+            "minimumIcpE8sRoundedUp": "154124974110",
+            "usdAtMarketQuote": 3344.511938172295,
+            "usdAtDocsIllustrativeXdr": 3375.0914396528983
+          },
+          "note": "60-bot-move scenario, not an observed mean or forecast"
+        },
+        {
+          "games": 1000,
+          "botMovesPerGame": 60,
+          "cost": {
+            "cycles": "23156991427733000",
+            "trillionCycles": 23156.991427733,
+            "icp": 14449.638978992263,
+            "minimumIcpE8sRoundedUp": "1444963897900",
+            "usdAtMarketQuote": 31355.71658441321,
+            "usdAtDocsIllustrativeXdr": 31642.407796597203
+          },
+          "architectureBCost": {
+            "cycles": "24700068350760000",
+            "trillionCycles": 24700.06835076,
+            "icp": 15412.497410932236,
+            "minimumIcpE8sRoundedUp": "1541249741094",
+            "usdAtMarketQuote": 33445.11938172295,
+            "usdAtDocsIllustrativeXdr": 33750.91439652899
+          },
+          "note": "60-bot-move scenario, not an observed mean or forecast"
+        }
+      ]
+    },
+    {
+      "targetNodes": 10000000,
+      "nodes": 13,
+      "perMove": {
+        "cycles": "489080110816",
+        "trillionCycles": 0.489080110816,
+        "icp": 0.30517915313615374,
+        "minimumIcpE8sRoundedUp": "30517916",
+        "usdAtMarketQuote": 0.6622387623054535,
+        "usdAtDocsIllustrativeXdr": 0.6682937358223069
+      },
+      "architectureBPerMoveIncludingSignature": {
+        "cycles": "515233956969",
+        "trillionCycles": 0.515233956969,
+        "icp": 0.3214987875758143,
+        "minimumIcpE8sRoundedUp": "32149879",
+        "usdAtMarketQuote": 0.697652369039517,
+        "usdAtDocsIllustrativeXdr": 0.7040311358211506
+      },
+      "games": [
+        {
+          "botMoves": 40,
+          "searchOnly": {
+            "cycles": "19563204432640",
+            "trillionCycles": 19.56320443264,
+            "icp": 12.20716612544615,
+            "minimumIcpE8sRoundedUp": "1220716613",
+            "usdAtMarketQuote": 26.489550492218147,
+            "usdAtDocsIllustrativeXdr": 26.731749432892276
+          },
+          "searchPlusOneTerminalSignature": {
+            "cycles": "19589358278793",
+            "trillionCycles": 19.589358278793,
+            "icp": 12.223485759885811,
+            "minimumIcpE8sRoundedUp": "1222348576",
+            "usdAtMarketQuote": 26.52496409895221,
+            "usdAtDocsIllustrativeXdr": 26.76748683289112
+          },
+          "architectureBOneSignaturePerBotMove": {
+            "cycles": "20609358278760",
+            "trillionCycles": 20.60935827876,
+            "icp": 12.859951503032573,
+            "minimumIcpE8sRoundedUp": "1285995151",
+            "usdAtMarketQuote": 27.906094761580682,
+            "usdAtDocsIllustrativeXdr": 28.161245432846027
+          }
+        },
+        {
+          "botMoves": 60,
+          "searchOnly": {
+            "cycles": "29344806648960",
+            "trillionCycles": 29.34480664896,
+            "icp": 18.310749188169225,
+            "minimumIcpE8sRoundedUp": "1831074919",
+            "usdAtMarketQuote": 39.734325738327215,
+            "usdAtDocsIllustrativeXdr": 40.097624149338415
+          },
+          "searchPlusOneTerminalSignature": {
+            "cycles": "29370960495113",
+            "trillionCycles": 29.370960495113,
+            "icp": 18.327068822608886,
+            "minimumIcpE8sRoundedUp": "1832706883",
+            "usdAtMarketQuote": 39.76973934506128,
+            "usdAtDocsIllustrativeXdr": 40.13336154933726
+          },
+          "architectureBOneSignaturePerBotMove": {
+            "cycles": "30914037418140",
+            "trillionCycles": 30.91403741814,
+            "icp": 19.289927254548857,
+            "minimumIcpE8sRoundedUp": "1928992726",
+            "usdAtMarketQuote": 41.85914214237102,
+            "usdAtDocsIllustrativeXdr": 42.241868149269045
+          }
+        },
+        {
+          "botMoves": 80,
+          "searchOnly": {
+            "cycles": "39126408865280",
+            "trillionCycles": 39.12640886528,
+            "icp": 24.4143322508923,
+            "minimumIcpE8sRoundedUp": "2441433226",
+            "usdAtMarketQuote": 52.97910098443629,
+            "usdAtDocsIllustrativeXdr": 53.46349886578455
+          },
+          "searchPlusOneTerminalSignature": {
+            "cycles": "39152562711433",
+            "trillionCycles": 39.152562711433,
+            "icp": 24.43065188533196,
+            "minimumIcpE8sRoundedUp": "2443065189",
+            "usdAtMarketQuote": 53.014514591170354,
+            "usdAtDocsIllustrativeXdr": 53.499236265783395
+          },
+          "architectureBOneSignaturePerBotMove": {
+            "cycles": "41218716557520",
+            "trillionCycles": 41.21871655752,
+            "icp": 25.719903006065145,
+            "minimumIcpE8sRoundedUp": "2571990301",
+            "usdAtMarketQuote": 55.812189523161365,
+            "usdAtDocsIllustrativeXdr": 56.32249086569205
+          }
+        }
+      ],
+      "volumes": [
+        {
+          "games": 100,
+          "botMovesPerGame": 60,
+          "cost": {
+            "cycles": "2937096049511300",
+            "trillionCycles": 2937.0960495113,
+            "icp": 1832.7068822608885,
+            "minimumIcpE8sRoundedUp": "183270688227",
+            "usdAtMarketQuote": 3976.973934506128,
+            "usdAtDocsIllustrativeXdr": 4013.3361549337255
+          },
+          "architectureBCost": {
+            "cycles": "3091403741814000",
+            "trillionCycles": 3091.403741814,
+            "icp": 1928.9927254548859,
+            "minimumIcpE8sRoundedUp": "192899272546",
+            "usdAtMarketQuote": 4185.914214237102,
+            "usdAtDocsIllustrativeXdr": 4224.186814926904
+          },
+          "note": "60-bot-move scenario, not an observed mean or forecast"
+        },
+        {
+          "games": 1000,
+          "botMovesPerGame": 60,
+          "cost": {
+            "cycles": "29370960495113000",
+            "trillionCycles": 29370.960495113,
+            "icp": 18327.068822608886,
+            "minimumIcpE8sRoundedUp": "1832706882261",
+            "usdAtMarketQuote": 39769.73934506128,
+            "usdAtDocsIllustrativeXdr": 40133.361549337256
+          },
+          "architectureBCost": {
+            "cycles": "30914037418140000",
+            "trillionCycles": 30914.03741814,
+            "icp": 19289.927254548857,
+            "minimumIcpE8sRoundedUp": "1928992725455",
+            "usdAtMarketQuote": 41859.14214237102,
+            "usdAtDocsIllustrativeXdr": 42241.868149269045
+          },
+          "note": "60-bot-move scenario, not an observed mean or forecast"
+        }
+      ]
+    },
+    {
+      "targetNodes": 10000000,
+      "nodes": 34,
+      "perMove": {
+        "cycles": "1279132597519",
+        "trillionCycles": 1.279132597519,
+        "icp": 0.7981608620485461,
+        "minimumIcpE8sRoundedUp": "79816087",
+        "usdAtMarketQuote": 1.732009070645345,
+        "usdAtDocsIllustrativeXdr": 1.7478451552278873
+      },
+      "architectureBPerMoveIncludingSignature": {
+        "cycles": "1305286443672",
+        "trillionCycles": 1.305286443672,
+        "icp": 0.8144804964882066,
+        "minimumIcpE8sRoundedUp": "81448050",
+        "usdAtMarketQuote": 1.7674226773794084,
+        "usdAtDocsIllustrativeXdr": 1.783582555226731
+      },
+      "games": [
+        {
+          "botMoves": 40,
+          "searchOnly": {
+            "cycles": "51165303900760",
+            "trillionCycles": 51.16530390076,
+            "icp": 31.926434481941843,
+            "minimumIcpE8sRoundedUp": "3192643449",
+            "usdAtMarketQuote": 69.2803628258138,
+            "usdAtDocsIllustrativeXdr": 69.91380620911549
+          },
+          "searchPlusOneTerminalSignature": {
+            "cycles": "51191457746913",
+            "trillionCycles": 51.191457746913,
+            "icp": 31.942754116381504,
+            "minimumIcpE8sRoundedUp": "3194275412",
+            "usdAtMarketQuote": 69.31577643254786,
+            "usdAtDocsIllustrativeXdr": 69.94954360911433
+          },
+          "architectureBOneSignaturePerBotMove": {
+            "cycles": "52211457746880",
+            "trillionCycles": 52.21145774688,
+            "icp": 32.579219859528266,
+            "minimumIcpE8sRoundedUp": "3257921986",
+            "usdAtMarketQuote": 70.69690709517633,
+            "usdAtDocsIllustrativeXdr": 71.34330220906924
+          }
+        },
+        {
+          "botMoves": 60,
+          "searchOnly": {
+            "cycles": "76747955851140",
+            "trillionCycles": 76.74795585114,
+            "icp": 47.88965172291277,
+            "minimumIcpE8sRoundedUp": "4788965173",
+            "usdAtMarketQuote": 103.9205442387207,
+            "usdAtDocsIllustrativeXdr": 104.87070931367325
+          },
+          "searchPlusOneTerminalSignature": {
+            "cycles": "76774109697293",
+            "trillionCycles": 76.774109697293,
+            "icp": 47.90597135735243,
+            "minimumIcpE8sRoundedUp": "4790597136",
+            "usdAtMarketQuote": 103.95595784545476,
+            "usdAtDocsIllustrativeXdr": 104.90644671367208
+          },
+          "architectureBOneSignaturePerBotMove": {
+            "cycles": "78317186620320",
+            "trillionCycles": 78.31718662032,
+            "icp": 48.8688297892924,
+            "minimumIcpE8sRoundedUp": "4886882979",
+            "usdAtMarketQuote": 106.0453606427645,
+            "usdAtDocsIllustrativeXdr": 107.01495331360387
+          }
+        },
+        {
+          "botMoves": 80,
+          "searchOnly": {
+            "cycles": "102330607801520",
+            "trillionCycles": 102.33060780152,
+            "icp": 63.85286896388369,
+            "minimumIcpE8sRoundedUp": "6385286897",
+            "usdAtMarketQuote": 138.5607256516276,
+            "usdAtDocsIllustrativeXdr": 139.82761241823098
+          },
+          "searchPlusOneTerminalSignature": {
+            "cycles": "102356761647673",
+            "trillionCycles": 102.356761647673,
+            "icp": 63.86918859832335,
+            "minimumIcpE8sRoundedUp": "6386918860",
+            "usdAtMarketQuote": 138.59613925836166,
+            "usdAtDocsIllustrativeXdr": 139.8633498182298
+          },
+          "architectureBOneSignaturePerBotMove": {
+            "cycles": "104422915493760",
+            "trillionCycles": 104.42291549376,
+            "icp": 65.15843971905653,
+            "minimumIcpE8sRoundedUp": "6515843972",
+            "usdAtMarketQuote": 141.39381419035266,
+            "usdAtDocsIllustrativeXdr": 142.68660441813847
+          }
+        }
+      ],
+      "volumes": [
+        {
+          "games": 100,
+          "botMovesPerGame": 60,
+          "cost": {
+            "cycles": "7677410969729300",
+            "trillionCycles": 7677.4109697293,
+            "icp": 4790.597135735243,
+            "minimumIcpE8sRoundedUp": "479059713574",
+            "usdAtMarketQuote": 10395.595784545476,
+            "usdAtDocsIllustrativeXdr": 10490.644671367207
+          },
+          "architectureBCost": {
+            "cycles": "7831718662032000",
+            "trillionCycles": 7831.718662032,
+            "icp": 4886.88297892924,
+            "minimumIcpE8sRoundedUp": "488688297893",
+            "usdAtMarketQuote": 10604.536064276452,
+            "usdAtDocsIllustrativeXdr": 10701.495331360386
+          },
+          "note": "60-bot-move scenario, not an observed mean or forecast"
+        },
+        {
+          "games": 1000,
+          "botMovesPerGame": 60,
+          "cost": {
+            "cycles": "76774109697293000",
+            "trillionCycles": 76774.109697293,
+            "icp": 47905.97135735242,
+            "minimumIcpE8sRoundedUp": "4790597135736",
+            "usdAtMarketQuote": 103955.95784545474,
+            "usdAtDocsIllustrativeXdr": 104906.44671367206
+          },
+          "architectureBCost": {
+            "cycles": "78317186620320000",
+            "trillionCycles": 78317.18662032,
+            "icp": 48868.8297892924,
+            "minimumIcpE8sRoundedUp": "4886882978930",
+            "usdAtMarketQuote": 106045.36064276451,
+            "usdAtDocsIllustrativeXdr": 107014.95331360387
+          },
+          "note": "60-bot-move scenario, not an observed mean or forecast"
+        }
+      ]
+    }
+  ],
+  "observedNativeTurnCountScenarios": [
+    {
+      "targetNodes": 3000000,
+      "nodes": 13,
+      "sourceNativeGames": [
+        {
+          "file": "../benchmarks/results/baseline-3m/12m-english.json",
+          "id": "12m-english",
+          "plies": 93,
+          "botMoves": 46,
+          "termination": "insufficient_material"
+        },
+        {
+          "file": "../benchmarks/results/baseline-3m/12m-king-pawn.json",
+          "id": "12m-king-pawn",
+          "plies": 189,
+          "botMoves": 94,
+          "termination": "claimed_fifty_moves_current"
+        },
+        {
+          "file": "../benchmarks/results/baseline-3m/12m-kings-fianchetto.json",
+          "id": "12m-kings-fianchetto",
+          "plies": 35,
+          "botMoves": 17,
+          "termination": "claimed_threefold_current"
+        },
+        {
+          "file": "../benchmarks/results/baseline-3m/12m-larsen.json",
+          "id": "12m-larsen",
+          "plies": 195,
+          "botMoves": 97,
+          "termination": "checkmate"
+        },
+        {
+          "file": "../benchmarks/results/baseline-3m/12m-queen-pawn.json",
+          "id": "12m-queen-pawn",
+          "plies": 75,
+          "botMoves": 37,
+          "termination": "claimed_threefold_current"
+        },
+        {
+          "file": "../benchmarks/results/baseline-3m/12m-reti.json",
+          "id": "12m-reti",
+          "plies": 201,
+          "botMoves": 100,
+          "termination": "claimed_threefold_current"
+        }
+      ],
+      "botMoveCounts": [
+        46,
+        94,
+        17,
+        97,
+        37,
+        100
+      ],
+      "meanBotMoves": 65.16666666666667,
+      "rangeBotMoves": [
+        17,
+        100
+      ],
+      "rangeSearchPlusSignature": [
+        {
+          "botMoves": 46,
+          "cost": {
+            "cycles": "6806664078391",
+            "trillionCycles": 6.806664078391,
+            "icp": 4.247263246219268,
+            "minimumIcpE8sRoundedUp": "424726325",
+            "usdAtMarketQuote": 9.216561244295812,
+            "usdAtDocsIllustrativeXdr": 9.300829996635814
+          },
+          "architectureBCost": {
+            "cycles": "7983587155276",
+            "trillionCycles": 7.983587155276,
+            "icp": 4.981646796003994,
+            "minimumIcpE8sRoundedUp": "498164680",
+            "usdAtMarketQuote": 10.810173547328667,
+            "usdAtDocsIllustrativeXdr": 10.909012996583785
+          }
+        },
+        {
+          "botMoves": 94,
+          "cost": {
+            "cycles": "13881979103335",
+            "trillionCycles": 13.881979103335,
+            "icp": 8.66216092807625,
+            "minimumIcpE8sRoundedUp": "866216093",
+            "usdAtMarketQuote": 18.796889213925464,
+            "usdAtDocsIllustrativeXdr": 18.968752706170044
+          },
+          "architectureBCost": {
+            "cycles": "16314286795564",
+            "trillionCycles": 16.314286795564,
+            "icp": 10.179886930964683,
+            "minimumIcpE8sRoundedUp": "1017988694",
+            "usdAtMarketQuote": 22.09035464019336,
+            "usdAtDocsIllustrativeXdr": 22.292330906062517
+          }
+        },
+        {
+          "botMoves": 17,
+          "cost": {
+            "cycles": "2531994584154",
+            "trillionCycles": 2.531994584154,
+            "icp": 1.5799292300973418,
+            "minimumIcpE8sRoundedUp": "157992924",
+            "usdAtMarketQuote": 3.4284464293112316,
+            "usdAtDocsIllustrativeXdr": 3.45979335962555
+          },
+          "architectureBCost": {
+            "cycles": "2950456122602",
+            "trillionCycles": 2.950456122602,
+            "icp": 1.8410433811319107,
+            "minimumIcpE8sRoundedUp": "184104339",
+            "usdAtMarketQuote": 3.995064137056246,
+            "usdAtDocsIllustrativeXdr": 4.031591759607051
+          }
+        },
+        {
+          "botMoves": 97,
+          "cost": {
+            "cycles": "14324186292394",
+            "trillionCycles": 14.324186292394,
+            "icp": 8.938092033192312,
+            "minimumIcpE8sRoundedUp": "893809204",
+            "usdAtMarketQuote": 19.395659712027317,
+            "usdAtDocsIllustrativeXdr": 19.572997875515934
+          },
+          "architectureBCost": {
+            "cycles": "16834955523082",
+            "trillionCycles": 16.834955523082,
+            "icp": 10.504776939399726,
+            "minimumIcpE8sRoundedUp": "1050477694",
+            "usdAtMarketQuote": 22.795365958497403,
+            "usdAtDocsIllustrativeXdr": 23.00378827540494
+          }
+        },
+        {
+          "botMoves": 37,
+          "cost": {
+            "cycles": "5480042511214",
+            "trillionCycles": 5.480042511214,
+            "icp": 3.4194699308710845,
+            "minimumIcpE8sRoundedUp": "341946994",
+            "usdAtMarketQuote": 7.420249749990253,
+            "usdAtDocsIllustrativeXdr": 7.488094488598146
+          },
+          "architectureBCost": {
+            "cycles": "6421580972722",
+            "trillionCycles": 6.421580972722,
+            "icp": 4.006976770698865,
+            "minimumIcpE8sRoundedUp": "400697678",
+            "usdAtMarketQuote": 8.695139592416536,
+            "usdAtDocsIllustrativeXdr": 8.774640888556522
+          }
+        },
+        {
+          "botMoves": 100,
+          "cost": {
+            "cycles": "14766393481453",
+            "trillionCycles": 14.766393481453,
+            "icp": 9.214023138308374,
+            "minimumIcpE8sRoundedUp": "921402314",
+            "usdAtMarketQuote": 19.99443021012917,
+            "usdAtDocsIllustrativeXdr": 20.17724304486182
+          },
+          "architectureBCost": {
+            "cycles": "17355624250600",
+            "trillionCycles": 17.3556242506,
+            "icp": 10.829666947834768,
+            "minimumIcpE8sRoundedUp": "1082966695",
+            "usdAtMarketQuote": 23.500377276801448,
+            "usdAtDocsIllustrativeXdr": 23.715245644747355
+          }
+        }
+      ],
+      "meanSearchPlusSignature": {
+        "cycles": "9631876675156",
+        "trillionCycles": 9.631876675156,
+        "icp": 6.010156417793586,
+        "minimumIcpE8sRoundedUp": "601015642",
+        "usdAtMarketQuote": 13.042039426612082,
+        "usdAtDocsIllustrativeXdr": 13.161285245233413
+      },
+      "architectureBMeanOneSignaturePerBotMove": {
+        "cycles": "11310081803307",
+        "trillionCycles": 11.310081803307,
+        "icp": 7.057332961005241,
+        "minimumIcpE8sRoundedUp": "705733297",
+        "usdAtMarketQuote": 15.314412525381373,
+        "usdAtDocsIllustrativeXdr": 15.454435078492784
+      },
+      "volumeAtMean": [
+        {
+          "games": 100,
+          "cost": {
+            "cycles": "963187667515600",
+            "trillionCycles": 963.1876675156,
+            "icp": 601.0156417793586,
+            "minimumIcpE8sRoundedUp": "60101564178",
+            "usdAtMarketQuote": 1304.2039426612082,
+            "usdAtDocsIllustrativeXdr": 1316.1285245233414
+          },
+          "architectureBCost": {
+            "cycles": "1131008180330700",
+            "trillionCycles": 1131.0081803307,
+            "icp": 705.7332961005242,
+            "minimumIcpE8sRoundedUp": "70573329611",
+            "usdAtMarketQuote": 1531.4412525381374,
+            "usdAtDocsIllustrativeXdr": 1545.4435078492786
+          }
+        },
+        {
+          "games": 1000,
+          "cost": {
+            "cycles": "9631876675156000",
+            "trillionCycles": 9631.876675156,
+            "icp": 6010.156417793585,
+            "minimumIcpE8sRoundedUp": "601015641780",
+            "usdAtMarketQuote": 13042.03942661208,
+            "usdAtDocsIllustrativeXdr": 13161.285245233414
+          },
+          "architectureBCost": {
+            "cycles": "11310081803307000",
+            "trillionCycles": 11310.081803307,
+            "icp": 7057.3329610052415,
+            "minimumIcpE8sRoundedUp": "705733296101",
+            "usdAtMarketQuote": 15314.412525381373,
+            "usdAtDocsIllustrativeXdr": 15454.435078492786
+          }
+        }
+      ],
+      "note": "Actual completed 3m-native-game bot-turn counts multiplied by one measured opening-search cost. Not the games executed/measured on ICP; position-dependent costs differ. Applying 10m per-move costs to these3m game lengths is a scenario, not an observed10m game length."
+    },
+    {
+      "targetNodes": 3000000,
+      "nodes": 34,
+      "sourceNativeGames": [
+        {
+          "file": "../benchmarks/results/baseline-3m/12m-english.json",
+          "id": "12m-english",
+          "plies": 93,
+          "botMoves": 46,
+          "termination": "insufficient_material"
+        },
+        {
+          "file": "../benchmarks/results/baseline-3m/12m-king-pawn.json",
+          "id": "12m-king-pawn",
+          "plies": 189,
+          "botMoves": 94,
+          "termination": "claimed_fifty_moves_current"
+        },
+        {
+          "file": "../benchmarks/results/baseline-3m/12m-kings-fianchetto.json",
+          "id": "12m-kings-fianchetto",
+          "plies": 35,
+          "botMoves": 17,
+          "termination": "claimed_threefold_current"
+        },
+        {
+          "file": "../benchmarks/results/baseline-3m/12m-larsen.json",
+          "id": "12m-larsen",
+          "plies": 195,
+          "botMoves": 97,
+          "termination": "checkmate"
+        },
+        {
+          "file": "../benchmarks/results/baseline-3m/12m-queen-pawn.json",
+          "id": "12m-queen-pawn",
+          "plies": 75,
+          "botMoves": 37,
+          "termination": "claimed_threefold_current"
+        },
+        {
+          "file": "../benchmarks/results/baseline-3m/12m-reti.json",
+          "id": "12m-reti",
+          "plies": 201,
+          "botMoves": 100,
+          "termination": "claimed_threefold_current"
+        }
+      ],
+      "botMoveCounts": [
+        46,
+        94,
+        17,
+        97,
+        37,
+        100
+      ],
+      "meanBotMoves": 65.16666666666667,
+      "rangeBotMoves": [
+        17,
+        100
+      ],
+      "rangeSearchPlusSignature": [
+        {
+          "botMoves": 46,
+          "cost": {
+            "cycles": "17759795992031",
+            "trillionCycles": 17.759795992031,
+            "icp": 11.081864465263322,
+            "minimumIcpE8sRoundedUp": "1108186447",
+            "usdAtMarketQuote": 24.04764588962141,
+            "usdAtDocsIllustrativeXdr": 24.267518037390918
+          },
+          "architectureBCost": {
+            "cycles": "18936719068916",
+            "trillionCycles": 18.936719068916,
+            "icp": 11.816248015048046,
+            "minimumIcpE8sRoundedUp": "1181624802",
+            "usdAtMarketQuote": 25.64125819265426,
+            "usdAtDocsIllustrativeXdr": 25.87570103733889
+          }
+        },
+        {
+          "botMoves": 94,
+          "cost": {
+            "cycles": "36264466057295",
+            "trillionCycles": 36.264466057295,
+            "icp": 22.628519940905402,
+            "minimumIcpE8sRoundedUp": "2262851995",
+            "usdAtMarketQuote": 49.103888271764724,
+            "usdAtDocsIllustrativeXdr": 49.55285435466961
+          },
+          "architectureBCost": {
+            "cycles": "38696773749524",
+            "trillionCycles": 38.696773749524,
+            "icp": 24.146245943793836,
+            "minimumIcpE8sRoundedUp": "2414624595",
+            "usdAtMarketQuote": 52.397353698032624,
+            "usdAtDocsIllustrativeXdr": 52.87643255456208
+          }
+        },
+        {
+          "botMoves": 17,
+          "cost": {
+            "cycles": "6579891160934",
+            "trillionCycles": 6.579891160934,
+            "icp": 4.105760115396231,
+            "minimumIcpE8sRoundedUp": "410576012",
+            "usdAtMarketQuote": 8.909499450409822,
+            "usdAtDocsIllustrativeXdr": 8.990960679035046
+          },
+          "architectureBCost": {
+            "cycles": "6998352699382",
+            "trillionCycles": 6.998352699382,
+            "icp": 4.3668742664308,
+            "minimumIcpE8sRoundedUp": "436687427",
+            "usdAtMarketQuote": 9.476117158154835,
+            "usdAtDocsIllustrativeXdr": 9.562759079016546
+          }
+        },
+        {
+          "botMoves": 97,
+          "cost": {
+            "cycles": "37421007936374",
+            "trillionCycles": 37.421007936374,
+            "icp": 23.350185908133035,
+            "minimumIcpE8sRoundedUp": "2335018591",
+            "usdAtMarketQuote": 50.66990342064869,
+            "usdAtDocsIllustrativeXdr": 51.13318787449952
+          },
+          "architectureBCost": {
+            "cycles": "39931777167062",
+            "trillionCycles": 39.931777167062,
+            "icp": 24.916870814340445,
+            "minimumIcpE8sRoundedUp": "2491687082",
+            "usdAtMarketQuote": 54.06960966711876,
+            "usdAtDocsIllustrativeXdr": 54.56397827438853
+          }
+        },
+        {
+          "botMoves": 37,
+          "cost": {
+            "cycles": "14290170354794",
+            "trillionCycles": 14.290170354794,
+            "icp": 8.916866563580431,
+            "minimumIcpE8sRoundedUp": "891686657",
+            "usdAtMarketQuote": 19.349600442969535,
+            "usdAtDocsIllustrativeXdr": 19.526517477901166
+          },
+          "architectureBCost": {
+            "cycles": "15231708816302",
+            "trillionCycles": 15.231708816302,
+            "icp": 9.504373403408211,
+            "minimumIcpE8sRoundedUp": "950437341",
+            "usdAtMarketQuote": 20.62449028539582,
+            "usdAtDocsIllustrativeXdr": 20.81306387785954
+          }
+        },
+        {
+          "botMoves": 100,
+          "cost": {
+            "cycles": "38577549815453",
+            "trillionCycles": 38.577549815453,
+            "icp": 24.071851875360665,
+            "minimumIcpE8sRoundedUp": "2407185188",
+            "usdAtMarketQuote": 52.23591856953264,
+            "usdAtDocsIllustrativeXdr": 52.71352139432944
+          },
+          "architectureBCost": {
+            "cycles": "41166780584600",
+            "trillionCycles": 41.1667805846,
+            "icp": 25.687495684887057,
+            "minimumIcpE8sRoundedUp": "2568749569",
+            "usdAtMarketQuote": 55.74186563620491,
+            "usdAtDocsIllustrativeXdr": 56.25152399421498
+          }
+        }
+      ],
+      "meanSearchPlusSignature": {
+        "cycles": "25148813552813",
+        "trillionCycles": 25.148813552813,
+        "icp": 15.69250814477287,
+        "minimumIcpE8sRoundedUp": "1569250815",
+        "usdAtMarketQuote": 34.05274267415712,
+        "usdAtDocsIllustrativeXdr": 34.36409330297027
+      },
+      "architectureBMeanOneSignaturePerBotMove": {
+        "cycles": "26827018680964",
+        "trillionCycles": 26.827018680964,
+        "icp": 16.739684687984525,
+        "minimumIcpE8sRoundedUp": "1673968469",
+        "usdAtMarketQuote": 36.32511577292642,
+        "usdAtDocsIllustrativeXdr": 36.65724313622964
+      },
+      "volumeAtMean": [
+        {
+          "games": 100,
+          "cost": {
+            "cycles": "2514881355281300",
+            "trillionCycles": 2514.8813552813,
+            "icp": 1569.250814477287,
+            "minimumIcpE8sRoundedUp": "156925081448",
+            "usdAtMarketQuote": 3405.2742674157125,
+            "usdAtDocsIllustrativeXdr": 3436.409330297027
+          },
+          "architectureBCost": {
+            "cycles": "2682701868096400",
+            "trillionCycles": 2682.7018680964,
+            "icp": 1673.9684687984525,
+            "minimumIcpE8sRoundedUp": "167396846880",
+            "usdAtMarketQuote": 3632.511577292642,
+            "usdAtDocsIllustrativeXdr": 3665.724313622964
+          }
+        },
+        {
+          "games": 1000,
+          "cost": {
+            "cycles": "25148813552813000",
+            "trillionCycles": 25148.813552813,
+            "icp": 15692.50814477287,
+            "minimumIcpE8sRoundedUp": "1569250814478",
+            "usdAtMarketQuote": 34052.742674157125,
+            "usdAtDocsIllustrativeXdr": 34364.09330297027
+          },
+          "architectureBCost": {
+            "cycles": "26827018680964000",
+            "trillionCycles": 26827.018680964,
+            "icp": 16739.684687984525,
+            "minimumIcpE8sRoundedUp": "1673968468799",
+            "usdAtMarketQuote": 36325.115772926416,
+            "usdAtDocsIllustrativeXdr": 36657.24313622964
+          }
+        }
+      ],
+      "note": "Actual completed 3m-native-game bot-turn counts multiplied by one measured opening-search cost. Not the games executed/measured on ICP; position-dependent costs differ. Applying 10m per-move costs to these3m game lengths is a scenario, not an observed10m game length."
+    },
+    {
+      "targetNodes": 10000000,
+      "nodes": 13,
+      "sourceNativeGames": [
+        {
+          "file": "../benchmarks/results/baseline-3m/12m-english.json",
+          "id": "12m-english",
+          "plies": 93,
+          "botMoves": 46,
+          "termination": "insufficient_material"
+        },
+        {
+          "file": "../benchmarks/results/baseline-3m/12m-king-pawn.json",
+          "id": "12m-king-pawn",
+          "plies": 189,
+          "botMoves": 94,
+          "termination": "claimed_fifty_moves_current"
+        },
+        {
+          "file": "../benchmarks/results/baseline-3m/12m-kings-fianchetto.json",
+          "id": "12m-kings-fianchetto",
+          "plies": 35,
+          "botMoves": 17,
+          "termination": "claimed_threefold_current"
+        },
+        {
+          "file": "../benchmarks/results/baseline-3m/12m-larsen.json",
+          "id": "12m-larsen",
+          "plies": 195,
+          "botMoves": 97,
+          "termination": "checkmate"
+        },
+        {
+          "file": "../benchmarks/results/baseline-3m/12m-queen-pawn.json",
+          "id": "12m-queen-pawn",
+          "plies": 75,
+          "botMoves": 37,
+          "termination": "claimed_threefold_current"
+        },
+        {
+          "file": "../benchmarks/results/baseline-3m/12m-reti.json",
+          "id": "12m-reti",
+          "plies": 201,
+          "botMoves": 100,
+          "termination": "claimed_threefold_current"
+        }
+      ],
+      "botMoveCounts": [
+        46,
+        94,
+        17,
+        97,
+        37,
+        100
+      ],
+      "meanBotMoves": 65.16666666666667,
+      "rangeBotMoves": [
+        17,
+        100
+      ],
+      "rangeSearchPlusSignature": [
+        {
+          "botMoves": 46,
+          "cost": {
+            "cycles": "22523838943689",
+            "trillionCycles": 22.523838943689,
+            "icp": 14.054560678702734,
+            "minimumIcpE8sRoundedUp": "1405456068",
+            "usdAtMarketQuote": 30.49839667278493,
+            "usdAtDocsIllustrativeXdr": 30.77724924782496
+          },
+          "architectureBCost": {
+            "cycles": "23700762020574",
+            "trillionCycles": 23.700762020574,
+            "icp": 14.788944228487457,
+            "minimumIcpE8sRoundedUp": "1478894423",
+            "usdAtMarketQuote": 32.092008975817784,
+            "usdAtDocsIllustrativeXdr": 32.38543224777293
+          }
+        },
+        {
+          "botMoves": 94,
+          "cost": {
+            "cycles": "45999684262857",
+            "trillionCycles": 45.999684262857,
+            "icp": 28.703160029238113,
+            "minimumIcpE8sRoundedUp": "2870316003",
+            "usdAtMarketQuote": 62.2858572634467,
+            "usdAtDocsIllustrativeXdr": 62.85534856729569
+          },
+          "architectureBCost": {
+            "cycles": "48431991955086",
+            "trillionCycles": 48.431991955086,
+            "icp": 30.220886032126543,
+            "minimumIcpE8sRoundedUp": "3022088604",
+            "usdAtMarketQuote": 65.5793226897146,
+            "usdAtDocsIllustrativeXdr": 66.17892676718816
+          }
+        },
+        {
+          "botMoves": 17,
+          "cost": {
+            "cycles": "8340515730025",
+            "trillionCycles": 8.340515730025,
+            "icp": 5.204365237754274,
+            "minimumIcpE8sRoundedUp": "520436524",
+            "usdAtMarketQuote": 11.293472565926775,
+            "usdAtDocsIllustrativeXdr": 11.39673090897806
+          },
+          "architectureBCost": {
+            "cycles": "8758977268473",
+            "trillionCycles": 8.758977268473,
+            "icp": 5.465479388788843,
+            "minimumIcpE8sRoundedUp": "546547939",
+            "usdAtMarketQuote": 11.860090273671789,
+            "usdAtDocsIllustrativeXdr": 11.968529308959562
+          }
+        },
+        {
+          "botMoves": 97,
+          "cost": {
+            "cycles": "47466924595305",
+            "trillionCycles": 47.466924595305,
+            "icp": 29.618697488646575,
+            "minimumIcpE8sRoundedUp": "2961869749",
+            "usdAtMarketQuote": 64.27257355036306,
+            "usdAtDocsIllustrativeXdr": 64.86022977476262
+          },
+          "architectureBCost": {
+            "cycles": "49977693825993",
+            "trillionCycles": 49.977693825993,
+            "icp": 31.18538239485399,
+            "minimumIcpE8sRoundedUp": "3118538240",
+            "usdAtMarketQuote": 67.67227979683315,
+            "usdAtDocsIllustrativeXdr": 68.29102017465162
+          }
+        },
+        {
+          "botMoves": 37,
+          "cost": {
+            "cycles": "18122117946345",
+            "trillionCycles": 18.122117946345,
+            "icp": 11.30794830047735,
+            "minimumIcpE8sRoundedUp": "1130794831",
+            "usdAtMarketQuote": 24.53824781203585,
+            "usdAtDocsIllustrativeXdr": 24.7626056254242
+          },
+          "architectureBCost": {
+            "cycles": "19063656407853",
+            "trillionCycles": 19.063656407853,
+            "icp": 11.89545514030513,
+            "minimumIcpE8sRoundedUp": "1189545515",
+            "usdAtMarketQuote": 25.81313765446213,
+            "usdAtDocsIllustrativeXdr": 26.049152025382575
+          }
+        },
+        {
+          "botMoves": 100,
+          "cost": {
+            "cycles": "48934164927753",
+            "trillionCycles": 48.934164927753,
+            "icp": 30.534234948055037,
+            "minimumIcpE8sRoundedUp": "3053423495",
+            "usdAtMarketQuote": 66.25928983727943,
+            "usdAtDocsIllustrativeXdr": 66.86511098222954
+          },
+          "architectureBCost": {
+            "cycles": "51523395696900",
+            "trillionCycles": 51.5233956969,
+            "icp": 32.14987875758143,
+            "minimumIcpE8sRoundedUp": "3214987876",
+            "usdAtMarketQuote": 69.7652369039517,
+            "usdAtDocsIllustrativeXdr": 70.40311358211507
+          }
+        }
+      ],
+      "meanSearchPlusSignature": {
+        "cycles": "31897874400995",
+        "trillionCycles": 31.897874400995,
+        "icp": 19.903827780478597,
+        "minimumIcpE8sRoundedUp": "1990382779",
+        "usdAtMarketQuote": 43.19130628363855,
+        "usdAtDocsIllustrativeXdr": 43.5862125177516
+      },
+      "architectureBMeanOneSignaturePerBotMove": {
+        "cycles": "33576079529146",
+        "trillionCycles": 33.576079529146,
+        "icp": 20.951004323690253,
+        "minimumIcpE8sRoundedUp": "2095100433",
+        "usdAtMarketQuote": 45.46367938240785,
+        "usdAtDocsIllustrativeXdr": 45.87936235101097
+      },
+      "volumeAtMean": [
+        {
+          "games": 100,
+          "cost": {
+            "cycles": "3189787440099500",
+            "trillionCycles": 3189.7874400995,
+            "icp": 1990.3827780478598,
+            "minimumIcpE8sRoundedUp": "199038277805",
+            "usdAtMarketQuote": 4319.130628363856,
+            "usdAtDocsIllustrativeXdr": 4358.62125177516
+          },
+          "architectureBCost": {
+            "cycles": "3357607952914600",
+            "trillionCycles": 3357.6079529146,
+            "icp": 2095.1004323690254,
+            "minimumIcpE8sRoundedUp": "209510043237",
+            "usdAtMarketQuote": 4546.3679382407845,
+            "usdAtDocsIllustrativeXdr": 4587.936235101097
+          }
+        },
+        {
+          "games": 1000,
+          "cost": {
+            "cycles": "31897874400995000",
+            "trillionCycles": 31897.874400995,
+            "icp": 19903.827780478598,
+            "minimumIcpE8sRoundedUp": "1990382778048",
+            "usdAtMarketQuote": 43191.30628363856,
+            "usdAtDocsIllustrativeXdr": 43586.2125177516
+          },
+          "architectureBCost": {
+            "cycles": "33576079529146000",
+            "trillionCycles": 33576.079529146,
+            "icp": 20951.004323690253,
+            "minimumIcpE8sRoundedUp": "2095100432370",
+            "usdAtMarketQuote": 45463.67938240785,
+            "usdAtDocsIllustrativeXdr": 45879.362351010976
+          }
+        }
+      ],
+      "note": "Actual completed 3m-native-game bot-turn counts multiplied by one measured opening-search cost. Not the games executed/measured on ICP; position-dependent costs differ. Applying 10m per-move costs to these3m game lengths is a scenario, not an observed10m game length."
+    },
+    {
+      "targetNodes": 10000000,
+      "nodes": 34,
+      "sourceNativeGames": [
+        {
+          "file": "../benchmarks/results/baseline-3m/12m-english.json",
+          "id": "12m-english",
+          "plies": 93,
+          "botMoves": 46,
+          "termination": "insufficient_material"
+        },
+        {
+          "file": "../benchmarks/results/baseline-3m/12m-king-pawn.json",
+          "id": "12m-king-pawn",
+          "plies": 189,
+          "botMoves": 94,
+          "termination": "claimed_fifty_moves_current"
+        },
+        {
+          "file": "../benchmarks/results/baseline-3m/12m-kings-fianchetto.json",
+          "id": "12m-kings-fianchetto",
+          "plies": 35,
+          "botMoves": 17,
+          "termination": "claimed_threefold_current"
+        },
+        {
+          "file": "../benchmarks/results/baseline-3m/12m-larsen.json",
+          "id": "12m-larsen",
+          "plies": 195,
+          "botMoves": 97,
+          "termination": "checkmate"
+        },
+        {
+          "file": "../benchmarks/results/baseline-3m/12m-queen-pawn.json",
+          "id": "12m-queen-pawn",
+          "plies": 75,
+          "botMoves": 37,
+          "termination": "claimed_threefold_current"
+        },
+        {
+          "file": "../benchmarks/results/baseline-3m/12m-reti.json",
+          "id": "12m-reti",
+          "plies": 201,
+          "botMoves": 100,
+          "termination": "claimed_threefold_current"
+        }
+      ],
+      "botMoveCounts": [
+        46,
+        94,
+        17,
+        97,
+        37,
+        100
+      ],
+      "meanBotMoves": 65.16666666666667,
+      "rangeBotMoves": [
+        17,
+        100
+      ],
+      "rangeSearchPlusSignature": [
+        {
+          "botMoves": 46,
+          "cost": {
+            "cycles": "58866253332027",
+            "trillionCycles": 58.866253332027,
+            "icp": 36.731719288672785,
+            "minimumIcpE8sRoundedUp": "3673171929",
+            "usdAtMarketQuote": 79.70783085641995,
+            "usdAtDocsIllustrativeXdr": 80.43661454048166
+          },
+          "architectureBCost": {
+            "cycles": "60043176408912",
+            "trillionCycles": 60.043176408912,
+            "icp": 37.46610283845751,
+            "minimumIcpE8sRoundedUp": "3746610284",
+            "usdAtMarketQuote": 81.30144315945279,
+            "usdAtDocsIllustrativeXdr": 82.04479754042963
+          }
+        },
+        {
+          "botMoves": 94,
+          "cost": {
+            "cycles": "120264618012939",
+            "trillionCycles": 120.264618012939,
+            "icp": 75.043440667003,
+            "minimumIcpE8sRoundedUp": "7504344067",
+            "usdAtMarketQuote": 162.8442662473965,
+            "usdAtDocsIllustrativeXdr": 164.33318199142025
+          },
+          "architectureBCost": {
+            "cycles": "122696925705168",
+            "trillionCycles": 122.696925705168,
+            "icp": 76.56116666989142,
+            "minimumIcpE8sRoundedUp": "7656116667",
+            "usdAtMarketQuote": 166.13773167366438,
+            "usdAtDocsIllustrativeXdr": 167.6567601913127
+          }
+        },
+        {
+          "botMoves": 17,
+          "cost": {
+            "cycles": "21771408003976",
+            "trillionCycles": 21.771408003976,
+            "icp": 13.585054289264944,
+            "minimumIcpE8sRoundedUp": "1358505429",
+            "usdAtMarketQuote": 29.479567807704928,
+            "usdAtDocsIllustrativeXdr": 29.749105038872926
+          },
+          "architectureBCost": {
+            "cycles": "22189869542424",
+            "trillionCycles": 22.189869542424,
+            "icp": 13.846168440299513,
+            "minimumIcpE8sRoundedUp": "1384616845",
+            "usdAtMarketQuote": 30.04618551544994,
+            "usdAtDocsIllustrativeXdr": 30.320903438854426
+          }
+        },
+        {
+          "botMoves": 97,
+          "cost": {
+            "cycles": "124102015805496",
+            "trillionCycles": 124.102015805496,
+            "icp": 77.43792325314864,
+            "minimumIcpE8sRoundedUp": "7743792326",
+            "usdAtMarketQuote": 168.04029345933253,
+            "usdAtDocsIllustrativeXdr": 169.5767174571039
+          },
+          "architectureBCost": {
+            "cycles": "126612785036184",
+            "trillionCycles": 126.612785036184,
+            "icp": 79.00460815935605,
+            "minimumIcpE8sRoundedUp": "7900460816",
+            "usdAtMarketQuote": 171.43999970580262,
+            "usdAtDocsIllustrativeXdr": 173.0075078569929
+          }
+        },
+        {
+          "botMoves": 37,
+          "cost": {
+            "cycles": "47354059954356",
+            "trillionCycles": 47.354059954356,
+            "icp": 29.548271530235866,
+            "minimumIcpE8sRoundedUp": "2954827154",
+            "usdAtMarketQuote": 64.11974922061182,
+            "usdAtDocsIllustrativeXdr": 64.70600814343068
+          },
+          "architectureBCost": {
+            "cycles": "48295598415864",
+            "trillionCycles": 48.295598415864,
+            "icp": 30.135778370063647,
+            "minimumIcpE8sRoundedUp": "3013577838",
+            "usdAtMarketQuote": 65.39463906303811,
+            "usdAtDocsIllustrativeXdr": 65.99255454338905
+          }
+        },
+        {
+          "botMoves": 100,
+          "cost": {
+            "cycles": "127939413598053",
+            "trillionCycles": 127.939413598053,
+            "icp": 79.83240583929427,
+            "minimumIcpE8sRoundedUp": "7983240584",
+            "usdAtMarketQuote": 173.23632067126854,
+            "usdAtDocsIllustrativeXdr": 174.82025292278755
+          },
+          "architectureBCost": {
+            "cycles": "130528644367200",
+            "trillionCycles": 130.5286443672,
+            "icp": 81.44804964882067,
+            "minimumIcpE8sRoundedUp": "8144804965",
+            "usdAtMarketQuote": 176.74226773794086,
+            "usdAtDocsIllustrativeXdr": 178.3582555226731
+          }
+        }
+      ],
+      "meanSearchPlusSignature": {
+        "cycles": "83382961451141",
+        "trillionCycles": 83.382961451141,
+        "icp": 52.02980247793648,
+        "minimumIcpE8sRoundedUp": "5202980248",
+        "usdAtMarketQuote": 112.90467137712216,
+        "usdAtDocsIllustrativeXdr": 113.9369800156826
+      },
+      "architectureBMeanOneSignaturePerBotMove": {
+        "cycles": "85061166579292",
+        "trillionCycles": 85.061166579292,
+        "icp": 53.076979021148134,
+        "minimumIcpE8sRoundedUp": "5307697903",
+        "usdAtMarketQuote": 115.17704447589145,
+        "usdAtDocsIllustrativeXdr": 116.23012984894198
+      },
+      "volumeAtMean": [
+        {
+          "games": 100,
+          "cost": {
+            "cycles": "8338296145114100",
+            "trillionCycles": 8338.2961451141,
+            "icp": 5202.980247793648,
+            "minimumIcpE8sRoundedUp": "520298024780",
+            "usdAtMarketQuote": 11290.467137712216,
+            "usdAtDocsIllustrativeXdr": 11393.69800156826
+          },
+          "architectureBCost": {
+            "cycles": "8506116657929200",
+            "trillionCycles": 8506.1166579292,
+            "icp": 5307.697902114814,
+            "minimumIcpE8sRoundedUp": "530769790212",
+            "usdAtMarketQuote": 11517.704447589145,
+            "usdAtDocsIllustrativeXdr": 11623.012984894198
+          }
+        },
+        {
+          "games": 1000,
+          "cost": {
+            "cycles": "83382961451141000",
+            "trillionCycles": 83382.96145114099,
+            "icp": 52029.80247793647,
+            "minimumIcpE8sRoundedUp": "5202980247794",
+            "usdAtMarketQuote": 112904.67137712214,
+            "usdAtDocsIllustrativeXdr": 113936.98001568258
+          },
+          "architectureBCost": {
+            "cycles": "85061166579292000",
+            "trillionCycles": 85061.166579292,
+            "icp": 53076.97902114814,
+            "minimumIcpE8sRoundedUp": "5307697902115",
+            "usdAtMarketQuote": 115177.04447589145,
+            "usdAtDocsIllustrativeXdr": 116230.12984894197
+          }
+        }
+      ],
+      "note": "Actual completed 3m-native-game bot-turn counts multiplied by one measured opening-search cost. Not the games executed/measured on ICP; position-dependent costs differ. Applying 10m per-move costs to these3m game lengths is a scenario, not an observed10m game length."
+    }
+  ],
+  "monthlyStorage": [
+    {
+      "nodes": 13,
+      "scenarios": [
+        {
+          "gib": 0.5,
+          "cost": {
+            "cycles": "164592000000",
+            "trillionCycles": 0.164592,
+            "icp": 0.10270310745039311,
+            "minimumIcpE8sRoundedUp": "10270311",
+            "usdAtMarketQuote": 0.22286574316735305,
+            "usdAtDocsIllustrativeXdr": 0.22490344656
+          }
+        },
+        {
+          "gib": 1,
+          "cost": {
+            "cycles": "329184000000",
+            "trillionCycles": 0.329184,
+            "icp": 0.20540621490078623,
+            "minimumIcpE8sRoundedUp": "20540622",
+            "usdAtMarketQuote": 0.4457314863347061,
+            "usdAtDocsIllustrativeXdr": 0.44980689312
+          }
+        }
+      ],
+      "observedWarm": {
+        "bytes": 637706660,
+        "gib": 0.5939106084406376,
+        "monthlyCost": {
+          "cycles": "195505869728",
+          "trillionCycles": 0.195505869728,
+          "icp": 0.12199293006863847,
+          "minimumIcpE8sRoundedUp": "12199294",
+          "usdAtMarketQuote": 0.2647246582489455,
+          "usdAtDocsIllustrativeXdr": 0.26714508557243105
+        }
+      }
+    },
+    {
+      "nodes": 34,
+      "scenarios": [
+        {
+          "gib": 0.5,
+          "cost": {
+            "cycles": "430471384616",
+            "trillionCycles": 0.430471384616,
+            "icp": 0.2686081271783352,
+            "minimumIcpE8sRoundedUp": "26860813",
+            "usdAtMarketQuote": 0.5828796359769873,
+            "usdAtDocsIllustrativeXdr": 0.5882090140808409
+          }
+        },
+        {
+          "gib": 1,
+          "cost": {
+            "cycles": "860942769231",
+            "trillionCycles": 0.860942769231,
+            "icp": 0.5372162543560465,
+            "minimumIcpE8sRoundedUp": "53721626",
+            "usdAtMarketQuote": 1.1657592719526209,
+            "usdAtDocsIllustrativeXdr": 1.1764180281603154
+          }
+        }
+      ],
+      "observedWarm": {
+        "bytes": 637706660,
+        "gib": 0.5939106084406376,
+        "monthlyCost": {
+          "cycles": "511323043904",
+          "trillionCycles": 0.511323043904,
+          "icp": 0.3190584324872083,
+          "minimumIcpE8sRoundedUp": "31905844",
+          "usdAtMarketQuote": 0.692356798497242,
+          "usdAtDocsIllustrativeXdr": 0.6986871468817427
+        }
+      }
+    }
+  ],
+  "upfront": [
+    {
+      "nodes": 13,
+      "twoCanistersCreation": {
+        "cycles": "1000000000000",
+        "trillionCycles": 1,
+        "icp": 0.6239860227130912,
+        "minimumIcpE8sRoundedUp": "62398603",
+        "usdAtMarketQuote": 1.354049669287408,
+        "usdAtDocsIllustrativeXdr": 1.36643
+      },
+      "onePercentReservedComputePerMonth": {
+        "cycles": "25920000000000",
+        "trillionCycles": 25.92,
+        "icp": 16.173717708723323,
+        "minimumIcpE8sRoundedUp": "1617371771",
+        "usdAtMarketQuote": 35.09696742792961,
+        "usdAtDocsIllustrativeXdr": 35.417865600000006
+      },
+      "note": "Creation burn only; installation/upload/reserved storage/freezing buffer and operational balance are additional. Reserved compute is optional and not assumed."
+    },
+    {
+      "nodes": 34,
+      "twoCanistersCreation": {
+        "cycles": "2615384615385",
+        "trillionCycles": 2.615384615385,
+        "icp": 1.631963444019094,
+        "minimumIcpE8sRoundedUp": "163196345",
+        "usdAtMarketQuote": 3.541360673521434,
+        "usdAtDocsIllustrativeXdr": 3.5737400000005257
+      },
+      "onePercentReservedComputePerMonth": {
+        "cycles": "67790769230770",
+        "trillionCycles": 67.79076923077,
+        "icp": 42.300492468969175,
+        "minimumIcpE8sRoundedUp": "4230049247",
+        "usdAtMarketQuote": 91.79206865766311,
+        "usdAtDocsIllustrativeXdr": 92.63134080000104
+      },
+      "note": "Creation burn only; installation/upload/reserved storage/freezing buffer and operational balance are additional. Reserved compute is optional and not assumed."
+    }
+  ],
+  "productionSignature": {
+    "cycles": "26153846153",
+    "trillionCycles": 0.026153846153,
+    "icp": 0.01631963443966055,
+    "minimumIcpE8sRoundedUp": "1631964",
+    "usdAtMarketQuote": 0.035413606734063394,
+    "usdAtDocsIllustrativeXdr": 0.03573739999884379
+  },
+  "exclusions": [
+    "production game-authority work and storage",
+    "RH receipt/RPC outcalls and event indexing, including per-bot-move state verification for architectureB",
+    "job queue, retries, callback and continuation orchestration costs",
+    "installation/chunk upload and storage-reservation/freezing balances",
+    "Robinhood gas and GH0ST prizes",
+    "failed/aborted searches",
+    "future price/rate/subnet changes"
+  ],
+  "caveats": [
+    "Game tables are scenarios, not full games measured on ICP.",
+    "Do not linearly scale three million nodes to a different node budget without labeling it.",
+    "ArchitectureA adds one terminal signature per game; architectureB separately assumes one signature per bot move.",
+    "A 34-node computation scenario scales compute/storage by34/13; the already34-node production signing fee is not multiplied a second time.",
+    "512MiB storage is illustrative and is below this prototype warm footprint when measured;1GiB gives headroom but is not a concurrency guarantee.",
+    "Default0percent compute allocation has no reserved-compute charge and no latency guarantee."
+  ]
+}
