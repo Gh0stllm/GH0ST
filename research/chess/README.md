@@ -2,6 +2,8 @@
 
 Research and implementation in progress. A real Stockfish 19 engine has been built and executed in isolated local ICP tests. No paid challenge, public engine deployment or prize funding is live.
 
+**Current user-selected execution target: native Solidity on Robinhood Chain.** The existing ICP port is a verified strength/reference implementation. It is not a native Robinhood Stockfish engine. Full-game adversarial tests and native EVM component/deployment-cost measurements are in progress; see [the native Robinhood work](NATIVE_ROBINHOOD.md). A complete Stockfish Solidity search engine has not been implemented or deployed, and its full gameplay gas is not yet known.
+
 User-selected terms: 25,000 GH0ST entry fee; 100,000 GH0ST total payout only when the human player legally checkmates the bot. A winner nets 75,000 GH0ST before network costs. Top-ups are manual. No project wallet or existing escrow balance is authorized for automatic funding. Every accepted game must have its full potential prize reserved.
 
 The game authority and Stockfish engine are built as separate ICP canisters. The reward vault is designed to hold the canonical GH0ST entry fees and reserved prizes on Robinhood Chain. The pinned official Stockfish 19 release uses its complete 98,511,183-byte neural network, maximum skill, and disabled strength limiting. The synchronous ICP Wasm is 101,257,329 bytes (96.567 MiB). Fourteen local ICP searches at 250,000 and 500,000 target nodes matched the native upstream engine in move, node count and completed depth; additional Black-side and costly-evaluation cases also matched. A one-million-node opening search exceeds the synchronous per-message instruction ceiling.

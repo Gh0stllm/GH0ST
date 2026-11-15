@@ -1,0 +1,73 @@
+{
+  "scope": "Native CPU proxy verification only; no ICP full game or Solidity execution",
+  "generated_at": "2026-11-15T07:43:57.942566+00:00",
+  "stockfish_commit": "edb0d9db6731067ec50ce619ff372b463bc4dd5d",
+  "nnue_sha256": "1a298aa575a085434d29027978dc36867fe9c5bcea9376654b7a8eba1e52dfc2",
+  "uci_binary_sha256": "8738d7d5720ef805849c7f09f43e54aa3b1fc9a6c3b0e23e582106e01aa287e0",
+  "direct_probe_sha256": "0e8bccf50e361c811cb036464f56353e3ec2ae867c7a6479d184bdb70a997f68",
+  "options": {
+    "NumaPolicy": "none",
+    "Threads": 1,
+    "Hash": 128,
+    "Skill Level": 20,
+    "UCI_LimitStrength": false,
+    "SyzygyPath": ""
+  },
+  "clear_tt_and_histories_every_search": true,
+  "python_chess_version": "1.11.2",
+  "tests": [
+    {
+      "case": "black-after-e4",
+      "initial_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+      "moves": [
+        "e2e4"
+      ],
+      "target_nodes": 3000000,
+      "optimized": {
+        "status": 0,
+        "bestmove": "e7e5",
+        "actual_nodes": 3000212,
+        "depth": 28
+      },
+      "direct": {
+        "status": 0,
+        "bestmove": "e7e5",
+        "actual_nodes": 3000212,
+        "depth": 28
+      },
+      "exact_match": true,
+      "optimized_seconds": 2.285155334000592,
+      "direct_seconds": 18.49969583299935,
+      "engine_id": {
+        "name": "Stockfish 19",
+        "author": "the Stockfish developers (see AUTHORS file)"
+      }
+    },
+    {
+      "case": "kiwipete",
+      "initial_fen": "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1",
+      "moves": [],
+      "target_nodes": 3000000,
+      "optimized": {
+        "status": 0,
+        "bestmove": "e2a6",
+        "actual_nodes": 3000417,
+        "depth": 23
+      },
+      "direct": {
+        "status": 0,
+        "bestmove": "e2a6",
+        "actual_nodes": 3000417,
+        "depth": 23
+      },
+      "exact_match": true,
+      "optimized_seconds": 2.3658259579988226,
+      "direct_seconds": 17.81873995800015,
+      "engine_id": {
+        "name": "Stockfish 19",
+        "author": "the Stockfish developers (see AUTHORS file)"
+      }
+    }
+  ],
+  "passed": true
+}

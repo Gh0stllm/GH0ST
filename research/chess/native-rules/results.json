@@ -1,0 +1,396 @@
+{
+  "scope": "Isolated local EVM third-party move-validation/state-write cost comparison; no GH0ST engine, prize escrow or public deployment",
+  "generatedAt": "2026-11-15T07:51:09.810Z",
+  "chainId": 31337,
+  "compiler": "0.8.30+commit.73712a01.Emscripten.clang",
+  "settings": {
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "viaIR": true,
+    "evmVersion": "shanghai",
+    "outputSelection": {
+      "*": {
+        "*": [
+          "abi",
+          "evm.bytecode.object",
+          "evm.deployedBytecode.object"
+        ]
+      }
+    }
+  },
+  "upstream": {
+    "repository": "https://github.com/Chess-Fish/v1-core",
+    "commit": "97f9a0e8579da597fe07a71b5a7419ae76899249",
+    "blob": "61cc22012af502e56a4b52a298f74bd071ef27c9",
+    "license": "MIT"
+  },
+  "importStandIn": "Only uint256 min/max are supplied locally; upstream verifier source is byte-identical",
+  "limitations": [
+    "Autoqueen only: underpromotion is not implemented",
+    "No threefold/50-move claim journal in the comparison wrapper",
+    "No Stockfish search, NNUE, entry fee or reward integration",
+    "Local receipt gas excludes Robinhood parent-chain data charges"
+  ],
+  "deployments": [
+    {
+      "name": "PinnedChessFishMoveVerifier",
+      "runtimeBytes": 12668,
+      "initcodeBytes": 12694,
+      "gas": "2792775",
+      "transactionHash": "0x94671fdb7cd1ef93ee5684a9d99100fc80182433166476356749ccafac0eb409"
+    },
+    {
+      "name": "RuleCostGame:black-checkmate",
+      "runtimeBytes": 1317,
+      "initcodeBytes": 1577,
+      "gas": "388236",
+      "transactionHash": "0x26c74dad63526a2ca09b59c53d48486f9614e75bd66dd18270bbbc7f277ea367"
+    },
+    {
+      "name": "RuleCostGame:white-checkmate",
+      "runtimeBytes": 1317,
+      "initcodeBytes": 1577,
+      "gas": "388236",
+      "transactionHash": "0x3136125d31b8d5af26b9493864a7267cae939066b319bed0cafb775755c293a7"
+    },
+    {
+      "name": "RuleCostGame:both-castles",
+      "runtimeBytes": 1317,
+      "initcodeBytes": 1577,
+      "gas": "388236",
+      "transactionHash": "0x8cd6ce44460105934c4e20ce98ef5ef03ec794660bb2ea26735297f6c04dd1ba"
+    },
+    {
+      "name": "RuleCostGame:en-passant-capture",
+      "runtimeBytes": 1317,
+      "initcodeBytes": 1577,
+      "gas": "388236",
+      "transactionHash": "0xb4fc4917a368689de96dd83710f42a7f7a83122a845e6aca202eb40246d5a449"
+    },
+    {
+      "name": "RuleCostGame:both-queen-promotions",
+      "runtimeBytes": 1317,
+      "initcodeBytes": 1577,
+      "gas": "388236",
+      "transactionHash": "0x886be9ef07b38fa7607223e54786cbf09954e3e96c29892b8bec83276974e996"
+    },
+    {
+      "name": "RuleCostGame:illegal-move",
+      "runtimeBytes": 1317,
+      "initcodeBytes": 1577,
+      "gas": "388236",
+      "transactionHash": "0x2c58696339aa15b5325ec144b1e5cce29d587b428ede16ff541f1818e2327670"
+    }
+  ],
+  "cases": [
+    {
+      "name": "black-checkmate",
+      "outcome": 3,
+      "referenceCheckmate": true,
+      "finalFen": "rnb1kbnr/pppp1ppp/8/4p3/6Pq/5P2/PPPPP2P/RNBQKBNR w KQkq - 1 3",
+      "moves": [
+        {
+          "uci": "f2f3",
+          "gas": "57156",
+          "transactionHash": "0xe78c36e8953c1464384c94325014967429b2ca60de5b975aa2f3d22784f0aedc",
+          "fen": "rnbqkbnr/pppppppp/8/8/8/5P2/PPPPP1PP/RNBQKBNR b KQkq - 0 1"
+        },
+        {
+          "uci": "e7e5",
+          "gas": "68824",
+          "transactionHash": "0xd2f532362d8a04e788d848316c5ff804b75400f6496a54f2606a7a5a43578b4d",
+          "fen": "rnbqkbnr/pppp1ppp/8/4p3/8/5P2/PPPPP1PP/RNBQKBNR w KQkq - 0 2"
+        },
+        {
+          "uci": "g2g4",
+          "gas": "57874",
+          "transactionHash": "0x67a5446d44c4dcff59ef8f3b2735c8d05110fe31130df47d0765a3844529fd33",
+          "fen": "rnbqkbnr/pppp1ppp/8/4p3/6P1/5P2/PPPPP2P/RNBQKBNR b KQkq - 0 2"
+        },
+        {
+          "uci": "d8h4",
+          "gas": "176711",
+          "transactionHash": "0x119a3b0581db4732302a8f54776e9636226134c61c7ee031b75fa0267ce73931",
+          "fen": "rnb1kbnr/pppp1ppp/8/4p3/6Pq/5P2/PPPPP2P/RNBQKBNR w KQkq - 1 3"
+        }
+      ]
+    },
+    {
+      "name": "white-checkmate",
+      "outcome": 2,
+      "referenceCheckmate": true,
+      "finalFen": "r1bqkb1r/pppp1Qpp/2n2n2/4p3/2B1P3/8/PPPP1PPP/RNB1K1NR b KQkq - 0 4",
+      "moves": [
+        {
+          "uci": "e2e4",
+          "gas": "57479",
+          "transactionHash": "0x5dbf13cfe0abc93ab8e75b1d07561f65bbe86c001c2a2b27ecc38e67e56cf74f",
+          "fen": "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1"
+        },
+        {
+          "uci": "e7e5",
+          "gas": "74093",
+          "transactionHash": "0x876d818a5ef3768a963a933bef60c577eac2b985c455b051e7ff4e0ec4295568",
+          "fen": "rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2"
+        },
+        {
+          "uci": "f1c4",
+          "gas": "59640",
+          "transactionHash": "0xca502e7f846d6a3055eee92da6c687e77ee66e2595055b9eb5feaaef5521590b",
+          "fen": "rnbqkbnr/pppp1ppp/8/4p3/2B1P3/8/PPPP1PPP/RNBQK1NR b KQkq - 1 2"
+        },
+        {
+          "uci": "b8c6",
+          "gas": "74984",
+          "transactionHash": "0xb108860503f4ea749ca291971c75661f3b2530f2efd4e70dcd15d3f06ec393eb",
+          "fen": "r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/8/PPPP1PPP/RNBQK1NR w KQkq - 2 3"
+        },
+        {
+          "uci": "d1h5",
+          "gas": "59773",
+          "transactionHash": "0xc0445f674cbb6b8782d575c4d9574490526e65d29c241a5c1e0aef69723786d9",
+          "fen": "r1bqkbnr/pppp1ppp/2n5/4p2Q/2B1P3/8/PPPP1PPP/RNB1K1NR b KQkq - 3 3"
+        },
+        {
+          "uci": "g8f6",
+          "gas": "70049",
+          "transactionHash": "0xf43466e26cabcae71e9fad2e267b890de22dbd3d917f805c83a1a2670130a2e3",
+          "fen": "r1bqkb1r/pppp1ppp/2n2n2/4p2Q/2B1P3/8/PPPP1PPP/RNB1K1NR w KQkq - 4 4"
+        },
+        {
+          "uci": "h5f7",
+          "gas": "215795",
+          "transactionHash": "0xc18c7ba634685349e25232ae7fb86bee4098898cf0fb046471aaff41e047c3a5",
+          "fen": "r1bqkb1r/pppp1Qpp/2n2n2/4p3/2B1P3/8/PPPP1PPP/RNB1K1NR b KQkq - 0 4"
+        }
+      ]
+    },
+    {
+      "name": "both-castles",
+      "outcome": 0,
+      "referenceCheckmate": false,
+      "finalFen": "r1bq1rk1/2p1bppp/p1np1n2/1p2p3/4P3/1BP2N2/PP1P1PPP/RNBQR1K1 w - - 1 9",
+      "moves": [
+        {
+          "uci": "e2e4",
+          "gas": "57479",
+          "transactionHash": "0x153125764269bdd318365cdc57251eaa3c8694fe0922b645388583473d720a8b",
+          "fen": "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1"
+        },
+        {
+          "uci": "e7e5",
+          "gas": "74093",
+          "transactionHash": "0x1955ad0cacff0105ed9e3bce40bbc9c0b4ef94c089ac194032e14ad4383bf6e2",
+          "fen": "rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2"
+        },
+        {
+          "uci": "g1f3",
+          "gas": "57702",
+          "transactionHash": "0x32482c8c3fb4b2547fc4b8ba50a6050fd8d05fb642546dfbc169835994bda99c",
+          "fen": "rnbqkbnr/pppp1ppp/8/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2"
+        },
+        {
+          "uci": "b8c6",
+          "gas": "73638",
+          "transactionHash": "0xffc32b57b2c287da9a32b6d3efe5fdabeb078f335236406dd6857b9d395cd379",
+          "fen": "r1bqkbnr/pppp1ppp/2n5/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3"
+        },
+        {
+          "uci": "f1b5",
+          "gas": "59889",
+          "transactionHash": "0xb711ebe36536d266616e5bb4eeff1caba6ed44ffb1e19e189f60520904b0fecc",
+          "fen": "r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 3 3"
+        },
+        {
+          "uci": "a7a6",
+          "gas": "69945",
+          "transactionHash": "0xa7e75fd25a71e74aff698dc28b878ff8ee2cfb96cf477236c5a1c0c634654fec",
+          "fen": "r1bqkbnr/1ppp1ppp/p1n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 0 4"
+        },
+        {
+          "uci": "b5a4",
+          "gas": "59313",
+          "transactionHash": "0x30b2fe664bcee4d168371b8c526d1b9bd099ba2b2b323eafed4690f4d5d37d75",
+          "fen": "r1bqkbnr/1ppp1ppp/p1n5/4p3/B3P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 1 4"
+        },
+        {
+          "uci": "g8f6",
+          "gas": "76285",
+          "transactionHash": "0xd9cafc54a44a81eb5423ac9bf9986bdf0e2bd5c108dd7727967ea8ef94798bc6",
+          "fen": "r1bqkb1r/1ppp1ppp/p1n2n2/4p3/B3P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 2 5"
+        },
+        {
+          "uci": "e1g1",
+          "gas": "69509",
+          "transactionHash": "0x5c9a746dfd79b809f34d0a68d32c1e0a7b7ce1140f99c4bf083a80c4fc7ba4b8",
+          "fen": "r1bqkb1r/1ppp1ppp/p1n2n2/4p3/B3P3/5N2/PPPP1PPP/RNBQ1RK1 b kq - 3 5"
+        },
+        {
+          "uci": "f8e7",
+          "gas": "76456",
+          "transactionHash": "0xaaafa4270f1cf2ae486b063b38a5c6bcc41604cf3f98404a0cb438d731331d78",
+          "fen": "r1bqk2r/1pppbppp/p1n2n2/4p3/B3P3/5N2/PPPP1PPP/RNBQ1RK1 w kq - 4 6"
+        },
+        {
+          "uci": "f1e1",
+          "gas": "59564",
+          "transactionHash": "0xa19f26fa5f10f36db2258adefb6ed4806e35bb6d865044529719f6492c8e2f60",
+          "fen": "r1bqk2r/1pppbppp/p1n2n2/4p3/B3P3/5N2/PPPP1PPP/RNBQR1K1 b kq - 5 6"
+        },
+        {
+          "uci": "b7b5",
+          "gas": "75841",
+          "transactionHash": "0xb168545ff1f2f422bbe96a2d657d60fb593068973dd80afd57205a32f7140af3",
+          "fen": "r1bqk2r/2ppbppp/p1n2n2/1p2p3/B3P3/5N2/PPPP1PPP/RNBQR1K1 w kq - 0 7"
+        },
+        {
+          "uci": "a4b3",
+          "gas": "59259",
+          "transactionHash": "0xa685e58b72095f56931dffa5bcabece43670fba46d3a901c59352e1e07d23b0c",
+          "fen": "r1bqk2r/2ppbppp/p1n2n2/1p2p3/4P3/1B3N2/PPPP1PPP/RNBQR1K1 b kq - 1 7"
+        },
+        {
+          "uci": "d7d6",
+          "gas": "74399",
+          "transactionHash": "0x7a63055d27ed323a5b990a0f7b8bca9aace9f06389df410561ab97c198d0e1fd",
+          "fen": "r1bqk2r/2p1bppp/p1np1n2/1p2p3/4P3/1B3N2/PPPP1PPP/RNBQR1K1 w kq - 0 8"
+        },
+        {
+          "uci": "c2c3",
+          "gas": "57619",
+          "transactionHash": "0x243f28d1356c3ebfc551682a7b831074c7166c431cd89d4d412a898b3d4d2711",
+          "fen": "r1bqk2r/2p1bppp/p1np1n2/1p2p3/4P3/1BP2N2/PP1P1PPP/RNBQR1K1 b kq - 0 8"
+        },
+        {
+          "uci": "e8g8",
+          "gas": "85103",
+          "transactionHash": "0x9b209ddb6f44370aaa69470c8dbe57253e7c160413edf0715de19264171e4cc9",
+          "fen": "r1bq1rk1/2p1bppp/p1np1n2/1p2p3/4P3/1BP2N2/PP1P1PPP/RNBQR1K1 w - - 1 9"
+        }
+      ]
+    },
+    {
+      "name": "en-passant-capture",
+      "outcome": 0,
+      "referenceCheckmate": false,
+      "finalFen": "rnbqkbnr/1pp2ppp/p2p4/8/8/8/PPPP1PPP/RNBQKBNR w KQkq - 0 4",
+      "moves": [
+        {
+          "uci": "e2e4",
+          "gas": "57479",
+          "transactionHash": "0xcab12b4ccfd3cb960ca280b5b3f9d932690ce4329c57cce91a222c0ef39c7e49",
+          "fen": "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1"
+        },
+        {
+          "uci": "a7a6",
+          "gas": "68392",
+          "transactionHash": "0x796189b242fd43de09b5388ea8d709c1c5f775ee4b59b00b7d05aaeb3eca34bb",
+          "fen": "rnbqkbnr/1ppppppp/p7/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2"
+        },
+        {
+          "uci": "e4e5",
+          "gas": "57260",
+          "transactionHash": "0x57b3c9d9e695bd7ddc8a4b5dcac8e9b70ec6c41977973232c08b335dd7fbc441",
+          "fen": "rnbqkbnr/1ppppppp/p7/4P3/8/8/PPPP1PPP/RNBQKBNR b KQkq - 0 2"
+        },
+        {
+          "uci": "d7d5",
+          "gas": "67665",
+          "transactionHash": "0x28946c6225bd41644afcd88350069afbc1838588b1a2e73d01ef5ea3f7f4c962",
+          "fen": "rnbqkbnr/1pp1pppp/p7/3pP3/8/8/PPPP1PPP/RNBQKBNR w KQkq d6 0 3"
+        },
+        {
+          "uci": "e5d6",
+          "gas": "58604",
+          "transactionHash": "0x45635c47219d62efb061857fb34be396f95a3675d41361a708e791d1ab6961ee",
+          "fen": "rnbqkbnr/1pp1pppp/p2P4/8/8/8/PPPP1PPP/RNBQKBNR b KQkq - 0 3"
+        },
+        {
+          "uci": "e7d6",
+          "gas": "70804",
+          "transactionHash": "0x4c76e4977ddc48a5aaa922a2728b5cba9d8f3c95137f18436a4c80a3a9064fbb",
+          "fen": "rnbqkbnr/1pp2ppp/p2p4/8/8/8/PPPP1PPP/RNBQKBNR w KQkq - 0 4"
+        }
+      ]
+    },
+    {
+      "name": "both-queen-promotions",
+      "outcome": 0,
+      "referenceCheckmate": false,
+      "finalFen": "Qnbqkbnr/p1ppppp1/8/8/8/8/1PPPPP1P/RNBQKBNq w Qk - 0 6",
+      "moves": [
+        {
+          "uci": "a2a4",
+          "gas": "57300",
+          "transactionHash": "0xff0f26ac948a24b65c8e90c11c32b3b520cd942e3227c7968a5957fbed58f2fe",
+          "fen": "rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR b KQkq - 0 1"
+        },
+        {
+          "uci": "h7h5",
+          "gas": "68157",
+          "transactionHash": "0x2f1bfa47d1acb40cb6b1ed067b5b955942062f3905e14bd31ffe90090c63ec1d",
+          "fen": "rnbqkbnr/ppppppp1/8/7p/P7/8/1PPPPPPP/RNBQKBNR w KQkq - 0 2"
+        },
+        {
+          "uci": "a4a5",
+          "gas": "57512",
+          "transactionHash": "0x9ccb69fa1a1467a17d0e54d752bd39c0e4ea8399c378f3c7e0f16e06b6e1dbc4",
+          "fen": "rnbqkbnr/ppppppp1/8/P6p/8/8/1PPPPPPP/RNBQKBNR b KQkq - 0 2"
+        },
+        {
+          "uci": "h5h4",
+          "gas": "65570",
+          "transactionHash": "0x98a0f2f4163ecbc3bc4598fcdbdb03c8ace759d1569275ebc5d97b2a375e081a",
+          "fen": "rnbqkbnr/ppppppp1/8/P7/7p/8/1PPPPPPP/RNBQKBNR w KQkq - 0 3"
+        },
+        {
+          "uci": "a5a6",
+          "gas": "57512",
+          "transactionHash": "0xa878831c6e87d0f85033cc3cad01527f260e2706f3c9372907991081bd52e0cf",
+          "fen": "rnbqkbnr/ppppppp1/P7/8/7p/8/1PPPPPPP/RNBQKBNR b KQkq - 0 3"
+        },
+        {
+          "uci": "h4h3",
+          "gas": "66615",
+          "transactionHash": "0xef38b43b3b7513e1b56b78d3dc3a199aaf2497003070ecefec4612af5c2de72a",
+          "fen": "rnbqkbnr/ppppppp1/P7/8/8/7p/1PPPPPPP/RNBQKBNR w KQkq - 0 4"
+        },
+        {
+          "uci": "a6b7",
+          "gas": "57997",
+          "transactionHash": "0x1e65c0408cd9b125364eee2c2beea3e8e743a3794cde03f348f378430a4d742f",
+          "fen": "rnbqkbnr/pPppppp1/8/8/8/7p/1PPPPPPP/RNBQKBNR b KQkq - 0 4"
+        },
+        {
+          "uci": "h3g2",
+          "gas": "64115",
+          "transactionHash": "0xdba57fb80626a01e20468ba3b71678f79fdb0ef4aacf5e5bce580b25275256d4",
+          "fen": "rnbqkbnr/pPppppp1/8/8/8/8/1PPPPPpP/RNBQKBNR w KQkq - 0 5"
+        },
+        {
+          "uci": "b7a8q",
+          "gas": "58181",
+          "transactionHash": "0x88829343f0d758f0959a38718608613dbbb56f2b33c3ba731ec1fbe812c3ccca",
+          "fen": "Qnbqkbnr/p1ppppp1/8/8/8/8/1PPPPPpP/RNBQKBNR b KQk - 0 5"
+        },
+        {
+          "uci": "g2h1q",
+          "gas": "61587",
+          "transactionHash": "0xc4e880985ba96f991e0b32da6618174d66764a9531f4dd853af286033c6cb8b5",
+          "fen": "Qnbqkbnr/p1ppppp1/8/8/8/8/1PPPPP1P/RNBQKBNq w Qk - 0 6"
+        }
+      ]
+    }
+  ],
+  "illegalMoveRejected": true,
+  "localReceipts": 50,
+  "moveGas": {
+    "minimum": 57156,
+    "maximum": 215795,
+    "mean": 71005,
+    "plies": 43
+  },
+  "passed": true
+}
