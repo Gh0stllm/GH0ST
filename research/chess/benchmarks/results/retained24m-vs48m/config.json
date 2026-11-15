@@ -1,0 +1,49 @@
+{
+  "scope": "New native CPU full-game retained-cache strength reference; no ICP full game, Solidity search, deployment or paid activation",
+  "created_at": "2026-11-15T12:16:05.970602+00:00",
+  "policy_version": "GH0ST_NATIVE_RETAINED_TT_24M_V1",
+  "engine_binary_sha256": "8738d7d5720ef805849c7f09f43e54aa3b1fc9a6c3b0e23e582106e01aa287e0",
+  "stockfish_commit": "edb0d9db6731067ec50ce619ff372b463bc4dd5d",
+  "nnue_sha256": "1a298aa575a085434d29027978dc36867fe9c5bcea9376654b7a8eba1e52dfc2",
+  "options": {
+    "NumaPolicy": "none",
+    "Threads": 1,
+    "Hash": 128,
+    "Skill Level": 20,
+    "UCI_LimitStrength": false,
+    "SyzygyPath": ""
+  },
+  "gh0st_policy": "Black24m retains its own TT and histories within one isolated game",
+  "challenger_policy": "White48m retains its own TT and histories, never elects an optional draw",
+  "opening_policy": "Standard initial board. Only the disclosed first White move is forced. No Black move is forced.",
+  "draw_policy": "Black claims current threefold/50move; mandatory fivefold/75move and insufficient material/stalemate remain; checkmate has precedence.",
+  "uci_cache_control": "One stable game token per colour; fresh engine processes per game; no per-turn Hash/Threads/NumaPolicy changes",
+  "termination_policy": "Complete legal games only. Explicit operator stop, error or1024ply ceiling is unfinished, never a draw.",
+  "wall_time_limit_minutes": null,
+  "max_plies": 1024,
+  "workers": 2,
+  "native_policy_source_sha256": {
+    "run_tightest.py": "de2088ead0c13e14d1295d1a9b9c55572e1bd3ec29a059e45f447bf7590ebff7",
+    "cache_policy.py": "24c1c01103b62f1e3ebd3c8ec9e658e9464a387993e57e40ff33da5396029461",
+    "run_matches.py": "a2eb15e878c463041ebab2df2feeb6a78bb156a35051539fe96ce964de7d6114"
+  },
+  "deployed_icp_module": null,
+  "deployed_solidity_engine": null,
+  "reference_limit": "Same pinned native Stockfish code/network as prior proxy checks, new larger node budget. No full-game ICP parity or rating is inferred.",
+  "jobs": [
+    {
+      "id": "48m-larsen",
+      "opening": "larsen",
+      "white_first_move": "b2b3",
+      "challenger_nodes": 48000000,
+      "ghost_nodes": 24000000
+    },
+    {
+      "id": "48m-king-pawn",
+      "opening": "king-pawn",
+      "white_first_move": "e2e4",
+      "challenger_nodes": 48000000,
+      "ghost_nodes": 24000000
+    }
+  ]
+}

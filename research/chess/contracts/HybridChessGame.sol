@@ -135,6 +135,9 @@ contract HybridChessGame {
     }
     function _settle(bytes32 id,Game storage g,Result result,uint256 paid) private {
         _solvent(); g.result=uint8(result); totalReserved=0; activeGameId=0;
+        // A successful attack ends this round. Review the line and explicitly reopen;
+        // a public deterministic winning transcript must not drain repeated prizes.
+        if(result==Result.HumanCheckmate) { paused=true; emit EntriesPaused(true); }
         if(paid!=0) _transferExact(address(this),g.player,paid);
         emit GameSettled(id,g.player,uint8(result),paid,g.positionHash,g.transcriptHash);
     }

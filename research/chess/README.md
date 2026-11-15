@@ -12,6 +12,7 @@ The interface is being released at [gh0st.fyi/chess](https://gh0st.fyi/chess/). 
 - Robinhood Solidity stores the board and complete move transcript, validates every move and decides checkmate. It pays the prize in the checkmating transaction.
 - Full Stockfish 19 on ICP plays Black. The stronger candidate uses **24,000,000 nodes**, Hash 128 MiB, one thread, maximum skill, full pinned NNUE and retained TT/history within a game. No lower-strength fallback.
 - ICP threshold ECDSA authorizes a Black move, never a winner. The signed move binds game, player, position, transcript, ply, engine configuration, contract, chain and deadline. Native legality still applies.
+- A human checkmate pauses new entries until the owner explicitly reopens a reviewed round.
 - One active game matches one retained engine instance. White has 24 hours per turn; Black one hour. A missed Black turn refunds the 25,000 entry on Robinhood. Draw, loss, resignation or missed White turn retains entry.
 
 ## Strength evidence
@@ -26,7 +27,7 @@ At 25,000 entry and 1,000,000 payout, entry fees cover prizes at a **2.5% player
 
 ## Implementation and checks
 
-- [Native game and custody](spec/hybrid-game.md): new HybridChessGame and independent packed-board HybridChessRules. 277 local checks/55 receipts passed, including 4,510 differential/perft positions, all promotion choices, en-passant/castling, 195-ply historical mate replay, simulated 1M payout and hostile token rollback. This is not an external audit.
+- [Native game and custody](spec/hybrid-game.md): new HybridChessGame and independent packed-board HybridChessRules. 280 local checks/56 receipts passed, including 4,510 differential/perft positions, all promotion choices, en-passant/castling, 195-ply historical mate replay, simulated 1M payout and hostile token rollback. This is not an external audit.
 - [Hybrid architecture and trust](spec/HYBRID.md): RH is authoritative; ICP, RPC and controllers have explicit roles.
 - [Retained ICP engine API](engine/hybrid/): authenticated arbitrary requests, bounded continuation steps, cached retry replies, one-game reservation and upgrade fault policy.
 - [ICP coordinator](hybrid-brain/): independently replays canonical RH history, binds engine jobs and signs only the engine's legal Black move.

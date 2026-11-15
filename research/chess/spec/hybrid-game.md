@@ -12,7 +12,7 @@ This source implements the selected hybrid architecture. It is distinct from the
 - A missed Black service deadline refunds exactly the entry. This closes the game and releases the unused prize reserve.
 - Manual funding only. There is no token auto-pull, minting, topup or administrator force-win function.
 
-The pool owner and ICP signer are immutable. The deployment starts paused. Pausing blocks new entries only; existing moves, refunds and results continue.
+The pool owner and ICP signer are immutable. The deployment starts paused. A human checkmate automatically pauses new entries, so the winning line is reviewed before the owner explicitly reopens another round. Funding alone does not reopen it. Pausing blocks new entries only; existing moves, refunds and results continue.
 
 ## Authority and trust
 
@@ -74,8 +74,8 @@ Human may claim a current-position threefold repetition or 100 reversible halfmo
 - `evm-tests/hybrid.test.mjs`: local EVM differential legality, promotions/castling/en-passant, signed moves, escrow and timeout tests.
 - `evm/hybrid-test-report.json`: generated local receipts and assertions when the complete test passes.
 
-Current complete local run passed **277 checks** and **55 mined receipts**. It compared **2,071 legal branches** from80 deterministic positions against chess.js, rejected240 sampled illegal moves, and verified every start-position depth2 leaf (**400**) and every Kiwipete depth2 leaf (**2,039**). All195 plies of the saved historical `98.Qa8#` loss replay through the independent Solidity move rules. Separate paid-game fixtures prove native Scholar's mate pays exactly1,000,000, bot outage refunds25,000, entry reserves before charging, signed moves cannot replay, and hostile token callbacks/taxes/false returns roll back atomically. Largest observed move was the native mate/payout at **3,152,236 gas**, below Robinhood's measured32M transaction cap; this is a tested case, not a universal worst-case proof.
+Current complete local run passed **280 checks** and **56 mined receipts**. It compared **2,071 legal branches** from80 deterministic positions against chess.js, rejected240 sampled illegal moves, and verified every start-position depth2 leaf (**400**) and every Kiwipete depth2 leaf (**2,039**). All195 plies of the saved historical `98.Qa8#` loss replay through the independent Solidity move rules. Separate paid-game fixtures prove native Scholar's mate pays exactly1,000,000, bot outage refunds25,000, entry reserves before charging, signed moves cannot replay, and hostile token callbacks/taxes/false returns roll back atomically. Largest observed move was the native mate/payout at **3,173,419 gas**, below Robinhood's measured32M transaction cap; this is a tested case, not a universal worst-case proof.
 
-Runtime sizes: game14,079 bytes; standalone rules test helper5,119 bytes. Rules are inlined in the game; the helper is not a production dependency.
+Runtime sizes: game14,149 bytes; standalone rules test helper5,119 bytes. Rules are inlined in the game; the helper is not a production dependency.
 
 Local testing is not an external contract audit or public deployment. Paid activation additionally requires canonical Robinhood chain4663/GH0ST binding, actual ICP module/controller/config/signer verification, full-budget inference integration and sufficient manual operating/prize funding.

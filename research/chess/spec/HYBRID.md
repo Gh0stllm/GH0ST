@@ -1,6 +1,6 @@
 # ICP brain, Robinhood game
 
-Selected by the user on 2026-11-15. Human plays White from the standard starting position. Entry is 25,000 GH0ST; legal human checkmate pays 1,000,000 GH0ST total to the original entering wallet. Full reward is reserved before accepting the fee. No automatic pool top-ups.
+Selected by the user on 2026-11-15. Human plays White from the standard starting position. Entry is 25,000 GH0ST; legal human checkmate pays 1,000,000 GH0ST total to the original entering wallet. Full reward is reserved before accepting the fee. No automatic pool top-ups. Human checkmate automatically pauses new entries until the owner explicitly reopens a reviewed round.
 
 ## Authority
 

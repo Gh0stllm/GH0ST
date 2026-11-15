@@ -111,3 +111,28 @@ per game, and uses a stable UCI game token for all Black turns. A canister port
 must skip both per-decision `search_clear` and option resets that rebuild the
 worker/TT, while preserving isolation between games. This benchmark has not
 implemented that production memory/queue/controller policy.
+
+## Higher-budget retained-cache reference
+
+`run_tightest.py` starts a separate new run at
+`results/retained24m-vs48m/`: full Stockfish 19, Hash128, one worker, Black
+24,000,000 target nodes with per-game retained TT/histories, against a White
+48,000,000-node retained-cache challenger. The two starting choices are `1.b3`
+(the previous attack family) and `1.e4`. Only White's first move is forced; all
+Black moves and subsequent White moves are searched.
+
+White never elects optional draw claims. Black may claim a current threefold or
+50-move draw; mandatory draw conditions and checkmate precedence are unchanged.
+The run has no implicit wall-time adjudication. An explicit operator stop, engine
+error or disclosed 1,024-ply resource ceiling remains unfinished, never a draw.
+Both games have separate engine instances and stable per-colour UCI game tokens.
+There is no cross-game cache sharing or production configuration mutation.
+
+This is a **new native-only strength reference** for a larger target budget.
+Completed whole-game results, when available, must be distinguished from selected
+ICP decision tests, local Solidity tests and any public deployment. No Elo, public
+checkmate probability or guaranteed prize safety is inferred from two games.
+
+```sh
+.cache/venv/bin/python run_tightest.py --openings larsen,king-pawn --workers 2
+```

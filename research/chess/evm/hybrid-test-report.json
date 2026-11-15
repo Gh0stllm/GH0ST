@@ -2,7 +2,7 @@
   "format": "GH0ST_HYBRID_CHESS_LOCAL_V1",
   "localOnly": true,
   "passed": true,
-  "checkCount": 277,
+  "checkCount": 280,
   "checks": [
     "orthodox initial board exact",
     "castle both",
@@ -274,6 +274,9 @@
     "same signedbot replay",
     "native Scholarsmate pays exact1million to originalwallet",
     "cannot doublepay",
+    "winner automatically pauses another entry",
+    "winner ends round until explicit owner reopening",
+    "funding alone cannot silently reopen won round",
     "earlytimeout",
     "refund false-return token rollsback",
     "nativeBlack currentthreefold claimsdraw",
@@ -289,7 +292,7 @@
   "historicalMatePlies": 195,
   "contracts": {
     "HybridChessGame": {
-      "runtimeBytes": 14079
+      "runtimeBytes": 14149
     },
     "HybridChessRules": {
       "runtimeBytes": 57
@@ -328,309 +331,315 @@
     },
     {
       "label": "deploy HybridChessGame",
-      "hash": "0x6b42b66c55d4a948fe1b16850ec8401234e334f5c2661ba0dcb3c455ed205239",
-      "gasUsed": "3129525",
+      "hash": "0x51d65bd1e502644f5f374e5468843c40ec53b031e0922a3ebc4fcfe41958b1c0",
+      "gasUsed": "3144673",
       "block": 5
     },
     {
       "label": "explicit unpause testonly",
-      "hash": "0xad1e034938f1f384d6235855bdc97f0242bd24356d9b2353c976b82861af05cd",
+      "hash": "0x9b3dd1ce865808566a068a7cfe479c239fdf9b81c79e25395806d2855d911047",
       "gasUsed": "22752",
       "block": 6
     },
     {
       "label": "approve almostfunded",
-      "hash": "0xb2ce3aaf9bcd93a8db228721dfa526f98d608a8520dd5e002df7578ee72f59cc",
+      "hash": "0xccf926f69f0ec45a903aac5ca23ce77324504a091dd1d17c70618e505aa7969d",
       "gasUsed": "44114",
       "block": 7
     },
     {
       "label": "fund belowfullprize",
-      "hash": "0x6c85e41a51d0ac4333d6f41c9358e98f3e0da86480525b6b1c8cadac10a884b8",
+      "hash": "0xf7fc5c19c64ba7640c96f14914c6e3b54404206f23d1e91c32488e6768f7a2f6",
       "gasUsed": "75000",
       "block": 8
     },
     {
       "label": "player approval",
-      "hash": "0x18234b8d5630868ed806a52e6fde9a3e68a6d9ca4d1abec4ba6921edd0115b82",
+      "hash": "0xdd22d6c56f06f833623dfece57b76749fa2bdfd3ae6df8d22307914ece23a644",
       "gasUsed": "44114",
       "block": 9
     },
     {
       "label": "approve poolremainder",
-      "hash": "0x671688dffb81bb9be5664b5f67b0e5bcb0a4e08aaa0d128b4f4c5917c25df5f3",
+      "hash": "0xdfa3d818acfb4d5da52437090072fdf5e9a99be28f5303cf695a7d861ff5086a",
       "gasUsed": "44114",
       "block": 10
     },
     {
       "label": "fund exact1m",
-      "hash": "0x41a6502d524338bbeddbe33464348e1d47dbead16602eb4e82535228b59fc223",
+      "hash": "0x6ef9cead572ee56feb09df12bada1a7a4532f41e2a32acec5c9e49a08bdad471",
       "gasUsed": "61320",
       "block": 11
     },
     {
       "label": "approve exact25k",
-      "hash": "0xaa1fa6484c85e6c794570893154a7237928361eb17b27007d2a842a36d6295da",
+      "hash": "0xa1d02f51734e461a73a81f477e8675e14d72cfbe3c72bdfbe967de3e522ad749",
       "gasUsed": "24214",
       "block": 12
     },
     {
       "label": "entry reserve1m",
-      "hash": "0x7e1169a6423915d7fdd89541bfed94652e8e510a68f2d24ccea57773ad5c2e2a",
+      "hash": "0x4c77427f607ec5ea71f5d89f5a958072fd36f8487db8dc279c762461706b8a21",
       "gasUsed": "300576",
       "block": 13
     },
     {
       "label": "legalWhite move",
-      "hash": "0x6aa6f39f4a6240724e68e9deca2ced6f3bf91ee96134993f38b74b7af08f0bbe",
+      "hash": "0x81873a974a8363ccd1455a4642726f266ff6fd0415bfc0ca443ece375881975c",
       "gasUsed": "276895",
       "block": 14
     },
     {
       "label": "validBlack",
-      "hash": "0x1db9a6d57e7753a83ca29976055433029f8e744e10eaba83160efe8fb2ec4028",
+      "hash": "0x2761aafb9312949425b59f6527c5dca0ad4bd8679b84bcd429627e98530f5f6c",
       "gasUsed": "297908",
       "block": 15
     },
     {
       "label": "humanresign",
-      "hash": "0x6e2fceb5fe0532c0af328ef1bca17dff2eacec96b480cc059ed2666345772bf5",
+      "hash": "0x95477a2739b8eab910c97ba7d7c41e74335bb0116670dd65216c00932e12f41c",
       "gasUsed": "59688",
       "block": 16
     },
     {
       "label": "approve exact25k",
-      "hash": "0x90ab4e0918a0b15782e3806f15da0cf405761c704320e869a9c4240e2ec81ddd",
+      "hash": "0x0ed6893e042931f49809cb6c33a41f0c2d088263711220e00f3b5c6a158b8143",
       "gasUsed": "44114",
       "block": 17
     },
     {
       "label": "entry reserve1m",
-      "hash": "0x61de3b751cf00d8b8fbd6a526568ba62871f3d1befd5f05ba9163b8a53d0aba9",
+      "hash": "0xf73afb106cb2fce5053b27a426cd9cd69951c7dbdb6d73b52b9de670bb05a327",
       "gasUsed": "300576",
       "block": 18
     },
     {
       "label": "legalWhite move",
-      "hash": "0x8e1d6cc7d4646db1bfc00fd139eab14d263823f5c0b4ae9024a25c086c202cd2",
+      "hash": "0x0151cba94daa3cf23e1775b7f58289de78243851281428fbeb8c10b72dbe86e7",
       "gasUsed": "276895",
       "block": 19
     },
     {
       "label": "signed legalBlack move",
-      "hash": "0x0d2275a48efec73dc4a88283056801c95e82523fc7db8c3b5768d0c6473b26c8",
+      "hash": "0xbf3cb19ddf39a924d9327fd414319dcd95f0c7a72627e289f77d057eb60e50c6",
       "gasUsed": "297908",
       "block": 20
     },
     {
       "label": "legalWhite move",
-      "hash": "0x962d05ddbf80cca7710ed6979c2b5208093a8fce1b100b3e8b5a598eba925bbd",
+      "hash": "0xbc4ecfd50a559ee138ee881b96ee9271f9ab7d9ce885b17436f13a6013a55cbf",
       "gasUsed": "365664",
       "block": 21
     },
     {
       "label": "signed legalBlack move",
-      "hash": "0xd5791df5c1eb49d3ac404265bc0adb488974cff31934adc30c3baaf409cb74a3",
+      "hash": "0x0e8050a210eec3c099092ebcc2e7ad6357f75e2d0d770c85d0a220beb53180cf",
       "gasUsed": "298575",
       "block": 22
     },
     {
       "label": "legalWhite move",
-      "hash": "0x757a33e07dcd3148b91a933a768c52689a25a3547bbacfa24612a48a88ae22b8",
+      "hash": "0x3dc3605a17f715ee2be70cfc62fcce75d36a9df4de7d212362d5436f699f46ee",
       "gasUsed": "343429",
       "block": 23
     },
     {
       "label": "signed legalBlack move",
-      "hash": "0xb12b7c38e1b1d99a7ff1d73242bb7fcc31182ef0906436547e76a4f36da4d2c6",
+      "hash": "0x1b17d581ab20960c56942b3f68349812ac3b0cd501a5d7a1c5973843326e2472",
       "gasUsed": "299980",
       "block": 24
     },
     {
       "label": "legalWhite move",
-      "hash": "0x2e387e7cae479c01cc451fb0e30619f99870187fa3cd0515660e2cbcf65650a7",
-      "gasUsed": "3152236",
+      "hash": "0x847282a8e2ed701eea181e1272638f60749beed36f1ec40b12f3b9da55c1a208",
+      "gasUsed": "3173419",
       "block": 25
     },
     {
       "label": "approve replenish afterwinner",
-      "hash": "0xa58bdeae4b83b44160df4a5fab752b4ba2bfe6d82efdbdccc90787f38b98c1e6",
+      "hash": "0x41fd5db0f9b0f00d4b5e9bec11cf05a088d5a27ec27ef6f808f4fe225abc5329",
       "gasUsed": "44102",
       "block": 26
     },
     {
       "label": "manual replenish afterwinner",
-      "hash": "0x7e0cfe9b57d90593936b9a9647f6efd2111ddd947994766cb39a036252f78dd8",
-      "gasUsed": "61310",
+      "hash": "0xbac73cfc43f3bd854eb5c1c16dfdb417682a7cf2fcff0bad26abdb280f7e6a11",
+      "gasUsed": "51937",
       "block": 27
     },
     {
-      "label": "approve exact25k",
-      "hash": "0xb7bd43508eb1fbefe3ecd119ccde9761b4ee66460dc713961d2ca603b7cc2363",
-      "gasUsed": "44114",
+      "label": "explicit reviewed round reopen testonly",
+      "hash": "0x35e25a0b1536480437a673a65bffcf97a7485edd3cd152c0fb739a8f8ccf6d9a",
+      "gasUsed": "22752",
       "block": 28
     },
     {
-      "label": "entry reserve1m",
-      "hash": "0x67c54e6e366de88b7202cb56235739d58991c6988bec38f38d6b6dd00d2a6fa0",
-      "gasUsed": "300576",
+      "label": "approve exact25k",
+      "hash": "0x5f71e5274c24ec3b01637e47317e92836ef3579fc4bd1447ea85692ef8663c32",
+      "gasUsed": "44114",
       "block": 29
     },
     {
-      "label": "legalWhite move",
-      "hash": "0x21776dd036aee012b709d8e07cc46e9eaebe77231e62d6837c6b4c7b11ec1d53",
-      "gasUsed": "276895",
+      "label": "entry reserve1m",
+      "hash": "0x67e9bf3b2989d85a8b430f81a9866720c1a7d4c37830cdbcd497026ad69e15b8",
+      "gasUsed": "300576",
       "block": 30
     },
     {
-      "label": "test hostilefalseoutgoing",
-      "hash": "0xf3f1cf12d10080254aa042d9ebe89ff8d3d18678da35fa901308d16ddf9b81e3",
-      "gasUsed": "44287",
-      "block": 32
+      "label": "legalWhite move",
+      "hash": "0xe8c20bfaadac943e6881baea0e8ea794bc7f1b61d95edc0e5ab6b3a70348c4da",
+      "gasUsed": "276895",
+      "block": 31
     },
     {
-      "label": "restore token outgoing",
-      "hash": "0x4e24fd78b5d8eeeb881641519a216fdce4c79e4ce3fc41a8f79614d6d04a8b77",
-      "gasUsed": "22375",
+      "label": "test hostilefalseoutgoing",
+      "hash": "0x7df856c31cd2f2113345cc33756f59ab8dccb4a3964d8d3795c219aea8597360",
+      "gasUsed": "44287",
       "block": 33
     },
     {
-      "label": "botoutagerefund",
-      "hash": "0xde689c61e3e2f972e8f8294e84767eed4367ff00803ae4929aa1d4b842f5c3c5",
-      "gasUsed": "78511",
+      "label": "restore token outgoing",
+      "hash": "0x439b504ff7a5a86181bc6c2b55c294d243ed82ea5f530665a4b258a791989d7a",
+      "gasUsed": "22375",
       "block": 34
     },
     {
-      "label": "approve exact25k",
-      "hash": "0xe6ce2ddd525e8fcba52466d4704d21d5d3f4e66b17e85d94c3b99bf01b4767be",
-      "gasUsed": "44114",
+      "label": "botoutagerefund",
+      "hash": "0xfdad25e214d2456b1b1f1fe41b3f1648c8c9f88b449e10e018b6a5b49c6c612e",
+      "gasUsed": "78511",
       "block": 35
     },
     {
-      "label": "entry reserve1m",
-      "hash": "0xf6f698b057ba6f10b4243b46fc25e59f54b8a9a07b855ce85dbffd395cca2d2d",
-      "gasUsed": "300576",
+      "label": "approve exact25k",
+      "hash": "0x4574ff0f3133fe3f1ef1f725986eb6acdd0e2532db1df72b2ef258140a75d048",
+      "gasUsed": "44114",
       "block": 36
     },
     {
-      "label": "playerabandon",
-      "hash": "0x0d2bcd37d25e2776bf849dbb8d59a808d5f16eca800d881f6d029e60f8dc6ee5",
-      "gasUsed": "61569",
-      "block": 38
+      "label": "entry reserve1m",
+      "hash": "0x73ef1ae627ba98714c458344c6eada47679a5c8375f826575791436cebf0fe47",
+      "gasUsed": "300576",
+      "block": 37
     },
     {
-      "label": "approve exact25k",
-      "hash": "0xaa99337e92860bb91fa773be7692c141af1be1c3a2919bb6fbc18a99435f2f63",
-      "gasUsed": "44114",
+      "label": "playerabandon",
+      "hash": "0xffb02544e92f77a88cea5f66c65460a0c2b0e054af0dc28ed0bbaa66a6519c29",
+      "gasUsed": "61569",
       "block": 39
     },
     {
-      "label": "entry reserve1m",
-      "hash": "0x0abebd1acf351c9a7a5a78b33547fe8c1d654897097fc29d2d0076f994a097af",
-      "gasUsed": "300576",
+      "label": "approve exact25k",
+      "hash": "0x324610edfde8c42e754e332db706d5d2c288dfc8aa1b790602b978be5490c0e2",
+      "gasUsed": "44114",
       "block": 40
     },
     {
-      "label": "legalWhite move",
-      "hash": "0x4c638e3d3dc691b47f146760871f580defea283f53cd572bb93631623af83a28",
-      "gasUsed": "274483",
+      "label": "entry reserve1m",
+      "hash": "0xf7cffe994a77399abe119ec3eb2370009af2b710eded946825b6cc9c595d05e1",
+      "gasUsed": "300576",
       "block": 41
     },
     {
-      "label": "signed legalBlack move",
-      "hash": "0xba6f32ad433eec291150fbbdcfb1ad25bca2b45cef5544747f1387c9b3367733",
-      "gasUsed": "296383",
+      "label": "legalWhite move",
+      "hash": "0x0d3d921b842fb2ac705dc7ff12eb66f68c86b7d0c4eb5f33d26061a0cfeb2a27",
+      "gasUsed": "274483",
       "block": 42
     },
     {
-      "label": "legalWhite move",
-      "hash": "0xdf7d1c0a8cc40a1ee9dc46dead862618d4c7801bdc7b9ca44eac38ce668fad6f",
-      "gasUsed": "225752",
+      "label": "signed legalBlack move",
+      "hash": "0xf3ada4dce69943043cf07745d42a398f0a587d8084ea6ef6620e518c9da4179d",
+      "gasUsed": "296354",
       "block": 43
     },
     {
-      "label": "signed legalBlack move",
-      "hash": "0xb922bd9eb4f4263545a65cfed715710cca34c30fe2800b1ac833004b1b70a37a",
-      "gasUsed": "277830",
+      "label": "legalWhite move",
+      "hash": "0xf8615d756da5011dfe4cf2cac562739dea7f8ace845a57212da99d7c825fdecb",
+      "gasUsed": "225752",
       "block": 44
     },
     {
-      "label": "legalWhite move",
-      "hash": "0xd753062a91988d57eb77362b4d4809a4fb38c34e5e866371040ad080beabf483",
-      "gasUsed": "223183",
+      "label": "signed legalBlack move",
+      "hash": "0x9ff7ce05e59619f5fa8e82ba96081cfa3721ce8441dc75e7cdd3891bf8cec042",
+      "gasUsed": "277801",
       "block": 45
     },
     {
-      "label": "signed legalBlack move",
-      "hash": "0x126dd26c040ba5f291a01f4342edd843562563bbc0470dd9be28380868cfa607",
-      "gasUsed": "279254",
+      "label": "legalWhite move",
+      "hash": "0xf79b8ab60b886a98aa458c106049986a0654427b248329b0ef203ade7947a9a9",
+      "gasUsed": "223183",
       "block": 46
     },
     {
-      "label": "legalWhite move",
-      "hash": "0x893ad1e3a96176eb4f4cf491060fe566453e66d9392cb54e32f1b609fe845388",
-      "gasUsed": "208652",
+      "label": "signed legalBlack move",
+      "hash": "0xd564c59a36752fd9a3a31d7eb5b626cd61132368bef5db6138ca15db3b3ae702",
+      "gasUsed": "279283",
       "block": 47
     },
     {
-      "label": "signed legalBlack move",
-      "hash": "0xc89dd2bfd9c58c71f90ddae5bb9ba8da527e875b8a49c370b441cc1152d6642a",
-      "gasUsed": "277789",
+      "label": "legalWhite move",
+      "hash": "0xb954a7485339b5258ca1ed19782e6f2751ed22e4da6c813aeaf9d3e11d880ddc",
+      "gasUsed": "208652",
       "block": 48
     },
     {
-      "label": "legalWhite move",
-      "hash": "0x46ea061286c109fbe51aa3fc711463b3fa1923173739d1b5ee7fddf60515dc3a",
-      "gasUsed": "230322",
+      "label": "signed legalBlack move",
+      "hash": "0x58c3daad3d6879b3c1064af806489d5cdade5f53a3496f17e97cba6fd48fe0a3",
+      "gasUsed": "277777",
       "block": 49
     },
     {
-      "label": "approve hostilefunding",
-      "hash": "0x79a373bcc6997ef715b7e43fd39bf626f138abc25a7a8217b806d7021d8d274d",
-      "gasUsed": "44114",
+      "label": "legalWhite move",
+      "hash": "0xa706b50a1d15218b9fcd62722e34e414b537f97a918b90dbb63122d4f8b81dfe",
+      "gasUsed": "230322",
       "block": 50
     },
     {
-      "label": "test transfer tax",
-      "hash": "0xdc6d7a5fa5df0a3ec829ff9ad297b94a94fcd78169ad9e7eb28a45f058850e35",
-      "gasUsed": "44287",
+      "label": "approve hostilefunding",
+      "hash": "0x1c1f63c5dfc591f466b733fb616db672a62f3be96c9ab63538b930b0b68857bb",
+      "gasUsed": "44114",
       "block": 51
     },
     {
-      "label": "test incomingfalse",
-      "hash": "0x89863fe1ad9a69403dc734b6e249fc316b1ffd3260d1fde02f5ea70a6307a3cc",
-      "gasUsed": "27187",
+      "label": "test transfer tax",
+      "hash": "0x6ddaac7e5f6b8b7497b44c0140a271adc9290fb3310132697d3a4b9a6a804835",
+      "gasUsed": "44287",
       "block": 52
     },
     {
-      "label": "approve hostileentry",
-      "hash": "0xadaffffc2b02bc27282295f08bc90fa65e9152a8473820f390b370bcc5776aab",
-      "gasUsed": "44114",
+      "label": "test incomingfalse",
+      "hash": "0x8bf11a6ee97f23b59f89a80d1e05a3159795330c20acd46fb8cf0afe35443807",
+      "gasUsed": "27187",
       "block": 53
     },
     {
-      "label": "restore token exact",
-      "hash": "0xc0968c770729a8f7a0f022e0d50260d97ebe2feff5f07ebff78fa214b80051b1",
-      "gasUsed": "22375",
+      "label": "approve hostileentry",
+      "hash": "0xaccd796fcbacb3cb396428e4633c282850aff66a11a2b972cfbe3b919699f108",
+      "gasUsed": "44114",
       "block": 54
     },
     {
-      "label": "configure callback",
-      "hash": "0x599056a880a14215aa82ca33271119b3fb55f66b613a42e16fac173efa41e2bf",
-      "gasUsed": "136243",
+      "label": "restore token exact",
+      "hash": "0x433cd7b36d1163afcaa85c193777e7d1b1f758e43a149081421b2ebcc8431aa6",
+      "gasUsed": "22375",
       "block": 55
     },
     {
-      "label": "guardedfund callback",
-      "hash": "0x3fd670900605152fa47599d7e0d5d53605374230534b97f4dc6a9f2581c78cf3",
-      "gasUsed": "87972",
+      "label": "configure callback",
+      "hash": "0x7705ab02b182ca78f50ca11090b0021786c2d447f73d2178c8e6cf0238c1665f",
+      "gasUsed": "136243",
       "block": 56
     },
     {
-      "label": "disable callback",
-      "hash": "0x91f780abfea9adb99b306c29256165b9a7c3f139ba0b6c65334993ed48000522",
-      "gasUsed": "40477",
+      "label": "guardedfund callback",
+      "hash": "0x9cbc009e5252923b4d067bf14268518f7b908adb8a275f3c2c7feac2263ee82f",
+      "gasUsed": "87972",
       "block": 57
+    },
+    {
+      "label": "disable callback",
+      "hash": "0x035dd042a8481d7635f9e41e9c6f92acb29dc244ac31561b01dc5d9ef89a5ade",
+      "gasUsed": "40477",
+      "block": 58
     }
   ]
 }
