@@ -222,3 +222,13 @@ The isolated 128 GB worker recorded a 39,053,127,680-byte cgroup peak and 37,034
 After saving and checking the evidence archives, all disposable workers from this milestone were terminated and each removal was verified by a fresh provider read. No public GL3 deployment, token movement or recurring production host was created. Full native GH0ST withdrawals, a deliberately incorrect engine-result dispute and production recovery/storage acceptance remain open.
 
 **Evidence:** [Complete next-block replay](mainnet/evidence/cloud-next-wavm-replay.json), [five actual Solidity checks](mainnet/evidence/cloud-next-complete-solidity-steps.json), [resource measurements](mainnet/evidence/cloud-next-resources-summary.json), [acceptance notebook](mainnet/README.md).
+
+## 30 · Prepare parallel withdrawal, dispute and restart acceptance — 17 November
+
+The user authorized multiple coding agents and required all execution on Runpod with unchanged bot strength. Separate native-token withdrawal and production-recovery fixtures are being prepared/executed on isolated workers, while the dispute path is being integrated with the pinned real verifier and custom-machine evidence. No new acceptance result is inferred from implementation or resource allocation.
+
+The withdrawal baseline uses actual native Nitro and real GH0ST state in a pinned private parent fork. The fork's inert Arbitrum precompile marker needs an explicit parent adapter; privileged fast confirmation and parent-host limitations remain visible. A clean official client stays paired with its standard machine; it does not certify the custom chess client. The production candidate adds non-executable-stack metadata and prepares a complete decision across lifecycle restarts.
+
+Review confirmed that released-game immutable delta accounts are not reclaimed by ordinary compaction. It also identified delayed chain-owner native-mint activation as an authority/backing consideration even when genesis management is disabled. These findings remain mainnet gates.
+
+**Evidence and test boundaries:** [Parallel acceptance work](mainnet/PARALLEL-ACCEPTANCE.md). New passes will be appended only after cloud receipts and output checks complete.
