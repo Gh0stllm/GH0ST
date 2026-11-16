@@ -1,83 +1,63 @@
-<p align="center"><img src="docs/assets/gh0st-banner.svg" alt="GH0ST — model weights in contracts, inference in Solidity"></p>
+<p align="center"><img src="research/gl3/assets/gl3-cover.png" alt="GH0ST GL3 — amber dot-matrix bracket face within three nested layers" width="100%"></p>
 
-# GH0ST
+# GH0ST L3 · GL3
 
-Research into language models and agents with model weights, inference and execution records on-chain. GH0ST includes quantized neural-network arithmetic, Solidity inference runtimes, gas benchmarks and model artifacts.
+**A Robinhood-settled execution layer for GH0ST.**
 
-[Provenance and verification](docs/PROVENANCE.md) · [Research index](docs/RESEARCH.md) · [Repository map](docs/REPOSITORY-MAP.md) · [Recovery record](docs/recovery/RECOVERY.md) · [Website](website/) · [Contributing](CONTRIBUTING.md)
+Private, low-traffic compute. GH0ST as proposed native gas. Solidity and Stylus at the base, with deterministic chess and language-model execution researched as separate extensions.
 
-## Protocol roadmap
+[Research history](research/gl3/HISTORY.md) · [Findings](research/gl3/FINDINGS.md) · [Roadmap](research/gl3/ROADMAP.md) · [Live research status](research/gl3/status.json) · [Source & evidence](research/chess/l3/README.md)
 
-![GH0ST roadmap with completed foundations and eight planned protocols](research/gh0st-watch/protocol-roadmap/assets/gh0st-protocol-roadmap.png)
+> **Research branch, 16 November 2026.** The base chain is verified locally. A public GL3 deployment, production hosting and fully on-chain Stockfish execution are not yet established. The current workload study uses the unchanged full-strength chess engine.
 
-[Open the roadmap](https://gh0st.fyi/roadmap/) · [Upcoming protocols infographic](research/gh0st-watch/protocol-roadmap/assets/gh0st-upcoming-protocols.png) · [Separate logos, page source and build instructions](research/gh0st-watch/protocol-roadmap/README.md)
+## What the evidence shows
 
-The artwork records the roadmap as of 4 November 2026. [GH0ST Bounties](https://gh0st.fyi/bounties/) now has a public preview for posting tasks, submitting evidence and recording creator reviews on ICP. [Bounties source and build instructions](research/gh0st-watch/protocol-bounties/README.md). Reward escrow and the seven other modules are still planned.
+| Milestone | Measured result | Scope |
+| :--- | :--- | :--- |
+| Clean base | Pinned Nitro 3.12.2, ArbOS 61, standard Stylus, debug extensions off | Actual local node |
+| Responsive receipts | 96/96 lightweight transactions; worst workload p95 ≈105 ms | Local M5 benchmark, not hosted inference speed |
+| Nested rollup | Real Geth → Nitro parent → Nitro child; validated genesis and native mock-token deposit | Local three-layer functional rehearsal |
+| Parent inclusion | Exact signed child transaction decoded from posted parent batch2 | Actual local calldata and receipts |
+| Fresh child footprint | **179.25 MiB peak RSS · 2.08 MiB chain data** | Excludes model, validator/staker and prover work |
+| Full-strength chess | Full NNUE · **24m nodes · Hash 128 · one worker** | Full-game memory measurement running |
 
-## Project status and repository history
+[Receipt benchmark](research/chess/l3/core/node/evidence/receipt-benchmark.json) · [Rollup evidence](research/chess/l3/core/integration/README.md) · [Memory methodology](research/chess/l3/core/hosting/chess-workload-20261116/README.md)
 
-**Early-stage, single-maintainer research.** Public source and execution records are available; broad adoption and an independent security audit are not established by this repository.
+## Architecture direction
 
-The current GitHub repository was created on **21 October 2026** to republish surviving work from an earlier account and separate workspaces. Its initial `main` snapshot contains **980 commits**, published on 21–22 October, including hundreds of individual-file restoration commits. This count measures publication activity as well as development; it is not evidence of 980 independent engineering changes.
-
-The recovery record describes 43 surviving older commits retained locally. **Those original commits and their parent relationships were not imported into this public history.** Recovered files, reconstructed documentation and missing material are described in the [provenance guide](docs/PROVENANCE.md). Technical claims should be assessed through the source, reproducible checks and execution records below.
-
-## Research areas and source records
-
-| Area | Source and evidence |
-| --- | --- |
-| Falcon-H1-Tiny research | [Model/runtime and deployment studies](falcon-agent/) |
-| S0UL-1M | [984,192-parameter model and training](s0ul-1m/) · [Complete Solidity inference](s0ul-1m/FULL-SOLIDITY.md) |
-| Completed 20-lane campaign | [Final results and predictions](s0ul-1m/reports/hard-max-39630021281/SUMMARY.md) · [Winner and baseline weights](artifacts/s0ul/) |
-| Genesis NFT | [Contracts, tests and recorded deployment](genesis/contracts-project/) · [Collection and IPFS records](genesis/) |
-| Website and Qwen UI | [Latest recovered published assets](website/) · [Qwen archive index](website/qwen/) |
-| Research paper and media | [Recovered original files](assets/recovered/) |
-| Earlier experiments | [Results](results/) · LFM, distillation, FLAN and Stylus folders retained at their original paths |
-
-## S0UL on Robinhood Chain mainnet
-
-The **984,192-parameter S0UL model is deployed on chain 4663**: 48 weight-data contracts, a model registry, tokenizer and Solidity inference engine, **51 contracts in total**. The deployment CLI checked every creation transaction and runtime against the verified build and all 48 shard hashes against the model export. [Deployment receipts and identities](s0ul-1m/deployments/robinhood-mainnet.json) · [Deployment details](s0ul-1m/FULL-SOLIDITY.md#robinhood-chain-mainnet-deployment).
-
-| Contract | Mainnet address |
-| --- | --- |
-| Inference engine | `0x07bB8455Db0928bEBEb3E7F27A22A0599AF1b650` |
-| Model registry | `0xa62C2d6fbba575732AAB38c56fCd73B2361B1D98` |
-| Tokenizer | `0x3Cf3739D8e587C3AB5706fd459e75A6fCE26d333` |
-| Agent controller | `0x9F92776e33087DCF0d77b9BE23145efAC6cE695D` |
-
-Deployment used **257,254,365 gas** and paid **0.005238250757104 ETH** across the 51 creation receipts. A separate read-only check confirmed those receipts, tokenizer output and a simulated `beginText` call. [Receipt, fee and smoke-check report](s0ul-1m/reports/robinhood-mainnet-deployment-check.json).
-
-**Real mainnet generation completed:** request `1` turned `Wait.` into `WAIT`, EOS (`[268, 2]`) using **398 successful transactions**, **892,989,640 gas** and **0.018193921167636 ETH**, with no failed transactions or saturation. An independent read-only checker confirmed all receipts and reread **1,024/1,024 logits** from the two on-chain decision states; every value matched the Python integer reference exactly. [Mainnet generation journal](s0ul-1m/deployments/robinhood-mainnet-generation.json) · [Independent verification and fees](s0ul-1m/reports/robinhood-mainnet-inference-check.json).
-
-The registry, tokenizer and inference engine are source verified on Sourcify with exact creation and runtime matches. [Inference engine source](https://repo.sourcify.dev/4663/0x07bB8455Db0928bEBEb3E7F27A22A0599AF1b650) · [Verification evidence](s0ul-1m/reports/robinhood-mainnet-verification/sourcify-verification-status.json).
-
-**Bounded agent live:** request `2` turned `theme=dark` into `MEM_SET|theme|dark`, EOS and saved the preference in its owner's on-chain memory. Independent verification confirmed **2,560/2,560 historical logits**, all receipts and the resulting memory. Four-step batches completed the remaining 423 engine steps in 108 transactions; the mixed direct/batched run used 409 inference transactions. The controller provides memory, tasks and balance reads, with explicit write intent enforced by the CLI. [Agent guide and costs](s0ul-1m/AGENT.md) · [Complete execution proof](s0ul-1m/reports/robinhood-mainnet-agent-check.json) · [Verified controller source](https://repo.sourcify.dev/4663/0x9F92776e33087DCF0d77b9BE23145efAC6cE695D).
-
-## Verification and measured limits
-
-The selected S0UL checkpoint scores **41.48%** exact correctness on the harder 540-request challenge and **58.06%** on the historical 360-request challenge. These are task-quality results, separate from execution parity.
-
-The earlier local EVM run matched **1,024/1,024 integer logits** for `Wait.` → `WAIT`, EOS, with zero saturation, using **398 transactions and 892,989,640 gas** at 128 rows. These local measurements are preserved separately from the subsequent mainnet receipts and fee evidence above. [Local evidence](s0ul-1m/reports/solidity-inference-ci-128.json).
-
-Historical Falcon/Qwen/Genesis deployment records are preserved as source evidence. The Qwen frontend and publication index are recovered; its original research/backend branch and the complete sub1b campaign are still missing. [Exact recovery boundaries](docs/recovery/RECOVERY.md).
-
-## Reproduce
-
-```bash
-cd s0ul-1m
-python -m pip install -e .
-npm ci --ignore-scripts --no-audit --no-fund
-python -m unittest discover -s tests -p 'test_*.py' -v
+```mermaid
+flowchart LR
+    E["Ethereum<br/>settlement root"] --> R["Robinhood Chain<br/>existing parent · 4663"]
+    R --> G["GL3<br/>proposed private deployment"]
+    G --> S["Solidity + Stylus<br/>clean base verified locally"]
+    G -.-> C["Deterministic chess / LLM<br/>custom execution under research"]
+    style E fill:#121212,stroke:#665137,color:#f7f1e4
+    style R fill:#121212,stroke:#ffc165,color:#f7f1e4
+    style G fill:#20190f,stroke:#ffc165,color:#ffc165
+    style S fill:#121212,stroke:#ffc165,color:#f7f1e4
+    style C fill:#121212,stroke:#665137,color:#f7f1e4
 ```
 
-Trained baseline and winner artifacts are included under `artifacts/s0ul/`. Two older model files exceed GitHub's per-file limit; their verified parts and reconstruction command are documented in the recovery record.
+The diagram shows the intended public topology. The completed test used a local Ethereum fixture, a local RH-like parent and a local child. Hosting Stockfish beside a node is a capacity test; it does not make the search part of the chain's verified state transition.
 
-Recovered workflows are manual-only during migration. Their original definitions are preserved in [the workflow archive](docs/recovery/original-workflows/). Old run IDs refer to the previous repository and are historical identifiers.
+## Research notebook
 
-## Original records
+| Read first | Purpose |
+| :--- | :--- |
+| [Chronological history](research/gl3/HISTORY.md) | Why each decision changed, with evidence and preserved limitations |
+| [Current findings](research/gl3/FINDINGS.md) | Performance, memory, gas-token requirements and unresolved production questions |
+| [Roadmap](research/gl3/ROADMAP.md) | Completed work, the active experiment and the next gates |
+| [Full-strength chess study](research/chess/l3/core/hosting/chess-workload-20261116/README.md) | Immutable strength policy, complete workloads and memory measurements |
+| [Hosting research](research/chess/l3/core/hosting/README.md) | Smaller private-node candidates and explicit price/availability boundaries |
+| [Core source](research/chess/l3/core/README.md) | Pinned standard base, native-gas work and deployment preparation |
+| [Preserved model experiments](research/chess/l3/llm/README.md) | Complete small-model arithmetic and custom-runtime research |
 
-Earlier README versions are preserved in [the recovery documents](docs/recovery/). Research failures, incomplete work and unsupported claims remain identifiable. File provenance and content hashes distinguish recovered bytes from reconstructed documentation.
+## Immediate objective
 
-$GH0ST research-support token: `0x2eb2849cde7957b86d0dfd4b59e450a9f9d15559`.
+Measure the complete selected chess workload before choosing hardware. Keep the full neural network,24m-node budget, Hash 128, maximum skill and per-game retained state. Test recovery and track actual memory instead of assuming that generic public-sequencer hardware guidance is our minimum.
 
-Falcon research uses artificial intelligence technology from the Technology Innovation Institute. [Model-specific licenses](docs/LICENSES.md) remain applicable.
+No server has been rented and no public GL3 chain has been funded. Parent posting still consumes ETH even if GL3 uses GH0ST for its own gas. Model integration, fee pricing, validator custody, finality, licensing and public deployment remain distinct review steps.
+
+---
+
+[Original GH0ST project overview](https://github.com/Gh0stllm/GH0ST/blob/b27fcb92e93d07073b4859b2c834909a03fc42b5/README.md) · [GH0ST website](https://gh0st.fyi/) · [Artwork brief](research/gl3/assets/ARTWORK.md)
