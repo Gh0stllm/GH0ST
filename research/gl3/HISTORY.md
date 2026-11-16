@@ -151,3 +151,11 @@ The first fully persisted EVM decision passed but took825.86s. A second design s
 Final API tests add project-only admission, one retained-game reservation, release without partial results, and isolated RPC simulation. Simulation cannot advance/evict the live cache, and its next root matches real execution. Global per-block work limits and tighter mining gas limits prevent aggregated searches; debug code-overwrite stays disabled. Complete native compiler/interpreter frame equivalence, actual mixed-traffic blocks and complete new-lane replay/proofs are being checked next. Long-history recovery and roughly1.616GB of sampled first-decision delta payload remain storage/hosting gates.
 
 **Evidence:** [Complete word-delta EVM result](chess/sliced/evidence/evm-word-delta-full.json), [final API regression](chess/sliced/evidence/evm-final-api-prefix.json), [architecture and limitations](chess/sliced/README.md).
+
+## 23 · Keep ordinary transfers moving during an actual chess search — 16 November
+
+An actual local custom Nitro node mined128 bounded compute transactions while127 independent transfers received receipts during the still-pending full-strength search. With the100ms target, ordinary transfers confirmed at123.1ms median /160.7ms p95; chess operations were123.2ms /169.4ms. The observed maximum was214.2ms, plus a separately measured905ms cold first operation. These are confirmation latencies, not model-inference times or a public SLA.
+
+The test disabled ArbDebug, used14m/15m transaction/block gas caps and an explicit150m-gas/s research pricing configuration. A realistic artificial owner balance avoided the generic fixture's near-uint256 maximum overflowing when the owner also received fees. The recorded first compute block was included in a real local parent batch. Independent native replay reproduced all expected global-state fields in5.59s. The native compiler and interpreter also matched complete VM bytes/globals at early, middle and final search frames. Complete new-lane WAVM execution is now running; no full BoLD dispute or public deployment is claimed.
+
+**Evidence:** [Mixed-traffic receipts](chess/sliced/evidence/mixed-traffic-blocks.json), [independent native block replay](chess/sliced/evidence/native-sliced-block-replay.json), [exact backend frames](chess/sliced/evidence/compiler-interpreter-parity.json).

@@ -56,6 +56,14 @@ func TestGL3ChessSlicesBlocksAndReplay(t *testing.T) {
 	b.takeOwnership = false
 	b.chainConfig.ArbitrumChainParams.AllowDebugPrecompiles = false
 	b.chainConfig.ArbitrumChainParams.InitialChainOwner = b.L2Info.GetAddress("Owner")
+	// The generic fixture gives Owner nearly2^256 wei. It is also this chain's
+	// fee recipient, so use a realistic artificial balance instead of wrapping
+	// that synthetic maximum as fees are credited back.
+	for i := range b.L2Info.ArbInitData.Accounts {
+		if b.L2Info.ArbInitData.Accounts[i].Addr == b.L2Info.GetAddress("Owner") {
+			b.L2Info.ArbInitData.Accounts[i].EthBalance = new(big.Int).Exp(big.NewInt(10), big.NewInt(21), nil)
+		}
+	}
 	b.execConfig.Sequencer.MaxBlockSpeed = 100 * time.Millisecond
 	b.execConfig.Sequencer.MaxRevertGasReject = 0
 	b.execConfig.Sequencer.QueueTimeout = 30 * time.Second
@@ -68,6 +76,7 @@ func TestGL3ChessSlicesBlocksAndReplay(t *testing.T) {
 	b.nodeConfig.ParentChainReader.OldHeaderTimeout = 10 * time.Minute
 	valConf := valnode.TestValidationConfig
 	valConf.UseJit = false
+	valConf.Wasm.RootPath = wasmDir
 	_, valStack := createTestValidationNode(t, ctx, &valConf)
 	configByValidationNode(b.nodeConfig, valStack)
 	addresses := make([]common.Address, 0, len(recorder.accounts))
@@ -93,6 +102,10 @@ func TestGL3ChessSlicesBlocksAndReplay(t *testing.T) {
 	}
 	ensure(owner.SetMaxTxGasLimit(&auth, 14_000_000))
 	ensure(owner.SetMaxBlockGasLimit(&auth, 15_000_000))
+	// Match the research tariff to one ~12m-gas operation per100ms. This is an
+	// explicit local configuration, not reviewed public pricing/capacity.
+	ensure(owner.SetSpeedLimit(&auth, 150_000_000))
+	ensure(owner.SetGasPricingConstraints(&auth, [][3]uint64{{150_000_000, 102, 0}, {150_000_000, 600, 0}}))
 	parsed, e := abi.JSON(strings.NewReader(precompiles.GhostChessSlicesABI))
 	Require(t, e)
 	address := common.HexToAddress("0xa14")
@@ -127,7 +140,7 @@ func TestGL3ChessSlicesBlocksAndReplay(t *testing.T) {
 	done := make(chan error, 1)
 	go func() {
 		for trafficCtx.Err() == nil {
-			tx := b.L2Info.PrepareTx("User", "User", 200000, big.NewInt(1), nil)
+			tx := b.L2Info.PrepareTx("Faucet", "Faucet", 200000, big.NewInt(1), nil)
 			at := time.Now()
 			e := b.L2.Client.SendTransaction(trafficCtx, tx)
 			if e != nil {
@@ -193,7 +206,7 @@ func TestGL3ChessSlicesBlocksAndReplay(t *testing.T) {
 	Require(t, os.WriteFile(filepath.Join(outDir, "input.json"), encoded, 0600))
 	header, e := b.L2.Client.HeaderByNumber(ctx, beginReceipt.BlockNumber)
 	Require(t, e)
-	report := map[string]any{"scope": "actual local Nitro blocks during a pending full-strength search; recorded complete first-slice block; not a complete chess game or fraud dispute", "passed": true, "blockTargetMS": 100, "singleComputeSlicePerBlock": true, "debugPrecompilesEnabled": false, "blockingA13Registered": false, "newGameSeconds": newGameSeconds, "coldBeginSeconds": beginSeconds, "chessRows": rows, "simultaneousOrdinaryTransfers": trafficCopy, "recordedBlock": beginReceipt.BlockNumber, "recordedBlockHash": header.Hash(), "recordedStateRoot": header.Root, "inputBytes": len(encoded), "fixedSearchTarget": sliced.TargetNodes, "pending": true, "publicDeployment": false, "realSpend": 0, "stateScheme": gethexec.BlockRecorderModeLegacy}
+	report := map[string]any{"scope": "actual local Nitro blocks during a pending full-strength search; recorded complete first-slice block; not a complete chess game or fraud dispute", "passed": true, "blockTargetMS": 100, "singleComputeSlicePerBlock": true, "debugPrecompilesEnabled": false, "blockingA13Registered": false, "maxTxGas": 14000000, "maxBlockGas": 15000000, "researchGasTargetPerSecond": 150000000, "newGameSeconds": newGameSeconds, "coldBeginSeconds": beginSeconds, "chessRows": rows, "simultaneousOrdinaryTransfers": trafficCopy, "recordedBlock": beginReceipt.BlockNumber, "recordedBlockHash": header.Hash(), "recordedStateRoot": header.Root, "inputBytes": len(encoded), "fixedSearchTarget": sliced.TargetNodes, "pending": true, "publicDeployment": false, "realSpend": 0, "stateScheme": gethexec.BlockRecorderModeLegacy}
 	encoded, e = json.MarshalIndent(report, "", "  ")
 	Require(t, e)
 	Require(t, os.WriteFile(filepath.Join(outDir, "results.json"), append(encoded, '\n'), 0600))

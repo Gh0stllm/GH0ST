@@ -39,6 +39,13 @@ if __name__=='__main__':
  for name in LIBS:args+=['-l',standard/(name+'.wasm')]
  if not options.sliced:args+=['-l',BIN/'gl3chess.wasm']
  run(args)
+ if options.sliced:
+  layout=CACHE/'machines-sliced';layout.mkdir(exist_ok=True)
+  for name in ['latest',(MACHINE/'module-root.txt').read_text().strip()]:
+   link=layout/name
+   if link.is_symlink():link.unlink()
+   if link.exists():raise RuntimeError('Refusing to replace a non-symlink machine directory')
+   link.symlink_to(MACHINE.resolve(),target_is_directory=True)
  artifacts=[BIN/'nitro',BIN/'replay-native',BIN/'replay.raw.wasm',BIN/'replay.wasm',MACHINE/'machine.v2.wavm.br',MACHINE/'until-host-io-state.bin']
  if not options.sliced:artifacts.append(BIN/'gl3chess.wasm')
  report={'scope':'Complete custom machine generated; full engine-bearing replay/proof not implied','sliced':options.sliced,'machineGenerated':True,'moduleRoot':(MACHINE/'module-root.txt').read_text().strip(),'artifacts':{p.name:record(p) for p in artifacts},'standardLibraries':{name:record(standard/(name+'.wasm')) for name in LIBS},'seconds':time.monotonic()-started,'publicDeployment':False,'realSpend':0}

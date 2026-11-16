@@ -11,7 +11,7 @@ Binaryen Asyncify turns the recursive search into a portable continuation. Its s
 - [x] Isolated continuation module builds without modifying the old full-replay run.
 - [x] Two consecutive complete24m searches match exact canonical checkpoints, with both scalar and accelerated portable modules.
 - [x] A fresh instance resumes suspended recursion with identical results.
-- [ ] GL3 commits bounded chunks and services ordinary transactions during a search.
+- [x] Actual local GL3 blocks commit bounded operations while127 independent transfers receive receipts during a pending search.
 - [x] Actual EVM retry, rollback, generation/cursor guards and restart checks pass; debug-mode corruption checks pass.
 - [ ] Matching direct Wasm replay and Solidity proof witnesses pass.
 - [ ] Measured cadence, storage growth and move latency fit the selected host.
@@ -52,6 +52,14 @@ The normal profile enables the reviewed research extension A14 directly while di
 
 RPC simulations use an isolated VM and a separate one-request admission limit. They cannot advance or evict the live replicated search, and their computed next root matched the subsequent real transition. Their admission and cache behavior do not change replicated arithmetic or gas results.
 
-Cold reconstruction took roughly0.6–0.8s at the measured early fixtures. The full word-delta run's warm dispatch median was76.8ms, p95112.5ms and maximum352.1ms while other research jobs ran locally. Its timed rows wrote about1.616GB of delta payload, excluding genesis, first operation and a recovery probe. Long-history recovery, pruning, total game storage and24GB hosting acceptance remain production gates. Actual block cadence and complete new-lane replay are being tested separately. The lane has moved no real funds.
+Cold reconstruction took roughly0.6–0.8s at the measured early fixtures. The full word-delta run's warm dispatch median was76.8ms, p95112.5ms and maximum352.1ms while other research jobs ran locally. Its timed rows wrote about1.616GB of delta payload, excluding genesis, first operation and a recovery probe. Long-history recovery, pruning, total game storage and24GB hosting acceptance remain production gates. The lane has moved no real funds.
+
+## Actual mixed-traffic blocks
+
+With the100ms sequencer target,128 computing transactions and127 independent transfers received real local receipts while the full-strength search remained pending. Chess receipt latency was123.2ms median /169.4ms p95; ordinary transfers were123.1ms median /160.7ms p95. The observed maximum was214.2ms, with a separate905ms cold first step. These are transaction-confirmation measurements, not a100ms inference claim or hosted SLA.
+
+The fixture explicitly used14m max transaction gas,15m max block gas and a150m-gas/s research pricing target. ArbDebug was disabled. A recorded engine-bearing block was posted in a real local parent batch. Independent native replay, without the node or database, reproduced its complete expected block hash, send root and inbox position in5.59s. The complete WAVM replay is running separately; it is not yet counted as passed.
+
+[Actual receipts and configuration](evidence/mixed-traffic-blocks.json) · [Independent replay](evidence/native-sliced-block-replay.json) · [Pinned replay machine](evidence/sliced-machine-build.json) · [Compiler/interpreter state parity](evidence/compiler-interpreter-parity.json).
 
 SIMD headers are fetched by exact URL and SHA from Emscripten4.0.20 using [compat-lock.json](compat-lock.json). The inherited [Emscripten license](../../../chess/engine/LICENSE-EMSCRIPTEN.txt) and Stockfish GPL notices apply.
