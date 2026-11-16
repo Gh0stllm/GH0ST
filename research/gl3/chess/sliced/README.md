@@ -77,3 +77,7 @@ The corrected full EVM experiment completed in143.22s and matched the entire can
 [Reproduced failures](evidence/cache-regressions-before.json) · [Exact gas equality](evidence/cache-metering-fixed.json) · [Corrected API tests](evidence/cachefix-api.json) · [Complete24m decision](evidence/cachefix-full24m.json) · [Mixed traffic](evidence/cachefix-mixed-traffic.json) · [Fresh first block](evidence/cachefix-first-native-replay.json) · [Fresh next block](evidence/cachefix-next-native-replay.json).
 
 The still-running WAVM experiment belongs to the frozen R23 cold-first-block artifact. Its eventual result must retain that scope and cannot certify the corrected module above. Source/build variants keep both sets of artifacts separate.
+
+## Proof execution experiment
+
+The [scalar AOT proof lane](aot/README.md) removes the embedded interpreter from a separately named proof build. Complete native24m translation parity and scalar Wasm state/error checks pass, and the upstream WAVM loader accepts its machine. Complete corrected-block replay is running. This remains an isolated experiment; neither public deployment nor a measured proof-speed improvement is claimed yet.

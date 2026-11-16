@@ -9,10 +9,10 @@ const here=path.dirname(fileURLToPath(import.meta.url)),repo=path.resolve(here,'
 const require=createRequire(path.join(repo,'research/chess/package.json'));
 const ganache=require('ganache');
 const {BrowserProvider,ContractFactory,ZeroAddress}=require('ethers');
-const options=process.argv.slice(2),sliced=options.includes('--sliced');
+const options=process.argv.slice(2),aot=options.includes('--aot'),sliced=aot||options.includes('--sliced');
 const stem=options.find(x=>!x.startsWith('--'))||'prefix';
 if(!/^[a-z0-9-]+$/.test(stem))throw Error('bad fixture name');
-const dir=path.join(here,sliced?'sliced/.cache/blocks':'.cache/block');
+const dir=path.join(here,aot?'sliced/aot/.cache/'+(options.includes('--next')?'proof-next':'proof-first'):sliced?'sliced/.cache/blocks':'.cache/block');
 const proofPath=sliced?path.join(dir,'selected-proofs.json'):stem==='search-selected'?path.join(dir,'search-selected/selected-proofs.json'):stem==='complete'?path.join(dir,'complete-selected-proofs.json'):stem==='selected'?path.join(dir,'selected/selected-proofs.json'):path.join(dir,stem+'-proofs.json');
 const logPath=sliced?path.join(dir,'prover.log'):path.join(here,'prover-'+(stem==='complete'?'full':stem)+'.log');
 const rows=JSON.parse(fs.readFileSync(proofPath,'utf8'));
@@ -54,6 +54,6 @@ try{
   records.push({step:String(steps[i]),reason:r.reason||null,moduleName:r.moduleName||null,functionName:r.functionName||null,location:location(r.proof),before:r.before,after:r.after,proofBytes:r.proof.length/2,corruptBeforeRejected:rejected,corruptProofRejected:badProof});
  }
  const scope=sliced?'Real Solidity verification of sampled steps from the complete recorded sliced block; not a complete24m-move WAVM run or full BoLD dispute':['full','complete'].includes(stem)?'Real Solidity verification of sampled witnesses from complete replay; not a full BoLD challenge':'Real Solidity verification of bounded trace witnesses; no complete chess replay or engine-search proof implied';
- const report={passed:true,scope,sliced,proofFileSHA256:createHash('sha256').update(fs.readFileSync(proofPath)).digest('hex'),moduleRoot:root,verifierSourceCommit:'4341b132cfbdcc980ead03765ca5224ff6cb5d97',artifacts,records,publicDeployment:false,realSpend:0};
+ const report={passed:true,scope,sliced,experimentalAOTProof:aot,proofFileSHA256:createHash('sha256').update(fs.readFileSync(proofPath)).digest('hex'),moduleRoot:root,verifierSourceCommit:'4341b132cfbdcc980ead03765ca5224ff6cb5d97',artifacts,records,publicDeployment:false,realSpend:0};
  fs.writeFileSync(path.join(dir,stem+'-solidity-steps.json'),JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report,null,2));
 }finally{await server.disconnect()}

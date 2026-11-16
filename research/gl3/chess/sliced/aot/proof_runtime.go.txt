@@ -1,0 +1,88 @@
+//go:build wasm && gl3aotproof
+
+// SPDX-License-Identifier: GPL-3.0-or-later
+// EXPERIMENTAL: isolated replay-machine variant, never the default node.
+package slicedchess
+
+import (
+ "bytes"
+ "crypto/sha256"
+ "encoding/binary"
+ "errors"
+ "runtime"
+ "sort"
+ "strings"
+ "unsafe"
+)
+const PageSize = 4096
+const MaxMemory = 768*1024*1024
+const Quantum = 2048
+const TargetNodes = 24000000
+var ErrState = errors.New("invalid GL3 chess continuation")
+type Runtime struct { Globals []string }
+type VM struct { R *Runtime; handle uint32; memory []byte; dead bool }
+type Global struct { Name string; Value uint64 }
+type Image struct { Memory []byte; Globals []Global }
+type Progress struct { Pending bool; Step uint32; Observed,Nodes uint64; Depth uint32; Move string }
+
+//go:wasmimport gl3aot execute
+func execute(op,handle,a,b,c uint32,ptr unsafe.Pointer,n uint32) uint64
+func bridge(op,handle,a,b,c uint32,data []byte)(uint64,error){
+ var ptr unsafe.Pointer
+ if len(data)>0 {ptr=unsafe.Pointer(&data[0])}
+ result:=execute(op,handle,a,b,c,ptr,uint32(len(data)))
+ runtime.KeepAlive(data)
+ if result>>63!=0 {return 0,ErrState}
+ return result,nil
+}
+func Shared()(*Runtime,error){return New(false)}
+func New(_ bool)(*Runtime,error){return &Runtime{[]string{"gl3_global_0","gl3_global_98","gl3_global_99"}},nil}
+func (r *Runtime) Close(){}
+func (r *Runtime) Instantiate()(*VM,error){h,e:=bridge(0,0,0,0,0,nil);if e!=nil||h==0||h>0xffffffff{return nil,ErrState};return &VM{R:r,handle:uint32(h)},nil}
+func(v *VM) Close(){if v.handle!=0{bridge(1,v.handle,0,0,0,nil);v.handle=0};v.dead=true;v.memory=nil}
+func(v *VM) invoke(op,a,b uint32)(uint64,error){
+ if v.dead||v.handle==0{return 0,ErrState}
+ n,e:=bridge(8,v.handle,op,a,b,nil);if e!=nil{v.dead=true};return n,e
+}
+func(v *VM) sync()error{
+ n,e:=bridge(5,v.handle,0,0,0,nil);if e!=nil||n==0||n>MaxMemory||n%65536!=0{return ErrState}
+ if len(v.memory)!=int(n){v.memory=make([]byte,n)}
+ _,e=bridge(4,v.handle,0,0,0,v.memory);return e
+}
+func(v *VM) Init()error{if _,e:=v.invoke(0,0,0);e!=nil{return e};if _,e:=v.invoke(1,0,0);e!=nil{return e};return v.sync()}
+func(v *VM) Memory()[]byte{return v.memory}
+func(v *VM) Globals()[]Global{
+ out:=make([]Global,3)
+ for i,index:=range []uint32{0,98,99}{n,e:=bridge(6,v.handle,index,0,0,nil);if e!=nil{panic(e)};out[i]=Global{v.R.Globals[i],n}}
+ return out
+}
+func(v *VM) Image()Image{return Image{bytes.Clone(v.memory),v.Globals()}}
+func(v *VM) Restore(im Image)error{
+ if len(im.Memory)==0||len(im.Memory)>MaxMemory||len(im.Memory)%65536!=0||len(im.Globals)!=3{return ErrState}
+ for i,g:=range im.Globals{if g.Name!=v.R.Globals[i]{return ErrState}}
+ if _,e:=bridge(2,v.handle,uint32(len(im.Memory)),0,0,nil);e!=nil{return e}
+ if _,e:=bridge(3,v.handle,0,0,0,im.Memory);e!=nil{return e}
+ for i,index:=range []uint32{0,98,99}{if _,e:=bridge(7,v.handle,index,uint32(im.Globals[i].Value),0,nil);e!=nil{return e}}
+ v.memory=bytes.Clone(im.Memory);return nil
+}
+func(v *VM) Begin(history string)(Progress,error){
+ if len(history)==0||len(history)>8192{return Progress{},ErrState}
+ p,e:=v.invoke(2,uint32(len(history)),0);if e!=nil||p==0||p>0xffffffff{return Progress{},ErrState}
+ if _,e=bridge(3,v.handle,uint32(p),0,0,[]byte(history));e!=nil{return Progress{},e}
+ pending,e:=v.invoke(4,uint32(p),uint32(len(history)));if e!=nil{return Progress{},e}
+ if _,e=v.invoke(3,uint32(p),0);e!=nil{return Progress{},e}
+ return v.progress(pending)
+}
+func(v *VM) Advance()(Progress,error){pending,e:=v.invoke(5,0,0);if e!=nil{return Progress{},e};return v.progress(pending)}
+func(v *VM) progress(p uint64)(Progress,error){
+ if p>1{return Progress{},ErrState};r:=Progress{Pending:p==1}
+ get:=func(op uint32)uint64{n,e:=v.invoke(op,0,0);if e!=nil{panic(e)};return n}
+ r.Step=uint32(get(8));r.Observed=get(6);r.Nodes=get(7);r.Depth=uint32(get(9))
+ if e:=v.sync();e!=nil{return r,e}
+ if !r.Pending{at:=get(10);if at+8>uint64(len(v.memory)){return r,ErrState};r.Move=string(bytes.SplitN(v.memory[at:at+8],[]byte{0},2)[0]);if len(r.Move)<4||len(r.Move)>5||(r.Nodes<TargetNodes&&r.Depth!=245){return r,ErrState}}
+ return r,nil
+}
+func(v *VM) Canonical()([]byte,error){
+ p,e:=v.invoke(11,0,0);if e!=nil{return nil,e};n,e:=v.invoke(12,0,0);if e!=nil||n>MaxMemory||p>0xffffffff{return nil,ErrState}
+ out:=make([]byte,n);if _,e=bridge(4,v.handle,uint32(p),0,0,out);e!=nil{return nil,e};return out,nil
+}

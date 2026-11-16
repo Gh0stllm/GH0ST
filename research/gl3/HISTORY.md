@@ -169,3 +169,13 @@ The repair charges the same seed reads on both paths and runs recording/replay/p
 The corrected module root is`0x52c7d494becea047cd0ba0ed288a96f39544056ef573ff961f8268d5b43fa4e5`. Its artifacts are isolated from the still-running R23 cold-block WAVM experiment. No public deployment, paid gameplay or completed BoLD dispute is claimed.
 
 **Evidence:** [Reproduced regressions](chess/sliced/evidence/cache-regressions-before.json), [corrected exact gas](chess/sliced/evidence/cache-metering-fixed.json), [complete policy match](chess/sliced/evidence/cachefix-full24m.json), [fresh next-block replay](chess/sliced/evidence/cachefix-next-native-replay.json), [measured figure](assets/chess-resume-results.png).
+
+## 25 · Remove the second interpreter from the proof experiment — 16 November
+
+The embedded interpreter made the frozen R23 cold-block proof extremely slow. A separate experiment translates the exact same portable SIMD program through pinned WABT1.0.42 and scalar SIMDe code. Its complete native24m decision matches the original move, node count, depth and every canonical retained-state byte. Fresh resumes at engine steps4,4000 and9850 match every byte of the466,157,568-byte image and all mutable globals. No model, search budget or retained game state is reduced.
+
+The first proof-runtime trap prototype failed on an invalid operation. A separate outer unwind layer now returns recoverable errors, including illegal chess history, without changing the inner portable engine frames. The verifier also rejected SDK bulk-memory instructions; proof-only MVP memory helpers pass870 alignment, overlap and fill checks. The final scalar Wasm companion repeats the exact early/middle/final resume checks and all error checks successfully.
+
+An isolated Go replay overlay compiles, and the unchanged upstream WAVM loader accepts the new complete machine with root`0x67c7f0be4295e764e9c34fbc06d428715032becca45452f8ee02461c32db2f42`. Its complete corrected first-block replay is running from frozen inputs. A generated machine and primitive parity tests are not a successful block replay; no proof-speed figure is claimed yet. The default node and earlier cachefix/R23 artifacts remain separate. Full BoLD disputes, long-history recovery and host acceptance are still open.
+
+**Evidence:** [Architecture and acceptance gates](chess/sliced/aot/README.md), [complete native policy parity](chess/sliced/aot/evidence/native-parity.json), [scalar proof-Wasm state and error parity](chess/sliced/aot/evidence/proof-parity.json), [memory helper boundaries](chess/sliced/aot/evidence/mvp-memory.json).
