@@ -12,6 +12,8 @@ local integration experiment, with no deployed chain, production tariff or
 fraud-proof claim. ArbOS storage charges are real in the fixture; the small
 deterministic computation floor is not complete interpreter instruction gas.
 The full model therefore must not be enabled for production assets.
+This overlay is outside the initial base-L3 scope, which uses ordinary Nitro
+and Stylus without the custom LLM debug precompile.
 
 `SeedGhostLLMGenesis(backing, moduleBytes, weightsBytes)` is a trusted
 initialization hook and is absent from the public ABI. Its caller provides
@@ -34,6 +36,15 @@ generation; stale calls fail. The optional native compiler constructor is
 for an equivalent local execution backend and does not alter job metadata,
 ABI output, checkpoint bytes, storage write set or gas floor. The default is
 the pure-Go interpreter, including Go/WASI builds.
+
+The ArbOS adapter alone uses a fresh `NewDirtyWordStore` for each call/setup.
+It filters unchanged writes and caches reads only within that operation. Never
+retain it across calls, direct source changes or snapshot rollback. The generic
+`WordAdapter` remains unchanged. Actual baseline/current EVM tests match the
+complete Geth state root, checkpoint and logits in both execution backends.
+Measured fixture gas fell 29.16%, while local elapsed time increased slightly;
+the reduced 132,053,125-gas advance still exceeds ordinary transaction limits.
+These are debug-fixture results, not production fees or speed guarantees.
 
 `TestGH0STFullLLMNativeABIDispatch` uses real Geth `EVM.Call` and `StaticCall`,
 Nitro's ABI dispatcher, real ArbOS storage, and the debug wrapper. Its local

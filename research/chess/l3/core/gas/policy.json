@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "scope": "Standard Nitro custom-GH0ST-gas Rollup preparation; no signing or execution authority",
+  "parentChainId": 4663,
+  "childArbOSVersion": 61,
+  "nitroVersion": "3.12.2",
+  "nitroContractsCommit": "4341b132cfbdcc980ead03765ca5224ff6cb5d97",
+  "chainSDKCommit": "9a34cbb6e0bb6bde760fab45fd51dfd589c877c4",
+  "nativeToken": "0x2eb2849cDE7957b86d0dFD4B59e450a9F9D15559",
+  "nativeTokenSymbol": "GH0ST",
+  "nativeTokenDecimals": 18,
+  "expectedTokenRuntimeKeccak256": "0x7c38fa1b069b5e677034bab6219dd2f519f219f7637910131d9a0f58a05ae164",
+  "dataAvailabilityCommittee": false,
+  "nativeTokenBridgeMode": "canonical parent ERC20 lock / child native mint; no synthetic premine",
+  "batchPostingFeeTokenOnParent": "ETH",
+  "batchPosterReimbursementTokenOnChild": "GH0ST",
+  "batchPosterReimbursementRequired": true,
+  "feeTokenPricer": null,
+  "expectedFeeTokenPricerRuntimeKeccak256": null,
+  "expectedFeeTokenPricerOwner": null,
+  "feeTokenPricerProductionReviewComplete": false,
+  "rateEvidence": {
+    "gh0stPerEthX18": null,
+    "source": null,
+    "observedAtUTC": null,
+    "maxAgeSeconds": 3600,
+    "note": "A positive exact decimal-string rate with contemporaneous evidence is required. No market rate is invented."
+  },
+  "batchPosterAccounts": [],
+  "parentETHOperatingReserveWei": null,
+  "parentETHOperatingReserveApproved": false,
+  "budget": {
+    "mode": "estimates and review; user removed old L3 spending caps",
+    "oldL3SpendingCapsRemoved": true,
+    "finiteICPSpendingCap": null,
+    "finiteETHSpendingCapWei": null,
+    "history": {
+      "alreadyConvertedICP": "13",
+      "recordedPriorICPTransferFees": "0.0003",
+      "recordedPriorETHFeeWei": "64114367868000",
+      "source": "../../../ops/hybrid/mainnet-progress.json"
+    },
+    "automaticTopups": false,
+    "validatorBondSpendApproved": false,
+    "externalHostingSpendApproved": false,
+    "newFundsOrTransactionsAuthorizedByThisFile": false
+  },
+  "runtimeRules": {
+    "arbOSVersionEvidence": "Pinned Nitro 3.12.2 geth params/config_arbitrum.go MaxArbosVersionSupported=61; current pinned SDK defaults to 61.",
+    "disableParentDataFees": false,
+    "note": "Nonzero pricer Rollup reports converted parent cost. Do not blindly set L1PricePerUnit to zero from older AnyTrust guidance.",
+    "gasPriceFloorAndTargets": "Use explicitly reviewed core node profile; GH0ST units must not be described as ETH or USD."
+  }
+}

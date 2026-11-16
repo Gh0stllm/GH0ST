@@ -1,0 +1,2201 @@
+{
+  "schema": "gh0st.core.local-factory-rehearsal.v1",
+  "status": "LOCAL_FACTORY_AND_MOCK_ROLLUP_VERIFIED_NO_PUBLIC_DEPLOYMENT",
+  "recordedAt": "2026-11-16T06:39:35.613Z",
+  "scope": "Actual pinned Nitro contracts deployed only in an ephemeral in-process synthetic EVM. This is not an RH fork, public RH deployment, running Nitro child chain, fraud-proof replay, or production gas estimate.",
+  "safety": {
+    "externalRpcConnections": 0,
+    "externalWalletsRead": 0,
+    "realEthSpent": "0",
+    "realIcpSpent": "0",
+    "environmentFilesRead": false,
+    "privateKeysPersisted": false,
+    "serverOrders": 0,
+    "chainProvider": "ganache.provider() in-process EIP-1193 object; no listening socket, no fork configuration",
+    "wallet": "Ganache randomly generated ephemeral unlocked accounts; fake ETH only",
+    "publicTransactionsBroadcast": 0,
+    "licenseAccepted": false
+  },
+  "provenance": {
+    "nitroContractsCommit": "4341b132cfbdcc980ead03765ca5224ff6cb5d97",
+    "machineRoot": "0xc10cd7ec6acaf1c441a3f6bd0900ad20f15855ba775a96f1939118cbc629dc97",
+    "machineRootPurpose": "Official standard Nitro machine root supplied by the core image provenance; no experimental LLM machine root",
+    "compilationEvidence": {
+      "path": "research/chess/l3/nitro/evidence/contract-source-compilation.json",
+      "sha256": "a3dbb7359b7cc54bc491fc2d286994ed703374cf5011b74e48b271754e475ed4"
+    },
+    "rehearsalScript": {
+      "path": "research/chess/l3/core/deployment/local-factory/rehearse.cjs",
+      "sha256": "0c3702ef4167f5648fdac70013e4dceb0fc10579eba7d391b47804b23b6d0b43"
+    },
+    "localDependencies": {
+      "node": "v24.22.1",
+      "ethers": "6.17.0",
+      "ganache": "7.9.2",
+      "solc": "0.8.30+commit.73712a01.Emscripten.clang",
+      "installedByThisScript": false
+    },
+    "upstreamDeployment": [
+      {
+        "path": "research/chess/l3/nitro/.cache/contracts-provenance/git/nitro-contracts-4341b132cfbdcc980ead03765ca5224ff6cb5d97/scripts/deployment.ts",
+        "sha256": "8f3680e6fa86472915558e7041b558dda4fad5a1d25749ea56cb978539b02448"
+      },
+      {
+        "path": "research/chess/l3/nitro/.cache/contracts-provenance/git/nitro-contracts-4341b132cfbdcc980ead03765ca5224ff6cb5d97/scripts/deploymentUtils.ts",
+        "sha256": "ad11fa8daf81ff7e1d65aa6a84e634008f19e86fd4829377828121ed3a710d9f"
+      },
+      {
+        "path": "research/chess/l3/nitro/.cache/contracts-provenance/git/nitro-contracts-4341b132cfbdcc980ead03765ca5224ff6cb5d97/scripts/config.example.ts",
+        "sha256": "73c253d78568243a86b6bed3c006ff55a27d6eab7076cf8b24d86e2bd53da936"
+      },
+      {
+        "path": "research/chess/l3/nitro/.cache/contracts-provenance/git/nitro-contracts-4341b132cfbdcc980ead03765ca5224ff6cb5d97/scripts/rollupCreation.ts",
+        "sha256": "cca7cb3eb1649e931192dc76fdff0031be7a04d7020786fd381c4eac86f2935f"
+      },
+      {
+        "path": "research/chess/l3/nitro/.cache/contracts-provenance/git/nitro-contracts-4341b132cfbdcc980ead03765ca5224ff6cb5d97/src/rollup/DeployHelper.sol",
+        "sha256": "ff72cd73b12590d749a839155d45f692b093d5e0295a5d46d025d95b08fa8162"
+      }
+    ],
+    "fixtureCompiler": {
+      "version": "0.8.30+commit.73712a01.Emscripten.clang",
+      "evmVersion": "shanghai",
+      "sourceSha256": "811e12ecf97846421c3d26a856320476f1cdc9f3720a4bc29281fb0f171605a6"
+    },
+    "upgradeExecutorPackage": {
+      "package": "@offchainlabs/upgrade-executor",
+      "version": "1.1.0-beta.0",
+      "gitHead": null,
+      "integrity": "sha512-mpn6PHjH/KDDjNX0pXHEKdyv8m6DVGQiI2nGzQn0JbM1nOSHJpWx6fvfjtH7YxHJ6zBZTcsKkqGkFKDtCfoSLw==",
+      "tarballSha256": "8ba55b2b35caa58b193b0e2f862a831786b9cf18ae857c5880decb6d10c1baf4",
+      "archiveBytes": 6368,
+      "archiveHashReverified": true,
+      "artifactBytesMatchVerifiedArchive": true
+    }
+  },
+  "syntheticParent": {
+    "chainId": 4663,
+    "name": "Synthetic local parent, not Robinhood",
+    "hardfork": "shanghai",
+    "blockGasLimit": 30000000,
+    "transactionGasLimitCap": "16777216",
+    "maxRuntimeCodeBytes": 24576,
+    "maxInitcodeBytes": 49152,
+    "unlimitedContractSize": false,
+    "unlimitedInitcodeSize": false,
+    "accounts": [
+      "0xbfAfDE78BB306686C567d8A84187912238ad850f",
+      "0x211f4f9EC214ed276e01F70444506654e6A320a5",
+      "0xD1FbB5bc4dF10fa35c7D1a8E59C11F3EE42bEF95",
+      "0xB47A3367185b0791232124E88ba13C1b8b2a9EB1",
+      "0xF66098156C6de139ad5c5c1eA33A0e74b12652dC"
+    ]
+  },
+  "fixtures": [
+    {
+      "name": "SyntheticArbSys, not a real Nitro precompile",
+      "address": "0x0000000000000000000000000000000000000064",
+      "compileSource": "LocalFixtures.sol",
+      "runtimeBytecodeKeccak256": "0x5e9c118d2a1f2602537360ceac83c8ffdeca5e0ede72e3ed32dc7e82142f2564",
+      "installation": "Ganache evm_setAccountCode local fixture only",
+      "arbOSVersionRaw": 116,
+      "arbOSVersionDecoded": 61,
+      "behavior": "arbOSVersion returns 116 (Nitro encoding 55+61); arbBlockNumber returns Ganache block.number; all other ArbSys methods unavailable"
+    },
+    {
+      "name": "SyntheticArbGasInfo, not real Nitro fee accounting",
+      "address": "0x000000000000000000000000000000000000006c",
+      "compileSource": "LocalFixtures.sol",
+      "runtimeBytecodeKeccak256": "0xda85178089b8eca1b4e903474a1d1ebfbce3f4d5392bd8facdb9a83d6f921265",
+      "installation": "Ganache evm_setAccountCode local fixture only",
+      "behavior": "getL1BaseFeeEstimate returns zero; local RollupEventInbox initialization adds no real parent-chain data charge"
+    },
+    {
+      "name": "canonical CREATE2 prerequisite",
+      "address": "0x4e59b44847b379578588920cA78FbF26c0B4956C",
+      "source": "Exact signed NICK_CREATE2_PAYLOAD from pinned DeployHelper.sol, stripped only of its 0x04 Nitro message-kind prefix",
+      "rawTransactionSha256": "09d393c33b3417df6d1000e5f367099d5cff26c0521f6d82d21f1e0f3bf3c2a6",
+      "runtimeBytecodeKeccak256": "0x2fa86add0aed31f33a762c9d88e807c475bd51d0f52bd0955754b2608f7e4989",
+      "runtimeBytes": 69,
+      "fundedWithFakeEth": "0.01"
+    }
+  ],
+  "transactions": [
+    {
+      "label": "Fund keyless canonical CREATE2 deployer (fake ETH)",
+      "category": "local-bootstrap",
+      "hash": "0xfcbea9e32e9e95269c4d798615c3b6e362ea32974d15b4b10007bcab8093055a",
+      "blockNumber": 3,
+      "estimatedGas": "21000",
+      "gasLimit": "33100",
+      "gasUsed": "21000",
+      "effectiveGasPrice": "847869872",
+      "syntheticEthFee": "0.000017805267312",
+      "dataBytes": 0,
+      "status": 1
+    },
+    {
+      "label": "Canonical CREATE2 factory from exact upstream keyless signed payload",
+      "category": "local-bootstrap",
+      "hash": "0xeddf9e61fb9d8f5111840daef55e5fde0041f5702856532cdbb5a02998033d26",
+      "blockNumber": 4,
+      "gasLimit": "100000",
+      "gasUsed": "68137",
+      "effectiveGasPrice": "100000000000",
+      "syntheticEthFee": "0.0068137",
+      "dataBytes": 83,
+      "status": 1
+    },
+    {
+      "label": "ethBridge",
+      "category": "upstream-core-factory",
+      "hash": "0xb86ae11f2c0fcd80b8b31aa02ee79d2eb081403a41e475fb798cef63e779812d",
+      "blockNumber": 5,
+      "estimatedGas": "1525299",
+      "gasLimit": "1687828",
+      "gasUsed": "1503945",
+      "effectiveGasPrice": "649701534",
+      "syntheticEthFee": "0.00097711537355163",
+      "dataBytes": 6805,
+      "status": 1
+    },
+    {
+      "label": "ethSequencerInbox",
+      "category": "upstream-core-factory",
+      "hash": "0x473e483f8260385b96d9ce19e767269eeabc29df33e461d16733f5e1c4afaa73",
+      "blockNumber": 6,
+      "estimatedGas": "4844869",
+      "gasLimit": "5339355",
+      "gasUsed": "4775174",
+      "effectiveGasPrice": "576631471",
+      "syntheticEthFee": "0.002753515607900954",
+      "dataBytes": 22934,
+      "status": 1
+    },
+    {
+      "label": "ethSequencerInboxDelayBufferable",
+      "category": "upstream-core-factory",
+      "hash": "0x8cc0d1c2a1ad05dc08de8697bcc72b764a10c0f64f0c80daf3ce29bcb76371cb",
+      "blockNumber": 7,
+      "estimatedGas": "4844881",
+      "gasLimit": "5339369",
+      "gasUsed": "4775186",
+      "effectiveGasPrice": "527498501",
+      "syntheticEthFee": "0.002518903456996186",
+      "dataBytes": 22934,
+      "status": 1
+    },
+    {
+      "label": "ethInbox",
+      "category": "upstream-core-factory",
+      "hash": "0xd832cf8f0d1223e22c688a05147528cc12867a2a1a7748566dfc9a081e403d74",
+      "blockNumber": 8,
+      "estimatedGas": "2460249",
+      "gasLimit": "2716273",
+      "gasUsed": "2425266",
+      "effectiveGasPrice": "482552052",
+      "syntheticEthFee": "0.001170317084945832",
+      "dataBytes": 11276,
+      "status": 1
+    },
+    {
+      "label": "ethRollupEventInbox",
+      "category": "upstream-core-factory",
+      "hash": "0xf070d56922b182756703c5dbe9f945a086dec49307350cfbe8502a4158d31cb0",
+      "blockNumber": 9,
+      "estimatedGas": "634451",
+      "gasLimit": "707896",
+      "gasUsed": "626015",
+      "effectiveGasPrice": "431985688",
+      "syntheticEthFee": "0.00027042952047332",
+      "dataBytes": 2745,
+      "status": 1
+    },
+    {
+      "label": "ethOutbox",
+      "category": "upstream-core-factory",
+      "hash": "0x1103f437429b6db612c5eea276137b90dda0f66c2c1b730bf8de9faf00f52b5d",
+      "blockNumber": 10,
+      "estimatedGas": "1515207",
+      "gasLimit": "1676727",
+      "gasUsed": "1493926",
+      "effectiveGasPrice": "380241057",
+      "syntheticEthFee": "0.000568052001319782",
+      "dataBytes": 6789,
+      "status": 1
+    },
+    {
+      "label": "erc20Bridge",
+      "category": "upstream-core-factory",
+      "hash": "0xc6e31e5f994ebb0ab01d737f8dd3026104643f218576e80f2021e2f52f02cde3",
+      "blockNumber": 11,
+      "estimatedGas": "1965956",
+      "gasLimit": "2172551",
+      "gasUsed": "1938165",
+      "effectiveGasPrice": "337444691",
+      "syntheticEthFee": "0.000654023489532015",
+      "dataBytes": 8828,
+      "status": 1
+    },
+    {
+      "label": "erc20SequencerInbox",
+      "category": "upstream-core-factory",
+      "hash": "0x197780401da2709056a70b6f776dbe95f056e8514de689d5c798bc14b06b5abb",
+      "blockNumber": 12,
+      "estimatedGas": "4844881",
+      "gasLimit": "5339369",
+      "gasUsed": "4775186",
+      "effectiveGasPrice": "300714302",
+      "syntheticEthFee": "0.001435966724910172",
+      "dataBytes": 22934,
+      "status": 1
+    },
+    {
+      "label": "erc20SequencerInboxDelayBufferable",
+      "category": "upstream-core-factory",
+      "hash": "0xdd25e0957736e79c90c8d5fca737fe7332bb9a6dd861e20ab74d3688cd97fe2a",
+      "blockNumber": 13,
+      "estimatedGas": "4844893",
+      "gasLimit": "5339382",
+      "gasUsed": "4775198",
+      "effectiveGasPrice": "275091403",
+      "syntheticEthFee": "0.001313615917422794",
+      "dataBytes": 22934,
+      "status": 1
+    },
+    {
+      "label": "erc20Inbox",
+      "category": "upstream-core-factory",
+      "hash": "0x9287cfe212fa13dea93ea09bc9e7b5f43006ab0d6546d35a7d544610ff1d8ef6",
+      "blockNumber": 14,
+      "estimatedGas": "2345713",
+      "gasLimit": "2590284",
+      "gasUsed": "2312396",
+      "effectiveGasPrice": "251651777",
+      "syntheticEthFee": "0.000581918562527692",
+      "dataBytes": 10720,
+      "status": 1
+    },
+    {
+      "label": "erc20RollupEventInbox",
+      "category": "upstream-core-factory",
+      "hash": "0x24cb068a01262ded53dc3137ba8eba8ec4975c4829e5fd0a80afde403f61fb04",
+      "blockNumber": 15,
+      "estimatedGas": "742419",
+      "gasLimit": "826660",
+      "gasUsed": "732408",
+      "effectiveGasPrice": "225044626",
+      "syntheticEthFee": "0.000164824484439408",
+      "dataBytes": 3240,
+      "status": 1
+    },
+    {
+      "label": "erc20Outbox",
+      "category": "upstream-core-factory",
+      "hash": "0x1bed8b211f57c7e76ce9574056799ce3415da902a33599f8f21db16493c19642",
+      "blockNumber": 16,
+      "estimatedGas": "1599124",
+      "gasLimit": "1769036",
+      "gasUsed": "1576627",
+      "effectiveGasPrice": "198287587",
+      "syntheticEthFee": "0.000312625563429049",
+      "dataBytes": 7171,
+      "status": 1
+    },
+    {
+      "label": "bridgeCreator",
+      "category": "upstream-core-factory",
+      "hash": "0x593c2c6d307397bdbbb2a9ada320903be5b239e3d6f365f1e9b7b913a0fbec51",
+      "blockNumber": 17,
+      "estimatedGas": "1718443",
+      "gasLimit": "1900287",
+      "gasUsed": "1694173",
+      "effectiveGasPrice": "176106852",
+      "syntheticEthFee": "0.000298355473773396",
+      "dataBytes": 7298,
+      "status": 1
+    },
+    {
+      "label": "prover0",
+      "category": "upstream-core-factory",
+      "hash": "0x737227a448ffcc336f12cf17e44adb6b1161dfc4fd0ead620d2edab79e5bbe57",
+      "blockNumber": 18,
+      "estimatedGas": "2979677",
+      "gasLimit": "3287644",
+      "gasUsed": "2937213",
+      "effectiveGasPrice": "156579791",
+      "syntheticEthFee": "0.000459908197662483",
+      "dataBytes": 13423,
+      "status": 1
+    },
+    {
+      "label": "proverMem",
+      "category": "upstream-core-factory",
+      "hash": "0xebad4ec6bf442e02364c5f23b2178a6491635ca50d368ddc7f05a09c77e68b87",
+      "blockNumber": 19,
+      "estimatedGas": "1890327",
+      "gasLimit": "2089359",
+      "gasUsed": "1863723",
+      "effectiveGasPrice": "140839887",
+      "syntheticEthFee": "0.000262486536719301",
+      "dataBytes": 8439,
+      "status": 1
+    },
+    {
+      "label": "proverMath",
+      "category": "upstream-core-factory",
+      "hash": "0x267ca816cd3e314d8a6ff66a64fd97e7d6ab199285ccd68c12bd6fa8bb0088e8",
+      "blockNumber": 20,
+      "estimatedGas": "2289218",
+      "gasLimit": "2528139",
+      "gasUsed": "2256816",
+      "effectiveGasPrice": "125422290",
+      "syntheticEthFee": "0.00028305503082864",
+      "dataBytes": 10261,
+      "status": 1
+    },
+    {
+      "label": "proverHostIo",
+      "category": "upstream-core-factory",
+      "hash": "0x367136d0662bd4658b4e1d2f5c86d23c32d688143dc472d6ea0b17f734be99ec",
+      "blockNumber": 21,
+      "estimatedGas": "4305582",
+      "gasLimit": "4746140",
+      "gasUsed": "4243811",
+      "effectiveGasPrice": "112103296",
+      "syntheticEthFee": "0.000475745200701056",
+      "dataBytes": 19663,
+      "status": 1
+    },
+    {
+      "label": "osp",
+      "category": "upstream-core-factory",
+      "hash": "0x35c2161761ab046de0d996919854ea422f079203147872112478eaec6d2c5250",
+      "blockNumber": 22,
+      "estimatedGas": "3084841",
+      "gasLimit": "3403325",
+      "gasUsed": "3040824",
+      "effectiveGasPrice": "102054929",
+      "syntheticEthFee": "0.000310331077421496",
+      "dataBytes": 13836,
+      "status": 1
+    },
+    {
+      "label": "challengeManager",
+      "category": "upstream-core-factory",
+      "hash": "0xc487677f53911a8f2e8a19af2b9f3d200b0e5f2a53894bf856ae06cc6238a502",
+      "blockNumber": 23,
+      "estimatedGas": "5241941",
+      "gasLimit": "5776135",
+      "gasUsed": "5166821",
+      "effectiveGasPrice": "91884155",
+      "syntheticEthFee": "0.000474748981621255",
+      "dataBytes": 23778,
+      "status": 1
+    },
+    {
+      "label": "rollupAdmin",
+      "category": "upstream-core-factory",
+      "hash": "0x1233d7fc2ea8e667cf2bc2c7ef3233e4ca23f4601907d312b714a4c46b54ec8f",
+      "blockNumber": 24,
+      "estimatedGas": "4965194",
+      "gasLimit": "5471713",
+      "gasUsed": "4894080",
+      "effectiveGasPrice": "84354878",
+      "syntheticEthFee": "0.00041283952132224",
+      "dataBytes": 22757,
+      "status": 1
+    },
+    {
+      "label": "rollupUser",
+      "category": "upstream-core-factory",
+      "hash": "0x4fa292e316c2da45950d565bd21516d4fac764032af85217a7042fe89344d172",
+      "blockNumber": 25,
+      "estimatedGas": "3830094",
+      "gasLimit": "4223103",
+      "gasUsed": "3775465",
+      "effectiveGasPrice": "77250847",
+      "syntheticEthFee": "0.000291657869068855",
+      "dataBytes": 17529,
+      "status": 1
+    },
+    {
+      "label": "upgradeExecutor",
+      "category": "upstream-core-factory",
+      "hash": "0x51002e0c945fee065224f0c30b3775bc1cd46f041afaafac8cde527729af73b0",
+      "blockNumber": 26,
+      "estimatedGas": "1456559",
+      "gasLimit": "1612214",
+      "gasUsed": "1436138",
+      "effectiveGasPrice": "70024973",
+      "syntheticEthFee": "0.000100565524674274",
+      "dataBytes": 6478,
+      "status": 1
+    },
+    {
+      "label": "validatorWalletCreator",
+      "category": "upstream-core-factory",
+      "hash": "0x89eb80f99e49581ceafcfad8214c3f76c5a69bca7c892879789a6c13a9adba8a",
+      "blockNumber": 27,
+      "estimatedGas": "3139046",
+      "gasLimit": "3462950",
+      "gasUsed": "3094184",
+      "effectiveGasPrice": "62109898",
+      "syntheticEthFee": "0.000192179452633232",
+      "dataBytes": 14170,
+      "status": 1
+    },
+    {
+      "label": "deployHelper",
+      "category": "upstream-core-factory",
+      "hash": "0x91ce3ed47f270f2935d624c90ef10be392cc8ab0b35fba64021eade731824df4",
+      "blockNumber": 28,
+      "estimatedGas": "1456995",
+      "gasLimit": "1612694",
+      "gasUsed": "1436631",
+      "effectiveGasPrice": "55947657",
+      "syntheticEthFee": "0.000080376138423567",
+      "dataBytes": 6478,
+      "status": 1
+    },
+    {
+      "label": "rollupCreator",
+      "category": "upstream-core-factory",
+      "hash": "0x17d0369eb5e1f14e643be262df70a494f013f57034f8e5408267f5210de7ab68",
+      "blockNumber": 29,
+      "estimatedGas": "5423238",
+      "gasLimit": "5975561",
+      "gasUsed": "5345125",
+      "effectiveGasPrice": "49624002",
+      "syntheticEthFee": "0.00026524649369025",
+      "dataBytes": 24581,
+      "status": 1
+    },
+    {
+      "label": "GH0ST_LOCAL_MOCK_NOT_REAL_GH",
+      "category": "local-child-fixtures",
+      "hash": "0x260db3cfe4f44e0ad297f4ff670b175d0a87b9855ede039e3e5be79674e6295b",
+      "blockNumber": 30,
+      "estimatedGas": "845801",
+      "gasLimit": "940381",
+      "gasUsed": "845801",
+      "effectiveGasPrice": "45631388",
+      "syntheticEthFee": "0.000038595073601788",
+      "dataBytes": 4367,
+      "status": 1
+    },
+    {
+      "label": "LOCAL_UNIT_RATE_PRICER_NOT_MARKET_DATA",
+      "category": "local-child-fixtures",
+      "hash": "0x3508eee1f56c9d4470d378ef9b08acb2bb3df9e4c45f1e89a2d7d083efced55b",
+      "blockNumber": 31,
+      "estimatedGas": "80019",
+      "gasLimit": "98020",
+      "gasUsed": "80019",
+      "effectiveGasPrice": "40249092",
+      "syntheticEthFee": "0.000003220692092748",
+      "dataBytes": 149,
+      "status": 1
+    },
+    {
+      "label": "createRollup with explicit GHMOCK token and pricer",
+      "category": "local-child-creation",
+      "hash": "0x4271adcae60fa5167ec1184270f4fc43ddd33794a0c4c8c82538e16eb85c2f5e",
+      "blockNumber": 32,
+      "estimatedGas": "7362378",
+      "gasLimit": "8108615",
+      "gasUsed": "7338187",
+      "effectiveGasPrice": "35244795",
+      "syntheticEthFee": "0.000258632896486665",
+      "dataBytes": 2276,
+      "status": 1
+    },
+    {
+      "label": "Safe singleton supplemental",
+      "category": "supplemental-safe",
+      "hash": "0x0b521b5c787ce032e4eb7c884a84e93b924d83ec69bfa6a67b957eb0f004225d",
+      "blockNumber": 33,
+      "estimatedGas": "4693246",
+      "gasLimit": "5172570",
+      "gasUsed": "4693246",
+      "effectiveGasPrice": "32994471",
+      "syntheticEthFee": "0.000154851169042866",
+      "dataBytes": 21491,
+      "status": 1
+    },
+    {
+      "label": "SafeProxyFactory supplemental",
+      "category": "supplemental-safe",
+      "hash": "0x411aa0e3d0152c2c7d27bcda9c5390a37360cec3a0e3e0246bba898449d3631e",
+      "blockNumber": 34,
+      "estimatedGas": "769222",
+      "gasLimit": "856144",
+      "gasUsed": "769222",
+      "effectiveGasPrice": "30160588",
+      "syntheticEthFee": "0.000023200187822536",
+      "dataBytes": 3353,
+      "status": 1
+    },
+    {
+      "label": "Initialize ephemeral 1-of-1 Safe proxy",
+      "category": "supplemental-safe",
+      "hash": "0x68bbb3ae1a56ff0b2de91ce9b073bf3b5e9baa68461f4a4aa7813c2e97361f8a",
+      "blockNumber": 35,
+      "estimatedGas": "228708",
+      "gasLimit": "261578",
+      "gasUsed": "226592",
+      "effectiveGasPrice": "26583850",
+      "syntheticEthFee": "0.0000060236877392",
+      "dataBytes": 516,
+      "status": 1
+    }
+  ],
+  "contracts": [
+    {
+      "label": "ethBridge",
+      "category": "upstream-core-factory",
+      "address": "0xC678f7B95A7D1F77c6024c0086301D21402854b1",
+      "artifact": {
+        "path": "research/chess/l3/nitro/.cache/contracts-provenance/compiled-main/build/contracts/src/bridge/Bridge.sol/Bridge.json",
+        "sha256": "a6b1dd0d7f9486a7b0a09a92ddc57c2fa07c8f27d52600cad323fbe56779128b",
+        "source": "src/bridge/Bridge.sol",
+        "contract": "Bridge"
+      },
+      "constructorArgs": [],
+      "creationBytecodeKeccak256": "0x0355e6b280b44123c9c0e2d10b5b9a074ada3f472fb68a7c5aae284ecd52ef29",
+      "runtimeBytecodeKeccak256": "0x60442aebf9a42be2caac83c13fa68befbb418993c3aa89e67295c4049a10d547",
+      "runtimeBytes": 6725,
+      "exactRuntimeMatchesArtifact": false,
+      "runtimeVerification": "CREATE2 address binds exact pinned artifact creation input; runtime length/metadata and public immutable getters checked, runtime hash recorded; no byte-for-byte immutable normalization claim",
+      "initcodeBytesIncludingConstructorArgs": 6773
+    },
+    {
+      "label": "ethSequencerInbox",
+      "category": "upstream-core-factory",
+      "address": "0xDA2e941cc4C7D8166Ec207CB7f7B09bA4f94406c",
+      "artifact": {
+        "path": "research/chess/l3/nitro/.cache/contracts-provenance/compiled-main/build/contracts/src/bridge/SequencerInbox.sol/SequencerInbox.json",
+        "sha256": "383bd7d9547796ae0b9c18ce1e8a4bfaa634c90736458fabb75e44fa5b60bec7",
+        "source": "src/bridge/SequencerInbox.sol",
+        "contract": "SequencerInbox"
+      },
+      "constructorArgs": [
+        104857,
+        "0x0000000000000000000000000000000000000000",
+        false,
+        false
+      ],
+      "creationBytecodeKeccak256": "0xebc5163e4c894bd7f2278c3588e8e10c420bf504f31a990766f26d11e6472e37",
+      "runtimeBytecodeKeccak256": "0x9293ccbcee7bf09ff184bf0ec8c28048b89981e312b818cbd9c6eaca047cd96d",
+      "runtimeBytes": 21892,
+      "exactRuntimeMatchesArtifact": false,
+      "runtimeVerification": "CREATE2 address binds exact pinned artifact creation input; runtime length/metadata and public immutable getters checked, runtime hash recorded; no byte-for-byte immutable normalization claim",
+      "initcodeBytesIncludingConstructorArgs": 22902
+    },
+    {
+      "label": "ethSequencerInboxDelayBufferable",
+      "category": "upstream-core-factory",
+      "address": "0xF6995BDC439B27deEA5d5d08e95E92451a7d36F5",
+      "artifact": {
+        "path": "research/chess/l3/nitro/.cache/contracts-provenance/compiled-main/build/contracts/src/bridge/SequencerInbox.sol/SequencerInbox.json",
+        "sha256": "383bd7d9547796ae0b9c18ce1e8a4bfaa634c90736458fabb75e44fa5b60bec7",
+        "source": "src/bridge/SequencerInbox.sol",
+        "contract": "SequencerInbox"
+      },
+      "constructorArgs": [
+        104857,
+        "0x0000000000000000000000000000000000000000",
+        false,
+        true
+      ],
+      "creationBytecodeKeccak256": "0xebc5163e4c894bd7f2278c3588e8e10c420bf504f31a990766f26d11e6472e37",
+      "runtimeBytecodeKeccak256": "0x002beca6b7710877c90079ff818c78590918072ce3d169b2e1ae16afeb0e5bd9",
+      "runtimeBytes": 21892,
+      "exactRuntimeMatchesArtifact": false,
+      "runtimeVerification": "CREATE2 address binds exact pinned artifact creation input; runtime length/metadata and public immutable getters checked, runtime hash recorded; no byte-for-byte immutable normalization claim",
+      "initcodeBytesIncludingConstructorArgs": 22902
+    },
+    {
+      "label": "ethInbox",
+      "category": "upstream-core-factory",
+      "address": "0x2c358843740dB38a40f96FD627D4DA1dd859E554",
+      "artifact": {
+        "path": "research/chess/l3/nitro/.cache/contracts-provenance/compiled-main/build/contracts/src/bridge/Inbox.sol/Inbox.json",
+        "sha256": "2d9ccfe1df4a2ee9031e4352bc4541653d7602bee5666729d8ee8964e56b820b",
+        "source": "src/bridge/Inbox.sol",
+        "contract": "Inbox"
+      },
+      "constructorArgs": [
+        104857
+      ],
+      "creationBytecodeKeccak256": "0x688be97da2982d5dd63c05a8b687c576aa265695dd1c6621ede8d8f086a4072d",
+      "runtimeBytecodeKeccak256": "0xa34b434cd115e1d0d7030ef080b23e2d063e683833dd51fa092f45ab46640a09",
+      "runtimeBytes": 11006,
+      "exactRuntimeMatchesArtifact": false,
+      "runtimeVerification": "CREATE2 address binds exact pinned artifact creation input; runtime length/metadata and public immutable getters checked, runtime hash recorded; no byte-for-byte immutable normalization claim",
+      "initcodeBytesIncludingConstructorArgs": 11244
+    },
+    {
+      "label": "ethRollupEventInbox",
+      "category": "upstream-core-factory",
+      "address": "0x796FeE4adceD1cb47a3e3d1B6925472F8fC8f1f9",
+      "artifact": {
+        "path": "research/chess/l3/nitro/.cache/contracts-provenance/compiled-main/build/contracts/src/rollup/RollupEventInbox.sol/RollupEventInbox.json",
+        "sha256": "1051bee87f4ed0cbab811994adaba3989a91f6fb712f84fdd30366e7516641b9",
+        "source": "src/rollup/RollupEventInbox.sol",
+        "contract": "RollupEventInbox"
+      },
+      "constructorArgs": [],
+      "creationBytecodeKeccak256": "0x547de1f5cc1d09b803851dd3470bbea0632b797ee8e9f2d09beb8453647bc3eb",
+      "runtimeBytecodeKeccak256": "0x762652d1e83b19f7713f306b8b616d5b357fe969353f3c5eab8b2960726b198a",
+      "runtimeBytes": 2665,
+      "exactRuntimeMatchesArtifact": false,
+      "runtimeVerification": "CREATE2 address binds exact pinned artifact creation input; runtime length/metadata and public immutable getters checked, runtime hash recorded; no byte-for-byte immutable normalization claim",
+      "initcodeBytesIncludingConstructorArgs": 2713
+    },
+    {
+      "label": "ethOutbox",
+      "category": "upstream-core-factory",
+      "address": "0x396765AEbE540575ef927F769b0d7b89594f931c",
+      "artifact": {
+        "path": "research/chess/l3/nitro/.cache/contracts-provenance/compiled-main/build/contracts/src/bridge/Outbox.sol/Outbox.json",
+        "sha256": "25f4ecd082daec43d8b724c2fcdb248a861f8ff93f99a32c0c920038a734a42b",
+        "source": "src/bridge/Outbox.sol",
+        "contract": "Outbox"
+      },
+      "constructorArgs": [],
+      "creationBytecodeKeccak256": "0x4ba56adc82a872b3a520e2413ec1c3373363e56ae0542a91a3bc1f6544ea58c0",
+      "runtimeBytecodeKeccak256": "0x6e44db0c9e8edf8f8dfd0e622ad4e106b0c6df56180cb2911d941d631a1335dd",
+      "runtimeBytes": 6702,
+      "exactRuntimeMatchesArtifact": false,
+      "runtimeVerification": "CREATE2 address binds exact pinned artifact creation input; runtime length/metadata and public immutable getters checked, runtime hash recorded; no byte-for-byte immutable normalization claim",
+      "initcodeBytesIncludingConstructorArgs": 6757
+    },
+    {
+      "label": "erc20Bridge",
+      "category": "upstream-core-factory",
+      "address": "0x0124687D1F2869b0C2335B98ddc7FCf59DA2CEa1",
+      "artifact": {
+        "path": "research/chess/l3/nitro/.cache/contracts-provenance/compiled-main/build/contracts/src/bridge/ERC20Bridge.sol/ERC20Bridge.json",
+        "sha256": "22a828d77e1ea812f1085825aa55873f6da3f58c382f3b9239f8591d4518d0b9",
+        "source": "src/bridge/ERC20Bridge.sol",
+        "contract": "ERC20Bridge"
+      },
+      "constructorArgs": [],
+      "creationBytecodeKeccak256": "0xe54133b9d55d858ae025310a484671002f4fa68984132262afd9af84ddb5bcb9",
+      "runtimeBytecodeKeccak256": "0x863b660da978d59787d8368fa822d4c42446f2a3e9dff60d97c4d52a0b0ff4c5",
+      "runtimeBytes": 8748,
+      "exactRuntimeMatchesArtifact": false,
+      "runtimeVerification": "CREATE2 address binds exact pinned artifact creation input; runtime length/metadata and public immutable getters checked, runtime hash recorded; no byte-for-byte immutable normalization claim",
+      "initcodeBytesIncludingConstructorArgs": 8796
+    },
+    {
+      "label": "erc20SequencerInbox",
+      "category": "upstream-core-factory",
+      "address": "0xB8594C833f519126B614979867216EB4BAE82B6d",
+      "artifact": {
+        "path": "research/chess/l3/nitro/.cache/contracts-provenance/compiled-main/build/contracts/src/bridge/SequencerInbox.sol/SequencerInbox.json",
+        "sha256": "383bd7d9547796ae0b9c18ce1e8a4bfaa634c90736458fabb75e44fa5b60bec7",
+        "source": "src/bridge/SequencerInbox.sol",
+        "contract": "SequencerInbox"
+      },
+      "constructorArgs": [
+        104857,
+        "0x0000000000000000000000000000000000000000",
+        true,
+        false
+      ],
+      "creationBytecodeKeccak256": "0xebc5163e4c894bd7f2278c3588e8e10c420bf504f31a990766f26d11e6472e37",
+      "runtimeBytecodeKeccak256": "0xf893c33459d1c6434fd75ebe10a519a6f4f5ac29fbaea6919589556cf5ec6ec2",
+      "runtimeBytes": 21892,
+      "exactRuntimeMatchesArtifact": false,
+      "runtimeVerification": "CREATE2 address binds exact pinned artifact creation input; runtime length/metadata and public immutable getters checked, runtime hash recorded; no byte-for-byte immutable normalization claim",
+      "initcodeBytesIncludingConstructorArgs": 22902
+    },
+    {
+      "label": "erc20SequencerInboxDelayBufferable",
+      "category": "upstream-core-factory",
+      "address": "0xC7FeB25D44D87F753C4ecCb974426Aea8c817f72",
+      "artifact": {
+        "path": "research/chess/l3/nitro/.cache/contracts-provenance/compiled-main/build/contracts/src/bridge/SequencerInbox.sol/SequencerInbox.json",
+        "sha256": "383bd7d9547796ae0b9c18ce1e8a4bfaa634c90736458fabb75e44fa5b60bec7",
+        "source": "src/bridge/SequencerInbox.sol",
+        "contract": "SequencerInbox"
+      },
+      "constructorArgs": [
+        104857,
+        "0x0000000000000000000000000000000000000000",
+        true,
+        true
+      ],
+      "creationBytecodeKeccak256": "0xebc5163e4c894bd7f2278c3588e8e10c420bf504f31a990766f26d11e6472e37",
+      "runtimeBytecodeKeccak256": "0x6b83c118b2ab5e95d8fdd68c4cd0dee4d93df6024f13c74da97dede2f1c96e22",
+      "runtimeBytes": 21892,
+      "exactRuntimeMatchesArtifact": false,
+      "runtimeVerification": "CREATE2 address binds exact pinned artifact creation input; runtime length/metadata and public immutable getters checked, runtime hash recorded; no byte-for-byte immutable normalization claim",
+      "initcodeBytesIncludingConstructorArgs": 22902
+    },
+    {
+      "label": "erc20Inbox",
+      "category": "upstream-core-factory",
+      "address": "0x02E5bFcF09Cc317EDDCaca72a1b1265A57197Db5",
+      "artifact": {
+        "path": "research/chess/l3/nitro/.cache/contracts-provenance/compiled-main/build/contracts/src/bridge/ERC20Inbox.sol/ERC20Inbox.json",
+        "sha256": "69a04dc083d3f9330cf3079b6ef93761ac21e521f8a32fc64f6ace6ce579b308",
+        "source": "src/bridge/ERC20Inbox.sol",
+        "contract": "ERC20Inbox"
+      },
+      "constructorArgs": [
+        104857
+      ],
+      "creationBytecodeKeccak256": "0x5b2f77eaae8f4f2fef796ebb3480aed9b485e1e1fca81cb86734e9c3310e7786",
+      "runtimeBytecodeKeccak256": "0xc19157b357d388e33ec878d24d9d1cd2b42ef63005bd94dcb017b081c1890db1",
+      "runtimeBytes": 10483,
+      "exactRuntimeMatchesArtifact": false,
+      "runtimeVerification": "CREATE2 address binds exact pinned artifact creation input; runtime length/metadata and public immutable getters checked, runtime hash recorded; no byte-for-byte immutable normalization claim",
+      "initcodeBytesIncludingConstructorArgs": 10688
+    },
+    {
+      "label": "erc20RollupEventInbox",
+      "category": "upstream-core-factory",
+      "address": "0x2706682dD3bD709b055E0266D98BA380FE22B807",
+      "artifact": {
+        "path": "research/chess/l3/nitro/.cache/contracts-provenance/compiled-main/build/contracts/src/rollup/ERC20RollupEventInbox.sol/ERC20RollupEventInbox.json",
+        "sha256": "579f397c4d8d9e71e436db17d5abfa209ffa3a8a5a73a10fba23b5c99ec41482",
+        "source": "src/rollup/ERC20RollupEventInbox.sol",
+        "contract": "ERC20RollupEventInbox"
+      },
+      "constructorArgs": [],
+      "creationBytecodeKeccak256": "0x1e1c563f890342d48ed3afd4ef502884ee6eaeca4980554e78e4726020c0424a",
+      "runtimeBytecodeKeccak256": "0x91312ef99a07b833af6f209d82a99745f18d4030a21326cdce2496bb71d8f7db",
+      "runtimeBytes": 3160,
+      "exactRuntimeMatchesArtifact": false,
+      "runtimeVerification": "CREATE2 address binds exact pinned artifact creation input; runtime length/metadata and public immutable getters checked, runtime hash recorded; no byte-for-byte immutable normalization claim",
+      "initcodeBytesIncludingConstructorArgs": 3208
+    },
+    {
+      "label": "erc20Outbox",
+      "category": "upstream-core-factory",
+      "address": "0x5128805C5331A3D445B72545d2461B2C3B05218c",
+      "artifact": {
+        "path": "research/chess/l3/nitro/.cache/contracts-provenance/compiled-main/build/contracts/src/bridge/ERC20Outbox.sol/ERC20Outbox.json",
+        "sha256": "998874c44a74dba0cd1d2d870d71b89342d932a831c0daab0401e197afd31768",
+        "source": "src/bridge/ERC20Outbox.sol",
+        "contract": "ERC20Outbox"
+      },
+      "constructorArgs": [],
+      "creationBytecodeKeccak256": "0x7295de608aff072a9dd89dac55e5fd19a98aabed0352dd382a5009af23766459",
+      "runtimeBytecodeKeccak256": "0x456cfc925dcb1e117f3518854b367eaf91f9bc6411eda6c027961b1af2224257",
+      "runtimeBytes": 7084,
+      "exactRuntimeMatchesArtifact": false,
+      "runtimeVerification": "CREATE2 address binds exact pinned artifact creation input; runtime length/metadata and public immutable getters checked, runtime hash recorded; no byte-for-byte immutable normalization claim",
+      "initcodeBytesIncludingConstructorArgs": 7139
+    },
+    {
+      "label": "bridgeCreator",
+      "category": "upstream-core-factory",
+      "address": "0xb3ef3EF9015Ff876E4cEba6670B00c09635C7e69",
+      "artifact": {
+        "path": "research/chess/l3/nitro/.cache/contracts-provenance/compiled-main/build/contracts/src/rollup/BridgeCreator.sol/BridgeCreator.json",
+        "sha256": "f515bd62f43ab7235b710c0323df9e58be358737a7302583bcd624d5d1fbd13c",
+        "source": "src/rollup/BridgeCreator.sol",
+        "contract": "BridgeCreator"
+      },
+      "constructorArgs": [
+        [
+          "0xC678f7B95A7D1F77c6024c0086301D21402854b1",
+          "0xDA2e941cc4C7D8166Ec207CB7f7B09bA4f94406c",
+          "0xF6995BDC439B27deEA5d5d08e95E92451a7d36F5",
+          "0x2c358843740dB38a40f96FD627D4DA1dd859E554",
+          "0x796FeE4adceD1cb47a3e3d1B6925472F8fC8f1f9",
+          "0x396765AEbE540575ef927F769b0d7b89594f931c"
+        ],
+        [
+          "0x0124687D1F2869b0C2335B98ddc7FCf59DA2CEa1",
+          "0xB8594C833f519126B614979867216EB4BAE82B6d",
+          "0xC7FeB25D44D87F753C4ecCb974426Aea8c817f72",
+          "0x02E5bFcF09Cc317EDDCaca72a1b1265A57197Db5",
+          "0x2706682dD3bD709b055E0266D98BA380FE22B807",
+          "0x5128805C5331A3D445B72545d2461B2C3B05218c"
+        ]
+      ],
+      "creationBytecodeKeccak256": "0x683e2a84139340a10a469e877f0d443618dca433169c1da166601717a539b07c",
+      "runtimeBytecodeKeccak256": "0x8a171f92d4c1b42b1c6d53bef39affc9723dfd76aaf05921ece47232ecee2dc7",
+      "runtimeBytes": 6306,
+      "exactRuntimeMatchesArtifact": true,
+      "runtimeVerification": "byte-for-byte equal to pinned artifact",
+      "initcodeBytesIncludingConstructorArgs": 7266
+    },
+    {
+      "label": "prover0",
+      "category": "upstream-core-factory",
+      "address": "0x6fE84aC811EBEcd888Eca93757fEa378Bb03b00c",
+      "artifact": {
+        "path": "research/chess/l3/nitro/.cache/contracts-provenance/compiled-main/build/contracts/src/osp/OneStepProver0.sol/OneStepProver0.json",
+        "sha256": "29cf3c941bee6ef4444bf1f8a2d19a3766dd65f52453a8d3b4b4e0682c5a26cd",
+        "source": "src/osp/OneStepProver0.sol",
+        "contract": "OneStepProver0"
+      },
+      "constructorArgs": [],
+      "creationBytecodeKeccak256": "0x9805bbce8ece824071301e185998c41154a7346e420f5ba3189a10c628a3199b",
+      "runtimeBytecodeKeccak256": "0x33820cdea97a97359f54adc0c6d7a4d1adbb2bc61aaaabaf08811458489de835",
+      "runtimeBytes": 13359,
+      "exactRuntimeMatchesArtifact": true,
+      "runtimeVerification": "byte-for-byte equal to pinned artifact",
+      "initcodeBytesIncludingConstructorArgs": 13391
+    },
+    {
+      "label": "proverMem",
+      "category": "upstream-core-factory",
+      "address": "0x665CEA1cA6C36aB701f4C6AE895b156f79C51c35",
+      "artifact": {
+        "path": "research/chess/l3/nitro/.cache/contracts-provenance/compiled-main/build/contracts/src/osp/OneStepProverMemory.sol/OneStepProverMemory.json",
+        "sha256": "02337afab69b8363f0f8dc4caa321c450ab7ba939253c9bdb46964b1eb64c410",
+        "source": "src/osp/OneStepProverMemory.sol",
+        "contract": "OneStepProverMemory"
+      },
+      "constructorArgs": [],
+      "creationBytecodeKeccak256": "0xf8985906ef9f618c315bb32e43547be7e9a32a32e763eb89eec1d2a7be7f48dc",
+      "runtimeBytecodeKeccak256": "0x4c895f2e86ba6fd275aa0084edf9e97621ccfaf272e05fb1e8cfa5c948023af9",
+      "runtimeBytes": 8375,
+      "exactRuntimeMatchesArtifact": true,
+      "runtimeVerification": "byte-for-byte equal to pinned artifact",
+      "initcodeBytesIncludingConstructorArgs": 8407
+    },
+    {
+      "label": "proverMath",
+      "category": "upstream-core-factory",
+      "address": "0x4B15E064d5d55705E89080bDEA4BFe4cF20D6114",
+      "artifact": {
+        "path": "research/chess/l3/nitro/.cache/contracts-provenance/compiled-main/build/contracts/src/osp/OneStepProverMath.sol/OneStepProverMath.json",
+        "sha256": "6e24a746dfba83f05df8b4669e5a10a0d1447308ac89f84463096f4b1f64dd0a",
+        "source": "src/osp/OneStepProverMath.sol",
+        "contract": "OneStepProverMath"
+      },
+      "constructorArgs": [],
+      "creationBytecodeKeccak256": "0x72b165ccba8c223ff0a5f5874033b2b51a1ff9f1611c0853a0ab9c278540f2e7",
+      "runtimeBytecodeKeccak256": "0x65dc08607f45037982e4b776e9c177b3559aa7ae78ec36cbb4c9707a23224ecd",
+      "runtimeBytes": 10197,
+      "exactRuntimeMatchesArtifact": true,
+      "runtimeVerification": "byte-for-byte equal to pinned artifact",
+      "initcodeBytesIncludingConstructorArgs": 10229
+    },
+    {
+      "label": "proverHostIo",
+      "category": "upstream-core-factory",
+      "address": "0x821b482c2148EedE258B600568FEC10EDb48431b",
+      "artifact": {
+        "path": "research/chess/l3/nitro/.cache/contracts-provenance/compiled-main/build/contracts/src/osp/OneStepProverHostIo.sol/OneStepProverHostIo.json",
+        "sha256": "71110c440eeec82b53092ecfe696d4e875fc219c589776a3906ad6ba98c1cb36",
+        "source": "src/osp/OneStepProverHostIo.sol",
+        "contract": "OneStepProverHostIo"
+      },
+      "constructorArgs": [
+        "0x0000000000000000000000000000000000000000"
+      ],
+      "creationBytecodeKeccak256": "0x3a2e0a4c4ac7c2fd6607d5e42318e99b5cc5b1d131ac425ef1fd617002b975e8",
+      "runtimeBytecodeKeccak256": "0x83ad0329b06c9ed0abd1186ce5d5701dfec44bfa01e092bccf4618966f266cd2",
+      "runtimeBytes": 19424,
+      "exactRuntimeMatchesArtifact": true,
+      "runtimeVerification": "byte-for-byte equal to pinned artifact",
+      "initcodeBytesIncludingConstructorArgs": 19631
+    },
+    {
+      "label": "osp",
+      "category": "upstream-core-factory",
+      "address": "0xD01d73E6BF0204d7ba0b6EE00d8DFfa72E3a3CFc",
+      "artifact": {
+        "path": "research/chess/l3/nitro/.cache/contracts-provenance/compiled-main/build/contracts/src/osp/OneStepProofEntry.sol/OneStepProofEntry.json",
+        "sha256": "abba7e73e5626783d805a820da2ffe662d1852266d6341176519ad12a8806f11",
+        "source": "src/osp/OneStepProofEntry.sol",
+        "contract": "OneStepProofEntry"
+      },
+      "constructorArgs": [
+        "0x6fE84aC811EBEcd888Eca93757fEa378Bb03b00c",
+        "0x665CEA1cA6C36aB701f4C6AE895b156f79C51c35",
+        "0x4B15E064d5d55705E89080bDEA4BFe4cF20D6114",
+        "0x821b482c2148EedE258B600568FEC10EDb48431b"
+      ],
+      "creationBytecodeKeccak256": "0xe5a47354254068387a902753b61a5334a8964e534d0d446d8b4c6cda9606f1c2",
+      "runtimeBytecodeKeccak256": "0x4b8e496b9d6fc8051da1b7aefe84a2814b3ff200ba065a2ebc863625f5e51e39",
+      "runtimeBytes": 13402,
+      "exactRuntimeMatchesArtifact": true,
+      "runtimeVerification": "byte-for-byte equal to pinned artifact",
+      "initcodeBytesIncludingConstructorArgs": 13804
+    },
+    {
+      "label": "challengeManager",
+      "category": "upstream-core-factory",
+      "address": "0xCAaa9332F940362aEAAADD1B0A59c229C4fD8f79",
+      "artifact": {
+        "path": "research/chess/l3/nitro/.cache/contracts-provenance/compiled-main/build/contracts/src/challengeV2/EdgeChallengeManager.sol/EdgeChallengeManager.json",
+        "sha256": "fec44ae1a4a9ea5c15442aae62445856d95a0d5920a7597b1aed7b0022a6c978",
+        "source": "src/challengeV2/EdgeChallengeManager.sol",
+        "contract": "EdgeChallengeManager"
+      },
+      "constructorArgs": [],
+      "creationBytecodeKeccak256": "0xd2195a74ce481db6c66e1bda3e5ae7afafa9b5d50cc60472733201e2e5b4075a",
+      "runtimeBytecodeKeccak256": "0xe33b0fd87df4a1bde1f779f9ddcd237b9d14b97842df8d314299865386a80f26",
+      "runtimeBytes": 23502,
+      "exactRuntimeMatchesArtifact": true,
+      "runtimeVerification": "byte-for-byte equal to pinned artifact",
+      "initcodeBytesIncludingConstructorArgs": 23746
+    },
+    {
+      "label": "rollupAdmin",
+      "category": "upstream-core-factory",
+      "address": "0xAb7A44CE7e66963d2116dCe74AB63eeF88266C82",
+      "artifact": {
+        "path": "research/chess/l3/nitro/.cache/contracts-provenance/compiled-main/build/contracts/src/rollup/RollupAdminLogic.sol/RollupAdminLogic.json",
+        "sha256": "6207e148ffa22bc6a792b625ec82a4f2b94ca32bd7a7e6cef2ac3d9d5094d2b2",
+        "source": "src/rollup/RollupAdminLogic.sol",
+        "contract": "RollupAdminLogic"
+      },
+      "constructorArgs": [],
+      "creationBytecodeKeccak256": "0xcde057ac5ca2e9a8ffc74ee0b8087f2ce6e281e5e88dd3be5c1205683f73ba61",
+      "runtimeBytecodeKeccak256": "0x5f74b704ed7357a502295a6f6a12aba8adbb09edf0b94ba2245947cf7a1c5a1a",
+      "runtimeBytes": 22343,
+      "exactRuntimeMatchesArtifact": false,
+      "runtimeVerification": "CREATE2 address binds exact pinned artifact creation input; runtime length/metadata and public immutable getters checked, runtime hash recorded; no byte-for-byte immutable normalization claim",
+      "initcodeBytesIncludingConstructorArgs": 22725
+    },
+    {
+      "label": "rollupUser",
+      "category": "upstream-core-factory",
+      "address": "0xedC23dFC7D1e57EC07eA5ff7419634DbAe08Ed2C",
+      "artifact": {
+        "path": "research/chess/l3/nitro/.cache/contracts-provenance/compiled-main/build/contracts/src/rollup/RollupUserLogic.sol/RollupUserLogic.json",
+        "sha256": "090bc8f1a1259d07688cdc087206e9ac483d7da6633bf1591230efdb0fb2ce7b",
+        "source": "src/rollup/RollupUserLogic.sol",
+        "contract": "RollupUserLogic"
+      },
+      "constructorArgs": [],
+      "creationBytecodeKeccak256": "0x76527cddf644859003693fe02754777e5f392519124f2114c856e0697325141b",
+      "runtimeBytecodeKeccak256": "0x9caacb86e9dc53718850b25d6563817fb34e0b81da14cb824862ca67f33ecd73",
+      "runtimeBytes": 17164,
+      "exactRuntimeMatchesArtifact": false,
+      "runtimeVerification": "CREATE2 address binds exact pinned artifact creation input; runtime length/metadata and public immutable getters checked, runtime hash recorded; no byte-for-byte immutable normalization claim",
+      "initcodeBytesIncludingConstructorArgs": 17497
+    },
+    {
+      "label": "upgradeExecutor",
+      "category": "upstream-core-factory",
+      "address": "0x9149DF379237a935cf0658fE54D2325109493CBb",
+      "artifact": {
+        "path": "research/chess/l3/nitro/.cache/contracts-provenance/deps/@offchainlabs__upgrade-executor/package/build/contracts/src/UpgradeExecutor.sol/UpgradeExecutor.json",
+        "sha256": "cfbca5579d62b4b0b92c8b99998d63dc60a700fdef115f9408470ffdefd7028e",
+        "source": "src/UpgradeExecutor.sol",
+        "provenance": "Pinned upgrade-executor package SHA512-verified in contract-source-compilation.json"
+      },
+      "constructorArgs": [],
+      "creationBytecodeKeccak256": "0x1a613ee27d9686e256c532dcaaa3e364a2068e7c0ad94772e4f04c07f8920cd5",
+      "runtimeBytecodeKeccak256": "0x0d88feac198ef1b50b99fddf06aa9f6b1050bfe7211d6f04173de9b6d8953bcb",
+      "runtimeBytes": 6204,
+      "exactRuntimeMatchesArtifact": true,
+      "runtimeVerification": "byte-for-byte equal to pinned artifact",
+      "initcodeBytesIncludingConstructorArgs": 6446
+    },
+    {
+      "label": "validatorWalletCreator",
+      "category": "upstream-core-factory",
+      "address": "0xB7FE37712e46F28C8f22Ec4bAA33A09fb8B52BD0",
+      "artifact": {
+        "path": "research/chess/l3/nitro/.cache/contracts-provenance/compiled-main/build/contracts/src/rollup/ValidatorWalletCreator.sol/ValidatorWalletCreator.json",
+        "sha256": "42787698988bd2896e706b2eaa7b61f5f910c2d432575305fbb65b525244ad70",
+        "source": "src/rollup/ValidatorWalletCreator.sol",
+        "contract": "ValidatorWalletCreator"
+      },
+      "constructorArgs": [],
+      "creationBytecodeKeccak256": "0xa4fca679e8dd6f951f2bc0cf53afa4f0d012a0bc8bbce58118de1658bf0ccd6d",
+      "runtimeBytecodeKeccak256": "0x8cc3b668a92ac888a6ccc5d5398d01ed65ab40fd326cccb1ee96563768ad563b",
+      "runtimeBytes": 6756,
+      "exactRuntimeMatchesArtifact": false,
+      "runtimeVerification": "CREATE2 address binds exact pinned artifact creation input; runtime length/metadata and public immutable getters checked, runtime hash recorded; no byte-for-byte immutable normalization claim",
+      "initcodeBytesIncludingConstructorArgs": 14138
+    },
+    {
+      "label": "deployHelper",
+      "category": "upstream-core-factory",
+      "address": "0xD5ac692aD897742eFE44d54fDA338B244Fc7cfb6",
+      "artifact": {
+        "path": "research/chess/l3/nitro/.cache/contracts-provenance/compiled-main/build/contracts/src/rollup/DeployHelper.sol/DeployHelper.json",
+        "sha256": "cbddfafc96bf3c0898090eaa3446fcd28768275f5a59869755164e31d6c9e7bd",
+        "source": "src/rollup/DeployHelper.sol",
+        "contract": "DeployHelper"
+      },
+      "constructorArgs": [],
+      "creationBytecodeKeccak256": "0x40e404ce67cf05b98536d86efff40d5387c48dec14f55095a538db0a9d8ae7da",
+      "runtimeBytecodeKeccak256": "0xdfaf75d8f985bf16db07154689c9817e31718c470566c21831e76fcddf784bc2",
+      "runtimeBytes": 6414,
+      "exactRuntimeMatchesArtifact": true,
+      "runtimeVerification": "byte-for-byte equal to pinned artifact",
+      "initcodeBytesIncludingConstructorArgs": 6446
+    },
+    {
+      "label": "rollupCreator",
+      "category": "upstream-core-factory",
+      "address": "0x98231dF66172fFb3048a88C43EEd32158759af55",
+      "artifact": {
+        "path": "research/chess/l3/nitro/.cache/contracts-provenance/compiled-main/build/contracts/src/rollup/RollupCreator.sol/RollupCreator.json",
+        "sha256": "aa3fb5d69f586e557d4496105aac32052eb25d80d48a55fe6c19b0e132a8c306",
+        "source": "src/rollup/RollupCreator.sol",
+        "contract": "RollupCreator"
+      },
+      "constructorArgs": [
+        "0xbfAfDE78BB306686C567d8A84187912238ad850f",
+        "0xb3ef3EF9015Ff876E4cEba6670B00c09635C7e69",
+        "0xD01d73E6BF0204d7ba0b6EE00d8DFfa72E3a3CFc",
+        "0xCAaa9332F940362aEAAADD1B0A59c229C4fD8f79",
+        "0xAb7A44CE7e66963d2116dCe74AB63eeF88266C82",
+        "0xedC23dFC7D1e57EC07eA5ff7419634DbAe08Ed2C",
+        "0x9149DF379237a935cf0658fE54D2325109493CBb",
+        "0xB7FE37712e46F28C8f22Ec4bAA33A09fb8B52BD0",
+        "0xD5ac692aD897742eFE44d54fDA338B244Fc7cfb6"
+      ],
+      "creationBytecodeKeccak256": "0xa9aeb8d805c50d2b82ff3058c953e943485a0019448b1e081e7df3912887d3e0",
+      "runtimeBytecodeKeccak256": "0x9cf3bab737ee22ae60bda61c533fbe23b8c1545a6c9ac29cdad2a44239a488ce",
+      "runtimeBytes": 23538,
+      "exactRuntimeMatchesArtifact": true,
+      "runtimeVerification": "byte-for-byte equal to pinned artifact",
+      "initcodeBytesIncludingConstructorArgs": 24549
+    },
+    {
+      "label": "GH0ST_LOCAL_MOCK_NOT_REAL_GH",
+      "category": "local-child-fixtures",
+      "address": "0xA26927F673Ed85c1c1c3d0f089cBF1C5d0CcF3ba",
+      "artifact": {
+        "path": "research/chess/l3/nitro/.cache/contracts-provenance/compiled-main/build/contracts/src/mocks/TestWETH9.sol/TestWETH9.json",
+        "sha256": "f192bf4c6ac18e3d5d0d247ae1a18ad08307bcd5d299bbe6d63e9227b3610a20",
+        "source": "src/mocks/TestWETH9.sol",
+        "contract": "TestWETH9"
+      },
+      "constructorArgs": [
+        "GH0ST LOCAL MOCK NOT REAL GH",
+        "GHMOCK"
+      ],
+      "creationBytecodeKeccak256": "0xc40bf16f1dfd0b885183bc64e108718eb49f9fd4253f2a6ed429e788c70f91de",
+      "runtimeBytecodeKeccak256": "0x1bba3f9fb7ffe6b266aec8839dc954466f3997a199cab95cc48227796a63d5ab",
+      "runtimeBytes": 3415,
+      "exactRuntimeMatchesArtifact": true,
+      "runtimeVerification": "byte-for-byte equal to pinned artifact",
+      "initcodeBytesIncludingConstructorArgs": 4367
+    },
+    {
+      "label": "LOCAL_UNIT_RATE_PRICER_NOT_MARKET_DATA",
+      "category": "local-child-fixtures",
+      "address": "0x63FF6Ff519Ad1E44C3aa68992EFd2b00C6d76891",
+      "artifact": {
+        "source": "LocalFixtures.sol",
+        "sourceSha256": "811e12ecf97846421c3d26a856320476f1cdc9f3720a4bc29281fb0f171605a6",
+        "contract": "LocalUnitRatePricer"
+      },
+      "constructorArgs": [],
+      "creationBytecodeKeccak256": "0x48d0bf5180989252952eb61077ed195354c180a3b404fac27bc3531c46480094",
+      "runtimeBytecodeKeccak256": "0xc169e657045a634ba415953415aa2ead4a2530ff5c9eab689d8af00fb513b674",
+      "runtimeBytes": 123,
+      "exactRuntimeMatchesArtifact": true,
+      "runtimeVerification": "byte-for-byte equal to pinned artifact",
+      "initcodeBytesIncludingConstructorArgs": 149
+    },
+    {
+      "label": "Safe singleton supplemental",
+      "category": "supplemental-safe",
+      "address": "0x839Ad109043CFeb0D71345d49785ac5ae06E8808",
+      "artifact": {
+        "path": "research/chess/l3/nitro/.cache/contracts-provenance/deps/@safe-global__safe-smart-account/package/build/artifacts/contracts/Safe.sol/Safe.json",
+        "sha256": "6bf7c1e86f9c6af3e70e96538002258aeb89846dffd73cf04906d622872cc2e5",
+        "source": "contracts/Safe.sol",
+        "contract": "Safe"
+      },
+      "constructorArgs": [],
+      "creationBytecodeKeccak256": "0x3c32e7eb3961c145eef8620b24e8b829e6d2062a5730629d6169319f29fc1d07",
+      "runtimeBytecodeKeccak256": "0xdda019cbd7c867a533a2a86e5c53434fdc50b13122b5a5ddb4a8df61b31c20f2",
+      "runtimeBytes": 21451,
+      "exactRuntimeMatchesArtifact": true,
+      "runtimeVerification": "byte-for-byte equal to pinned artifact",
+      "initcodeBytesIncludingConstructorArgs": 21491
+    },
+    {
+      "label": "SafeProxyFactory supplemental",
+      "category": "supplemental-safe",
+      "address": "0x301f568656559de7463A5D5Dd2D156CAe9b64e66",
+      "artifact": {
+        "path": "research/chess/l3/nitro/.cache/contracts-provenance/deps/@safe-global__safe-smart-account/package/build/artifacts/contracts/proxies/SafeProxyFactory.sol/SafeProxyFactory.json",
+        "sha256": "a5c1601937a826160bf8c8174850e01c365bc15d7e43b23654cff6d327f237e9",
+        "source": "contracts/proxies/SafeProxyFactory.sol",
+        "contract": "SafeProxyFactory"
+      },
+      "constructorArgs": [],
+      "creationBytecodeKeccak256": "0xd8803696e4c627ba4cab33cfab2625cf66c88f218c017306e392fcf88cc4e0c6",
+      "runtimeBytecodeKeccak256": "0x967dae4cda22b0c9ef7f31b010bdc1ceb0af9904b0c3dc060b5302e4c18a4529",
+      "runtimeBytes": 3321,
+      "exactRuntimeMatchesArtifact": true,
+      "runtimeVerification": "byte-for-byte equal to pinned artifact",
+      "initcodeBytesIncludingConstructorArgs": 3353
+    }
+  ],
+  "checks": [
+    {
+      "name": "Synthetic parent selects official Arbitrum deployment branch",
+      "passed": true,
+      "observed": 116
+    },
+    {
+      "name": "ethBridge runtime code exists and fits EIP-170",
+      "passed": true,
+      "observed": {
+        "codeBytes": 6725
+      }
+    },
+    {
+      "name": "ethBridge Solidity metadata matches compiled artifact",
+      "passed": true,
+      "observed": {
+        "exactRuntimeMatchesArtifact": false
+      }
+    },
+    {
+      "name": "ethSequencerInbox runtime code exists and fits EIP-170",
+      "passed": true,
+      "observed": {
+        "codeBytes": 21892
+      }
+    },
+    {
+      "name": "ethSequencerInbox Solidity metadata matches compiled artifact",
+      "passed": true,
+      "observed": {
+        "exactRuntimeMatchesArtifact": false
+      }
+    },
+    {
+      "name": "ethSequencerInboxDelayBufferable runtime code exists and fits EIP-170",
+      "passed": true,
+      "observed": {
+        "codeBytes": 21892
+      }
+    },
+    {
+      "name": "ethSequencerInboxDelayBufferable Solidity metadata matches compiled artifact",
+      "passed": true,
+      "observed": {
+        "exactRuntimeMatchesArtifact": false
+      }
+    },
+    {
+      "name": "ethInbox runtime code exists and fits EIP-170",
+      "passed": true,
+      "observed": {
+        "codeBytes": 11006
+      }
+    },
+    {
+      "name": "ethInbox Solidity metadata matches compiled artifact",
+      "passed": true,
+      "observed": {
+        "exactRuntimeMatchesArtifact": false
+      }
+    },
+    {
+      "name": "ethRollupEventInbox runtime code exists and fits EIP-170",
+      "passed": true,
+      "observed": {
+        "codeBytes": 2665
+      }
+    },
+    {
+      "name": "ethRollupEventInbox Solidity metadata matches compiled artifact",
+      "passed": true,
+      "observed": {
+        "exactRuntimeMatchesArtifact": false
+      }
+    },
+    {
+      "name": "ethOutbox runtime code exists and fits EIP-170",
+      "passed": true,
+      "observed": {
+        "codeBytes": 6702
+      }
+    },
+    {
+      "name": "ethOutbox Solidity metadata matches compiled artifact",
+      "passed": true,
+      "observed": {
+        "exactRuntimeMatchesArtifact": false
+      }
+    },
+    {
+      "name": "erc20Bridge runtime code exists and fits EIP-170",
+      "passed": true,
+      "observed": {
+        "codeBytes": 8748
+      }
+    },
+    {
+      "name": "erc20Bridge Solidity metadata matches compiled artifact",
+      "passed": true,
+      "observed": {
+        "exactRuntimeMatchesArtifact": false
+      }
+    },
+    {
+      "name": "erc20SequencerInbox runtime code exists and fits EIP-170",
+      "passed": true,
+      "observed": {
+        "codeBytes": 21892
+      }
+    },
+    {
+      "name": "erc20SequencerInbox Solidity metadata matches compiled artifact",
+      "passed": true,
+      "observed": {
+        "exactRuntimeMatchesArtifact": false
+      }
+    },
+    {
+      "name": "erc20SequencerInboxDelayBufferable runtime code exists and fits EIP-170",
+      "passed": true,
+      "observed": {
+        "codeBytes": 21892
+      }
+    },
+    {
+      "name": "erc20SequencerInboxDelayBufferable Solidity metadata matches compiled artifact",
+      "passed": true,
+      "observed": {
+        "exactRuntimeMatchesArtifact": false
+      }
+    },
+    {
+      "name": "erc20Inbox runtime code exists and fits EIP-170",
+      "passed": true,
+      "observed": {
+        "codeBytes": 10483
+      }
+    },
+    {
+      "name": "erc20Inbox Solidity metadata matches compiled artifact",
+      "passed": true,
+      "observed": {
+        "exactRuntimeMatchesArtifact": false
+      }
+    },
+    {
+      "name": "erc20RollupEventInbox runtime code exists and fits EIP-170",
+      "passed": true,
+      "observed": {
+        "codeBytes": 3160
+      }
+    },
+    {
+      "name": "erc20RollupEventInbox Solidity metadata matches compiled artifact",
+      "passed": true,
+      "observed": {
+        "exactRuntimeMatchesArtifact": false
+      }
+    },
+    {
+      "name": "erc20Outbox runtime code exists and fits EIP-170",
+      "passed": true,
+      "observed": {
+        "codeBytes": 7084
+      }
+    },
+    {
+      "name": "erc20Outbox Solidity metadata matches compiled artifact",
+      "passed": true,
+      "observed": {
+        "exactRuntimeMatchesArtifact": false
+      }
+    },
+    {
+      "name": "bridgeCreator runtime code exists and fits EIP-170",
+      "passed": true,
+      "observed": {
+        "codeBytes": 6306
+      }
+    },
+    {
+      "name": "bridgeCreator Solidity metadata matches compiled artifact",
+      "passed": true,
+      "observed": {
+        "exactRuntimeMatchesArtifact": true
+      }
+    },
+    {
+      "name": "prover0 runtime code exists and fits EIP-170",
+      "passed": true,
+      "observed": {
+        "codeBytes": 13359
+      }
+    },
+    {
+      "name": "prover0 Solidity metadata matches compiled artifact",
+      "passed": true,
+      "observed": {
+        "exactRuntimeMatchesArtifact": true
+      }
+    },
+    {
+      "name": "proverMem runtime code exists and fits EIP-170",
+      "passed": true,
+      "observed": {
+        "codeBytes": 8375
+      }
+    },
+    {
+      "name": "proverMem Solidity metadata matches compiled artifact",
+      "passed": true,
+      "observed": {
+        "exactRuntimeMatchesArtifact": true
+      }
+    },
+    {
+      "name": "proverMath runtime code exists and fits EIP-170",
+      "passed": true,
+      "observed": {
+        "codeBytes": 10197
+      }
+    },
+    {
+      "name": "proverMath Solidity metadata matches compiled artifact",
+      "passed": true,
+      "observed": {
+        "exactRuntimeMatchesArtifact": true
+      }
+    },
+    {
+      "name": "proverHostIo runtime code exists and fits EIP-170",
+      "passed": true,
+      "observed": {
+        "codeBytes": 19424
+      }
+    },
+    {
+      "name": "proverHostIo Solidity metadata matches compiled artifact",
+      "passed": true,
+      "observed": {
+        "exactRuntimeMatchesArtifact": true
+      }
+    },
+    {
+      "name": "osp runtime code exists and fits EIP-170",
+      "passed": true,
+      "observed": {
+        "codeBytes": 13402
+      }
+    },
+    {
+      "name": "osp Solidity metadata matches compiled artifact",
+      "passed": true,
+      "observed": {
+        "exactRuntimeMatchesArtifact": true
+      }
+    },
+    {
+      "name": "challengeManager runtime code exists and fits EIP-170",
+      "passed": true,
+      "observed": {
+        "codeBytes": 23502
+      }
+    },
+    {
+      "name": "challengeManager Solidity metadata matches compiled artifact",
+      "passed": true,
+      "observed": {
+        "exactRuntimeMatchesArtifact": true
+      }
+    },
+    {
+      "name": "rollupAdmin runtime code exists and fits EIP-170",
+      "passed": true,
+      "observed": {
+        "codeBytes": 22343
+      }
+    },
+    {
+      "name": "rollupAdmin Solidity metadata matches compiled artifact",
+      "passed": true,
+      "observed": {
+        "exactRuntimeMatchesArtifact": false
+      }
+    },
+    {
+      "name": "rollupUser runtime code exists and fits EIP-170",
+      "passed": true,
+      "observed": {
+        "codeBytes": 17164
+      }
+    },
+    {
+      "name": "rollupUser Solidity metadata matches compiled artifact",
+      "passed": true,
+      "observed": {
+        "exactRuntimeMatchesArtifact": false
+      }
+    },
+    {
+      "name": "upgradeExecutor runtime code exists and fits EIP-170",
+      "passed": true,
+      "observed": {
+        "codeBytes": 6204
+      }
+    },
+    {
+      "name": "upgradeExecutor Solidity metadata matches compiled artifact",
+      "passed": true,
+      "observed": {
+        "exactRuntimeMatchesArtifact": true
+      }
+    },
+    {
+      "name": "validatorWalletCreator runtime code exists and fits EIP-170",
+      "passed": true,
+      "observed": {
+        "codeBytes": 6756
+      }
+    },
+    {
+      "name": "validatorWalletCreator Solidity metadata matches compiled artifact",
+      "passed": true,
+      "observed": {
+        "exactRuntimeMatchesArtifact": false
+      }
+    },
+    {
+      "name": "deployHelper runtime code exists and fits EIP-170",
+      "passed": true,
+      "observed": {
+        "codeBytes": 6414
+      }
+    },
+    {
+      "name": "deployHelper Solidity metadata matches compiled artifact",
+      "passed": true,
+      "observed": {
+        "exactRuntimeMatchesArtifact": true
+      }
+    },
+    {
+      "name": "rollupCreator runtime code exists and fits EIP-170",
+      "passed": true,
+      "observed": {
+        "codeBytes": 23538
+      }
+    },
+    {
+      "name": "rollupCreator Solidity metadata matches compiled artifact",
+      "passed": true,
+      "observed": {
+        "exactRuntimeMatchesArtifact": true
+      }
+    },
+    {
+      "name": "RollupCreator factory owner initialized",
+      "passed": true,
+      "observed": "0xbfAfDE78BB306686C567d8A84187912238ad850f"
+    },
+    {
+      "name": "RollupCreator.bridgeCreator initialized",
+      "passed": true,
+      "observed": "0xb3ef3EF9015Ff876E4cEba6670B00c09635C7e69"
+    },
+    {
+      "name": "RollupCreator.osp initialized",
+      "passed": true,
+      "observed": "0xD01d73E6BF0204d7ba0b6EE00d8DFfa72E3a3CFc"
+    },
+    {
+      "name": "RollupCreator.challengeManagerTemplate initialized",
+      "passed": true,
+      "observed": "0xCAaa9332F940362aEAAADD1B0A59c229C4fD8f79"
+    },
+    {
+      "name": "RollupCreator.rollupAdminLogic initialized",
+      "passed": true,
+      "observed": "0xAb7A44CE7e66963d2116dCe74AB63eeF88266C82"
+    },
+    {
+      "name": "RollupCreator.rollupUserLogic initialized",
+      "passed": true,
+      "observed": "0xedC23dFC7D1e57EC07eA5ff7419634DbAe08Ed2C"
+    },
+    {
+      "name": "RollupCreator.upgradeExecutorLogic initialized",
+      "passed": true,
+      "observed": "0x9149DF379237a935cf0658fE54D2325109493CBb"
+    },
+    {
+      "name": "RollupCreator.validatorWalletCreator initialized",
+      "passed": true,
+      "observed": "0xB7FE37712e46F28C8f22Ec4bAA33A09fb8B52BD0"
+    },
+    {
+      "name": "RollupCreator.l2FactoriesDeployer initialized",
+      "passed": true,
+      "observed": "0xD5ac692aD897742eFE44d54fDA338B244Fc7cfb6"
+    },
+    {
+      "name": "BridgeCreator.ethBasedTemplates initialized",
+      "passed": true,
+      "observed": [
+        "0xC678f7B95A7D1F77c6024c0086301D21402854b1",
+        "0xDA2e941cc4C7D8166Ec207CB7f7B09bA4f94406c",
+        "0xF6995BDC439B27deEA5d5d08e95E92451a7d36F5",
+        "0x2c358843740dB38a40f96FD627D4DA1dd859E554",
+        "0x796FeE4adceD1cb47a3e3d1B6925472F8fC8f1f9",
+        "0x396765AEbE540575ef927F769b0d7b89594f931c"
+      ]
+    },
+    {
+      "name": "BridgeCreator.erc20BasedTemplates initialized",
+      "passed": true,
+      "observed": [
+        "0x0124687D1F2869b0C2335B98ddc7FCf59DA2CEa1",
+        "0xB8594C833f519126B614979867216EB4BAE82B6d",
+        "0xC7FeB25D44D87F753C4ecCb974426Aea8c817f72",
+        "0x02E5bFcF09Cc317EDDCaca72a1b1265A57197Db5",
+        "0x2706682dD3bD709b055E0266D98BA380FE22B807",
+        "0x5128805C5331A3D445B72545d2461B2C3B05218c"
+      ]
+    },
+    {
+      "name": "ethSequencerInbox.maxDataSize",
+      "passed": true,
+      "observed": 104857
+    },
+    {
+      "name": "ethSequencerInboxDelayBufferable.maxDataSize",
+      "passed": true,
+      "observed": 104857
+    },
+    {
+      "name": "erc20SequencerInbox.maxDataSize",
+      "passed": true,
+      "observed": 104857
+    },
+    {
+      "name": "erc20SequencerInboxDelayBufferable.maxDataSize",
+      "passed": true,
+      "observed": 104857
+    },
+    {
+      "name": "ethInbox.maxDataSize",
+      "passed": true,
+      "observed": 104857
+    },
+    {
+      "name": "erc20Inbox.maxDataSize",
+      "passed": true,
+      "observed": 104857
+    },
+    {
+      "name": "ethSequencerInbox immutable constructor flags",
+      "passed": true,
+      "observed": {
+        "isUsingFeeToken": false,
+        "isDelayBufferable": false,
+        "reader4844": "0x0000000000000000000000000000000000000000"
+      }
+    },
+    {
+      "name": "ethSequencerInboxDelayBufferable immutable constructor flags",
+      "passed": true,
+      "observed": {
+        "isUsingFeeToken": false,
+        "isDelayBufferable": true,
+        "reader4844": "0x0000000000000000000000000000000000000000"
+      }
+    },
+    {
+      "name": "erc20SequencerInbox immutable constructor flags",
+      "passed": true,
+      "observed": {
+        "isUsingFeeToken": true,
+        "isDelayBufferable": false,
+        "reader4844": "0x0000000000000000000000000000000000000000"
+      }
+    },
+    {
+      "name": "erc20SequencerInboxDelayBufferable immutable constructor flags",
+      "passed": true,
+      "observed": {
+        "isUsingFeeToken": true,
+        "isDelayBufferable": true,
+        "reader4844": "0x0000000000000000000000000000000000000000"
+      }
+    },
+    {
+      "name": "OneStepProofEntry.prover0 initialized",
+      "passed": true,
+      "observed": "0x6fE84aC811EBEcd888Eca93757fEa378Bb03b00c"
+    },
+    {
+      "name": "OneStepProofEntry.proverMem initialized",
+      "passed": true,
+      "observed": "0x665CEA1cA6C36aB701f4C6AE895b156f79C51c35"
+    },
+    {
+      "name": "OneStepProofEntry.proverMath initialized",
+      "passed": true,
+      "observed": "0x4B15E064d5d55705E89080bDEA4BFe4cF20D6114"
+    },
+    {
+      "name": "OneStepProofEntry.proverHostIo initialized",
+      "passed": true,
+      "observed": "0x821b482c2148EedE258B600568FEC10EDb48431b"
+    },
+    {
+      "name": "Standard OneStepProverHostIo customDAValidator is zero",
+      "passed": true,
+      "observed": "0x0000000000000000000000000000000000000000"
+    },
+    {
+      "name": "GH0ST_LOCAL_MOCK_NOT_REAL_GH runtime code exists and fits EIP-170",
+      "passed": true,
+      "observed": {
+        "codeBytes": 3415
+      }
+    },
+    {
+      "name": "GH0ST_LOCAL_MOCK_NOT_REAL_GH Solidity metadata matches compiled artifact",
+      "passed": true,
+      "observed": {
+        "exactRuntimeMatchesArtifact": true
+      }
+    },
+    {
+      "name": "LOCAL_UNIT_RATE_PRICER_NOT_MARKET_DATA runtime code exists and fits EIP-170",
+      "passed": true,
+      "observed": {
+        "codeBytes": 123
+      }
+    },
+    {
+      "name": "LOCAL_UNIT_RATE_PRICER_NOT_MARKET_DATA Solidity metadata matches compiled artifact",
+      "passed": true,
+      "observed": {
+        "exactRuntimeMatchesArtifact": true
+      }
+    },
+    {
+      "name": "createRollup ABI includes exact current feeTokenPricer and customOsp tuple fields",
+      "passed": true,
+      "observed": "function createRollup(((uint64 confirmPeriodBlocks, address stakeToken, uint256 baseStake, bytes32 wasmModuleRoot, address owner, address loserStakeEscrow, uint256 chainId, string chainConfig, uint256 minimumAssertionPeriod, uint64 validatorAfkBlocks, uint256[] miniStakeValues, (uint256 delayBlocks, uint256 futureBlocks, uint256 delaySeconds, uint256 futureSeconds) sequencerInboxMaxTimeVariation, uint256 layerZeroBlockEdgeHeight, uint256 layerZeroBigStepEdgeHeight, uint256 layerZeroSmallStepEdgeHeight, ((bytes32[2] bytes32Vals, uint64[2] u64Vals) globalState, uint8 machineStatus, bytes32 endHistoryRoot) genesisAssertionState, uint256 genesisInboxCount, address anyTrustFastConfirmer, uint8 numBigStepLevel, uint64 challengeGracePeriodBlocks, (uint64 threshold, uint64 max, uint64 replenishRateInBasis) bufferConfig, uint256 dataCostEstimate) config, address[] validators, uint256 maxDataSize, address nativeToken, bool deployFactoriesToL2, uint256 maxFeePerGasForRetryables, address[] batchPosters, address batchPosterManager, address feeTokenPricer, address customOsp) deployParams) payable returns (address)"
+    },
+    {
+      "name": "Rollup CREATE2 address matches exact encoded 3.2 tuple",
+      "passed": true,
+      "observed": "0x4b26501D642183B73C75c7928bC4690ddb7c6408"
+    },
+    {
+      "name": "Created rollupAddress code exists",
+      "passed": true,
+      "observed": "0x4b26501D642183B73C75c7928bC4690ddb7c6408"
+    },
+    {
+      "name": "Created nativeToken code exists",
+      "passed": true,
+      "observed": "0xA26927F673Ed85c1c1c3d0f089cBF1C5d0CcF3ba"
+    },
+    {
+      "name": "Created inboxAddress code exists",
+      "passed": true,
+      "observed": "0x0CA6921F55556f562b43f5c87b8641c17d57d5E5"
+    },
+    {
+      "name": "Created outbox code exists",
+      "passed": true,
+      "observed": "0x2458FF28960D0264D2e7c9e1EA27960794064928"
+    },
+    {
+      "name": "Created rollupEventInbox code exists",
+      "passed": true,
+      "observed": "0x23D17298014D32AB93532E99137519A831Fd68E8"
+    },
+    {
+      "name": "Created challengeManager code exists",
+      "passed": true,
+      "observed": "0x432642Be807e769946CAc2d003B32d03462D50D6"
+    },
+    {
+      "name": "Created adminProxy code exists",
+      "passed": true,
+      "observed": "0xaCD177F9599271040FDf3c9EB5726245fD8B93Fa"
+    },
+    {
+      "name": "Created sequencerInbox code exists",
+      "passed": true,
+      "observed": "0xb1003b24D68Ca115F987B2190dc59C53F03B9D95"
+    },
+    {
+      "name": "Created bridge code exists",
+      "passed": true,
+      "observed": "0x4250b85940C13C112d8DC7dB49f708cfbe96C0B0"
+    },
+    {
+      "name": "Created upgradeExecutor code exists",
+      "passed": true,
+      "observed": "0xc47dbE86035B975bB9441CaEf0d8775ec3772153"
+    },
+    {
+      "name": "Created validatorWalletCreator code exists",
+      "passed": true,
+      "observed": "0xB7FE37712e46F28C8f22Ec4bAA33A09fb8B52BD0"
+    },
+    {
+      "name": "Rollup owner is upgrade executor",
+      "passed": true
+    },
+    {
+      "name": "ProxyAdmin owner is upgrade executor",
+      "passed": true
+    },
+    {
+      "name": "UpgradeExecutor config.owner has EXECUTOR_ROLE",
+      "passed": true
+    },
+    {
+      "name": "UpgradeExecutor is self-administered",
+      "passed": true
+    },
+    {
+      "name": "Creator did not retain executor role",
+      "passed": true
+    },
+    {
+      "name": "Validator initialized",
+      "passed": true
+    },
+    {
+      "name": "Batch poster initialized",
+      "passed": true
+    },
+    {
+      "name": "Batch poster manager initialized",
+      "passed": true
+    },
+    {
+      "name": "Fee-token pricer tuple field initialized",
+      "passed": true
+    },
+    {
+      "name": "Native token is local GHMOCK",
+      "passed": true
+    },
+    {
+      "name": "Expected inbox allowed at index zero",
+      "passed": true
+    },
+    {
+      "name": "Expected rollup event inbox allowed at index one",
+      "passed": true
+    },
+    {
+      "name": "Expected outbox allowed at index zero",
+      "passed": true
+    },
+    {
+      "name": "Created SequencerInbox uses custom fee token",
+      "passed": true
+    },
+    {
+      "name": "Created SequencerInbox enables delay buffer",
+      "passed": true
+    },
+    {
+      "name": "Created SequencerInbox maxDataSize matches parent layer 2",
+      "passed": true
+    },
+    {
+      "name": "Rollup wasmModuleRoot matches standard Nitro root",
+      "passed": true
+    },
+    {
+      "name": "Rollup child chainId initialized",
+      "passed": true
+    },
+    {
+      "name": "Rollup stake token initialized",
+      "passed": true
+    },
+    {
+      "name": "Challenge manager assertion chain initialized",
+      "passed": true
+    },
+    {
+      "name": "Challenge manager standard proof entry initialized",
+      "passed": true
+    },
+    {
+      "name": "Challenge manager stake token initialized",
+      "passed": true
+    },
+    {
+      "name": "Challenge manager challenge period initialized",
+      "passed": true
+    },
+    {
+      "name": "allowedDelayedInboxList contains exactly 2 entries",
+      "passed": true
+    },
+    {
+      "name": "allowedOutboxList contains exactly 1 entries",
+      "passed": true
+    },
+    {
+      "name": "bridge proxy admin storage",
+      "passed": true,
+      "observed": "0xaCD177F9599271040FDf3c9EB5726245fD8B93Fa"
+    },
+    {
+      "name": "inboxAddress proxy admin storage",
+      "passed": true,
+      "observed": "0xaCD177F9599271040FDf3c9EB5726245fD8B93Fa"
+    },
+    {
+      "name": "outbox proxy admin storage",
+      "passed": true,
+      "observed": "0xaCD177F9599271040FDf3c9EB5726245fD8B93Fa"
+    },
+    {
+      "name": "rollupEventInbox proxy admin storage",
+      "passed": true,
+      "observed": "0xaCD177F9599271040FDf3c9EB5726245fD8B93Fa"
+    },
+    {
+      "name": "sequencerInbox proxy admin storage",
+      "passed": true,
+      "observed": "0xaCD177F9599271040FDf3c9EB5726245fD8B93Fa"
+    },
+    {
+      "name": "challengeManager proxy admin storage",
+      "passed": true,
+      "observed": "0xaCD177F9599271040FDf3c9EB5726245fD8B93Fa"
+    },
+    {
+      "name": "upgradeExecutor proxy admin storage",
+      "passed": true,
+      "observed": "0xaCD177F9599271040FDf3c9EB5726245fD8B93Fa"
+    },
+    {
+      "name": "Rollup admin implementation storage",
+      "passed": true,
+      "observed": "0xAb7A44CE7e66963d2116dCe74AB63eeF88266C82"
+    },
+    {
+      "name": "bridge proxy implementation storage",
+      "passed": true,
+      "observed": "0x0124687D1F2869b0C2335B98ddc7FCf59DA2CEa1"
+    },
+    {
+      "name": "inboxAddress proxy implementation storage",
+      "passed": true,
+      "observed": "0x02E5bFcF09Cc317EDDCaca72a1b1265A57197Db5"
+    },
+    {
+      "name": "outbox proxy implementation storage",
+      "passed": true,
+      "observed": "0x5128805C5331A3D445B72545d2461B2C3B05218c"
+    },
+    {
+      "name": "rollupEventInbox proxy implementation storage",
+      "passed": true,
+      "observed": "0x2706682dD3bD709b055E0266D98BA380FE22B807"
+    },
+    {
+      "name": "sequencerInbox proxy implementation storage",
+      "passed": true,
+      "observed": "0xC7FeB25D44D87F753C4ecCb974426Aea8c817f72"
+    },
+    {
+      "name": "challengeManager proxy implementation storage",
+      "passed": true,
+      "observed": "0xCAaa9332F940362aEAAADD1B0A59c229C4fD8f79"
+    },
+    {
+      "name": "upgradeExecutor proxy implementation storage",
+      "passed": true,
+      "observed": "0x9149DF379237a935cf0658fE54D2325109493CBb"
+    },
+    {
+      "name": "Safe singleton supplemental runtime code exists and fits EIP-170",
+      "passed": true,
+      "observed": {
+        "codeBytes": 21451
+      }
+    },
+    {
+      "name": "Safe singleton supplemental Solidity metadata matches compiled artifact",
+      "passed": true,
+      "observed": {
+        "exactRuntimeMatchesArtifact": true
+      }
+    },
+    {
+      "name": "SafeProxyFactory supplemental runtime code exists and fits EIP-170",
+      "passed": true,
+      "observed": {
+        "codeBytes": 3321
+      }
+    },
+    {
+      "name": "SafeProxyFactory supplemental Solidity metadata matches compiled artifact",
+      "passed": true,
+      "observed": {
+        "exactRuntimeMatchesArtifact": true
+      }
+    },
+    {
+      "name": "Supplemental Safe proxy initialized with ephemeral owner",
+      "passed": true,
+      "observed": "0xbfAfDE78BB306686C567d8A84187912238ad850f"
+    },
+    {
+      "name": "Supplemental Safe threshold initialized to 1",
+      "passed": true,
+      "observed": 1
+    }
+  ],
+  "deploymentSettings": {
+    "parentLayer": 2,
+    "maxDataSize": 104857,
+    "reader4844": "0x0000000000000000000000000000000000000000",
+    "create2Salt": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "contractVerificationServiceUsed": false,
+    "deployRollupProxyForExplorerVerification": false
+  },
+  "limitations": [
+    "Ganache Shanghai gas schedules and a synthetic ArbSys fixture are not Robinhood Nitro execution, fee accounting, precompiles, gas limits, transaction compression, or data-availability semantics.",
+    "Child createRollup registers and initializes contracts only. No child node is booted and no genesis-state or fraud-proof claim follows.",
+    "Child L2 keyless factories are intentionally not deployed: deployFactoriesToL2=false, so retryable execution is outside this rehearsal.",
+    "A locally compiled mock token and mock unit-rate pricer are not GH0ST, a market price, a canonical token registration, or a bridge."
+  ],
+  "childRollup": {
+    "status": "LOCAL_CONTRACT_REGISTRATION_VERIFIED",
+    "localOnly": true,
+    "chainConfig": {
+      "chainId": 466300061,
+      "homesteadBlock": 0,
+      "daoForkBlock": null,
+      "daoForkSupport": true,
+      "eip150Block": 0,
+      "eip150Hash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+      "eip155Block": 0,
+      "eip158Block": 0,
+      "byzantiumBlock": 0,
+      "constantinopleBlock": 0,
+      "petersburgBlock": 0,
+      "istanbulBlock": 0,
+      "muirGlacierBlock": 0,
+      "berlinBlock": 0,
+      "londonBlock": 0,
+      "clique": {
+        "period": 0,
+        "epoch": 0
+      },
+      "arbitrum": {
+        "EnableArbOS": true,
+        "AllowDebugPrecompiles": false,
+        "DataAvailabilityCommittee": false,
+        "InitialArbOSVersion": 61,
+        "InitialChainOwner": "0xbfAfDE78BB306686C567d8A84187912238ad850f",
+        "GenesisBlockNum": 0
+      }
+    },
+    "params": {
+      "config": {
+        "confirmPeriodBlocks": 45818,
+        "stakeToken": "0xA26927F673Ed85c1c1c3d0f089cBF1C5d0CcF3ba",
+        "baseStake": "1000000000000000000",
+        "wasmModuleRoot": "0xc10cd7ec6acaf1c441a3f6bd0900ad20f15855ba775a96f1939118cbc629dc97",
+        "owner": "0xbfAfDE78BB306686C567d8A84187912238ad850f",
+        "loserStakeEscrow": "0xF66098156C6de139ad5c5c1eA33A0e74b12652dC",
+        "chainId": 466300061,
+        "chainConfig": "{\"chainId\":466300061,\"homesteadBlock\":0,\"daoForkBlock\":null,\"daoForkSupport\":true,\"eip150Block\":0,\"eip150Hash\":\"0x0000000000000000000000000000000000000000000000000000000000000000\",\"eip155Block\":0,\"eip158Block\":0,\"byzantiumBlock\":0,\"constantinopleBlock\":0,\"petersburgBlock\":0,\"istanbulBlock\":0,\"muirGlacierBlock\":0,\"berlinBlock\":0,\"londonBlock\":0,\"clique\":{\"period\":0,\"epoch\":0},\"arbitrum\":{\"EnableArbOS\":true,\"AllowDebugPrecompiles\":false,\"DataAvailabilityCommittee\":false,\"InitialArbOSVersion\":61,\"InitialChainOwner\":\"0xbfAfDE78BB306686C567d8A84187912238ad850f\",\"GenesisBlockNum\":0}}",
+        "minimumAssertionPeriod": 75,
+        "validatorAfkBlocks": 201600,
+        "genesisAssertionState": {
+          "globalState": {
+            "bytes32Vals": [
+              "0x0000000000000000000000000000000000000000000000000000000000000000",
+              "0x0000000000000000000000000000000000000000000000000000000000000000"
+            ],
+            "u64Vals": [
+              0,
+              0
+            ]
+          },
+          "machineStatus": 1,
+          "endHistoryRoot": "0x0000000000000000000000000000000000000000000000000000000000000000"
+        },
+        "genesisInboxCount": 0,
+        "miniStakeValues": [
+          0,
+          "500000000000000000",
+          "250000000000000000"
+        ],
+        "layerZeroBlockEdgeHeight": 67108864,
+        "layerZeroBigStepEdgeHeight": 524288,
+        "layerZeroSmallStepEdgeHeight": 8388608,
+        "numBigStepLevel": 1,
+        "challengeGracePeriodBlocks": 10,
+        "bufferConfig": {
+          "threshold": 600,
+          "max": 14400,
+          "replenishRateInBasis": 833
+        },
+        "sequencerInboxMaxTimeVariation": {
+          "delayBlocks": 7200,
+          "futureBlocks": 12,
+          "delaySeconds": 86400,
+          "futureSeconds": 3600
+        },
+        "anyTrustFastConfirmer": "0x0000000000000000000000000000000000000000",
+        "dataCostEstimate": 0
+      },
+      "validators": [
+        "0x211f4f9EC214ed276e01F70444506654e6A320a5"
+      ],
+      "maxDataSize": 104857,
+      "nativeToken": "0xA26927F673Ed85c1c1c3d0f089cBF1C5d0CcF3ba",
+      "deployFactoriesToL2": false,
+      "maxFeePerGasForRetryables": 1000000000,
+      "batchPosters": [
+        "0xD1FbB5bc4dF10fa35c7D1a8E59C11F3EE42bEF95"
+      ],
+      "batchPosterManager": "0xB47A3367185b0791232124E88ba13C1b8b2a9EB1",
+      "feeTokenPricer": "0x63FF6Ff519Ad1E44C3aa68992EFd2b00C6d76891",
+      "customOsp": "0x0000000000000000000000000000000000000000"
+    },
+    "nativeTokenLabel": "GH0ST LOCAL MOCK NOT REAL GH",
+    "notRealGh0stToken": true,
+    "zeroGenesisStateIsRehearsalOnly": true,
+    "childNodeBooted": false,
+    "retryableFactoriesDeployed": false,
+    "addresses": {
+      "rollupAddress": "0x4b26501D642183B73C75c7928bC4690ddb7c6408",
+      "nativeToken": "0xA26927F673Ed85c1c1c3d0f089cBF1C5d0CcF3ba",
+      "inboxAddress": "0x0CA6921F55556f562b43f5c87b8641c17d57d5E5",
+      "outbox": "0x2458FF28960D0264D2e7c9e1EA27960794064928",
+      "rollupEventInbox": "0x23D17298014D32AB93532E99137519A831Fd68E8",
+      "challengeManager": "0x432642Be807e769946CAc2d003B32d03462D50D6",
+      "adminProxy": "0xaCD177F9599271040FDf3c9EB5726245fD8B93Fa",
+      "sequencerInbox": "0xb1003b24D68Ca115F987B2190dc59C53F03B9D95",
+      "bridge": "0x4250b85940C13C112d8DC7dB49f708cfbe96C0B0",
+      "upgradeExecutor": "0xc47dbE86035B975bB9441CaEf0d8775ec3772153",
+      "validatorWalletCreator": "0xB7FE37712e46F28C8f22Ec4bAA33A09fb8B52BD0"
+    },
+    "predictedRollup": "0x4b26501D642183B73C75c7928bC4690ddb7c6408",
+    "receiptHash": "0x4271adcae60fa5167ec1184270f4fc43ddd33794a0c4c8c82538e16eb85c2f5e",
+    "deployedCode": {
+      "rollupAddress": {
+        "address": "0x4b26501D642183B73C75c7928bC4690ddb7c6408",
+        "runtimeBytes": 5172,
+        "runtimeBytecodeKeccak256": "0xf11a4226605262c50dd682a06fa38ed1d4e8ec8012a2aba49e1fc6abe559209a"
+      },
+      "nativeToken": {
+        "address": "0xA26927F673Ed85c1c1c3d0f089cBF1C5d0CcF3ba",
+        "runtimeBytes": 3415,
+        "runtimeBytecodeKeccak256": "0x1bba3f9fb7ffe6b266aec8839dc954466f3997a199cab95cc48227796a63d5ab"
+      },
+      "inboxAddress": {
+        "address": "0x0CA6921F55556f562b43f5c87b8641c17d57d5E5",
+        "runtimeBytes": 2201,
+        "runtimeBytecodeKeccak256": "0x69a469ef198a7f785b09fb0783fe42576faef7635e2d56426ec8746bad638e64"
+      },
+      "outbox": {
+        "address": "0x2458FF28960D0264D2e7c9e1EA27960794064928",
+        "runtimeBytes": 2201,
+        "runtimeBytecodeKeccak256": "0x69a469ef198a7f785b09fb0783fe42576faef7635e2d56426ec8746bad638e64"
+      },
+      "rollupEventInbox": {
+        "address": "0x23D17298014D32AB93532E99137519A831Fd68E8",
+        "runtimeBytes": 2201,
+        "runtimeBytecodeKeccak256": "0x69a469ef198a7f785b09fb0783fe42576faef7635e2d56426ec8746bad638e64"
+      },
+      "challengeManager": {
+        "address": "0x432642Be807e769946CAc2d003B32d03462D50D6",
+        "runtimeBytes": 2201,
+        "runtimeBytecodeKeccak256": "0x69a469ef198a7f785b09fb0783fe42576faef7635e2d56426ec8746bad638e64"
+      },
+      "adminProxy": {
+        "address": "0xaCD177F9599271040FDf3c9EB5726245fD8B93Fa",
+        "runtimeBytes": 1892,
+        "runtimeBytecodeKeccak256": "0x0404ac3f01bce31756226b1da9f9248125480183fd9467da66d0ac679260fa7a"
+      },
+      "sequencerInbox": {
+        "address": "0xb1003b24D68Ca115F987B2190dc59C53F03B9D95",
+        "runtimeBytes": 2201,
+        "runtimeBytecodeKeccak256": "0x69a469ef198a7f785b09fb0783fe42576faef7635e2d56426ec8746bad638e64"
+      },
+      "bridge": {
+        "address": "0x4250b85940C13C112d8DC7dB49f708cfbe96C0B0",
+        "runtimeBytes": 2201,
+        "runtimeBytecodeKeccak256": "0x69a469ef198a7f785b09fb0783fe42576faef7635e2d56426ec8746bad638e64"
+      },
+      "upgradeExecutor": {
+        "address": "0xc47dbE86035B975bB9441CaEf0d8775ec3772153",
+        "runtimeBytes": 2201,
+        "runtimeBytecodeKeccak256": "0x69a469ef198a7f785b09fb0783fe42576faef7635e2d56426ec8746bad638e64"
+      },
+      "validatorWalletCreator": {
+        "address": "0xB7FE37712e46F28C8f22Ec4bAA33A09fb8B52BD0",
+        "runtimeBytes": 6756,
+        "runtimeBytecodeKeccak256": "0x8cc3b668a92ac888a6ccc5d5398d01ed65ab40fd326cccb1ee96563768ad563b"
+      }
+    },
+    "checkedRoles": {
+      "owner": "0xbfAfDE78BB306686C567d8A84187912238ad850f",
+      "validator": "0x211f4f9EC214ed276e01F70444506654e6A320a5",
+      "batchPoster": "0xD1FbB5bc4dF10fa35c7D1a8E59C11F3EE42bEF95",
+      "batchPosterManager": "0xB47A3367185b0791232124E88ba13C1b8b2a9EB1",
+      "loserStakeEscrow": "0xF66098156C6de139ad5c5c1eA33A0e74b12652dC"
+    }
+  },
+  "safe": {
+    "scope": "Supplemental exact artifact rehearsal only; not real custody or a proposed production multisig policy",
+    "singleton": "0x839Ad109043CFeb0D71345d49785ac5ae06E8808",
+    "factory": "0x301f568656559de7463A5D5Dd2D156CAe9b64e66",
+    "proxy": "0x9865C0Fcb7777A09c1102D9e6d3aCa9ce18F554F",
+    "owners": [
+      "0xbfAfDE78BB306686C567d8A84187912238ad850f"
+    ],
+    "threshold": 1
+  },
+  "gas": {
+    "measuredSyntheticGasByCategory": {
+      "local-bootstrap": "89137",
+      "upstream-core-factory": "72894496",
+      "local-child-fixtures": "925820",
+      "local-child-creation": "7338187",
+      "supplemental-safe": "5689060"
+    },
+    "measuredSyntheticTotalGas": "86936700",
+    "coreFactoryPlusCreateRollupGas": "80232683",
+    "assumedParentGasPriceWei": "20000000",
+    "assumptionSource": "20,000,000 wei supplied parent-gas assumption; not refreshed or verified against current Robinhood RPC",
+    "assumptionIsCurrentVerifiedEstimate": false,
+    "coreFactoryPlusCreateRollupAtAssumptionEth": "0.00160465366",
+    "allTransactionsAtAssumptionEth": "0.001738734",
+    "conversionLimit": "Gas multiplied by an assumed price only. Excludes Robinhood-specific fee components, real Nitro pricing/compression differences, deployment retries and running costs; not a cap guarantee or transaction approval."
+  },
+  "budget": {
+    "historicalRealSpendEth": "0.000064114367868",
+    "historicalIcpFeesIncluded": "13",
+    "currentPolicy": {
+      "priorEthIcpSpendingCeilingsRemovedByUser": true,
+      "activeEthCeiling": null,
+      "activeIcpCeiling": null
+    },
+    "historicalCeilingsForContextOnly": {
+      "retiredTotalEthCap": "0.003",
+      "retiredRemainingEthCap": "0.002935885632132",
+      "retiredTotalIcpCapIncludingFees": "100"
+    },
+    "realSpendThisRehearsalEth": "0",
+    "realSpendThisRehearsalIcp": "0",
+    "publicSpendAuthorizedByThisScript": false
+  },
+  "completedAt": "2026-11-16T06:39:37.100Z"
+}

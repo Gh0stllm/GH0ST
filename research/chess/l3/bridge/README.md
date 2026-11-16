@@ -2,6 +2,8 @@
 
 This package connects the actual TinyStories integer Wasm runtime to a word-addressed persistent state store. It executes the full reviewed small model, not a mock tensor calculation. It remains a local integration package: no running L3, public precompile activation, parent settlement or fraud-proof challenge is established here.
 
+This research overlay is outside the initial base-L3 scope, which prioritizes ordinary Nitro and Stylus. The custom LLM debug precompile is not part of that initial core.
+
 ## Deterministic admission and execution
 
 Only the reviewed runtime SHA256 `d7ebddffb302ab1ffe5a13edc2d06109d8375ab143bfa923d1af9e2c139052c5` and complete model-data SHA256 `6dc6dd216d0c4b12b81b0844244423e53bb8d7e4c726b8e6205683708971ef1f` are admitted. Both are checked **before** interpreting the guest. The code supports the pinned TinyStories INT8/Q12/context64 variant, not arbitrary Wasm or arbitrary LLMs.
@@ -44,9 +46,19 @@ Twelve focused tests reject wrong caller, duplicate job, stale generation, inval
 
 The real Geth `EVM.Call` and `StaticCall` fixture has executed all 18 persisted commits for one complete model position, matching all 50,257 logits and the same final checkpoint as the native/WASI reference. It passed caller isolation, static-call rejection, stale generations, duplicate jobs, work bounds, append, missing/corrupt genesis, debug gating and metered failure rollback after writes. Actual registered ABI metadata tests also passed.
 
-The interpreter and optional native compiler both passed that fixture with identical checkpoint, logits and measured gas: one advance cost 245,844,125 gas; the complete fixture including failure probes used 10,090,709,081 gas, excluding genesis storage. The tests allow up to 2,000,000,000 gas per call. Storage is genuinely metered, but the computation floor is incomplete, so these are local fixture charges, not a supported public transaction budget or production fee quote. Local elapsed times were 16.129 seconds and 2.206 seconds respectively. See the [interpreter run](../nitro/evidence/llm-abi-dispatch-interpreter.json), [compiler run](../nitro/evidence/llm-abi-dispatch-native-compiler.json) and [backend parity check](../nitro/evidence/llm-abi-backend-parity.json).
+The original interpreter and optional native compiler both passed that fixture with identical checkpoint, logits and measured gas: one advance cost 245,844,125 gas; the complete fixture including failure probes used 10,090,709,081 gas, excluding genesis storage. The tests allow up to 2,000,000,000 gas per call. Storage is genuinely metered, but the computation floor is incomplete, so these are local fixture charges, not a supported public transaction budget or production fee quote. See the original [interpreter run](../nitro/evidence/llm-abi-dispatch-interpreter.json), [compiler run](../nitro/evidence/llm-abi-dispatch-native-compiler.json) and [backend parity check](../nitro/evidence/llm-abi-backend-parity.json).
 
 The actual `GhostLLM.sol` interface also compiles with Solidity 0.8.30. All five functions' input/output types, mutability, signatures and selectors match the embedded Go ABI; see the [repeatable compiler check](nitro-overlay/compile-abi.mjs) and [bounded ABI evidence](nitro-overlay/evidence/abi.json). This ABI-only check performs no calls or transactions.
+
+## Transaction-local storage filtering
+
+Only the A12 ArbOS wrapper applies `NewDirtyWordStore`. Every call or trusted setup creates a fresh instance, and no cache survives an external state change or snapshot rollback. It filters unchanged word writes and caches reads within that transition, while preserving ordered changes and underlying failure/rollback semantics. The generic `WordAdapter` default is unchanged.
+
+The [full-model comparison](evidence/dirty-wordstore-full-model.json) matched 38 complete checkpoints/progress states, all 100,514 logits and 39 complete word-state comparisons over two positions. Missing words are canonically zero, matching ArbOS semantics. Applied word writes fell from 1,007,081 to 154,988 including setup, an 84.61% word-count reduction; setup reads increased. This count is not a gas or speed estimate.
+
+The actual [ArbOS before/after comparison](../nitro/evidence/llm-dirty-arbos-parity.json) matched the complete final Geth state root, checkpoint and logits in all four combinations of baseline/filtered storage and interpreter/compiler. The complete fixture including failure probes fell from 10,090,709,081 to 7,148,295,681 gas, a 29.16% reduction, excluding genesis storage. One measured advance fell from 245,844,125 to 132,053,125 gas. Even the reduced call remains above ordinary transaction limits; computation instruction pricing is still incomplete. These are debug-fixture measurements, not a production fee quote or a supported game budget.
+
+Local elapsed times did not improve in that run: interpreter 16.280 to 16.588 seconds, compiler 2.438 to 2.771 seconds. The optimization reduces metered fixture gas while adding cache bookkeeping; no latency improvement is claimed. Pure bridge Go/WASI compilation and vet passed after integration. No further LLM/proof work is included in the base-L3-first scope.
 
 ## Optional native compiler experiment
 
@@ -70,6 +82,6 @@ The toolchain is the pinned Go 1.25.4 fetched by the Nitro experiment. Dependenc
 
 ## Remaining production work
 
-The local debug ABI now reaches the full model through metered ArbOS storage. Production genesis integration and model availability, complete interpreter instruction gas, native/replay/prover integration, a real incorrect-result challenge, bounds/cost analysis and parent escrow/finality tests remain separate requirements. The model is 3,745,984 parameters with 64-token context; no 7B/70B, Qwen or Stockfish port is claimed. The user’s 100 ICP and 0.003 ETH caps are unchanged and no twenty-game launch is established.
+The local debug ABI now reaches the full model through metered ArbOS storage. Production genesis integration and model availability, complete interpreter instruction gas, native/replay/prover integration, a real incorrect-result challenge, bounds/cost analysis and parent escrow/finality tests remain separate requirements. The model is 3,745,984 parameters with 64-token context; no 7B/70B, Qwen or Stockfish port is claimed. The user removed the old ICP/ETH spending ceilings; no twenty-game launch is established.
 
 Primary runtime sources: [wazero overview](https://wazero.io/), [pinned v1.12.0](https://github.com/wazero/wazero/releases/tag/v1.12.0), [Nitro custom state transition requirements](https://developer.arbitrum.io/launch-arbitrum-chain/extend-the-protocol/stf).

@@ -48,9 +48,9 @@ def validate(plan, root=Path("."), mode="rehearsal"):
         errors.append("co-located roles must not be described as independent")
     if operator.get("publicRPCBoundToLoopback") is not True or operator.get("publicAdminRPC") is not False or operator.get("publicMetrics") is not False:
         errors.append("RPC/admin/metrics exposure is not restricted")
-    caps = plan.get("financialCaps", {})
-    if caps != {"totalICP": "100", "includesPreviouslyConvertedICP": "13", "totalETH": "0.003", "automaticTopups": False}:
-        errors.append("hard spending caps changed or unspecified")
+    financial = plan.get("financialPolicy", {})
+    if financial.get("mode") != "estimates_and_review" or financial.get("automaticTopups") is not False:
+        errors.append("missing current estimate policy or automatic top-ups enabled")
     if mode == "mainnet":
         # Deliberately unconditional: checking boxes cannot enable an unimplemented
         # custom execution/fraud-proof path or turn this into a mainnet launcher.

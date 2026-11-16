@@ -55,7 +55,10 @@ func (s ghostLLMPrecompileWords) Apply(writes []bridge.WordWrite) error {
 }
 
 func ghostLLMPrecompileStore(backing *storage.Storage) bridge.WordAdapter {
-	return bridge.WordAdapter{Words: ghostLLMPrecompileWords{backing.OpenSubStorage([]byte("GH0ST_LLM_V1"))}}
+	// A new cache belongs to exactly this call/setup. Discard it before any
+	// external state change or snapshot rollback; never retain it globally.
+	words := ghostLLMPrecompileWords{backing.OpenSubStorage([]byte("GH0ST_LLM_V1"))}
+	return bridge.WordAdapter{Words: bridge.NewDirtyWordStore(words)}
 }
 
 func ghostLLMModelConfig(backing *storage.Storage) *storage.Storage {

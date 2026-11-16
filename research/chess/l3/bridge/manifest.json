@@ -74,10 +74,50 @@
       "../nitro/evidence/llm-abi-dispatch-interpreter.json",
       "../nitro/evidence/llm-abi-dispatch-native-compiler.json",
       "../nitro/evidence/llm-abi-backend-parity.json"
-    ]
+    ],
+    "measurementsAreBeforeDirtyWordStore": true
   },
   "fraudProofExecuted": false,
   "chainBooted": false,
   "largeLLMOrChessStrengthChanged": false,
-  "financialActions": false
+  "financialActions": false,
+  "initialCoreL3IncludesThisDebugLLM": false,
+  "dirtyWordStore": {
+    "enabledOnlyInA12ArbOSWrapper": true,
+    "genericWordAdapterDefaultChanged": false,
+    "freshWrapperPerCallAndSetup": true,
+    "cacheSurvivesSnapshots": false,
+    "fullModelPositionsCompared": 2,
+    "allLogitsCompared": 100514,
+    "completeCheckpointsCompared": 38,
+    "completeWordStateComparisons": 39,
+    "baselineAppliedWordWritesIncludingSetup": 1007081,
+    "optimizedAppliedWordWritesIncludingSetup": 154988,
+    "appliedWriteReductionFraction": 0.8461017534835827,
+    "setupReadsIncrease": true,
+    "wordCountReductionIsNotGasReduction": true,
+    "allFourActualArbOSStateRootsCheckpointsAndLogitsEqual": true,
+    "actualGethStateRoot": "0xbd05e78bb902245dd227e6eb24d4b7dcb3a4b9fe57f5bca534659bf42b04e033",
+    "baselineTotalFixtureGasIncludingFailureProbes": 10090709081,
+    "dirtyTotalFixtureGasIncludingFailureProbes": 7148295681,
+    "fixtureGasReductionFraction": 0.2915962967895219,
+    "baselineSingleAdvanceGas": 245844125,
+    "dirtySingleAdvanceGas": 132053125,
+    "genesisGasExcluded": true,
+    "ordinaryTransactionFeasibilityProven": false,
+    "speedImprovementClaimed": false,
+    "localInterpreterSecondsBeforeAfter": [
+      16.280282084,
+      16.587592
+    ],
+    "localCompilerSecondsBeforeAfter": [
+      2.437979209,
+      2.7709815
+    ],
+    "evidence": [
+      "evidence/dirty-wordstore-full-model.json",
+      "../nitro/evidence/llm-dirty-arbos-parity.json"
+    ],
+    "productionFeeQuote": false
+  }
 }

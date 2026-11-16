@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "status": "design_only_not_a_deployable_chain",
+  "status": "deferred_custom_chess_execution_design_not_a_core_launch_gate",
   "asOfUserDateIST": "2026-11-16",
   "decision": "Custom Robinhood-settled GH0ST-gas L3 on reliable servers; no server rented or chain deployed",
   "parent": {
@@ -77,10 +77,8 @@
     "separateValidatorHostIsProtocolMinimumClaim": false
   },
   "budgets": {
-    "totalICPIncludingPreviouslyConverted": "100",
     "previouslyConvertedICP": "13",
     "ledgerFeesPreviouslyPaidICP": "0.0003",
-    "ETHDeploymentAndRelayTotalCap": "0.003",
     "prizeGH0STCap": "1000000",
     "pilotEntryGH0STCap": "25000",
     "newExternalHostingBillApproved": false,
@@ -91,7 +89,9 @@
       "games": 20,
       "blackDecisionsPerGamePlanningAssumption": 80,
       "notAUniversalLengthGuarantee": true
-    }
+    },
+    "oldCashSpendingCapsRemovedByUser": true,
+    "finiteCashSpendingCaps": null
   },
   "launch": {
     "publicPaidEntriesEnabled": false,
@@ -164,7 +164,8 @@
         "passed": false,
         "evidence": []
       }
-    ]
+    ],
+    "scope": "Future custom chess/compute product; standard core deployment has separate requirements"
   },
   "validationProposal": {
     "modeSelected": null,
@@ -190,5 +191,7 @@
     "currentSDKStakeDefaults": "https://github.com/OffchainLabs/arbitrum-chain-sdk/blob/main/src/createRollupPrepareDeploymentParamsConfig/v3.2.ts",
     "bondReview": "https://developer.arbitrum.io/launch-arbitrum-chain/chain-config/validation/bond-and-validator",
     "BoLD": "https://docs.arbitrum.io/launch-arbitrum-chain/chain-config/validation/bold"
-  }
+  },
+  "initialBaseChainPriority": true,
+  "coreBuildReference": "../core/README.md"
 }

@@ -207,12 +207,17 @@ func TestGH0STFullLLMNativeABIDispatch(t *testing.T) {
 	if hex.EncodeToString(checkpoint[:]) != "5972420b6f0fdc3fd42191dbb299e0dd8fafaeefca9023cf99db33c6d2da8f3a" {
 		t.Fatal("complete checkpoint differs from native/WASI oracle")
 	}
+	// All successful transitions and rollback probes are finished. Compute the
+	// complete actual Geth state root at this same final point in both runs.
+	// IntermediateRoot finalizes the journal; no later snapshot is used.
+	fullGethStateRoot := evm.StateDB.IntermediateRoot(true)
 	report := map[string]any{
 		"scope":   "Actual Nitro ABI dispatcher reached full reviewed model through real Geth EVM CALL/STATICCALL and ArbOS storage in a local fixture",
 		"backend": backend, "address": address.Hex(), "genesisRuntimeSHA256": hex.EncodeToString(bridge.RuntimeSHA256[:]),
 		"genesisWeightsSHA256": hex.EncodeToString(bridge.WeightsSHA256[:]), "comparedLogits": 50257,
 		"logitsI32LESHA256": expectedHash, "bestToken": p[4], "kernelStep": p[1], "commits": commits,
 		"checkpointSHA256": hex.EncodeToString(checkpoint[:]), "modelParameters": 3745984,
+		"fullGethStateRoot": fullGethStateRoot.Hex(), "stateRootDeletesEmptyObjects": true,
 		"actualEVMOutOfGasRollbackVerified": true, "actualStaticCallRejectionVerified": true,
 		"callerIsolationVerified": true, "staleGenerationRejected": true, "missingGenesisFailsClosed": true,
 		"appendABIVerified": true, "workBoundsVerified": true, "duplicateJobRejected": true,

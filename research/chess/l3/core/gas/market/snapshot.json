@@ -1,0 +1,166 @@
+{
+  "scope": "Read-only current GH0ST/ETH pool and canonical Robinhood WETH snapshot; fee-pricer research, not trading or deployment",
+  "checkedAtUTC": "2026-11-16T06:36:40.760Z",
+  "observedAtUTC": "2026-11-16T06:36:35.000Z",
+  "endpointSource": "public fallback",
+  "chainId": 4663,
+  "blockNumber": 115563810,
+  "blockHash": "0x5934281e4b47eb237e0853035ea22ffc2681dd87881d08c4900811db4ff7f7ae",
+  "blockRechecked": true,
+  "finalityProven": false,
+  "contracts": {
+    "token": {
+      "address": "0x2eb2849cde7957b86d0dfd4b59e450a9f9d15559",
+      "runtimeBytes": 3248,
+      "runtimeKeccak256": "0x7c38fa1b069b5e677034bab6219dd2f519f219f7637910131d9a0f58a05ae164",
+      "matchesHistoricalRuntimePin": true,
+      "officialAddressSource": null
+    },
+    "weth": {
+      "address": "0x0bd7d308f8e1639fab988df18a8011f41eacad73",
+      "runtimeBytes": 2202,
+      "runtimeKeccak256": "0x5706be52f64875fee65a2cec0d80e47a23d8793cbe85d214b48445e2d05f5353",
+      "matchesHistoricalRuntimePin": null,
+      "officialAddressSource": "https://docs.robinhood.com/chain/contracts/"
+    },
+    "manager": {
+      "address": "0x8366a39cc670b4001a1121b8f6a443a643e40951",
+      "runtimeBytes": 24009,
+      "runtimeKeccak256": "0xbd3881180b547f5fe817545743cfb4343e96b1bc6640dcd70c106b0066e95626",
+      "matchesHistoricalRuntimePin": true,
+      "officialAddressSource": null
+    },
+    "position": {
+      "address": "0x58daec3116aae6d93017baaea7749052e8a04fa7",
+      "runtimeBytes": 23877,
+      "runtimeKeccak256": "0xc873e135dc9aaec88489cfbad146b4cb49d6a32e0d80326377784b7ba17670b2",
+      "matchesHistoricalRuntimePin": true,
+      "officialAddressSource": null
+    },
+    "quoter": {
+      "address": "0x8dc178efb8111bb0973dd9d722ebeff267c98f94",
+      "runtimeBytes": 6118,
+      "runtimeKeccak256": "0xd707b1da8cb165e5ea35a3b4450d971eb562ec171e23492aa117036b78a868f6",
+      "matchesHistoricalRuntimePin": true,
+      "officialAddressSource": null
+    },
+    "hook": {
+      "address": "0xe5e702641ea86f4ae6cc3cdaed2b886f976be044",
+      "runtimeBytes": 15167,
+      "runtimeKeccak256": "0xc21b1e6c1b45403e81a581f22ed6d9c747997af1cfdac1b1dc9f4b1d346a10db",
+      "matchesHistoricalRuntimePin": true,
+      "officialAddressSource": null
+    }
+  },
+  "pool": {
+    "id": "0x42ce003822cbaa9eb94e9e07ef8d988e5a998ded86b189fd4f3e25b68f001d01",
+    "key": {
+      "currency0": "0x0000000000000000000000000000000000000000",
+      "currency1": "0x2eb2849cDE7957b86d0dFD4B59e450a9F9D15559",
+      "fee": 0,
+      "tickSpacing": 200,
+      "hooks": "0xE5e702641Ea86F4ae6cC3cDaeD2B886f976Be044"
+    },
+    "identitySource": "Current PositionManager.poolKeys(bytes25), full PoolId hash, manager references and hook registration",
+    "actualQuoteCurrency": "Native ETH at address(0), not WETH; aggregator WETH labels are not used",
+    "stateSlot": "0xd1e1449381bd39ab9322335b9a3cbc64c41aa5592ccfd6b15edf295a43bc4d57",
+    "rawSlot0": "0x00000000000000000002d44f000000000000297e2ef758eaa0d4bee25b72da8d",
+    "rawLiquiditySlot": "0x0000000000000000000000000000000000000000000006331c062631f599cda5",
+    "sqrtPriceX96": "841576077561541398308588683975309",
+    "tick": 185423,
+    "protocolFee": 0,
+    "lpFee": 0,
+    "activeLiquidity": "29277002188455996411301",
+    "gh0stPerEthX18": "112830781494453514806087080",
+    "virtualEthWei": "2756213192321692552",
+    "virtualGh0stUnits": "310985688454979074483211199",
+    "gh0stPerEth": "112830781.49445351480608708",
+    "virtualEth": "2.756213192321692552",
+    "virtualGh0st": "310985688.454979074483211199",
+    "virtualReservesAreActualTokenBalances": false,
+    "actualPoolSpecificTokenReservesVerified": false,
+    "reserveLimit": "Uniswap v4 singleton balances span pools. Virtual reserves describe current active-liquidity curvature, not withdrawable or pool-attributable balances.",
+    "singletonAggregateEthBalanceWei": "23549832575157358071356",
+    "singletonAggregateGh0stBalanceUnits": "311946835897665776770055861",
+    "hook": {
+      "registered": true,
+      "creatorTaxBps": "150",
+      "hookFeeBps": "100",
+      "protocolFeeShareBps": "3000",
+      "buybackEnabled": false
+    }
+  },
+  "weth": {
+    "address": "0x0bd7d308f8e1639fab988df18a8011f41eacad73",
+    "name": "WETH",
+    "symbol": "WETH",
+    "decimals": 18,
+    "totalSupplyUnits": "39112924541424381673943",
+    "contractNativeEthBalanceWei": "39112924541424381673943",
+    "fullWethImplementationAuditComplete": false,
+    "SDKCustomParentField": "contracts.weth.address",
+    "defaultBondReference": "SDK v3.2 stakeToken=getWethAddress(parent); baseStake=1e18; custom parent must supply its WETH address. These defaults are configurable."
+  },
+  "quotes": [
+    {
+      "direction": "ETH to GH0ST",
+      "status": "quoted",
+      "inputUnits": "1000000000000000",
+      "outputUnits": "109970112970585276104994",
+      "quotedExecutionGas": "84893",
+      "persistsState": false,
+      "effectiveGh0stPerEthX18": "109970112970585276104994000",
+      "feeAndImpactBpsVersusSpot": "253"
+    },
+    {
+      "direction": "GH0ST to ETH",
+      "status": "quoted",
+      "inputUnits": "112830781494453514806087",
+      "outputUnits": "974646382077848",
+      "quotedExecutionGas": "108430",
+      "persistsState": false,
+      "effectiveGh0stPerEthX18": "115765865004197362061556643",
+      "feeAndImpactBpsVersusSpot": "253"
+    },
+    {
+      "direction": "GH0ST input for exact 0.001 ETH output",
+      "status": "quoted",
+      "requestedOutputEthWei": "1000000000000000",
+      "requiredInputGh0stUnits": "115693526567992639543950",
+      "effectiveGh0stPerEthX18": "115693526567992639543950000",
+      "quotedExecutionGas": "85270",
+      "persistsState": false,
+      "exactInputCrossCheckEthOutputWei": "999365935335317",
+      "exactInputCrossCheckRecoversRequestedETH": false,
+      "note": "Independent exact-output quotation includes current hook behavior and price impact, excludes transaction gas; no conversion was submitted."
+    }
+  ],
+  "manualPricerProposal": {
+    "selected": false,
+    "automaticOracle": false,
+    "productionTWAP": false,
+    "spotReferenceGh0stPerEthX18": "112830781494453514806087080",
+    "initialExchangeRateX18": null,
+    "maxSnapshotAgeSeconds": 300,
+    "referenceParentCostWei": "1000000000000000",
+    "proposedLiquidityGuard": {
+      "selected": false,
+      "minVirtualEthToReferenceParentCostRatio": 1000,
+      "observedRatio": "2756",
+      "passesProposedRatio": true,
+      "note": "Pool depth observation only, not a bond or deposit requirement; no amount is allocated. Quotes must also succeed and price changes need review."
+    },
+    "risks": [
+      "Spot is manipulable within one block and is not a secure oracle",
+      "Hook/creator fees and market impact can make spot reimbursement insufficient",
+      "A manual rate becomes stale; it must be refreshed from a canonical block before selection",
+      "Active tick liquidity can change or disappear; virtual reserves are not total reserves",
+      "No continuous monitoring or production freshness enforcement is deployed"
+    ]
+  },
+  "credentialURLLogged": false,
+  "privateKeysLoadedOrUsed": false,
+  "transactionRequestsCreated": 0,
+  "transactionsSubmitted": 0,
+  "tokenApprovalsOrTransfersSubmitted": 0
+}

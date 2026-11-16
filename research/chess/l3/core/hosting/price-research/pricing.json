@@ -1,0 +1,194 @@
+{
+  "scope": "Official public hosting price research only; no account access, reservation or order",
+  "checkedAtUTC": "2026-11-16T06:43:18.727260+00:00",
+  "billingHoursPerMonth": 730,
+  "currency": "USD unless explicitly EUR",
+  "region": "us-east-1 / N. Virginia; illustrative price reference, final region unselected",
+  "taxesIncluded": false,
+  "primaryRecommendation": "AWS across availability zones for managed availability infrastructure; benchmark single-core performance and failover before launch",
+  "nitroRecommendedHardware": {
+    "cpu": "16 core CPU or higher; high single-core performance matters",
+    "memory": "128 GB or more DDR5",
+    "storage": "locally attached NVMe SSD, ideally several TB",
+    "source": "https://docs.arbitrum.io/run-a-node/sequencer/run-sequencer-node"
+  },
+  "awsCompute": {
+    "instanceType": "i7i.4xlarge",
+    "vcpu": 16,
+    "vcpuArePhysicalCoreCount": false,
+    "memoryGiB": 128,
+    "localNVMeGB": 3750,
+    "processor": "Intel Xeon Scalable (Emerald Rapids)",
+    "listedClock": "3.2 GHz",
+    "pricePerHourUSD": "1.5101000000",
+    "monthlyPerNodeUSD": "1102.3730000000",
+    "twoNodesMonthlyUSD": "2204.7460000000",
+    "threeNodesMonthlyUSD": "3307.1190000000",
+    "offerSKU": "Z7SMPYDZ89XYPJ3R",
+    "effectiveDate": "2026-11-01",
+    "capacityStatus": "Used",
+    "usageType": "BoxUsage:i7i.4xlarge",
+    "source": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonEC2/current/us-east-1/index.csv",
+    "specificationSource": "https://aws.amazon.com/ec2/instance-types/i7i/",
+    "onDemandCapacityGuaranteed": false,
+    "localInstanceStorageDurableAcrossStopOrTermination": false
+  },
+  "twoCoreNodeEstimate": {
+    "items": [
+      {
+        "item": "Nitro active and standby servers",
+        "quantity": 2,
+        "unit": "node-hour",
+        "unitPriceUSD": "1.5101",
+        "billingUnitsPerMonth": 730,
+        "monthlyUSD": "2204.7460",
+        "basis": "EC2 regional price feed; Used / Linux / Shared / NA software"
+      },
+      {
+        "item": "ElastiCache Redis cache.t4g.small",
+        "quantity": 3,
+        "unit": "node-hour",
+        "unitPriceUSD": ".032",
+        "billingUnitsPerMonth": 730,
+        "monthlyUSD": "70.080",
+        "basis": "ElastiCache regional price feed; Redis current-generation NodeUsage"
+      },
+      {
+        "item": "ALB base",
+        "quantity": 1,
+        "unit": "hour",
+        "unitPriceUSD": ".0225",
+        "billingUnitsPerMonth": 730,
+        "monthlyUSD": "16.4250",
+        "basis": "ELB regional price feed; AWS Region LoadBalancerUsage"
+      },
+      {
+        "item": "ALB average capacity",
+        "quantity": 1,
+        "unit": "LCU-hour",
+        "unitPriceUSD": ".008",
+        "billingUnitsPerMonth": 730,
+        "monthlyUSD": "5.840",
+        "basis": "ELB regional price feed; assumed average one used LCU"
+      },
+      {
+        "item": "EKS standard-support control plane",
+        "quantity": 1,
+        "unit": "cluster-hour",
+        "unitPriceUSD": ".1",
+        "billingUnitsPerMonth": 730,
+        "monthlyUSD": "73.0",
+        "basis": "AWS EKS public pricing; no Auto Mode or extended-support add-ons"
+      },
+      {
+        "item": "NAT gateways",
+        "quantity": 2,
+        "unit": "gateway-hour",
+        "unitPriceUSD": ".045",
+        "billingUnitsPerMonth": 730,
+        "monthlyUSD": "65.700",
+        "basis": "EC2 regional price feed; one per compute AZ"
+      },
+      {
+        "item": "Public IPv4 addresses",
+        "quantity": 4,
+        "unit": "address-hour",
+        "unitPriceUSD": ".005",
+        "billingUnitsPerMonth": 730,
+        "monthlyUSD": "14.600",
+        "basis": "VPC regional price feed; assumed two NAT IPs plus two ALB IPs"
+      },
+      {
+        "item": "gp3 root volumes",
+        "quantity": 200,
+        "unit": "GB-month",
+        "unitPriceUSD": ".08",
+        "billingUnitsPerMonth": 1,
+        "monthlyUSD": "16.00",
+        "basis": "EC2 regional price feed; 100 GB per core node"
+      },
+      {
+        "item": "S3 standard backup storage",
+        "quantity": 500,
+        "unit": "GB-month",
+        "unitPriceUSD": ".023",
+        "billingUnitsPerMonth": 1,
+        "monthlyUSD": "11.500",
+        "basis": "S3 regional price feed; first 50 TB tier; stored backup volume assumption"
+      }
+    ],
+    "monthlySubtotalUSD": "2477.8910",
+    "roundedMonthlySubtotalUSD": "2477.89",
+    "topology": "Active/standby Nitro core across two AZs; three Redis copies (primary plus two replicas) across three AZs; one multi-AZ ALB; EKS standard; private subnets with two NAT gateways. Not a fully isolated enterprise RPC/relay deployment.",
+    "redisMemoryPerNodeGiB": "1.37",
+    "redisSizingCapacityValidated": false,
+    "redisNote": "Small coordinator pricing example only; sustained throughput and message retention must be sized. Higher memory nodes may be needed.",
+    "backupNote": "S3 stores explicit application/state backups; EC2 local instance-store NVMe is not protected by EBS snapshots."
+  },
+  "optionalRelayAndProxyBudget": {
+    "twoT3MediumHourlyRateUSD": ".0416 each",
+    "monthlyComputeAndTwo20GBRootVolumesUSD": "63.9360",
+    "capacityValidated": false,
+    "note": "Lightweight relay/proxy example, not full Nitro RPC nodes; sustained CPU-credit charges can add cost."
+  },
+  "optionalThirdCoreNode": {
+    "roles": "Separate validator or third sequencer; role separation must be finalized",
+    "monthlyIncrementIncluding100GBRootAndThirdAZNATAndIPv4USD": "1146.8730000000",
+    "additionalNativeSettlementGasIncluded": false
+  },
+  "planningTotals": {
+    "twoCorePlusLightProxiesUSD": "2541.8270",
+    "threeCorePlusLightProxiesUSD": "3688.7000000000",
+    "suggestedUserFacingRounded": "About $2,550/month base, or $3,700/month with a third full-size node, before usage-dependent services and operations."
+  },
+  "unpricedOrVariableCosts": [
+    "Internet egress and cross-AZ transfer",
+    "NAT data processing at $0.045/GB in the extracted current offer",
+    "Higher ALB capacity, WAF/CDN and DDoS service choices",
+    "CloudWatch logs/metrics, alerts, DNS, backup requests and restore traffic",
+    "Parent-chain redundant RPC subscriptions",
+    "Production-sized separate RPC fleet and additional relays",
+    "Labor, management/support plans and incident response",
+    "Taxes; no Spot/Reserved/Savings Plans discounts assumed"
+  ],
+  "excludedBlockchainCosts": [
+    "Robinhood parent settlement gas",
+    "Validator collateral and challenge bonds",
+    "Future LLM/GPU inference compute"
+  ],
+  "availability": {
+    "zeroDowntimeGuarantee": false,
+    "EC2QualifyingRegionalSLAPercent": "99.99",
+    "SLAIsEndToEndChainGuarantee": false,
+    "officialNitroDefaultUnplannedFailoverGap": "Up to lockout-duration (default about one minute), plus coordinator interval and startup; Redis or lack of synced standbys can stop sequencing.",
+    "haGuide": "https://docs.arbitrum.io/launch-arbitrum-chain/run-a-node/high-availability-sequencer",
+    "SLASource": "https://aws.amazon.com/compute/sla/",
+    "local100msBlockTimeIsNotHostedSLATPSOrUserRoundTrip": true
+  },
+  "hetznerValueAlternative": {
+    "hardwareSource": "https://docs.hetzner.com/robot/dedicated-server/server-lines/ax-server/",
+    "configurator": "https://www.hetzner.com/dedicated-rootserver/ax102/configurator/?country=ot",
+    "priceSource": "https://docs.hetzner.com/general/infrastructure-and-availability/price-adjustment/",
+    "priceTableEffectiveDate": "2026-06-15",
+    "cpu": "AMD Ryzen 9 7950X3D, 16 physical cores / 32 threads",
+    "storage": "2 x 1.92 TB NVMe datacenter SSD; RAID1 leaves about 1.92 TB before overhead",
+    "pricedSKU": "AX102-1",
+    "pricedSKUMemory": "128 GB DDR5 (non-ECC in current SKU-specific table)",
+    "monthlyEURExVATAndIPv4": "257.30",
+    "setupEURExVAT": "129.00",
+    "twoServersMonthlyEURExVATAndIPv4": "514.60",
+    "twoServersSetupEURExVAT": "258.00",
+    "limitedSKU": "AX102-1-LTD",
+    "limitedMonthlyEURExVATAndIPv4": "157.30",
+    "limitedSetupEURExVAT": "39.00",
+    "limitedStockVerified": false,
+    "ECCSKU": "AX102-3 / AX102-3-LTD",
+    "ECCMemory": "128 GB DDR5 ECC",
+    "ECCPriceVerified": false,
+    "ECCPriceEUR": null,
+    "caveat": "Do not attach the AX102-1 price to the ECC -3 SKU. Limited pricing depends on stock; older generic AX102 hardware pages do not resolve per-SKU pricing. Self-managed failover/Redis/monitoring and support must be priced separately."
+  },
+  "accountAccessed": false,
+  "ordersPlaced": 0,
+  "licenseOrPurchaseTermsAccepted": false
+}

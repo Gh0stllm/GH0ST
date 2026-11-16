@@ -1,0 +1,47 @@
+{
+  "scope": "Actual registered full-model Nitro EVM ABI before/after transaction-local dirty word-store, both host execution backends",
+  "comparedFields": [
+    "fullGethStateRoot",
+    "checkpointSHA256",
+    "logitsI32LESHA256",
+    "commits",
+    "bestToken"
+  ],
+  "allFourModesExactlyEqual": true,
+  "fullGethStateRoot": "0xbd05e78bb902245dd227e6eb24d4b7dcb3a4b9fe57f5bca534659bf42b04e033",
+  "baselineTotalFixtureGasIncludingFailureProbes": 10090709081,
+  "dirtyTotalFixtureGasIncludingFailureProbes": 7148295681,
+  "totalFixtureGasReductionFraction": 0.2915962967895219,
+  "baselineAdvanceGas": 245844125,
+  "dirtyAdvanceGas": 132053125,
+  "fixturePerCallAllowance": 2000000000,
+  "genesisStorageExcluded": true,
+  "ordinaryTransactionFeasibilityProven": false,
+  "speedImprovementClaimed": false,
+  "records": [
+    {
+      "backend": "interpreter",
+      "localWallSeconds": 16.280282084,
+      "singleAdvanceMeasuredGas": 245844125,
+      "totalFixtureCallGasIncludingFailureProbes": 10090709081
+    },
+    {
+      "backend": "native-compiler",
+      "localWallSeconds": 2.437979209,
+      "singleAdvanceMeasuredGas": 245844125,
+      "totalFixtureCallGasIncludingFailureProbes": 10090709081
+    },
+    {
+      "backend": "interpreter",
+      "localWallSeconds": 16.587592,
+      "singleAdvanceMeasuredGas": 132053125,
+      "totalFixtureCallGasIncludingFailureProbes": 7148295681
+    },
+    {
+      "backend": "native-compiler",
+      "localWallSeconds": 2.7709815,
+      "singleAdvanceMeasuredGas": 132053125,
+      "totalFixtureCallGasIncludingFailureProbes": 7148295681
+    }
+  ]
+}

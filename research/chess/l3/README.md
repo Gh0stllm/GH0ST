@@ -1,73 +1,53 @@
-# GH0ST L3 developer build
+# GH0ST L3
 
-The selected direction is a custom L3 settling on Robinhood, with GH0ST gas, ordinary EVM/Stylus compatibility and a separate deterministic model runtime. **The native development node now boots locally, and real local transactions deploy/activate Stylus and call it from Solidity. The proposed Robinhood-settled L3, GH0ST gas and matching fraud prover are not deployed.** No server is rented and this is not a twenty-game deployment within 100 ICP. The reviewed Stockfish policy remains unchanged.
+Build the **fast base chain first**, then integrate the LLM and chess products. The initial core uses standard Nitro/Stylus, the official consensus-v61 machine, GH0ST native gas and Robinhood as parent. [Core build and configuration](core/README.md).
 
-## Implemented developer components
+The clean node is built and locally tested. **No public L3, hosted RPC, server order or real token movement has been completed.** Parent/child integration is being rehearsed with local nodes and a clearly labeled mock token. Experimental LLM debug precompiles are excluded from the initial core.
 
-| Component | Verified result | Remaining chain integration |
-|---|---|---|
-| [Stylus Rust kernel](stylus/README.md) | SDK 0.10.10; normalized 23,102-byte Wasm; actual Nitro activation, 12 live local RPC ABI cases and four mined local receipts, including Solidity calling Stylus | Public chain configuration/settlement and fraud proof |
-| [Paged model registry](stylus/registry/README.md) | 18 local EVM checks for authenticated pages, canonical padding, completeness and immutability | Large uploads and authenticated runtime loader |
-| [Full small-model runtime](llm/README.md) | Complete 3.75M-parameter TinyStories INT8/Q12 model; 64 positions / 3,216,448 logits match native/Wasm/independent oracle; 9 negative boundary tests | Larger architectures and production execution/proving |
-| [Persistent full-model bridge](bridge/README.md) | Native and actual Go/WASI inference; caller-bound jobs; exact checkpoint/write parity; real ArbOS storage and rollback | Public bounded model loading, transaction gas and complete fraud-proof integration |
-| [Nitro overlays](nitro/README.md) | Complete native Nitro node binary builds from exact contract sources; registered full-model debug ABI executes a complete token in both backends; WASI package compiles | Public L3 configuration, complete replay execution and fraud-prover checks |
-| [Wasm compatibility checker](compatibility/README.md) | 13 tests; catches required Rust Wasm normalization; canonical kernel passes; 103 MB Stockfish correctly rejected by standard Stylus | Structural checks do not establish deployment/proving compatibility |
+## Verified core work
 
-The full-context test generated a short story beginning `Once upon a time, there was a little girl named Lily.` and compared every vocabulary logit at all 64 positions. It tests the documented INT8/Q12 variant, not FP32 equivalence or 7B/70B support. Model data are separate from program code. The registry's 64 GiB format bound is not a measured inference capacity or storage-cost claim.
+| Component | Evidence |
+|---|---|
+| Clean standard Nitro v3.12.2 | Pristine source, upstream Go1.25.12, ArbOS61, debug off; reproducible local native build |
+| Official production machine | Canonical consensus-v61 root recovered from the SHA-verified official Linux image layer; no experimental model root used |
+| Fast local sequencer | 96/96 measured native/Stylus transactions; chosen100ms minimum block delay; p95 approximately101–105ms |
+| Solidity/Stylus | Real contract deployment, activation and execution on the running clean node |
+| Factory route | Exact upstream templates and mock-token rollup initialized on a synthetic parent; 140 checks, ordinary code/initcode limits |
+| Parent token | Read-only Robinhood checks confirm the expected GH0ST runtime, 18 decimals and basic ERC20 behavior; not a full audit |
+| Genesis proposal | Exact pinned SDK pure helpers generate a standard61/debug-off configuration; no provider, signer or broadcast |
 
-The actual registered debug ABI test completes 18 committed transitions for one token and matches all 50,257 logits plus the expected checkpoint. Caller/static isolation, stale work, missing/corrupt genesis and out-of-gas rollback checks pass. Interpreter and native compiler outputs, checkpoints and gas match on this fixture.
+The burst fixture used eight concurrent senders and achieved about78 lightweight transactions/second. It is a bounded local workload, not maximum capacity, hosted latency or LLM throughput. The100ms setting is a minimum delay between non-empty blocks; execution and network conditions can make intervals longer. A sequencer receipt is separate from parent batch confirmation and final settlement. See [measured receipts](core/node/evidence/receipt-benchmark.json).
 
-The real ArbOS tests currently spend billions of storage gas across model setup and inference because they reload and checkpoint through individual storage words. A measured ABI advance alone consumes 245,844,125 gas under an oversized local fixture allowance. This is not feasible under ordinary transaction limits. The native compiler improves local execution speed with identical tested state, but does not change storage gas. Efficient immutable model reads, dirty checkpoint pages and deterministic pricing remain release gates. [Storage optimization plan](architecture/storage-optimization-plan.md).
+## Deployment direction
 
-`capabilities.json` records each component's exact scope and artifact hashes. The standard Stylus VM keeps its ordinary limits; large-model execution is a separate custom path. Raising limits or launching an ordinary Nitro container does not connect that path automatically.
+- Parent: Robinhood mainnet4663; native gas: the existing GH0ST ERC20.
+- Proposed child ID4663001, screened against the public list but not registered or reserved.
+- Standard Rollup data availability and official machine root; no custom model dependency for the first chain.
+- Self-deployed factory and self-hosted nodes, with a reviewed operational/validation setup.
+- GH0ST reimburses posting costs; operators still need parent ETH and a reviewed token pricer/rate.
 
-The working assumption is a capped pilot while the requested choice between a scheduled tournament and an always-on service remains open. A short pilot does not make a monthly server charge prorated.
+Robinhood is absent from the current canonical-factory table. Self-deployment is documented but unsupported upstream, and the applicable Nitro/AEP terms still need to be handled. No license was accepted. [Factory documentation](https://docs.arbitrum.io/launch-arbitrum-chain/deploy/canonical-factory-contracts), [licensing](https://docs.arbitrum.io/launch-arbitrum-chain/overview/license).
 
-## Selected server candidate
+The SDK's1WETH validator bond is a configurable default, not a universal launch fee. A project-run pilot and a separately reviewed smaller/custom bond are being considered; collateral asset/amount, validator custody and public access are not silently selected. See [gas policy](core/gas/README.md) and [deployment proposal](core/deployment/README.md).
 
-OVH/Kimsufi SYS-3: Xeon E-2288G, eight cores and sixteen threads, 128 GB DDR4 ECC RAM, two 960 GB enterprise NVMe drives, and advertised 1 Gbps unmetered public networking. Configure RAID1 and verify it on the actual host: usable mirrored capacity is about 960 GB before formatting, not 1.92 TB. The SYS range advertises Anti-DDoS, root access, provider support and remote console access. Region-specific SLA and the account's final upgraded quote have not been checked.
+**The user removed the old100ICP and0.003ETH spending ceilings.** Active plans use cost estimates and review with no replacement finite ceiling. Historical conversions/fees remain accounting records. No automatic top-ups were enabled. Existing fixed chess reward/entry amounts remain unchanged and are not available for an unapproved bond.
 
-| Item | Price excluding VAT |
-|---|---:|
-| Server each month | €71.99 |
-| Advertised base setup | €41.99 |
-| First month, server and setup only | €113.98 |
-| Optional separate 1 TB Hetzner BX11 off-site backup | €3.20/month |
+## Hosting and availability
 
-Sources: [server configuration](https://www.kimsufi.com/en-ie/sys/sys-3/), [SYS range features](https://www.kimsufi.com/en-gb/sys/), [backup candidate](https://www.hetzner.com/storage/storage-box/). Prices are advertised candidates, not a placed order. DDR4 is below Nitro's published DDR5 baseline, so actual chain and engine capacity must be measured before selecting the host for funded games.
+Use the current core hosting research rather than the earlier single-server chess candidate. A fast public service needs redundant nodes, coordinated sequencer leadership, replicated coordination state, restricted administration, backups and tested recovery. Multiple containers or mirrored disks on one host do not provide independent failure protection. No provider or configuration guarantees literal zero downtime.
 
-A single host can hold the sequencer, batch poster and local validator during rehearsal. Those roles share the host's failure domain. ECC RAM and mirrored drives do not provide an independent validator or high availability. Public-service availability, monitoring, off-site restoration and dispute recovery need a reviewed operating plan; an independently operated validator in a separate failure domain is recommended.
+## Preserved future compute research
 
-## Prepared artifacts
+Further LLM work is deferred while the base L3 is built. These verified components remain available without being enabled in the core:
 
-- `plan.json`: server quote, topology, scope, preserved spending caps and unresolved capital costs.
-- `parent-read.mjs`: anonymous read-only Robinhood chain and canonical-token checks. It never prints an endpoint containing credentials and has no transaction method.
-- `parent-snapshot.json`: actual parent snapshot; verified chain4663 and the expected GH0ST runtime/18 decimals. This does not establish a supported factory or complete fee-token audit.
-- `architecture/manifest.json`: pinned full model and strength policy, required custom execution/proving work and release evidence.
-- `server/host_preflight.py`: read-only Linux/CPU/RAM/storage/mirroring checks for the actual target host.
-- `server/compose.rehearsal.yaml`: ordinary Nitro rehearsal template, pinned to a verified linux/amd64 digest. It contains no signing key and binds RPC only to loopback.
-- `server/plan_guard.py`: plan checks that cannot launch mainnet. Filling approval/evidence fields does not turn this template into a custom engine.
+| Component | Verified research scope |
+|---|---|
+| [Small-model runtime](llm/README.md) | Complete TinyStories INT8/Q12/context64 variant;3,216,448 native/Wasm/oracle logits match |
+| [Persistent model bridge](bridge/README.md) | Caller-bound jobs, exact checkpoints and all vocabulary logits; actual debug ABI/ArbOS tests |
+| [State-write optimization](architecture/storage-optimization-plan.md) | Identical tested Geth state roots;29.16% lower fixture gas, still above ordinary limits; no CPU speed claim |
+| [Experimental replay machine](nitro/replay/README.md) | Complete custom machine generated; full-model proof execution and an incorrect-result challenge remain unverified |
+| [Paged registry](stylus/registry/README.md) |18 local EVM checks;64GiB format bound is not measured model capacity |
 
-The full bot remains Stockfish19, its pinned 98,511,183-byte NNUE, 24 million nodes per Black decision, Hash128, Threads1, maximum skill and complete per-game retained state. No hosted inference API substitutes for deterministic chain execution.
+The unchanged Stockfish policy and one-million-GH0ST checkmate reward belong to the later chess product. Launching the standard base chain does not require claiming that the engine or a large LLM has already been ported. [Future architecture](architecture/README.md).
 
-## Work required before a server lease
-
-The native macOS/arm64 node binary and complete upstream Go/WASI replay artifact now build from the exact pinned sources. The replay artifact has not executed a chain transition, and the Linux/amd64 hosting image remains unbuilt. The isolated dev boot has no parent connectivity and no seeded model. Required integration remains Robinhood settlement/GH0ST gas configuration and matching replay/fraud-proof execution, including a real test in which an incorrect result loses a challenge. Then port the complete Stockfish continuation and retained state and compare complete searches and games against the reference. A standard Nitro image or a Stockfish process alongside it does not satisfy this requirement. [Custom execution requirements](https://developer.arbitrum.io/launch-arbitrum-chain/extend-the-protocol/stf).
-
-The 100 ICP total cap includes the previously converted 13 ICP and fees. The existing ETH cap remains 0.003 ETH. Server rental, Robinhood settlement, installation, operating reserves, finality/dispute retention and validator funding must fit a reviewable budget. The quote above covers hardware rental only.
-
-Current SDKv3.2 defaults to a **1 WETH validator base stake**. That is configurable, not a universal minimum, but it exceeds existing ETH authority. GH0ST gas does not automatically change the bond asset, and prize funds are not available for an unapproved bond. A smaller/custom bond or permissioned validator configuration needs explicit economic/trust review; none has been selected. [SDK configuration](https://github.com/OffchainLabs/arbitrum-chain-sdk/blob/main/src/createRollupPrepareDeploymentParamsConfig/v3.2.ts), [BoLD recommendations](https://docs.arbitrum.io/launch-arbitrum-chain/chain-config/validation/bold).
-
-Robinhood remains absent from the current canonical-factory table. Its deployment path and the applicable license therefore remain unresolved. No license has been accepted. [Factories](https://docs.arbitrum.io/launch-arbitrum-chain/deploy/canonical-factory-contracts), [license](https://docs.arbitrum.io/launch-arbitrum-chain/overview/license).
-
-Only after exact engine/prover tests, measured twenty-game capacity/costs, custody/finality checks and an approved concrete total budget should paid hosting and a closed pilot begin. Public fee admission stays disabled.
-
-## Local checks
-
-```sh
-python3 -m unittest discover -s research/chess/l3/server -p 'test_*.py' -v
-python3 research/chess/l3/server/plan_guard.py research/chess/l3/server/plan.example.json
-node research/chess/l3/parent-read.mjs --write
-```
-
-The parent command is a read-only network probe. The guard and tests start no containers, rent no machines and move no funds. The Docker template still needs a reviewed local node configuration; none of these checks constitutes a custom-chain boot or chess game.
+`capabilities.json` records exact component scopes. Source/evidence manifests pin local tests; cached binaries, model weights and keys remain ignored. All actual public-chain operations require a concrete deployment configuration rather than checking a planning flag.

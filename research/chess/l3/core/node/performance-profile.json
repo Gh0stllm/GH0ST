@@ -1,0 +1,44 @@
+{
+  "schema": "gh0st.l3.node-performance-profile.v1",
+  "purpose": "Standard Nitro/Stylus base L3 first; custom LLM execution is a later upgrade",
+  "productionChainDeployed": false,
+  "parentChain": {"name": "Robinhood Chain", "chainId": 4663},
+  "childChainId": null,
+  "nativeGasSymbol": "GH0ST",
+  "nitroTag": "v3.12.2",
+  "officialLinuxAmd64Image": "offchainlabs/nitro-node@sha256:c908f324a08b7332d1fa031b83b071cfa2d9edd8a364c4344d7c34b665bf08e9",
+  "officialWasmModuleRoot": "0xc10cd7ec6acaf1c441a3f6bd0900ad20f15855ba775a96f1939118cbc629dc97",
+  "initialArbOSVersion": 61,
+  "allowDebugPrecompiles": false,
+  "customSTF": false,
+  "LLMModelSeedRequired": false,
+  "nodeSettings": {
+    "execution.sequencer.max-block-speed": "100ms",
+    "execution.sequencer.poll-interval": "5ms",
+    "execution.stylus-target.allow-offchain-activation": false,
+    "http.addr": "127.0.0.1",
+    "http.api": ["net", "web3", "eth", "arb"],
+    "auth.addr": "127.0.0.1"
+  },
+  "RPCIngressPolicy": {
+    "directNodePortPublic": false,
+    "publicGatewayTLSRequired": true,
+    "publicGatewayRateLimitsRequired": true,
+    "privilegedMethodsOnPublicGateway": false,
+    "adminAccess": "private network or local Unix socket only",
+    "authEndpoint": "private authenticated execution/consensus traffic only"
+  },
+  "unchangedLimits": {
+    "EVMTransactionGasLimits": true,
+    "StylusMemoryAndCodeLimits": true,
+    "StylusSIMDPolicy": true
+  },
+  "latencyMeaning": {
+    "target": "Fast local sequencer receipts for ordinary EVM/Stylus transactions",
+    "minimumDelayIsNotGuaranteedReceiptLatency": true,
+    "sequencerReceiptIsNotRobinhoodBatchConfirmation": true,
+    "sequencerReceiptIsNotEthereumFinality": true,
+    "LLMThroughputNotEstablished": true
+  },
+  "spending": {"serverOrdered": false, "hostingAuthorized": false, "publicTransactionsSent": false}
+}

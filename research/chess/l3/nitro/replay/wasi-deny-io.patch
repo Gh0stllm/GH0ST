@@ -1,0 +1,27 @@
+--- a/crates/wasm-libraries/wasi-stub/lib.rs
++++ b/crates/wasm-libraries/wasi-stub/lib.rs
+@@ -99,3 +99,24 @@
+     fn args_sizes_get(a: GuestPtr, b: GuestPtr) -> Errno;
+     fn args_get(a: GuestPtr, b: GuestPtr) -> Errno
+ }
++
++// GH0ST replay link compatibility only. These filesystem operations are forbidden
++// in the deterministic STF. Any execution must trap; never emulate host IO.
++#[cfg(target_arch = "wasm32")]
++#[unsafe(no_mangle)]
++pub unsafe extern "C" fn wasi_snapshot_preview1__path_filestat_set_times(_a0: u32, _a1: u32, _a2: u32, _a3: u32, _a4: u64, _a5: u64, _a6: u32) -> Errno {
++    core::arch::wasm32::unreachable()
++}
++
++#[cfg(target_arch = "wasm32")]
++#[unsafe(no_mangle)]
++pub unsafe extern "C" fn wasi_snapshot_preview1__path_link(_a0: u32, _a1: u32, _a2: u32, _a3: u32, _a4: u32, _a5: u32, _a6: u32) -> Errno {
++    core::arch::wasm32::unreachable()
++}
++
++#[cfg(target_arch = "wasm32")]
++#[unsafe(no_mangle)]
++pub unsafe extern "C" fn wasi_snapshot_preview1__path_symlink(_a0: u32, _a1: u32, _a2: u32, _a3: u32, _a4: u32) -> Errno {
++    core::arch::wasm32::unreachable()
++}
++

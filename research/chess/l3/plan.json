@@ -1,12 +1,11 @@
 {
-  "status": "server_candidate_selected_local_rehearsal_bundle_only",
+  "status": "base_l3_first_clean_nitro_stylus_local_build_verified",
   "asOfUserDateIST": "2026-11-16",
-  "userDirection": "Custom L3 on a reliable server",
+  "userDirection": "Fast, responsive self-hosted L3 first; future LLM support; old financial ceilings removed",
   "launchDuration": {
-    "questionPending": true,
-    "workingAssumption": "capped twenty-game pilot preparation",
-    "alwaysOnServiceAuthorized": false,
-    "pilotDurationDoesNotImplyProratedServerBilling": true
+    "workingAssumption": "always-on base-chain planning for high availability",
+    "alwaysOnTarget": true,
+    "hostingOrderPlaced": false
   },
   "serverCandidate": {
     "provider": "OVHcloud Kimsufi",
@@ -22,7 +21,12 @@
     "drives": "2 x 960 GB enterprise NVMe, configure and verify RAID1",
     "mirroredUsableDecimalGBBeforeFormatting": 960,
     "publicNetwork": "1 Gbps unmetered, advertised",
-    "features": ["root access", "Anti-DDoS", "KVM/IPMI access", "provider support"],
+    "features": [
+      "root access",
+      "Anti-DDoS",
+      "KVM/IPMI access",
+      "provider support"
+    ],
     "slaVerifiedForSelectedRegion": false,
     "monthlyEURExVAT": "71.99",
     "baseSetupEURExVAT": "41.99",
@@ -33,7 +37,8 @@
     "capacityBenchmarkPerformed": false,
     "DDR4BelowPublishedNitroDDR5Baseline": true,
     "resourcesReserved": false,
-    "provisioned": false
+    "provisioned": false,
+    "status": "earlier_single_server_chess_candidate_not_current_HA_recommendation"
   },
   "optionalOffsiteBackupCandidate": {
     "provider": "Hetzner",
@@ -47,7 +52,11 @@
   },
   "topology": {
     "initialRehearsalHosts": 1,
-    "roles": ["sequencer and batch poster", "local validator and prover", "restricted RPC"],
+    "roles": [
+      "sequencer and batch poster",
+      "local validator and prover",
+      "restricted RPC"
+    ],
     "sameHostRolesAreIndependent": false,
     "highAvailability": false,
     "mirroringIsOffsiteBackup": false,
@@ -67,35 +76,62 @@
     "ordinaryNitroRehearsalIsNotChessDeployment": true,
     "parentFactorySupportVerified": false,
     "licenseAccepted": false,
-    "serverSideInferenceAPIAllowedAsOnchainBrain": false
+    "serverSideInferenceAPIAllowedAsOnchainBrain": false,
+    "initialArbOSVersion": 61,
+    "initialCoreCustomSTF": false,
+    "experimentalLLMEnabled": false,
+    "childChainIdProposal": 4663001,
+    "officialWasmModuleRoot": "0xc10cd7ec6acaf1c441a3f6bd0900ad20f15855ba775a96f1939118cbc629dc97"
   },
   "constraints": {
     "enginePolicySource": "architecture/manifest.json",
     "unchangedEngine": "Stockfish 19, full pinned NNUE,24m nodes,Hash128,Threads1,maximum skill,complete per-game retained state",
-    "totalICPIncludingPriorAllocationAndFees": "100",
     "alreadyConvertedICP": "13",
     "priorLedgerFeesICP": "0.0003",
-    "ETHDeploymentAndRelayTotalCap": "0.003",
     "prizeGH0STCap": "1000000",
     "pilotEntryGH0STCap": "25000",
     "automaticTopups": false,
     "externalHostingSpendApproved": false,
     "validatorBondSpendApproved": false,
     "prizeReallocationToValidatorBondApproved": false,
-    "twentyGameBudgetVerified": false
+    "twentyGameBudgetVerified": false,
+    "oldFinancialCeilingsRemovedByUser": true,
+    "finiteSpendingCaps": null,
+    "alreadyConvertedICPIsHistoryNotCurrentBalance": true
   },
   "capitalGate": {
     "currentSDKV3Point2DefaultBond": "1 WETH on parent, configurable not a universal minimum",
-    "defaultBondFitsExistingETHAuthority": false,
+    "defaultBondFitsExistingETHAuthority": null,
     "GH0STGasAutomaticallyChangesBondToken": false,
     "reducedOrCustomBondSecurityReviewed": false,
     "permissionedValidationSelected": false,
-    "source": "https://github.com/OffchainLabs/arbitrum-chain-sdk/blob/main/src/createRollupPrepareDeploymentParamsConfig/v3.2.ts"
+    "source": "https://github.com/OffchainLabs/arbitrum-chain-sdk/blob/main/src/createRollupPrepareDeploymentParamsConfig/v3.2.ts",
+    "note": "Earlier finite ETH ceiling was removed; actual collateral configuration and funding remain unselected."
   },
-  "notIncludedInServerQuote": ["tax", "RPC usage", "parent ETH settlement", "validator bond capital", "licensing or AEP fees", "custom engine and proving implementation", "audits", "prize funding", "additional hosting through finality or disputes"],
-  "nextBuildStep": "Local deterministic custom execution and real bad-result fraud-proof rehearsal before any full-engine server lease",
+  "notIncludedInServerQuote": [
+    "tax",
+    "RPC usage",
+    "parent ETH settlement",
+    "validator bond capital",
+    "licensing or AEP fees",
+    "custom engine and proving implementation",
+    "audits",
+    "prize funding",
+    "additional hosting through finality or disputes"
+  ],
+  "nextBuildStep": "Actual local parent/child rollup and mock native-gas integration, then reviewed hosting, validator, fee-pricer and parent deployment setup",
   "readyForServerPurchaseReview": false,
   "readyForProduction": false,
   "paidEntriesEnabled": false,
-  "financialActions": false
+  "financialActions": false,
+  "budgetPolicy": {
+    "mode": "estimates_and_review",
+    "old100ICPCapRemoved": true,
+    "old003ETHCapRemoved": true,
+    "finiteSpendingCeilings": null,
+    "automaticTopups": false,
+    "historicalConvertedICP": "13",
+    "historicalICPTransferFees": "0.0003",
+    "historicalETHDeploymentFees": "0.000064114367868"
+  }
 }

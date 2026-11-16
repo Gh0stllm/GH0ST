@@ -59,8 +59,12 @@ class ReleaseBoundaryTests(unittest.TestCase):
             plan["operator"][field] = value
             self.assertFalse(validate(plan)["validForRequestedMode"])
 
-    def test_hard_cap_changes_are_rejected(self):
-        self.plan["financialCaps"]["totalICP"] = "1250"
+    def test_estimates_above_removed_caps_are_not_rejected(self):
+        self.plan["estimatedCosts"] = {"ICP": "1250", "ETH": "0.01"}
+        self.assertTrue(validate(self.plan)["validForRequestedMode"])
+
+    def test_automatic_topups_are_still_not_enabled(self):
+        self.plan["financialPolicy"]["automaticTopups"] = True
         self.assertFalse(validate(self.plan)["validForRequestedMode"])
 
 

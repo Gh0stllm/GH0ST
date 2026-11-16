@@ -1,8 +1,8 @@
 # GH0ST L3 engineering and launch requirements
 
-The proposed chain settles on Robinhood Chain, uses GH0ST as native gas, and executes the unchanged chess engine as part of its deterministic state transition. **This is a design specification. No deployable custom engine, matching fraud prover or twenty-game budget proof exists yet.** Renting a server does not complete those components.
+This is the deferred custom chess/compute phase. The user prioritized the [standard base L3](../core/README.md) first; its launch does not depend on completing the chess engine. The future chain extension settles on Robinhood, uses GH0ST gas, and executes the unchanged chess engine as part of its deterministic state transition. **This is a design specification. No deployable custom engine, matching fraud prover or twenty-game budget proof exists yet.** Renting a server does not complete those components.
 
-[`manifest.json`](manifest.json) pins the existing engine policy and leaves every production gate closed. It approves no server order, bond, transaction or token movement. The existing 100 ICP total cap, 0.003 ETH cap and fixed 1,000,000 GH0ST prize remain constraints.
+[`manifest.json`](manifest.json) pins the existing engine policy and leaves every production gate closed. It approves no server order, bond, transaction or token movement. The old 100 ICP and 0.003 ETH spending ceilings were removed by the user. Historical spending remains recorded; the fixed 1,000,000 GH0ST prize and 25,000 GH0ST entry remain unchanged.
 
 ## Architecture
 
@@ -32,13 +32,13 @@ Standard Stylus code-size and SIMD defaults do not accept this engine unchanged.
 
 First implement a small deterministic custom transition and its matching fraud proof. Demonstrate that an intentionally wrong output loses a local challenge. Then integrate the complete engine with bounded continuations. Engine work remains node-based; a wall-clock timeout must fault/refund rather than return a weaker partial search. The state transition cannot call an external engine process or network API. [Custom execution and proving requirements](https://developer.arbitrum.io/launch-arbitrum-chain/extend-the-protocol/stf).
 
-## Gates before spending and paid games
+## Gates for the later custom chess product
 
 1. Resolve the Robinhood factory/support route, native gas-token compatibility and licensing.
 2. Pin reproducible custom node, replay/prover and model artifacts. Validate the toy correct/incorrect challenge first.
 3. Prove complete retained-state continuation and consecutive full-budget engine parity. Run complete games through native and replay paths; exercise corruption, restarts and stale continuations.
 4. Test the new parent escrow, bridge accounting, authenticated outbox sender/child chain, finality, payout and refunds. No prize can depend only on sequencer confirmation.
-5. Complete at least twenty normal-game workloads under the unchanged policy. The existing planning assumption is 80 Black decisions per game, not a universal maximum. Measure node/prover CPU, memory, disk growth, latency, settlement gas and operating headroom before claiming capacity or a 100 ICP total.
+5. Complete at least twenty normal-game workloads under the unchanged policy. The existing planning assumption is 80 Black decisions per game, not a universal maximum. Measure node/prover CPU, memory, disk growth, latency, settlement gas and operating headroom before claiming capacity or an operating-cost target.
 6. Review exact server, bond and deployment funding. Current SDK v3.2 defaults to a separate WETH stake token and base stake of 1 WETH; these are configurable defaults, not a universal minimum. GH0ST gas does not automatically set the bond currency. A lower/custom bond needs a security/economic review and explicit funding authorization, and cannot silently use the prize pool. [SDK defaults](https://github.com/OffchainLabs/arbitrum-chain-sdk/blob/main/src/createRollupPrepareDeploymentParamsConfig/v3.2.ts), [bond configuration](https://developer.arbitrum.io/launch-arbitrum-chain/chain-config/validation/bond-and-validator).
 7. Review the availability, failure and refund model; rehearse an offsite restore and monitor the selected topology. An independent validator failure domain is recommended for public service. Keep state, RPC and an adequately funded prover/validator available through final assertion confirmation and disputes, including after the last game. Complete a closed, receipt-backed pilot before accepting an entry fee.
 

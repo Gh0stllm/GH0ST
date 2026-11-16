@@ -1,0 +1,79 @@
+{
+  "scope": "Read-only parent ERC20 identity, partial custom-gas compatibility and optional pricer checks; not a full token audit or deployment",
+  "checkedAtUTC": "2026-11-16T06:17:14.067Z",
+  "chainId": 4663,
+  "blockNumber": 115552968,
+  "blockHash": "0x1e915e13abc519d8cfe371b7b5b5647e96c0bff138413df65077b25a448d1e37",
+  "blockIsHeadMinus12": true,
+  "finalityProven": false,
+  "endpointSource": "public fallback",
+  "credentialURLLogged": false,
+  "parentNitro": {
+    "allArbSysReadsSucceeded": true,
+    "arbChainID": "4663",
+    "arbBlockNumber": "115552968",
+    "arbOSVersionRaw": "116",
+    "arbOSVersionDecoded": "61",
+    "versionEncoding": "ArbSys reports ArbOS version + 55; raw value is not an ArbOS version",
+    "matchesRobinhoodChainId": true,
+    "rpcHeightIsNotAssumedToBeEVMBlockNumber": true
+  },
+  "token": "0x2eb2849cDE7957b86d0dFD4B59e450a9F9D15559",
+  "name": "GH0ST",
+  "symbol": "GH0ST",
+  "decimals": 18,
+  "totalSupplyUnits": "997000000000000000000000000",
+  "runtimeKeccak256": "0x7c38fa1b069b5e677034bab6219dd2f519f219f7637910131d9a0f58a05ae164",
+  "tokenIdentityMatches": true,
+  "proxySlots": {
+    "eip1967.implementation": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "eip1967.admin": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "eip1967.beacon": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "eip1822Proxiable": "0x0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "proxySlotsClear": true,
+  "opcodeHeuristic": {
+    "delegatecall": 0,
+    "callcode": 0
+  },
+  "simulations": {
+    "statePersisted": false,
+    "probeAccount": "0x8D6B11CFdF079e27C17e05Cb7Ea81235887691c6",
+    "probeBalanceUnits": "6203543923518168334031263",
+    "selfTransferZero": true,
+    "approveZero": true,
+    "transferFromZero": true,
+    "selfTransferOneBaseUnit": true,
+    "positiveSelfTransferSkippedReason": null
+  },
+  "basicTokenChecksPassed": true,
+  "unprovenRequirements": [
+    "No transfer fee or rebase under all states",
+    "No callbacks or hooks under all states",
+    "No nonstandard proxy/upgrade path",
+    "All nonzero transfer and approval cases",
+    "Canonical bridge round trip"
+  ],
+  "fullTokenAuditComplete": false,
+  "currentParentGasPriceWei": "20016000",
+  "pricer": null,
+  "batchPosters": [],
+  "privateKeysAccessed": false,
+  "transactionRequestsCreated": 0,
+  "transactionsSubmitted": 0,
+  "gasPrerequisitesReady": false,
+  "wholeChainDeploymentReady": false,
+  "blockers": [
+    "A nonzero parent-chain feeTokenPricer is required",
+    "Pricer runtime must match the reviewed artifact",
+    "Parent pricer rate must match reviewed evidence",
+    "Production pricer review is incomplete",
+    "A positive, current, sourced GH0ST-per-ETH rate is required",
+    "Explicit batch poster accounts are required",
+    "An approved parent ETH operating reserve is required"
+  ],
+  "gasOverrides": {
+    "nativeToken": "0x2eb2849cDE7957b86d0dFD4B59e450a9F9D15559",
+    "feeTokenPricer": null
+  }
+}

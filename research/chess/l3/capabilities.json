@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "status": "locally_booted_nitro_dev_chain_and_verified_llm_fixture_not_deployed_l3",
+  "status": "base_l3_first_clean_core_benchmark_verified_public_launch_pending",
   "asOfUserDateIST": "2026-11-16",
   "parentChainIdProposal": 4663,
   "nativeGasTokenProposal": "GH0ST",
@@ -9,14 +9,15 @@
     "version": "v3.12.2",
     "chainBooted": false,
     "nativeBuildTarget": "darwin/arm64",
-    "nativeNodeBinarySHA256": "a42cb8677eadbfd8824b630d444a1477fac664c6f711487002fc9ba8d8d2b8fa",
+    "nativeNodeBinarySHA256": "344fc4323c0e001b60410b64cfe10cd0f3b5fcb11e617abe7a098f7af0d20807",
     "linuxAmd64ServerImageBuilt": false,
     "chainBootedScope": "Proposed Robinhood-settled GH0ST L3; isolated dev chain is reported separately",
     "isolatedNativeDevChainBooted": true,
     "isolatedDevChainId": 412346,
     "isolatedDevChainStoppedCleanly": true,
     "robinhoodParentSettlementDeployed": false,
-    "customGH0STGasEndToEndVerified": false
+    "customGH0STGasEndToEndVerified": false,
+    "nativeNodeBinaryHashScope": "Preserved experimental custom runtime build; clean production core is separate"
   },
   "evm": {
     "ordinaryNitroCompatibilityTarget": true,
@@ -87,7 +88,7 @@
     "actualCompleteNitroPrecompilesPackageBuildOnWasiTargetPassed": true,
     "usesStubNitroTypes": false,
     "debugRegistrationPatchApplies": true,
-    "nativeNitroBuildComplete": false,
+    "nativeNitroBuildComplete": true,
     "precompileDispatchExecutedOnNode": false,
     "fullLLMDispatcherImplemented": true,
     "matchingFraudProverExecuted": false,
@@ -97,8 +98,15 @@
     "fullLLMDispatcherWasiPackageBuildPassed": true,
     "nativeNitroNodeBinaryComplete": true,
     "completeUpstreamWasiReplayArtifactBuilt": true,
-    "completeWasiReplaySHA256": "55107e87a98a55aecbf459b668da9bbffd801673f6147c532af331201ab70982",
-    "completeReplayExecuted": false
+    "completeWasiReplaySHA256": "3e8b176d7a72bd488f129efb6c458f7c6b85dd3725438b789b38f4f49647cce7",
+    "completeReplayExecuted": false,
+    "normalizedMachineInputReplaySHA256": "a9aaed2af02aa994075f0f6d62e591aee7f9d36ff004fec1c6cbae9c6af16e72",
+    "nativeProverToolBuilt": true,
+    "experimentalCompleteReplayMachineGenerated": true,
+    "experimentalModuleRoot": "0x8ebe7b0dfc015b942a24dd9c7251eb4d34fa1dfd71f36131946b3172d01a28bb",
+    "fullModelExecutedUnderProver": false,
+    "incorrectResultFraudChallengeExecuted": false,
+    "enabledInInitialCore": false
   },
   "compatibilityPreflight": {
     "wasmBinaryInstructionParserImplemented": true,
@@ -110,18 +118,20 @@
   },
   "constraints": {
     "stockfishStrengthPolicyChanged": false,
-    "totalICPCapIncludingPreviouslyConvertedAndFees": "100",
-    "ETHCap": "0.003",
+    "totalICPCapIncludingPreviouslyConvertedAndFees": null,
+    "ETHCap": null,
     "externalHostingOrdered": false,
     "validatorBondFunded": false,
     "licenseAccepted": false,
     "twentyGameCapacityMeasured": false,
     "twentyGameBudgetVerified": false,
-    "publicPaidEntriesEnabled": false
+    "publicPaidEntriesEnabled": false,
+    "oldFinancialCeilingsRemovedByUser": true,
+    "finiteReplacementCeilingSelected": false
   },
   "readyForProduction": false,
   "fullOnchainLLMExecutionDemonstrated": false,
-  "nextRequiredIntegration": "Complete native node and replay/prover builds and boot; metered bounded model publication/efficient state IO; real incorrect-result fraud challenge; then full Stockfish port and twenty-game cost tests",
+  "nextRequiredIntegration": "Complete actual local parent/child rollup and native mock-token gas flow; review self-hosted HA, validator/bond, fee-token pricing and public parent deployment configuration",
   "persistentModelBridge": {
     "defaultPureGoInterpreter": "wazero 1.12.0",
     "runtimeAndModelHashesPinnedBeforeExecution": true,
@@ -145,6 +155,47 @@
     "actualABINegativeAndRollbackTestsPassed": true,
     "actualABIGasIdenticalAcrossTestedBackends": true,
     "genesisModelSeedIsTestFixture": true,
-    "solidityInterfaceCompiledAndAllFiveSelectorsMatch": true
+    "solidityInterfaceCompiledAndAllFiveSelectorsMatch": true,
+    "transactionLocalDirtyWordsImplemented": true,
+    "allFourBaselineDirtyBackendStateRootsMatch": true,
+    "baselineDirtyFixtureGasReductionFraction": 0.2915962967895219,
+    "currentMeasuredAdvanceGas": 132053125,
+    "CPUImprovementFromDirtyFilteringClaimed": false,
+    "enabledInInitialCore": false
+  },
+  "currentPriority": {
+    "baseL3First": true,
+    "responsiveChain": true,
+    "LLMIntegrationDeferred": true,
+    "oldFinancialCeilingsRemovedByUser": true
+  },
+  "coreBase": {
+    "scope": "Clean standard Nitro/Stylus base, local evidence only",
+    "nitro": "v3.12.2",
+    "GoVersion": "1.25.12",
+    "ArbOSVersion": 61,
+    "debugPrecompiles": false,
+    "customLLMSTF": false,
+    "officialModuleRoot": "0xc10cd7ec6acaf1c441a3f6bd0900ad20f15855ba775a96f1939118cbc629dc97",
+    "reproducibleNativeBuild": true,
+    "nativeTarget": "darwin/arm64",
+    "localMeasuredTransactions": 96,
+    "localSuccesses": 96,
+    "minimumBlockDelayMs": 100,
+    "localWorstWorkloadP95ReceiptMs": 105.41537499999959,
+    "localBurstLightweightTPS": 78.01750212948174,
+    "saturationCapacityMeasured": false,
+    "hostedSLAMeasured": false,
+    "LLMThroughputMeasured": false,
+    "syntheticFactoryRehearsalChecks": 140,
+    "syntheticTokenIsRealGH0ST": false,
+    "parentTokenBasicPreflightPassed": true,
+    "parentTokenFullAuditPassed": false,
+    "actualLocalNestedRollupIntegrationInProgress": true,
+    "liveRobinhoodRollupDeployed": false,
+    "hostingOrdered": false,
+    "nativeBinarySHA256": "04709c088f1f1814e6cdc2a21fb0d8c1190b5bcfb3ea31cec00b80cb8677f874",
+    "hostingProposal": "core/hosting/README.md",
+    "zeroDowntimeGuaranteed": false
   }
 }
