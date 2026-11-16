@@ -69,6 +69,8 @@ func TestGL3ChessMinedBlockAndInputs(t *testing.T) {
 	builder, auth, cleanup := setupProgramTest(t, false, func(b *NodeBuilder) {
 		b.DontParalellise().WithArbOSVersion(61).WithLegacyBlockRecorder().WithWasmRootDir(wasmDir)
 		b.chainConfig.ArbitrumChainParams.AllowDebugPrecompiles = true
+		b.execConfig.Sequencer.QueueTimeout = 2 * time.Minute
+		b.execConfig.RPC.RPCEVMTimeout = 2 * time.Minute
 		addresses := make([]common.Address, 0, len(recorder.accounts))
 		for a := range recorder.accounts {
 			addresses = append(addresses, a)

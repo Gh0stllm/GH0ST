@@ -102,3 +102,12 @@ Four consecutive complete24m decisions matched the published reference across sc
 The full Go replay target and direct C++ engine companion linked into a WAVM machine with root`0xdc64c010de5e7a45fa4c83dde4e6d165ab0abf1a0f074e2ef2a086207edf3ebe`. Initialization passed. This is a build milestone; full engine-bearing block replay and Solidity proof verification remain pending. A local mined-block rehearsal is being prepared. No hosting was ordered and no public-chain funds moved.
 
 **Evidence:** [Exact artifact identities and build boundary](chess/evidence/custom-machine-build.json), [reproducer](chess/build_replay.py).
+
+
+## 17 · Mine, batch and independently replay an engine-bearing block — 16 November
+
+A full24m decision mined on the actual local custom Nitro profile, returnede7e5 /24,000,033nodes /depth38 and the exact canonical checkpoint, and was included in its real local parent-chain batch. The native block recorder reproduced its canonical hash. A separate complete `cmd/replay` process, using only the recorded preimages and inbox batch, independently reproduced block hash, send root and final inbox position in21.83s. This experiment explicitly set100m local transaction/block gas limits and a longer queue timeout; its32.58m prototype gas is not a production fee quote.
+
+Ten initialization-prefix WAVM witnesses passed the actual pinned Solidity OSP, including rejection of corrupted pre-state hashes and witnesses. The complete interpreter replay is running separately. Prefix proofs are not a full engine proof, and this is not a public Robinhood deployment or an executed BoLD dispute.
+
+**Evidence:** [Mined transaction and block roots](chess/evidence/mined-block.json), [independent native replay](chess/evidence/native-replay.json), [bounded Solidity witness checks](chess/evidence/prefix-solidity-steps.json).
