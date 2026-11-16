@@ -1,0 +1,152 @@
+{
+  "scope": "In-memory Ganache deployment and real EVM registry transactions; local fixture bytes only, no public chain or LLM inference",
+  "passed": 18,
+  "tests": [
+    {
+      "name": "declared geometry and file commitment bind model ID",
+      "passed": true
+    },
+    {
+      "name": "duplicate registration is idempotent",
+      "passed": true
+    },
+    {
+      "name": "zero or oversized model rejected",
+      "passed": true
+    },
+    {
+      "name": "invalid page geometry and excessive page count rejected",
+      "passed": true
+    },
+    {
+      "name": "unsealed data cannot be loaded",
+      "passed": true
+    },
+    {
+      "name": "unauthorized upload and seal rejected",
+      "passed": true
+    },
+    {
+      "name": "unknown model cannot upload, seal or load",
+      "passed": true
+    },
+    {
+      "name": "premature seal rejected",
+      "passed": true
+    },
+    {
+      "name": "index and final page length enforced",
+      "passed": true
+    },
+    {
+      "name": "wrong content and reordered page proof rejected",
+      "passed": true
+    },
+    {
+      "name": "wrong proof height rejected",
+      "passed": true
+    },
+    {
+      "name": "valid pages may arrive out of order",
+      "passed": true
+    },
+    {
+      "name": "same page does not increment count",
+      "passed": true
+    },
+    {
+      "name": "conflicting duplicate rejected",
+      "passed": true
+    },
+    {
+      "name": "complete model seals and all bytes load unchanged",
+      "passed": true
+    },
+    {
+      "name": "sealed model is immutable and identical actions idempotent",
+      "passed": true
+    },
+    {
+      "name": "noncanonical padding root can never seal",
+      "passed": true
+    },
+    {
+      "name": "single-page height zero is supported",
+      "passed": true
+    }
+  ],
+  "solc": "0.8.30+commit.73712a01.Emscripten.clang",
+  "evmVersion": "shanghai",
+  "chainId": 31337,
+  "fixtureBytes": 1025,
+  "fixturePages": 5,
+  "contractBytecodeBytes": 4748,
+  "contractBytecodeSHA256": "784f27e14c30b5ee0f9a6de4d8c9de20bea38d2b9ecc91b512b386ac0d76132f",
+  "localDeploymentGas": "1074224",
+  "receipts": [
+    {
+      "label": "register1025",
+      "gasUsed": "116833"
+    },
+    {
+      "label": "registerDuplicate",
+      "gasUsed": "25906"
+    },
+    {
+      "label": "page1025-2",
+      "gasUsed": "289280"
+    },
+    {
+      "label": "page1025-0",
+      "gasUsed": "289258"
+    },
+    {
+      "label": "page1025-4",
+      "gasUsed": "107633"
+    },
+    {
+      "label": "page1025-1",
+      "gasUsed": "289280"
+    },
+    {
+      "label": "page1025-3",
+      "gasUsed": "289290"
+    },
+    {
+      "label": "duplicatePage",
+      "gasUsed": "39187"
+    },
+    {
+      "label": "seal1025",
+      "gasUsed": "30531"
+    },
+    {
+      "label": "registerBadPadding",
+      "gasUsed": "116743"
+    },
+    {
+      "label": "badPaddingReal-0",
+      "gasUsed": "287871"
+    },
+    {
+      "label": "badPaddingReal-1",
+      "gasUsed": "287893"
+    },
+    {
+      "label": "registerSingle",
+      "gasUsed": "116551"
+    },
+    {
+      "label": "singlePage",
+      "gasUsed": "103159"
+    },
+    {
+      "label": "sealSingle",
+      "gasUsed": "30531"
+    }
+  ],
+  "fullLargeModelUploaded": false,
+  "nativeWasmLoaderIntegrated": false,
+  "publicTransactions": 0,
+  "financialActions": false
+}

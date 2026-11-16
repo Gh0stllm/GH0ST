@@ -1,0 +1,116 @@
+{
+  "scope": "Local full pretrained INT8/Q12 model execution, native and generic Wasm against independent NumPy oracle; not on-chain execution or fraud proof",
+  "model": "roneneldan/TinyStories-1M",
+  "parameters": 3745984,
+  "weightsBytes": 4401034,
+  "modelSHA256": "6dc6dd216d0c4b12b81b0844244423e53bb8d7e4c726b8e6205683708971ef1f",
+  "modelWeightsInProgramCode": false,
+  "layersExecutedPerToken": 8,
+  "vocabularyLogitsPerToken": 50257,
+  "positionsCompared": 6,
+  "totalLogitsCompared": 301542,
+  "promptTokenIds": [
+    7454,
+    2402,
+    257,
+    640
+  ],
+  "generatedTokenIds": [
+    11,
+    612,
+    373
+  ],
+  "decodedText": "Once upon a time, there was",
+  "tokenizerSHA256": "f6ed3d307010c244c22aeffbde05f419cf277c23e64cf98b673cac5449cfeff5",
+  "checks": {
+    "wrongModelRejected": true,
+    "invalidTokenRejected": true,
+    "nativeWasmCanonicalMidSearchCheckpointEqual": true,
+    "corruptCheckpointRejectedWithoutStateMutation": true,
+    "freshInstanceResumeSucceeded": true,
+    "staleStepRejectedWithoutStateMutation": true,
+    "invalidWorkRejectedWithoutStateMutation": true,
+    "fullNativeWasmOracleLogitsEqual": true,
+    "finalCanonicalStateEqual": true
+  },
+  "records": [
+    {
+      "position": 0,
+      "inputToken": 7454,
+      "nextToken": 2402,
+      "allLogitsCompared": 50257,
+      "logitsI32LESHA256": "44f7ac472b255db705be0be97f0ad9b820dd985530ac16fd3534363081b2787a",
+      "chunkCalls": 596,
+      "freshInstanceRestore": true,
+      "checkpointSHA256": "8b079562edc3df0e00da31155f5d5e3fb8352eaf6f4e11cc008f6d13a779f2e3",
+      "localPairedExecutionSeconds": 0.131826
+    },
+    {
+      "position": 1,
+      "inputToken": 2402,
+      "nextToken": 257,
+      "allLogitsCompared": 50257,
+      "logitsI32LESHA256": "9486c642c70bd30a1a40589a5191ee9f60c89a7dea23850d309467575352fe4c",
+      "chunkCalls": 596,
+      "freshInstanceRestore": false,
+      "checkpointSHA256": "4f2a194c33c28d9fe61c731df401290b1b7e88a1102a9cc5a2373ae530a3df2a",
+      "localPairedExecutionSeconds": 0.109008
+    },
+    {
+      "position": 2,
+      "inputToken": 257,
+      "nextToken": 640,
+      "allLogitsCompared": 50257,
+      "logitsI32LESHA256": "a61cf9167826062b5bcaa148eaad0476914084317185f6532fb01183e8866aba",
+      "chunkCalls": 596,
+      "freshInstanceRestore": false,
+      "checkpointSHA256": "7ddbef75319c839c3b3ed93d92e559de0caab29bbccb2eda4bbc4436d159948b",
+      "localPairedExecutionSeconds": 0.109051
+    },
+    {
+      "position": 3,
+      "inputToken": 640,
+      "nextToken": 11,
+      "allLogitsCompared": 50257,
+      "logitsI32LESHA256": "d403513e6fa54e0a8d382b8b2b483702c80af50239ccd736f6757377fe59c6a2",
+      "chunkCalls": 596,
+      "freshInstanceRestore": false,
+      "checkpointSHA256": "2730b6803088aebe8cbb191de897847c76de7ac56d232f501b3bea71deb90335",
+      "localPairedExecutionSeconds": 0.109693
+    },
+    {
+      "position": 4,
+      "inputToken": 11,
+      "nextToken": 612,
+      "allLogitsCompared": 50257,
+      "logitsI32LESHA256": "c14c87fa4da09fcc053d1ec06bc7d341b6c955dd4029b85de6273e9b01e7f2cb",
+      "chunkCalls": 596,
+      "freshInstanceRestore": false,
+      "checkpointSHA256": "04833e537cae36d043d5884306fe9e99d0d517ca953b0cfbd67670d0624b794c",
+      "localPairedExecutionSeconds": 0.109751
+    },
+    {
+      "position": 5,
+      "inputToken": 612,
+      "nextToken": 373,
+      "allLogitsCompared": 50257,
+      "logitsI32LESHA256": "f0d7ef91c3b8ad5d0dee3ff90b9d548fa5eb48d34d82a26037cf9c04d3af5b00",
+      "chunkCalls": 596,
+      "freshInstanceRestore": false,
+      "checkpointSHA256": "7fedb5a9b4391a12598bb936420ac325c90b5214211b140052095f29fc3ddf96",
+      "localPairedExecutionSeconds": 0.10951
+    }
+  ],
+  "localWallSeconds": 0.715149,
+  "runtimeExternalImports": [],
+  "serverRented": false,
+  "chainBooted": false,
+  "fraudProofExecuted": false,
+  "largeLLMOrChessStrengthChanged": false,
+  "limitations": [
+    "INT8/Q12 differs from FP32; context64",
+    "Small-model test does not establish7B/70B support",
+    "Model loaded as validated input bytes; on-chain paged storage and Nitro integration remain separate work",
+    "Checkpoint expected hash must come from authenticated chain state; checksum alone is not authorization"
+  ]
+}

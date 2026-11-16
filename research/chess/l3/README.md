@@ -1,6 +1,20 @@
-# GH0ST custom L3 server preparation
+# GH0ST L3 developer build
 
-The selected direction is a custom L3 settling on Robinhood, with GH0ST gas and the unchanged Stockfish bot. **The server configuration and local rehearsal checks are prepared; the custom chess execution and matching fraud prover are not built.** No server is rented and this is not a twenty-game deployment within 100 ICP.
+The selected direction is a custom L3 settling on Robinhood, with GH0ST gas, ordinary EVM/Stylus compatibility and a separate deterministic model runtime. **Working developer components are now compiled and tested locally; they are not yet connected into a booted L3 or matching fraud prover.** No server is rented and this is not a twenty-game deployment within 100 ICP. The reviewed Stockfish policy remains unchanged.
+
+## Implemented developer components
+
+| Component | Verified result | Remaining chain integration |
+|---|---|---|
+| [Stylus Rust kernel](stylus/README.md) | SDK 0.10.10; 25,401-byte Wasm; 4 native and 12 compiled-ABI tests; Solidity caller compiles | Actual Nitro activation, gas and proof execution |
+| [Paged model registry](stylus/registry/README.md) | 18 local EVM checks for authenticated pages, canonical padding, completeness and immutability | Large uploads and authenticated runtime loader |
+| [Full small-model runtime](llm/README.md) | Complete 3.75M-parameter TinyStories INT8/Q12 model; 301,542 logits match native/Wasm/independent oracle; mid-inference fresh-instance restore; 9 negative boundary tests | Actual Nitro dispatcher and matching replay/fraud proof |
+| [Nitro tensor overlay](nitro/README.md) | Persistent resumable integer core; 4 native Go test groups;complete actual Nitro precompiles package builds on upstream WASI target | Native node artifacts, dispatch execution and full-model connection |
+| [Wasm compatibility checker](compatibility/README.md) | 12 tests; actual Stylus kernel passes standard preflight; 103 MB Stockfish correctly rejected by standard Stylus | Structural checks do not establish deployment/proving compatibility |
+
+The model test generated `Once upon a time, there was` using every vocabulary logit at six positions. It tests the documented INT8/Q12 variant, not FP32 equivalence or 7B/70B support. Model data are separate from program code. The registry's 64 GiB format bound is not a measured inference capacity or storage-cost claim.
+
+`capabilities.json` records each component's exact scope and artifact hashes. The standard Stylus VM keeps its ordinary limits; large-model execution is a separate custom path. Raising limits or launching an ordinary Nitro container does not connect that path automatically.
 
 The working assumption is a capped pilot while the requested choice between a scheduled tournament and an always-on service remains open. A short pilot does not make a monthly server charge prorated.
 

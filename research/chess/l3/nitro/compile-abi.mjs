@@ -1,0 +1,14 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+import solc from '../../node_modules/solc/index.js';
+const source=fs.readFileSync(new URL('./GhostTensor.sol',import.meta.url),'utf8');
+const out=JSON.parse(solc.compile(JSON.stringify({language:'Solidity',sources:{'GhostTensor.sol':{content:source}},settings:{outputSelection:{'*':{'*':['abi']}}}})));
+assert(!(out.errors??[]).some(e=>e.severity==='error'));
+const abi=out.contracts['GhostTensor.sol'].IGhostTensor.abi;
+const glue=fs.readFileSync(new URL('./overlay/precompiles/ArbGhostTensor.go',import.meta.url),'utf8');
+const embedded=JSON.parse(glue.match(/const GhostTensorABI = `([\s\S]*?)`/)[1]);
+const norm=a=>a.filter(x=>x.type==='function').map(x=>[x.name,x.stateMutability,x.inputs.map(v=>v.type),x.outputs.map(v=>v.type)]).sort((a,b)=>a[0].localeCompare(b[0]));
+assert.deepEqual(norm(abi),norm(embedded));
+const report={compiler:solc.version(),compiled:true,functions:norm(abi),nitroEmbeddedABIMatches:true,evmCallExecuted:false,precompileRegistered:false};
+fs.writeFileSync(new URL('./evidence/abi.json',import.meta.url),JSON.stringify(report,null,2)+'\n');
+console.log(JSON.stringify(report));

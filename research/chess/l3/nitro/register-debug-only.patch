@@ -1,0 +1,11 @@
+--- a/precompiles/precompile.go
++++ b/precompiles/precompile.go
+@@ -520,6 +520,8 @@
+ 		return impl.Precompile()
+ 	}
+ 
++	// GH0ST local-development kernel only; never enable this debug chain for assets.
++	insert(debugOnly(makeGhostTensorPrecompile()))
+ 	insert(MakePrecompile(precompilesgen.ArbInfoMetaData, &ArbInfo{Address: types.ArbInfoAddress}))
+ 	insert(MakePrecompile(precompilesgen.ArbAddressTableMetaData, &ArbAddressTable{Address: types.ArbAddressTableAddress}))
+ 	insert(MakePrecompile(precompilesgen.ArbBLSMetaData, &ArbBLS{Address: types.ArbBLSAddress}))

@@ -1,0 +1,22 @@
+[package]
+name = "gh0st-stylus-kernel"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+
+[lib]
+crate-type = ["lib", "cdylib"]
+
+[dependencies]
+stylus-sdk = "=0.10.10"
+
+[features]
+contract-client-gen = []
+export-abi = ["stylus-sdk/export-abi"]
+
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = "z"
+panic = "abort"
+strip = true
