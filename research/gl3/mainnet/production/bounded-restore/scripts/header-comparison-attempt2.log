@@ -1,0 +1,9 @@
+# github.com/offchainlabs/nitro/cmd/gl3replayaudit
+cmd/gl3replayaudit/main.go:260:2: undefined: setupGarbageCollector
+cmd/gl3replayaudit/main.go:271:27: undefined: PreimageDb
+Traceback (most recent call last):
+  File "/root/bounded-restore/header-comparison.py", line 24, in <module>
+    subprocess.run([go,'build','-p','8','-mod=mod','-o',binary,'./cmd/gl3replayaudit'],cwd=source,env=env,check=True)
+  File "/usr/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '[PosixPath('/root/bounded-restore/toolchain/go/bin/go'), 'build', '-p', '8', '-mod=mod', '-o', PosixPath('/root/bounded-restore/replay-header-baseline'), './cmd/gl3replayaudit']' returned non-zero exit status 1.

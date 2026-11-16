@@ -2,7 +2,7 @@
 
 [GL3 overview](../README.md) · [Sequential history](../HISTORY.md) · [Roadmap](../ROADMAP.md) · [Release packet](release/README.md)
 
-**Native-flow and recovery checks passed; the final-block guest replay failed. Robinhood mainnet is not deployed.** Every build, engine run, replay and contract test in this milestone ran on Runpod. Local work is limited to editing, evidence transfers, research and publication.
+**Native historical-code repair checks now pass; the new guarded terminal guest replay is running, not accepted. Robinhood mainnet is not deployed.** Every build, engine run, replay and contract test in this milestone ran on Runpod. Local work is limited to editing, evidence transfers, research and publication.
 
 ## Evidence snapshot
 
@@ -14,7 +14,10 @@
 | Strict native-mint rejection regression | Ten classified execution rejections before/after a short restart; actual exit 0 | Eight EVM reverts and two exact pinned access-control errors; transport/deadline/internal errors cannot count as passes |
 | Native artifact hardening | Original 98,511,183-byte NNUE unchanged; final ELF GNU_STACK=RW | Metadata repair; production artifact/genesis acceptance remains separate |
 | Complete terminal decision capture | Full 24m decision, actual terminal compute receipt and parent batch 2469; input 2,574,999,906 bytes, recorded exit 0 | Native capture passed; independent terminal-block interpreter replay subsequently failed |
-| Independent last-block interpreter replay | **Failed** after 2,153.854s, actual exit 1; guest heap exhausted during historical delta restoration | Expected four-field result not matched; no host OOM or timeout; bounded-restore candidate untested |
+| Original d453 last-block interpreter replay | **Failed** after 2,153.854 s, actual exit 1; historical delta restoration exhausted the guest heap | Preserved historical failure; no host OOM or timeout |
+| Bounded historical-code repair, native | Accessor/witness/recorder/journaling and 768-delta checks pass; all four terminal fields, identical hashes and 12,306,935 gas; exact 163,085,439 canonical bytes | Native acceptance only; not a completed interpreter replay or full dispute |
+| Guarded replacement interpreter | Root `0xc03c…16c00` generated; original terminal input replay running | No completed result or production acceptance yet |
+| Isolated full BoLD lifecycle candidate | Launched compilation on Runpod; designed around unchanged full decision and honest/false completed-block claims | Untested: actual history/OSP/assertion confirmation and stake refund are intended checks, not passes |
 | Inherited challenge-manager terminal proof path | Five authentic witnesses; 35 strict negative contract checks reject | Fixture ancestors, history siblings and predecessor config; not complete assertion creation, bisection, stake settlement or assertion confirmation |
 | Real BoLD start boundary | Pinned Go backend at step 0 / offset 1; one subsequent inherited-manager/OSP case and seven strict negative checks; both actual exits 0 | Finished-to-running wrapper initialization only, with fixture context; no engine search or full dispute |
 | Two consecutive initial lazy-machine block replays | All four expected fields matched; five actual Solidity witness checks per block | Captured initial/progress blocks; not every computing transaction in a complete move |
@@ -58,7 +61,11 @@ The matching `0xd453…4613b` interpreter replay subsequently **failed**, with a
 
 [Exact failed replay](dispute/evidence/terminal-wavm-failure/replay-result.json) · [failure classification](dispute/evidence/terminal-wavm-failure/failure-classification.json) · [actual exit](dispute/evidence/terminal-wavm-failure/exit.json).
 
-The native decision and capture still passed, but they do not accept this guest module for production. Earlier initial/next-block replay passes do not supersede this late-state failure. A bounded historical-code restoration candidate under development is **untested and unaccepted**; it needs fresh native/guest and matching-machine acceptance without changing the engine policy. Neither a future final-block replay nor the current capture would constitute interpreter execution of all2,464compute transactions or a complete BoLD dispute.
+The native decision and capture still passed, but they do not accept this guest module for production. Earlier initial/next-block replay passes do not supersede this late-state failure. The bounded historical-code repair now **passes native acceptance**. Its optional uncached accessor preserves authenticated code reads, witness/recorder behavior, dirty/cached bytes, errors and journaling. Native replay of the same input matches all four expected fields; baseline, repaired and guarded native runs preserve the same header/state/receipt hashes and 12,306,935 gas. Cold reconstruction preserves all 163,085,439 canonical bytes. The repair removes 1,618,877,488 bytes of retained clean account code in this terminal fixture; it does not reclaim immutable on-chain delta accounts. [Exact native evidence](production/bounded-restore/README.md).
+
+The new guarded root `0xc03cf6f44fe1ca3c0826064ba7e5a3c134dc0013a9b994f3355f2ba185116c00` is independently replaying that original terminal input. Its guest-only 3 GiB soft limit changes collection scheduling, with a GOGC=1000 native diagnostic motivating the guard rather than measuring the guest exactly. The cache-only reference `0x70f2…d5ce7` was generated but deliberately not long-replayed. **The new guest replay is not yet accepted.** Neither a final-block pass nor the native capture would constitute interpreter execution of all 2,464 computing transactions or a complete BoLD dispute.
+
+A separate isolated [full-lifecycle candidate](dispute/full-lifecycle/) has compiled and is running on the same Runpod worker and remains unaccepted. It intends to run the unchanged full decision and honest/false completed-block claims through actual history/one-step proof, assertion confirmation and honest-edge stake refund. Its source, launch and compilation do not establish those results.
 
 Five witnesses from the previously completed next block already pass the inherited real `EdgeChallengeManager.confirmEdgeByOneStepProof` path. Correct edges become confirmed, conflicting rivals cannot replace them, and all 35 negative checks reject through contract execution. The ancestor/history/config fixtures leave full automatic bisection, assertion confirmation and stake settlement open.
 
@@ -75,10 +82,10 @@ First-decision raw deltas total 1,617,883,940 bytes. The earlier disk fixture ob
 ## Remaining mainnet gates
 
 - Freeze production GH0ST backing, token/parent contract configuration and operator controls. Actual native-parent observed-state parity passed; no public deployment or complete canonical-ledger clone is implied.
-- Repair and independently accept the failed late-state guest restoration/replay, then execute the complete deliberately incorrect engine-result dispute through the actual assertion/challenge lifecycle. The bounded-restore candidate is not yet tested.
+- Independently accept the guarded late-state guest replay after the native repair passes, then complete the actual incorrect-engine assertion/challenge lifecycle. Guarded replay is running; the separate full-lifecycle candidate has compiled and is running, unaccepted.
 - Accept process-level/crash recovery, long-history capacity, challenge-safe retention and resource rejection/coexistence.
 - Freeze the matching native client, custom machine, production genesis/allocation, parent contracts and validator configuration. The custom A14 client cannot be paired with an unrelated official standard root.
 - Review fee pricing/parent ETH reserves, validator collateral/finality, operator/upgrade/native-mint authority, hosting and the applicable license path. Production configuration and addresses remain unset.
 - Deploy only the reviewed configuration and establish the launch with public receipts and working endpoints.
 
-The earlier withdrawal worker was removed after evidence collection. The native-parent fixture has finished and its owned chain processes are stopped; the failed replay process has exited. The 32 GB production worker was deleted after completed transfers and idle-process checks; its task-only transfer key was removed first and a fresh provider 404 confirms deletion. Only the 128 GB proof allocation remains at **USD 1.04/hour compute plus disk** until cleanup or reassignment. Bounded-restore work is in progress, not accepted production hosting or a passing replay.
+The earlier withdrawal worker was removed after evidence collection. The native-parent fixture has finished and its owned chain processes are stopped; the failed replay process has exited. The 32 GB production worker was deleted after completed transfers and idle-process checks; its task-only transfer key was removed first and a fresh provider 404 confirms deletion. Only the 128 GB proof allocation remains at **USD 1.04/hour compute plus disk** until cleanup or reassignment. The guarded replacement replay is running and the isolated full-lifecycle candidate has compiled and is running; neither is accepted. Native repair passes do not establish production hosting acceptance.

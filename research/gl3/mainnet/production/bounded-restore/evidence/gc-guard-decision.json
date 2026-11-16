@@ -1,0 +1,44 @@
+{
+  "nativeEquivalentGOGC": 1000,
+  "nativeHeapBefore": [
+    3949822872,
+    3993812992,
+    32013177756,
+    5278523880,
+    4
+  ],
+  "nativeHeapAfterForcedGC": [
+    2303832344,
+    2310160384,
+    25345899340,
+    5279310312,
+    5
+  ],
+  "nativeInputPreimagePayloadBytes": 1911582985,
+  "nativeInputPreimageCount": 402818,
+  "postGCHeapMinusInputPayloadBytes": 392249359,
+  "projectedGOGC1000TargetMinusInputPayloadTimes11": 4314742949,
+  "notAnExactGuestHeapMeasurement": true,
+  "guestSoftMemoryLimitProposedBytes": 3221225472,
+  "reason": "Native reference retains its input preimages whereas guest resolves them on demand. Subtracting payload leaves runtime/VM and input-map overhead. GOGC1000 still gives a target above WASM32; exact target is architecture-dependent. Add explicit guest-only soft limit as guard after fixing account-code retention.",
+  "actualTerminalAccountRetention": {
+    "baseline": {
+      "accounts": 171813,
+      "codeAccounts": 171809,
+      "retainedCodeBytes": 1913501851,
+      "dirtyCodeBytes": 6282,
+      "blockHashMatches": true,
+      "gas12306935": true
+    },
+    "candidate": {
+      "accounts": 171813,
+      "codeAccounts": 71827,
+      "retainedCodeBytes": 294624363,
+      "dirtyCodeBytes": 6282,
+      "blockHashMatches": true,
+      "gas12306935": true
+    }
+  },
+  "sharedCodeCacheCapacityBytes": 268435456,
+  "retentionFixRemovedCodeBytes": 1618877488
+}

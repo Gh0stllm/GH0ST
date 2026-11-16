@@ -48,11 +48,13 @@
 - [x] Verify ten strict native-mint execution rejections around a separate short restart, with actual exit 0.
 - [x] Remove executable-stack metadata while preserving exact original network bytes and fixed engine policy.
 - [x] Capture the actual last computing block and parent batch 2469, with a 2.575 GB hash-verified input and actual exit 0.
-- [ ] Repair and independently accept its matching-machine terminal replay: d453 failed from WASM32 guest heap exhaustion. The bounded-restore candidate is in progress and untested.
+- [x] Pass the bounded historical-code repair natively: optional accessor/witness/recorder/journaling checks, exact terminal four-field result, identical block/state/receipt hashes and 12,306,935 gas, and all 163,085,439 canonical bytes.
+- [x] Generate the guarded matching proof root with a guest-only 3 GiB soft limit, leaving engine quality and consensus gas unchanged.
+- [ ] Independently accept the new guarded machine’s terminal interpreter replay, currently running. The old d453 heap failure remains preserved; the new root is not accepted yet.
 - [x] Verify five authentic witnesses through the inherited terminal challenge manager and reject 35 negative contract cases (fixture ancestors/history/config).
 - [x] Verify the real BoLD finished-to-running start boundary at step 0 / offset 1, then its separate Solidity case and seven strict negative checks (fixture context only).
 - [ ] Complete the original monolithic24m-move WAVM reference; the incomplete local run was stopped when the user moved all tests to Runpod.
-- [ ] Execute a complete incorrect-result dispute through the actual challenge contracts.
+- [ ] Execute a complete incorrect-result dispute through the actual challenge contracts. The isolated full-lifecycle candidate has compiled and is running on Runpod and remains unaccepted; its intended assertion/history/one-step/refund path is not yet a pass.
 - [ ] Measure actual end-to-end memory, disk growth, move latency and parent posting costs.
 - [ ] Wire the reviewed game/reward path and prove complete legal play and payouts.
 
@@ -60,6 +62,6 @@ Checks represent achieved local/private-cloud evidence or explicit remaining wor
 
 ## Mainnet direction
 
-The user requested Robinhood mainnet deployment after testing. No launch date is certified by these results. The completed withdrawal worker has been removed; the actual native-parent observed-state fixture passed, and the 128 GB last-compute-block replay failed. The 32 GB production worker has now been deleted after completed transfers and idle-process checks; a fresh provider 404 confirms removal, and its task-only transfer key was removed first. Only the temporary 128 GB proof allocation remains at USD 1.04/hour compute plus disk. The bounded-restore candidate remains untested and unaccepted in this R31 snapshot. Every further build, engine test, replay, proof and deployment rehearsal runs on Runpod; local work remains editing, transfers, research and publication.
+The user requested Robinhood mainnet deployment after testing. No launch date is certified by these results. The completed withdrawal worker has been removed; the actual native-parent observed-state fixture passed, and the 128 GB last-compute-block replay failed. The 32 GB production worker has now been deleted after completed transfers and idle-process checks; a fresh provider 404 confirms removal, and its task-only transfer key was removed first. Only the temporary 128 GB proof allocation remains at USD 1.04/hour compute plus disk. The bounded-restore native regressions now pass, while its new guarded terminal guest replay is running and not accepted. An isolated full-lifecycle candidate has compiled and is running, unaccepted on that same worker. Every further build, engine test, replay, proof and deployment rehearsal runs on Runpod; local work remains editing, transfers, research and publication.
 
 The new graceful restart and repeated native withdrawal results close bounded acceptance tasks. A pilot still needs matching production client/machine/genesis, full wrong-engine-result dispute, repaired late-state guest replay, production token/parent configuration, process-level recovery and long-history storage/resource bounds, reviewed fee/ETH reserve and validator/upgrade controls, and the applicable license path. The current proof path has not met the preferred 24 GB server target, and no complete all-in USD 100/month production configuration or 20-game capacity is accepted. Public receipts and working endpoints will establish a launch when it occurs.

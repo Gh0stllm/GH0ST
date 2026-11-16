@@ -6,7 +6,11 @@
 
 GL3 now has repeated native GH0ST withdrawal rehearsals and a passing actual native-parent/child flow over an observed token-state clone: 82 parent transactions, seven token storage keys and zero unmatched keys. The unchanged chess engine also completed a decision across two graceful node restarts, and bounded challenge-manager/start-boundary checks passed.
 
-**The independent last-compute-block interpreter replay failed.** Its WASM32 guest exhausted its roughly 4 GB heap while restoring historical deltas; this was not host OOM. The native capture passed, but the final guest replay and production proof machine are not accepted. A bounded-restore candidate is in progress and untested. Full BoLD assertion/bisection, production recovery/storage and operator configuration remain open. **Robinhood mainnet is not deployed.** All builds, engine work and tests run on Runpod.
+**The historical-code retention repair now passes native acceptance.** The original terminal input produces the same four end-state fields, block/state/receipt hashes and 12,306,935 gas; all 163,085,439 canonical engine bytes remain identical. Optional code-accessor, witness, recorder, journaling and corruption checks also pass. The original d453 guest heap failure remains preserved.
+
+The new guarded proof machine is running its independent terminal interpreter replay; it is **not yet accepted**. A separate complete BoLD lifecycle candidate has compiled and is running on the same Runpod worker and remains unaccepted. Full proof, production recovery/storage and operator configuration gates remain open. **Robinhood mainnet is not deployed.** All builds, engine work and tests run on Runpod.
+
+[Native repair evidence and exact artifact identities](mainnet/production/bounded-restore/README.md)
 
 [New: parallel acceptance results and exact boundaries](mainnet/PARALLEL-ACCEPTANCE.md)
 

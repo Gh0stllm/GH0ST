@@ -1,0 +1,23 @@
+patching file go-ethereum/core/state/state_object.go
+Hunk #1 FAILED at 75.
+Hunk #2 FAILED at 525.
+Hunk #3 FAILED at 575.
+Hunk #4 FAILED at 618.
+Hunk #5 succeeded at 638 (offset 10 lines).
+4 out of 5 hunks FAILED -- saving rejects to file go-ethereum/core/state/state_object.go.rej
+patching file go-ethereum/core/state/statedb.go
+Unreversed patch detected!  Ignoring -R.
+Hunk #1 succeeded at 422 with fuzz 1.
+patching file go-ethereum/core/state/statedb_hooked.go
+Unreversed patch detected!  Ignoring -R.
+Hunk #1 succeeded at 81 with fuzz 1 (offset 4 lines).
+patching file precompiles/ArbGhostChessSliceDelta.go
+Hunk #1 FAILED at 54.
+Hunk #2 succeeded at 81 (offset 3 lines).
+1 out of 2 hunks FAILED -- saving rejects to file precompiles/ArbGhostChessSliceDelta.go.rej
+Traceback (most recent call last):
+  File "/root/bounded-restore/header-comparison.py", line 11, in <module>
+    subprocess.run(['patch','-R','-p1','--batch','-i',r/'kit/bounded-code-cache.patch'],cwd=r/'nitro-baseline',check=True)
+  File "/usr/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['patch', '-R', '-p1', '--batch', '-i', PosixPath('/root/bounded-restore/kit/bounded-code-cache.patch')]' returned non-zero exit status 1.

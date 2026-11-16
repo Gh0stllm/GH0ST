@@ -1,0 +1,138 @@
+--- a/go-ethereum/core/state/state_object.go
++++ b/go-ethereum/core/state/state_object.go
+@@ -74,7 +74,8 @@
+ 	uncommittedStorage Storage
+ 
+ 	// Cache flags.
+-	dirtyCode bool // true if the code was updated
++	dirtyCode        bool // true if the code was updated
++	codeReadUncached bool // preserve later write journaling after a read-only code load
+ 
+ 	// Flag whether the account was marked as self-destructed. The self-destructed
+ 	// account is still accessible in the scope of same transaction.
+@@ -524,6 +525,7 @@
+ 		dirtyStorage:       s.dirtyStorage.Copy(),
+ 		uncommittedStorage: s.uncommittedStorage.Copy(),
+ 		dirtyCode:          s.dirtyCode,
++		codeReadUncached:   s.codeReadUncached,
+ 		selfDestructed:     s.selfDestructed,
+ 		newContract:        s.newContract,
+ 	}
+@@ -573,6 +575,31 @@
+ 		s.db.setError(fmt.Errorf("code is not found %x", s.CodeHash()))
+ 	}
+ 	s.code = code
++	s.codeReadUncached = false
++	return code
++}
++
++// CodeUncached reads clean historical code through the identical reader without
++// retaining its bytes in this account object. Cached/dirty code remains authoritative.
++func (s *stateObject) CodeUncached() []byte {
++	if s.dirtyCode || len(s.code) != 0 {
++		return s.Code()
++	}
++	if bytes.Equal(s.CodeHash(), types.EmptyCodeHash.Bytes()) {
++		return nil
++	}
++	var code []byte
++	defer func(start time.Time) {
++		s.db.CodeLoaded += 1
++		s.db.CodeReads += time.Since(start)
++		s.db.CodeLoadBytes += len(code)
++	}(time.Now())
++	code = s.db.reader.Code(s.address, common.BytesToHash(s.CodeHash()))
++	if len(code) == 0 {
++		s.db.setError(fmt.Errorf("code is not found %x", s.CodeHash()))
++	} else {
++		s.codeReadUncached = true
++	}
+ 	return code
+ }
+ 
+@@ -599,6 +626,11 @@
+ }
+ 
+ func (s *stateObject) SetCode(codeHash common.Hash, code []byte) (prev []byte) {
++	// Ordinary GetCode would have cached the prior bytes. Materialize them only
++	// if a later write actually needs journal/revert semantics after an uncached read.
++	if s.codeReadUncached {
++		s.Code()
++	}
+ 	prev = slices.Clone(s.code)
+ 	s.db.journal.setCode(s.address, prev)
+ 	s.setCode(codeHash, code)
+@@ -606,6 +638,7 @@
+ }
+ 
+ func (s *stateObject) setCode(codeHash common.Hash, code []byte) {
++	s.codeReadUncached = false
+ 	s.code = code
+ 	s.data.CodeHash = codeHash[:]
+ 	s.dirtyCode = true
+--- a/go-ethereum/core/state/statedb.go
++++ b/go-ethereum/core/state/statedb.go
+@@ -422,6 +422,20 @@
+ 		return stateObject.Code()
+ 	}
+ 	return nil
++}
++
++// GetCodeUncached is an optional read-only extension for sealed historical data.
++// It preserves account access, reader authentication, witness and error handling.
++func (s *StateDB) GetCodeUncached(addr common.Address) []byte {
++	stateObject := s.getStateObject(addr)
++	if stateObject == nil {
++		return nil
++	}
++	code := stateObject.CodeUncached()
++	if s.witness != nil {
++		s.witness.AddCode(code)
++	}
++	return code
+ }
+ 
+ func (s *StateDB) GetCodeSize(addr common.Address) int {
+--- a/go-ethereum/core/state/statedb_hooked.go
++++ b/go-ethereum/core/state/statedb_hooked.go
+@@ -77,6 +77,10 @@
+ 	return s.inner.GetCode(addr)
+ }
+ 
++func (s *hookedStateDB) GetCodeUncached(addr common.Address) []byte {
++	return s.inner.GetCodeUncached(addr)
++}
++
+ func (s *hookedStateDB) GetCodeSize(addr common.Address) int {
+ 	return s.inner.GetCodeSize(addr)
+ }
+--- a/precompiles/ArbGhostChessSliceDelta.go
++++ b/precompiles/ArbGhostChessSliceDelta.go
+@@ -54,8 +54,17 @@
+ 	}
+ 	return hash, nil
+ }
++
++// Only immutable delta restoration opts in. Writers and general EVM code reads
++// retain their normal cache/journal behavior; wrappers without the extension fall back.
++func sliceReadSealedDeltaCode(db vm.StateDB, address common.Address) []byte {
++	if reader, ok := db.(interface{ GetCodeUncached(common.Address) []byte }); ok {
++		return reader.GetCodeUncached(address)
++	}
++	return db.GetCode(address)
++}
+ func sliceReadDelta(db vm.StateDB, hash [32]byte) ([]byte, error) {
+-	first := db.GetCode(sliceDeltaAddress(hash, 0))
++	first := sliceReadSealedDeltaCode(db, sliceDeltaAddress(hash, 0))
+ 	header := len(sliceDeltaPrefix) + 4
+ 	if len(first) < header || !bytes.Equal(first[:len(sliceDeltaPrefix)], sliceDeltaPrefix) {
+ 		return nil, errGhostChess
+@@ -72,7 +81,7 @@
+ 		}
+ 		code := first
+ 		if at > 0 {
+-			code = db.GetCode(sliceDeltaAddress(hash, at/sliceBlobPage))
++			code = sliceReadSealedDeltaCode(db, sliceDeltaAddress(hash, at/sliceBlobPage))
+ 		}
+ 		if len(code) != header+end-at || !bytes.Equal(code[:len(sliceDeltaPrefix)], sliceDeltaPrefix) || int(binary.LittleEndian.Uint32(code[len(sliceDeltaPrefix):])) != n {
+ 			return nil, errGhostChess

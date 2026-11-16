@@ -1,0 +1,12 @@
+--- a/cmd/replay/wasm.go
++++ b/cmd/replay/wasm.go
+@@ -8,6 +8,9 @@
+ import "runtime/debug"
+ 
+ func setupGarbageCollector() {
++	// Bound transient replay allocations below WASM32's 4 GiB linear heap.
++	// This affects GC scheduling only; engine policy and verification stay exact.
++	debug.SetMemoryLimit(3 * 1024 * 1024 * 1024)
+ 	// Decrease the GC activity to run once the freshly allocated memory
+ 	// reaches 10x the previous live memory (since the last collection).
+ 	debug.SetGCPercent(1000)
