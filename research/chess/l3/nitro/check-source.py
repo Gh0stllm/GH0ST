@@ -1,5 +1,5 @@
 """Verify upstream pin and overlay API anchors; does NOT typecheck full Nitro."""
-import hashlib,json,difflib,subprocess
+import hashlib,json,difflib,subprocess,os
 from pathlib import Path
 root=Path(__file__).resolve().parent
 src=root/'.cache/nitro-3.12.2'
@@ -12,7 +12,7 @@ assert s.count(needle)==1
 changed=s.replace(needle,'\t// GH0ST local-development kernel only; never enable this debug chain for assets.\n\tinsert(debugOnly(makeGhostTensorPrecompile()))\n'+needle)
 patch=''.join(difflib.unified_diff(s.splitlines(True),changed.splitlines(True),fromfile='a/precompiles/precompile.go',tofile='b/precompiles/precompile.go'))
 (root/'register-debug-only.patch').write_text(patch)
-p=subprocess.run(['git','apply','--check',str(root/'register-debug-only.patch')],cwd=src,capture_output=True,text=True)
+p=subprocess.run(['git','apply','--check',str(root/'register-debug-only.patch')],cwd=src,env={**os.environ,'GIT_CEILING_DIRECTORIES':str(src.parent)},capture_output=True,text=True)
 assert p.returncode==0,p.stderr
 assert 'func (c *Context) Burn(' in (src/paths[1]).read_text()
 assert 'func (state *ArbosState) BackingStorage() *storage.Storage' in (src/paths[3]).read_text()

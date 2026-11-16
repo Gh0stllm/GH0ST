@@ -66,7 +66,8 @@ def inspect(data):
     out = {'moduleBytes': len(data), 'sha256': hashlib.sha256(data).hexdigest(),
            'features': {'simd': False, 'relaxedSIMD': False, 'atomics': False,
                         'memory64': False, 'sharedMemory': False, 'floats': False,
-                        'tailCalls': False, 'referenceTypes': False},
+                        'tailCalls': False, 'referenceTypes': False,
+                        'nonCanonicalIndirectTableZero': False},
            'imports': [], 'memories': [], 'exports': [], 'exportCount': 0, 'hasStylusEntrypoint': False, 'codeSectionBytes': 0,
            'dataSectionBytes': 0, 'instructionCount': 0, 'functionBodies': 0}
     f = out['features']
@@ -113,7 +114,11 @@ def inspect(data):
             elif op == 14:
                 for _ in range(q.leb() + 1): q.leb()
             elif op in [17, 19]:
-                q.leb(); q.leb()
+                q.leb()
+                table_start=q.p
+                table_index=q.leb()
+                if table_index!=0 or q.p-table_start!=1:
+                    f['nonCanonicalIndirectTableZero']=True
                 if op == 19: f['tailCalls'] = True
             elif op in [18, 20, 21]:
                 q.leb(); f['tailCalls'] |= op in [18, 21]
@@ -267,7 +272,7 @@ def assess(result, profile='stylus_v3_arbos60'):
     features = result['features']
     if profile == 'stylus_v3_arbos60':
         max_module, max_initial = 256 * 1024, 128
-        forbidden = ['simd', 'relaxedSIMD', 'atomics', 'sharedMemory', 'memory64', 'tailCalls', 'referenceTypes']
+        forbidden = ['simd', 'relaxedSIMD', 'atomics', 'sharedMemory', 'memory64', 'tailCalls', 'referenceTypes', 'nonCanonicalIndirectTableZero']
         imports = {'vm_hooks'}
         if result['brotliQuality11Bytes'] is None:
             reasons.append('Brotli size unmeasured')

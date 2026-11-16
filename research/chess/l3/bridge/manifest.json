@@ -1,0 +1,83 @@
+{
+  "status": "tested_local_full_model_bridge_and_debug_nitro_abi_not_running_l3_or_prover",
+  "model": "TinyStories-1M pinned INT8/Q12 context64 variant",
+  "parameters": 3745984,
+  "runtimeSHA256": "d7ebddffb302ab1ffe5a13edc2d06109d8375ab143bfa923d1af9e2c139052c5",
+  "modelSHA256": "6dc6dd216d0c4b12b81b0844244423e53bb8d7e4c726b8e6205683708971ef1f",
+  "dependency": "github.com/tetratelabs/wazero v1.12.0",
+  "defaultBackend": "interpreter",
+  "arbitraryModuleAdmissionAllowed": false,
+  "wallClockConsensusDeadlineUsed": false,
+  "nativePositionsVerified": 2,
+  "allNativeLogitsCompared": 100514,
+  "persistentCommits": 36,
+  "freshGuestEachCommit": true,
+  "freshHostWrapperEachCommit": true,
+  "checkpointAuthority": "SHA stored in committed caller-scoped job metadata",
+  "modelBootstrap": "trusted Go STF loader hashes all stored bytes before exact guest copy and preverified-root assertion",
+  "safetyChecksPassed": 12,
+  "crossBackendRejectionCasesPassed": 6,
+  "compilerExperiment": {
+    "optInOnly": true,
+    "committedWriteSetsCompared": 36,
+    "writeSetsAndCheckpointsEqual": true,
+    "backendRecordedInConsensusState": false,
+    "interpreterSeconds": 25.858229917,
+    "compilerSeconds": 1.445811999,
+    "localRatio": 17.884918602753967,
+    "gasPricingMeasured": false
+  },
+  "actualGoWASIExecution": {
+    "passed": true,
+    "positions": 1,
+    "logits": 50257,
+    "moduleSHA256": "c84037c536da60f39e66ea5e298d46c15bb20ff3b2b8f0fbc1159a1f74f64868",
+    "localSeconds": 36.085024,
+    "isNitroProver": false
+  },
+  "bootstrapOptimization": {
+    "baselineSeconds": 148.778053666,
+    "checkedHostBootstrapSeconds": 28.757810125,
+    "resultsIdenticalOnTestedCases": true,
+    "localRatio": 5.1734834126560605
+  },
+  "publicPagedUploadImplemented": false,
+  "actualNitroABIDispatchVerifiedByThisPackage": true,
+  "solidityInterfaceCompatibility": {
+    "compiled": true,
+    "compiler": "0.8.30+commit.73712a01.Emscripten.clang",
+    "functionsCompared": 5,
+    "inputOutputMutabilitySignaturesAndSelectorsMatchEmbeddedGoABI": true,
+    "evidence": "nitro-overlay/evidence/abi.json",
+    "reproducer": "nitro-overlay/compile-abi.mjs",
+    "abiOnlyCheck": true
+  },
+  "debugNitroABI": {
+    "address": "0x0000000000000000000000000000000000000a12",
+    "debugOnly": true,
+    "publicModelUpload": false,
+    "genesisModelHashChecked": true,
+    "actualGethCallAndStaticCall": true,
+    "positionsPerBackend": 1,
+    "logitsComparedPerBackend": 50257,
+    "commitsPerBackend": 18,
+    "actualMeteredEVMRollbackVerified": true,
+    "interpreterSeconds": 16.128970084,
+    "nativeCompilerSeconds": 2.205654292,
+    "checkpointLogitsAndGasEqual": true,
+    "singleAdvanceFixtureGas": 245844125,
+    "totalFixtureGasIncludingFailureProbes": 10090709081,
+    "genesisGasExcluded": true,
+    "computationInstructionTariffComplete": false,
+    "ordinaryTransactionFeasibilityProven": false,
+    "evidence": [
+      "../nitro/evidence/llm-abi-dispatch-interpreter.json",
+      "../nitro/evidence/llm-abi-dispatch-native-compiler.json",
+      "../nitro/evidence/llm-abi-backend-parity.json"
+    ]
+  },
+  "fraudProofExecuted": false,
+  "chainBooted": false,
+  "largeLLMOrChessStrengthChanged": false,
+  "financialActions": false
+}

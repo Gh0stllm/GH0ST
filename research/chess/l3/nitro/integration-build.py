@@ -11,7 +11,18 @@ for p in (r/'overlay').rglob('*'):
   q=dst/p.relative_to(r/'overlay');q.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(p,q)
 p=dst/'arbos/gh0stllm';p.mkdir(parents=True,exist_ok=True)
 for f in ['runtime.go','runtime_test.go']:shutil.copy2(r/'portable'/f,p/f)
-subprocess.run(['git','apply',str(r/'register-debug-only.patch')],cwd=dst,check=True)
+# Prevent git from treating this ignored extracted tree as a subdirectory of the
+# enclosing GH0ST checkout and silently skipping all patch paths.
+patchEnv={**os.environ,'GIT_CEILING_DIRECTORIES':str(b)}
+subprocess.run(['git','apply',str(r/'register-debug-only.patch')],cwd=dst,env=patchEnv,check=True)
+llmOverlay=(r/'../bridge/nitro-overlay').resolve()
+for name in ['ArbGhostLLM.go','ArbGhostLLM_test.go']:
+ shutil.copy2(llmOverlay/name,dst/'precompiles'/name)
+subprocess.run(['git','apply',str(llmOverlay/'registration.patch')],cwd=dst,env=patchEnv,check=True)
+registry=(dst/'precompiles/precompile.go').read_text()
+for name in ['makeGhostTensorPrecompile','makeGhostLLMPrecompile']:
+ assert 'insert(debugOnly('+name+'()))' in registry,'Registration patch was not applied: '+name
+
 for repo,commit,name,sha in [
  ('go-ethereum','30456d24d3cff444d3b0f246e9c7609477c7d4a1','geth','264b7c342e58910564f7f70d2975ff455a8293219f1886a32cfd7f4a6799c726'),
  ('nitro-precompile-interfaces','7e88c8cc53c2e96201a23c638f1536557b9cb68b','precompile-interfaces','ada4f0770a5d9aeacfa7ba785d4e55453c1a40c15f0a7782be1ce569e5226912')]:
@@ -26,8 +37,9 @@ for repo,commit,name,sha in [
   shutil.copytree(b/(repo+'-'+commit),dst/'go-ethereum',symlinks=True)
 subprocess.run(['node',str(r/'generate-precompile-abis.mjs')],cwd=r,check=True)
 baseEnv={**os.environ,'GOTOOLCHAIN':'local'}
-subprocess.run([str(b/'go/bin/go'),'run','solgen/gen.go'],cwd=dst,check=True,env=baseEnv,timeout=150)
-p=subprocess.run([str(b/'go/bin/go'),'build','./precompiles'],cwd=dst,capture_output=True,text=True,env={**baseEnv,'GOOS':'wasip1','GOARCH':'wasm','CGO_ENABLED':'0'},timeout=150)
-report={'scope':'Complete pinned Nitro precompiles overlay package on upstream Wasm replay compilation target','target':'wasip1/wasm','exitCode':p.returncode,'output':(p.stdout+p.stderr).replace(str(r),'$NITRO_EXPERIMENT')[-7000:],'overlayTypecheckedAgainstCompleteNitroWasmPackage':p.returncode==0,'nativeNodeBuilt':False,'proverBuilt':False,'precompileExecuted':False,'financialActions':False}
+subprocess.run([str(b/'go/bin/go'),'mod','edit','-require=github.com/Gh0stllm/GH0ST/l3/bridge@v0.0.0','-replace=github.com/Gh0stllm/GH0ST/l3/bridge='+str((r/'../bridge').resolve())],cwd=dst,check=True,env=baseEnv)
+subprocess.run([str(b/'go/bin/go'),'run','-mod=mod','solgen/gen.go'],cwd=dst,check=True,env=baseEnv,timeout=150)
+p=subprocess.run([str(b/'go/bin/go'),'build','-mod=mod','./precompiles'],cwd=dst,capture_output=True,text=True,env={**baseEnv,'GOOS':'wasip1','GOARCH':'wasm','CGO_ENABLED':'0'},timeout=150)
+report={'scope':'Complete pinned Nitro precompiles overlay package on upstream Wasm replay compilation target','target':'wasip1/wasm','exitCode':p.returncode,'output':(p.stdout+p.stderr).replace(str(r),'$NITRO_EXPERIMENT')[-7000:],'overlayTypecheckedAgainstCompleteNitroWasmPackage':p.returncode==0,'nativeNodeBuilt':False,'proverBuilt':False,'fullLLMPrecompileSourceIncluded':True,'debugA12RegisteredInSource':True,'precompileExecutedByThisBuild':False,'financialActions':False}
 (r/'evidence/nitro-wasm-package-build.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report,indent=2))
 raise SystemExit(p.returncode)

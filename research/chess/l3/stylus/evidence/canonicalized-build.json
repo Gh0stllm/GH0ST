@@ -1,0 +1,17 @@
+{
+  "scope": "Canonical Wasm re-encoding only; activation evidence is a separate native Nitro test",
+  "method": "wasmparser/wasm-encoder0.245.1 RoundtripReencoder; no instruction-semantic changes",
+  "raw": {
+    "bytes": 25401,
+    "sha256": "50c3f59bb8bdbd6b6883835ce5caf24a58057e526ea3989d77403ad921db723c"
+  },
+  "canonical": {
+    "bytes": 23102,
+    "sha256": "e15336947f6bc96a6e29c5eab5d0ad84ffb8d76422f03866115766d1173b5527"
+  },
+  "reasons": [
+    "LLVM pads call_indirect table index zero; reference-types-disabled Nitro parser needs canonical reserved zero"
+  ],
+  "productionReady": false,
+  "chainCallsSubmitted": 0
+}

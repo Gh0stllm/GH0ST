@@ -28,7 +28,7 @@ research/chess/engine/.cache/venv/bin/python research/chess/l3/compatibility/che
 
 The actual-engine command intentionally exits2 for incompatibility. Its Wasmtime backend comes from the existing local engine virtual environment. Optional Brotli1.1.0 was installed only in this directory's ignored `.cache/deps`; no global package or live service changed. Modules already above the decompressed Stylus limit skip expensive compression because raw size already rejects them.
 
-Twelve bounded fixture tests cover structural corruption, false SIMD detections in data/immediates, real SIMD, float policy differences, memory64/shared memory, initial-memory versus later-growth limits, forbidden host I/O, unknown instructions and raw module size.
+Thirteen bounded fixture tests cover structural corruption, false SIMD detections in data/immediates, real SIMD, float policy differences, memory64/shared memory, initial-memory versus later-growth limits, forbidden host I/O, unknown instructions, raw module size and padded indirect-call table-zero encoding. The raw Rust Stylus artifact fails this last check; its required canonical build passes (`stylus-raw-report.json` versus `stylus-kernel-report.json`). Separate actual Nitro activation tests confirm that parser distinction. The checker itself still makes no activation claim.
 
 ## Pinned primary sources
 

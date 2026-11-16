@@ -19,7 +19,7 @@ common=["-std=c++17","-O2","-fno-exceptions","-fno-rtti","-fwrapv","-fno-vectori
 library=cache/("libruntime.dylib" if platform.system()=="Darwin" else "libruntime.so")
 native_command=[native,*common,"-dynamiclib" if platform.system()=="Darwin" else "-shared","-fPIC","-o",str(library)]
 wasm=cache/"runtime.wasm"
-exports=["gh_model_ptr","gh_model_len","gh_seal_model","gh_reset","gh_begin","gh_advance",
+exports=["gh_model_ptr","gh_model_len","gh_seal_model","gh_accept_preverified_model","gh_reset","gh_begin","gh_advance",
     "gh_phase","gh_step","gh_position","gh_best_token","gh_logits_ptr","gh_logits_count",
     "gh_checkpoint_ptr","gh_checkpoint_capacity","gh_checkpoint_export","gh_checkpoint_restore"]
 wasm_command=[str(wasi),*common,"-nostartfiles","-Wl,--no-entry","-Wl,--export-memory",

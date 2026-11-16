@@ -1,0 +1,95 @@
+{
+  "inspection": {
+    "moduleBytes": 25401,
+    "sha256": "50c3f59bb8bdbd6b6883835ce5caf24a58057e526ea3989d77403ad921db723c",
+    "features": {
+      "simd": false,
+      "relaxedSIMD": false,
+      "atomics": false,
+      "memory64": false,
+      "sharedMemory": false,
+      "floats": false,
+      "tailCalls": false,
+      "referenceTypes": false,
+      "nonCanonicalIndirectTableZero": true
+    },
+    "imports": [
+      {
+        "module": "vm_hooks",
+        "name": "write_result",
+        "kind": 0
+      },
+      {
+        "module": "vm_hooks",
+        "name": "read_args",
+        "kind": 0
+      },
+      {
+        "module": "vm_hooks",
+        "name": "storage_flush_cache",
+        "kind": 0
+      },
+      {
+        "module": "vm_hooks",
+        "name": "pay_for_memory_grow",
+        "kind": 0
+      },
+      {
+        "module": "vm_hooks",
+        "name": "msg_reentrant",
+        "kind": 0
+      },
+      {
+        "module": "vm_hooks",
+        "name": "msg_value",
+        "kind": 0
+      }
+    ],
+    "memories": [
+      {
+        "minimumPages": 17,
+        "maximumPages": 128,
+        "memory64": false,
+        "shared": false
+      }
+    ],
+    "exports": [
+      {
+        "name": "memory",
+        "kind": 2,
+        "index": 0
+      },
+      {
+        "name": "user_entrypoint",
+        "kind": 0,
+        "index": 59
+      }
+    ],
+    "exportCount": 2,
+    "hasStylusEntrypoint": true,
+    "codeSectionBytes": 22190,
+    "dataSectionBytes": 2666,
+    "instructionCount": 9395,
+    "functionBodies": 162,
+    "structuralInspectionCompleted": true,
+    "staticTypeValidation": "not performed; install optional wasmtime",
+    "brotliQuality11Bytes": 9149
+  },
+  "assessment": {
+    "profile": "stylus_v3_arbos60",
+    "profileConstraintsMet": false,
+    "deploymentReady": false,
+    "reasons": [
+      "unsupported feature: nonCanonicalIndirectTableZero"
+    ],
+    "limitScope": "initial memory bound; not a universal runtime memory cap",
+    "largeRuntimeImplemented": false,
+    "notValidated": [
+      "Nitro activation/instrumentation",
+      "Stylus ABI/types beyond entrypoint",
+      "gas and ink safety",
+      "matching replay/fraud prover",
+      "model quality and scale"
+    ]
+  }
+}

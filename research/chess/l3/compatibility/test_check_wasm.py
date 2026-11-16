@@ -84,6 +84,17 @@ class FeatureTests(unittest.TestCase):
         r = inspect(module(data=bytes(256 * 1024)))
         self.assertTrue(any('module exceeds' in x for x in assess(r)['reasons']))
 
+    def test_padded_indirect_table_zero_requires_stylus_canonicalization(self):
+        def indirect(table):
+            raw=module(b'\x41\0\x11\0'+table)
+            at=8+len(sec(1,b'\1\x60\0\0'))+len(sec(3,b'\1\0'))
+            return raw[:at]+sec(4,b'\1\x70\0\1')+raw[at:]
+        padded=inspect(indirect(b'\x80\x80\x80\x80\0'))
+        self.assertTrue(padded['features']['nonCanonicalIndirectTableZero'])
+        self.assertIn('unsupported feature: nonCanonicalIndirectTableZero',assess(padded)['reasons'])
+        canonical=inspect(indirect(b'\0'))
+        self.assertFalse(canonical['features']['nonCanonicalIndirectTableZero'])
+
 
 if __name__ == '__main__':
     unittest.main()

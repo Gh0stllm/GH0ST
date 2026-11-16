@@ -1,0 +1,3237 @@
+{
+  "schema": "gh0st.nitro.contract-source-compilation.v1",
+  "status": "SOURCE_COMPILED_NOT_DEPLOYED",
+  "recordedAt": "2026-11-16T05:46:21.548393+00:00",
+  "scope": "Free local exact pinned Solidity source compilation to unblock native Nitro Go binding generation. No node boot, chain deployment, transaction, proving, or mainnet claim.",
+  "nitroRevision": "v3.12.2",
+  "noInstallHooksExecuted": true,
+  "compilerWrapper": "Existing solc-js setupMethods wrapper loads separately SHA512-verified exact-version soljson modules; compiler versions reported below.",
+  "artifactFormat": "Hardhat hh-sol-artifact-1, generated from actual solc ABI, creation bytecode, runtime bytecode, and link references; no empty placeholder contract bytecode. Interfaces and abstract contracts naturally have empty creation bytecode.",
+  "main": {
+    "sourceCommit": "4341b132cfbdcc980ead03765ca5224ff6cb5d97",
+    "sourceArchive": {
+      "name": "git.tgz",
+      "url": "https://codeload.github.com/OffchainLabs/nitro-contracts/tar.gz/4341b132cfbdcc980ead03765ca5224ff6cb5d97",
+      "sha256": "9a3ccbf6ab73158d0639c8c1567c39bee3313195b5c92fdf03f100e74b7b16c2",
+      "bytes": 640649
+    },
+    "hardhatConfigSha256": "48e56093fddb85050855e32e6f1bb47e337176a45a4456876b59b814d6f6f6b5",
+    "sourceFileHashes": {
+      "src/assertionStakingPool/AbsBoldStakingPool.sol": "cfecad304e2371a0c1c51f6f067850899f76c7a43d47315bb8de5e460a6a400f",
+      "src/assertionStakingPool/AssertionStakingPool.sol": "b729e8491820dfc5800da97de5cce052adf1f65fd74bc21e78d58d2302cf0b73",
+      "src/assertionStakingPool/AssertionStakingPoolCreator.sol": "0c8ef637bfab76e62a4c1cd435adb19b464fb37b9917e61bfdfb547b496c0c4a",
+      "src/assertionStakingPool/EdgeStakingPool.sol": "9ab915c7cddda70fc30d80e8a8f1c5dcdfbeba97b9e1be295ec13f0fd4356267",
+      "src/assertionStakingPool/EdgeStakingPoolCreator.sol": "29b60ec9970513c213ddde5663425e0606f064aa883cbecec54e32727dd4a454",
+      "src/assertionStakingPool/StakingPoolCreatorUtils.sol": "634017ac669b93b9840ce56fe0d3f47bf6b6e8e754708106adf8000d0d16083b",
+      "src/assertionStakingPool/interfaces/IAbsBoldStakingPool.sol": "a8b5077340edb37b164dc678c2b163131024a605cc66dd3942e0f4f7d24e9c04",
+      "src/assertionStakingPool/interfaces/IAssertionStakingPool.sol": "e7b817cebadeece82060399826fe48802dad020587e5044e41d27123ee142a6c",
+      "src/assertionStakingPool/interfaces/IAssertionStakingPoolCreator.sol": "c96a95a4701a91e1ed599ffc6d797260b6c3785598e3f223c5be232b40d460eb",
+      "src/assertionStakingPool/interfaces/IEdgeStakingPool.sol": "49ba29dd6c11c73ac80f49985f8190c2456cd45cc3c3f3c5ebb49321ecb18477",
+      "src/assertionStakingPool/interfaces/IEdgeStakingPoolCreator.sol": "d73d89feff269f8450d100a16bd058bb4eb8d0798e1c591389199601a165d474",
+      "src/bridge/AbsBridge.sol": "8b0632c5fa3ea493d1d46248780b725781f7ebcf1b5b5669d1fdd69d0a4d2ec9",
+      "src/bridge/AbsInbox.sol": "4688b0bfacfbc29d384d098c5669aff078e7a032118ad8d436b0434fdd130ee6",
+      "src/bridge/AbsOutbox.sol": "794fada80cd2d77d5bdfc5a9abccad0a3ffdd272e759393247102be1ed8eb79e",
+      "src/bridge/Bridge.sol": "c27a3d54fde3e2a6009d9a4cdc2d869646fa37d8930ba4268153413476b7953f",
+      "src/bridge/DelayBuffer.sol": "9c7d1929ae83b5492d299ec369aa09166565cf0f81a096c1f52f76c7ea896e95",
+      "src/bridge/DelayBufferTypes.sol": "84aac6436d2609d78899f302b9e01805451195010aba5e996cbf302c4d03dc30",
+      "src/bridge/ERC20Bridge.sol": "c26270da3feae60d6ca9b1fa22a2a764711885845f3cdfb938a3b81588f2a93a",
+      "src/bridge/ERC20Inbox.sol": "eeb88f96c6ca2b58c743abbce769446813bc2abb1922ddab3db784548905e222",
+      "src/bridge/ERC20Outbox.sol": "4460ea4168139f7af0c8e236b1362acb93e1209ef3c472ca6dbaa9098e9b5b9d",
+      "src/bridge/GasRefunder.sol": "c6f6c36832f06af497bfc346d88b10cf55628f33b7aaec99294203d15c100996",
+      "src/bridge/IBridge.sol": "3b8cb076fa43cf14755ed836e9cebacec15cdfaf27db07c974bb5069528bea7f",
+      "src/bridge/IDelayedMessageProvider.sol": "81d2542e66ec9314e8759d8e9fa56e9f6c31050b5f3c09b3fc90693eac3e4016",
+      "src/bridge/IERC20Bridge.sol": "973c603490c2153c480e7f43564d4e8763eef9696a479802490bdfb245185084",
+      "src/bridge/IERC20Inbox.sol": "f4377dcb60c5def326258f08ba48b01cd601263e6e38677a20c0cb390c9d0741",
+      "src/bridge/IEthBridge.sol": "fd5d90fcd20855301d5a80ca95e062df8570f176e4e4d92a5a2a1fb520b4c350",
+      "src/bridge/IInbox.sol": "081310cbdccf791097ba6dd8f1063a569fbdd04b4392543f226b8540d64b4cf6",
+      "src/bridge/IInboxBase.sol": "08843b8d3d0c88541c0926c84a70976a491c4058d62e9482a82f7231315d8776",
+      "src/bridge/IOutbox.sol": "2b5b3a459c92ff326c7ac186254b0442b9acd1b90cce375aed03f71bfd7e8f7e",
+      "src/bridge/IOwnable.sol": "49b5257ef1078a2a7aa8502189407872c14aba0d4faf0d2ee7d5bb5015f57d1b",
+      "src/bridge/ISequencerInbox.sol": "5eb979c80f3c823cd21946fe61956d65ac9521edc8ab9488544ec62467e8cd6f",
+      "src/bridge/Inbox.sol": "811818cff3a2047aa64992508977f557b5a97a5ffff1f65994527255ab921fa9",
+      "src/bridge/Messages.sol": "1240e227ee687c43a1a919ca97b68b53c0c246ae62b2c7038c2fd8714376adeb",
+      "src/bridge/Outbox.sol": "d482bbfc0673c565c75a48765773b2bcf9bf2dbe899fceb9701270a8ab5bd8e8",
+      "src/bridge/SequencerInbox.sol": "ae8aa44acbf5522a8819d4a11f37517d9e33df2711aa1deb4a76a3408c2d7be2",
+      "src/bridge/extra/ERC20MigrationOutbox.sol": "2ac3b3e2c1738b2a8709c1d91dae97daba8cc24395791b1393067b1723615911",
+      "src/bridge/extra/IERC20MigrationOutbox.sol": "e66d3b5ef9b9487ff0e5756dc25fca3955a96b5e4f94f627f57a19f39f563638",
+      "src/chain/CacheManager.sol": "b9371795766054be2f9b9735d9da905ab15d9d70fd50889ccec9bf7f353591e1",
+      "src/chain/ResourceConstraintManager.sol": "2af88df92c2980d24c49bbb04bdd99f8495876ced957b748e3f830990f86007a",
+      "src/challengeV2/EdgeChallengeManager.sol": "408b64d6ac8a61f656ef94cff2f61537714e373ef38129bd734136aa3f45bfb9",
+      "src/challengeV2/IAssertionChain.sol": "4eaaf528d70002590552d1c944e2e72b84a4cbe687fe8c53e57c06126d5030ec",
+      "src/challengeV2/IEdgeChallengeManager.sol": "5033ec2cdb13a028aa31b6a12a3f71a3803517aec9a7fc755c2e7ff336146893",
+      "src/challengeV2/libraries/ArrayUtilsLib.sol": "537cfe739a899b103d6598c5d7df517b3756c0d6d63fe64044f3c4205cafac85",
+      "src/challengeV2/libraries/ChallengeEdgeLib.sol": "8fdf463f01f1608ca7030725f25868d5e96fda961ef6a282c2f900ef4477431e",
+      "src/challengeV2/libraries/ChallengeErrors.sol": "ae6ad207e90f12ee1e70aae24047b7f83109db0f0a761584fadd86dc6ee97477",
+      "src/challengeV2/libraries/EdgeChallengeManagerLib.sol": "453354bced72ad51727e495e1f921d45598563d9697d9b48aeccb6f97bbf58c0",
+      "src/challengeV2/libraries/Enums.sol": "07ee115c08d2af9f90e4c8629c133365c285ad61d70d2d0cae9cfe8f08b0029d",
+      "src/challengeV2/libraries/MerkleTreeAccumulatorLib.sol": "43618105ccc26e6be100f569c278b39b6fdd8c44617b05b7cb7cbdeb3f9960ff",
+      "src/challengeV2/libraries/Structs.sol": "0c1e4c90bec97cb221daa0d67a84e2734b03477c2a8156fe16125df9b3b3614e",
+      "src/challengeV2/libraries/UintUtilsLib.sol": "9e4e28a0b351c47e5f9dafd7da77243c3d6d5986c677941f3d9110af6d7eacce",
+      "src/express-lane-auction/Balance.sol": "2ab757b071ff30a5cfbb60167405772e1f4dd999034ba300e0eef87fc34b133e",
+      "src/express-lane-auction/Burner.sol": "2b323d700b3ba06516d5952c482f722ad37952b0e0f7f6473494a8777463ebc8",
+      "src/express-lane-auction/ELCRound.sol": "8206904f2cf2978cc528448281b28fc93a7c935a1fb23f699cb02b0d3146429e",
+      "src/express-lane-auction/Errors.sol": "b4bf8656f8abfac2f7578f64e8389e0f58934d189f2936ccdac09c3462f39298",
+      "src/express-lane-auction/ExpressLaneAuction.sol": "d871b5c0abfe7ed418cd34b9727112b218757d0b3c10f0a728bfa3bfe6932f97",
+      "src/express-lane-auction/IExpressLaneAuction.sol": "e36144c37eaf819cebd1a1ba560305dd2c2f567b40907c76e16f0756cec922dc",
+      "src/express-lane-auction/RoundTimingInfo.sol": "0b9ba03da8018bfaa5d9c7ea352599f6399c6ef260523eaa688060fa208a3834",
+      "src/libraries/AddressAliasHelper.sol": "bde4e6942742c0763fa7ed910ae79da9ab7620eb4f8f5a101cb16a0bbd5ce91e",
+      "src/libraries/AdminFallbackProxy.sol": "5c89164a148b9896eed71611e8297265ba65099c3f5d96faf67f1f3d1d115e80",
+      "src/libraries/ArbitrumChecker.sol": "a4132bcf35fdc3c25a6ea5a565b8e8db929331de7491451ed2dbe41bfdd5633e",
+      "src/libraries/CallerChecker.sol": "5f64c18a67b74af55aa3fcc336dedb3c75a002c7b0b1d4a935135429931305d6",
+      "src/libraries/Constants.sol": "991326e8c714914e38f1edf13bbd2e78b4849521e49e8408785fed6ef9edd7ff",
+      "src/libraries/CryptographyPrimitives.sol": "2ecf2f33b0c359821c1d29e3ec749a808003bce7307a316ee995224452e24e6d",
+      "src/libraries/DecimalsConverterHelper.sol": "db16c3fa98bec5af1c9b0a779a8116c2f3765c35f3ca0e85559fde9f8c031a12",
+      "src/libraries/DelegateCallAware.sol": "fbdb2d4ad7c07eac1c12925806e3f4ec59f613244e4f824fc3b2a7b44a84831d",
+      "src/libraries/DoubleLogicUUPSUpgradeable.sol": "9ad473fd6ce45d89b24f324064d8b2d76a0642b4ad073954bf88a41fa977df42",
+      "src/libraries/Error.sol": "82081c367e38630c0f0105507fe7bba252fd37ea69247b77a4e2e9a5e580fc66",
+      "src/libraries/GasRefundEnabled.sol": "1eab9ad3f6efdff1f9457dfd2182db4c708ada18924748e7f78e7cbe3ae63428",
+      "src/libraries/IGasRefunder.sol": "1baaa5556984d60f257597fde8df72df39377bc42238a1bc6b8cec20581b6c6e",
+      "src/libraries/IReader4844.sol": "d39d9f98f7111bb854077d9c4fc6e8276b1cbbfa6c7bc1c7247155dd939f591e",
+      "src/libraries/MerkleLib.sol": "e125f7323938678f1d6572e193e297b074b00dada7e7f629574726e3267ff907",
+      "src/libraries/MessageTypes.sol": "aa535ecc02f51e1567f846eb6a8d73cca4815479f1049263cc581e3077295490",
+      "src/libraries/UUPSNotUpgradeable.sol": "8551f9254526723bba4a2c173d9c6cb46f4c55763f400a8cf5f3719c63658858",
+      "src/mocks/BridgeStub.sol": "dff6e2b04fec579c9d25415ba0fbfe387d38fd6d8ac034164b89b2b76db07078",
+      "src/mocks/BridgeUnproxied.sol": "8b6ff440d9a0832c647343f82f4d4136264e074fa576ac3d802e0279b33150be",
+      "src/mocks/InboxStub.sol": "ef9d89d3da54d9a126d611e2e7e122d1abe9d505bde680926662e5e92590f021",
+      "src/mocks/MerkleTreeAccess.sol": "6968073768771bff6fd85b51b555b08c31c821b40948bb1a2b9ded9342edbf60",
+      "src/mocks/MockRollupEventInbox.sol": "3694c4c8cdd14f3900c5c3fc392b13b62aa67a94eebeaae020f883d1583b2781",
+      "src/mocks/SequencerInboxBlobMock.sol": "f97f72fd6fd9240cfa45385e761a2c9c95dffb1a05076896f7fed868f4407d3f",
+      "src/mocks/SequencerInboxStub.sol": "9d9a44aa072f9af970fcbbabba406736e79b48ef23eb67c9c1b144e32c442de7",
+      "src/mocks/SimpleOneStepProofEntry.sol": "1e5aa81f0eb3243845e7c9596114d5e8003b77a474ecbef88ee22e3c440e8fc6",
+      "src/mocks/TestWETH9.sol": "bbff5ee4ebb9516e01d9aea2064b89197d02b7ecd81b011378ee454a0ac3373a",
+      "src/mocks/UpgradeExecutorMock.sol": "b55a65cf062f5a00e18c69a60125668dfab7877c5d5605448bb578370be2c1bb",
+      "src/node-interface/NodeInterface.sol": "f42de11ff893d17ed7e490094f4d21730f9720a93dbb6e190de35a7e9481d752",
+      "src/node-interface/NodeInterfaceDebug.sol": "e3c754bc326131ba491d665b3b0aea3ed1d9b7537dd9e53420bcf4f91efbf31a",
+      "src/osp/HashProofHelper.sol": "e23bc0816c1ded00061c9239c2bf0da30319edb509ab7fe1a13cee8d1e54a272",
+      "src/osp/ICustomDAProofValidator.sol": "ab86305a015325417c99bf24a45c49568b567df8e8b525503461bab311b4f891",
+      "src/osp/IOneStepProofEntry.sol": "a70bc0cab24c48b9f0e2b509f5148406952fc3a7e2b98544853b27c56bff8b65",
+      "src/osp/IOneStepProver.sol": "4e760abe7abdfdd6ffd39d502bc86c573ef4d73f189e65af6262bc9b9be89176",
+      "src/osp/OneStepProofEntry.sol": "75f72d96b0446a7028608db3f681eb2af5b61761d6228c809271dd694129d5cb",
+      "src/osp/OneStepProver0.sol": "0191feba0e25ef228d44e5dd236168a88c3e84ec1e51cc95d7338ec72b31251d",
+      "src/osp/OneStepProverHostIo.sol": "552b337b4ffe1df1ed7c9840be86d3266367fda6094a2b8281eecd77e88c0509",
+      "src/osp/OneStepProverMath.sol": "ee6ba58344f197ab88865c69e30aa687acc8617a4191d3113b179338bcfa17f6",
+      "src/osp/OneStepProverMemory.sol": "66d1686709cba56b0eaeea908f012dd4158d5e13b87f549e842b0f4dd86621a0",
+      "src/rollup/AbsRollupEventInbox.sol": "15fb1c491d15f5fc7afbee8e17046389ba47802faf81ca84ced16aa51c298aae",
+      "src/rollup/Assertion.sol": "5055b86d16e3a72b420a9093b1145d04517a86283931f9360a9b959b5fbca998",
+      "src/rollup/AssertionState.sol": "d88f95777ad5e4a24e93cc460de27099c6dcd74863630729bb7739a4bac663ac",
+      "src/rollup/BOLDUpgradeAction.sol": "c61555cafe58161cad3413198938fb319baf4e189eeed6d6ab0f212d8cb77601",
+      "src/rollup/BridgeCreator.sol": "6d27b16767693767bb65533fa6ffc937d0b23b443e086b21ed36ed754f72c424",
+      "src/rollup/Config.sol": "c0bf20d956a97ad2f6cb5062d570cae2b33a49dfb1743d7f178a6477e5c9452a",
+      "src/rollup/DeployHelper.sol": "ff72cd73b12590d749a839155d45f692b093d5e0295a5d46d025d95b08fa8162",
+      "src/rollup/ERC20RollupEventInbox.sol": "486b889d15ad9138868dbb0af5d0f395aab80eba4adeb1941a816191bb5acb3f",
+      "src/rollup/IRollupAdmin.sol": "a271156029bc721826a12cd0ffed20a68e5eacc4a27e4b329df3de1e6b99e494",
+      "src/rollup/IRollupCore.sol": "e1bda885f25df1cc4421c92d44676c31623261b4a89396e5808c756bdd5409e3",
+      "src/rollup/IRollupEventInbox.sol": "47e43c3e2048d14b70ae9db8071bb0da4ac2dcea446f8b0972e67f3c2ec268c6",
+      "src/rollup/IRollupLogic.sol": "6f93f34b0951e8771eb65c9dc66374f227589b7f8627daf8776085452f46edbe",
+      "src/rollup/RollupAdminLogic.sol": "b09c457fffbc68a9ceec497e2946258368a9a908caabce0f35773f0be2be0ce3",
+      "src/rollup/RollupCore.sol": "399c0c0d78e2d801bca88e874e696f489639d9c1557852cdd0b43301c7a44d83",
+      "src/rollup/RollupCreator.sol": "1f229aa8709b6471faacbc011c10d12adebb8a5152e6940e966e2530bc248f91",
+      "src/rollup/RollupEventInbox.sol": "90baf6f991062d2e9774d00677ccd5e94f250d4594bd0f54482c1294a2ceed7c",
+      "src/rollup/RollupLib.sol": "95b4754b7483bcb82c190f8ff0d83b0fb2e11f6875225b85527c8aced42aaf13",
+      "src/rollup/RollupProxy.sol": "ef44aa0f5a71a1adf35ed215faa827728766fdd483bac38095ec0c8fcd8755b3",
+      "src/rollup/RollupUserLogic.sol": "eae664c9a3dcbad5d9c342921e8677882e1dc881795c63581dc6980797f8ecaf",
+      "src/rollup/ValidatorUtils.sol": "ba291dcb329e6197b067b388bd83a157588148c7c407e01e3d31f16789d03b11",
+      "src/rollup/ValidatorWallet.sol": "ab1c48717850639c73365b0b533c8b36f01da20cd2a88b62ee52771b26ef9526",
+      "src/rollup/ValidatorWalletCreator.sol": "21827038989eccb69a016006007e52305d89e02df38f94b3cdc7bb0613697401",
+      "src/state/Deserialize.sol": "f6bd061eb9e06b32b4c99b177fdc0038dffa3f2d295bbb48ae7f32c91ae8e54e",
+      "src/state/GlobalState.sol": "510e694cd7b6c4d13b18d4e9d943e71efece76c836716c67c2484634c2557c44",
+      "src/state/Instructions.sol": "6f78d95507febd7287c77e0b70f1f06c1d7b750de18d1df1b4cb46e38405edb6",
+      "src/state/Machine.sol": "e1abfde3b384792322adc53b3ac41b557552ca5cb558e066ebbbfa390997b55a",
+      "src/state/MerkleProof.sol": "2e5a3401f558131249af0f43df21fc16cfa266c1495c2975d982d2b05ef35ddc",
+      "src/state/Module.sol": "43c4b4bbce5a4db10cdacf9033062b5d740d857b4759943a213adcb831ad2d2b",
+      "src/state/ModuleMemory.sol": "4adba636980d0a5aed19a36fe21b0900e6fa6212c57499d7ea39b254232ef780",
+      "src/state/ModuleMemoryCompact.sol": "25a7d82a8f0d0ee9ba3027c98b356577a2e9426776b2f03fffbaf3e2eb5f1f2d",
+      "src/state/MultiStack.sol": "0f15fc2dad2b9974b0ed4b6ea943573daff1fa3e0ef5be61de2175a00db63caa",
+      "src/state/PcArray.sol": "f6386417ab21d52dd66ca42ee4f44089888f656fbff359404db1d288c561cd50",
+      "src/state/StackFrame.sol": "728ccae0a09173ba0e29ebb4d3866338239b152cd0fa899be11858ad2052bb94",
+      "src/state/Value.sol": "fe44fb3c7744518521e4a1435da56ca0a2cb1a67efae31f4156d59089cb17e45",
+      "src/state/ValueArray.sol": "1be61a1ea7dddcf8feee205f98f65cc28427beccdca606103c24dee817af840e",
+      "src/state/ValueStack.sol": "e7ab95bcd47143be1d903c57cdfafb9df69e20f3add8f67cdb29e3d6962ec05f",
+      "src/stylus/StylusDeployer.sol": "4fdb96c7180594d01821affff221ac570b84f6136e2fe7588257c4fffc893ebf",
+      "src/test-helpers/BridgeTester.sol": "ffb48a61b607d3949302f5db3b0261b88037c8274b535b1a012891d384741dd1",
+      "src/test-helpers/CryptographyPrimitivesTester.sol": "580f3d8019a67fa7f273955bb0f4a4c6cd4910088509d7aee2b9907cf0656f45",
+      "src/test-helpers/EthVault.sol": "0a134149f4d72596469c2a7a18f821f01fe420f89130e98d01c90c5631815900",
+      "src/test-helpers/InterfaceCompatibilityTester.sol": "1adde0c1dc485c0135eca4fa0d1367d08b3128404871b2969c55a50a63a8f225",
+      "src/test-helpers/MessageTester.sol": "35d287c411af0331e4266ff70bf11c86454a850cb2172629c01fc7c991ab1765",
+      "src/test-helpers/NoReceiveForwarder.sol": "17b105d4b5dc1da349f05af04fceedfbe0029158e002237142c2a3056fec494e",
+      "src/test-helpers/OutboxWithoutOptTester.sol": "05903ecd9e1e23c3f6080289ba412b1741d079a5ecdfb791a458df4c9b92a2c2",
+      "src/test-helpers/RollupMock.sol": "f7340e16fb7816ab0f746703a416f28961c3d1d727d68b6a0ba75423dd693625",
+      "src/test-helpers/TestToken.sol": "c41d26de2b47e0198f55cc2883f001005e963d28ee6eafcb0c180da9f1d417fb",
+      "src/test-helpers/ValueArrayTester.sol": "456f4689238cc9517262fddd44c5fe8fea0eddd8a54e0de2d47b4a652e8905cb"
+    },
+    "compilerRuns": [
+      {
+        "optimizerRuns": 2000,
+        "selectedSources": "all",
+        "artifacts": 210,
+        "elapsedMs": 24304,
+        "inputSha256": "83c7eead862cd7d611020857c45e94839d4df176cf53fccbaf13e304530d8033"
+      },
+      {
+        "optimizerRuns": 20,
+        "selectedSources": [
+          "src/rollup/RollupUserLogic.sol",
+          "src/rollup/RollupAdminLogic.sol"
+        ],
+        "artifacts": 2,
+        "elapsedMs": 2453,
+        "inputSha256": "74275f5acbef9decffa3676e188c63aec7f4ba3fa384c17d4595b9bccbee8003"
+      },
+      {
+        "optimizerRuns": 200,
+        "selectedSources": [
+          "src/challengeV2/EdgeChallengeManager.sol"
+        ],
+        "artifacts": 1,
+        "elapsedMs": 1338,
+        "inputSha256": "ec96458724707af13ff23ad4bb6607b46c8940733063fa3e1486593e44fb9d79"
+      }
+    ],
+    "compilerDiagnostics": {
+      "errors": 0,
+      "warningFiles": [
+        "compile-main-200-errors.json",
+        "compile-main-20-errors.json",
+        "compile-main-2000-errors.json"
+      ]
+    },
+    "importedDependencySourceHashes": {
+      "@openzeppelin/contracts/token/ERC20/IERC20.sol": "94f23e4af51a18c2269b355b8c7cf4db8003d075c9c541019eb8dcf4122864d5",
+      "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol": "fa36a21bd954262006d806b988e4495562e7b50420775e2aa0deecb596fd1902",
+      "@openzeppelin/contracts/utils/Create2.sol": "ad74e5c578f8c3c2f2c3b82a445a72db2b07504c731344f0fc5fbc5cfbee8bbb",
+      "@openzeppelin/contracts/utils/Address.sol": "1e0922f6c0bf6b1b8b4d480dcabb691b1359195a297bde6dc5172e79f3a1f826",
+      "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol": "cd823c76cbf5f5b6ef1bda565d58be66c843c37707cd93eb8fb5425deebd6756",
+      "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol": "35fb271561f3dc72e91b3a42c6e40c2bb2e788cd8ca58014ac43f6198b8d32ca",
+      "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol": "c05b019a0b3bee8f3fac2da7c929f7d665b97d6d046aa35126615fff11205119",
+      "@openzeppelin/contracts-upgradeable/utils/StorageSlotUpgradeable.sol": "05b696b46ca1be28e19dfba65ea71c3b3615bd39d19bfd8212864a16c54870fd",
+      "@openzeppelin/contracts/token/ERC20/ERC20.sol": "5031430cc2613c32736d598037d3075985a2a09e61592a013dbd09a5bc2041b8",
+      "@openzeppelin/contracts/access/Ownable.sol": "9353af89436556f7ba8abb3f37a6677249aa4df6024fbfaa94f79ab2f44f3231",
+      "solady/src/utils/MinHeapLib.sol": "4de140172414671de3cede62373f95c8d73979a96698f068f192a18eee3661e3",
+      "@openzeppelin/contracts/access/AccessControlEnumerable.sol": "47861db7fa8d98b58cef570e7c8fca6af6d9d82e3ec0f525c3ad035cbfbed195",
+      "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20BurnableUpgradeable.sol": "ca660e828b0c4be205a9f56f3b87b91c1fa67cfd0f6e9dbd431faea7a6280d36",
+      "@openzeppelin/contracts/utils/cryptography/ECDSA.sol": "4e45d53327d561848fbcf381262ec5c0ac91b2f1f06432210bf76db55279d945",
+      "@openzeppelin/contracts-upgradeable/access/AccessControlEnumerableUpgradeable.sol": "a55a53b215e2bb9c350bf7b86ee09b0e488522f7d8747877fd9a3a7e474c2c26",
+      "@openzeppelin/contracts-upgradeable/utils/cryptography/draft-EIP712Upgradeable.sol": "798dd77cf98881ad27047953b5162f39ae8cc1420f0c0e8570e9342568ab8e9b",
+      "@openzeppelin/contracts-upgradeable/access/IAccessControlEnumerableUpgradeable.sol": "00e174801c04f08f2840ee1eed6394d06ba2b029c0b6078166255148794c1187",
+      "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol": "a39bc026ad6214e9ecd526bd4a1ddf9862d80bd4a9d0d031d9bafa4c3c147c0b",
+      "@openzeppelin/contracts/proxy/Proxy.sol": "b3b79c95884570b4d01629e13985aea8a3c71bc37c257e1ea7fae9f23cffe8c4",
+      "@openzeppelin/contracts/proxy/ERC1967/ERC1967Upgrade.sol": "a137681e196c44eaf1b819384a9633aef5cee10954ff1301138557cab2169dac",
+      "@openzeppelin/contracts/utils/StorageSlot.sol": "7583bd6ad3fdd5160823f090beb6b1519f54436d73ea7b7b4051b5d0758d533d",
+      "@openzeppelin/contracts/proxy/utils/UUPSUpgradeable.sol": "2a1718ae9e194695361c1ea66a1acbe346f7b52f59d3f3925f7a95e375ae82e6",
+      "@openzeppelin/contracts/interfaces/draft-IERC1822.sol": "38728bce05e2b518d0ef66d514dbfcdee5555aeac2d57729480bf1409ee63630",
+      "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol": "86752f503f326b20940831c24fd682d21767235c88dfd5960a43a17c148c93ed",
+      "@openzeppelin/contracts/security/ReentrancyGuard.sol": "aa73590d5265031c5bb64b5c0e7f84c44cf5f8539e6d8606b763adac784e8b2e",
+      "@offchainlabs/upgrade-executor/src/IUpgradeExecutor.sol": "2cea2f62401de2d297d2c7c6eb5748b0c21dd16491bf11a8f3967b3afb31271a",
+      "@openzeppelin/contracts-upgradeable/utils/Create2Upgradeable.sol": "2808ce0e7ba056f7d92b44f3ba301f7ecc45a01803c12884bf3d171abe1e6534",
+      "@openzeppelin/contracts/proxy/transparent/ProxyAdmin.sol": "172cd054bf76f83d70aa88eefee8679e2291b12f7b28cf043d4b821db6ebbe84",
+      "@openzeppelin/contracts-upgradeable/utils/structs/EnumerableSetUpgradeable.sol": "014846dc6c387e8fd6d31df636c28898eed601dc668725edbb1a0606c58d4b7e",
+      "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol": "36e855d6e7d1c09586002f8711b5c850c5ce36a73a50590e39b1cb099ee8702c",
+      "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol": "da66c17044345dc892d85bd7ddc9745d25df0b3dacfba8f84eb87c60d6e40fe3",
+      "@openzeppelin/contracts/token/ERC20/extensions/draft-IERC20Permit.sol": "3e7aa0e0f69eec8f097ad664d525e7b3f0a3fda8dcdd97de5433ddb131db86ef",
+      "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol": "5fb301961e45cb482fe4e05646d2f529aa449fe0e90c6671475d6a32356fa2d4",
+      "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol": "af5c8a77965cc82c33b7ff844deb9826166689e55dc037a7f2f790d057811990",
+      "@openzeppelin/contracts/utils/Context.sol": "1458c260d010a08e4c20a4a517882259a23a4baa0b5bd9add9fb6d6a1549814a",
+      "@openzeppelin/contracts/access/IAccessControlEnumerable.sol": "655ab8dc2a9617376734d04ca293e099cc24f8ce893997e68c29cfebc4a61d39",
+      "@openzeppelin/contracts/access/AccessControl.sol": "5af1771388b4fe634e0a566716e32c6d00a5372875099127b274d4cf8a94e9d2",
+      "@openzeppelin/contracts/utils/structs/EnumerableSet.sol": "778d5305652c4eb562b12880cb6cf023d67df24844c15783a0b80fac2e715585",
+      "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol": "36a6477c6263d9441dab59861e0ca97a201caf2843598af2a8e04e897a738c2f",
+      "@openzeppelin/contracts-upgradeable/utils/cryptography/ECDSAUpgradeable.sol": "227bd4d1c0a0eb3428b44e4570bf34d87e30dcfed49e9c7a6079f27b5d2c1b19",
+      "@openzeppelin/contracts/utils/Strings.sol": "34127ad0054df5963b0fd694c1b313d17e9114a2f426b85526d6d976210298ab",
+      "@openzeppelin/contracts-upgradeable/access/IAccessControlUpgradeable.sol": "6d3fbd4566bc123db1ee6ba2a1b79544b572df9b9cc9be360ddb3244dd07c86b",
+      "@openzeppelin/contracts/proxy/beacon/IBeacon.sol": "6afea1d83856ed8e0495fe78109f674f925cfdc79fe2e24e854b1237e742f011",
+      "@openzeppelin/contracts-upgradeable/utils/StringsUpgradeable.sol": "e7b950eee23563e23989a3b51a1456614a1838084eef1fad04eb2be0bc280f48",
+      "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol": "fd84e5284eccc479268f0ef36b830019d4f7999ceb7959430d8d8d9e602dd4ef",
+      "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol": "f64dc961f262436fc9fd3235f16a8495fd43c8f1d98d0a750a376ea8c8d5365d",
+      "@openzeppelin/contracts/access/IAccessControl.sol": "d03c1257f2094da6c86efa7aa09c1c07ebd33dd31046480c5097bc2542140e45",
+      "@openzeppelin/contracts/utils/introspection/ERC165.sol": "8806a632d7b656cadb8133ff8f2acae4405b3a64d8709d93b0fa6a216a8a6154",
+      "@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol": "4e09a7479aa3e7c313f8fc141c4c8fc04e0abfeb8754615ef7d78ec94c298b07",
+      "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/IERC20MetadataUpgradeable.sol": "68bcca423fc72ec9625e219c9e36306c726a347e43f3711467c579bd3f6500c8",
+      "@openzeppelin/contracts/utils/introspection/IERC165.sol": "701e025d13ec6be09ae892eb029cd83b3064325801d73654847a5fb11c58b1e5"
+    },
+    "distinctArtifacts": 210,
+    "concreteBytecodes": 115,
+    "artifactTreeSha256": "fde054de2a0f81f9f35e10f6bcca1aa69300387cd7fbde7b6ad2227f2b9d8faf",
+    "artifacts": [
+      {
+        "path": "@offchainlabs/upgrade-executor/src/IUpgradeExecutor.sol/IUpgradeExecutor.json",
+        "sha256": "951edafd198f3f7c0cce3518ea2a906ba8964a4986ad929f49b52748afd08b60",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts/access/AccessControl.sol/AccessControl.json",
+        "sha256": "fd2698448ea5df5511308013919de69e35f91c9243949b93a503c7fd70f03078",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts/access/AccessControlEnumerable.sol/AccessControlEnumerable.json",
+        "sha256": "4496de039bb9b7b8de5f5e0250939971e0ca59f8e6025e2721c15550834118a1",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts/access/IAccessControl.sol/IAccessControl.json",
+        "sha256": "9a68b9a27ace48b1bcd7b3f58e8747a63203f11f745b7e672b0ba8eaa9fb6945",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts/access/IAccessControlEnumerable.sol/IAccessControlEnumerable.json",
+        "sha256": "f5c918245c7500f6a06cd0fad9c9ab54b9d70f1f1d9a6725ef5e6df397ee2f8f",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts/access/Ownable.sol/Ownable.json",
+        "sha256": "f226316c0e4d5e8796a814260cc280b1e6c135924519cb1810a6405dbf049ba4",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts/interfaces/draft-IERC1822.sol/IERC1822Proxiable.json",
+        "sha256": "f45c295c6397d0ca3e144dd09b35a2a3f8a33a3dc73af499c528b737bbe4fe93",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol/ERC1967Proxy.json",
+        "sha256": "f2ffa24fc1a146b3f5fd0ea978c90fd53c1a7c8c5ddfa6c6dd8369fff753ed0c",
+        "bytecodeBytes": 1921
+      },
+      {
+        "path": "@openzeppelin/contracts/proxy/ERC1967/ERC1967Upgrade.sol/ERC1967Upgrade.json",
+        "sha256": "97774b1b907a44355da1ccb4e0d9ec04b2bdcba468bab524858f8a36b9b000a6",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts/proxy/Proxy.sol/Proxy.json",
+        "sha256": "cc370f5c020dd484b919db48c90edc58f1180216bd193b8ab0f0411fc0cc069f",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts/proxy/beacon/IBeacon.sol/IBeacon.json",
+        "sha256": "e909a06ba9aaf6e6c4a3f447a18a6cd7f23e55e9c9ee3d5d2073528bcb9c30b3",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts/proxy/transparent/ProxyAdmin.sol/ProxyAdmin.json",
+        "sha256": "0f1653ea1a23075a5e047b04ab1f59d3eff14c3358f34735a8a1d250e860bbe0",
+        "bytecodeBytes": 2018
+      },
+      {
+        "path": "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol/TransparentUpgradeableProxy.json",
+        "sha256": "f31c6f84108c46a3a6a7586714e0a3cbf910897c826e7db497c9f7906dce285f",
+        "bytecodeBytes": 3754
+      },
+      {
+        "path": "@openzeppelin/contracts/proxy/utils/UUPSUpgradeable.sol/UUPSUpgradeable.json",
+        "sha256": "fc706927ddc8ff6ab0c2cc81a6f2101ab1c1c2061f147eb6249673eda20e65b5",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts/security/ReentrancyGuard.sol/ReentrancyGuard.json",
+        "sha256": "e1a32d753ba7a69a52a4128329302d202e88465308a8732c2ef7a69c3b68da62",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts/token/ERC20/ERC20.sol/ERC20.json",
+        "sha256": "1a743aa62f963295f97bc348c91658549e2429ed934180f63288a124ab7069ef",
+        "bytecodeBytes": 3249
+      },
+      {
+        "path": "@openzeppelin/contracts/token/ERC20/IERC20.sol/IERC20.json",
+        "sha256": "434b0cacb470a8c906227725346311c39da85973922ba5752f4e1e8731943717",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol/IERC20Metadata.json",
+        "sha256": "4aa87fdb339b62b3bc58f9257a0811baf98086af28314ade8837ba95a7ffcaf0",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts/token/ERC20/extensions/draft-IERC20Permit.sol/IERC20Permit.json",
+        "sha256": "1b6a174f8c80c7949d1c164ba7dddefbb729e3b3688aac00ee490ff5bad699fc",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol/SafeERC20.json",
+        "sha256": "9ff5c6fcfab6917aa106b6f1bfb4fb1d8cda107b32f0d1780e7b87be49ce2cf1",
+        "bytecodeBytes": 100
+      },
+      {
+        "path": "@openzeppelin/contracts/utils/Address.sol/Address.json",
+        "sha256": "06ed7632a45ab41af0fd5d5cc9c75015a32fa78af25dfaaabef6c070c34679b3",
+        "bytecodeBytes": 100
+      },
+      {
+        "path": "@openzeppelin/contracts/utils/Context.sol/Context.json",
+        "sha256": "4e976e9054315918d801adab824f80a3c2ee91497df846161e264fb6cd42504b",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts/utils/Create2.sol/Create2.json",
+        "sha256": "95f5dc1e8d668abd0cb03b0721f909c73707e0297d220230a410b268d39b5226",
+        "bytecodeBytes": 100
+      },
+      {
+        "path": "@openzeppelin/contracts/utils/StorageSlot.sol/StorageSlot.json",
+        "sha256": "4d46e1751540c70b5e041f0d242ef06639bad2131d26eb8a11cc89396d8bd8af",
+        "bytecodeBytes": 100
+      },
+      {
+        "path": "@openzeppelin/contracts/utils/Strings.sol/Strings.json",
+        "sha256": "a6a85553aadba47a78c92eb80c969a0e752668113195b0ebfb4dd941ec0c5ea1",
+        "bytecodeBytes": 100
+      },
+      {
+        "path": "@openzeppelin/contracts/utils/cryptography/ECDSA.sol/ECDSA.json",
+        "sha256": "087706d061c6ebc8f965abc31dd4dc548c1bbe3cc4b775aa99ac90ed6e57d5f1",
+        "bytecodeBytes": 100
+      },
+      {
+        "path": "@openzeppelin/contracts/utils/introspection/ERC165.sol/ERC165.json",
+        "sha256": "79ed90958154bf6c1db235ec5684c57e331c5692fab60cee07352af197cb0997",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts/utils/introspection/IERC165.sol/IERC165.json",
+        "sha256": "8416d9d840f76fa3bd66aaae68698eb8248c334364519659193ba22c1407b596",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts/utils/structs/EnumerableSet.sol/EnumerableSet.json",
+        "sha256": "04ab40134cda89879e64f76844eca6741e464aa974fdc9e9d6d8d8557110a118",
+        "bytecodeBytes": 100
+      },
+      {
+        "path": "@openzeppelin/contracts-upgradeable/access/AccessControlEnumerableUpgradeable.sol/AccessControlEnumerableUpgradeable.json",
+        "sha256": "276d7c37f3f52d99bb689b84f4bcc10ad41fb816c81728df0ccd69768b1e5902",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol/AccessControlUpgradeable.json",
+        "sha256": "7fe9551ca68429e31b5ecf7454f7d1d633bcf69c819ede6c5cfd448a7cd56f22",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts-upgradeable/access/IAccessControlEnumerableUpgradeable.sol/IAccessControlEnumerableUpgradeable.json",
+        "sha256": "a7f19e5a2b53029abe46b2cfcad22a4df836dfa8fb935f5d2b0f5289b1d83113",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts-upgradeable/access/IAccessControlUpgradeable.sol/IAccessControlUpgradeable.json",
+        "sha256": "2905907786b4d980be11f41f139f5f85d067c04990122c7e0351fca114d860c6",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol/OwnableUpgradeable.json",
+        "sha256": "f6ac596e773adeac1284d465851a95e828bf8d0e00093abaeb777a7c142655a3",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol/Initializable.json",
+        "sha256": "f1e36d845cc0148420a3cfb092374a51bacc23ccd921dd8df69c3e6fdc131f2e",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol/PausableUpgradeable.json",
+        "sha256": "fe9fa8a966d99bd7906e095f6c09670629b8f70d048013ed9f48cbeabc534d07",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol/ERC20Upgradeable.json",
+        "sha256": "56df59e07ecfb60cad1da77dd34733d977e37514de59e23ee59d0bd1f6dda1a2",
+        "bytecodeBytes": 2525
+      },
+      {
+        "path": "@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol/IERC20Upgradeable.json",
+        "sha256": "8f93914784666daf691d7c662f62a4ed093b322507476c824ae98329d7c56903",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20BurnableUpgradeable.sol/ERC20BurnableUpgradeable.json",
+        "sha256": "937e09aa1cac84a81edb7931b44a466d55f74c98b2188c0fa0f193f7f806a883",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/IERC20MetadataUpgradeable.sol/IERC20MetadataUpgradeable.json",
+        "sha256": "5a0885448f373a079cf14a22d531cd7299bbf4a3fabd68b7926cf20df32b92af",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol/AddressUpgradeable.json",
+        "sha256": "bb9498525e3194d084055cc1790f7df54c44d8ddec91578f65f5530f39913242",
+        "bytecodeBytes": 100
+      },
+      {
+        "path": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol/ContextUpgradeable.json",
+        "sha256": "a84067be2a1d339422cfe1cf445e00f5d8ae13e6150bc2ef36886b33fb1695f1",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts-upgradeable/utils/Create2Upgradeable.sol/Create2Upgradeable.json",
+        "sha256": "1af5b67e078726026ef06f4b667f30a369e5458515e27940642a08e5af7e2be1",
+        "bytecodeBytes": 100
+      },
+      {
+        "path": "@openzeppelin/contracts-upgradeable/utils/StorageSlotUpgradeable.sol/StorageSlotUpgradeable.json",
+        "sha256": "8aafa57c9e663a4906441aa543bb57b39fc7af72ef60e8f613b33ca9a2649a92",
+        "bytecodeBytes": 100
+      },
+      {
+        "path": "@openzeppelin/contracts-upgradeable/utils/StringsUpgradeable.sol/StringsUpgradeable.json",
+        "sha256": "809f28c041bb103ee4a70b75525050ddc9d45819279123937d1a712a1136d808",
+        "bytecodeBytes": 100
+      },
+      {
+        "path": "@openzeppelin/contracts-upgradeable/utils/cryptography/ECDSAUpgradeable.sol/ECDSAUpgradeable.json",
+        "sha256": "ae924a1c95c729b3b328c946c26e61f4c61d14fb0725f315ad06795241c4ad99",
+        "bytecodeBytes": 100
+      },
+      {
+        "path": "@openzeppelin/contracts-upgradeable/utils/cryptography/draft-EIP712Upgradeable.sol/EIP712Upgradeable.json",
+        "sha256": "08e019ad420fca37fc79de4fde0f10572f6da426ea76b2dde2e722c1fad8e27e",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol/ERC165Upgradeable.json",
+        "sha256": "296bab0b457c67fc0cf5f8e2baeb11d513eb1fe5db87813395c03c0321ae5882",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol/IERC165Upgradeable.json",
+        "sha256": "86a1feaf52f756a8de57cadc3eece0d0689c240b55d016cad7f37a6442977def",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts-upgradeable/utils/structs/EnumerableSetUpgradeable.sol/EnumerableSetUpgradeable.json",
+        "sha256": "4cc3f9bd892a4614c505951d325b68d5a9acffa8c92f2901ff0c1993c9833548",
+        "bytecodeBytes": 100
+      },
+      {
+        "path": "solady/src/utils/MinHeapLib.sol/MinHeapLib.json",
+        "sha256": "0fb7675d9a4bc89dd3900dc4e0aafc3ce209ee728bc3d022ee8fc335f522bf87",
+        "bytecodeBytes": 100
+      },
+      {
+        "path": "src/assertionStakingPool/AbsBoldStakingPool.sol/AbsBoldStakingPool.json",
+        "sha256": "5831c115fa09c2e9a59732dc68f202d3e1bf74801248e529a019461eaee7bbf4",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/assertionStakingPool/AssertionStakingPool.sol/AssertionStakingPool.json",
+        "sha256": "75ed65ded0854727d80357741cd5021484e8087168384de38bbbdb83ef142387",
+        "bytecodeBytes": 3808
+      },
+      {
+        "path": "src/assertionStakingPool/AssertionStakingPoolCreator.sol/AssertionStakingPoolCreator.json",
+        "sha256": "2c74ffc0d0a5e271697a041b5eba7d44a3cb216ef5b53cbce27c91ba80510410",
+        "bytecodeBytes": 4692
+      },
+      {
+        "path": "src/assertionStakingPool/EdgeStakingPool.sol/EdgeStakingPool.json",
+        "sha256": "4b259cbc4ac3cefe6c98f7484882d417a98c43362c81c790890ce390e4028c4b",
+        "bytecodeBytes": 3777
+      },
+      {
+        "path": "src/assertionStakingPool/EdgeStakingPoolCreator.sol/EdgeStakingPoolCreator.json",
+        "sha256": "dda76f0c997fff3aa21b5ddc69f853e41d520e36060fe2120d91d36af237cf7f",
+        "bytecodeBytes": 4649
+      },
+      {
+        "path": "src/assertionStakingPool/StakingPoolCreatorUtils.sol/StakingPoolCreatorUtils.json",
+        "sha256": "47bc99b2fc4f564b3f6e99e4e281635ab737b97369d2d31419d683919e4bacc4",
+        "bytecodeBytes": 100
+      },
+      {
+        "path": "src/assertionStakingPool/interfaces/IAbsBoldStakingPool.sol/IAbsBoldStakingPool.json",
+        "sha256": "147a6cf150bd0d085c9b422843c954b224a68a82763c573181a226053643451a",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/assertionStakingPool/interfaces/IAssertionStakingPool.sol/IAssertionStakingPool.json",
+        "sha256": "4d9b62ff36ec8d680536926d3fd6e91ec26be17474c9ad558b3f7297efee80f6",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/assertionStakingPool/interfaces/IAssertionStakingPoolCreator.sol/IAssertionStakingPoolCreator.json",
+        "sha256": "e5d51687b190571ec7e93be0bca67d0dfd53f7ab3175b8628ac58852320fd5ed",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/assertionStakingPool/interfaces/IEdgeStakingPool.sol/IEdgeStakingPool.json",
+        "sha256": "6cf73f50d796a110a2e48d9bb258a0da3a389473f4cbef3043ebc5d75af20532",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/assertionStakingPool/interfaces/IEdgeStakingPoolCreator.sol/IEdgeStakingPoolCreator.json",
+        "sha256": "c4f222b002d5068e77649a6bbf78e1c24b3b9b340ebcf69bd12ec73e38ca8dd7",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/bridge/AbsBridge.sol/AbsBridge.json",
+        "sha256": "8990049c47854f116cb20406dbabf44a2a608ecff8d8c67644c0fc4a364820e3",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/bridge/AbsInbox.sol/AbsInbox.json",
+        "sha256": "7b8e705aee312fb31d328c7505ae34bffda05d3b3de728fb0f497b2605ec1783",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/bridge/AbsOutbox.sol/AbsOutbox.json",
+        "sha256": "a0bf0d527e2d2f708b42a1ae0c69c1820940172f677b9fb6cc71e0cbb64b034d",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/bridge/Bridge.sol/Bridge.json",
+        "sha256": "a6b1dd0d7f9486a7b0a09a92ddc57c2fa07c8f27d52600cad323fbe56779128b",
+        "bytecodeBytes": 6773
+      },
+      {
+        "path": "src/bridge/DelayBuffer.sol/DelayBuffer.json",
+        "sha256": "ad71bfdf8ac6427bf2416fed8eaf315c59f86012e8c936c6c418bf92fb74b8af",
+        "bytecodeBytes": 151
+      },
+      {
+        "path": "src/bridge/ERC20Bridge.sol/ERC20Bridge.json",
+        "sha256": "22a828d77e1ea812f1085825aa55873f6da3f58c382f3b9239f8591d4518d0b9",
+        "bytecodeBytes": 8796
+      },
+      {
+        "path": "src/bridge/ERC20Inbox.sol/ERC20Inbox.json",
+        "sha256": "69a04dc083d3f9330cf3079b6ef93761ac21e521f8a32fc64f6ace6ce579b308",
+        "bytecodeBytes": 10656
+      },
+      {
+        "path": "src/bridge/ERC20Outbox.sol/ERC20Outbox.json",
+        "sha256": "998874c44a74dba0cd1d2d870d71b89342d932a831c0daab0401e197afd31768",
+        "bytecodeBytes": 7139
+      },
+      {
+        "path": "src/bridge/GasRefunder.sol/GasRefunder.json",
+        "sha256": "b69265cdf6d92d37ecfe923b1ba6b36190a1c9ba52b95a4d2183bdebd58e73c8",
+        "bytecodeBytes": 5012
+      },
+      {
+        "path": "src/bridge/IBridge.sol/IBridge.json",
+        "sha256": "f82a242bbeef469538933a44acfc5dd196a9fdeafa523462a5d8e58993b0c8cc",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/bridge/IDelayedMessageProvider.sol/IDelayedMessageProvider.json",
+        "sha256": "c72a8bffd941bbcf8ecf65ae807ef4c912f2ea3998386099df2ef7287bcd746b",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/bridge/IERC20Bridge.sol/IERC20Bridge.json",
+        "sha256": "f32b09a6e6cd1c810f46f3142e030a0d94bbd3142c2f3f4e37558bdfb25091d6",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/bridge/IERC20Inbox.sol/IERC20Inbox.json",
+        "sha256": "cd282f1c06c5ae3b1ba427c1314f06e76a21369bc65e9f78777cb1719446bc24",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/bridge/IEthBridge.sol/IEthBridge.json",
+        "sha256": "5e51f6c5cfd7875de95e11cdc3a014560c0f53e7679c65f038f1bef76c4c081b",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/bridge/IInbox.sol/IInbox.json",
+        "sha256": "d7683e63173a23dcc8a1d97ede39e387db1b043c4e9a93af93d190ad45edc467",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/bridge/IInboxBase.sol/IInboxBase.json",
+        "sha256": "16486583b9660d5c6d4dfbb573d32351e46a448995d943bba4fafadb6a77e278",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/bridge/IOutbox.sol/IOutbox.json",
+        "sha256": "660c0c9554c107eda87d184c44fe7ed022dae6934bfff20db61eb100232e45cb",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/bridge/IOwnable.sol/IOwnable.json",
+        "sha256": "04ead97469349e6aa81e4b89f25bd309487378a4ab048aa7ba1654bc1836d69b",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/bridge/ISequencerInbox.sol/IFeeTokenPricer.json",
+        "sha256": "c139b0224e0e757a55ee1789808bb6ff3c204daaed10614d7952ac8fd304c786",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/bridge/ISequencerInbox.sol/ISequencerInbox.json",
+        "sha256": "d3732582c2b59348450930de8437163740a32380c95207c9bb413ff98efc9d34",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/bridge/Inbox.sol/Inbox.json",
+        "sha256": "2d9ccfe1df4a2ee9031e4352bc4541653d7602bee5666729d8ee8964e56b820b",
+        "bytecodeBytes": 11212
+      },
+      {
+        "path": "src/bridge/Messages.sol/Messages.json",
+        "sha256": "168e9301f54c4cd09e95190658120617ef256ae35ebdaa3df8e8535dcace1492",
+        "bytecodeBytes": 100
+      },
+      {
+        "path": "src/bridge/Outbox.sol/Outbox.json",
+        "sha256": "25f4ecd082daec43d8b724c2fcdb248a861f8ff93f99a32c0c920038a734a42b",
+        "bytecodeBytes": 6757
+      },
+      {
+        "path": "src/bridge/SequencerInbox.sol/SequencerInbox.json",
+        "sha256": "383bd7d9547796ae0b9c18ce1e8a4bfaa634c90736458fabb75e44fa5b60bec7",
+        "bytecodeBytes": 22774
+      },
+      {
+        "path": "src/bridge/extra/ERC20MigrationOutbox.sol/ERC20MigrationOutbox.json",
+        "sha256": "4b84f6d6be608dd114d11d8af7ba9dd44265edee60fc3ed9e0c8a8bcb72c1f46",
+        "bytecodeBytes": 1741
+      },
+      {
+        "path": "src/bridge/extra/IERC20MigrationOutbox.sol/IERC20MigrationOutbox.json",
+        "sha256": "7f687b5beb9e567982e04b51a26b93cec84a19359b5d592fb51404ac79e5f8b1",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/chain/CacheManager.sol/CacheManager.json",
+        "sha256": "f91b901a7310fbfc942627abb01ca0bf170a0b3defd4ae0570b3bf195bf620ab",
+        "bytecodeBytes": 8351
+      },
+      {
+        "path": "src/chain/ResourceConstraintManager.sol/ResourceConstraintManager.json",
+        "sha256": "829756db782ae27a16334a44b433add43c7fe0001c9e7aa22fec22f46313a877",
+        "bytecodeBytes": 5182
+      },
+      {
+        "path": "src/challengeV2/EdgeChallengeManager.sol/EdgeChallengeManager.json",
+        "sha256": "fec44ae1a4a9ea5c15442aae62445856d95a0d5920a7597b1aed7b0022a6c978",
+        "bytecodeBytes": 23746
+      },
+      {
+        "path": "src/challengeV2/IAssertionChain.sol/IAssertionChain.json",
+        "sha256": "57d9acc780fb9b9ffbaf05f66bf46e467e674b87fb449a93a00aab138c7cfc4c",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/challengeV2/IEdgeChallengeManager.sol/IEdgeChallengeManager.json",
+        "sha256": "0c93a14c7e124c54b5846c4e96b36e64da67157b923f0d9891089f3f0a294ff0",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/challengeV2/libraries/ArrayUtilsLib.sol/ArrayUtilsLib.json",
+        "sha256": "5005294cf22f18ca2f27b89683a0fbf1e4fe187cdb4d63f77c2ed70465a5bb00",
+        "bytecodeBytes": 100
+      },
+      {
+        "path": "src/challengeV2/libraries/ChallengeEdgeLib.sol/ChallengeEdgeLib.json",
+        "sha256": "1c6ff9fa0bcfbe8e251acac3d78adf05fd4dbcf31da33d532b4cbbfa91c38588",
+        "bytecodeBytes": 100
+      },
+      {
+        "path": "src/challengeV2/libraries/EdgeChallengeManagerLib.sol/EdgeChallengeManagerLib.json",
+        "sha256": "0c2d6320e3e1c2c6aec6d9166da90866ef43544e13984e7ff4ce84f0aba9b0d6",
+        "bytecodeBytes": 215
+      },
+      {
+        "path": "src/challengeV2/libraries/MerkleTreeAccumulatorLib.sol/MerkleTreeAccumulatorLib.json",
+        "sha256": "4d75481ad1fcc9987bd47cf14652a3c4bafb54211fd176334c5239cffa2484e1",
+        "bytecodeBytes": 150
+      },
+      {
+        "path": "src/challengeV2/libraries/UintUtilsLib.sol/UintUtilsLib.json",
+        "sha256": "5bc465359b5bfd56286b973cadb38a27e1e4d0562fa629f607b1a1c412c8ed6d",
+        "bytecodeBytes": 100
+      },
+      {
+        "path": "src/express-lane-auction/Balance.sol/BalanceLib.json",
+        "sha256": "e44c5bf0add71a825ee723f58357cf895e7f7a52adbc2c9fde99459e0521b83c",
+        "bytecodeBytes": 100
+      },
+      {
+        "path": "src/express-lane-auction/Burner.sol/Burner.json",
+        "sha256": "d9a6e9014621da6eba067eaa31ad02f070e8f8b23600fc99538d5b9258285052",
+        "bytecodeBytes": 634
+      },
+      {
+        "path": "src/express-lane-auction/ELCRound.sol/LatestELCRoundsLib.json",
+        "sha256": "d8e8bc58b5d0af6d8d606b25e00cf72b095101c32ed3b094894e35f49755f11d",
+        "bytecodeBytes": 100
+      },
+      {
+        "path": "src/express-lane-auction/ExpressLaneAuction.sol/ExpressLaneAuction.json",
+        "sha256": "e9e8da39ac01125da3f344e02b0accb688019aded1639911ae35fca410ba86ef",
+        "bytecodeBytes": 18398
+      },
+      {
+        "path": "src/express-lane-auction/IExpressLaneAuction.sol/IExpressLaneAuction.json",
+        "sha256": "04e3e2bd13cad76103ffe930e1e2aa5ef8322b1e57274d6c8d8360d2a58434b5",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/express-lane-auction/RoundTimingInfo.sol/RoundTimingInfoLib.json",
+        "sha256": "6a5027a842614b7831435411636c8e02a1f483aabfcd62f848b7f7a8dd431ad1",
+        "bytecodeBytes": 100
+      },
+      {
+        "path": "src/libraries/AddressAliasHelper.sol/AddressAliasHelper.json",
+        "sha256": "e80e1665453f592a3bd0770521bec6697531c1c8ce0c48b9c726ca6736ea85f4",
+        "bytecodeBytes": 100
+      },
+      {
+        "path": "src/libraries/AdminFallbackProxy.sol/AdminFallbackProxy.json",
+        "sha256": "8c75240abfc9c762da2401a7872eb8ee0254e0e7cf4b88df66d0ab5dc8f57d70",
+        "bytecodeBytes": 572
+      },
+      {
+        "path": "src/libraries/AdminFallbackProxy.sol/DoubleLogicERC1967Upgrade.json",
+        "sha256": "12a39f0ad5ffc78f57b71dabb95b5c4e9c2935a0d4576a0503049d6e8415c9b9",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/libraries/ArbitrumChecker.sol/ArbitrumChecker.json",
+        "sha256": "28e64cc411e1e9cedd5b964303c44f56480cd6404ebb24e43a35943668b0c129",
+        "bytecodeBytes": 100
+      },
+      {
+        "path": "src/libraries/CallerChecker.sol/CallerChecker.json",
+        "sha256": "807de8ce452f6d4e98057e646c9edf8c21c3bd293d9c4232ff02018b3e316667",
+        "bytecodeBytes": 100
+      },
+      {
+        "path": "src/libraries/CryptographyPrimitives.sol/CryptographyPrimitives.json",
+        "sha256": "69a8ab19e74c65a4d9d3b0a4b772ec7cdd0da87f9ee1d540c5a6c2afcb582705",
+        "bytecodeBytes": 100
+      },
+      {
+        "path": "src/libraries/DecimalsConverterHelper.sol/DecimalsConverterHelper.json",
+        "sha256": "cb9e2b15cc18a4ed49e562bc8fa253161fd290c8f03daddde6325e1a85582922",
+        "bytecodeBytes": 100
+      },
+      {
+        "path": "src/libraries/DelegateCallAware.sol/DelegateCallAware.json",
+        "sha256": "5684a476be56b314ebe8f5fd6bb3bd82dbc8b2363f687cd1374ec325df7807ba",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/libraries/DoubleLogicUUPSUpgradeable.sol/DoubleLogicUUPSUpgradeable.json",
+        "sha256": "3cbfb882e7700e98e98ec21455c0de798143c2777c812ce5f5ad86cdf6e45365",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/libraries/GasRefundEnabled.sol/GasRefundEnabled.json",
+        "sha256": "1baa82c8b0881312033b8089b720608bbd6a6d0f48774e6283ff277759fb98e2",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/libraries/IGasRefunder.sol/IGasRefunder.json",
+        "sha256": "78028a5ae019333ecda19ef4dbce0ec26cd19d92c00c8daf40fbfe6e5da53c65",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/libraries/IReader4844.sol/IReader4844.json",
+        "sha256": "070b8f494879213b3bf1fbaa8c392a05d5798456d5ac8d9bffb2a478ea9c2c5d",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/libraries/MerkleLib.sol/MerkleLib.json",
+        "sha256": "071cdae745ffdc56c4f07f54dd0a32b9305c2c8209dfb87db5e9d9b3d7867d4c",
+        "bytecodeBytes": 100
+      },
+      {
+        "path": "src/libraries/UUPSNotUpgradeable.sol/UUPSNotUpgradeable.json",
+        "sha256": "cb929f6861c337ae9ab4b7d95af3fbdfb50aef2854df04d50c2fef90f8429a0e",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/mocks/BridgeStub.sol/BridgeStub.json",
+        "sha256": "a25f1e1d1e181c1b643cbc6ff98482a88527a6d98f87a105147d639461ac8894",
+        "bytecodeBytes": 3861
+      },
+      {
+        "path": "src/mocks/BridgeUnproxied.sol/BridgeUnproxied.json",
+        "sha256": "7f7f277a4852044c1cf131040f3c90ef3c492351ff538849ff671229b443f521",
+        "bytecodeBytes": 6850
+      },
+      {
+        "path": "src/mocks/InboxStub.sol/InboxStub.json",
+        "sha256": "b80e621cc5d1ac2dee159046c2dc01898f701a3780e18bb10eb33dcf35c21c57",
+        "bytecodeBytes": 3576
+      },
+      {
+        "path": "src/mocks/MerkleTreeAccess.sol/MerkleTreeAccess.json",
+        "sha256": "4421a7c31c453895fd636eae8e31546473c4d8eaecb3f521e243ba4e62046b9c",
+        "bytecodeBytes": 5807
+      },
+      {
+        "path": "src/mocks/MockRollupEventInbox.sol/MockRollupEventInbox.json",
+        "sha256": "98ecbe17846c2a3c6ae6c864a4fc8fd7c6996ec642be411c7653769be5222164",
+        "bytecodeBytes": 2516
+      },
+      {
+        "path": "src/mocks/SequencerInboxBlobMock.sol/SequencerInboxBlobMock.json",
+        "sha256": "55a3dc080050f9e089d44b007fbdf5fa680adeb34a864a50ab9a8c8b171ce125",
+        "bytecodeBytes": 22476
+      },
+      {
+        "path": "src/mocks/SequencerInboxStub.sol/SequencerInboxStub.json",
+        "sha256": "92aa9a7b2f9b9b366e036aeae40265b8bff880671f75b41de34db10a16bef260",
+        "bytecodeBytes": 23378
+      },
+      {
+        "path": "src/mocks/SimpleOneStepProofEntry.sol/SimpleOneStepProofEntry.json",
+        "sha256": "3266f9dec9d0ae35f7d70ef470ac73f750d93166a8b65d84f9d255a35e949e2c",
+        "bytecodeBytes": 2439
+      },
+      {
+        "path": "src/mocks/TestWETH9.sol/IWETH9.json",
+        "sha256": "8167d8869291c8358997e28240287b5fa6eed3009dbb1104b59746399877fda9",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/mocks/TestWETH9.sol/TestWETH9.json",
+        "sha256": "f192bf4c6ac18e3d5d0d247ae1a18ad08307bcd5d299bbe6d63e9227b3610a20",
+        "bytecodeBytes": 4175
+      },
+      {
+        "path": "src/mocks/UpgradeExecutorMock.sol/UpgradeExecutorMock.json",
+        "sha256": "3ee0c362f7c548238931f97e0e75c1fc35832ba4d2ee44ebb9712596c44d50a8",
+        "bytecodeBytes": 5507
+      },
+      {
+        "path": "src/node-interface/NodeInterface.sol/NodeInterface.json",
+        "sha256": "4f0d205a3fce07707746ad5a7dcf3cf49aeb26c573c78b0faca4bd0dc5eb308d",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/node-interface/NodeInterfaceDebug.sol/NodeInterfaceDebug.json",
+        "sha256": "e981d226826da82900fab64951c7064b4163927f606d6eb1d7af75f30b4c4a27",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/osp/HashProofHelper.sol/HashProofHelper.json",
+        "sha256": "f49e414345f17c9e49ff72f5b7d71a51f44c8ca297721af99912081d3f0181f0",
+        "bytecodeBytes": 7759
+      },
+      {
+        "path": "src/osp/ICustomDAProofValidator.sol/ICustomDAProofValidator.json",
+        "sha256": "728c95c695335a1879947f411e565e6e5aa24b916d5a87bb7f182f229f28f797",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/osp/IOneStepProofEntry.sol/IOneStepProofEntry.json",
+        "sha256": "21f4a855169299423332d0252962976f6067f2dcad8f8b5c669fb95988ba3baf",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/osp/IOneStepProofEntry.sol/OneStepProofEntryLib.json",
+        "sha256": "007814f397efd8c6b527f93e23810d3835c7f6d343fa04b9d1827cfa7ed4e2d7",
+        "bytecodeBytes": 100
+      },
+      {
+        "path": "src/osp/IOneStepProver.sol/IOneStepProver.json",
+        "sha256": "fcc56537d490c566e5d3d2acb43083b58a079f964fe61d0cec6e2d1c8bbfa2f3",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/osp/OneStepProofEntry.sol/OneStepProofEntry.json",
+        "sha256": "abba7e73e5626783d805a820da2ffe662d1852266d6341176519ad12a8806f11",
+        "bytecodeBytes": 13676
+      },
+      {
+        "path": "src/osp/OneStepProver0.sol/OneStepProver0.json",
+        "sha256": "29cf3c941bee6ef4444bf1f8a2d19a3766dd65f52453a8d3b4b4e0682c5a26cd",
+        "bytecodeBytes": 13391
+      },
+      {
+        "path": "src/osp/OneStepProverHostIo.sol/OneStepProverHostIo.json",
+        "sha256": "71110c440eeec82b53092ecfe696d4e875fc219c589776a3906ad6ba98c1cb36",
+        "bytecodeBytes": 19599
+      },
+      {
+        "path": "src/osp/OneStepProverMath.sol/OneStepProverMath.json",
+        "sha256": "6e24a746dfba83f05df8b4669e5a10a0d1447308ac89f84463096f4b1f64dd0a",
+        "bytecodeBytes": 10229
+      },
+      {
+        "path": "src/osp/OneStepProverMemory.sol/OneStepProverMemory.json",
+        "sha256": "02337afab69b8363f0f8dc4caa321c450ab7ba939253c9bdb46964b1eb64c410",
+        "bytecodeBytes": 8407
+      },
+      {
+        "path": "src/precompiles/ArbAddressTable.sol/ArbAddressTable.json",
+        "sha256": "4f220ada337dd53208acad98ef1ba8fb9f38a2e10ca4b70d553d03e94f681560",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/precompiles/ArbAggregator.sol/ArbAggregator.json",
+        "sha256": "6d3d700aa6006df4140cc556b1065bec27b76e7a57d1d36809d53f700afbf85a",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/precompiles/ArbBLS.sol/ArbBLS.json",
+        "sha256": "7e3b9f3a94b867c9b6ca2bf488329e3e9fd9fab040ceaa8c3f3b7da9bced6793",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/precompiles/ArbDebug.sol/ArbDebug.json",
+        "sha256": "fa5daaf7071e34a695e475d6f743a8a2be80e6a9139cc496bc0ecf0981bfd2da",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/precompiles/ArbFunctionTable.sol/ArbFunctionTable.json",
+        "sha256": "354f154de08cef30c015e60ae5e6c435ae2bed87f47a21094e9ed7021beb64c8",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/precompiles/ArbGasInfo.sol/ArbGasInfo.json",
+        "sha256": "b5e0e3ccfd64a5e4651a23f1ab9c35e1c88672a50dbc48c0e60eeb87a6ef157d",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/precompiles/ArbInfo.sol/ArbInfo.json",
+        "sha256": "7d308e471638dd5ba111454f9da22f99f0f3374cfb0d2cc238aacbcd558dcd99",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/precompiles/ArbNativeTokenManager.sol/ArbNativeTokenManager.json",
+        "sha256": "52903177807ca2dfa5ddc03e1a877f911e1b19c45534b931411c6c4573b98b57",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/precompiles/ArbOwner.sol/ArbOwner.json",
+        "sha256": "27bb857771c3dbe3cc4a10b37d1b2511293d2445072da0ae54a891f1fd60b421",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/precompiles/ArbOwnerPublic.sol/ArbOwnerPublic.json",
+        "sha256": "0f8a0b3247967f4348fe683becb58b13fce2d7c8b5632ccb41cd0402c95e0a64",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/precompiles/ArbRetryableTx.sol/ArbRetryableTx.json",
+        "sha256": "0f7b3e96859587ef3391961ad17d4ac82fc286b84a2216488291569f888e73e6",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/precompiles/ArbStatistics.sol/ArbStatistics.json",
+        "sha256": "cff88ccc422e0522e6ffb74995adf4acaa4b20331013b5550ee441853fe6fd05",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/precompiles/ArbSys.sol/ArbSys.json",
+        "sha256": "0aa3ce8f25ff4585f4fdbc7f3d7dab311c4cca24d100acb8a3308116b1d256d9",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/precompiles/ArbWasm.sol/ArbWasm.json",
+        "sha256": "142fbb56978bd17fe2f23fac91ef5400107429a72ca877305a4e0f8ca8e44d18",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/precompiles/ArbWasmCache.sol/ArbWasmCache.json",
+        "sha256": "6205d57801abdfa1333782f4f4494c6ae7ddc0c90a762230b9f4db107e41cc70",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/precompiles/ArbosActs.sol/ArbosActs.json",
+        "sha256": "fd4103ffdbe4ca01b1e2d177f02b97cc2619fc7fd7905aeb2b93eefbd7135117",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/precompiles/ArbosTest.sol/ArbosTest.json",
+        "sha256": "42cd96aa3167ea7292048031a772ed7165b603ccdcbc3eff9b87b3d91732763d",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/rollup/AbsRollupEventInbox.sol/AbsRollupEventInbox.json",
+        "sha256": "036b09a5f04828bc22e2658dac9c16ced1dcf93bf6b68545fed17c32b2ea25d5",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/rollup/Assertion.sol/AssertionNodeLib.json",
+        "sha256": "38f652898123e460da2992f3cc5178df626e4c2f7d8d7b936009e4504ab207d2",
+        "bytecodeBytes": 100
+      },
+      {
+        "path": "src/rollup/AssertionState.sol/AssertionStateLib.json",
+        "sha256": "e5a2899f50a4cadccf0eae6a479f12f07ffdd979013c48f1eab7a1d0abd76494",
+        "bytecodeBytes": 100
+      },
+      {
+        "path": "src/rollup/BOLDUpgradeAction.sol/BOLDUpgradeAction.json",
+        "sha256": "7892ed6778815dea122d543d8855546d33e4638bd11b790683b9668836638445",
+        "bytecodeBytes": 29968
+      },
+      {
+        "path": "src/rollup/BOLDUpgradeAction.sol/ConstantArrayStorage.json",
+        "sha256": "f402e8c611564525d424f9a33e232f325ba16f5b2c6ad4904fcac6fb6454866e",
+        "bytecodeBytes": 630
+      },
+      {
+        "path": "src/rollup/BOLDUpgradeAction.sol/IOldRollup.json",
+        "sha256": "ee8bbb63882d5c87eaa79044b34da9694971696ce37c7fa5aa3993b73b372a01",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/rollup/BOLDUpgradeAction.sol/IOldRollupAdmin.json",
+        "sha256": "5e056ca4a96af63d5b658946a29717ed249f82629b38ce59b6f000d78e54d9ed",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/rollup/BOLDUpgradeAction.sol/ISeqInboxPostUpgradeInit.json",
+        "sha256": "cdc7ad2b5e189df77d278ed06c85e4e264c456b85d2f3662c6a9e6d737e1dec7",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/rollup/BOLDUpgradeAction.sol/StateHashPreImageLookup.json",
+        "sha256": "d45597ff79b263795a347c6c4d831afc32e3a9dfa0f7f19fd36e084d8dac38d0",
+        "bytecodeBytes": 2564
+      },
+      {
+        "path": "src/rollup/BridgeCreator.sol/BridgeCreator.json",
+        "sha256": "f515bd62f43ab7235b710c0323df9e58be358737a7302583bcd624d5d1fbd13c",
+        "bytecodeBytes": 6882
+      },
+      {
+        "path": "src/rollup/DeployHelper.sol/DeployHelper.json",
+        "sha256": "cbddfafc96bf3c0898090eaa3446fcd28768275f5a59869755164e31d6c9e7bd",
+        "bytecodeBytes": 6446
+      },
+      {
+        "path": "src/rollup/ERC20RollupEventInbox.sol/ERC20RollupEventInbox.json",
+        "sha256": "579f397c4d8d9e71e436db17d5abfa209ffa3a8a5a73a10fba23b5c99ec41482",
+        "bytecodeBytes": 3208
+      },
+      {
+        "path": "src/rollup/IRollupAdmin.sol/IRollupAdmin.json",
+        "sha256": "e1e438ff51e666ccb09ed2e543a01e33ae33d9b283672f1dfe490005557792e8",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/rollup/IRollupCore.sol/IRollupCore.json",
+        "sha256": "af27a9c3c769e7020f0beb1388d70bc3b92632dea379853d2cd17458f212e25b",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/rollup/IRollupEventInbox.sol/IRollupEventInbox.json",
+        "sha256": "4075b4f7e582233f0dcfb0cd292c72e0b9321aecc1deaf32bc4d86b8f026bd4f",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/rollup/IRollupLogic.sol/IRollupUser.json",
+        "sha256": "a649b4be91243c4875075d27be4bb1a7a0b75697f2c4c3527ecf49560cb8bdc4",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/rollup/RollupAdminLogic.sol/RollupAdminLogic.json",
+        "sha256": "6207e148ffa22bc6a792b625ec82a4f2b94ca32bd7a7e6cef2ac3d9d5094d2b2",
+        "bytecodeBytes": 22725
+      },
+      {
+        "path": "src/rollup/RollupCore.sol/RollupCore.json",
+        "sha256": "20d1a755d363919667530c44a803d5d64a6bd750f701513dd26b9cd494f40dc4",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/rollup/RollupCreator.sol/RollupCreator.json",
+        "sha256": "aa3fb5d69f586e557d4496105aac32052eb25d80d48a55fe6c19b0e132a8c306",
+        "bytecodeBytes": 24261
+      },
+      {
+        "path": "src/rollup/RollupEventInbox.sol/RollupEventInbox.json",
+        "sha256": "1051bee87f4ed0cbab811994adaba3989a91f6fb712f84fdd30366e7516641b9",
+        "bytecodeBytes": 2713
+      },
+      {
+        "path": "src/rollup/RollupLib.sol/RollupLib.json",
+        "sha256": "ec1ed888f847d9f3f38ba5e6a1af957f901c0eb49b55b0d628e004bdbf48961b",
+        "bytecodeBytes": 100
+      },
+      {
+        "path": "src/rollup/RollupProxy.sol/RollupProxy.json",
+        "sha256": "de69a86ae3545297438105d75410a3e0cffca81c0e746c34b0b85e46a32be649",
+        "bytecodeBytes": 5204
+      },
+      {
+        "path": "src/rollup/RollupUserLogic.sol/RollupUserLogic.json",
+        "sha256": "090bc8f1a1259d07688cdc087206e9ac483d7da6633bf1591230efdb0fb2ce7b",
+        "bytecodeBytes": 17497
+      },
+      {
+        "path": "src/rollup/ValidatorWallet.sol/ValidatorWallet.json",
+        "sha256": "5fed04882e173e5231fe548a4426a2cb5197447bbaef946d1af3801605673022",
+        "bytecodeBytes": 7262
+      },
+      {
+        "path": "src/rollup/ValidatorWalletCreator.sol/ValidatorWalletCreator.json",
+        "sha256": "42787698988bd2896e706b2eaa7b61f5f910c2d432575305fbb65b525244ad70",
+        "bytecodeBytes": 14138
+      },
+      {
+        "path": "src/state/Deserialize.sol/Deserialize.json",
+        "sha256": "82603c4111546b34dd00719a7e536aa4f242712bd088eb7d6d27a0111d4e4ba7",
+        "bytecodeBytes": 100
+      },
+      {
+        "path": "src/state/GlobalState.sol/GlobalStateLib.json",
+        "sha256": "9ab8c5ab838bb0529d111c7c082268b85c2b64b9bffd3133f354045be05c43ad",
+        "bytecodeBytes": 100
+      },
+      {
+        "path": "src/state/Instructions.sol/Instructions.json",
+        "sha256": "f1686f073b7cdcf0245dd8e6b25ce7c8db8b6af7dcc363222ffe1a0d4b60b303",
+        "bytecodeBytes": 100
+      },
+      {
+        "path": "src/state/Machine.sol/MachineLib.json",
+        "sha256": "21e07b11ecf704d59c1620004cecf3f0fc32931617987b36c37c52041f45cc32",
+        "bytecodeBytes": 100
+      },
+      {
+        "path": "src/state/MerkleProof.sol/MerkleProofLib.json",
+        "sha256": "27f04902a7d7d4941123510db5e972ee5e4a25e30890274d2b2ffd2953625658",
+        "bytecodeBytes": 100
+      },
+      {
+        "path": "src/state/Module.sol/ModuleLib.json",
+        "sha256": "46f2c05dc26583665133fce924173b470e14e13f844c28e30a8270fae09d177a",
+        "bytecodeBytes": 100
+      },
+      {
+        "path": "src/state/ModuleMemory.sol/ModuleMemoryLib.json",
+        "sha256": "569966c5cc35a544a5b50c85f9f1f39b308a930575ca74f88e5cf6fb15f37ef6",
+        "bytecodeBytes": 100
+      },
+      {
+        "path": "src/state/ModuleMemoryCompact.sol/ModuleMemoryCompactLib.json",
+        "sha256": "76915e1135271cac166d0d889dd5afc43793d5c21161ac22bd451aba7c9e6f21",
+        "bytecodeBytes": 100
+      },
+      {
+        "path": "src/state/MultiStack.sol/MultiStackLib.json",
+        "sha256": "8b1d083d33827a177520642555382a499885244a5540d90d5772b2df4dd009ab",
+        "bytecodeBytes": 100
+      },
+      {
+        "path": "src/state/PcArray.sol/PcArrayLib.json",
+        "sha256": "e9b35668c3f84efdcdb3a5265cdf7da37ea1b8fc1cfa8607b96f06542aca06a2",
+        "bytecodeBytes": 100
+      },
+      {
+        "path": "src/state/StackFrame.sol/StackFrameLib.json",
+        "sha256": "43c3a387f7046de115cb9d9de436528a7c69e62a1d9a20da37a9c15e84d41d4c",
+        "bytecodeBytes": 100
+      },
+      {
+        "path": "src/state/Value.sol/ValueLib.json",
+        "sha256": "d3918cc85b868746773c664ab5f3e2c111b18940a29ead492eefbae294de6b68",
+        "bytecodeBytes": 100
+      },
+      {
+        "path": "src/state/ValueArray.sol/ValueArrayLib.json",
+        "sha256": "59c120fe93cff8efb8cd1c7e848268be729873bf85ccd70fc6f1236265a03f75",
+        "bytecodeBytes": 100
+      },
+      {
+        "path": "src/state/ValueStack.sol/ValueStackLib.json",
+        "sha256": "4aba9419eceb1afc0e6d4724670ae82f0b42df06dd5f7fc051f339dfed56bac5",
+        "bytecodeBytes": 100
+      },
+      {
+        "path": "src/stylus/StylusDeployer.sol/StylusDeployer.json",
+        "sha256": "8e3021d65cdaeccb29d81690c27828ad0eb758c37a9e908dc0d26225f5f81df5",
+        "bytecodeBytes": 2260
+      },
+      {
+        "path": "src/test-helpers/BridgeTester.sol/BridgeTester.json",
+        "sha256": "16f350633691cd0ff992461395d78073fecfaf1dfe959c802dc843403a2945d4",
+        "bytecodeBytes": 5529
+      },
+      {
+        "path": "src/test-helpers/CryptographyPrimitivesTester.sol/CryptographyPrimitivesTester.json",
+        "sha256": "b9757a93cc6332b3ad5f96f0beb6219aebdd62bebe5c774038441eec9f65031f",
+        "bytecodeBytes": 5964
+      },
+      {
+        "path": "src/test-helpers/EthVault.sol/EthVault.json",
+        "sha256": "3eb0b13c1ebe2f7540258527bcf3b57133ece8af1afc2c30b9c9b1284029728c",
+        "bytecodeBytes": 289
+      },
+      {
+        "path": "src/test-helpers/MessageTester.sol/MessageTester.json",
+        "sha256": "21cca76e34ee0f4e73cb1ed0fc5208bbabc1a8f79a9bc250666c363b848c1c68",
+        "bytecodeBytes": 606
+      },
+      {
+        "path": "src/test-helpers/NoReceiveForwarder.sol/ConstructorError.json",
+        "sha256": "1a934766d83a31c15736ff7c43369f3745fe0575919505e07624045b79a9057c",
+        "bytecodeBytes": 93
+      },
+      {
+        "path": "src/test-helpers/NoReceiveForwarder.sol/ConstructorFine.json",
+        "sha256": "23dc02d94521a5cc4cd3c63144470c8619f4879e2fac2d8653014c82299be722",
+        "bytecodeBytes": 107
+      },
+      {
+        "path": "src/test-helpers/NoReceiveForwarder.sol/NoReceiveForwarder.json",
+        "sha256": "ad787aec0b93b1a087546a47755d100ece9b798076570aa08a3be92baf431813",
+        "bytecodeBytes": 500
+      },
+      {
+        "path": "src/test-helpers/NoReceiveForwarder.sol/ReceivingForwarder.json",
+        "sha256": "5425db119dc36ab445f499062509f4db4803ad2888d4ab0362795c68d1bf7efd",
+        "bytecodeBytes": 511
+      },
+      {
+        "path": "src/test-helpers/OutboxWithoutOptTester.sol/OutboxWithoutOptTester.json",
+        "sha256": "a5dbf107a8edd6fb3c24b4b8bd9799d038c8b3f04c8f13e78662204bf9150437",
+        "bytecodeBytes": 5342
+      },
+      {
+        "path": "src/test-helpers/RollupMock.sol/RollupMock.json",
+        "sha256": "14ee3a72385407f0f9b59bcd1a132fb637ad226b1c407eb921653e304323eedd",
+        "bytecodeBytes": 355
+      },
+      {
+        "path": "src/test-helpers/TestToken.sol/TestToken.json",
+        "sha256": "1da3234d24bc383faa1afb91cfd4b0f5e34b236d415f1f78e494b27d7fdfa7b7",
+        "bytecodeBytes": 3353
+      },
+      {
+        "path": "src/test-helpers/ValueArrayTester.sol/ValueArrayTester.json",
+        "sha256": "b40d82cbf5d256a501bc13e22df9c27233e865e1d821ea517e12627a76ec0ec4",
+        "bytecodeBytes": 2049
+      }
+    ]
+  },
+  "legacy": {
+    "sourceCommit": "68a8efc587e51813755d746f53d2cda9a4c16311",
+    "sourceArchive": {
+      "name": "legacy-git",
+      "sha256": "58c5a7478c9b97a647338c068994bf2c67143ac9fa8489652e5338b5126b196b",
+      "bytes": 539472,
+      "url": "https://codeload.github.com/OffchainLabs/nitro-contracts/tar.gz/68a8efc587e51813755d746f53d2cda9a4c16311"
+    },
+    "hardhatConfigSha256": "e48b04d763b7cd70b2abf6c016d6809e6b0325f59d29ff8c84c7a8deb7d14bb4",
+    "sourceFileHashes": {
+      "src/bridge/AbsBridge.sol": "a8765d99880ddfcd75e5f2690074e9ab3582b89c242cb5ab720f3290fe8bd0a1",
+      "src/bridge/AbsInbox.sol": "8994e68bd8d7c9813b9b93b3dcd0e011ea98d0f7ea5768c14ec66cd9cff86fd0",
+      "src/bridge/AbsOutbox.sol": "1c394f5caebc6383b7b27468eadbb8621c0170aedba8137aff17b2c7a7ca9d9b",
+      "src/bridge/Bridge.sol": "c1d2cd06905e355f2b4229a3a9778ef8dd0cdee8cd1b1775ab1eab39b0ab2b07",
+      "src/bridge/ERC20Bridge.sol": "12e5af7df2e34af639bc95f1282a49b16cbe85f81bd54880497de5a7763d812d",
+      "src/bridge/ERC20Inbox.sol": "62459e62a62d5d80a0c967067d356403eea8a4b33848eb63ac220d7d57e51e59",
+      "src/bridge/ERC20Outbox.sol": "739bb070e57faaf848cad0ea64fb5b176adb9f0585effd66140bcb08237f84e7",
+      "src/bridge/GasRefunder.sol": "f71ce3fbded0ef024dc3c0ed7f2d6dcc0bcbb13962f8bdd18dc3827c2247911e",
+      "src/bridge/IBridge.sol": "ee112500619c5cd6121d2d0c99dbc92843a9fd7c53eade952d98042d54b86c7c",
+      "src/bridge/IDelayedMessageProvider.sol": "81d2542e66ec9314e8759d8e9fa56e9f6c31050b5f3c09b3fc90693eac3e4016",
+      "src/bridge/IERC20Bridge.sol": "e305d5b25aa10293d35c6346df938544e05c7ef78bf736708fdf8c21da7d7f24",
+      "src/bridge/IERC20Inbox.sol": "7b601d4aa00448ed182bffe1c74595e75a34f38a964289b0dbb9fb862a01158b",
+      "src/bridge/IEthBridge.sol": "73aacc73aa28c263f4f02659e246acc810b53035a24b78c401e306be711deaf0",
+      "src/bridge/IInbox.sol": "08c26113be91c870b1515ecc3d1db2565bf0d6388b047ed441b974115462ce43",
+      "src/bridge/IInboxBase.sol": "ccfb13b38cc478898c464ec60a810168ca0bf13add8bba28931233b7f2e69a76",
+      "src/bridge/IOutbox.sol": "04e2a0cc1cce675aa3b50e87fe7c9bea386dd0b61eb7c4c41eb1ba6c87ccff2f",
+      "src/bridge/IOwnable.sol": "49b5257ef1078a2a7aa8502189407872c14aba0d4faf0d2ee7d5bb5015f57d1b",
+      "src/bridge/ISequencerInbox.sol": "ff26cbdbbe8d7283788bf84737811698ecf6151b98bf301f7e6fd2d472c191ac",
+      "src/bridge/Inbox.sol": "c89bfb9fd8f9060a3a601c609538af081b42eb0501c454135434e858f215670d",
+      "src/bridge/Messages.sol": "0d1e1e6459d92e2afe9918c0234caa3b59c6bd5d52e71d60dd168c4d732cf233",
+      "src/bridge/Outbox.sol": "abb528feff1bf3fc73ee980a9f10613b9b7d441fb62058c77ca2f49663c55f64",
+      "src/bridge/SequencerInbox.sol": "ab17ea874a49b83b07aaa403bbbc9e6e03cac9cc61f5467c312e7b8a4faaaaae",
+      "src/chain/CacheManager.sol": "f8831b2cb3a1bec6095233d1e190b3dc784b087980d9afbac48843dd56f0c140",
+      "src/challenge/ChallengeLib.sol": "5590f6d368b13abb1789da9dfe572fc5796e13ce32cc9cc5e5b675d2fb808995",
+      "src/challenge/ChallengeManager.sol": "6327b141b7789b4c6e65d722238b39ead1eafcf3b8f6207740edf2e10acfef45",
+      "src/challenge/IChallengeManager.sol": "13fda32466e458ca3f016756c108b8d86a8e89c2e7ac53c7b38d4dd5901bc9b2",
+      "src/challenge/IChallengeResultReceiver.sol": "b365d718d335676205f967233090883eac11469f56816620afb2c3d8680aa6d8",
+      "src/express-lane-auction/Balance.sol": "bcc63d942ff03bfc1c1a97df28ebc3bcf6fbf60e4e830fc1a45fdec72f22af99",
+      "src/express-lane-auction/Burner.sol": "0b22410afda5eb627b5ef6c7bc8b64f8673a9c17b243dcb09e8901bfc4b46df1",
+      "src/express-lane-auction/ELCRound.sol": "1da52ba25982e17880650eb39f7d0a373c4d25e581a3fdce8c51dcca32d04e74",
+      "src/express-lane-auction/Errors.sol": "b4bf8656f8abfac2f7578f64e8389e0f58934d189f2936ccdac09c3462f39298",
+      "src/express-lane-auction/ExpressLaneAuction.sol": "db04ce8faca991289e92fabda1144e99e8df18cd39fbc20161944dc1e83670d6",
+      "src/express-lane-auction/IExpressLaneAuction.sol": "5549a385220cabab16c525bb851dc4e1d1e2ef30e8e090853a62f70f3a3ae606",
+      "src/express-lane-auction/RoundTimingInfo.sol": "3d1398a324296722069baf8356b8dfeff4a8cf7c0261f42752486bab106843b3",
+      "src/libraries/AddressAliasHelper.sol": "5e140475624d6eb420c15027b64eec54367c7dd0d7102c15e7cec9ae8997b566",
+      "src/libraries/AdminFallbackProxy.sol": "0e2b97bf18dd2733c738220e00901ec08f3a6266ad3dc38ca2cd8005d229269c",
+      "src/libraries/ArbitrumChecker.sol": "4954675f33b8d7d11181eeba491ed2f84d4a3adeb73b3deb7f3a691c60a1e937",
+      "src/libraries/CallerChecker.sol": "5f64c18a67b74af55aa3fcc336dedb3c75a002c7b0b1d4a935135429931305d6",
+      "src/libraries/Constants.sol": "991326e8c714914e38f1edf13bbd2e78b4849521e49e8408785fed6ef9edd7ff",
+      "src/libraries/CryptographyPrimitives.sol": "ceacf8dfc2b4037a25b113c6c08de5b67f7bb50c8d17e7bd3a557bd314c87144",
+      "src/libraries/DecimalsConverterHelper.sol": "5d4f13ff4ad187c0df456f7edfd52efb4e866d30bbd5f833f58a93753f75d8b6",
+      "src/libraries/DelegateCallAware.sol": "fbdb2d4ad7c07eac1c12925806e3f4ec59f613244e4f824fc3b2a7b44a84831d",
+      "src/libraries/DoubleLogicUUPSUpgradeable.sol": "1b39803ed3fe263573acf43a044d09f8984dcbd21347fdabef6e79ea16347bb4",
+      "src/libraries/Error.sol": "323707c01d32a3f75f96352ed42901bd0d2b25d4e6a7df928739fb01e42bc92c",
+      "src/libraries/GasRefundEnabled.sol": "e6104e65cb18d44168729b71ab1001800f42287ed4ab99f88835cb624445bbc7",
+      "src/libraries/IGasRefunder.sol": "1baaa5556984d60f257597fde8df72df39377bc42238a1bc6b8cec20581b6c6e",
+      "src/libraries/IReader4844.sol": "d39d9f98f7111bb854077d9c4fc6e8276b1cbbfa6c7bc1c7247155dd939f591e",
+      "src/libraries/MerkleLib.sol": "b7f0e82eaeee3ec1a74e4c809ebbb6fe782e479e48a0bff06e35ea43fcb8bd7c",
+      "src/libraries/MessageTypes.sol": "aa535ecc02f51e1567f846eb6a8d73cca4815479f1049263cc581e3077295490",
+      "src/libraries/UUPSNotUpgradeable.sol": "86dd7567d896ce236a9aa63f2c5cfdfbedd7d2d3c5fdd86ef11fb6d41544c7af",
+      "src/mocks/ArbOS11To32UpgradeTest.sol": "bf4dd9600b08c575dbe63846506090ba19963276bf3fcb523d37df013b525071",
+      "src/mocks/Benchmarks.sol": "e04d66aea39457e14b0510cd9bf0f36cf64e0c02fe72a58994d72f5ae823de93",
+      "src/mocks/BigMap.sol": "2e81c0fecc0ddae0224398e7e23d8c54af01be4b5dc392eae2a133932d06d73e",
+      "src/mocks/BridgeStub.sol": "82b833e759aa774bb4fb05a269db0180c2df3cf4d78a63ca871baf57d7024f02",
+      "src/mocks/BridgeUnproxied.sol": "8b6ff440d9a0832c647343f82f4d4136264e074fa576ac3d802e0279b33150be",
+      "src/mocks/CreateTest.sol": "00a367e395394d51aae02fea8b43f71e0a42db7a0aecceaf8233aaa8b576955b",
+      "src/mocks/HostioTest.sol": "98f3812f7b08f90785f6090cff8db3c633a329f21387a56285dbf8900cbc62c5",
+      "src/mocks/InboxStub.sol": "120b1af25f4960f86988628121ba47c99d2c6029db010dcf0bcf6237c46320cb",
+      "src/mocks/MockResultReceiver.sol": "b293836664f1195b88e5ca0e9ed24c1584b34509d48573b605a0afbc57778fd3",
+      "src/mocks/MultiCallTest.sol": "8acaeaf6067e301e7ce966e45acd9c4a371b99939d33f164c1f8288ec397127f",
+      "src/mocks/PendingBlkTimeAndNrAdvanceCheck.sol": "dc9640d84be0bdf5b7836688cd7ee8210a7a7b1f1f6cac7d13e8adb41fd31998",
+      "src/mocks/Program.sol": "bd094d83cca9b556cf82869653563c3e53a85545b2a9ffed69f3755b5439d1bf",
+      "src/mocks/ProxyAdminForBinding.sol": "73f466a32ffb586d621ac35b21171a916cbfa68487e117b471037cd38cea9b3b",
+      "src/mocks/SdkStorage.sol": "68dbf0e75d41cbf2ccb846f8362ce0bd215115c534539a91a86f56169f30af18",
+      "src/mocks/SelfDestruct.sol": "ccd22d46815968408628a948ee7926891e4b8bbc21c71f437f65838270cc7fc2",
+      "src/mocks/SequencerInboxStub.sol": "87e4b0a3ab9d42241f802e215f6711ebe10e8818217337e203c7d1d9f789c801",
+      "src/mocks/Simple.sol": "a92235d9e2a36c499f9dac2dc078a5b2b5319164596b1fa43fa0279d8dbfe927",
+      "src/mocks/SimpleCacheManager.sol": "52113c497069ad87ea4059b88808cdee26be83af983d342faf59753840eaed07",
+      "src/mocks/SimpleProxy.sol": "f8b9fdb85479baae4cfd09de96ad108823b927d74350049d7b1339e5ffd189f8",
+      "src/mocks/SingleExecutionChallenge.sol": "c26a0fb6873f1f89d9809ae10b5bb132a7f1dbad2ed83b49fa6626b37b22198e",
+      "src/mocks/TimedOutChallengeManager.sol": "8f26a2e2f0504e5d651e750890b0d79999c0ab18e170b51e2d9b188d273a1f8c",
+      "src/mocks/UpgradeExecutorMock.sol": "1cc9741d1501bfcdf37b913f69fbeb4e51bf65b56886fddaf7aaf1ddbeefd66b",
+      "src/node-interface/NodeInterface.sol": "239752ef13257399c59704ebbcf0e1c965508273cf6fc9c439f6d3ef817428e6",
+      "src/node-interface/NodeInterfaceDebug.sol": "dcbeed9c5a6a10ae7e4830bd6517309d97774ec0b66d0598434f5cee3f33ef49",
+      "src/osp/HashProofHelper.sol": "fb0789f00909adcf1e39095952516703d22cd4b6b4e8381f8a46002edd741f1f",
+      "src/osp/IOneStepProofEntry.sol": "8f771eba1f8b4fb212ce5fe0ad95b44f3a98fba03fdf637b1fd1049109c0f452",
+      "src/osp/IOneStepProver.sol": "d2010a47c3144ce34fcdcd58c62ac78f364b8d66e194becdf12c70257ce037dd",
+      "src/osp/OneStepProofEntry.sol": "e2062a26bb54f4f3cb6d1f72a2458c6b56fe5b20b646f6b03ab9f07dd9083cd2",
+      "src/osp/OneStepProver0.sol": "485181ff782e326973d0e629cdbd430b62511c55fa26d55356575dc86710c081",
+      "src/osp/OneStepProverHostIo.sol": "a2d42cbe006076238217ef2cb485e6969360d307063d2db97c639e9be3a3c03d",
+      "src/osp/OneStepProverMath.sol": "3a7d1bbdeb7d354bc1780095a944a8ae361b7e326889fdc1f711969632d0b8c7",
+      "src/osp/OneStepProverMemory.sol": "58faeb46054344d3c06757c8c58fd1d7b8eb50515d3f651be5ffc11a3e076cd3",
+      "src/precompiles/ArbAddressTable.sol": "731b2dae00032b8de591d803e3d92a0af54808b552016b58d5258e48a3913148",
+      "src/precompiles/ArbAggregator.sol": "af282d04e2b8dc05799516f772ac3bd43d1ba2ed34081a63149900ee5c5ce4ca",
+      "src/precompiles/ArbBLS.sol": "8c31135cf6a9b55bcde81e6ac9a55a26805563be2d936d54ca79adc7b9b1dc6e",
+      "src/precompiles/ArbDebug.sol": "770174f3cf3a80c8270c4577bb085c22854c0baca88a1c19abff7c17a281df71",
+      "src/precompiles/ArbFunctionTable.sol": "62496ceb549e624cbcb435c62994e77b5a7e9d9c49d7afe595fcf76fb757d7db",
+      "src/precompiles/ArbGasInfo.sol": "57c9ca03e2a1305de2676f80358e095c69f93d03736f52df7f0031a4fd5cdca1",
+      "src/precompiles/ArbInfo.sol": "6e3561105211a676fc4b05d789cdba62c27e730a0629331ad8d40266899bd38b",
+      "src/precompiles/ArbOwner.sol": "42f915f7450ca80e97eafba3d5091fe676b9b0229614df6d2300377cbe295f9b",
+      "src/precompiles/ArbOwnerPublic.sol": "21495c37724e2278e3551728390d7c2440e807ea93bdcfa87b2c18661aa03a0d",
+      "src/precompiles/ArbRetryableTx.sol": "f76bed73238211f048b15e12f50b723220b622dbcf89db7d4336fdc76ffac3e5",
+      "src/precompiles/ArbStatistics.sol": "3186333f34f53ce4a2f9530bb1f82374a8a6a13807860a209d6dd554d68dc47e",
+      "src/precompiles/ArbSys.sol": "2c452bb2cbd9b9199f7f4c20175c82e31b4493e4e2c41ba4a4a2cf7ae9d906e7",
+      "src/precompiles/ArbWasm.sol": "7f0a6ca07fc4e0170603e8de964d119c3bec856ab9144f22564821af3c8f0a19",
+      "src/precompiles/ArbWasmCache.sol": "335aee4c5ba8dc0bde7e2d631388e5eecc8dc1f0405117231e06e1e854b378b9",
+      "src/precompiles/ArbosActs.sol": "938e0c7683094112ab6b8713bde955b83231a3de19e9945af589771ad80a6212",
+      "src/precompiles/ArbosTest.sol": "d4bdf151f9c2435ca5929cbf72b98f5803e48335bd7d60c6c92581288fb83e26",
+      "src/rollup/AbsRollupEventInbox.sol": "ec8e4fd8be3c7f1370c7b6cdd0104c9c07417d078313be054224d76696476679",
+      "src/rollup/BridgeCreator.sol": "9cc351290a032abef3ff255dcb9516dd8a419ac7fa6a60019ec07faf4b73a0c6",
+      "src/rollup/Config.sol": "133182394f1d42570fac1e0e9c32666b6f91a4092065930b7f04b1d7150ccb6d",
+      "src/rollup/DeployHelper.sol": "08aa59be90d52c1f91990532fd658cf07f8c57ec29b83de7298537661a88d903",
+      "src/rollup/ERC20RollupEventInbox.sol": "79f98cbd476dc6b3668c4ce55b12b856c5f946ceea6352594944b27f547322bb",
+      "src/rollup/FactoryDeployerHelper.sol": "0a925cc54d5150a99afb4988e4e11b38f6bc4e9826c22f2b3530facd3afc2735",
+      "src/rollup/IRollupAdmin.sol": "8149380791034ce80014135533f1e6d3fd68c8e73fec611551cf7bdb579489a0",
+      "src/rollup/IRollupCore.sol": "77431a8e3ee83c8383afc7230f62e5b9e45d9193b622924dcdf8c4f17337f5ba",
+      "src/rollup/IRollupEventInbox.sol": "e0b0a81f2dd3975710b6fc8773d61b49b0e30612ac0eef72ecc9fb25fd60655b",
+      "src/rollup/IRollupLogic.sol": "27caab6288fb3aa3e4d58d085dc99f18d12b6634643da8f884c9084dd619d9da",
+      "src/rollup/Node.sol": "a6990fc6af3830b38bd8ef96d9d174b841590a596e367a44e34d1ee8d8d6eede",
+      "src/rollup/RollupAdminLogic.sol": "64903e8c38ef06f54b10cfddbf940b61eaade4d152644462496e2dacab29298d",
+      "src/rollup/RollupCore.sol": "321920d444471840707bce635dd08ac42f9ed0c36024eb57d898bf61cdb2a6e0",
+      "src/rollup/RollupCreator.sol": "14f9af14780a9c59bc5c996286bb452f25f98592dbbcb6fafd5f4d1158dd07b8",
+      "src/rollup/RollupEventInbox.sol": "f959e57350cf970af6ca259cda7c3da62622ac6b34f5130be392a7e7702e558a",
+      "src/rollup/RollupLib.sol": "61876636e1cd544c5ca51deaffbe22fc3fb74cd7970ac3c9a31b98376c4d87cb",
+      "src/rollup/RollupProxy.sol": "fc86c4a4d9ac6579479d5d828019c988b9cf1d4132c0f302ca777d17d754785a",
+      "src/rollup/RollupUserLogic.sol": "b6105db9fc87b41ce02bce19b70e67c2f0bfed3629a42825d649bee267f8affa",
+      "src/rollup/ValidatorUtils.sol": "3d2ad542e6beedc4372c2a6b8bea0919b6391429d583e0b48dfab5c00e193db1",
+      "src/rollup/ValidatorWallet.sol": "f51685ea9fd594649be3e16dce2be0d4c6a28f286610d40f4e2a264d65ff86bc",
+      "src/rollup/ValidatorWalletCreator.sol": "eeb12d05d4b04195a575c5398077b93de137fbde00eb44669647e8f330c48c59",
+      "src/state/Deserialize.sol": "10208a3b89854f762cdf88e35a09cde87b4ed43af1de810a27cdf28f34e42dd4",
+      "src/state/GlobalState.sol": "93767d22400b899859d5f993223edecec535ba2297cf237f2341d1cb8d13527c",
+      "src/state/Instructions.sol": "04c706e28e332524e7619a30cade2cf97e7bce98dffa88a8831518384b7d876c",
+      "src/state/Machine.sol": "953e12f178b81e8494b1a71905baa2e9062efdc935cd15dfc9bc61da608c8c20",
+      "src/state/MerkleProof.sol": "2e5a3401f558131249af0f43df21fc16cfa266c1495c2975d982d2b05ef35ddc",
+      "src/state/Module.sol": "a20b676af3034d54722fae13cd8f1fd4ed1670e94c53271c58a5b2de428958e4",
+      "src/state/ModuleMemory.sol": "6144700f85826907bc3746d63204522841a139696792ffcafb93d0e0a4623c2d",
+      "src/state/ModuleMemoryCompact.sol": "708b40838d2a5811b0c620f84c3c2c68b9c3ca8cf2ad4f2188d823612a7ba6d3",
+      "src/state/MultiStack.sol": "431bdbae8d057e0057e92c80ba39f714a2c2acf69414155cee1169ad7210f304",
+      "src/state/PcArray.sol": "c329d937b3b27d0a765eef3764bae6f1cf5cd5d2863d327ac0ae3350dc085940",
+      "src/state/StackFrame.sol": "08d85d589b26079236f12224555e4b4829fee0e7ee39d59aef70e6a6381c4457",
+      "src/state/Value.sol": "08adb7578e1dab67d9a8d0ddae0167832a4e255b6d5f95165f08300348c49496",
+      "src/state/ValueArray.sol": "403d1fdcb863c4793af4e1b52e297eadd56d9b0901dda7fb5aae0acf325d2659",
+      "src/state/ValueStack.sol": "39d1256521aad58d0f3caeef32f1e1ca271c4f2c6f28575687a681b7d4d53785",
+      "src/test-helpers/BridgeTester.sol": "955cee1dc95402c23031eaf135159af0a85b71763b7cc2a6d755551173c603cd",
+      "src/test-helpers/CryptographyPrimitivesTester.sol": "00391e14b4cfa84b59c3f269f901a859eaa2abc061d653640c70309d0726367a",
+      "src/test-helpers/EthVault.sol": "cad3ef5928d771a2b3933f8c869983c8a4a76c7059fd1c4a6a0de959e018968e",
+      "src/test-helpers/InterfaceCompatibilityTester.sol": "6dca8e98f27b0407d2804726e4bc58d7442a815fd68c7148cbe521d4bc06a405",
+      "src/test-helpers/MessageTester.sol": "2df0165131a2ddc6318bc3228657c23708141579de48a563fe62b66f913205af",
+      "src/test-helpers/OutboxWithoutOptTester.sol": "49fb5afe60fadbf2b8ddb50cbb9f324be3c8058c768b718c2672b5edcd065225",
+      "src/test-helpers/RollupMock.sol": "4f49d11e4fb1df0758df488ad61c71fc3043553172daff90448053793b5869a0",
+      "src/test-helpers/TestToken.sol": "099fc2e1535aa921b9a56d5bf9d2ba5532c7147875b6c3f984909bf5ee448c11",
+      "src/test-helpers/ValueArrayTester.sol": "456f4689238cc9517262fddd44c5fe8fea0eddd8a54e0de2d47b4a652e8905cb"
+    },
+    "compilerRuns": [
+      {
+        "compiler": "0.8.9+commit.e5eed63a.Emscripten.clang",
+        "optimizerRuns": 100,
+        "evmVersion": "compiler default",
+        "metadataBytecodeHash": "compiler default",
+        "selectedSources": "all except 0.8.24 overrides",
+        "artifacts": 188,
+        "elapsedMs": 24042,
+        "inputSha256": "9b96b7de0e0732c0f1912fbc22571fcc47f8be91ef948c2a1c55d56f58309533"
+      },
+      {
+        "compiler": "0.8.9+commit.e5eed63a.Emscripten.clang",
+        "optimizerRuns": 0,
+        "evmVersion": "compiler default",
+        "metadataBytecodeHash": "compiler default",
+        "selectedSources": [
+          "src/rollup/RollupUserLogic.sol"
+        ],
+        "artifacts": 3,
+        "elapsedMs": 3105,
+        "inputSha256": "3bfad350eabce207b9a6039514e087a356426424f286fa6c66800e7fdae96d6b"
+      },
+      {
+        "compiler": "0.8.24+commit.e11b9ed9.Emscripten.clang",
+        "optimizerRuns": 100,
+        "evmVersion": "cancun",
+        "metadataBytecodeHash": "compiler default",
+        "selectedSources": [
+          "src/mocks/HostioTest.sol",
+          "src/mocks/ArbOS11To32UpgradeTest.sol"
+        ],
+        "artifacts": 2,
+        "elapsedMs": 259,
+        "inputSha256": "44249cde7cf5687c829b2b577ec1937bc119bb6d18e479539313a16781f07708"
+      }
+    ],
+    "compilerDiagnostics": {
+      "errors": 0,
+      "warningFiles": [
+        "compile-legacy-0.8.9-0-errors.json",
+        "compile-legacy-0.8.9-100-errors.json",
+        "compile-legacy-0.8.24-100-errors.json"
+      ]
+    },
+    "importedDependencySourceHashes": {
+      "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol": "6e058aaee8c641107b209b62c34d484f2f125a44ecb66f7204a701614dfc1d68",
+      "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol": "44edc4d7099c781d11421cea2d82a52948e738f5f6191c8ad01dfc0f9858549c",
+      "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol": "8aecaaba0f09bc906c27867246210adfd19230a3e4a209a1909045c633030476",
+      "@openzeppelin/contracts-upgradeable/utils/StorageSlotUpgradeable.sol": "8253b7fb367ad6bdb028d020b73a063caf353d2f9f7f4d63d6ff0ceb65e73344",
+      "@openzeppelin/contracts/token/ERC20/IERC20.sol": "c2b06bb4572bb4f84bfc5477dadc0fcc497cb66c3a1bd53480e68bedc2e154a6",
+      "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol": "b5a1340c5232f387b15592574f27eef78f6017bdc66542a1cea512ad4f78a0d2",
+      "@openzeppelin/contracts/token/ERC20/ERC20.sol": "f7831910f2ed6d32acff6431e5998baf50e4a00121303b27e974aab0ec637d79",
+      "@openzeppelin/contracts/access/Ownable.sol": "75e3c97011e75627ffb36f4a2799a4e887e1a3e27ed427490e82d7b6f51cc5c9",
+      "solady/src/utils/MinHeapLib.sol": "4de140172414671de3cede62373f95c8d73979a96698f068f192a18eee3661e3",
+      "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20BurnableUpgradeable.sol": "ca660e828b0c4be205a9f56f3b87b91c1fa67cfd0f6e9dbd431faea7a6280d36",
+      "@openzeppelin/contracts/utils/cryptography/ECDSA.sol": "0fd6508524523d313bca0ef90b03c754a8cc8b0dc7f02859b8b440d59bb62e40",
+      "@openzeppelin/contracts-upgradeable/access/AccessControlEnumerableUpgradeable.sol": "a55a53b215e2bb9c350bf7b86ee09b0e488522f7d8747877fd9a3a7e474c2c26",
+      "@openzeppelin/contracts-upgradeable/utils/cryptography/draft-EIP712Upgradeable.sol": "9dd13a59c80288b44db61f9eaca6704fae90e79808c2669ad1bf41aefeef3f29",
+      "@openzeppelin/contracts-upgradeable/access/IAccessControlEnumerableUpgradeable.sol": "00e174801c04f08f2840ee1eed6394d06ba2b029c0b6078166255148794c1187",
+      "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol": "a39bc026ad6214e9ecd526bd4a1ddf9862d80bd4a9d0d031d9bafa4c3c147c0b",
+      "@openzeppelin/contracts/proxy/Proxy.sol": "c26f460761bab92443c5f900b20024b0433900762f5f4bf6f6612f7bee7c2f34",
+      "@openzeppelin/contracts/proxy/ERC1967/ERC1967Upgrade.sol": "a137681e196c44eaf1b819384a9633aef5cee10954ff1301138557cab2169dac",
+      "@openzeppelin/contracts/utils/Address.sol": "aafa8f3e41700a8353aabcdf020e06735753e6bc4b615279b43de53cfbb4f2cd",
+      "@openzeppelin/contracts/utils/StorageSlot.sol": "b8d43f55a3afc09327fb9d802f714a8bec64e3a259ad42f5b3d877deb29aaaef",
+      "@openzeppelin/contracts/proxy/utils/UUPSUpgradeable.sol": "2a1718ae9e194695361c1ea66a1acbe346f7b52f59d3f3925f7a95e375ae82e6",
+      "@openzeppelin/contracts/interfaces/draft-IERC1822.sol": "38728bce05e2b518d0ef66d514dbfcdee5555aeac2d57729480bf1409ee63630",
+      "@openzeppelin/contracts/utils/Strings.sol": "8597c62818dcbc6cf85c21179b90b714fb4f70a4347ca2eed23e88c87b08b8a1",
+      "@openzeppelin/contracts/proxy/transparent/ProxyAdmin.sol": "172cd054bf76f83d70aa88eefee8679e2291b12f7b28cf043d4b821db6ebbe84",
+      "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol": "7f221363f6bd6fcf5af3f5e6ae628756c195021c3b366718665427c4f14099cb",
+      "@openzeppelin/contracts/security/ReentrancyGuard.sol": "aa73590d5265031c5bb64b5c0e7f84c44cf5f8539e6d8606b763adac784e8b2e",
+      "@offchainlabs/upgrade-executor/src/IUpgradeExecutor.sol": "2cea2f62401de2d297d2c7c6eb5748b0c21dd16491bf11a8f3967b3afb31271a",
+      "@openzeppelin/contracts/proxy/beacon/UpgradeableBeacon.sol": "62837cd05e75f09d5b7c02faf786032cafd749375f9bd710106fec84d77be149",
+      "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol": "95ec54d0e8065f04805f220da2d880c150e9a90181afed85e28d4958915ff7fb",
+      "@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol": "db1d80b38061ba675444e6ad861a621d99666042950278d6cdeae9a108afdd17",
+      "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol": "f0cbb88e6cbc994b565645eabd4320d27d529c7f1f4b3abb5fc263f3961c0a24",
+      "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol": "5fb301961e45cb482fe4e05646d2f529aa449fe0e90c6671475d6a32356fa2d4",
+      "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol": "af5c8a77965cc82c33b7ff844deb9826166689e55dc037a7f2f790d057811990",
+      "@openzeppelin/contracts/utils/Context.sol": "1458c260d010a08e4c20a4a517882259a23a4baa0b5bd9add9fb6d6a1549814a",
+      "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol": "a439a162881f7f36131b1fe307aa2a8dc98ac3f01ac121ff92fbbc25d0d216b5",
+      "@openzeppelin/contracts-upgradeable/utils/structs/EnumerableSetUpgradeable.sol": "80cae696855012fa154908e5641f81c5d94ac3bf5ecd463c62fdafc120b9bc9e",
+      "@openzeppelin/contracts-upgradeable/utils/cryptography/ECDSAUpgradeable.sol": "22ee481b20f289ce83a466bffd66ade2dfb47a23307179b254fed5756b3ee2cf",
+      "@openzeppelin/contracts-upgradeable/access/IAccessControlUpgradeable.sol": "6d3fbd4566bc123db1ee6ba2a1b79544b572df9b9cc9be360ddb3244dd07c86b",
+      "@openzeppelin/contracts/proxy/beacon/IBeacon.sol": "6afea1d83856ed8e0495fe78109f674f925cfdc79fe2e24e854b1237e742f011",
+      "@openzeppelin/contracts-upgradeable/utils/StringsUpgradeable.sol": "16a0e36f8dc6a83df3fec4344a11ad166ba99649d1cc52613c7ebe8015bd81a3",
+      "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol": "fd84e5284eccc479268f0ef36b830019d4f7999ceb7959430d8d8d9e602dd4ef",
+      "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol": "db6c986d393626060fa219d1072a1913eb16872224307e9261fc90c296e3770d",
+      "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/IERC20MetadataUpgradeable.sol": "68bcca423fc72ec9625e219c9e36306c726a347e43f3711467c579bd3f6500c8",
+      "src/rollup/IRollupLogic.sol": "27caab6288fb3aa3e4d58d085dc99f18d12b6634643da8f884c9084dd619d9da",
+      "src/libraries/UUPSNotUpgradeable.sol": "86dd7567d896ce236a9aa63f2c5cfdfbedd7d2d3c5fdd86ef11fb6d41544c7af",
+      "src/rollup/RollupCore.sol": "321920d444471840707bce635dd08ac42f9ed0c36024eb57d898bf61cdb2a6e0",
+      "src/libraries/Constants.sol": "991326e8c714914e38f1edf13bbd2e78b4849521e49e8408785fed6ef9edd7ff",
+      "src/libraries/AdminFallbackProxy.sol": "0e2b97bf18dd2733c738220e00901ec08f3a6266ad3dc38ca2cd8005d229269c",
+      "src/rollup/IRollupCore.sol": "77431a8e3ee83c8383afc7230f62e5b9e45d9193b622924dcdf8c4f17337f5ba",
+      "src/bridge/ISequencerInbox.sol": "ff26cbdbbe8d7283788bf84737811698ecf6151b98bf301f7e6fd2d472c191ac",
+      "src/bridge/IOutbox.sol": "04e2a0cc1cce675aa3b50e87fe7c9bea386dd0b61eb7c4c41eb1ba6c87ccff2f",
+      "src/bridge/IOwnable.sol": "49b5257ef1078a2a7aa8502189407872c14aba0d4faf0d2ee7d5bb5015f57d1b",
+      "src/rollup/Node.sol": "a6990fc6af3830b38bd8ef96d9d174b841590a596e367a44e34d1ee8d8d6eede",
+      "src/rollup/RollupLib.sol": "61876636e1cd544c5ca51deaffbe22fc3fb74cd7970ac3c9a31b98376c4d87cb",
+      "src/rollup/IRollupEventInbox.sol": "e0b0a81f2dd3975710b6fc8773d61b49b0e30612ac0eef72ecc9fb25fd60655b",
+      "src/challenge/IChallengeManager.sol": "13fda32466e458ca3f016756c108b8d86a8e89c2e7ac53c7b38d4dd5901bc9b2",
+      "src/bridge/IBridge.sol": "ee112500619c5cd6121d2d0c99dbc92843a9fd7c53eade952d98042d54b86c7c",
+      "src/precompiles/ArbSys.sol": "2c452bb2cbd9b9199f7f4c20175c82e31b4493e4e2c41ba4a4a2cf7ae9d906e7",
+      "src/libraries/ArbitrumChecker.sol": "4954675f33b8d7d11181eeba491ed2f84d4a3adeb73b3deb7f3a691c60a1e937",
+      "src/libraries/IGasRefunder.sol": "1baaa5556984d60f257597fde8df72df39377bc42238a1bc6b8cec20581b6c6e",
+      "src/bridge/IDelayedMessageProvider.sol": "81d2542e66ec9314e8759d8e9fa56e9f6c31050b5f3c09b3fc90693eac3e4016",
+      "src/bridge/IInboxBase.sol": "ccfb13b38cc478898c464ec60a810168ca0bf13add8bba28931233b7f2e69a76",
+      "src/state/Machine.sol": "953e12f178b81e8494b1a71905baa2e9062efdc935cd15dfc9bc61da608c8c20",
+      "src/osp/IOneStepProofEntry.sol": "8f771eba1f8b4fb212ce5fe0ad95b44f3a98fba03fdf637b1fd1049109c0f452",
+      "src/challenge/IChallengeResultReceiver.sol": "b365d718d335676205f967233090883eac11469f56816620afb2c3d8680aa6d8",
+      "src/challenge/ChallengeLib.sol": "5590f6d368b13abb1789da9dfe572fc5796e13ce32cc9cc5e5b675d2fb808995",
+      "src/state/GlobalState.sol": "93767d22400b899859d5f993223edecec535ba2297cf237f2341d1cb8d13527c",
+      "src/osp/IOneStepProver.sol": "d2010a47c3144ce34fcdcd58c62ac78f364b8d66e194becdf12c70257ce037dd",
+      "src/state/ValueStack.sol": "39d1256521aad58d0f3caeef32f1e1ca271c4f2c6f28575687a681b7d4d53785",
+      "src/state/Instructions.sol": "04c706e28e332524e7619a30cade2cf97e7bce98dffa88a8831518384b7d876c",
+      "src/state/MultiStack.sol": "431bdbae8d057e0057e92c80ba39f714a2c2acf69414155cee1169ad7210f304",
+      "src/state/StackFrame.sol": "08d85d589b26079236f12224555e4b4829fee0e7ee39d59aef70e6a6381c4457",
+      "src/state/Module.sol": "a20b676af3034d54722fae13cd8f1fd4ed1670e94c53271c58a5b2de428958e4",
+      "src/state/Value.sol": "08adb7578e1dab67d9a8d0ddae0167832a4e255b6d5f95165f08300348c49496",
+      "src/state/ValueArray.sol": "403d1fdcb863c4793af4e1b52e297eadd56d9b0901dda7fb5aae0acf325d2659",
+      "src/state/ModuleMemoryCompact.sol": "708b40838d2a5811b0c620f84c3c2c68b9c3ca8cf2ad4f2188d823612a7ba6d3"
+    },
+    "distinctArtifacts": 190,
+    "concreteBytecodes": 109,
+    "artifactTreeSha256": "e670dd0800a5cdc627f587275ea03bad6c68a05b00b924df85c2ed0ca5bf57ec",
+    "artifacts": [
+      {
+        "path": "@offchainlabs/upgrade-executor/src/IUpgradeExecutor.sol/IUpgradeExecutor.json",
+        "sha256": "951edafd198f3f7c0cce3518ea2a906ba8964a4986ad929f49b52748afd08b60",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts/access/Ownable.sol/Ownable.json",
+        "sha256": "f226316c0e4d5e8796a814260cc280b1e6c135924519cb1810a6405dbf049ba4",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts/interfaces/draft-IERC1822.sol/IERC1822Proxiable.json",
+        "sha256": "f45c295c6397d0ca3e144dd09b35a2a3f8a33a3dc73af499c528b737bbe4fe93",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol/ERC1967Proxy.json",
+        "sha256": "2f88f3c1002d58d91f4e6f3f2756be21b5341ae1cc6cf1cfffd8cfa1b6fee19b",
+        "bytecodeBytes": 1967
+      },
+      {
+        "path": "@openzeppelin/contracts/proxy/ERC1967/ERC1967Upgrade.sol/ERC1967Upgrade.json",
+        "sha256": "97774b1b907a44355da1ccb4e0d9ec04b2bdcba468bab524858f8a36b9b000a6",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts/proxy/Proxy.sol/Proxy.json",
+        "sha256": "cc370f5c020dd484b919db48c90edc58f1180216bd193b8ab0f0411fc0cc069f",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts/proxy/beacon/IBeacon.sol/IBeacon.json",
+        "sha256": "e909a06ba9aaf6e6c4a3f447a18a6cd7f23e55e9c9ee3d5d2073528bcb9c30b3",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts/proxy/beacon/UpgradeableBeacon.sol/UpgradeableBeacon.json",
+        "sha256": "32d921ad6d0c57c62c07b215cbc8629104c1631d0f92acb47fd4581f939ec992",
+        "bytecodeBytes": 1319
+      },
+      {
+        "path": "@openzeppelin/contracts/proxy/transparent/ProxyAdmin.sol/ProxyAdmin.json",
+        "sha256": "335b11befd81b2a03ef986d93c3def58dbeb18206583eb9d141e47945c87c690",
+        "bytecodeBytes": 1982
+      },
+      {
+        "path": "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol/TransparentUpgradeableProxy.json",
+        "sha256": "5f35f8ed78dcb69263c3d6a4b65f833016966f4216ca30efea0fce1980495c45",
+        "bytecodeBytes": 3938
+      },
+      {
+        "path": "@openzeppelin/contracts/proxy/utils/UUPSUpgradeable.sol/UUPSUpgradeable.json",
+        "sha256": "fc706927ddc8ff6ab0c2cc81a6f2101ab1c1c2061f147eb6249673eda20e65b5",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts/security/ReentrancyGuard.sol/ReentrancyGuard.json",
+        "sha256": "e1a32d753ba7a69a52a4128329302d202e88465308a8732c2ef7a69c3b68da62",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts/token/ERC20/ERC20.sol/ERC20.json",
+        "sha256": "b2a9c903b7f03aefc6beafd893e0b7ea5dbca7f0a8b6e9217f7ad7c93f3fc0f7",
+        "bytecodeBytes": 2893
+      },
+      {
+        "path": "@openzeppelin/contracts/token/ERC20/IERC20.sol/IERC20.json",
+        "sha256": "434b0cacb470a8c906227725346311c39da85973922ba5752f4e1e8731943717",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol/IERC20Metadata.json",
+        "sha256": "4aa87fdb339b62b3bc58f9257a0811baf98086af28314ade8837ba95a7ffcaf0",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol/SafeERC20.json",
+        "sha256": "a8d01fd66b97f045df73dd658fc675ceb641ef8b75864926ab94cf09699231fd",
+        "bytecodeBytes": 141
+      },
+      {
+        "path": "@openzeppelin/contracts/utils/Address.sol/Address.json",
+        "sha256": "1b89ff2e02b5e2f65833fe6831d43ab27b0784f4c3ad29779c39be5a05dc3d21",
+        "bytecodeBytes": 141
+      },
+      {
+        "path": "@openzeppelin/contracts/utils/Context.sol/Context.json",
+        "sha256": "4e976e9054315918d801adab824f80a3c2ee91497df846161e264fb6cd42504b",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts/utils/StorageSlot.sol/StorageSlot.json",
+        "sha256": "5dc3627485e3e3e395a25200dbc8c24169d14c27edd0c8e96fe6a0062a34be9a",
+        "bytecodeBytes": 141
+      },
+      {
+        "path": "@openzeppelin/contracts/utils/Strings.sol/Strings.json",
+        "sha256": "5687b2d6fd164940cf1fa2183faf60b0e5499d9f4b794ac017452a065fce4b53",
+        "bytecodeBytes": 141
+      },
+      {
+        "path": "@openzeppelin/contracts/utils/cryptography/ECDSA.sol/ECDSA.json",
+        "sha256": "e0a8359ec7e520f4e13027ad8b9dc180d1730c283dfa3923a9ed79c315af562e",
+        "bytecodeBytes": 141
+      },
+      {
+        "path": "@openzeppelin/contracts-upgradeable/access/AccessControlEnumerableUpgradeable.sol/AccessControlEnumerableUpgradeable.json",
+        "sha256": "d6c6d088ae2003bdf3227a4eeda8a9375db1cbaaa811ce54aa3fbb400ab53a7c",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol/AccessControlUpgradeable.json",
+        "sha256": "a6c832eb978a3310ae54cb4907e8c1e608ea95f91d15471ac097c390b9987bbc",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts-upgradeable/access/IAccessControlEnumerableUpgradeable.sol/IAccessControlEnumerableUpgradeable.json",
+        "sha256": "a7f19e5a2b53029abe46b2cfcad22a4df836dfa8fb935f5d2b0f5289b1d83113",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts-upgradeable/access/IAccessControlUpgradeable.sol/IAccessControlUpgradeable.json",
+        "sha256": "2905907786b4d980be11f41f139f5f85d067c04990122c7e0351fca114d860c6",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol/OwnableUpgradeable.json",
+        "sha256": "1bec353a0de1e76417556ebfcd8bc9f46cf70a04047926d9ccbcebd867607407",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol/Initializable.json",
+        "sha256": "ddcb43f679d2d69ba6a998bfe7d024154bebdd95703c9281d20800fbfeb254b2",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol/PausableUpgradeable.json",
+        "sha256": "88f9dee0298c748eb9e95c28008d6dd3a7a1c2abce0d2a1fa07380bb087c1bb9",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol/ERC20Upgradeable.json",
+        "sha256": "d5aad1fa29101c3659e370ad0ef4f5132a551dee5229082b93b760b0a1c9fbb5",
+        "bytecodeBytes": 2267
+      },
+      {
+        "path": "@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol/IERC20Upgradeable.json",
+        "sha256": "8f93914784666daf691d7c662f62a4ed093b322507476c824ae98329d7c56903",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20BurnableUpgradeable.sol/ERC20BurnableUpgradeable.json",
+        "sha256": "723715d6da7d83435ead38227a9f2f841470467a5c193c379917f087faea3e85",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/IERC20MetadataUpgradeable.sol/IERC20MetadataUpgradeable.json",
+        "sha256": "5a0885448f373a079cf14a22d531cd7299bbf4a3fabd68b7926cf20df32b92af",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol/AddressUpgradeable.json",
+        "sha256": "5871a441c1cfc8801a0e8144660dc2c9ccc665e9797d9bad330f0bdbbaea6631",
+        "bytecodeBytes": 141
+      },
+      {
+        "path": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol/ContextUpgradeable.json",
+        "sha256": "3dc5e00607e8a77c2e495479986709e9bd794bedbd17b6c9a71c201b8d9fe56a",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts-upgradeable/utils/StorageSlotUpgradeable.sol/StorageSlotUpgradeable.json",
+        "sha256": "08dce47d5d6ec220e66e0e25101dd22495c51af5629e11d265c3bffc459e9581",
+        "bytecodeBytes": 141
+      },
+      {
+        "path": "@openzeppelin/contracts-upgradeable/utils/StringsUpgradeable.sol/StringsUpgradeable.json",
+        "sha256": "8db8b7f35115f4f80923699d0a561a48b960e2baba571d3f56b58c3557ea87df",
+        "bytecodeBytes": 141
+      },
+      {
+        "path": "@openzeppelin/contracts-upgradeable/utils/cryptography/ECDSAUpgradeable.sol/ECDSAUpgradeable.json",
+        "sha256": "a420d972f8b6b24482479867553084f7b0278138d2412652e12c836d2f33e621",
+        "bytecodeBytes": 141
+      },
+      {
+        "path": "@openzeppelin/contracts-upgradeable/utils/cryptography/draft-EIP712Upgradeable.sol/EIP712Upgradeable.json",
+        "sha256": "9cb7d79f4eeb9e8a285641b67ceee51b7a742280d6fd96aa98d4765fc4f0876c",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol/ERC165Upgradeable.json",
+        "sha256": "a6335c0cee4400689f1128d26044a60902a8b30d0d1b3d745988b21c872e6244",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol/IERC165Upgradeable.json",
+        "sha256": "86a1feaf52f756a8de57cadc3eece0d0689c240b55d016cad7f37a6442977def",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "@openzeppelin/contracts-upgradeable/utils/structs/EnumerableSetUpgradeable.sol/EnumerableSetUpgradeable.json",
+        "sha256": "810a71ce3448093b900113d9b7de6f4d53529888b6eae67a1d78acbe8159ee55",
+        "bytecodeBytes": 141
+      },
+      {
+        "path": "solady/src/utils/MinHeapLib.sol/MinHeapLib.json",
+        "sha256": "789550b079d9ba13e41bb8c32897faea68c79c7a6619075fdf02adede88ab59a",
+        "bytecodeBytes": 141
+      },
+      {
+        "path": "src/bridge/AbsBridge.sol/AbsBridge.json",
+        "sha256": "5e4dd4bd8b1fc2660b655dad21989a860616299837bb9f2be74d5cdca70d78aa",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/bridge/AbsInbox.sol/AbsInbox.json",
+        "sha256": "cd50f2ea8aeb5da1810102b60d0f5fe2316f03f9ff385a886e4297c94a5b592f",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/bridge/AbsOutbox.sol/AbsOutbox.json",
+        "sha256": "a0bf0d527e2d2f708b42a1ae0c69c1820940172f677b9fb6cc71e0cbb64b034d",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/bridge/Bridge.sol/Bridge.json",
+        "sha256": "3a39233bb510ba5cac5dc03090ca1928dc101cbbbbfa334157139e0a15b1c648",
+        "bytecodeBytes": 6216
+      },
+      {
+        "path": "src/bridge/ERC20Bridge.sol/ERC20Bridge.json",
+        "sha256": "c7853da5353845224e01a548f8c775a6408b2304df551298887bc32492db2619",
+        "bytecodeBytes": 8246
+      },
+      {
+        "path": "src/bridge/ERC20Inbox.sol/ERC20Inbox.json",
+        "sha256": "13145c39670f9d4cd226ebae3625438a77fadb6e3ebb1f8f233fac7439385250",
+        "bytecodeBytes": 10121
+      },
+      {
+        "path": "src/bridge/ERC20Outbox.sol/ERC20Outbox.json",
+        "sha256": "f9cb992daf9452e69f8cebef242324dc35fea0445734690b87596e2508dc83fb",
+        "bytecodeBytes": 6316
+      },
+      {
+        "path": "src/bridge/GasRefunder.sol/GasRefunder.json",
+        "sha256": "80f2568f3ce5513d03d8541aaaee1eddde4ae744cab3b223cbc3778edcdd2b4f",
+        "bytecodeBytes": 4843
+      },
+      {
+        "path": "src/bridge/IBridge.sol/IBridge.json",
+        "sha256": "f82a242bbeef469538933a44acfc5dd196a9fdeafa523462a5d8e58993b0c8cc",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/bridge/IDelayedMessageProvider.sol/IDelayedMessageProvider.json",
+        "sha256": "c72a8bffd941bbcf8ecf65ae807ef4c912f2ea3998386099df2ef7287bcd746b",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/bridge/IERC20Bridge.sol/IERC20Bridge.json",
+        "sha256": "f32b09a6e6cd1c810f46f3142e030a0d94bbd3142c2f3f4e37558bdfb25091d6",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/bridge/IERC20Inbox.sol/IERC20Inbox.json",
+        "sha256": "cd282f1c06c5ae3b1ba427c1314f06e76a21369bc65e9f78777cb1719446bc24",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/bridge/IEthBridge.sol/IEthBridge.json",
+        "sha256": "5e51f6c5cfd7875de95e11cdc3a014560c0f53e7679c65f038f1bef76c4c081b",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/bridge/IInbox.sol/IInbox.json",
+        "sha256": "d7683e63173a23dcc8a1d97ede39e387db1b043c4e9a93af93d190ad45edc467",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/bridge/IInboxBase.sol/IInboxBase.json",
+        "sha256": "16486583b9660d5c6d4dfbb573d32351e46a448995d943bba4fafadb6a77e278",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/bridge/IOutbox.sol/IOutbox.json",
+        "sha256": "660c0c9554c107eda87d184c44fe7ed022dae6934bfff20db61eb100232e45cb",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/bridge/IOwnable.sol/IOwnable.json",
+        "sha256": "04ead97469349e6aa81e4b89f25bd309487378a4ab048aa7ba1654bc1836d69b",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/bridge/ISequencerInbox.sol/ISequencerInbox.json",
+        "sha256": "711ad6a7606427c9bc24c0fbfbf38136010ee6c48f56e33a0692b1bb9f05097e",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/bridge/Inbox.sol/Inbox.json",
+        "sha256": "85dfd35b436fcd5409db644bdf9a47da37c573bed6ff99cc3883760b345874ce",
+        "bytecodeBytes": 10639
+      },
+      {
+        "path": "src/bridge/Messages.sol/Messages.json",
+        "sha256": "948b80540c500c220eaa68fee8f9d1e2cb4b275d0c1880b4149a76213fca4c77",
+        "bytecodeBytes": 141
+      },
+      {
+        "path": "src/bridge/Outbox.sol/Outbox.json",
+        "sha256": "c41fd91484f9bf0eacfcc9c8151857e94ffa3a5a836eabedd0f1f3a6bced68df",
+        "bytecodeBytes": 5898
+      },
+      {
+        "path": "src/bridge/SequencerInbox.sol/SequencerInbox.json",
+        "sha256": "b41fdb3aee22e6dcf9b56fd2cbdf187642ed229fc7f20eac0e44b6a5898e1be8",
+        "bytecodeBytes": 15226
+      },
+      {
+        "path": "src/chain/CacheManager.sol/CacheManager.json",
+        "sha256": "c3b4eb747ba56929cc47cd859c193a89316f881439fcbaca828491a9b7769f51",
+        "bytecodeBytes": 7690
+      },
+      {
+        "path": "src/challenge/ChallengeLib.sol/ChallengeLib.json",
+        "sha256": "845c53e0f0e0f6e4ea36d40ca0c577a350f6555a817cca8e29f14c1f827a0fd7",
+        "bytecodeBytes": 141
+      },
+      {
+        "path": "src/challenge/ChallengeManager.sol/ChallengeManager.json",
+        "sha256": "06c12b6b55b276343d6830689dbc30729d52f0a5fb779a903b24883850eb97ae",
+        "bytecodeBytes": 11490
+      },
+      {
+        "path": "src/challenge/IChallengeManager.sol/IChallengeManager.json",
+        "sha256": "ad3d455652f17a8b11cea751a900f0a1354dd256f9fcc7371ad28b3a6fb4bd2b",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/challenge/IChallengeResultReceiver.sol/IChallengeResultReceiver.json",
+        "sha256": "32932f9d416435cdcd4f1646607645d8cbc007f52949f5f5ff6ede834d0bb258",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/express-lane-auction/Balance.sol/BalanceLib.json",
+        "sha256": "e0b2db487d41e36b336f023e2311cf86f7ddbf5b66bb85dc3c7b9e3c34e9317f",
+        "bytecodeBytes": 141
+      },
+      {
+        "path": "src/express-lane-auction/Burner.sol/Burner.json",
+        "sha256": "db37e9c50b7239d8bd5af0a28f33a6584cde5f8b298c479aa1a0f10afe051b53",
+        "bytecodeBytes": 639
+      },
+      {
+        "path": "src/express-lane-auction/ELCRound.sol/LatestELCRoundsLib.json",
+        "sha256": "37e0ae12b94a9168eaac7c9e91e8e3570a7bb832a978e919dd2e6c7d8ecf3048",
+        "bytecodeBytes": 141
+      },
+      {
+        "path": "src/express-lane-auction/ExpressLaneAuction.sol/ExpressLaneAuction.json",
+        "sha256": "192d9a97b21caffa7da485653c5bbaba7b9a5477196670f9e5e2a353bcc131dd",
+        "bytecodeBytes": 16428
+      },
+      {
+        "path": "src/express-lane-auction/IExpressLaneAuction.sol/IExpressLaneAuction.json",
+        "sha256": "04e3e2bd13cad76103ffe930e1e2aa5ef8322b1e57274d6c8d8360d2a58434b5",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/express-lane-auction/RoundTimingInfo.sol/RoundTimingInfoLib.json",
+        "sha256": "bcba2874d3cbff5da1ecfec0fd9499b282322a5e32d8882f3fed5a8d92f99972",
+        "bytecodeBytes": 141
+      },
+      {
+        "path": "src/libraries/AddressAliasHelper.sol/AddressAliasHelper.json",
+        "sha256": "551d9246d31671946212cc9af93c072b8343fed82558a774f35833e807db7c19",
+        "bytecodeBytes": 141
+      },
+      {
+        "path": "src/libraries/AdminFallbackProxy.sol/AdminFallbackProxy.json",
+        "sha256": "454c3e1fe9ce2ef498146aad09cd76f6a30ca0ea4c58493f7c7bbaf5db763104",
+        "bytecodeBytes": 495
+      },
+      {
+        "path": "src/libraries/AdminFallbackProxy.sol/DoubleLogicERC1967Upgrade.json",
+        "sha256": "12a39f0ad5ffc78f57b71dabb95b5c4e9c2935a0d4576a0503049d6e8415c9b9",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/libraries/ArbitrumChecker.sol/ArbitrumChecker.json",
+        "sha256": "aa8dab64f282ed58501750e3e0c9ca450c0fd59bf242c727da8d879246eb1a12",
+        "bytecodeBytes": 141
+      },
+      {
+        "path": "src/libraries/CallerChecker.sol/CallerChecker.json",
+        "sha256": "b05d37d8ebd9ba6dff2822b4834f305ea44e14d65acb07c61438c21e068cf36c",
+        "bytecodeBytes": 141
+      },
+      {
+        "path": "src/libraries/CryptographyPrimitives.sol/CryptographyPrimitives.json",
+        "sha256": "08e55b201428efe1434291f2bd24363ea769dfe892ba41acb1ead05a02d55597",
+        "bytecodeBytes": 141
+      },
+      {
+        "path": "src/libraries/DecimalsConverterHelper.sol/DecimalsConverterHelper.json",
+        "sha256": "b83a4bdde2d8098debf0e8d72c4d8651d036ab9ac2d0c0419495a62ba3a84fb3",
+        "bytecodeBytes": 141
+      },
+      {
+        "path": "src/libraries/DelegateCallAware.sol/DelegateCallAware.json",
+        "sha256": "5684a476be56b314ebe8f5fd6bb3bd82dbc8b2363f687cd1374ec325df7807ba",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/libraries/DoubleLogicUUPSUpgradeable.sol/DoubleLogicUUPSUpgradeable.json",
+        "sha256": "3cbfb882e7700e98e98ec21455c0de798143c2777c812ce5f5ad86cdf6e45365",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/libraries/GasRefundEnabled.sol/GasRefundEnabled.json",
+        "sha256": "1baa82c8b0881312033b8089b720608bbd6a6d0f48774e6283ff277759fb98e2",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/libraries/IGasRefunder.sol/IGasRefunder.json",
+        "sha256": "78028a5ae019333ecda19ef4dbce0ec26cd19d92c00c8daf40fbfe6e5da53c65",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/libraries/IReader4844.sol/IReader4844.json",
+        "sha256": "070b8f494879213b3bf1fbaa8c392a05d5798456d5ac8d9bffb2a478ea9c2c5d",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/libraries/MerkleLib.sol/MerkleLib.json",
+        "sha256": "6d0367d4f0e6c6cf4ce9e756d85ca1ac43c1331a909ebd94071a075e6a164350",
+        "bytecodeBytes": 141
+      },
+      {
+        "path": "src/libraries/UUPSNotUpgradeable.sol/UUPSNotUpgradeable.json",
+        "sha256": "cb929f6861c337ae9ab4b7d95af3fbdfb50aef2854df04d50c2fef90f8429a0e",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/mocks/ArbOS11To32UpgradeTest.sol/ArbOS11To32UpgradeTest.json",
+        "sha256": "d57bbd461450f0915020b115e6662b30df93c2ebc185864ac0ba87fd75d97da0",
+        "bytecodeBytes": 363
+      },
+      {
+        "path": "src/mocks/Benchmarks.sol/Benchmarks.json",
+        "sha256": "a70e938b035428616e775b366b9d1d8ab6aa2167ad3c9092b45f7cd50bf78485",
+        "bytecodeBytes": 684
+      },
+      {
+        "path": "src/mocks/BigMap.sol/BigMap.json",
+        "sha256": "a0a6cd0581aeca507e0d9b1382718b085f1477c52d7aee7f37533f63cc23ed79",
+        "bytecodeBytes": 466
+      },
+      {
+        "path": "src/mocks/BridgeStub.sol/BridgeStub.json",
+        "sha256": "c83be032eb9b8c57637a14eebff45f053f2c726e883f69092b201a8754093b78",
+        "bytecodeBytes": 3354
+      },
+      {
+        "path": "src/mocks/BridgeUnproxied.sol/BridgeUnproxied.json",
+        "sha256": "71c5e8a312eb82182ae7c778972dc1388051384c1b2372022a9047c322630256",
+        "bytecodeBytes": 6293
+      },
+      {
+        "path": "src/mocks/CreateTest.sol/CreateTest.json",
+        "sha256": "ba84f190529757cdce01986109bcfd3e5f3bd3176a2a3f5aacc10f377c9b3b47",
+        "bytecodeBytes": 635
+      },
+      {
+        "path": "src/mocks/HostioTest.sol/HostioTest.json",
+        "sha256": "4e89f4b0f5c6b7994eefc2d71cc57317a059cd6cc6bbc973f24e3f2a8aef8203",
+        "bytecodeBytes": 2149
+      },
+      {
+        "path": "src/mocks/InboxStub.sol/InboxStub.json",
+        "sha256": "ce2db9f264c5ef85a575c60dc7650aa94ee1c7e005aa7765d2471cfcd758f21e",
+        "bytecodeBytes": 3275
+      },
+      {
+        "path": "src/mocks/MockResultReceiver.sol/MockResultReceiver.json",
+        "sha256": "acb2b183ff741128c1049869e6520c9c738a3fd7322501f6efd6f30436d11cdc",
+        "bytecodeBytes": 1295
+      },
+      {
+        "path": "src/mocks/MultiCallTest.sol/MultiCallTest.json",
+        "sha256": "a418af6c5fc9e3bfce390cf05bf77bb02168201658c5e4af1a8e501d86b05fc7",
+        "bytecodeBytes": 1868
+      },
+      {
+        "path": "src/mocks/PendingBlkTimeAndNrAdvanceCheck.sol/PendingBlkTimeAndNrAdvanceCheck.json",
+        "sha256": "251fc3dc5718f8c307e07737a87b2c45890535461badda28d225ecfa3a6e8527",
+        "bytecodeBytes": 1148
+      },
+      {
+        "path": "src/mocks/Program.sol/ProgramTest.json",
+        "sha256": "223800e6f018a217a4c6164c7c5f39f18981ef57bb0cf5896beaa0b9be0be9ee",
+        "bytecodeBytes": 4102
+      },
+      {
+        "path": "src/mocks/ProxyAdminForBinding.sol/ProxyAdminForBinding.json",
+        "sha256": "4e18bb2b681f56f1e397e089688b263cd59f24dd21b7a988767464cc8628048e",
+        "bytecodeBytes": 1982
+      },
+      {
+        "path": "src/mocks/SdkStorage.sol/SdkStorage.json",
+        "sha256": "d3c3c3bddbe388b30097a10e165321c50067002560cef133548fdc3f0f525ce5",
+        "bytecodeBytes": 5292
+      },
+      {
+        "path": "src/mocks/SelfDestruct.sol/SelfDestructInConstructorWithDestination.json",
+        "sha256": "28bb56cfe1983253cedb5e5af549bccf98d64e2fa3be7e4a29562329fc2f8b10",
+        "bytecodeBytes": 89
+      },
+      {
+        "path": "src/mocks/SelfDestruct.sol/SelfDestructInConstructorWithoutDestination.json",
+        "sha256": "c71f6d5edd17e38bf2652f8625f3fb0983e272aca374d8f49e423b4ca862b115",
+        "bytecodeBytes": 8
+      },
+      {
+        "path": "src/mocks/SelfDestruct.sol/SelfDestructOutsideConstructor.json",
+        "sha256": "340bdfffb9ff63395423cf0430bd69db0851e0b1854e6fa36a7b7ac0b03c7d48",
+        "bytecodeBytes": 207
+      },
+      {
+        "path": "src/mocks/SequencerInboxStub.sol/SequencerInboxStub.json",
+        "sha256": "68a83abf310fbcc86f28b60fa533a4522b219f684c05f564234fbad36f741c78",
+        "bytecodeBytes": 15947
+      },
+      {
+        "path": "src/mocks/Simple.sol/Simple.json",
+        "sha256": "ed430b267d2486790e3ed3deff4c0bee27106b048ce37e110e860fa43adb21d9",
+        "bytecodeBytes": 5220
+      },
+      {
+        "path": "src/mocks/SimpleCacheManager.sol/SimpleCacheManager.json",
+        "sha256": "3b4a0ebada32d5fc78d911c714a69826ebc249badab1746f2894689ab99b8245",
+        "bytecodeBytes": 364
+      },
+      {
+        "path": "src/mocks/SimpleProxy.sol/SimpleProxy.json",
+        "sha256": "6431388911aa594d5502186587a4aef237f67da9fa00e0207332b5b66ce74de9",
+        "bytecodeBytes": 285
+      },
+      {
+        "path": "src/mocks/SingleExecutionChallenge.sol/SingleExecutionChallenge.json",
+        "sha256": "a2c5cb687429e754354844eb4749555d75029abe2344bbdb4e760676a3791a0c",
+        "bytecodeBytes": 12674
+      },
+      {
+        "path": "src/mocks/TimedOutChallengeManager.sol/TimedOutChallengeManager.json",
+        "sha256": "f26c7c242f069aee1c6085f77dd5718419ad2b129e0593822e7d66d8d65194b9",
+        "bytecodeBytes": 6466
+      },
+      {
+        "path": "src/mocks/UpgradeExecutorMock.sol/UpgradeExecutorMock.json",
+        "sha256": "60e62e11dbfd365176d49a269ae058cad1550214e1c9d99c0cabd82ca09af1c3",
+        "bytecodeBytes": 4817
+      },
+      {
+        "path": "src/node-interface/NodeInterface.sol/NodeInterface.json",
+        "sha256": "4f0d205a3fce07707746ad5a7dcf3cf49aeb26c573c78b0faca4bd0dc5eb308d",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/node-interface/NodeInterfaceDebug.sol/NodeInterfaceDebug.json",
+        "sha256": "e981d226826da82900fab64951c7064b4163927f606d6eb1d7af75f30b4c4a27",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/osp/HashProofHelper.sol/HashProofHelper.json",
+        "sha256": "d9173a2c7783a3d4e4a608dd2f562bc022ae415765859f74bce76da4113b2a7e",
+        "bytecodeBytes": 7434
+      },
+      {
+        "path": "src/osp/IOneStepProofEntry.sol/IOneStepProofEntry.json",
+        "sha256": "10b9f252f322420fb9a3460b53cc602916c6e98f88e4a63816910e3213edc799",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/osp/IOneStepProofEntry.sol/OneStepProofEntryLib.json",
+        "sha256": "574cc173b7c082e072c655b85c1f4032d745c5aa50643663bfbfe58d3bf89f1b",
+        "bytecodeBytes": 141
+      },
+      {
+        "path": "src/osp/IOneStepProver.sol/IOneStepProver.json",
+        "sha256": "3b66ac0c9da55d2c582df3239a720ed08f5ff49da2b427600778f343a801b88b",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/osp/OneStepProofEntry.sol/OneStepProofEntry.json",
+        "sha256": "f5e34de242ea01977abedcf73bd076240d805738a271fcdaa02a6fec27c08acd",
+        "bytecodeBytes": 12079
+      },
+      {
+        "path": "src/osp/OneStepProver0.sol/OneStepProver0.json",
+        "sha256": "82b9c7882ef8e5aeae06cf78515509b2a9e76c5f413bfa3fefe4db425d35224c",
+        "bytecodeBytes": 11313
+      },
+      {
+        "path": "src/osp/OneStepProverHostIo.sol/OneStepProverHostIo.json",
+        "sha256": "eb326c28fd1141a411dbb1e051b38902bc3c2ceee476578af385601ccbc631fd",
+        "bytecodeBytes": 15289
+      },
+      {
+        "path": "src/osp/OneStepProverMath.sol/OneStepProverMath.json",
+        "sha256": "f8757a712cb73c604aeedbbf796760ed27f283db29f0ef2fa66c2128ed4c5888",
+        "bytecodeBytes": 9353
+      },
+      {
+        "path": "src/osp/OneStepProverMemory.sol/OneStepProverMemory.json",
+        "sha256": "847231220c449fdcee72b49e4ffbc23feb89801d56ac9d189d2ed972f79caf76",
+        "bytecodeBytes": 8100
+      },
+      {
+        "path": "src/precompiles/ArbAddressTable.sol/ArbAddressTable.json",
+        "sha256": "4f220ada337dd53208acad98ef1ba8fb9f38a2e10ca4b70d553d03e94f681560",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/precompiles/ArbAggregator.sol/ArbAggregator.json",
+        "sha256": "6d3d700aa6006df4140cc556b1065bec27b76e7a57d1d36809d53f700afbf85a",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/precompiles/ArbBLS.sol/ArbBLS.json",
+        "sha256": "7e3b9f3a94b867c9b6ca2bf488329e3e9fd9fab040ceaa8c3f3b7da9bced6793",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/precompiles/ArbDebug.sol/ArbDebug.json",
+        "sha256": "f37bb8d004c2f08b25625bbd74f13ba36b6daa28000c2a93caec8bc98ac69c7a",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/precompiles/ArbFunctionTable.sol/ArbFunctionTable.json",
+        "sha256": "354f154de08cef30c015e60ae5e6c435ae2bed87f47a21094e9ed7021beb64c8",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/precompiles/ArbGasInfo.sol/ArbGasInfo.json",
+        "sha256": "404885aeb73eb15cbb6675ed91397bc45834185e7db710aa477365f3adc2d3ae",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/precompiles/ArbInfo.sol/ArbInfo.json",
+        "sha256": "7d308e471638dd5ba111454f9da22f99f0f3374cfb0d2cc238aacbcd558dcd99",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/precompiles/ArbOwner.sol/ArbOwner.json",
+        "sha256": "7688d8ba1115e59cdabc53dbc1a297cc46bed8e7d8a4b51f4ad1fc93fed08632",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/precompiles/ArbOwnerPublic.sol/ArbOwnerPublic.json",
+        "sha256": "e2e6eb1f89fee2247437e978221c579336cc53c21ffaa55bbd0ae99762e4d5ce",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/precompiles/ArbRetryableTx.sol/ArbRetryableTx.json",
+        "sha256": "0f7b3e96859587ef3391961ad17d4ac82fc286b84a2216488291569f888e73e6",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/precompiles/ArbStatistics.sol/ArbStatistics.json",
+        "sha256": "cff88ccc422e0522e6ffb74995adf4acaa4b20331013b5550ee441853fe6fd05",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/precompiles/ArbSys.sol/ArbSys.json",
+        "sha256": "0aa3ce8f25ff4585f4fdbc7f3d7dab311c4cca24d100acb8a3308116b1d256d9",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/precompiles/ArbWasm.sol/ArbWasm.json",
+        "sha256": "142fbb56978bd17fe2f23fac91ef5400107429a72ca877305a4e0f8ca8e44d18",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/precompiles/ArbWasmCache.sol/ArbWasmCache.json",
+        "sha256": "6205d57801abdfa1333782f4f4494c6ae7ddc0c90a762230b9f4db107e41cc70",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/precompiles/ArbosActs.sol/ArbosActs.json",
+        "sha256": "b626c41c275bbc83a3baa4b2c9efc5887555ba6ecda7bf1b072ea3c3db8c0c0e",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/precompiles/ArbosTest.sol/ArbosTest.json",
+        "sha256": "42cd96aa3167ea7292048031a772ed7165b603ccdcbc3eff9b87b3d91732763d",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/rollup/AbsRollupEventInbox.sol/AbsRollupEventInbox.json",
+        "sha256": "554c258783fd53bab7f101d41aacfad303154e594f6bca10e35be19b36396eeb",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/rollup/BridgeCreator.sol/BridgeCreator.json",
+        "sha256": "8f081bf4fbb27f1f525856c8635bee977d275cd61320bca75ebbed4df660f090",
+        "bytecodeBytes": 7453
+      },
+      {
+        "path": "src/rollup/DeployHelper.sol/DeployHelper.json",
+        "sha256": "06d55048cbde85c56a0c33aadad1c8eb7bb5b99cfc5333bdcfa07c85cee2e6d9",
+        "bytecodeBytes": 6371
+      },
+      {
+        "path": "src/rollup/ERC20RollupEventInbox.sol/ERC20RollupEventInbox.json",
+        "sha256": "f352ac7f29b85d043126201699359a951a14fa4cd0405a94ac3ae043a815f2de",
+        "bytecodeBytes": 2047
+      },
+      {
+        "path": "src/rollup/FactoryDeployerHelper.sol/FactoryDeployerHelper.json",
+        "sha256": "19978e19fc625ff9666f7df8073286433cb49081e401b6919185c86d915f90e9",
+        "bytecodeBytes": 1164
+      },
+      {
+        "path": "src/rollup/FactoryDeployerHelper.sol/IDeployHelper.json",
+        "sha256": "c48fc4caa231756ddb24fb8451e4a30b13d8205652f36044721c56c32d36da0b",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/rollup/FactoryDeployerHelper.sol/IERC20.json",
+        "sha256": "6c64897d5f2706e444f271c6a90108653106bea26e55274ec616d96ad8a0ce5e",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/rollup/FactoryDeployerHelper.sol/IERC20Bridge.json",
+        "sha256": "d945e8dda2d41e4a95e298d111eda5a5bd58537676568074746570fb9e30a971",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/rollup/FactoryDeployerHelper.sol/IInboxBase.json",
+        "sha256": "06a43e2483a914ae3462206a990f2be35d62d3f7ff81f485896cdeca05d1cc16",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/rollup/IRollupAdmin.sol/IRollupAdmin.json",
+        "sha256": "dacb4700f65fb10e5e2ed434e573f5f4d4e80d94e3ad1ff884cc3df2852474c5",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/rollup/IRollupCore.sol/IRollupCore.json",
+        "sha256": "e23e8a4d501055637080d7a9e08bb4132208e3767946f0593dcaa40121ead978",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/rollup/IRollupEventInbox.sol/IRollupEventInbox.json",
+        "sha256": "8bb288e5cef4ef3a2e1d06eaf2207f34e3155cab9c1ec17b08a19828eafa6d5b",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/rollup/IRollupLogic.sol/IRollupUser.json",
+        "sha256": "1125122bbf87c323b735172fd06ffbc24d978fa068c3d195cc13664058597d61",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/rollup/IRollupLogic.sol/IRollupUserAbs.json",
+        "sha256": "c61ad1a9d6ef3636604320069c5dd8a34093bb85d257474d2d627dc8999a00ba",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/rollup/IRollupLogic.sol/IRollupUserERC20.json",
+        "sha256": "1f21ade4e2c481a3a880ec9254f6354b68a573f6c31df0bf4451a301b8c8c6ca",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/rollup/Node.sol/NodeLib.json",
+        "sha256": "5ad52ee1a195d1b1aed6524f51c37342711978057e0c46f675f6deaea572d53a",
+        "bytecodeBytes": 141
+      },
+      {
+        "path": "src/rollup/RollupAdminLogic.sol/RollupAdminLogic.json",
+        "sha256": "4842c57aae1e992b968ac2f5f60fb174fceb8ab80c3311b4273b3c21dfde3a57",
+        "bytecodeBytes": 23767
+      },
+      {
+        "path": "src/rollup/RollupCore.sol/RollupCore.json",
+        "sha256": "01cfa16fe4e7b1f208c5a25c7823dbd7d21f3a355571b2d4f73310fedfb9f9f9",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/rollup/RollupCreator.sol/RollupCreator.json",
+        "sha256": "6655ae3970e4b25f712288d231a1046d897e4ee4bbc4a1f0bbc017b980a7f8d3",
+        "bytecodeBytes": 20169
+      },
+      {
+        "path": "src/rollup/RollupEventInbox.sol/RollupEventInbox.json",
+        "sha256": "dc5441a1fe3ff1ce98b4a86393c949f6830818567b5bf058d67b335dbcf1636d",
+        "bytecodeBytes": 2437
+      },
+      {
+        "path": "src/rollup/RollupLib.sol/RollupLib.json",
+        "sha256": "1216d2d3e8a672b1e2a2b4b2c72402de40df341a2a3b644d48bbf88b8881f01a",
+        "bytecodeBytes": 141
+      },
+      {
+        "path": "src/rollup/RollupProxy.sol/RollupProxy.json",
+        "sha256": "cb7d83b2ab5ca169d35e0bd6a0fe7f33258136f1b0055ee3549ac7d46c9f6a4c",
+        "bytecodeBytes": 3725
+      },
+      {
+        "path": "src/rollup/RollupUserLogic.sol/AbsRollupUserLogic.json",
+        "sha256": "c6f7483ce969be7230b552a38bc54584f9beb120c6eb9c22b34e59e6e2bfbffa",
+        "bytecodeBytes": 0
+      },
+      {
+        "path": "src/rollup/RollupUserLogic.sol/ERC20RollupUserLogic.json",
+        "sha256": "70cf3981d9b3e0fffcaf6b6a9baf51f8acf3af2f96a43ed468e5c88b7a8ffefe",
+        "bytecodeBytes": 24509
+      },
+      {
+        "path": "src/rollup/RollupUserLogic.sol/RollupUserLogic.json",
+        "sha256": "883e29c0601d630f6b28821994a6bf0e2a333f00483a9a47f94a7c1d863e6413",
+        "bytecodeBytes": 24911
+      },
+      {
+        "path": "src/rollup/ValidatorUtils.sol/ValidatorUtils.json",
+        "sha256": "5f6b35f0191480f5e73108128b14a76c2c81091fad1fcff3c2506cf275552a76",
+        "bytecodeBytes": 9695
+      },
+      {
+        "path": "src/rollup/ValidatorWallet.sol/ValidatorWallet.json",
+        "sha256": "145bf1c02adb5a35f9d33b0529aa70d031ccd82c2498d1c29afffee6cedf4783",
+        "bytecodeBytes": 8268
+      },
+      {
+        "path": "src/rollup/ValidatorWalletCreator.sol/ValidatorWalletCreator.json",
+        "sha256": "1e776ecf9d9e65d3ce899c19af0143041aa4b8478d3eaf6938b264174c196a6e",
+        "bytecodeBytes": 15988
+      },
+      {
+        "path": "src/state/Deserialize.sol/Deserialize.json",
+        "sha256": "d3b070878ef1f5fe1fe7950e38d451c417293ffe2c1d926a2705c2b5062bae90",
+        "bytecodeBytes": 141
+      },
+      {
+        "path": "src/state/GlobalState.sol/GlobalStateLib.json",
+        "sha256": "a1cc107abff02c9e42ddfb94f9ffe673a1776ba7cfc79b4f903bd54797c02942",
+        "bytecodeBytes": 141
+      },
+      {
+        "path": "src/state/Instructions.sol/Instructions.json",
+        "sha256": "c746ed4fe2c7bf47ac5c959ac1685dd326beb568b169f3d0e661d4e314df3ac5",
+        "bytecodeBytes": 141
+      },
+      {
+        "path": "src/state/Machine.sol/MachineLib.json",
+        "sha256": "84131dd71321ff49cc6ec13e009ebecf8ac863c62eaf5a5cb318e1f4c5a74529",
+        "bytecodeBytes": 141
+      },
+      {
+        "path": "src/state/MerkleProof.sol/MerkleProofLib.json",
+        "sha256": "79efe696e700240d05da4948ac7e9a060de212b397308a54559de89b4bcea595",
+        "bytecodeBytes": 141
+      },
+      {
+        "path": "src/state/Module.sol/ModuleLib.json",
+        "sha256": "6497476ad788d50496905ab7b99dd82e46234b7b1aeedbb46dcd4e34b27d7591",
+        "bytecodeBytes": 141
+      },
+      {
+        "path": "src/state/ModuleMemory.sol/ModuleMemoryLib.json",
+        "sha256": "31c50658633ea50dc2f4d510b30f7f5241b2533aa445ea6c642ac4d99d6a6d19",
+        "bytecodeBytes": 141
+      },
+      {
+        "path": "src/state/ModuleMemoryCompact.sol/ModuleMemoryCompactLib.json",
+        "sha256": "84358ef562616ef3b3ece7fa098c61bf731f111efece616997237642708d3945",
+        "bytecodeBytes": 141
+      },
+      {
+        "path": "src/state/MultiStack.sol/MultiStackLib.json",
+        "sha256": "7a389b382082f6f813ce192461aaec836db7a1f665937f598ba49609b3da52c4",
+        "bytecodeBytes": 141
+      },
+      {
+        "path": "src/state/PcArray.sol/PcArrayLib.json",
+        "sha256": "c1887152ce710829704034cb3a22cee14715ca86400e9599807d946338d43c2c",
+        "bytecodeBytes": 141
+      },
+      {
+        "path": "src/state/StackFrame.sol/StackFrameLib.json",
+        "sha256": "5e423dd87f01f129e900df0ad55443712e2492919910d5899ca651cb68921b75",
+        "bytecodeBytes": 141
+      },
+      {
+        "path": "src/state/Value.sol/ValueLib.json",
+        "sha256": "e358d83dfc851429c10e89951b496cafff0028710390bc184f966e56e8dbca64",
+        "bytecodeBytes": 141
+      },
+      {
+        "path": "src/state/ValueArray.sol/ValueArrayLib.json",
+        "sha256": "3bfcdad323bb1970db0c383017e4400e26ebdf40ab5e5b6b7187fad4e3113147",
+        "bytecodeBytes": 141
+      },
+      {
+        "path": "src/state/ValueStack.sol/ValueStackLib.json",
+        "sha256": "910d4294ce27345b7802782c27cfb5afb6c21581e4961482c6634be84d38f0c9",
+        "bytecodeBytes": 141
+      },
+      {
+        "path": "src/test-helpers/BridgeTester.sol/BridgeTester.json",
+        "sha256": "434f9dcabdffe6b62aad43c6d152debd137b1956084bccde9f7b05bbe49a1044",
+        "bytecodeBytes": 5156
+      },
+      {
+        "path": "src/test-helpers/CryptographyPrimitivesTester.sol/CryptographyPrimitivesTester.json",
+        "sha256": "60e61e7fc9baac9312a2644508f62e38afe041a381808602e75d94b43b2d2597",
+        "bytecodeBytes": 5922
+      },
+      {
+        "path": "src/test-helpers/EthVault.sol/EthVault.json",
+        "sha256": "e6e6f1718ccb426ef071e15dd92c4084e022f0c86be112d884c888921ab4751d",
+        "bytecodeBytes": 278
+      },
+      {
+        "path": "src/test-helpers/MessageTester.sol/MessageTester.json",
+        "sha256": "630f4c9d46c141980079b2d8e61928a134ce68a318f9e8295b83d420e4927a90",
+        "bytecodeBytes": 567
+      },
+      {
+        "path": "src/test-helpers/OutboxWithoutOptTester.sol/OutboxWithoutOptTester.json",
+        "sha256": "b81577e893bb0e297b31553f4054fdf83e732a478830fb3b3b86bd111616bffc",
+        "bytecodeBytes": 4923
+      },
+      {
+        "path": "src/test-helpers/RollupMock.sol/RollupMock.json",
+        "sha256": "bdda1c0af4d879cd984ed66f5f3e4b6dd34becdbec26296f5429c445b118c03c",
+        "bytecodeBytes": 480
+      },
+      {
+        "path": "src/test-helpers/TestToken.sol/TestToken.json",
+        "sha256": "9d906d6370313d47f9fe5e060bbed048562e437bd02f167ac2f5d31f66047db7",
+        "bytecodeBytes": 2952
+      },
+      {
+        "path": "src/test-helpers/ValueArrayTester.sol/ValueArrayTester.json",
+        "sha256": "af65fea5c5189ee92edfcaa4c5cbfe74e20dc2da14ce7784c354b850311e6dda",
+        "bytecodeBytes": 1873
+      }
+    ]
+  },
+  "mainPrecompileSubmodule": {
+    "commit": "f49a4889b486fd804a7901203f5f663cfd1581c8",
+    "tarballSha256": "3359013880a2ed997c229e33842514f77dbf860a1f557d960ffb9ad00305ab57",
+    "bytes": 14934
+  },
+  "npmDependencyArchives": [
+    {
+      "package": "solc",
+      "version": "0.8.17",
+      "gitHead": null,
+      "integrity": "sha512-Dtidk2XtTTmkB3IKdyeg6wLYopJnBVxdoykN8oP8VY3PQjN16BScYoUJTXFm2OP7P0hXNAqWiJNmmfuELtLf8g==",
+      "tarballSha256": "d384ac1d28f47fbf45e9c56d1bd43d60d4c534776589ef8618a39679bfe30ddd",
+      "archiveBytes": 6041286
+    },
+    {
+      "package": "@offchainlabs/upgrade-executor",
+      "version": "1.1.0-beta.0",
+      "gitHead": null,
+      "integrity": "sha512-mpn6PHjH/KDDjNX0pXHEKdyv8m6DVGQiI2nGzQn0JbM1nOSHJpWx6fvfjtH7YxHJ6zBZTcsKkqGkFKDtCfoSLw==",
+      "tarballSha256": "8ba55b2b35caa58b193b0e2f862a831786b9cf18ae857c5880decb6d10c1baf4",
+      "archiveBytes": 6368
+    },
+    {
+      "package": "@openzeppelin/contracts",
+      "version": "4.7.3",
+      "gitHead": "ecd2ca2cd7cac116f7a37d0e474bbb3d7d5e1c4d",
+      "integrity": "sha512-dGRS0agJzu8ybo44pCIf3xBaPQN/65AIXNgK8+4gzKd5kbvlqyxryUYVLJv7fK98Seyd2hDZzVEHSWAh0Bt1Yw==",
+      "tarballSha256": "786f6efa321478c2918b6bfa0b8d039f940e8ecf85135b856b4372f34bd46669",
+      "archiveBytes": 207954
+    },
+    {
+      "package": "@openzeppelin/contracts-upgradeable",
+      "version": "4.7.3",
+      "gitHead": "0a2cb9a445c365870ed7a8ab461b12acf3e27d63",
+      "integrity": "sha512-+wuegAMaLcZnLCJIvrVUDzA9z/Wp93f0Dla/4jJvIhijRrPabjQbZe6fWiECLaJyfn5ci9fqf9vTw3xpQOad2A==",
+      "tarballSha256": "a5e406ca7d4dea4bfb6efc3ddb0ad07f58f7705e0ca26aa9eef5ee2bfc43ea89",
+      "archiveBytes": 203733
+    },
+    {
+      "package": "solady",
+      "version": "0.0.182",
+      "gitHead": "a6e41377a77084d6dc3cc54c34eb09e98c9f8204",
+      "integrity": "sha512-FW6xo1akJoYpkXMzu58/56FcNU3HYYNamEbnFO3iSibXk0nSHo0DV2Gu/zI3FPg3So5CCX6IYli1TT1IWATnvg==",
+      "tarballSha256": "db9ca5ae110f2f066d9909f953d267b2be7d3e6771484f3441ad3be9345d00c0",
+      "archiveBytes": 142730
+    },
+    {
+      "package": "@safe-global/safe-smart-account",
+      "version": "1.5.0",
+      "gitHead": "dc437e8fba8b4805d76bcbd1c668c9fd3d1e83be",
+      "integrity": "sha512-VIMWxoeY/kNuZVsQVvAeOFKcQS3eojCXg0ecGnesBSLn5ypYshmBhVEEU5XiurJJGTs/MrcoLTbTxhs9W9GvdQ==",
+      "tarballSha256": "6ffc8ccbd8c5de2a9909bd072a4bb677b4d84b25f126757bdec9f26ef732fc29",
+      "archiveBytes": 1587324
+    },
+    {
+      "package": "solc",
+      "version": "0.8.9",
+      "integrity": "sha512-dD8tQgGCrdWQPpbDTbQF048S3JAcpytOax2r5qPgQluKJPCRFT6c/fec0ZkbrRwRSeYT/qiKz0OKBDOinnGeWw==",
+      "tarballSha256": "61f8cbaf4d3afc84710e841847178bce0d8738a343bacdbeec77fc64bb184f97",
+      "archiveBytes": 7419853
+    },
+    {
+      "package": "solc",
+      "version": "0.8.24",
+      "integrity": "sha512-G5yUqjTUPc8Np74sCFwfsevhBPlUifUOfhYrgyu6CmYlC6feSw0YS6eZW47XDT23k3JYdKx5nJ+Q7whCEmNcoA==",
+      "tarballSha256": "6d7a5bc2b07bbe78edb35b1811dec51f5f3ab36b64cb25ef3092945fbe2a69cd",
+      "archiveBytes": 6216155
+    },
+    {
+      "package": "@openzeppelin/contracts",
+      "version": "4.5.0",
+      "integrity": "sha512-fdkzKPYMjrRiPK6K4y64e6GzULR7R7RwxSigHS8DDp7aWDeoReqsQI+cxHV1UuhAqX69L1lAaWDxenfP+xiqzA==",
+      "tarballSha256": "60225cf36265610bf8e2e9473b2279e0c1345033eedd11262e14cfc802052263",
+      "archiveBytes": 178309
+    },
+    {
+      "package": "@openzeppelin/contracts-upgradeable",
+      "version": "4.5.2",
+      "integrity": "sha512-xgWZYaPlrEOQo3cBj97Ufiuv79SPd8Brh4GcFYhPgb6WvAq4ppz8dWKL6h+jLAK01rUqMRp/TS9AdXgAeNvCLA==",
+      "tarballSha256": "53065d40bf0bc687e1f919261d6f15cc650577771a21a0a9f67dcb6fa72c6ea0",
+      "archiveBytes": 165741
+    }
+  ],
+  "safe": {
+    "sourceCommit": "dc437e8fba8b4805d76bcbd1c668c9fd3d1e83be",
+    "packageGitHeadMatches": true,
+    "packageIntegrityVerified": true,
+    "sourceArchiveSha256": "d3632074e0a9509aac614daef9f3faf6742c0fcf18314bb5fa6651fba1de945d",
+    "compiler": "0.7.6+commit.7338295f",
+    "compilerInputSourceCount": 88,
+    "compilerInputPrimarySourceCount": 66,
+    "primarySourceDifferences": [],
+    "artifactCompilerOutputMismatches": [],
+    "buildInfoSha256": "4e6e395d80d1d228cda6ca495e3145271b0b13ee33d4e9b37fbfc3016bcfaee1",
+    "compilerSettings": {
+      "optimizer": {
+        "enabled": false,
+        "runs": 200
+      },
+      "outputSelection": {
+        "*": {
+          "*": [
+            "abi",
+            "evm.bytecode",
+            "evm.deployedBytecode",
+            "evm.methodIdentifiers",
+            "metadata",
+            "devdoc",
+            "userdoc",
+            "storageLayout",
+            "evm.gasEstimates"
+          ],
+          "": [
+            "ast"
+          ]
+        }
+      },
+      "metadata": {
+        "useLiteralContent": true
+      }
+    },
+    "artifacts": [
+      {
+        "source": "contracts/handler/TokenCallbackHandler.sol",
+        "name": "TokenCallbackHandler",
+        "bytecodeBytes": 2499,
+        "artifactSha256": "f435ae3b78c206b672806d2582b6f53923e996c10d1af70cfeb73b8ccb1a668e",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/handler/HandlerContext.sol",
+        "name": "HandlerContext",
+        "bytecodeBytes": 0,
+        "artifactSha256": "50d571611502590569923914367cbd6b7f615c1e119f13e548d1e2887cd19ef8",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/handler/CompatibilityFallbackHandler.sol",
+        "name": "CompatibilityFallbackHandler",
+        "bytecodeBytes": 6326,
+        "artifactSha256": "1143587ed224e5728c1bff3065adbe73be99b5df3b7af2c1bf281eee6eff99f6",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/handler/ExtensibleFallbackHandler.sol",
+        "name": "ExtensibleFallbackHandler",
+        "bytecodeBytes": 11691,
+        "artifactSha256": "447015a1ff590a080fd3db64afd75b78c1db149884c4fdc6bbf631bf638bd3e1",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/handler/extensible/MarshalLib.sol",
+        "name": "MarshalLib",
+        "bytecodeBytes": 121,
+        "artifactSha256": "19c16e0c9571c403b8fa8d466b632024f32a955ac84459197eb91584bc78c1c7",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/handler/extensible/ERC165Handler.sol",
+        "name": "IERC165Handler",
+        "bytecodeBytes": 0,
+        "artifactSha256": "4794cc65bc9354d4c16e060119ea98d7b7006c3baa27174f21f25e29d70809fb",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/handler/extensible/ERC165Handler.sol",
+        "name": "ERC165Handler",
+        "bytecodeBytes": 0,
+        "artifactSha256": "ac3f1bee12be4b486d36463db9b0e9d90fa7e477f0b733baf167b0d1d2f99fa1",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/handler/extensible/SignatureVerifierMuxer.sol",
+        "name": "SignatureVerifierMuxer",
+        "bytecodeBytes": 0,
+        "artifactSha256": "ccfabc894d3affe2efdcb29d5fce241ae8514f807c8694559517aa11366b8266",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/handler/extensible/SignatureVerifierMuxer.sol",
+        "name": "ISignatureVerifierMuxer",
+        "bytecodeBytes": 0,
+        "artifactSha256": "1e878211e34e16fd1ab18171230442b3c79dd8fd211861af4963aaadc737daf9",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/handler/extensible/SignatureVerifierMuxer.sol",
+        "name": "ISafeSignatureVerifier",
+        "bytecodeBytes": 0,
+        "artifactSha256": "50136b43fcd8f28399e8f052af60fc8adfbaff6db9d8afbe55397ad027bacc8c",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/handler/extensible/SignatureVerifierMuxer.sol",
+        "name": "EIP712",
+        "bytecodeBytes": 121,
+        "artifactSha256": "305b19faa566ab1791e7a6a17fec55468300c1e4a25cdf2289f17ed62e732558",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/handler/extensible/SignatureVerifierMuxer.sol",
+        "name": "ERC1271",
+        "bytecodeBytes": 0,
+        "artifactSha256": "55a9e924ec69de48f184e09ab5f9b6ceb1a4816f6546b59fcde78458bcbe4239",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/handler/extensible/ExtensibleBase.sol",
+        "name": "IStaticFallbackMethod",
+        "bytecodeBytes": 0,
+        "artifactSha256": "a991cd0c2ad85b6e1cd83412c22645b262cbe2faaf08405d6c6d835259130cd2",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/handler/extensible/ExtensibleBase.sol",
+        "name": "IFallbackMethod",
+        "bytecodeBytes": 0,
+        "artifactSha256": "eb915bab86b19bbbf273fdcde4b58348d355fce4c9505cbcbe9435a76bea22d6",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/handler/extensible/ExtensibleBase.sol",
+        "name": "ExtensibleBase",
+        "bytecodeBytes": 0,
+        "artifactSha256": "cdca8829f175a05b34efa5160c0ff5ac1ea378429bf15ce0fb7cabb317a01828",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/handler/extensible/TokenCallbacks.sol",
+        "name": "TokenCallbacks",
+        "bytecodeBytes": 0,
+        "artifactSha256": "8bb5c28a2ab1c01c988a28f5518339fa05a6213c012d1a96eff4dcf3e1596e3e",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/handler/extensible/FallbackHandler.sol",
+        "name": "FallbackHandler",
+        "bytecodeBytes": 0,
+        "artifactSha256": "5b122dd2411dcf17a00a605e8dbe0e81fe65ad7229ab9ab4ccda3e92db4d459a",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/handler/extensible/FallbackHandler.sol",
+        "name": "IFallbackHandler",
+        "bytecodeBytes": 0,
+        "artifactSha256": "f62a54a05f19ff2f47a5f68ac41e740bde46abc2bc2ab4135fca4727ca70068c",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/test/Token.sol",
+        "name": "Token",
+        "bytecodeBytes": 0,
+        "artifactSha256": "07fa30db7a8e5e85198bdf7af1c0eb002988e73338f9b5b7b41ba2c6b2d96dc6",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/test/Test4337ModuleAndHandler.sol",
+        "name": "Test4337ModuleAndHandler",
+        "bytecodeBytes": 2521,
+        "artifactSha256": "7f50048f63aa6da0810b4e6e91e3fd1266511fcd216cb745b59dd32591a867fc",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/test/Test4337ModuleAndHandler.sol",
+        "name": "ISafe",
+        "bytecodeBytes": 0,
+        "artifactSha256": "f461a4f63a64b74f3981c4fc51d0e05ec40c2866681199c0e359eb6176dd3a1a",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/test/TestSafeSignatureVerifier.sol",
+        "name": "TestSafeSignatureVerifier",
+        "bytecodeBytes": 873,
+        "artifactSha256": "65a77b48af793c9a4b8ff5ef8859caee0f78731f6068646519194eded2ffc59d",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/test/TestHandler.sol",
+        "name": "TestHandler",
+        "bytecodeBytes": 388,
+        "artifactSha256": "95a1d8217e78f27bc24b3e737c2107c6eb1535841ca65d9e0a085f784395372f",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/test/TestNativeTokenReceiver.sol",
+        "name": "TestNativeTokenReceiver",
+        "bytecodeBytes": 175,
+        "artifactSha256": "f62dddd8731777cec3b59376cb7e1e335924b1062d6a479617c82a9dbba38993",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/test/ERC721Token.sol",
+        "name": "ERC721Token",
+        "bytecodeBytes": 12074,
+        "artifactSha256": "53ff909c7812f3a6e72733fac7a6804f70235a9fdc5ceaa039476cf1bbf1dc94",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/test/ERC20Token.sol",
+        "name": "ERC20Token",
+        "bytecodeBytes": 5373,
+        "artifactSha256": "ddf362fcf20d1b14960538c9fd04d3c5d2707d299b1f063d07978e0b728cd83e",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/test/DelegateCaller.sol",
+        "name": "DelegateCaller",
+        "bytecodeBytes": 696,
+        "artifactSha256": "ae0c03ea3bf0dbb154f933ab7af38d08dcf27d241e1e5cabf8b8a86a33c71e8d",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/test/ERC1155Token.sol",
+        "name": "ERC1155Token",
+        "bytecodeBytes": 11723,
+        "artifactSha256": "d55acb53f3b8767c2b186937d544809fe396dc620c883cf3b44a6a5d12b1c85e",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/test/TestMarshalLib.sol",
+        "name": "TestMarshalLib",
+        "bytecodeBytes": 1005,
+        "artifactSha256": "d20ed64624cdde3abec0dc8f09f3af511e3bc62115c62202a73fe642fe85c211",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/accessors/SimulateTxAccessor.sol",
+        "name": "SimulateTxAccessor",
+        "bytecodeBytes": 951,
+        "artifactSha256": "3bdfede3638a34f11a1365218dddbc920ff48b5da3cd880fa191058937ec3c57",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/libraries/SafeToL2Setup.sol",
+        "name": "SafeToL2Setup",
+        "bytecodeBytes": 920,
+        "artifactSha256": "b232b14f1099d34669c174b510025adf576269b157deb6eb13b2426d58a0259d",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/libraries/MultiSend.sol",
+        "name": "MultiSend",
+        "bytecodeBytes": 740,
+        "artifactSha256": "7e0fab5cdf1ea7d8433cac190da82b6f62e55529ee9c1ffb72f0f7507985d03a",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/libraries/ErrorMessage.sol",
+        "name": "ErrorMessage",
+        "bytecodeBytes": 0,
+        "artifactSha256": "5ed29f3902d24cf832522f29d6e50815e0ccfc9912d051ffac950b376f74b1b1",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/libraries/SignMessageLib.sol",
+        "name": "SignMessageLib",
+        "bytecodeBytes": 998,
+        "artifactSha256": "8c8e2a5131ae08e170fd118631c00ccae343e4dd0cb518d9fa9885f2262c68de",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/libraries/CreateCall.sol",
+        "name": "CreateCall",
+        "bytecodeBytes": 1131,
+        "artifactSha256": "946caf867478fcf3b83e7efeb4f0b7d79a32eaf18f1ea0c8342fd0a5583ca97b",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/libraries/Enum.sol",
+        "name": "Enum",
+        "bytecodeBytes": 121,
+        "artifactSha256": "aea02aaf69da0a72967d6f9ceaf328c1b07ba25de57b5b0d1c20aed176987e23",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/libraries/SafeStorage.sol",
+        "name": "SafeStorage",
+        "bytecodeBytes": 0,
+        "artifactSha256": "f34fa2208a0e3f632af5927bc5c050ed0a2c8e62ea49e1abf0a6d68947798f2d",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/libraries/MultiSendCallOnly.sol",
+        "name": "MultiSendCallOnly",
+        "bytecodeBytes": 453,
+        "artifactSha256": "1ecb16beeda0ab6a50b3c2e9bd924daf023b4ca6b1020f95d40a76a59e0cfad9",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/libraries/SafeMigration.sol",
+        "name": "SafeMigration",
+        "bytecodeBytes": 2895,
+        "artifactSha256": "b98351a6f9ad26b653e1f2795a0483c8a88d4c543bcd83b25fa662da2b383d6d",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/Safe.sol",
+        "name": "Safe",
+        "bytecodeBytes": 21491,
+        "artifactSha256": "6bf7c1e86f9c6af3e70e96538002258aeb89846dffd73cf04906d622872cc2e5",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/common/SecuredTokenTransfer.sol",
+        "name": "SecuredTokenTransfer",
+        "bytecodeBytes": 0,
+        "artifactSha256": "64744da37722ba3cf4eb110b472f229b5ddba60af617c21541431c580ac81375",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/common/SignatureDecoder.sol",
+        "name": "SignatureDecoder",
+        "bytecodeBytes": 0,
+        "artifactSha256": "cc792eb586b72ddecd6a3587dd40c084d9f1d2f1d6d842c9c269bf6642b9409e",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/common/StorageAccessible.sol",
+        "name": "StorageAccessible",
+        "bytecodeBytes": 0,
+        "artifactSha256": "1e4059600adda712316090d665501185b0655959b059883f03b1aea109a97260",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/common/NativeCurrencyPaymentFallback.sol",
+        "name": "NativeCurrencyPaymentFallback",
+        "bytecodeBytes": 0,
+        "artifactSha256": "0e95f9700f117faeaa6e2d00de57ce4bf5a0f879844416d2d1173d2454c98900",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/common/Singleton.sol",
+        "name": "Singleton",
+        "bytecodeBytes": 0,
+        "artifactSha256": "d0b2e2c9c6f19ae9442de93a8f92afe90af84112802ea15066aeb760ec9e7143",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/common/SelfAuthorized.sol",
+        "name": "SelfAuthorized",
+        "bytecodeBytes": 0,
+        "artifactSha256": "3e03e285f55749da7dcf02f7dfdda23b3a84796adbc6648b0e4972582d2d4e7f",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/examples/libraries/Migrate_1_3_0_to_1_2_0.sol",
+        "name": "Migration",
+        "bytecodeBytes": 1236,
+        "artifactSha256": "af5ce88376d37d95557d979a6bf2c8a0bc50f2667f2029b687a987bb8bf17c5a",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/examples/guards/DelegateCallTransactionGuard.sol",
+        "name": "DelegateCallTransactionGuard",
+        "bytecodeBytes": 2449,
+        "artifactSha256": "8d22f5a54d08a9d007b794f04194a1accdfef877c286857094c85691b773b4de",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/examples/guards/DebugTransactionGuard.sol",
+        "name": "DebugTransactionGuard",
+        "bytecodeBytes": 3326,
+        "artifactSha256": "dec9e44af020d0925ca437f9b0afbd9216389df812edb5aa6c86bf69b60f692e",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/examples/guards/OnlyOwnersGuard.sol",
+        "name": "OnlyOwnersGuard",
+        "bytecodeBytes": 1342,
+        "artifactSha256": "825fc38eb842ebd1bcb590783a243fe13aca2173f053e7e40ff7eafe92ae90de",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/examples/guards/ReentrancyTransactionGuard.sol",
+        "name": "ReentrancyTransactionGuard",
+        "bytecodeBytes": 2234,
+        "artifactSha256": "a799a4a29a69e1c5c34f269baa705d60fe05ecec65abcdf935f2a6716e4a7dd8",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/examples/guards/BaseGuard.sol",
+        "name": "BaseGuard",
+        "bytecodeBytes": 0,
+        "artifactSha256": "ddc565d8ec47187edc09df387fd1af201645892e33eb6ef345baf95e2863c442",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/SafeL2.sol",
+        "name": "SafeL2",
+        "bytecodeBytes": 22272,
+        "artifactSha256": "3286096d8c4c205304c184951ff72d4fb8901c56258c614340968989fe41bd52",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/external/SafeMath.sol",
+        "name": "SafeMath",
+        "bytecodeBytes": 121,
+        "artifactSha256": "26c8a0825068adbf25d45b1af9e3de2575132b6df40e6faa73c09e7ab8c7e5bf",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/proxies/SafeProxyFactory.sol",
+        "name": "SafeProxyFactory",
+        "bytecodeBytes": 3353,
+        "artifactSha256": "a5c1601937a826160bf8c8174850e01c365bc15d7e43b23654cff6d327f237e9",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/proxies/SafeProxy.sol",
+        "name": "IProxy",
+        "bytecodeBytes": 0,
+        "artifactSha256": "88f349c6f7b37d388961c0dcc8512135f2ef5c42e99b24709b7e77693a3482d3",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/proxies/SafeProxy.sol",
+        "name": "SafeProxy",
+        "bytecodeBytes": 438,
+        "artifactSha256": "43a43cf56d550a0596ef461dadffc2721bd998f8cd74df0ef1ca5685b8f93851",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/base/OwnerManager.sol",
+        "name": "OwnerManager",
+        "bytecodeBytes": 0,
+        "artifactSha256": "45ba1be49a3c30e10504442eab17ca26b47a4b0e8c39f1bfbbe3395e2cefb987",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/base/ModuleManager.sol",
+        "name": "ModuleManager",
+        "bytecodeBytes": 0,
+        "artifactSha256": "325e7ec19dfe6e3aaa1bb433c0924a301ba2c3cb6f22504a8a51d395d2d2241c",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/base/ModuleManager.sol",
+        "name": "IModuleGuard",
+        "bytecodeBytes": 0,
+        "artifactSha256": "cbd102202cc7c4d16c895639db876ff827194e12e8422813c0832bb25ff181d1",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/base/ModuleManager.sol",
+        "name": "BaseModuleGuard",
+        "bytecodeBytes": 0,
+        "artifactSha256": "f032e9e031849cd776cf6824058da3afc7b1a556d0e90f91e4395d7a1bad3d25",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/base/FallbackManager.sol",
+        "name": "FallbackManager",
+        "bytecodeBytes": 0,
+        "artifactSha256": "96c4c77d1b12955d3c675f278e0770d213a982efd95547b54dda7f7487c86da3",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/base/GuardManager.sol",
+        "name": "GuardManager",
+        "bytecodeBytes": 0,
+        "artifactSha256": "4108a3b6bdfb2ec712c9f3404130fc92c98a9778e0e20a22f0db7f7fe19d1474",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/base/GuardManager.sol",
+        "name": "ITransactionGuard",
+        "bytecodeBytes": 0,
+        "artifactSha256": "90ef7d5e54c427f57bb24efa342cab45988027b029ca77a3b65dddbe8c818e95",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/base/GuardManager.sol",
+        "name": "BaseTransactionGuard",
+        "bytecodeBytes": 0,
+        "artifactSha256": "94db9d10b5714d3fd4fd781674bd7602e831dbbc150b92b6ed9c376fa7e64c6b",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/base/Executor.sol",
+        "name": "Executor",
+        "bytecodeBytes": 0,
+        "artifactSha256": "ceda558b42d05c21c1deaf46eabf48f5197c6c48d8e6d1dab6d972d09ab1a2ea",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/interfaces/IStorageAccessible.sol",
+        "name": "IStorageAccessible",
+        "bytecodeBytes": 0,
+        "artifactSha256": "67dea4abcef608a50e453995f98bfeeb33dd5688a40ecfe10bb4033a3f1ba325",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/interfaces/IModuleManager.sol",
+        "name": "IModuleManager",
+        "bytecodeBytes": 0,
+        "artifactSha256": "652cca0301e5ea8179c5646c22be7e02ba1d9683ca3b6519793d7d7668fe269b",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/interfaces/ERC721TokenReceiver.sol",
+        "name": "ERC721TokenReceiver",
+        "bytecodeBytes": 0,
+        "artifactSha256": "93336a85ee4c700b7b5b17e35e4df6211601cd6ea5577435bef6be26e236afca",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/interfaces/ERC1155TokenReceiver.sol",
+        "name": "ERC1155TokenReceiver",
+        "bytecodeBytes": 0,
+        "artifactSha256": "31df67129d84e6d63b626138f9c0f8f072f76159a721ac6103c3685c9b597cb4",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/interfaces/IFallbackManager.sol",
+        "name": "IFallbackManager",
+        "bytecodeBytes": 0,
+        "artifactSha256": "f5748e1e501b9a7a721af4997c4da5517862adf416ae2582eb0545217ad801dd",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/interfaces/ISignatureValidator.sol",
+        "name": "ISignatureValidator",
+        "bytecodeBytes": 0,
+        "artifactSha256": "6697ebe98728ed5a62d4eb65839c68c692b33469f394133dab5fdf0fbe6e1f51",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/interfaces/ISignatureValidator.sol",
+        "name": "ISignatureValidatorConstants",
+        "bytecodeBytes": 0,
+        "artifactSha256": "9d40d463f10cf1815e7ef7bc678da2d0d24d37cfbd62f6dfec217c1328766c17",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/interfaces/IOwnerManager.sol",
+        "name": "IOwnerManager",
+        "bytecodeBytes": 0,
+        "artifactSha256": "1368e599e6ec97c20c70b4b3b0226f4715e6fbcb8ef97bbdd3de71893404b4e6",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/interfaces/ViewStorageAccessible.sol",
+        "name": "ViewStorageAccessible",
+        "bytecodeBytes": 0,
+        "artifactSha256": "399614dc82870c53503bbfcc7e1b86d09979159d76f9f5c056d1edea96cb5913",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/interfaces/ERC777TokensRecipient.sol",
+        "name": "ERC777TokensRecipient",
+        "bytecodeBytes": 0,
+        "artifactSha256": "397e41880f66b77712cd988b7d72705df6abd5bffd11e6f7bb807e56ffece720",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/interfaces/IGuardManager.sol",
+        "name": "IGuardManager",
+        "bytecodeBytes": 0,
+        "artifactSha256": "a23659eece3545d5f28fa3a046e6726695ff70bc2441832e9d9b8e11c04fd4f4",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/interfaces/INativeCurrencyPaymentFallback.sol",
+        "name": "INativeCurrencyPaymentFallback",
+        "bytecodeBytes": 0,
+        "artifactSha256": "94a003ec2600e9042d5e300899b857808323336056de9e01339a5e7d987cfdeb",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/interfaces/ISafe.sol",
+        "name": "ISafe",
+        "bytecodeBytes": 0,
+        "artifactSha256": "c30a7eb7bf8fb09006621c1c31d8c3c3fbe26e65e4ae529df0868dad2dc5e0f1",
+        "matchesCompilerOutput": true
+      },
+      {
+        "source": "contracts/interfaces/IERC165.sol",
+        "name": "IERC165",
+        "bytecodeBytes": 0,
+        "artifactSha256": "dfeb94dab0584b89ce440d47e7f82e43800420fe6a88c2fdeb58cc8291983f45",
+        "matchesCompilerOutput": true
+      }
+    ],
+    "distinctArtifacts": 80,
+    "concreteBytecodes": 32
+  },
+  "rejectedPublishedMainArtifactReason": "NPM3.2.0-beta.0 differs in exact pinned OneStepProverHostIo.sol, so full exact source compiled instead.",
+  "rejectedPublishedLegacyArtifactReason": "NPM2.1.3 differs in four pinned Solidity files, so full exact source compiled instead.",
+  "localOutputLayout": {
+    "main": "contracts-provenance/compiled-main/build/contracts",
+    "legacy": "contracts-provenance/compiled-legacy/build/contracts",
+    "safe": "contracts-provenance/deps/@safe-global__safe-smart-account/package/build/artifacts",
+    "upgradeExecutor": "contracts-provenance/deps/@offchainlabs__upgrade-executor/package"
+  },
+  "furtherGates": [
+    "Upstream solgen/gen.go must generate bindings from these artifacts.",
+    "Native cmd/nitro must then compile and be exercised separately.",
+    "No public chain boot, L3 parent-chain registration, or custom runtime fraud-proof replay follows from this dependency build."
+  ]
+}

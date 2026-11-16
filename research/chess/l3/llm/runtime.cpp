@@ -79,6 +79,12 @@ extern "C" {
 uintptr_t gh_model_ptr(){return reinterpret_cast<uintptr_t>(model);}
 uint32_t gh_model_len(){return MODEL_BYTES;}
 int32_t gh_seal_model(){uint8_t digest[32];sha256(model,MODEL_BYTES,digest);sealed=std::memcmp(digest,EXPECTED_MODEL_SHA256,32)==0;return sealed?0:-1;}
+// Privileged consensus-loader assertion, not a public model-authentication API.
+// The matched native/replay/prover loader MUST hash all bytes against committed
+// metadata before copying them into this guest and passing this digest. A raw
+// host already controls linear memory; this avoids repeating its verified hash
+// inside an interpreter. Standalone callers must use gh_seal_model instead.
+int32_t gh_accept_preverified_model(const uint8_t* verifiedSHA256){sealed=std::memcmp(verifiedSHA256,EXPECTED_MODEL_SHA256,32)==0;return sealed?0:-1;}
 int32_t gh_reset(){if(!sealed)return -1;std::memset(&state,0,sizeof(state));state.best_logit=INT64_MIN;return 0;}
 int32_t gh_begin(uint32_t token){if(!sealed||token>=VOCAB||(state.phase!=0&&state.phase!=11))return -1;if(state.phase==11){if(state.pos+1>=CONTEXT)return -2;++state.pos;}
     state.phase=1;state.layer=0;state.head=0;state.cursor=0;state.token=token;state.best=0;state.best_logit=INT64_MIN;return 0;}

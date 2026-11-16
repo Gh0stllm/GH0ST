@@ -1,0 +1,10 @@
+diff --git a/precompiles/precompile.go b/precompiles/precompile.go
+--- a/precompiles/precompile.go
++++ b/precompiles/precompile.go
+@@ -522,3 +522,6 @@ func Precompiles() map[addr]ArbosPrecompile {
+ 	// GH0ST local-development kernel only; never enable this debug chain for assets.
+ 	insert(debugOnly(makeGhostTensorPrecompile()))
++	// Full reviewed TinyStories runtime; trusted genesis seed is required.
++	// Debug-only: no production instruction tariff or fraud-proof claim.
++	insert(debugOnly(makeGhostLLMPrecompile()))
+ 	insert(MakePrecompile(precompilesgen.ArbInfoMetaData, &ArbInfo{Address: types.ArbInfoAddress}))

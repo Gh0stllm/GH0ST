@@ -1,11 +1,15 @@
 """Executes the compiled Stylus ABI in Wasmtime with a minimal explicit host.
 This is a local host simulation, not Nitro activation, ink metering or a proof.
 """
-import hashlib,json,importlib.metadata
+import hashlib,json,importlib.metadata,argparse
 from pathlib import Path
 import wasmtime
 ROOT=Path(__file__).resolve().parents[1]
-wasm=(ROOT/'target/wasm32-unknown-unknown/release/gh0st_stylus_kernel.wasm').read_bytes()
+parser=argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--wasm',type=Path,default=ROOT/'target/wasm32-unknown-unknown/release/gh0st_stylus_kernel.wasm')
+parser.add_argument('--out',type=Path,default=ROOT/'evidence/wasm-abi.json')
+args=parser.parse_args()
+wasm=args.wasm.read_bytes()
 config=wasmtime.Config();config.wasm_simd=False;config.wasm_relaxed_simd=False
 engine=wasmtime.Engine(config);module=wasmtime.Module(engine,wasm)
 ALLOWED={'read_args','write_result','storage_flush_cache','pay_for_memory_grow','msg_reentrant','msg_value'}
@@ -36,5 +40,5 @@ for case in json.loads((ROOT/'evidence/abi-cases.json').read_text()):
  records.append({'name':case['name'],'passed':True,'entrypointStatus':status,'returnOrRevertHex':data.hex()})
 memory_type=next(e.type for e in module.exports if e.name=='memory')
 report={'initialMemoryPages':memory_type.limits.min,'maximumMemoryPages':memory_type.limits.max,'initialMemoryWithin128Pages':memory_type.limits.min<=128,'wasmtimePythonVersion':importlib.metadata.version('wasmtime'),'scope':'Compiled real Stylus-SDK ABI executed in local Wasmtime with explicit simulated vm_hooks; no Nitro activation, gas metering, deployment or proof','sdk':'0.10.10','rust':'1.99.1','wasmBytes':len(wasm),'wasmSHA256':hashlib.sha256(wasm).hexdigest(),'under256KiBUncompressed':len(wasm)<256*1024,'under96KiBEvenBeforeCompression':len(wasm)<96*1024,'simdDisabledAndModuleValidated':True,'imports':[i.name for i in module.imports],'passed':len(records),'records':records,'nitroActivationTested':False,'stylusGasMeasured':False,'fraudProofTested':False,'fullLLMTested':False,'financialActions':False}
-(ROOT/'evidence/wasm-abi.json').write_text(json.dumps(report,indent=2)+'\n')
+args.out.write_text(json.dumps(report,indent=2)+'\n')
 print(json.dumps({k:v for k,v in report.items() if k!='records'},indent=2))
