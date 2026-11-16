@@ -120,3 +120,12 @@ The selected interpreter driver reproduces an independently checked100b-step mac
 Late-start samples of the full prover reached14.63GiB RSS, about15.7GB, before completion. TheUSD100 monthly direction now prefers32GB and sustained dedicated CPU; the earlier native2.463GiB capacity screen is not the full proof budget. The macOS native binary and Go replay remain byte-identical after recipe changes. A Linux SSE4.1 candidate is prepared but not tested; AVX2 needs a separately verified accumulator-layout adapter. No server was ordered.
 
 **Evidence:** [Actual search-loop verifier results](chess/evidence/search-loop-solidity-steps.json), [reviewable witnesses](chess/evidence/search-loop-witnesses.json), [explicit bounded scope](chess/evidence/search-loop-collection.json), [preserved artifact identities](chess/evidence/native-recipe-preservation.json), [updated hosting direction](chess/HOSTING.md).
+
+
+## 19 · Select24GB and run a real node/prover overlap screen — 16 November
+
+The user selected24GB RAM while retaining theUSD100/month server budget. A second actual custom-node fixture mined the unchanged full24m move while the complete prover was running:23.85s, exacte7e5 /24,000,033nodes /depth38 and the same canonical checkpoint. The node and retained game then stayed live for a60s overlap sample. The held in-process node/validation fixture peaked at2.65GiB, with6.23GiB observed combined at sampled overlapping instants. That window does not include the full lifecycle or the full prover's earlier14.63GiB peak.
+
+The sum of separately observed component peaks is about17.35GiB. Adding a4GiB planning reserve gives about21.35GiB; that is a sizing estimate, not a measured simultaneous peak or a hard24GB/Linux acceptance test.24GB remains a candidate for one active node/prover, with unchanged bot strength and final hosting acceptance pending. The repeat fixture shut down cleanly; no real funds moved.
+
+**Evidence:** [Repeated full-strength move](chess/evidence/cohost24-move.json), [bounded capacity screen and limits](chess/evidence/cohost24-screen.json), [all overlap samples](chess/evidence/cohost24-samples.csv).

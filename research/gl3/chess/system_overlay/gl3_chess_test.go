@@ -8,6 +8,7 @@ import (
 	"os"
 	"path/filepath"
 	"sort"
+	"strconv"
 	"strings"
 	"testing"
 	"time"
@@ -57,6 +58,8 @@ func TestGL3ChessMinedBlockAndInputs(t *testing.T) {
 		t.Fatal("explicit model, evidence and custom machine paths required")
 	}
 	Require(t, os.MkdirAll(outDir, 0700))
+	_ = os.Remove(filepath.Join(outDir, "hold-ready.json"))
+	_ = os.Remove(filepath.Join(outDir, "release-hold"))
 	weights, err := os.ReadFile(modelPath)
 	Require(t, err)
 	db, err := state.New(types.EmptyRootHash, state.NewDatabaseForTesting())
@@ -143,4 +146,22 @@ func TestGL3ChessMinedBlockAndInputs(t *testing.T) {
 	Require(t, err)
 	Require(t, os.WriteFile(filepath.Join(outDir, "results.json"), append(encoded, '\n'), 0600))
 	t.Log(string(encoded))
+	// Optional resource fixture: keep this actual node and its recorded game live.
+	// This changes only the test lifecycle, never block execution or the engine policy.
+	if text := os.Getenv("GL3_CHESS_HOLD_SECONDS"); text != "" {
+		seconds, e := strconv.Atoi(text)
+		Require(t, e)
+		if seconds < 1 || seconds > 1200 {
+			t.Fatal("hold bound")
+		}
+		ready, _ := json.Marshal(map[string]any{"pid": os.Getpid(), "seconds": seconds, "actualNodeAndGameLive": true})
+		Require(t, os.WriteFile(filepath.Join(outDir, "hold-ready.json"), ready, 0600))
+		deadline := time.Now().Add(time.Duration(seconds) * time.Second)
+		for time.Now().Before(deadline) {
+			if _, e = os.Stat(filepath.Join(outDir, "release-hold")); e == nil {
+				break
+			}
+			time.Sleep(time.Second)
+		}
+	}
 }

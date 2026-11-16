@@ -17,7 +17,7 @@
 
 ## What controls hardware sizing
 
-**RAM** holds the full neural network,128MiB transposition table, histories, search/runtime memory, checkpoint copies and chain/replay/prover state. Fixed node count preserves the work even on a slower CPU. Fewer concurrent searches can reduce peak RAM without reducing each decision's work.
+**RAM** holds the full neural network,128 MiB transposition table, histories, search/runtime memory, checkpoint copies and chain/replay/prover state. Fixed node count preserves the work even on a slower CPU. Fewer concurrent searches can reduce peak RAM without reducing each decision's work.
 
 **CPU** controls how long24m nodes take. Shared hosting can change latency and jitter without changing the configured search budget. A hard time deadline must not silently return a reduced search.
 
@@ -29,7 +29,7 @@ The team needs the GL3 child and parent RPC connectivity, not locally hosted ful
 
 GH0ST native gas does not remove parent ETH posting charges. The SDK requires an explicit compatible custom-token fee-pricer configuration; its rate and safe reimbursement policy remain unselected. Validator collateral, custody, license applicability and independent recovery still need review. A small single host can preserve computation quality while remaining a single failure domain.
 
-The earlier large AWS fleet is a public-availability reference, not a private-chain minimum. Current smaller provider quotes and their billing terms are in the [hosting study](../chess/l3/core/hosting/price-research/README.md). The active budget is nowUSD100/month. A late sample of the full WAVM prover reached14.63GiB RSS before completion;32GB is preferred for the cohosted node/prover until complete Linux acceptance.
+The earlier large AWS fleet is a public-availability reference, not a private-chain minimum. Current smaller provider quotes and their billing terms are in the [hosting study](../chess/l3/core/hosting/price-research/README.md). The active budget is nowUSD 100/month. A late sample of the full WAVM prover reached14.63 GiB RSS before completion;24 GB is the user-selected target; the actual node/prover overlap screen and Linux acceptance remain separate checks.
 
 ## Claim policy
 
@@ -49,10 +49,10 @@ The lowest practical shared-CPU catalog candidate found is OVH8 GB at€8.49 bas
 
 ## Active full chess integration
 
-The98.5MB network and24m-node/Hash128/one-worker policy are unchanged. Four consecutive decisions reproduce exact move, actual nodes, depth and all163,085,439 canonical checkpoint bytes across native/scalar-Wasm. The native vector binary remains byte-identical after the build-recipe update.
+The98.5 MB network and24m-node/Hash128/one-worker policy are unchanged. Four consecutive decisions reproduce exact move, actual nodes, depth and all 163,085,439 canonical checkpoint bytes across native/scalar-Wasm. The native vector binary remains byte-identical after the build-recipe update.
 
 The custom ArbOS extension executed a full move in an actual local Nitro block and included it in a real local Ethereum-parent batch. A separate complete native replay, using only recorded inputs, reproduced the exact block hash, send root and inbox position. Full-model/state corruption, caller isolation, retries and one-gas-short rollback passed. The full WAVM replay is in progress; ten initial OSP witnesses, an independently reproduced100b-step point and real Worker::search arithmetic/memory witnesses passed actual Solidity verification, with corrupted witness/pre-state rejection.
 
-The full prover's partial late-start samples already exceed14GiB RSS; the earlier2.463GiB native capacity screen does not cover that proof workload. The current32GB/USD100 direction supersedes the cheapest shared-CPU recommendation above. No host has been rented. Linux SSE4.1 is a prepared candidate, not a tested deployment. AVX2's accumulator-lane layout requires a separately verified canonical-state adapter before promotion.
+The full prover's partial late-start samples already exceed14 GiB RSS; the earlier2.463 GiB native capacity screen does not cover that proof workload. The current24 GB/USD 100 direction supersedes the cheapest shared-CPU recommendation above. No host has been rented. Linux SSE4.1 is a prepared candidate, not a tested deployment. AVX2's accumulator-lane layout requires a separately verified canonical-state adapter before promotion.
 
 [Engine/replay evidence](chess/README.md) · [Current host candidates](chess/HOSTING.md)

@@ -53,15 +53,15 @@ The diagram shows the intended public topology. The completed test used a local 
 | [Roadmap](research/gl3/ROADMAP.md) | Completed work, the active experiment and the next gates |
 | [Full-strength chess study](research/chess/l3/core/hosting/chess-workload-20261116/README.md) | Immutable strength policy, complete workloads and memory measurements |
 | [Active chess integration](research/gl3/chess/README.md) | Exact engine/state parity, mined block, replay artifacts and proof tests |
-| [USD100 hosting plan](research/gl3/chess/HOSTING.md) | Sustained CPU,32GB preference, quoted candidates and acceptance gates |
+| [USD 100 hosting plan](research/gl3/chess/HOSTING.md) | Sustained CPU,24 GB target, quoted candidates and acceptance gates |
 | [Core source](research/chess/l3/core/README.md) | Pinned standard base, native-gas work and deployment preparation |
 | [Preserved model experiments](research/chess/l3/llm/README.md) | Complete small-model arithmetic and custom-runtime research |
 
 ## Next build gate
 
-The unchanged engine is integrated in the experimental custom STF. Four complete24m decisions and all canonical retained state matched across native and scalar Wasm. An actual local mined decision and independent full native block replay passed. The complete WAVM interpreter run and engine-specific Solidity witness checks are the active gate. [Exact results](research/gl3/chess/README.md).
+The unchanged engine is integrated in the experimental custom STF. Four complete 24m decisions and all canonical retained state matched across native and scalar Wasm. An actual local mined decision and independent full native block replay passed. The complete WAVM interpreter run and engine-specific Solidity witness checks are the active gate. [Exact results](research/gl3/chess/README.md).
 
-The active server budget is **USD100/month**, with sustained CPU and recovery taking priority over the cheapest shared VPS. A late sample of the running full prover briefly reached **14.63GiB RSS on its own**. This is a lower bound from partial sampling, not a16GB acceptance certificate;32GB is the preferred hosting target. Parent fees and any one-time setup are separate. [Current hardware plan](research/gl3/chess/HOSTING.md).
+The active server budget is **USD 100/month**, with sustained CPU and recovery taking priority over the cheapest shared VPS. A late sample of the running full prover briefly reached **14.63 GiB RSS on its own**. This is a lower bound from partial sampling, not a16 GB acceptance certificate;24 GB is the user-selected hosting target, with an actual node/prover overlap screen in progress. Parent fees and any one-time setup are separate. [Current hardware plan](research/gl3/chess/HOSTING.md).
 
 ![Measured GL3 research workload memory](research/gl3/assets/memory-results.svg)
 

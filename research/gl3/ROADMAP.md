@@ -7,7 +7,7 @@
 - [x] Define Robinhood-parent / GH0ST-gas direction and preserve fixed chess strength policy.
 - [x] Pin standard Nitro, SDK, source, official machine root and reproducible build artifacts.
 - [x] Verify ordinary Solidity/Stylus execution on the clean base.
-- [x] Measure100ms-profile lightweight receipt latency.
+- [x] Measure100 ms-profile lightweight receipt latency.
 - [x] Validate both actual local Nitro genesis assertions.
 - [x] Verify native mock-token deposit, child spending and exact parent-batch inclusion.
 - [x] Separate the deployable child footprint from test-only Ethereum/RH-like parents.

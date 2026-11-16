@@ -15,4 +15,4 @@ This branch records the path from a full-strength chess workload to a private Ro
 | [Append-only journal](journal.jsonl) | Ordered research events linked to their evidence |
 | [Chess memory study](../chess/l3/core/hosting/chess-workload-20261116/README.md) | Full network,24m nodes, retained state and hosting measurements |
 
-[Active full chess integration](chess/README.md) · [USD100 hosting direction](chess/HOSTING.md)
+[Active full chess integration](chess/README.md) · [USD 100 hosting direction](chess/HOSTING.md)
