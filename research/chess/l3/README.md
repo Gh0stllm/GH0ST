@@ -1,23 +1,23 @@
 # GH0ST L3 developer build
 
-The selected direction is a custom L3 settling on Robinhood, with GH0ST gas, ordinary EVM/Stylus compatibility and a separate deterministic model runtime. **Working developer components are now compiled and tested locally; they are not yet connected into a booted L3 or matching fraud prover.** No server is rented and this is not a twenty-game deployment within 100 ICP. The reviewed Stockfish policy remains unchanged.
+The selected direction is a custom L3 settling on Robinhood, with GH0ST gas, ordinary EVM/Stylus compatibility and a separate deterministic model runtime. **The native development node now boots locally, and real local transactions deploy/activate Stylus and call it from Solidity. The proposed Robinhood-settled L3, GH0ST gas and matching fraud prover are not deployed.** No server is rented and this is not a twenty-game deployment within 100 ICP. The reviewed Stockfish policy remains unchanged.
 
 ## Implemented developer components
 
 | Component | Verified result | Remaining chain integration |
 |---|---|---|
-| [Stylus Rust kernel](stylus/README.md) | SDK 0.10.10; normalized 23,102-byte Wasm; actual Nitro activation and 12 real EVM ABI cases pass | Booted chain transactions, Solidity caller integration and fraud proof |
+| [Stylus Rust kernel](stylus/README.md) | SDK 0.10.10; normalized 23,102-byte Wasm; actual Nitro activation, 12 live local RPC ABI cases and four mined local receipts, including Solidity calling Stylus | Public chain configuration/settlement and fraud proof |
 | [Paged model registry](stylus/registry/README.md) | 18 local EVM checks for authenticated pages, canonical padding, completeness and immutability | Large uploads and authenticated runtime loader |
 | [Full small-model runtime](llm/README.md) | Complete 3.75M-parameter TinyStories INT8/Q12 model; 64 positions / 3,216,448 logits match native/Wasm/independent oracle; 9 negative boundary tests | Larger architectures and production execution/proving |
 | [Persistent full-model bridge](bridge/README.md) | Native and actual Go/WASI inference; caller-bound jobs; exact checkpoint/write parity; real ArbOS storage and rollback | Public bounded model loading, transaction gas and complete fraud-proof integration |
-| [Nitro overlays](nitro/README.md) | Complete native Nitro node binary builds from exact contract sources; registered full-model debug ABI executes a complete token in both backends; WASI package compiles | Local node boot, complete replay execution and fraud-prover checks |
+| [Nitro overlays](nitro/README.md) | Complete native Nitro node binary builds from exact contract sources; registered full-model debug ABI executes a complete token in both backends; WASI package compiles | Public L3 configuration, complete replay execution and fraud-prover checks |
 | [Wasm compatibility checker](compatibility/README.md) | 13 tests; catches required Rust Wasm normalization; canonical kernel passes; 103 MB Stockfish correctly rejected by standard Stylus | Structural checks do not establish deployment/proving compatibility |
 
 The full-context test generated a short story beginning `Once upon a time, there was a little girl named Lily.` and compared every vocabulary logit at all 64 positions. It tests the documented INT8/Q12 variant, not FP32 equivalence or 7B/70B support. Model data are separate from program code. The registry's 64 GiB format bound is not a measured inference capacity or storage-cost claim.
 
 The actual registered debug ABI test completes 18 committed transitions for one token and matches all 50,257 logits plus the expected checkpoint. Caller/static isolation, stale work, missing/corrupt genesis and out-of-gas rollback checks pass. Interpreter and native compiler outputs, checkpoints and gas match on this fixture.
 
-The real ArbOS tests currently spend billions of storage gas across model setup and inference because they reload and checkpoint through individual storage words. A measured ABI advance alone consumes 245,844,125 gas under an oversized local fixture allowance. This is not feasible under ordinary transaction limits. The native compiler improves local execution speed with identical tested state, but does not change storage gas. Efficient immutable model reads, dirty checkpoint pages and deterministic pricing remain release gates.
+The real ArbOS tests currently spend billions of storage gas across model setup and inference because they reload and checkpoint through individual storage words. A measured ABI advance alone consumes 245,844,125 gas under an oversized local fixture allowance. This is not feasible under ordinary transaction limits. The native compiler improves local execution speed with identical tested state, but does not change storage gas. Efficient immutable model reads, dirty checkpoint pages and deterministic pricing remain release gates. [Storage optimization plan](architecture/storage-optimization-plan.md).
 
 `capabilities.json` records each component's exact scope and artifact hashes. The standard Stylus VM keeps its ordinary limits; large-model execution is a separate custom path. Raising limits or launching an ordinary Nitro container does not connect that path automatically.
 
@@ -52,7 +52,7 @@ The full bot remains Stockfish19, its pinned 98,511,183-byte NNUE, 24 million no
 
 ## Work required before a server lease
 
-The native macOS/arm64 node binary and complete upstream Go/WASI replay artifact now build from the exact pinned sources. The replay artifact has not executed a chain transition, and the Linux/amd64 hosting image remains unbuilt. The next required integration is local node boot and matching replay/fraud-proof execution, including a real test in which an incorrect result loses a challenge. Then port the complete Stockfish continuation and retained state and compare complete searches and games against the reference. A standard Nitro image or a Stockfish process alongside it does not satisfy this requirement. [Custom execution requirements](https://developer.arbitrum.io/launch-arbitrum-chain/extend-the-protocol/stf).
+The native macOS/arm64 node binary and complete upstream Go/WASI replay artifact now build from the exact pinned sources. The replay artifact has not executed a chain transition, and the Linux/amd64 hosting image remains unbuilt. The isolated dev boot has no parent connectivity and no seeded model. Required integration remains Robinhood settlement/GH0ST gas configuration and matching replay/fraud-proof execution, including a real test in which an incorrect result loses a challenge. Then port the complete Stockfish continuation and retained state and compare complete searches and games against the reference. A standard Nitro image or a Stockfish process alongside it does not satisfy this requirement. [Custom execution requirements](https://developer.arbitrum.io/launch-arbitrum-chain/extend-the-protocol/stf).
 
 The 100 ICP total cap includes the previously converted 13 ICP and fees. The existing ETH cap remains 0.003 ETH. Server rental, Robinhood settlement, installation, operating reserves, finality/dispute retention and validator funding must fit a reviewable budget. The quote above covers hardware rental only.
 

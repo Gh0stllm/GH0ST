@@ -1,5 +1,5 @@
 {
-  "status": "Local debug full LLM EVM/ArbOS execution, real Stylus VM, complete native node binary and complete WASI replay compilation passed; chain boot and matched prover challenge pending",
+  "status": "Local debug full LLM EVM/ArbOS execution, real Stylus VM+local RPC transactions, complete native node and complete WASI replay builds passed; public L3 and matched proof challenge pending",
   "portableNativeTestsPassed": [
     "TestChunkingAndRestartParity",
     "TestOwnerAndInputBinding",
@@ -21,10 +21,13 @@
     ".gitattributes": "4018589685f73b2b1ff9fa9b3a3b8d8248d04ecc58de1d3b13b304fafcaaa4b9",
     ".gitignore": "046032151fe6113c18a8d7d9971c557e81129ca1ba244e5263d54b7e0e6f9643",
     "GhostTensor.sol": "8c51e7986bb19ae82922ee2515685979916e4ee632c37a6b48832693f2f021b6",
-    "README.md": "9ed3129b513d4b3dc1c5e07a3f6aa672672bccadc4b9dd7efc073ef0eefe33cd",
+    "README.md": "927d75603ea1c24b1bd33570d0fe57095fdeaea9a8978a4d06fa1c85a48009ea",
     "bootstrap.py": "9fb5103cd70184791349d36ede3380033e9101e17571e7a8f39a9c9ed30e7b43",
     "check-source.py": "57022fd864c1f656b585984de71fbc0b8ffbc65cf4de5df8a5803ef8e84e6ac4",
     "compile-abi.mjs": "864665e455dc014294374891ef147ade012296c964ce04eecc94ce903eee911f",
+    "dev-rpc/README.md": "7e8b9cab6f276ac1ed811dccc6b247da780515181603a52e8cfd5b55e4a923ff",
+    "dev-rpc/encode/main.go": "52d04dc5ea1e77763513a93a3184bae10f41eaca4c0c8fa4f7c44cc6d7a4e807",
+    "dev-rpc/run.mjs": "51809ae32d6d0f1dbdc9814f15da2b495f94f91ef9d18d776945d74ee87c358d",
     "evidence/abi.json": "d0795444d27de11b9437bf2b83fc1eb9017a24d23bf8bd28446c435dd5e80db6",
     "evidence/arbos-backend-parity.json": "c53342822255d92d25470f673c2f4339dc6e46e92ab0e8dbd33ea1450429ecc1",
     "evidence/arbos-fullmodel-baseline-run.json": "7850b39ca06144ce0525371f83407815536bd6f6520e19ad74beac9f7905bb1e",
@@ -42,6 +45,8 @@
     "evidence/llm-abi-dispatch-interpreter.json": "3c9a16d104d101a28d0f93f0eee1f1aeb778ae5c6d7ccd40ccc7ad537bed46fd",
     "evidence/llm-abi-dispatch-native-compiler-run.json": "abd95b3ee56e27c2990a6071d443743b5f6f1d3ec0ad89f105286403e9bb946b",
     "evidence/llm-abi-dispatch-native-compiler.json": "774a4ba85cf8fa061f33416d95eba9e43474f30fdc00aa5033ef5b47e8fbe697",
+    "evidence/local-dev-boot.json": "0c538ee2361cdc30e75c6954c1867151a97d7423bf3d0c9dd77624e5461d5a38",
+    "evidence/local-dev-rpc-transactions.json": "213e896a80ec4c8b7413f9ce1e71f1cde8181ad3dcbe75657ea2e7988170ffd3",
     "evidence/native-libraries.json": "5245c29abd1c0f08aa20fa9d1592f11702d17752164388e1524daf651ecfff2d",
     "evidence/native-nitro-tensor-tests.json": "6380cf149cff179bd88dfe4017824c6454cdf22883d66af32b59e0dce882e75d",
     "evidence/native-node-build.json": "c40831da3a0155582d0bdab7dd27c94c98cdbed8197295f21a5c1379cdd45f4f",
@@ -111,9 +116,14 @@
   "stylusActivatedArtifactSHA256": "e15336947f6bc96a6e29c5eab5d0ad84ffb8d76422f03866115766d1173b5527",
   "completeReplayWasmBuilt": true,
   "replayExecuted": false,
-  "nodeBooted": false,
+  "nodeBooted": true,
   "nativeNodeSHA256": "a42cb8677eadbfd8824b630d444a1477fac664c6f711487002fc9ba8d8d2b8fa",
   "nativeNodeTarget": "darwin/arm64",
   "linuxAmd64ServerBuildPassed": false,
-  "serverImageBuilt": false
+  "serverImageBuilt": false,
+  "nodeBootScope": "isolated loopback development chain412346, no public parent",
+  "localRPCStylusAndSolidityTransactionsPassed": true,
+  "localRPCMinedTransactions": 4,
+  "localRPCFullModelSeeded": false,
+  "localRPCMissingModelFailsClosed": true
 }

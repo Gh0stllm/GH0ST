@@ -1,6 +1,6 @@
 # Nitro execution integration
 
-This is a working **local, debug-only** integration against pinned Nitro v3.12.2. Real Geth EVM calls now reach the complete reviewed TinyStories model through a custom ArbOS precompile, and the normalized Stylus contract activates and executes in the actual Nitro Stylus VM. No public chain, production activation or successful fraud-proof challenge is claimed.
+This is a working **local, debug-only** integration against pinned Nitro v3.12.2. Real Geth EVM calls now reach the complete reviewed TinyStories model through a custom ArbOS precompile, and the normalized Stylus contract activates and executes in the actual Nitro Stylus VM. The built node also boots in isolated loopback development mode and mines four local Stylus/Solidity transactions. No public chain, production activation or successful fraud-proof challenge is claimed.
 
 ## Verified execution
 
@@ -36,7 +36,7 @@ The LLM fixture deliberately grants 2 billion gas per call. One measured advance
 
 A production path still needs authenticated immutable model pages seeded outside ordinary user calls, efficient checkpoint writes, reviewed computation pricing and explicit bounded transaction work. Reducing charged prices or silently raising limits would not prove safety or affordability. This integration has no public bulk model-upload ABI.
 
-The complete native `cmd/nitro` binary for **darwin/arm64** and upstream `cmd/replay` WASI artifact are now built from this integrated source. A Linux/amd64 server binary/image is not built. The replay artifact is 33,485,567 bytes with SHA256 `55107e87a98a55aecbf459b668da9bbffd801673f6147c532af331201ab70982`; it has not been executed or converted into a matched prover machine. Exact main/legacy Solidity source produced real ABI and bytecode bindings; Safe artifacts were verified against pinned compiler input and output. Available NPM artifacts were not blindly reused because an actual production HostIo source mismatch was found. See `evidence/contract-source-compilation.json`, `evidence/native-node-build.json` and `evidence/complete-replay-build.json`. No node has been booted, parent contracts deployed, public transactions sent or fraudulent result challenged. Production additionally needs a reviewed activation/genesis, matching complete node/replay/prover artifacts, whole-inference replay equivalence and an actual successful challenge against a deliberately incorrect computation. Package compilation alone does not establish those properties.
+The complete native `cmd/nitro` binary for **darwin/arm64** and upstream `cmd/replay` WASI artifact are now built from this integrated source. A Linux/amd64 server binary/image is not built. The replay artifact is 33,485,567 bytes with SHA256 `55107e87a98a55aecbf459b668da9bbffd801673f6147c532af331201ab70982`; it has not been executed or converted into a matched prover machine. Exact main/legacy Solidity source produced real ABI and bytecode bindings; Safe artifacts were verified against pinned compiler input and output. Available NPM artifacts were not blindly reused because an actual production HostIo source mismatch was found. See `evidence/contract-source-compilation.json`, `evidence/native-node-build.json` and `evidence/complete-replay-build.json`. The node was booted only in isolated loopback development mode: four local transactions deployed and activated Stylus and called it from Solidity; twelve RPC ABI cases passed and the stored result was `-31`. A12 with absent genesis data failed closed. That boot does not seed or run the full model. No parent contracts were deployed, public transactions sent or fraudulent result challenged. See [the reproducible RPC check](dev-rpc/README.md). Production additionally needs a reviewed activation/genesis, matching complete node/replay/prover artifacts, whole-inference replay equivalence and an actual successful challenge against a deliberately incorrect computation. Package compilation alone does not establish those properties.
 
 ## Reproduce
 
@@ -47,6 +47,7 @@ python3 integration-build.py
 python3 native-build.py --llm-abi
 python3 native-build.py --reuse-build --full-model
 python3 stylus-native/run.py
+node dev-rpc/run.mjs
 ```
 
 The first native command rebuilds pinned local dependencies; `--reuse-build` uses already prepared headers/libraries. `--llm-abi` runs both exact named ABI tests and requires their pass records, preventing a zero-test success from counting. `--full-model` additionally runs the separate two-position ArbOS-store fixture. All downloads and build outputs stay under ignored caches. No keys, paid services or financial actions are involved.

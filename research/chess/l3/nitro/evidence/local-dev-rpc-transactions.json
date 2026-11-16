@@ -1,0 +1,137 @@
+{
+  "scope": "Actual signed local-only Nitro RPC transactions with ephemeral genesis-funded test account",
+  "nativeTarget": "darwin/arm64",
+  "parentConnectivity": false,
+  "publicChain": false,
+  "existingWalletUsed": false,
+  "modelSeeded": false,
+  "financialActions": false,
+  "transactions": [
+    {
+      "name": "deploy normalized Stylus runtime",
+      "hash": "0x54f2a803b2152cdee3c114753b9783509447c719cd4e667ba555ebb2001881be",
+      "blockNumber": 1,
+      "gasUsed": "73932872",
+      "status": 1,
+      "contractAddress": "0x6d4bdE2A86e99193157c39C3028ae3592A1f7ca8"
+    },
+    {
+      "name": "activate actual Stylus program",
+      "hash": "0xfbc4dcdeb76d240e1524f248381f47b455926c40c21ae826ce015a79929420ef",
+      "blockNumber": 2,
+      "gasUsed": "4768522",
+      "status": 1,
+      "contractAddress": null
+    },
+    {
+      "name": "deploy Solidity caller",
+      "hash": "0x4478734bc9bb670cd4b7515c5180ffd67a624a6f9f7d1b923efafed26e27eebe",
+      "blockNumber": 3,
+      "gasUsed": "5057869",
+      "status": 1,
+      "contractAddress": "0x218779052b7D1B0555a09eFFdb8b9c9a0f74cAeF"
+    },
+    {
+      "name": "Solidity transaction calls Stylus signed dot",
+      "hash": "0x62aa94a658252f923f89dfa319e9493c07db96cb3fd5640c9c0f6a8b604d605d",
+      "blockNumber": 4,
+      "gasUsed": "2457514",
+      "status": 1,
+      "contractAddress": null
+    }
+  ],
+  "checks": [
+    {
+      "name": "deploy normalized Stylus runtime estimate",
+      "estimatedGas": "82786744"
+    },
+    {
+      "name": "activate actual Stylus program estimate",
+      "estimatedGas": "5175180"
+    },
+    {
+      "name": "kernel version",
+      "expectedRevert": false,
+      "passed": true
+    },
+    {
+      "name": "signed dot",
+      "expectedRevert": false,
+      "passed": true
+    },
+    {
+      "name": "largest signed lanes",
+      "expectedRevert": false,
+      "passed": true
+    },
+    {
+      "name": "linear positive",
+      "expectedRevert": false,
+      "passed": true
+    },
+    {
+      "name": "relu clamps negative",
+      "expectedRevert": false,
+      "passed": true
+    },
+    {
+      "name": "argmax negative ties",
+      "expectedRevert": false,
+      "passed": true
+    },
+    {
+      "name": "dimension mismatch",
+      "expectedRevert": true,
+      "passed": true
+    },
+    {
+      "name": "empty vectors",
+      "expectedRevert": true,
+      "passed": true
+    },
+    {
+      "name": "oversized input",
+      "expectedRevert": true,
+      "passed": true
+    },
+    {
+      "name": "linear overflow",
+      "expectedRevert": true,
+      "passed": true
+    },
+    {
+      "name": "empty logits",
+      "expectedRevert": true,
+      "passed": true
+    },
+    {
+      "name": "unknown selector",
+      "expectedRevert": true,
+      "passed": true
+    },
+    {
+      "name": "deploy Solidity caller estimate",
+      "estimatedGas": "5887888"
+    },
+    {
+      "name": "Solidity transaction calls Stylus signed dot estimate",
+      "estimatedGas": "2941080"
+    }
+  ],
+  "chainId": "0x64aba",
+  "clientVersion": "gh0st-nitro/vlocal+unknown-unknown/darwin-arm64/go1.25.4",
+  "genesisBalance": "1000000000000000000000",
+  "llmAbsentGenesis": {
+    "rejected": true,
+    "message": "execution reverted (no data present; likely require(false) occurred",
+    "data": "0x"
+  },
+  "stylusAddress": "0x6d4bdE2A86e99193157c39C3028ae3592A1f7ca8",
+  "stylusVersion": 3,
+  "solidityCaller": "0x218779052b7D1B0555a09eFFdb8b9c9a0f74cAeF",
+  "solidityAnswer": "-31",
+  "wasmSHA256": "e15336947f6bc96a6e29c5eab5d0ad84ffb8d76422f03866115766d1173b5527",
+  "passed": true,
+  "processStopped": true,
+  "gasIsLocalDevPosterAccountingNotProductionFeeQuote": true
+}

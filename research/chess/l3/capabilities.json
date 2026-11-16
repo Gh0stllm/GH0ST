@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "status": "locally_tested_developer_components_not_a_booted_l3",
+  "status": "locally_booted_nitro_dev_chain_and_verified_llm_fixture_not_deployed_l3",
   "asOfUserDateIST": "2026-11-16",
   "parentChainIdProposal": 4663,
   "nativeGasTokenProposal": "GH0ST",
@@ -10,11 +10,18 @@
     "chainBooted": false,
     "nativeBuildTarget": "darwin/arm64",
     "nativeNodeBinarySHA256": "a42cb8677eadbfd8824b630d444a1477fac664c6f711487002fc9ba8d8d2b8fa",
-    "linuxAmd64ServerImageBuilt": false
+    "linuxAmd64ServerImageBuilt": false,
+    "chainBootedScope": "Proposed Robinhood-settled GH0ST L3; isolated dev chain is reported separately",
+    "isolatedNativeDevChainBooted": true,
+    "isolatedDevChainId": 412346,
+    "isolatedDevChainStoppedCleanly": true,
+    "robinhoodParentSettlementDeployed": false,
+    "customGH0STGasEndToEndVerified": false
   },
   "evm": {
     "ordinaryNitroCompatibilityTarget": true,
-    "customChainEndToEndVerified": false
+    "customChainEndToEndVerified": false,
+    "actualLocalSolidityCallerToStylusTransactionPassed": true
   },
   "stylus": {
     "sdkVersion": "0.10.10",
@@ -30,8 +37,10 @@
     "rawWasmSHA256": "50c3f59bb8bdbd6b6883835ce5caf24a58057e526ea3989d77403ad921db723c",
     "canonicalizationRequired": true,
     "actualNativeNitroABICasesPassed": 12,
-    "actualNodeTransactionsSubmitted": 0,
-    "fullFraudChallengeExecuted": false
+    "actualNodeTransactionsSubmitted": 4,
+    "fullFraudChallengeExecuted": false,
+    "nodeTransactionsScope": "Isolated local dev chain only; deployment, activation, Solidity caller deployment and call",
+    "actualRPCABICasesPassed": 12
   },
   "modelRegistry": {
     "modelDataSeparateFromProgramCode": true,
@@ -67,7 +76,8 @@
     "fullContextBoundaryTested": true,
     "oneGreedyTrajectoryOnly": true,
     "standaloneFullModelSHA256Verified": true,
-    "trustedLoaderPreverifiedBootstrap": true
+    "trustedLoaderPreverifiedBootstrap": true,
+    "modelSeededInBootedDevChain": false
   },
   "nitroTensorOverlay": {
     "deterministicPersistentTensorCoreImplemented": true,
