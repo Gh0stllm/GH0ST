@@ -105,9 +105,19 @@ The newer machine root is
 `0xd45324627b0b3118dfdf1ad585769024cfa6008da8cdcaa745de32edc724613b`.
 Its own full replay is still required. The completed older-root test cannot
 certify this later change. A disposable Runpod CPU server is being used for a
-paired Linux replay of both roots against the same captured input. CPU generation
-5, 16 vCPUs and 32 GB RAM were quoted by the live catalog at $0.56/hour, excluding
-scratch storage. No GPU is used; the engine and proof runner remain unchanged.
+paired Linux replay of both roots against the same captured input. At the user's
+request, the16-vCPU machine was terminated and replaced by32 vCPUs and64 GB RAM,
+quoted at$1.12/hour for compute. The guest reports an AMD EPYC9575F and confirms
+32 allocated CPU threads and a64,000,000,000-byte memory limit. The processor's
+up-to5 GHz specification is not a promise of sustained guest frequency. No GPU
+is used. This hourly allocation is temporary and exceeds theUSD100/month budget
+if left running continuously. [Allocation and scope](evidence/cloud-allocation.json).
+
+The first Linux build exposed a packaging omission: its Brotli native support
+library was absent. The cloud recipe now supplies the exact pinned, SHA-verified
+Brotli C source and uses upstream's `cc_brotli` feature. This is a build correction;
+it does not change the portable engine, the captured input or either machine root.
+Complete paired replay results remain pending.
 
 [Completed WAVM block](evidence/complete-wavm-block.json) ·
 [Solidity results](evidence/complete-solidity-steps.json) ·

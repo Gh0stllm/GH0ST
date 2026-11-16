@@ -2,8 +2,8 @@
 from pathlib import Path
 import argparse,hashlib,importlib.util,json,re
 HERE=Path(__file__).resolve().parent;CHESS=HERE.parents[1]
-parser=argparse.ArgumentParser();parser.add_argument('--next',action='store_true');options=parser.parse_args()
-OUT=HERE/'.cache'/('proof-next' if options.next else 'proof-first')
+parser=argparse.ArgumentParser();variant=parser.add_mutually_exclusive_group();variant.add_argument('--next',action='store_true');variant.add_argument('--cloud-lazy',action='store_true');options=parser.parse_args()
+OUT=HERE/'.cache'/('proof-cloud-lazy' if options.cloud_lazy else 'proof-next' if options.next else 'proof-first')
 spec=importlib.util.spec_from_file_location('proof_helpers',CHESS/'select_full_proofs.py');helpers=importlib.util.module_from_spec(spec);spec.loader.exec_module(helpers)
 report=json.loads((OUT/'proof-run.json').read_text());assert report['completed'] and report['allFourGlobalStateFieldsMatch']
 manifest=json.loads((OUT/'proof-manifest.json').read_text());log=re.sub(r'\x1b\[[0-9;]*m','',(OUT/'prover.log').read_text())

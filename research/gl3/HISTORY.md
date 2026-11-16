@@ -190,3 +190,13 @@ Uniform instruction samples identify generic Go SHA-256 at 61.9% of sampled loca
 A disposable, billable Runpod CPU test server now supports a paired Linux replay against the same captured input. The live CPU5 compute catalog quoted 16 vCPUs and 32 GB RAM at $0.56/hour, plus scratch storage. No GPU, public GL3 deployment, live gameplay or real chain spending is involved. The obsolete R23 cold-block experiment was retired after the corrected full replay passed; its runner resumed the older full-search reference. Production storage, resource rejection and hosting acceptance remain open.
 
 **Evidence:** [Complete block replay](chess/sliced/aot/evidence/complete-wavm-block.json), [five distinct Solidity checks](chess/sliced/aot/evidence/complete-solidity-steps.json), [uniform instruction samples](chess/sliced/aot/evidence/sampled-profile.json), [copy-traffic and wrapper parity](chess/sliced/aot/evidence/wrapper-parity.json).
+
+## 27 · Verify the requested Linux hardware and bound the storage claim — 16 November
+
+The user requested a32-vCPU test machine with a5 GHz-class CPU. The earlier16-vCPU temporary pod was terminated before its replacement was created. The new guest confirms32 allocated CPU threads, a64 GB memory limit and an AMD EPYC9575F. AMD specifies up to5 GHz boost, with4.5 GHz all-core boost; this is not a guarantee of sustained guest frequency. The live catalog quotesUSD1.12/hour for compute. It is temporary testing infrastructure, not anUSD100/month production proposal.
+
+The verified replay bundle has arrived. A missing native Brotli dependency interrupted the first Linux build; the corrected recipe supplies the pinned C source and resumes compilation. Paired full-block replay of the eager and lazy roots is pending. Both retain the identical complete portable engine and captured input. No complete cloud workload result is claimed by allocation or compilation alone.
+
+The user's64 GB/1 TB whole-chain question is recorded as a launch-capacity candidate, not a passing acceptance test or an order for a1 TB volume. Approximately1.616 GB of observed first-decision delta payload makes long-game storage material: a simple80-decision projection is129 GB/game before overhead, not a measured ongoing rate. State reclamation, challenge retention, full-node/prover coexistence and recovery remain gates. One host cannot supply zero downtime by itself.
+
+**Evidence:** [Verified allocation and cost scope](chess/sliced/aot/evidence/cloud-allocation.json), [hosting and storage boundaries](chess/HOSTING.md), [corrected Linux build recipe](chess/sliced/aot/cloud/start.sh).

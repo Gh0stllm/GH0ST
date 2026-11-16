@@ -1,6 +1,6 @@
 # GL3 chess · USD 100/month performance budget
 
-The active server ceiling is **USD 100 per month**. The objective is sustained full-strength chess execution and recovery, not the cheapest shared VPS. This is a server budget; parent-chain gas, bonds and any software-license terms remain separate. No order has been placed.
+The active recurring server ceiling is **USD 100 per month**. The objective is sustained full-strength chess execution and recovery. This is a server budget; parent-chain gas, bonds and any software-license terms remain separate. No permanent production host has been ordered. A temporary, billable Runpod CPU machine is being used for replay testing, as requested by the user.
 
 | Candidate | Advertised hardware | Current public starting price | Decision |
 | --- | --- | --- | --- |
@@ -27,8 +27,20 @@ Current local M5 measurements: accelerated native18.7–20.5s/decision in the fo
 During the complete interpreter replay, a late-start sampler of the prover process briefly observed **14.63 GiB RSS**, before the run completed. This is not an exact whole-run peak or a hard16 GB Linux test. It is already enough to avoid treating the earlier native2.463 GiB study as the full node/proof budget. The user-selected target is24 GB withinUSD 100/month. Bounding diagnostic Merkle-hashing concurrency and reducing redundant witness generation are being tested separately; neither changes the Stockfish model, search budget or chess results.
 
 
-## User-selected24 GB target
+## Earlier 24 GB capacity candidate
 
-The latest preference is24 GB RAM withinUSD 100/month. The bounded real node/prover overlap screen supports it as a candidate for one active node/prover: the held native fixture observed2.65 GiB; a separate full-prover late sample reached14.63 GiB. The conservative observed-component sum plus a4 GiB planning reserve is about 21.35 GiB. This is neither a measured simultaneous maximum nor a hard24 GB/Linux certificate. [Exact scope](evidence/cohost24-screen.json).
+The earlier preference was24 GB RAM withinUSD 100/month. The bounded real node/prover overlap screen supports it as a candidate for one active node/prover: the held native fixture observed2.65 GiB; a separate full-prover late sample reached14.63 GiB. The conservative observed-component sum plus a4 GiB planning reserve is about 21.35 GiB. This is neither a measured simultaneous maximum nor a hard24 GB/Linux certificate. [Exact scope](evidence/cohost24-screen.json).
 
 The provider table preserves quoted comparison bundles, some of which include32 GB. An exact24 GB hosting configuration, checkout total, sustained CPU performance and restore acceptance remain unselected. The bot's full model,24m nodes and retained state remain fixed.
+
+## 32 vCPUs, 64 GB RAM and 1 TB NVMe
+
+This is a credible **low-traffic launch candidate**, not a completed whole-chain capacity test. It could co-host a GL3 sequencer/RPC, batch poster and a bounded validation worker, using a remote Robinhood parent RPC. It does not include running a full Robinhood or Ethereum node on the same server. Resource reservations must keep proof generation from starving block production. One machine also remains one failure domain.
+
+The [Nitro prerequisites](https://docs.arbitrum.io/run-a-node/start-here) list64 GB DDR5 as the minimum and128 GB or more as recommended; they call for local NVMe and storage sized to traffic, ideally several TB. Those public-chain guidelines do not establish a measured GL3 limit. GL3 starts much smaller, but its retained engine history can grow even when the number of players is low.
+
+The current first-decision experiment wrote approximately **1.616 GB of immutable delta payload**. A simple projection of that one observation gives129 GB for80 Black decisions, or2.59 TB for20 such games, before database and proof overhead. This is an illustrative projection, not measured sustained growth: later moves may differ. A1 TB disk is therefore a starting capacity, not a guarantee for20 long games under the current storage design. Reclaiming live code, retaining challenge data and cold replay need a tested design; ordinary database pruning alone is not a demonstrated solution.
+
+For the temporary Linux replay experiment, the allocated machine has32 vCPUs and64 GB RAM. The guest reports an AMD EPYC9575F. [AMD's specification](https://www.amd.com/en/products/processors/server/epyc/9005-series/amd-epyc-9575f.html) lists up to5 GHz boost and4.5 GHz all-core boost; neither is a provider guarantee of sustained guest frequency. A vCPU is not a promise of a dedicated physical core. The live Runpod CPU5 compute catalog quoted **USD1.12/hour** for32 vCPUs, excluding scratch disk. At730 hours this isUSD817.60 in compute alone, so this temporary testing configuration is **not** the permanentUSD100/month proposal. Its scratch disk is64 GB; the1 TB question did not authorize ordering a1 TB volume.
+
+The16-vCPU predecessor was terminated before creating the32-vCPU test machine. Both machines use the same complete engine and captured replay input. Paired eager/lazy replay results and final cleanup are recorded separately; allocation alone is not a passing workload test.
