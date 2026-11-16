@@ -1,0 +1,25 @@
+# TEMPLATE ONLY: standard Nitro base chain; no custom Stockfish execution.
+# No wallet, sequencer, batch-poster or validator-staking key is mounted.
+# Create a reviewed local-only node.json before explicitly running a rehearsal.
+services:
+  base-node:
+    profiles: [base-chain-rehearsal]
+    image: offchainlabs/nitro-node@sha256:c908f324a08b7332d1fa031b83b071cfa2d9edd8a364c4344d7c34b665bf08e9
+    platform: linux/amd64
+    command: ["--conf.file", "/config/node.json"]
+    restart: "no"
+    ports:
+      - "127.0.0.1:8547:8547"
+    volumes:
+      - "./private/node.json:/config/node.json:ro"
+      - "./data:/home/user/.arbitrum"
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "3"
+    mem_limit: 48g
+    cpus: 6
+    stop_grace_period: 120s

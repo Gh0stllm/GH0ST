@@ -1,0 +1,194 @@
+{
+  "schemaVersion": 1,
+  "status": "design_only_not_a_deployable_chain",
+  "asOfUserDateIST": "2026-11-16",
+  "decision": "Custom Robinhood-settled GH0ST-gas L3 on reliable servers; no server rented or chain deployed",
+  "parent": {
+    "network": "Robinhood mainnet",
+    "chainId": 4663,
+    "factorySupportVerified": false,
+    "licenseAcceptanceCompleted": false
+  },
+  "child": {
+    "chainId": null,
+    "dataAvailabilityModeProposal": "rollup",
+    "nativeGasTokenProposal": "GH0ST",
+    "parentTokenAddress": "0x2eb2849cDE7957b86d0dFD4B59e450a9F9D15559",
+    "feeTokenAuditComplete": false,
+    "customSTFImplemented": false,
+    "matchingFraudProverImplemented": false,
+    "witnessAndReplayImplemented": false,
+    "stockNitroContainerRunsSelectedEngine": false,
+    "ordinaryStylusAcceptsCurrentEngineUnchanged": false
+  },
+  "immutableStrengthPolicy": {
+    "engine": "Stockfish 19",
+    "engineCommit": "edb0d9db6731067ec50ce619ff372b463bc4dd5d",
+    "nnueSHA256": "1a298aa575a085434d29027978dc36867fe9c5bcea9376654b7a8eba1e52dfc2",
+    "nodes": 24000000,
+    "hashMiB": 128,
+    "threads": 1,
+    "skillLevel": 20,
+    "limitStrength": false,
+    "multiPV": 1,
+    "cachePolicy": "TT and all search histories retained within each game; explicit new-game reset"
+  },
+  "strengthPolicyCanonicalJSONSHA256": "a5639c5d2c8a700a187e803add4685823535d5edf59306e6097609b0f1aa6daf",
+  "engineReference": {
+    "upstreamCommit": "edb0d9db6731067ec50ce619ff372b463bc4dd5d",
+    "fullNNUEBytes": 98511183,
+    "fullNNUESHA256": "1a298aa575a085434d29027978dc36867fe9c5bcea9376654b7a8eba1e52dfc2",
+    "existingICPWasmBytes": 103089852,
+    "existingICPWasmSHA256": "725dc0c795262be21f1ffafec60f50aae3e9d00140add77e791a89eece0f417b",
+    "existingICPMeteringAndHostAPINotAnL3Artifact": true,
+    "L3NativeExecutableSHA256": null,
+    "L3ProverWasmSHA256": null,
+    "proverModuleRoot": null,
+    "genesisStateHash": null
+  },
+  "execution": {
+    "workLimitUnit": "nodes",
+    "nodesPerBlackDecision": 24000000,
+    "wallClockCutoffMustNotReturnWeakerMove": true,
+    "resumableDeterministicTransitionsRequired": true,
+    "externalInferenceAPIAllowed": false,
+    "externalEngineProcessInsideSTFAllowed": false,
+    "uncommittedReplicaRAMAllowedForFutureAffectingState": false,
+    "sameEnginePolicyForNativeReplayAndFraudProof": true
+  },
+  "rewardSettlementProposal": {
+    "entryGH0ST": "25000",
+    "fixedCheckmatePayoutGH0ST": "1000000",
+    "parentEscrow": "new_receipt_backed_RH_contract_required",
+    "proof": "authenticated_finalized_L3_outbox_message_to_RH_parent_escrow",
+    "rawSequencerRPCOrOperatorSignatureAloneAuthorizesPayout": false,
+    "existingImmutableRHGameIsNotAnL3SettlementEscrow": true,
+    "exactEntryBridgeAndGasFundingFlowReviewed": false,
+    "assetMovesApprovedByThisManifest": false
+  },
+  "reliability": {
+    "twoContainersOnOneHostAreNotIndependent": true,
+    "mirrorIsNotOffsiteBackup": true,
+    "keepValidatorProverAndStateThroughFinalityAndDisputes": true,
+    "independentFailureDomainRecommended": true,
+    "topologyMustBeDisclosed": true,
+    "singleHostRehearsalSelected": true,
+    "singleHostIsHighAvailability": false,
+    "separateValidatorHostIsProtocolMinimumClaim": false
+  },
+  "budgets": {
+    "totalICPIncludingPreviouslyConverted": "100",
+    "previouslyConvertedICP": "13",
+    "ledgerFeesPreviouslyPaidICP": "0.0003",
+    "ETHDeploymentAndRelayTotalCap": "0.003",
+    "prizeGH0STCap": "1000000",
+    "pilotEntryGH0STCap": "25000",
+    "newExternalHostingBillApproved": false,
+    "newValidatorBondFundingApproved": false,
+    "automaticTopups": false,
+    "twentyGameCapacityMeasured": false,
+    "twentyGameScenario": {
+      "games": 20,
+      "blackDecisionsPerGamePlanningAssumption": 80,
+      "notAUniversalLengthGuarantee": true
+    }
+  },
+  "launch": {
+    "publicPaidEntriesEnabled": false,
+    "readyForProduction": false,
+    "verifiedGateEvidence": [],
+    "requiredGates": [
+      {
+        "id": "parent-and-license",
+        "acceptance": "Supported RH deployment path, exact factories or reviewed self-deployed route, fee token compatibility, license terms and acceptance",
+        "passed": false,
+        "evidence": []
+      },
+      {
+        "id": "policy-and-artifacts",
+        "acceptance": "Pinned upstream/network/policy plus reproducible native node, replay/prover and module root hashes",
+        "passed": false,
+        "evidence": []
+      },
+      {
+        "id": "toy-stf-fraud-proof",
+        "acceptance": "Local deterministic toy custom STF runs through native, replay and one-step proof; wrong result loses a real local challenge",
+        "passed": false,
+        "evidence": []
+      },
+      {
+        "id": "full-engine-continuation",
+        "acceptance": "Full network, complete search continuation and all retained TT/history state persist deterministically across chunks",
+        "passed": false,
+        "evidence": []
+      },
+      {
+        "id": "engine-parity",
+        "acceptance": "Consecutive complete 24m searches and whole games match reference behavior on native node and replay/proving path",
+        "passed": false,
+        "evidence": []
+      },
+      {
+        "id": "fraud-and-recovery",
+        "acceptance": "Corrupt output/state, changed code, stale continuation and restart are rejected or fail closed; no silent search reset",
+        "passed": false,
+        "evidence": []
+      },
+      {
+        "id": "parent-custody-and-finality",
+        "acceptance": "Reviewed parent escrow/bridge/outbox checks, exact token accounting, winner payout, refunds and challenge window",
+        "passed": false,
+        "evidence": []
+      },
+      {
+        "id": "capacity-and-fees",
+        "acceptance": "At least20 completed normal-game workload tests at stated length plus measured CPU/memory/disk/latency/settlement/proving costs and contingency",
+        "passed": false,
+        "evidence": []
+      },
+      {
+        "id": "capital-and-authority",
+        "acceptance": "Explicit approved server quote, bond asset/amount, deployment/fee caps and no reallocation of GH0ST prizes",
+        "passed": false,
+        "evidence": []
+      },
+      {
+        "id": "reliability",
+        "acceptance": "Reviewed availability/failure/refund model, monitoring, offsite restore and funded dispute/finality retention; independent validator failure domain recommended for public service",
+        "passed": false,
+        "evidence": []
+      },
+      {
+        "id": "closed-pilot",
+        "acceptance": "Paused installation receipts and full-strength live capped pilot pass before fee admission",
+        "passed": false,
+        "evidence": []
+      }
+    ]
+  },
+  "validationProposal": {
+    "modeSelected": null,
+    "permissionedValidationMayBeReviewed": true,
+    "permissionedValidatorsActivated": false,
+    "permissionedTrustDisclosedAndAccepted": false,
+    "bondReductionApproved": false,
+    "customBondTokenApproved": false,
+    "fastConfirmationApproved": false,
+    "unchangedSecurityAssumedForLowerBonds": false
+  },
+  "codeEpochPolicy": {
+    "genesisMustBindEnginePolicyAndNativeReplayProverHashes": true,
+    "samePolicyRequiredForGameAdmissionAndPayout": true,
+    "changingEnginePolicyDuringActiveGameAllowed": false,
+    "oldHistoryReplaySemanticsMustRemainAvailable": true,
+    "upgradeProcedureReviewed": false
+  },
+  "sources": {
+    "customSTF": "https://developer.arbitrum.io/launch-arbitrum-chain/extend-the-protocol/stf",
+    "factories": "https://docs.arbitrum.io/launch-arbitrum-chain/deploy/canonical-factory-contracts",
+    "customGas": "https://docs.arbitrum.io/launch-arbitrum-chain/chain-config/costs/custom-gas-token-rollup",
+    "currentSDKStakeDefaults": "https://github.com/OffchainLabs/arbitrum-chain-sdk/blob/main/src/createRollupPrepareDeploymentParamsConfig/v3.2.ts",
+    "bondReview": "https://developer.arbitrum.io/launch-arbitrum-chain/chain-config/validation/bond-and-validator",
+    "BoLD": "https://docs.arbitrum.io/launch-arbitrum-chain/chain-config/validation/bold"
+  }
+}
