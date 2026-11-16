@@ -24,10 +24,10 @@ sources=[p for p in SRC.rglob('*.cpp') if p.name not in ['main.cpp']]
 sources=[p for p in sources if p.parent==SRC or p.parent.name in ['nnue','features','syzygy']]
 sources.append(CACHE/'engine.cpp')
 wasi=ENGINE/'.cache/toolchain/wasi-sdk/wasi-sdk-25.0/bin';common=['-std=c++20','-O3','-fno-exceptions','-fno-rtti','-DGH0ST_ICP','-DIS_64BIT','-DUSE_POPCNT','-DNO_TABLEBASES','-DARCH=gl3-scalar','-fconstexpr-steps=500000000','-I'+str(SRC),'-I'+str(CACHE)]
-parser=argparse.ArgumentParser();parser.add_argument('--target',choices=['native','wasm','both'],default='both');args=parser.parse_args()
+parser=argparse.ArgumentParser();parser.add_argument('--target',choices=['native','wasm','both'],default='both');options=parser.parse_args()
 records=[]
 for target,compiler,extra in [('native','/usr/bin/clang++',['-fPIC','-DUSE_NEON=8','-DUSE_NEON_DOTPROD','-mcpu=apple-m1']),('wasm',str(wasi/'clang++'),['-mno-simd128'])]:
- if args.target not in ['both',target]:continue
+ if options.target not in ['both',target]:continue
  out=CACHE/target;out.mkdir(exist_ok=True)
  def compile(p):
   obj=out/(str(p.relative_to(SRC)) if p.is_relative_to(SRC) else 'gl3.cpp');obj=obj.with_suffix('.o');obj.parent.mkdir(parents=True,exist_ok=True)

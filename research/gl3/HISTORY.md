@@ -89,3 +89,16 @@ The complete official OVH catalog distinguished default monthly pricing from ann
 The user authorized full Stockfish integration into GL3 with replay and proof tests, preserving the full network,24m-node budget, Hash128 and retained game state. The first direct native/scalar-Wasm decision matched exact move/nodes/depth and its entire canonical retained state. Four-decision parity, actual GL3 calls and full proofs remain in progress. The server target changed to up toUSD100/month, with sustained CPU performance and recovery taking precedence over the cheapest shared VPS. No server was rented.
 
 **Evidence:** [Active integration](chess/README.md), [first complete decision](chess/evidence/first-scalar-parity.json).
+
+
+## 15 · Verify full native/Wasm retained state and actual EVM dispatch — 16 November
+
+Four consecutive complete24m decisions matched the published reference across scalar native, scalar Wasm and accelerated native. All canonical retained checkpoints matched byte for byte. Two full searches then ran through actual Geth EVM/ArbOS dispatch and committed the same state. Caller isolation, stale/illegal input, corrupted model/state, retry and one-gas-short rollback passed. The latter checks actual code pages, metadata and the whole trie root. Local accelerated decisions took roughly17–20s across the measured runs, with the full model and search policy unchanged.
+
+**Evidence:** [Integration results](chess/README.md), [all four parity decisions](chess/evidence/native-wasm-parity.json), [actual EVM checks](chess/evidence/actual-evm-dispatch.json).
+
+## 16 · Generate the complete custom chess replay machine — 16 November
+
+The full Go replay target and direct C++ engine companion linked into a WAVM machine with root`0xdc64c010de5e7a45fa4c83dde4e6d165ab0abf1a0f074e2ef2a086207edf3ebe`. Initialization passed. This is a build milestone; full engine-bearing block replay and Solidity proof verification remain pending. A local mined-block rehearsal is being prepared. No hosting was ordered and no public-chain funds moved.
+
+**Evidence:** [Exact artifact identities and build boundary](chess/evidence/custom-machine-build.json), [reproducer](chess/build_replay.py).
