@@ -129,3 +129,9 @@ The user selected24GB RAM while retaining theUSD100/month server budget. A secon
 The sum of separately observed component peaks is about17.35GiB. Adding a4GiB planning reserve gives about21.35GiB; that is a sizing estimate, not a measured simultaneous peak or a hard24GB/Linux acceptance test.24GB remains a candidate for one active node/prover, with unchanged bot strength and final hosting acceptance pending. The repeat fixture shut down cleanly; no real funds moved.
 
 **Evidence:** [Repeated full-strength move](chess/evidence/cohost24-move.json), [bounded capacity screen and limits](chess/evidence/cohost24-screen.json), [all overlap samples](chess/evidence/cohost24-samples.csv).
+
+## 20 · Split chess work so ordinary blocks can continue — 16 November
+
+The user required fully on-chain search without the monolithic19–24s block stall, preserving bot strength. An isolated Asyncify module now pauses recursive Stockfish work at a2,048-node scheduling quantum while retaining the full24m decision target, complete network, Hash128 and game cache. This is a build milestone. Exact completed-state parity, persistent snapshot costs, real block cadence and matching proofs remain acceptance gates. The previous full interpreter replay continues on its immutable original inputs.
+
+**Evidence:** [Resumable implementation and gates](chess/sliced/README.md).
