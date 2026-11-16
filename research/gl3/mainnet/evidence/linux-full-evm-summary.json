@@ -1,0 +1,31 @@
+{
+  "checks": [
+    "project-only admission and one retained-game reservation bound live memory",
+    "unseeded, static writes, caller isolation, generation and illegal moves reject",
+    "retry performs no duplicate search; generation and future cursor reject",
+    "global one-slice-per-block limit prevents aggregation of blocking searches",
+    "eth_call uses isolated VM and cannot advance or evict live search; real transition matches",
+    "recording rebuilds a separate VM and leaves the live cache untouched",
+    "debug arbitrary-code writer forces strict cache identity checks; fast profile disables it",
+    "warm and cold execution match output root and exact gas",
+    "OOG rolls back entire trie; discarded VM cache resumes exact next root from on-chain bytes",
+    "complete24m decision and every canonical retained-state byte match monolithic reference",
+    "terminal release frees capacity and cannot expose or resume a partial result"
+  ],
+  "coldBeginSeconds": 0.532799181,
+  "complete24mCheckpointSHA256": "5f9762c73c1309824a365e47f936d27975c6233770672803bcc6ffbba30f28c6",
+  "fullDecision": true,
+  "passed": true,
+  "publicDeployment": false,
+  "realSpend": 0,
+  "scope": "actual local EVM/ArbOS dispatch with authoritative portable VM deltas; not mined cadence or full fraud dispute",
+  "steps": 2464,
+  "rowsLatency": {
+    "count": 2461,
+    "medianMS": 79.03436599999999,
+    "p95NearestRankMS": 86.67787100000001,
+    "maximumMS": 143.564582
+  },
+  "rawJSON_SHA256": "7746224b508d492653ee769741517fde9b43b5dcde780e3d0f78f98ab565a45a",
+  "rawRowsArchive": "linux-full-evm.json.gz"
+}

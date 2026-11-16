@@ -35,9 +35,23 @@
 - [x] Match four complete native/scalar-Wasm decisions and canonical state; generate the complete custom WAVM machine.
 - [x] Mine an actual full-strength block, post it in a real local parent batch and independently replay the complete native block.
 - [x] Verify initialization/common-point and actual Stockfish search-loop/memory/arithmetic OSP witnesses, with corruption rejection.
-- [ ] Complete the engine-bearing full WAVM replay and compare the exact final global state.
+- [x] Complete one corrected sliced block in the frozen eager WAVM machine and match all four global-state fields.
+- [x] Verify five distinct eager-machine Solidity witnesses, including corruption rejection.
+- [x] Complete the newer lazy-copy machine’s independent Linux first-block replay and five Solidity witnesses.
+- [ ] Complete its next consecutive recorded-block replay and independent witness checks.
+- [x] Mine a complete unchanged Linux decision alongside 2,464 ordinary transfers.
+- [x] Recover its terminal retained state from disk in a separate OS process.
+- [x] Complete the standard inbox BoLD dispute through actual challenge contracts.
+- [ ] Complete native GH0ST child burn and confirmed parent withdrawal (the real-token bridge unit uses a test-confirmed root).
+- [ ] Complete the original monolithic24m-move WAVM reference; the incomplete local run was stopped when the user moved all tests to Runpod.
 - [ ] Execute a complete incorrect-result dispute through the actual challenge contracts.
 - [ ] Measure actual end-to-end memory, disk growth, move latency and parent posting costs.
 - [ ] Wire the reviewed game/reward path and prove complete legal play and payouts.
 
 Checks represent achieved local evidence or explicit remaining work. This is not a launch-date promise.
+
+## Mainnet direction
+
+The user requested Robinhood mainnet deployment after testing. The working planning estimate for a restricted pilot is3–7 days, conditional on the remaining gates; it is not a launch commitment. The temporary Linux workers are for testing and are not a permanent hosting selection. The paired 64 GB experiment exceeded its memory limit; a single next-block proof runs separately on 128 GB. Every further build, engine test, replay, proof and deployment rehearsal runs on Runpod. Local work is limited to editing, transfers, research and publication.
+
+A pilot still needs an accepted Linux image and matching genesis/module root, long-history cold recovery and storage bounds, reviewed GH0ST deposits/withdrawals and fee pricing, validator/upgrade controls, a complete deliberately incorrect-result dispute rehearsal, verified parent compatibility and the applicable license path. Passing one replay is one gate. Public receipts and working endpoints will establish a launch when it actually happens.

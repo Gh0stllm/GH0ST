@@ -1,0 +1,96 @@
+{
+  "scope": "read-only Robinhood snapshot and private cloud-fork ERC20 tests; no public transactions",
+  "publicEndpoint": "https://rpc.mainnet.chain.robinhood.com",
+  "token": "0x2eb2849cDE7957b86d0dFD4B59e450a9F9D15559",
+  "owner": "0x8D6B11CFdF079e27C17e05Cb7Ea81235887691c6",
+  "publicDeployment": false,
+  "realChainSpend": 0,
+  "gasTokenReadyForProduction": false,
+  "checks": [
+    {
+      "name": "fund unprivileged fork holder",
+      "passed": true,
+      "amount": "4000000000000000000",
+      "privateForkGasUsed": "51364"
+    },
+    {
+      "name": "nonzero self transfer preserves balance",
+      "passed": true,
+      "amount": "1000000000000000000",
+      "privateForkGasUsed": "26664"
+    },
+    {
+      "name": "unprivileged transfer exact balance deltas",
+      "passed": true,
+      "amount": "1000000000000000000",
+      "privateForkGasUsed": "51364"
+    },
+    {
+      "name": "approval and transferFrom exact deltas and allowance",
+      "passed": true,
+      "privateForkGasUsed": "39983"
+    },
+    {
+      "name": "unknown withdrawal root rejects",
+      "passed": true
+    },
+    {
+      "name": "non-rollup root registration rejects",
+      "passed": true
+    },
+    {
+      "name": "withdrawal replay rejects",
+      "passed": true
+    }
+  ],
+  "parent": {
+    "chainId": 4663,
+    "blockNumber": 115983492,
+    "blockHash": "0x82513b3abf5578b7740746ada88d83fc66cfa5b5d36c58cac390dce65e038572",
+    "gasLimit": "1125899906842624",
+    "baseFeeWei": "20000000"
+  },
+  "runtimeCodeHash": "0x7c38fa1b069b5e677034bab6219dd2f519f219f7637910131d9a0f58a05ae164",
+  "runtimeCodeBytes": 3248,
+  "standardMinimalProxyImplementation": null,
+  "metadata": {
+    "name": "GH0ST",
+    "symbol": "GH0ST",
+    "decimals": 18,
+    "totalSupply": "997000000000000000000000000"
+  },
+  "publicSelfTransferSimulationPassed": true,
+  "privateForkChainId": 94663007,
+  "sampledERC20ForkChecksPassed": true,
+  "bridgeContractUnitChecksPassed": true,
+  "bridgeUnit": {
+    "realGH0STFork": true,
+    "pinnedImplementations": {
+      "ERC20Bridge": "22a828d77e1ea812f1085825aa55873f6da3f58c382f3b9239f8591d4518d0b9",
+      "ERC20Outbox": "998874c44a74dba0cd1d2d870d71b89342d932a831c0daab0401e197afd31768"
+    },
+    "exactEscrowAndReturnAmount": "4000000000000000000",
+    "mockConfirmedSendRoot": true,
+    "actualChildBurnAndConfirmedAssertionTested": false,
+    "productionProxyAndGovernanceTested": false
+  },
+  "limitations": [
+    "Representative transfers do not prove all privileged, rebasing or future upgrade behavior.",
+    "Shanghai Ganache does not reproduce every Robinhood/ArbOS feature.",
+    "Parent deployment, bridge custody, fee pricing and full withdrawals remain untested here.",
+    "Private-fork gas is not a Robinhood deployment fee quote."
+  ],
+  "publicRPCMethods": [
+    "eth_blockNumber",
+    "eth_call",
+    "eth_chainId",
+    "eth_getBalance",
+    "eth_getBlockByNumber",
+    "eth_getCode",
+    "eth_getStorageAt",
+    "eth_getTransactionCount",
+    "net_version"
+  ],
+  "asOfUTC": "2026-11-16T18:51:48.966Z",
+  "publicReportOmittedTreasuryBalance": true
+}

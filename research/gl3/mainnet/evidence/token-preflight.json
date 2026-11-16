@@ -1,0 +1,72 @@
+{
+  "scope": "read-only Robinhood snapshot and private cloud-fork ERC20 tests; no public transactions",
+  "publicEndpoint": "https://rpc.mainnet.chain.robinhood.com",
+  "token": "0x2eb2849cDE7957b86d0dFD4B59e450a9F9D15559",
+  "owner": "0x8D6B11CFdF079e27C17e05Cb7Ea81235887691c6",
+  "publicDeployment": false,
+  "realChainSpend": 0,
+  "gasTokenReadyForProduction": false,
+  "checks": [
+    {
+      "name": "fund unprivileged fork holder",
+      "passed": true,
+      "amount": "4000000000000000000",
+      "privateForkGasUsed": "51364"
+    },
+    {
+      "name": "nonzero self transfer preserves balance",
+      "passed": true,
+      "amount": "1000000000000000000",
+      "privateForkGasUsed": "26664"
+    },
+    {
+      "name": "unprivileged transfer exact balance deltas",
+      "passed": true,
+      "amount": "1000000000000000000",
+      "privateForkGasUsed": "51364"
+    },
+    {
+      "name": "approval and transferFrom exact deltas and allowance",
+      "passed": true,
+      "privateForkGasUsed": "39983"
+    }
+  ],
+  "parent": {
+    "chainId": 4663,
+    "blockNumber": 115978165,
+    "blockHash": "0xf00ebe73d3d4f7de752160c725f299c6e7be672faaa0d5de84d6f8bbbbf5ec44",
+    "gasLimit": "1125899906842624",
+    "baseFeeWei": "20160000"
+  },
+  "runtimeCodeHash": "0x7c38fa1b069b5e677034bab6219dd2f519f219f7637910131d9a0f58a05ae164",
+  "runtimeCodeBytes": 3248,
+  "standardMinimalProxyImplementation": null,
+  "metadata": {
+    "name": "GH0ST",
+    "symbol": "GH0ST",
+    "decimals": 18,
+    "totalSupply": "997000000000000000000000000"
+  },
+  "publicSelfTransferSimulationPassed": true,
+  "privateForkChainId": 94663007,
+  "sampledERC20ForkChecksPassed": true,
+  "limitations": [
+    "Representative transfers do not prove all privileged, rebasing or future upgrade behavior.",
+    "Shanghai Ganache does not reproduce every Robinhood/ArbOS feature.",
+    "Parent deployment, bridge custody, fee pricing and full withdrawals remain untested here.",
+    "Private-fork gas is not a Robinhood deployment fee quote."
+  ],
+  "publicRPCMethods": [
+    "eth_blockNumber",
+    "eth_call",
+    "eth_chainId",
+    "eth_getBalance",
+    "eth_getBlockByNumber",
+    "eth_getCode",
+    "eth_getStorageAt",
+    "eth_getTransactionCount",
+    "net_version"
+  ],
+  "asOfUTC": "2026-11-16T18:42:21.384Z",
+  "publicReportOmittedTreasuryBalance": true
+}

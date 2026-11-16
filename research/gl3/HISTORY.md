@@ -200,3 +200,15 @@ The verified replay bundle has arrived. A missing native Brotli dependency inter
 The user's64 GB/1 TB whole-chain question is recorded as a launch-capacity candidate, not a passing acceptance test or an order for a1 TB volume. Approximately1.616 GB of observed first-decision delta payload makes long-game storage material: a simple80-decision projection is129 GB/game before overhead, not a measured ongoing rate. State reclamation, challenge retention, full-node/prover coexistence and recovery remain gates. One host cannot supply zero downtime by itself.
 
 **Evidence:** [Verified allocation and cost scope](chess/sliced/aot/evidence/cloud-allocation.json), [hosting and storage boundaries](chess/HOSTING.md), [corrected Linux build recipe](chess/sliced/aot/cloud/start.sh).
+
+## 28 · Complete Linux replay, traffic, recovery and standard dispute checks — 17 November
+
+All heavy work moved to Runpod. The lazy-copy proof machine independently completed the corrected first compute block in 2,712.72 seconds, matching every global-state field. Five distinct actual Solidity witnesses passed with corrupted-state/proof rejection. The paired eager job was OOM-killed under the 64 GB hard limit; this failed comparison is preserved. A separate 128 GB worker is checking the next consecutive block, rather than treating one cold block as proof of later blocks.
+
+The native Linux engine completed the unchanged full decision with all canonical retained bytes matching. An actual private Nitro node then mined all 2,464 compute operations alongside 2,464 independent transfers: ordinary confirmation latency was 141.60 ms median /160.91 ms p95 under the 100 ms target. The entire mined fixture took 365.91 seconds including setup/recording/cleanup. Those receipt measurements are neither a public SLA nor a 100 ms move claim.
+
+An isolated persisted database closed and reopened across separate OS processes, reconstructing the complete terminal state in 8.63 seconds. Raw first-decision deltas total 1.618 GB; disk measurements and compaction timing are preserved without extrapolating a passing long-game capacity. A private fork of the real GH0ST token passed representative ERC20 transfer/approval checks. Actual ERC20 bridge/outbox contracts returned exactly 4 GH0ST with a test-confirmed root and rejected invalid/repeated withdrawals. A separate upstream ETH fast-confirmation withdrawal passed. Neither is a complete native GH0ST withdrawal.
+
+The actual standard inbox BoLD dispute passed both recorder cases in 415.55 seconds and the honest validator won. A deliberately incorrect Stockfish-result dispute remains untested. Production artifact/root pairing, long-history recovery, storage reclamation, GH0ST native withdrawals, fee/custody configuration and parent/license acceptance still gate mainnet. No public GL3 contract was deployed and no real token moved in these rehearsals.
+
+**Evidence:** [Linux acceptance notebook](mainnet/README.md), [complete lazy replay](mainnet/evidence/cloud-lazy-wavm-replay.json), [actual mined decision](mainnet/evidence/linux-full-mined-summary.json), [standard dispute](mainnet/evidence/bold-inbox-summary.json).
