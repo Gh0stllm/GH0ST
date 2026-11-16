@@ -11,7 +11,7 @@
 | Does the nested token/transaction route work? | Real local Geth → Nitro → Nitro, GHMOCK lock/native credit and exact signed transaction in parent batch2 | Mock funds, development finality; no fraud challenge |
 | How large is a fresh child? |179.25 MiB peak RSS;2132 KiB allocated chain-data directory | No model, staker, block-validator or prover peak included |
 | Is the chess model small enough to inspect? | Full NNUE98,511,183bytes; pinned SHA and full 24m-node policy | File size is not live execution memory |
-| Have we tested all on-chain chess layers? | No. Existing native and ICP engines are separate from the standard L3 | No L3 Stockfish replay/prover capacity claim |
+| Does full chess execute inside the custom STF? | Four native/Wasm state fixtures match; actual mined move and independent complete native block replay passed | Custom debug-only research profile; full WAVM replay and live dispute not complete |
 
 [Core evidence](../chess/l3/core/README.md) · [Full-strength workload](../chess/l3/core/hosting/chess-workload-20261116/README.md)
 
@@ -29,7 +29,7 @@ The team needs the GL3 child and parent RPC connectivity, not locally hosted ful
 
 GH0ST native gas does not remove parent ETH posting charges. The SDK requires an explicit compatible custom-token fee-pricer configuration; its rate and safe reimbursement policy remain unselected. Validator collateral, custody, license applicability and independent recovery still need review. A small single host can preserve computation quality while remaining a single failure domain.
 
-The earlier large AWS fleet is a public-availability reference, not a private-chain minimum. Current smaller provider quotes and their billing terms are in the [hosting study](../chess/l3/core/hosting/price-research/README.md). A16 GB final recommendation waits for the selected full-strength measurements and their remaining replay/prover boundary.
+The earlier large AWS fleet is a public-availability reference, not a private-chain minimum. Current smaller provider quotes and their billing terms are in the [hosting study](../chess/l3/core/hosting/price-research/README.md). The active budget is nowUSD100/month. A late sample of the full WAVM prover reached14.63GiB RSS before completion;32GB is preferred for the cohosted node/prover until complete Linux acceptance.
 
 ## Claim policy
 
@@ -45,3 +45,14 @@ This supports16 GB for the measured native engine workload; it is not a16 GB Lin
 ![Exact memory data in GH0ST's dot-matrix style](assets/memory-results.svg)
 
 The lowest practical shared-CPU catalog candidate found is OVH8 GB at€8.49 base, conservatively€8.99/month before tax with the undiscounted backup allowance. For at least16 GB, its24 GB plan is€23.49 base, conservatively€24.49 before tax. A netcup8 GB guaranteed-resource alternative is about€25 including displayed19%VAT and IPv4. Stock, invoice eligibility, Linux parity and hosted performance remain unverified. [Pricing rows, terms and primary sources](../chess/l3/core/hosting/chess-workload-20261116/HOSTING.md).
+
+
+## Active full chess integration
+
+The98.5MB network and24m-node/Hash128/one-worker policy are unchanged. Four consecutive decisions reproduce exact move, actual nodes, depth and all163,085,439 canonical checkpoint bytes across native/scalar-Wasm. The native vector binary remains byte-identical after the build-recipe update.
+
+The custom ArbOS extension executed a full move in an actual local Nitro block and included it in a real local Ethereum-parent batch. A separate complete native replay, using only recorded inputs, reproduced the exact block hash, send root and inbox position. Full-model/state corruption, caller isolation, retries and one-gas-short rollback passed. The full WAVM replay is in progress; ten initial OSP witnesses, an independently reproduced100b-step point and real Worker::search arithmetic/memory witnesses passed actual Solidity verification, with corrupted witness/pre-state rejection.
+
+The full prover's partial late-start samples already exceed14GiB RSS; the earlier2.463GiB native capacity screen does not cover that proof workload. The current32GB/USD100 direction supersedes the cheapest shared-CPU recommendation above. No host has been rented. Linux SSE4.1 is a prepared candidate, not a tested deployment. AVX2's accumulator-lane layout requires a separately verified canonical-state adapter before promotion.
+
+[Engine/replay evidence](chess/README.md) · [Current host candidates](chess/HOSTING.md)

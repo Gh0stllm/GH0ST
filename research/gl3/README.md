@@ -4,7 +4,7 @@
 
 [Open the full overview](../../README.md) · [History](HISTORY.md) · [Findings](FINDINGS.md) · [Roadmap](ROADMAP.md)
 
-This branch records the path from a full-strength chess workload to a private Robinhood-settled compute chain. The standard base works locally. Deterministic Stockfish integration and its full L3 replay/prover path remain research.
+This branch records the path from a full-strength chess workload to a private Robinhood-settled compute chain. The standard base works locally. The custom full-strength Stockfish transition and complete native block replay now work locally; complete WAVM replay and production acceptance remain active research.
 
 | Notebook | Read for |
 | --- | --- |
@@ -14,3 +14,5 @@ This branch records the path from a full-strength chess workload to a private Ro
 | [Machine-readable status](status.json) | Current workload and verified deployment boundaries |
 | [Append-only journal](journal.jsonl) | Ordered research events linked to their evidence |
 | [Chess memory study](../chess/l3/core/hosting/chess-workload-20261116/README.md) | Full network,24m nodes, retained state and hosting measurements |
+
+[Active full chess integration](chess/README.md) · [USD100 hosting direction](chess/HOSTING.md)

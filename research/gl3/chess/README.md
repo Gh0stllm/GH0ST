@@ -54,3 +54,11 @@ The local research profile explicitly set100m max transaction/block gas and a120
 5. Run the real Rust prover on the generated `machine.v2.wavm.br` and recorded `input.json`, with `--require-success`. It must reach the expected complete end state, not merely finish initialization. `verify_steps.mjs` checks exported witnesses with real Solidity OSP contracts and rejects corrupt witnesses/pre-state hashes.
 
 Caches contain the full network, binary artifacts and large replay inputs. They are intentionally ignored. Source, fixtures' identities, measured outputs and reproduction recipes are published; regenerated local parent timestamps can change block hashes, while the pinned chess checkpoint must still match.
+
+## Actual search-loop proof witnesses
+
+The pinned Solidity OSP accepted actual `Stockfish::Search::Worker::search` witnesses at steps119,733,151,745,122,111,322,114 and124,706,547,715, including arithmetic and memory transitions. Every altered pre-state/witness probe was rejected. The independent100b-step witness matches byte for byte across the two interpreter drivers. These are real search-loop proofs, separately labeled from the complete end-state replay that remains running.
+
+[Verifier results](evidence/search-loop-solidity-steps.json) · [Actual witnesses](evidence/search-loop-witnesses.json) · [Bounded collection scope](evidence/search-loop-collection.json)
+
+The diagnostic driver executes the same interpreter instructions and limits only witness collection and Merkle-hash concurrency. Its `--witnesses-only` mode makes partial coverage explicit. The first broad symbol filter caught `Worker::clear`; the corrected filter requires the actual search/qsearch function. No initializer witness is counted as search-loop evidence. The reviewed engine extension must be promoted separately from all development-only precompiles before any public launch.

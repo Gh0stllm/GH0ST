@@ -20,3 +20,8 @@ The quote must be rechecked at checkout for the user's billing country, datacent
 - Keep backup data off the primary host; test restore and retain the old authoritative checkpoint on any failed transition. A single host does not provide zero downtime.
 
 Current local M5 measurements: accelerated native18.7–20.5s/decision in the four-position suite; actual EVM17.3–17.9s in a later two-decision run. Scalar Wasm JIT188–222s/decision. These do not establish hosted timing or full WAVM-proof speed. The full retained checkpoint is155.5MiB/game; historical state growth and parent DA cost still need measurement.
+
+
+## Full-prover memory observation
+
+During the complete interpreter replay, a late-start sampler of the prover process briefly observed **14.63GiB RSS**, before the run completed. This is not an exact whole-run peak or a hard16GB Linux test. It is already enough to avoid treating the earlier native2.463GiB study as the full node/proof budget. The active preference is32GB withinUSD100/month. Bounding diagnostic Merkle-hashing concurrency and reducing redundant witness generation are being tested separately; neither changes the Stockfish model, search budget or chess results.

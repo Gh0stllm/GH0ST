@@ -1,0 +1,82 @@
+{
+  "passed": true,
+  "scope": "Actual Stockfish Worker::search computation, arithmetic and memory witnesses verified by pinned Solidity OSP, with corruption rejection; bounded witnesses do not imply complete replay",
+  "proofFileSHA256": "ba636892e94b84e9a1cbc3768dae80a09694efbc3c0f090314bfa8f6897a80ce",
+  "moduleRoot": "0xdc64c010de5e7a45fa4c83dde4e6d165ab0abf1a0f074e2ef2a086207edf3ebe",
+  "verifierSourceCommit": "4341b132cfbdcc980ead03765ca5224ff6cb5d97",
+  "artifacts": {
+    "OneStepProver0": "29cf3c941bee6ef4444bf1f8a2d19a3766dd65f52453a8d3b4b4e0682c5a26cd",
+    "OneStepProverMemory": "02337afab69b8363f0f8dc4caa321c450ab7ba939253c9bdb46964b1eb64c410",
+    "OneStepProverMath": "6e24a746dfba83f05df8b4669e5a10a0d1447308ac89f84463096f4b1f64dd0a",
+    "OneStepProverHostIo": "71110c440eeec82b53092ecfe696d4e875fc219c589776a3906ad6ba98c1cb36",
+    "OneStepProofEntry": "abba7e73e5626783d805a820da2ffe662d1852266d6341176519ad12a8806f11"
+  },
+  "records": [
+    {
+      "step": "100000000000",
+      "reason": "independent_common_100b_point",
+      "moduleName": "replay.wasm",
+      "functionName": "crypto_internal_fips140_sha256.blockGeneric",
+      "location": {
+        "module": 10,
+        "function": 4654,
+        "pc": 28
+      },
+      "before": "1ee77a6862552034086a67509afec59dc674bb1790e0f6f183f72f822177941e",
+      "after": "70f372ac228d509de1749cea0af181c0ed9c636d0926da2b89abadcb267eba30",
+      "proofBytes": 3601,
+      "corruptBeforeRejected": true,
+      "corruptProofRejected": true
+    },
+    {
+      "step": "119733151745",
+      "reason": "full_engine_search",
+      "moduleName": "gl3chess.wasm",
+      "functionName": "int Stockfish::Search::Worker::search<(Stockfish::NodeType)0>(Stockfish::Position&, Stockfish::Search::Stack*, int, int, int, bool)",
+      "location": {
+        "module": 9,
+        "function": 181,
+        "pc": 2269
+      },
+      "before": "f5013d7087ee4abfc9f9b0a329f64c2c06c60d527a270221ce72dff40a0429a1",
+      "after": "1f376e99510e9cd56c4fad278d4fcca1ec3b9c32d56d1a7ed363c13133829c1c",
+      "proofBytes": 3602,
+      "corruptBeforeRejected": true,
+      "corruptProofRejected": true
+    },
+    {
+      "step": "122111322114",
+      "reason": "engine_search_arithmetic",
+      "moduleName": "gl3chess.wasm",
+      "functionName": "int Stockfish::Search::Worker::search<(Stockfish::NodeType)0>(Stockfish::Position&, Stockfish::Search::Stack*, int, int, int, bool)",
+      "location": {
+        "module": 9,
+        "function": 181,
+        "pc": 2028
+      },
+      "before": "2ab6a1b9102fdaff12ded30420b1dc61f9cbf6882e32ab82ac85f8c89bad5aa2",
+      "after": "64cd47062caa271061c817b36945fb4287326a24e25b958d6e2b78c5241badeb",
+      "proofBytes": 3602,
+      "corruptBeforeRejected": true,
+      "corruptProofRejected": true
+    },
+    {
+      "step": "124706547715",
+      "reason": "engine_search_memory",
+      "moduleName": "gl3chess.wasm",
+      "functionName": "int Stockfish::Search::Worker::search<(Stockfish::NodeType)0>(Stockfish::Position&, Stockfish::Search::Stack*, int, int, int, bool)",
+      "location": {
+        "module": 9,
+        "function": 181,
+        "pc": 2771
+      },
+      "before": "c43c9c0b7b0c5ffde37f7989ca0389d79e68207fe0233e36c24934bef3691fae",
+      "after": "734491510be8a63528d6e6214231540884b1b8620a612e09b722863cfca816c8",
+      "proofBytes": 5396,
+      "corruptBeforeRejected": true,
+      "corruptProofRejected": true
+    }
+  ],
+  "publicDeployment": false,
+  "realSpend": 0
+}

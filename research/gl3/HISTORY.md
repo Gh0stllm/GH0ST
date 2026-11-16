@@ -111,3 +111,12 @@ A full24m decision mined on the actual local custom Nitro profile, returnede7e5 
 Ten initialization-prefix WAVM witnesses passed the actual pinned Solidity OSP, including rejection of corrupted pre-state hashes and witnesses. The complete interpreter replay is running separately. Prefix proofs are not a full engine proof, and this is not a public Robinhood deployment or an executed BoLD dispute.
 
 **Evidence:** [Mined transaction and block roots](chess/evidence/mined-block.json), [independent native replay](chess/evidence/native-replay.json), [bounded Solidity witness checks](chess/evidence/prefix-solidity-steps.json).
+
+
+## 18 · Verify actual search-loop OSP witnesses and revise hosting headroom — 16 November
+
+The selected interpreter driver reproduces an independently checked100b-step machine hash, exact witness and next state. A broad initial namespace filter matched `Worker::clear`; it was narrowed to `Worker::search`/`qsearch`, keeping initialization separate from actual search evidence. Real search-loop, arithmetic and memory witnesses from the narrowed run passed the pinned Solidity OSP. Corrupted pre-state hashes and witnesses were rejected. This collection intentionally stops at its four bounded proof points; the complete engine-bearing replay continues in the unchanged upstream prover.
+
+Late-start samples of the full prover reached14.63GiB RSS, about15.7GB, before completion. TheUSD100 monthly direction now prefers32GB and sustained dedicated CPU; the earlier native2.463GiB capacity screen is not the full proof budget. The macOS native binary and Go replay remain byte-identical after recipe changes. A Linux SSE4.1 candidate is prepared but not tested; AVX2 needs a separately verified accumulator-layout adapter. No server was ordered.
+
+**Evidence:** [Actual search-loop verifier results](chess/evidence/search-loop-solidity-steps.json), [reviewable witnesses](chess/evidence/search-loop-witnesses.json), [explicit bounded scope](chess/evidence/search-loop-collection.json), [preserved artifact identities](chess/evidence/native-recipe-preservation.json), [updated hosting direction](chess/HOSTING.md).

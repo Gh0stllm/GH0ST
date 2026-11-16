@@ -1,8 +1,10 @@
 """Prepare only the isolated custom chess source; never modifies the clean core."""
 from pathlib import Path
-import json,os,shutil,subprocess,hashlib
+import json,os,shutil,subprocess,hashlib,platform
 HERE=Path(__file__).resolve().parent;REPO=HERE.parents[2];source=HERE/'.cache/nitro-chess';core=REPO/'research/chess/l3/core/node';go=core/'.cache/go-1.25.12/go/bin/go'
-if not source.exists():subprocess.run(['cp','-cR',str(core/'.cache/nitro-core'),str(source)],check=True)
+if not source.exists():
+ if platform.system()=='Darwin':subprocess.run(['cp','-cR',str(core/'.cache/nitro-core'),str(source)],check=True)
+ else:shutil.copytree(core/'.cache/nitro-core',source,symlinks=True)
 for p in (HERE/'overlay').glob('*.go'):shutil.copy2(p,source/'precompiles'/p.name)
 for p in (HERE/'system_overlay').glob('*.go'):shutil.copy2(p,source/'system_tests'/p.name)
 # The pinned local Geth predates an optional deep-reorg test flag. No reorg is used here.

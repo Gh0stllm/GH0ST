@@ -12,11 +12,12 @@ const {BrowserProvider,ContractFactory,ZeroAddress}=require('ethers');
 const stem=process.argv[2]||'prefix';
 if(!/^[a-z0-9-]+$/.test(stem))throw Error('bad fixture name');
 const dir=path.join(here,'.cache/block');
-const proofPath=path.join(dir,stem+'-proofs.json');
-const logPath=path.join(here,'prover-'+stem+'.log');
+const proofPath=stem==='search-selected'?path.join(dir,'search-selected/selected-proofs.json'):stem==='complete'?path.join(dir,'complete-selected-proofs.json'):stem==='selected'?path.join(dir,'selected/selected-proofs.json'):path.join(dir,stem+'-proofs.json');
+const logPath=path.join(here,'prover-'+(stem==='complete'?'full':stem)+'.log');
 const rows=JSON.parse(fs.readFileSync(proofPath,'utf8'));
 const clean=fs.readFileSync(logPath,'utf8').replace(/\x1b\[[0-9;]*m/g,'');
-const steps=[...clean.matchAll(/Generating proof\s+\d+\s+\(inst\s+([\d,]+)\)/g)].map(x=>BigInt(x[1].replaceAll(',','')));
+const logSteps=[...clean.matchAll(/Generating proof\s+\d+\s+\(inst\s+([\d,]+)\)/g)].map(x=>BigInt(x[1].replaceAll(',','')));
+const steps=rows.every(x=>typeof x.step==='string')?rows.map(x=>BigInt(x.step)):logSteps;
 if(steps.length!==rows.length && !clean.includes('End machine status: Finished'))throw Error('proof/step count');
 const base=path.join(repo,'research/chess/l3/nitro/.cache/contracts-provenance/compiled-main/build/contracts/src/osp');
 const server=ganache.provider({logging:{quiet:true},chain:{chainId:13371,hardfork:'shanghai'},miner:{blockGasLimit:100000000},wallet:{deterministic:true}});
@@ -48,8 +49,8 @@ try{
   const changed=Buffer.from(r.proof,'hex');changed[0]^=1;let badProof=false;
   try{const wrong=await entry.proveOneStep(context,steps[i],'0x'+r.before,'0x'+changed.toString('hex'),{gasLimit:30000000});badProof=wrong.toLowerCase()!=='0x'+r.after.toLowerCase()}catch{badProof=true}
   if(!badProof)throw Error('corrupt witness accepted');
-  records.push({step:String(steps[i]),location:location(r.proof),before:r.before,after:r.after,proofBytes:r.proof.length/2,corruptBeforeRejected:rejected,corruptProofRejected:badProof});
+  records.push({step:String(steps[i]),reason:r.reason||null,moduleName:r.moduleName||null,functionName:r.functionName||null,location:location(r.proof),before:r.before,after:r.after,proofBytes:r.proof.length/2,corruptBeforeRejected:rejected,corruptProofRejected:badProof});
  }
- const report={passed:true,scope:stem==='full'?'Real Solidity verification of sampled witnesses from complete replay; not a full BoLD challenge':'Real Solidity verification of bounded trace witnesses; no complete chess replay or engine-search proof implied',proofFileSHA256:createHash('sha256').update(fs.readFileSync(proofPath)).digest('hex'),moduleRoot:root,verifierSourceCommit:'4341b132cfbdcc980ead03765ca5224ff6cb5d97',artifacts,records,publicDeployment:false,realSpend:0};
+ const report={passed:true,scope:['full','complete'].includes(stem)?'Real Solidity verification of sampled witnesses from complete replay; not a full BoLD challenge':'Real Solidity verification of bounded trace witnesses; no complete chess replay or engine-search proof implied',proofFileSHA256:createHash('sha256').update(fs.readFileSync(proofPath)).digest('hex'),moduleRoot:root,verifierSourceCommit:'4341b132cfbdcc980ead03765ca5224ff6cb5d97',artifacts,records,publicDeployment:false,realSpend:0};
  fs.writeFileSync(path.join(dir,stem+'-solidity-steps.json'),JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report,null,2));
 }finally{await server.disconnect()}

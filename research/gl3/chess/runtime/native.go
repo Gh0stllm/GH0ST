@@ -5,6 +5,7 @@
 package chessruntime
 
 /*
+#cgo linux LDFLAGS: ${SRCDIR}/../engine/.cache/libgl3chess.a -lstdc++ -lm
 #cgo darwin LDFLAGS: ${SRCDIR}/../engine/.cache/libgl3chess.a -lc++
 #include <stdint.h>
 #include <stdlib.h>

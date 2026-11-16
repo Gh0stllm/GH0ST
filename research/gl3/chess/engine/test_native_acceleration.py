@@ -1,7 +1,7 @@
 """Full24m native vector path against published policy and portable state hashes."""
 from pathlib import Path
 import json,time,hashlib
-from test_parity import Native,request,decode,FEN,REPO,CACHE,digest
+from test_parity import Native,request,decode,FEN,REPO,CACHE,digest,NATIVE_LIBRARY
 out=CACHE/'native-acceleration';out.mkdir(exist_ok=True)
 engine=Native();started=time.monotonic();report={'passed':False,'scope':'Native vector implementation, unchanged full model/node policy','records':[],'scalarWasmSuiteComplete':False}
 try:
@@ -17,5 +17,5 @@ try:
   if len(report['records'])==4:break
  report['passed']=True
 finally:
- report['seconds']=time.monotonic()-started;report['librarySHA256']=hashlib.sha256((CACHE/'libgl3chess-neon.dylib').read_bytes()).hexdigest();report['staticLibrarySHA256']=hashlib.sha256((CACHE/'libgl3chess.a').read_bytes()).hexdigest()
+ report['seconds']=time.monotonic()-started;report['librarySHA256']=hashlib.sha256(NATIVE_LIBRARY.read_bytes()).hexdigest();report['staticLibrarySHA256']=hashlib.sha256((CACHE/'libgl3chess.a').read_bytes()).hexdigest()
  (out/'results.json').write_text(json.dumps(report,indent=2)+'\n')

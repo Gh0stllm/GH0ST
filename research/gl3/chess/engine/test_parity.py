@@ -1,8 +1,9 @@
 """Full24m native/Wasm parity with fresh engine instances and retained state."""
 from pathlib import Path
-import ctypes,gc,hashlib,json,struct,time
+import ctypes,gc,hashlib,json,struct,time,platform
 import wasmtime
 HERE=Path(__file__).resolve().parent;REPO=HERE.parents[3];CACHE=HERE/'.cache';OUT=CACHE/'parity';OUT.mkdir(exist_ok=True)
+NATIVE_LIBRARY=CACHE/('libgl3chess-neon.dylib' if platform.system()=='Darwin' else 'libgl3chess-sse41.so')
 FEN='rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
 def digest(b):return hashlib.sha256(b).hexdigest()
 def request(op,moves,state):
@@ -14,7 +15,7 @@ def decode(b):
 
 class Native:
  def __init__(self,library=None):
-  self.lib=ctypes.CDLL(str(library or CACHE/'libgl3chess-neon.dylib'));self.lib.gl3_execute.argtypes=[ctypes.c_void_p,ctypes.c_uint32,ctypes.POINTER(ctypes.c_void_p)];self.lib.gl3_execute.restype=ctypes.c_uint32;self.lib.gl3_free.argtypes=[ctypes.c_void_p]
+  self.lib=ctypes.CDLL(str(library or NATIVE_LIBRARY));self.lib.gl3_execute.argtypes=[ctypes.c_void_p,ctypes.c_uint32,ctypes.POINTER(ctypes.c_void_p)];self.lib.gl3_execute.restype=ctypes.c_uint32;self.lib.gl3_free.argtypes=[ctypes.c_void_p]
  def run(self,raw):
   p=ctypes.c_void_p();buf=ctypes.create_string_buffer(raw);n=self.lib.gl3_execute(buf,len(raw),ctypes.byref(p));assert n,'native engine rejected request'
   try:return ctypes.string_at(p,n)
