@@ -28,7 +28,7 @@
 - [ ] Build the reviewed Linux artifact and rehearse production configuration.
 - [ ] Deploy only the concrete reviewed contracts and verify public receipts.
 
-## Before fully on-chain chess or larger models
+## Active: full chess integration and proofs
 
 - [ ] Integrate deterministic engine execution, authenticated retained state and bounded work into the L3 state transition.
 - [ ] Match complete native, replay and prover semantics/artifact identities.

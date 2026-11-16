@@ -82,3 +82,10 @@ All 72 Black decisions across the two complete recorded histories reproduced the
 The complete official OVH catalog distinguished default monthly pricing from annual-upfront marketing prices. It also exposed mandatory backup pricing and a conditional100% offer, so the shortlist retains a conservative undiscounted allowance. Netcup's exact one-month variants established smaller guaranteed-resource options without assuming a two-year commitment. Shared CPU does not justify weakening the engine; its hosted search time still needs measurement. No server was bought.
 
 **Evidence:** [Server comparison and source records](../chess/l3/core/hosting/chess-workload-20261116/HOSTING.md).
+
+
+## 14 · Integrate the full engine and prioritize sustained CPU — 16 November
+
+The user authorized full Stockfish integration into GL3 with replay and proof tests, preserving the full network,24m-node budget, Hash128 and retained game state. The first direct native/scalar-Wasm decision matched exact move/nodes/depth and its entire canonical retained state. Four-decision parity, actual GL3 calls and full proofs remain in progress. The server target changed to up toUSD100/month, with sustained CPU performance and recovery taking precedence over the cheapest shared VPS. No server was rented.
+
+**Evidence:** [Active integration](chess/README.md), [first complete decision](chess/evidence/first-scalar-parity.json).
