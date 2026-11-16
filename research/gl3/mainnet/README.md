@@ -27,7 +27,11 @@ This decision used 2,464 computing transactions. At the 100 ms target the schedu
 
 Two simultaneous full proof jobs exceeded the 64 GB pod's memory limit. The eager baseline was killed at about 264.3 billion steps; the lazy job continued and completed. Consequently there is no completed paired Linux timing comparison. Removing three redundant memory copies reduces copying by 1,398,472,704 bytes per operation; that is not a 75% proof-speed claim.
 
-The next consecutive recorded block is being replayed independently on a 128 GB cloud worker. Its result must match every expected global-state field, then its actual witnesses must pass the pinned Solidity verifier. A completed first block alone does not certify warm-cache subsequent blocks.
+The next consecutive recorded block also completed independently on a 128 GB cloud worker. All four expected global-state fields match; five distinct actual Solidity witnesses pass and corrupted states/witnesses reject. Its completed interval is 300.0–300.1 billion steps. This establishes two consecutive captured blocks, rather than relying on the first cold block alone. It is not a complete 24-million-node move in the interpreter or an incorrect chess-result BoLD dispute.
+
+This isolated proof worker peaked at 39,053,127,680 bytes of cgroup memory, with no out-of-memory event. Kernel process high-water RSS was 37,034,960 KiB. The current proof path therefore has not met the preferred 24 GB server target. Nor is this a hard-limit 64 GB or production node/prover coexistence test. The first monitoring launcher failed after starting the prover; an attached monitor observed the same continuing process. Its operating-system exit code was unavailable, so the report retains null; completion is evidenced by the finished-machine log, all four matching fields and actual Solidity checks. No restart or fabricated exit code is claimed.
+
+All disposable cloud workers for this milestone were removed after their reports and proof outputs were saved. No production hosting order or mainnet launch occurred.
 
 ## Recovery and storage
 
@@ -46,6 +50,6 @@ A simple payload projection for 20 games with 80 Black decisions each exceeds 2.
 
 ## Evidence and reproduction
 
-[Linux builder](native-cloud.py) · [real-token/fork checks](token-preflight.mjs) · [first-block replay](evidence/cloud-lazy-wavm-replay.json) · [five Solidity witnesses](evidence/cloud-lazy-complete-solidity-steps.json) · [OOM failure](evidence/cloud-baseline-comparison-failed.json) · [full mined decision](evidence/linux-full-mined-summary.json) · [disk recovery](evidence/disk-probe-20261117-recovery.json) · [real-token bridge unit](evidence/bridge-withdrawal-unit.json)
+[Linux builder](native-cloud.py) · [real-token/fork checks](token-preflight.mjs) · [first-block replay](evidence/cloud-lazy-wavm-replay.json) · [next-block replay](evidence/cloud-next-wavm-replay.json) · [next-block Solidity checks](evidence/cloud-next-complete-solidity-steps.json) · [five Solidity witnesses](evidence/cloud-lazy-complete-solidity-steps.json) · [OOM failure](evidence/cloud-baseline-comparison-failed.json) · [full mined decision](evidence/linux-full-mined-summary.json) · [disk recovery](evidence/disk-probe-20261117-recovery.json) · [real-token bridge unit](evidence/bridge-withdrawal-unit.json)
 
 The builder expects the pinned patched source tree, generated contract bindings, Rust libraries and portable engine module documented by the existing sliced/AOT build instructions. It is a Linux acceptance recipe, not a one-command mainnet deployment. Test-only source fixtures and the full standard inbox dispute log accompany this milestone. Raw high-volume receipt rows are gzip-compressed; their summary files retain raw SHA-256 digests.

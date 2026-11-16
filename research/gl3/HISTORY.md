@@ -212,3 +212,13 @@ An isolated persisted database closed and reopened across separate OS processes,
 The actual standard inbox BoLD dispute passed both recorder cases in 415.55 seconds and the honest validator won. A deliberately incorrect Stockfish-result dispute remains untested. Production artifact/root pairing, long-history recovery, storage reclamation, GH0ST native withdrawals, fee/custody configuration and parent/license acceptance still gate mainnet. No public GL3 contract was deployed and no real token moved in these rehearsals.
 
 **Evidence:** [Linux acceptance notebook](mainnet/README.md), [complete lazy replay](mainnet/evidence/cloud-lazy-wavm-replay.json), [actual mined decision](mainnet/evidence/linux-full-mined-summary.json), [standard dispute](mainnet/evidence/bold-inbox-summary.json).
+
+## 29 · Verify the next consecutive block and retire completed cloud workers — 17 November
+
+The independent lazy-machine replay of the next corrected block completed through a 300.0–300.1 billion-step interval. Its block hash, send root, batch and position all match the captured expectation. Five actual Solidity witnesses pass, including scalar companion execution/memory/arithmetic, runtime hashing and a finished-state transition; corrupted states and witnesses reject. Together with R28, this gives independent replay and witness evidence for two consecutive blocks. Neither a complete 24m-move interpreter trace nor a complete wrong-engine-result dispute is implied.
+
+The isolated 128 GB worker recorded a 39,053,127,680-byte cgroup peak and 37,034,960 KiB process high-water RSS, with no OOM event. The current proof path has not met the user's 24 GB preference; no production host is accepted. A resource parser error in the initial monitoring launcher did not stop or restart the prover. The replacement monitor captured completion, but its exit code was unavailable and remains null. The verifier's first launch had a missing dependency-directory link; correcting that environment allowed the actual checks to pass. All these boundaries remain in the reports.
+
+After saving and checking the evidence archives, all disposable workers from this milestone were terminated and each removal was verified by a fresh provider read. No public GL3 deployment, token movement or recurring production host was created. Full native GH0ST withdrawals, a deliberately incorrect engine-result dispute and production recovery/storage acceptance remain open.
+
+**Evidence:** [Complete next-block replay](mainnet/evidence/cloud-next-wavm-replay.json), [five actual Solidity checks](mainnet/evidence/cloud-next-complete-solidity-steps.json), [resource measurements](mainnet/evidence/cloud-next-resources-summary.json), [acceptance notebook](mainnet/README.md).

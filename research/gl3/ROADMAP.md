@@ -38,7 +38,7 @@
 - [x] Complete one corrected sliced block in the frozen eager WAVM machine and match all four global-state fields.
 - [x] Verify five distinct eager-machine Solidity witnesses, including corruption rejection.
 - [x] Complete the newer lazy-copy machine’s independent Linux first-block replay and five Solidity witnesses.
-- [ ] Complete its next consecutive recorded-block replay and independent witness checks.
+- [x] Complete its next consecutive recorded-block replay and five independent witness checks.
 - [x] Mine a complete unchanged Linux decision alongside 2,464 ordinary transfers.
 - [x] Recover its terminal retained state from disk in a separate OS process.
 - [x] Complete the standard inbox BoLD dispute through actual challenge contracts.
@@ -52,6 +52,6 @@ Checks represent achieved local evidence or explicit remaining work. This is not
 
 ## Mainnet direction
 
-The user requested Robinhood mainnet deployment after testing. The working planning estimate for a restricted pilot is3–7 days, conditional on the remaining gates; it is not a launch commitment. The temporary Linux workers are for testing and are not a permanent hosting selection. The paired 64 GB experiment exceeded its memory limit; a single next-block proof runs separately on 128 GB. Every further build, engine test, replay, proof and deployment rehearsal runs on Runpod. Local work is limited to editing, transfers, research and publication.
+The user requested Robinhood mainnet deployment after testing. The working planning estimate for a restricted pilot is3–7 days, conditional on the remaining gates; it is not a launch commitment. The temporary Linux workers are for testing and are not a permanent hosting selection. The paired 64 GB experiment exceeded its memory limit; a single next-block proof completed separately on 128 GB, peaking at 39.05 GB of cgroup memory. The preferred 24 GB production target remains unaccepted. Those disposable test workers have been removed. Every further build, engine test, replay, proof and deployment rehearsal runs on Runpod. Local work is limited to editing, transfers, research and publication.
 
 A pilot still needs an accepted Linux image and matching genesis/module root, long-history cold recovery and storage bounds, reviewed GH0ST deposits/withdrawals and fee pricing, validator/upgrade controls, a complete deliberately incorrect-result dispute rehearsal, verified parent compatibility and the applicable license path. Passing one replay is one gate. Public receipts and working endpoints will establish a launch when it actually happens.

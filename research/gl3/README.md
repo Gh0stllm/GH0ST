@@ -4,7 +4,7 @@
 
 [Open the full overview](../../README.md) · [History](HISTORY.md) · [Findings](FINDINGS.md) · [Roadmap](ROADMAP.md)
 
-This branch records the path from a full-strength chess workload to a private Robinhood-settled compute chain. The unchanged engine completed a full decision on Linux while 2,464 ordinary transfers confirmed at 141.60 ms median. The lazy proof machine completed its first recorded block and five Solidity witness checks. Separate-process disk recovery and the standard inbox BoLD challenge also passed. Full GH0ST native-gas withdrawals, an incorrect chess-result dispute and production storage acceptance remain open. **Robinhood mainnet is not deployed.** All further compilation and tests run on Runpod.
+This branch records the path from a full-strength chess workload to a private Robinhood-settled compute chain. The unchanged engine completed a full decision on Linux while 2,464 ordinary transfers confirmed at 141.60 ms median. The lazy proof machine independently completed two consecutive recorded blocks, with five Solidity witness checks for each. Separate-process disk recovery and the standard inbox BoLD challenge also passed. Full GH0ST native-gas withdrawals, an incorrect chess-result dispute and production storage acceptance remain open. **Robinhood mainnet is not deployed.** All further compilation and tests run on Runpod.
 
 [New: Linux acceptance results, failures and launch gates](mainnet/README.md)
 
