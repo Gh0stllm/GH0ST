@@ -1,8 +1,8 @@
 """Exact full-policy search, including destruction/recreation at a suspended frame."""
 from pathlib import Path
-import ctypes,gc,hashlib,json,struct,time
+import ctypes,gc,hashlib,json,struct,time,os
 import wasmtime
-HERE=Path(__file__).resolve().parent;CACHE=HERE/'.cache'
+HERE=Path(__file__).resolve().parent;CACHE=HERE/('.cache/simd' if os.environ.get('GL3_CHESS_SIMD')=='1' else '.cache')
 engine=wasmtime.Engine();module=wasmtime.Module.from_file(engine,str(CACHE/'sliced.wasm'))
 calls={}
 def instantiate():

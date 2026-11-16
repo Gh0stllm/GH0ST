@@ -5,7 +5,8 @@ import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
 import {spawnSync} from 'node:child_process';
 const here=path.dirname(fileURLToPath(import.meta.url)),repo=path.resolve(here,'../../..');
-const source=path.join(here,'.cache/nitro-chess');
+const sliced=process.argv.includes('--sliced');
+const source=path.join(here,sliced?'.cache/nitro-sliced':'.cache/nitro-chess');
 const require=createRequire(path.join(repo,'research/chess/package.json'));
 const provenance=path.join(repo,'research/chess/l3/nitro/.cache/contracts-provenance');
 const solc=require('solc');
@@ -25,7 +26,7 @@ if((output.errors||[]).some(x=>x.severity==='error'))throw Error(JSON.stringify(
 const local=[];for(const [file,contracts] of Object.entries(output.contracts))if(Object.hasOwn(sources,file))for(const [name,c] of Object.entries(contracts))local.push({name,pkg:'localgen',abi:c.abi,bytecode:c.evm.bytecode.object});
 const reader=JSON.parse(fs.readFileSync(path.join(repo,'research/chess/l3/core/integration/root-factory/Reader4844.json'),'utf8'));
 const artifacts=[...local,{name:'Reader4844',pkg:'yulgen',abi:reader.abi,bytecode:reader.bytecode.object||reader.bytecode}];
-const dir=path.join(here,'.cache/test-bindings');fs.mkdirSync(dir,{recursive:true});
+const dir=path.join(here,sliced?'.cache/test-bindings-sliced':'.cache/test-bindings');fs.mkdirSync(dir,{recursive:true});
 fs.writeFileSync(path.join(dir,'artifacts.json'),JSON.stringify(artifacts));
 fs.writeFileSync(path.join(dir,'main.go'),`package main
 import("encoding/json";"os";"path/filepath";"github.com/ethereum/go-ethereum/accounts/abi/abigen")

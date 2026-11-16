@@ -1,6 +1,7 @@
 from pathlib import Path
+import sys
 import icpp_binaryen as b
-HERE=Path(__file__).resolve().parent;CACHE=HERE/'.cache'
+HERE=Path(__file__).resolve().parent;CACHE=Path(sys.argv[1]) if len(sys.argv)>1 else HERE/'.cache'
 b.ffi.cdef('void BinaryenModuleRunPasses(BinaryenModuleRef,const char**,int); void BinaryenSetPassArgument(const char*,const char*); const char* BinaryenExportGetValue(BinaryenExportRef); typedef struct BinaryenGlobal *BinaryenGlobalRef; BinaryenGlobalRef BinaryenGetGlobalByIndex(BinaryenModuleRef,uint32_t); const char* BinaryenGlobalGetName(BinaryenGlobalRef); bool BinaryenGlobalIsMutable(BinaryenGlobalRef); BinaryenExportRef BinaryenAddGlobalExport(BinaryenModuleRef,const char*,const char*);')
 with b.Module.load(CACHE/'sliced.raw.wasm') as m:
  remove=[]

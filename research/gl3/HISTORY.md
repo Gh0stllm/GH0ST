@@ -135,3 +135,19 @@ The sum of separately observed component peaks is about17.35GiB. Adding a4GiB pl
 The user required fully on-chain search without the monolithic19–24s block stall, preserving bot strength. An isolated Asyncify module now pauses recursive Stockfish work at a2,048-node scheduling quantum while retaining the full24m decision target, complete network, Hash128 and game cache. This is a build milestone. Exact completed-state parity, persistent snapshot costs, real block cadence and matching proofs remain acceptance gates. The previous full interpreter replay continues on its immutable original inputs.
 
 **Evidence:** [Resumable implementation and gates](chess/sliced/README.md).
+
+## 21 · Preserve exact continuation state and accelerate it — 16 November
+
+Two consecutive full24m decisions matched every canonical retained-state byte across the original reference, a scalar continuation and SIMD128 continuation. Each test destroyed/recreated the module at three suspended points per decision. SIMD reduced the local engine experiment from319/322s to about55/58s, without changing the network, move, node count, depth or retained heuristics. A real EVM prefix passed retries, generation/cursor guards, whole-trie OOG rollback and cold resumption from committed VM pages.
+
+The new profile removes the synchronous A13 ABI, exposes only the sliced A14 workflow, disables ordinary debug precompiles and limits computing work to one slice per block. The code-overwrite capability in ArbDebug requires a stricter identity sweep when enabled; the normal fast path relies on sealed pages and exact root-keyed cache invalidation. Cold restoration remains roughly0.6–0.8s; warm EVM outliers exceed100ms. Moreover, roughly9,900 slices imply at least16.5min per decision at100ms blocks. Actual cadence, storage growth and complete new-lane replay/proofs remain gates. This is not a public deployment or a claim that every timing problem is solved.
+
+**Evidence:** [Measured results and limitations](chess/sliced/README.md), [complete SIMD parity](chess/sliced/evidence/simd-full24m-parity.json).
+
+## 22 · Reduce persistence cost while keeping the exact search — 16 November
+
+The first fully persisted EVM decision passed but took825.86s. A second design stores immutable32-byte word deltas instead of rewriting whole dirty pages, merges shared Merkle ancestors, and groups four exact continuations per transaction. It completed the same24m decision in206.73s across2,464 operations, preserving every canonical retained-state byte. At100ms per block, that operation count implies about4.1min before overhead, versus16.4min for the original schedule. This remains slower per move than the monolithic native search; its purpose is allowing ordinary blocks between bounded work units.
+
+Final API tests add project-only admission, one retained-game reservation, release without partial results, and isolated RPC simulation. Simulation cannot advance/evict the live cache, and its next root matches real execution. Global per-block work limits and tighter mining gas limits prevent aggregated searches; debug code-overwrite stays disabled. Complete native compiler/interpreter frame equivalence, actual mixed-traffic blocks and complete new-lane replay/proofs are being checked next. Long-history recovery and roughly1.616GB of sampled first-decision delta payload remain storage/hosting gates.
+
+**Evidence:** [Complete word-delta EVM result](chess/sliced/evidence/evm-word-delta-full.json), [final API regression](chess/sliced/evidence/evm-final-api-prefix.json), [architecture and limitations](chess/sliced/README.md).
