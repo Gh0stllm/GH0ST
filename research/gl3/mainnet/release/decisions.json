@@ -1,0 +1,97 @@
+{
+  "schema": "gh0st.gl3.operator-release-decisions.v1",
+  "asOfDateIST": "2026-11-17",
+  "deploymentReady": false,
+  "financialMutationApprovedByThisPacket": false,
+  "licenseAcceptedByThisPacket": false,
+  "hostOrdered": false,
+  "decisions": {
+    "licensePath": {
+      "status": "UNRESOLVED",
+      "applicableGrantOrAgreementReference": null,
+      "signingEntityAndAuthority": null,
+      "AEPFeesAccountingReviewed": false,
+      "combinedDistributionReviewComplete": false
+    },
+    "operatorCustody": {
+      "status": "UNRESOLVED",
+      "rollupOwner": null,
+      "upgradeExecutor": null,
+      "childChainOwner": null,
+      "sequencer": null,
+      "batchPoster": null,
+      "batchPosterManager": null,
+      "validators": [],
+      "feePricerAuthority": null,
+      "custodyPolicy": null,
+      "recoveryEvidence": null,
+      "nativeManagementDisabledAtGenesis": true,
+      "nativeMintOwnersAtGenesis": [],
+      "unbackedNativeGenesisAllocationsAllowed": false
+    },
+    "collateralAndFinality": {
+      "status": "UNRESOLVED",
+      "stakeToken": null,
+      "baseStakeBaseUnits": null,
+      "miniStakeBaseUnits": null,
+      "loserStakeEscrow": null,
+      "validatorAllowlistPolicy": null,
+      "confirmPeriodBlocks": null,
+      "minimumAssertionPeriod": null,
+      "challengeGracePeriodBlocks": null,
+      "recommendedCandidateFastConfirmer": "0x0000000000000000000000000000000000000000",
+      "fastConfirmerAccepted": false,
+      "oneWETHUniversalLaunchFee": false
+    },
+    "feesAndReserve": {
+      "status": "UNRESOLVED",
+      "pricerContract": null,
+      "pricerSourceSHA256": null,
+      "rateGH0STPerETHScaled1e18": null,
+      "rateUpdateAndStalenessPolicy": null,
+      "ETHReserveAccount": null,
+      "ETHReserveAmount": null,
+      "replenishmentPolicy": null,
+      "parentPostingGasEvidence": null,
+      "unitRateTestPricerAccepted": false
+    },
+    "hostingAndRetention": {
+      "status": "UNRESOLVED",
+      "recurringBudgetUSD": 100,
+      "candidateObservation": "hosting-observation.json",
+      "hardLimitMemoryAcceptancePassed": false,
+      "longHistoryStorageAcceptancePassed": false,
+      "nodeProverCoexistenceAcceptancePassed": false,
+      "CPUBlockTimingAcceptancePassed": false,
+      "backupRestoreAcceptancePassed": false,
+      "twentyGamesCapacityAccepted": false,
+      "releaseGameReclaimsDeltaAccounts": false,
+      "hostSelected": null
+    }
+  },
+  "neededAcceptanceEvidence": [
+    "same-client-machine-genesis rehearsal",
+    "repaired terminal guest restoration/replay under matching machine, then complete incorrect-engine assertion/challenge lifecycle",
+    "production native-token backing/configuration acceptance after the bounded native-parent observed-state flow pass",
+    "graceful and process-level recovery boundaries",
+    "long-history live-state retention and resource rejection",
+    "final operator roles, pricing and reserve readback",
+    "public mainnet receipts and working endpoint after authorized deployment"
+  ],
+  "latestAcceptance": {
+    "nativeParentObservedStateParityPassed": true,
+    "nativeParentStorageWitness": {
+      "parentTransactionsTraced": 82,
+      "distinctTokenStorageKeys": 7,
+      "unmatchedKeys": 0
+    },
+    "nativeParentCompleteCanonicalLedgerCloned": false,
+    "nativeParentFastConfirmationPrivileged": true,
+    "terminalNativeCapturePassed": true,
+    "terminalGuestReplayPassed": false,
+    "terminalGuestReplayStatus": "FAILED_WASM32_GUEST_HEAP_EXHAUSTION",
+    "terminalGuestReplayEvidence": "../dispute/evidence/terminal-wavm-failure/replay-result.json",
+    "boundedRestoreCandidate": "IN_PROGRESS_UNTESTED_NOT_ACCEPTED",
+    "fullIncorrectEngineBoLDDisputePassed": false
+  }
+}

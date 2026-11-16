@@ -1,0 +1,260 @@
+{
+  "passed": true,
+  "publicDeployment": false,
+  "publicWrites": 0,
+  "realChainSpend": 0,
+  "allExecutionOnRunpod": true,
+  "chessPolicyChanged": false,
+  "parentNativeArbSysNotOverridden": true,
+  "scope": "Actual private three-layer execution with an observed-state GH0ST account clone; incomplete canonical token ledger",
+  "modelOrEngineExecuted": false,
+  "fastConfirmationPrivileged": true,
+  "executionHistoryCommitmentVerified": false,
+  "permissionlessFinalityTested": false,
+  "steps": [
+    {
+      "label": "Fake root ETH funding",
+      "hash": "0x4ea74cd666970f59b91cb27c1734e2c4161ec29c32700b3651f55d731c02c356",
+      "blockNumber": 2,
+      "gasUsed": "21000"
+    },
+    {
+      "label": "Fund native-parent unprivileged token holder",
+      "hash": "0xe958212568d2e98bc4a4853b80d0e3407c43f14a181621e521bc24780c57e234",
+      "blockNumber": 34,
+      "gasUsed": "51596"
+    },
+    {
+      "label": "Approve exact native-parent token deposit",
+      "hash": "0x4570d42cf203f5ddfa61cb24925850aabdd1d21afaf3ead704fb5d98055d3a70",
+      "blockNumber": 35,
+      "gasUsed": "46181"
+    },
+    {
+      "label": "Deposit cloned GH0ST through actual Nitro parent",
+      "hash": "0xe2be8a702873a741d47c1470e22eed1fd1848024fdfa48a30c93fbe23d3e4bdc",
+      "blockNumber": 36,
+      "gasUsed": "130377"
+    },
+    {
+      "label": "Spend child native token",
+      "hash": "0x7614154827e838c295f9cca315dc44760d99d6e404a13eccc15930a51c51eb80",
+      "blockNumber": 2,
+      "gasUsed": "21000"
+    },
+    {
+      "label": "Burn child native token",
+      "hash": "0x8a6af400647442a73aef98f6c0e0586dcddb1a50b3c4737280db02d4da514977",
+      "blockNumber": 3,
+      "gasUsed": "68371"
+    },
+    {
+      "label": "Unconfirmed root rejects",
+      "passed": true,
+      "reason": "UnknownRoot(bytes32)"
+    },
+    {
+      "label": "Non-rollup root registration rejects",
+      "passed": true,
+      "reason": "NotRollup(address,address)"
+    },
+    {
+      "label": "Confirm exact child genesis bootstrap",
+      "hash": "0x5f31b9e9f2d658ea33606393d350ec4d660d310e6e5f0325dc8c3b3d221e6db3",
+      "blockNumber": 39,
+      "gasUsed": "228528"
+    },
+    {
+      "label": "Confirm actual child withdrawal assertion",
+      "hash": "0x4adba1df5b4aa2d605d823e1f95568e0366ed3e5543550a71ad9e0b1c06240e6",
+      "blockNumber": 40,
+      "gasUsed": "228754"
+    },
+    {
+      "label": "Altered withdrawal amount rejects",
+      "passed": true,
+      "reason": "UnknownRoot(bytes32)"
+    },
+    {
+      "label": "Release native-parent observed-state GH0ST",
+      "hash": "0x3000abffbc5ad383023c6d71568a88d7a3067b299324aeccc5f8c3a554cc5543",
+      "blockNumber": 41,
+      "gasUsed": "130411"
+    },
+    {
+      "label": "Repeated withdrawal rejects",
+      "passed": true,
+      "reason": "AlreadySpent(uint256)"
+    }
+  ],
+  "assertions": [
+    {
+      "hash": "0xc90a2a1a4e7d77362a1c5ca42751e5f78c8388ad2e5af9aef80c4095a6cb884a",
+      "prev": "0xe2413bdea8fe48f69aafcc717a010b7e9ee6c43898044c63f65452eff9faeeb6",
+      "state": {
+        "globalState": {
+          "bytes32Vals": [
+            "0x57e39c86010b17bd1dc7079ecfe0ed9a4878d4872d9280b59c0bb7ca97442a90",
+            "0x0000000000000000000000000000000000000000000000000000000000000000"
+          ],
+          "u64Vals": [
+            "1",
+            "0"
+          ]
+        },
+        "machineStatus": 1,
+        "endHistoryRoot": "0x0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "nextConfig": {
+        "wasmModuleRoot": "0xc10cd7ec6acaf1c441a3f6bd0900ad20f15855ba775a96f1939118cbc629dc97",
+        "requiredStake": "1000000000000000000",
+        "challengeManager": "0x6fa02BBDd595BBaA76934924fac7ff697c233333",
+        "confirmPeriodBlocks": "20",
+        "nextInboxPosition": "2"
+      },
+      "parentTransaction": "0x5f31b9e9f2d658ea33606393d350ec4d660d310e6e5f0325dc8c3b3d221e6db3"
+    },
+    {
+      "hash": "0x6cd83dac0e91167bcac08cd31f4147e32ca22c445a068b7f41b102d714b5d97a",
+      "prev": "0xc90a2a1a4e7d77362a1c5ca42751e5f78c8388ad2e5af9aef80c4095a6cb884a",
+      "state": {
+        "globalState": {
+          "bytes32Vals": [
+            "0x0167c95acb1b260bc5603968f3446ea274d96a9e2c8e8f5a816ee2be4ebdba98",
+            "0x5f81abf3381871ad70913051f1fca533bf8755e0f0056e16e0b6a8c26183f33c"
+          ],
+          "u64Vals": [
+            "2",
+            "0"
+          ]
+        },
+        "machineStatus": 1,
+        "endHistoryRoot": "0x0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "nextConfig": {
+        "wasmModuleRoot": "0xc10cd7ec6acaf1c441a3f6bd0900ad20f15855ba775a96f1939118cbc629dc97",
+        "requiredStake": "1000000000000000000",
+        "challengeManager": "0x6fa02BBDd595BBaA76934924fac7ff697c233333",
+        "confirmPeriodBlocks": "20",
+        "nextInboxPosition": "3"
+      },
+      "parentTransaction": "0x4adba1df5b4aa2d605d823e1f95568e0366ed3e5543550a71ad9e0b1c06240e6"
+    }
+  ],
+  "source": {
+    "scope": "Observed token account and touched storage after a PRIVATE fork transfer; incomplete canonical ledger",
+    "publicChainId": 4663,
+    "publicBlockNumber": 116103301,
+    "publicBlockHash": "0x191ea361b84d5ae74969b74b8a46b7835d9efc3998ac6cbc00e00c302f7cf6a8",
+    "publicStateRoot": "0x2726fe2b93ead5585b271282396bad126188fdce57627a056656ca0540854f47",
+    "privateForkChainId": 94663007,
+    "privateSnapshotBlock": 116103304,
+    "privateFundingTransaction": "0x195127b84e2862fcbd1ebdc54a58bf3056611d94fde5f662a4c9cd425ca49626",
+    "privateFundingAmount": "32000000000000000000",
+    "holder": "0xD8A479C1A3CA216CF780D8E34ED5DE3744ae9cb4",
+    "originalPublicHolder": "0x8D6B11CFdF079e27C17e05Cb7Ea81235887691c6",
+    "token": "0x2eb2849cDE7957b86d0dFD4B59e450a9F9D15559",
+    "runtimeCodeHash": "0x7c38fa1b069b5e677034bab6219dd2f519f219f7637910131d9a0f58a05ae164",
+    "metadata": {
+      "name": "GH0ST",
+      "symbol": "GH0ST",
+      "decimals": 18,
+      "totalSupply": "997000000000000000000000000",
+      "source": "Read-only actual Robinhood calls at the pinned public block; native clone getters must match"
+    },
+    "initialStorageKeyCount": 34,
+    "tokenOwnerRolesFabricated": false,
+    "fullCanonicalStateCloned": false,
+    "canonicalMerkleProofVerificationPerformed": false,
+    "publicWrites": 0
+  },
+  "actorRoles": {
+    "owner": "0xD8A479C1A3CA216CF780D8E34ED5DE3744ae9cb4",
+    "player": "0xc388abeF1Bf6d7F68f6Be53335782cc3b98d18c4",
+    "batchPoster": "0xD570441Da4a98883055C30c7b5c1F646b92D610E",
+    "allDistinct": true
+  },
+  "genesisSetup": {
+    "parentFakeETHAllocationExplicit": true,
+    "childNativeAllocationEmpty": true,
+    "tokenCodeAndObservedSlotsCopied": true,
+    "genesisGeneratorSHA256": "40456050fbace57791e724ae0912ae435024f4d58a6e40aff4d9ba963d9d0f4d",
+    "officialNativeBinarySHA256": "d9e778d3c513e106dab9de8ef04be9500093b0638cfd463e4d4ec542c214c4ed"
+  },
+  "parent": {
+    "actualNative": true,
+    "genesisHash": "0xddc02951308746f97a02a49f17858540b2c9fa3201eca95129e092d18e9d90e0",
+    "genesisStateRoot": "0x3ad6d5b208fd05365cb7d0ce309072ff4f167e5361c61a2571ad7d71a99b5302",
+    "hashAndStateRootMatchComputed": true,
+    "genesisValidationLogged": true,
+    "configuredMachineRoot": "0xc10cd7ec6acaf1c441a3f6bd0900ad20f15855ba775a96f1939118cbc629dc97",
+    "childToken": "0x0000000000000000000000000000000000000000",
+    "nativeArbSys": {
+      "reportedVersion": "116",
+      "chainId": "4663",
+      "arbBlockNumber": "0",
+      "code": "0xfe",
+      "notOverridden": true
+    }
+  },
+  "child": {
+    "actualNative": true,
+    "genesisHash": "0x57e39c86010b17bd1dc7079ecfe0ed9a4878d4872d9280b59c0bb7ca97442a90",
+    "genesisStateRoot": "0xf872cdd26986a45963e4f60934c728a3f1ec193b98e9096eb2f7fa063e9710ed",
+    "hashAndStateRootMatchComputed": true,
+    "genesisValidationLogged": true,
+    "configuredMachineRoot": "0xc10cd7ec6acaf1c441a3f6bd0900ad20f15855ba775a96f1939118cbc629dc97",
+    "childToken": "0x2eb2849cDE7957b86d0dFD4B59e450a9F9D15559"
+  },
+  "flow": {
+    "deposit": "4000000000000000000",
+    "spend": "1000000000000000000",
+    "burnAndWithdrawal": "500000000000000000",
+    "burnTransaction": "0x8a6af400647442a73aef98f6c0e0586dcddb1a50b3c4737280db02d4da514977",
+    "parentReleaseTransaction": "0x3000abffbc5ad383023c6d71568a88d7a3067b299324aeccc5f8c3a554cc5543",
+    "exactUserNativeDebitWithGas": true,
+    "exactReceiverAndBridgeDeltas": true,
+    "nativeParentBatch": {
+      "hash": "0xd7cdcbc405f9a6c7e4191f25d0a7d840e0884e2f464b5a3594a3c0a41573cd1f",
+      "number": "1",
+      "newMessageCount": "4",
+      "childBatchEnd": "0x0167c95acb1b260bc5603968f3446ea274d96a9e2c8e8f5a816ee2be4ebdba98"
+    },
+    "proof": [
+      [],
+      "0",
+      "0xc388abeF1Bf6d7F68f6Be53335782cc3b98d18c4",
+      "0x35D4d01eE486c02bac18B167CC541fBDc95927b2",
+      "3",
+      "34",
+      "1794867763",
+      "500000000000000000",
+      "0x"
+    ],
+    "sendRoot": "0x5f81abf3381871ad70913051f1fca533bf8755e0f0056e16e0b6a8c26183f33c",
+    "mockConfirmedRoot": false
+  },
+  "storageCoverage": {
+    "parentEndBlock": 41,
+    "parentTransactionsTraced": 82,
+    "tokenCallTransactions": 5,
+    "distinctTokenStorageKeys": 7,
+    "allInitialValuesMatchFrozenSource": true,
+    "sourceConfirmedZeroDefaults": 6,
+    "unmatchedKeys": 0,
+    "scope": "Every committed parent transaction through fixed endpoint; token SLOAD/SSTORE contexts checked against frozen observed source or queried zero defaults"
+  },
+  "publicRPCMethods": [
+    "eth_blockNumber",
+    "eth_call",
+    "eth_chainId",
+    "eth_getBalance",
+    "eth_getBlockByNumber",
+    "eth_getCode",
+    "eth_getStorageAt",
+    "eth_getTransactionCount",
+    "net_version"
+  ],
+  "ownedProcessesRemaining": 0,
+  "asOfUTC": "2026-11-16T22:22:47.713Z"
+}

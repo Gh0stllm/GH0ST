@@ -42,16 +42,24 @@
 - [x] Mine a complete unchanged Linux decision alongside 2,464 ordinary transfers.
 - [x] Recover its terminal retained state from disk in a separate OS process.
 - [x] Complete the standard inbox BoLD dispute through actual challenge contracts.
-- [ ] Complete native GH0ST child burn and confirmed parent withdrawal (the real-token bridge unit uses a test-confirmed root).
+- [x] Complete real-GH0ST deposit, native child spend/burn and genuine-rollup-confirmed parent release twice on an explicitly adapted private fork.
+- [x] Pass actual native Nitro-parent/child GH0ST observed-state parity:82 parent transactions, 7 token storage keys, 0 unmatched. The sparse-clone and privileged-confirmation scope remains explicit.
+- [x] Complete an unchanged decision across graceful execution/consensus restarts at cursors 64 and 2048, with cold VM destruction and exact canonical state.
+- [x] Verify ten strict native-mint execution rejections around a separate short restart, with actual exit 0.
+- [x] Remove executable-stack metadata while preserving exact original network bytes and fixed engine policy.
+- [x] Capture the actual last computing block and parent batch 2469, with a 2.575 GB hash-verified input and actual exit 0.
+- [ ] Repair and independently accept its matching-machine terminal replay: d453 failed from WASM32 guest heap exhaustion. The bounded-restore candidate is in progress and untested.
+- [x] Verify five authentic witnesses through the inherited terminal challenge manager and reject 35 negative contract cases (fixture ancestors/history/config).
+- [x] Verify the real BoLD finished-to-running start boundary at step 0 / offset 1, then its separate Solidity case and seven strict negative checks (fixture context only).
 - [ ] Complete the original monolithic24m-move WAVM reference; the incomplete local run was stopped when the user moved all tests to Runpod.
 - [ ] Execute a complete incorrect-result dispute through the actual challenge contracts.
 - [ ] Measure actual end-to-end memory, disk growth, move latency and parent posting costs.
 - [ ] Wire the reviewed game/reward path and prove complete legal play and payouts.
 
-Checks represent achieved local evidence or explicit remaining work. This is not a launch-date promise.
+Checks represent achieved local/private-cloud evidence or explicit remaining work. Graceful same-process restart, adapted-fork withdrawal and seeded terminal challenge checks retain their stated boundaries. This is not a launch-date promise.
 
 ## Mainnet direction
 
-The user requested Robinhood mainnet deployment after testing. The working planning estimate for a restricted pilot is3–7 days, conditional on the remaining gates; it is not a launch commitment. The temporary Linux workers are for testing and are not a permanent hosting selection. The paired 64 GB experiment exceeded its memory limit; a single next-block proof completed separately on 128 GB, peaking at 39.05 GB of cgroup memory. The preferred 24 GB production target remains unaccepted. Those disposable test workers have been removed. Every further build, engine test, replay, proof and deployment rehearsal runs on Runpod. Local work is limited to editing, transfers, research and publication.
+The user requested Robinhood mainnet deployment after testing. No launch date is certified by these results. The completed withdrawal worker has been removed; the actual native-parent observed-state fixture passed, and the 128 GB last-compute-block replay failed. The 32 GB production worker has now been deleted after completed transfers and idle-process checks; a fresh provider 404 confirms removal, and its task-only transfer key was removed first. Only the temporary 128 GB proof allocation remains at USD 1.04/hour compute plus disk. The bounded-restore candidate remains untested and unaccepted in this R31 snapshot. Every further build, engine test, replay, proof and deployment rehearsal runs on Runpod; local work remains editing, transfers, research and publication.
 
-A pilot still needs an accepted Linux image and matching genesis/module root, long-history cold recovery and storage bounds, reviewed GH0ST deposits/withdrawals and fee pricing, validator/upgrade controls, a complete deliberately incorrect-result dispute rehearsal, verified parent compatibility and the applicable license path. Passing one replay is one gate. Public receipts and working endpoints will establish a launch when it actually happens.
+The new graceful restart and repeated native withdrawal results close bounded acceptance tasks. A pilot still needs matching production client/machine/genesis, full wrong-engine-result dispute, repaired late-state guest replay, production token/parent configuration, process-level recovery and long-history storage/resource bounds, reviewed fee/ETH reserve and validator/upgrade controls, and the applicable license path. The current proof path has not met the preferred 24 GB server target, and no complete all-in USD 100/month production configuration or 20-game capacity is accepted. Public receipts and working endpoints will establish a launch when it occurs.
