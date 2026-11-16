@@ -179,3 +179,14 @@ The first proof-runtime trap prototype failed on an invalid operation. A separat
 An isolated Go replay overlay compiles, and the unchanged upstream WAVM loader accepts the new complete machine with root`0x67c7f0be4295e764e9c34fbc06d428715032becca45452f8ee02461c32db2f42`. Its complete corrected first-block replay is running from frozen inputs. A generated machine and primitive parity tests are not a successful block replay; no proof-speed figure is claimed yet. The default node and earlier cachefix/R23 artifacts remain separate. Full BoLD disputes, long-history recovery and host acceptance are still open.
 
 **Evidence:** [Architecture and acceptance gates](chess/sliced/aot/README.md), [complete native policy parity](chess/sliced/aot/evidence/native-parity.json), [scalar proof-Wasm state and error parity](chess/sliced/aot/evidence/proof-parity.json), [memory helper boundaries](chess/sliced/aot/evidence/mvp-memory.json).
+
+
+## 26 · Complete a corrected block proof, then remove redundant copying — 16 November
+
+The frozen scalar AOT machine (`0x67c7…b2f42`) completed a full corrected first-operation block and reproduced every expected global-state field. Its 3,097 witnesses cover a completed interval of 309.5–309.6 billion steps. Five distinct sampled steps pass the pinned Solidity verifier, including memory, arithmetic, runtime hashing and a finished-state witness; corrupted prestates and proofs reject. The local run took 2,455.83 seconds. This is proof-generation time, not a game-move latency or a completed full-game/BoLD test.
+
+Uniform instruction samples identify generic Go SHA-256 at 61.9% of sampled locations. A separate Go/Wasm experiment then removes three of four full-memory copies per computing operation, saving 1.398 GB of copy traffic per operation. Full-image hashes, globals, progress and illegal-history rejection match the earlier wrapper. The newer lazy machine (`0xd453…4613b`) has its own replay gate; the earlier root's success does not certify it.
+
+A disposable, billable Runpod CPU test server now supports a paired Linux replay against the same captured input. The live CPU5 compute catalog quoted 16 vCPUs and 32 GB RAM at $0.56/hour, plus scratch storage. No GPU, public GL3 deployment, live gameplay or real chain spending is involved. The obsolete R23 cold-block experiment was retired after the corrected full replay passed; its runner resumed the older full-search reference. Production storage, resource rejection and hosting acceptance remain open.
+
+**Evidence:** [Complete block replay](chess/sliced/aot/evidence/complete-wavm-block.json), [five distinct Solidity checks](chess/sliced/aot/evidence/complete-solidity-steps.json), [uniform instruction samples](chess/sliced/aot/evidence/sampled-profile.json), [copy-traffic and wrapper parity](chess/sliced/aot/evidence/wrapper-parity.json).

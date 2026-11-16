@@ -15,7 +15,7 @@ Binaryen Asyncify turns the recursive search into a portable continuation. Its s
 - [x] A fresh instance resumes suspended recursion with identical results.
 - [x] Actual local GL3 blocks commit bounded operations while 128 independent transfers receive receipts during a pending search.
 - [x] Actual EVM retry, rollback, generation/cursor guards and restart checks pass; debug-mode corruption checks pass.
-- [ ] Matching direct Wasm replay and Solidity proof witnesses pass.
+- [x] A frozen scalar AOT snapshot matches a complete recorded first-operation block and passes sampled Solidity witnesses. Newer optimizations require their own repeat.
 - [ ] Measured cadence, storage growth and move latency fit the selected host.
 
 The100 ms base block target is a measurement goal. Short engine calls alone do not prove it: snapshot persistence, model initialization, completion and cold recovery also need to fit. No latency or hosting claim is promoted before those costs are measured.
@@ -80,4 +80,4 @@ The still-running WAVM experiment belongs to the frozen R23 cold-first-block art
 
 ## Proof execution experiment
 
-The [scalar AOT proof lane](aot/README.md) removes the embedded interpreter from a separately named proof build. Complete native24m translation parity and scalar Wasm state/error checks pass, and the upstream WAVM loader accepts its machine. Complete corrected-block replay is running. This remains an isolated experiment; neither public deployment nor a measured proof-speed improvement is claimed yet.
+The [scalar AOT proof lane](aot/README.md) removes the embedded interpreter from a separately named proof build. Complete native24m translation parity and scalar Wasm state/error checks pass, and the upstream WAVM loader accepts its machine. The frozen eager snapshot passes a complete corrected first-operation block and five distinct Solidity witnesses. A later lazy-mirror change passes Go/Wasm wrapper parity and is entering paired Linux replay tests. This remains isolated research; no public deployment or production hosting acceptance is claimed.

@@ -12,17 +12,17 @@ proofs=json.loads((OUT/'full-proofs.json').read_text());trace=re.findall(r'Gener
 assert len(proofs)==len(trace)+1 and proofs[-1]['before']==proofs[-1]['after']
 assert hashlib.sha256((OUT/'replay.wasm').read_bytes()).hexdigest()==manifest['canonicalReplayWasmSHA256']
 assert hashlib.sha256((OUT/'gl3aot.wasm').read_bytes()).hexdigest()==manifest['companionSHA256']
-names={8:helpers.function_names(OUT/'replay.wasm'),9:helpers.function_names(OUT/'gl3aot.wasm')}
+names={10:helpers.function_names(OUT/'replay.wasm'),9:helpers.function_names(OUT/'gl3aot.wasm')}
 rows=[]
 for p,(step,opcode) in zip(proofs,trace):
- at=helpers.location(p['proof']);mod=at['module'];rows.append({**p,**at,'step':step,'opcode':opcode,'moduleName':{8:'replay.wasm',9:'gl3aot.wasm'}.get(mod,'standard_library'),'functionName':names.get(mod,{}).get(at['function'],'')})
+ at=helpers.location(p['proof']);mod=at['module'];rows.append({**p,**at,'step':step,'opcode':opcode,'moduleName':{10:'replay.wasm',9:'gl3aot.wasm'}.get(mod,'standard_library'),'functionName':names.get(mod,{}).get(at['function'],'')})
 selected=[]
 def choose(test,label):
- r=next((r for r in rows if test(r)),None);assert r is not None,'missing '+label;selected.append({**r,'reason':label})
+ r=next((r for r in rows if test(r) and all(r['step']!=p['step'] for p in selected)),None);assert r is not None,'missing '+label;selected.append({**r,'reason':label})
 choose(lambda r:r['module']==9,'scalar_companion_execution')
 choose(lambda r:r['module']==9 and ('MemoryLoad' in r['opcode'] or 'MemoryStore' in r['opcode']),'scalar_companion_memory')
 choose(lambda r:r['module']==9 and ('IBinOp' in r['opcode'] or 'IRelOp' in r['opcode']),'scalar_companion_integer_arithmetic')
-choose(lambda r:r['module']==8 and 'sha256' in r['functionName'].lower(),'runtime_authenticated_state_hashing')
+choose(lambda r:r['module']==10 and 'sha256' in r['functionName'].lower(),'runtime_authenticated_state_hashing')
 last=int(trace[-1][0]);assert last+manifest['interval']<1<<43
 selected.append({**proofs[-1],'step':str(last+1),'reason':'finished_self_transition_nonzero_step'})
 (OUT/'selected-proofs.json').write_text(json.dumps(selected,indent=2)+'\n')

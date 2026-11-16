@@ -1,0 +1,26 @@
+package main
+
+import (
+ "crypto/sha256"
+ "encoding/hex"
+ "encoding/json"
+ "os"
+ s "github.com/Gh0stllm/GH0ST/gl3/slicedchess"
+)
+func main(){
+ r,e:=s.Shared();if e!=nil{panic(e)}
+ v,e:=r.Instantiate();if e!=nil{panic(e)};defer v.Close()
+ if e=v.Init();e!=nil{panic(e)}
+ rows:=[]map[string]any{}
+ p,e:=v.Begin("e2e4");if e!=nil{panic(e)}
+ for _,target:=range []uint32{4,8}{
+  for p.Pending&&p.Step<target{p,e=v.Advance();if e!=nil{panic(e)}}
+  if p.Step!=target{panic("unexpected cursor")}
+  memory:=v.Memory();sum:=sha256.Sum256(memory)
+  rows=append(rows,map[string]any{"progress":p,"memoryBytes":len(memory),"memorySHA256":hex.EncodeToString(sum[:]),"globals":v.Globals()})
+ }
+ bad,e:=r.Instantiate();if e!=nil{panic(e)}
+ if e=bad.Init();e!=nil{panic(e)}
+ _,e=bad.Begin("e2e5");if e==nil{panic("illegal history accepted")};bad.Close()
+ json.NewEncoder(os.Stdout).Encode(map[string]any{"checkpoints":rows,"illegalHistoryRejected":true})
+}
