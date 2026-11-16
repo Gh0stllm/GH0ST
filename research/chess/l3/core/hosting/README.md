@@ -4,6 +4,12 @@ The current requirement is GH0ST-operated inference with very few transactions. 
 
 The 16 GB and 32 GB plans below are priced provider options, not minimum requirements. For the clean base alone, 4–8 GB RAM and 80–160 GB NVMe are smaller candidates to benchmark. No full inference, prover peak or long-term disk growth was measured, so these smaller sizes are not yet a production capacity claim.
 
+## Latest selected-workload result
+
+The user selected the unchanged full-strength chess engine for sizing. **72 complete-history Black decisions and five recovery searches passed**, preserving full NNUE,24m nodes,Hash128 and retained state. The simultaneous native test reached **2.463GiB sampled aggregate RSS**. This supports16GB for the measured native workload, but does not certify the unimplemented L3 Stockfish replay/prover or a16GB Linux server. [Measurement and limitations](chess-workload-20261116/README.md).
+
+The new [monthly server shortlist](chess-workload-20261116/HOSTING.md) includes OVH8GB at€8.49 base plus up to€0.50 backup allowance, and24GB at€23.49 base plus up to€1.00, before tax. Netcup8GB guaranteed-resource KVM is about€25 including displayed19%VAT/IPv4. Hosted latency and stock are not verified; no order was made. The earlier16/32GB quotes below remain alternatives, not minimums.
+
 Current verified netcup one-month options, with displayed19%VAT and IPv4, zero setup:
 
 | Plan | Advertised dedicated CPU allocation | RAM / NVMe | One host / month | Two matching hosts / month |

@@ -58,7 +58,7 @@ The user clarified that GL3 is private, very low traffic and intended for the pr
 
 **Evidence:** [Role-separated footprint](../chess/l3/core/integration/evidence/resource-footprint.json), [private hosting proposal](../chess/l3/core/hosting/README.md).
 
-## 10 · Select full-strength chess for the16 GB test — 16 November
+## 10 · Select full-strength chess for the 16 GB test — 16 November
 
 The user selected the unchanged chess engine rather than the TinyStories demo. The active test repeats every Black inference decision in two complete published games, checks exact move/nodes/depth, and measures retained-state save/restore peaks. It does not pretend that Stockfish is already integrated into the L3 state transition or fraud prover.
 
@@ -69,3 +69,16 @@ The user selected the unchanged chess engine rather than the TinyStories demo. T
 `research/GH0ST-L3-GL3` preserves the source history inherited from the chess research branch. A new cover, overview, findings, roadmap and this notebook make the chain research navigable. Subsequent findings are appended in sequence and tied to their artifacts; earlier unsuccessful experiments are not erased.
 
 **Baseline:** [Verified inherited public snapshot](https://github.com/Gh0stllm/GH0ST/commit/b27fcb92e93d07073b4859b2c834909a03fc42b5).
+
+
+## 12 · Finish the unchanged chess workload — 16 November
+
+All 72 Black decisions across the two complete recorded histories reproduced the exact move/nodes/depth at the full24m budget. The simultaneous searches and exact checkpoint-recovery probe produced a2.463 GiB sampled peak; the largest single native game process peaked at490.14 MiB. Five recovery searches preserved future results and reset state. This is a native memory-capacity screen, not a fresh strength campaign or a working L3 chess prover.16 GB is supported for the measured engine, while complete on-chain L3 capacity remains unverified.
+
+**Evidence:** [Complete measurement](../chess/l3/core/hosting/chess-workload-20261116/README.md), [all 72 decisions and identities](../chess/l3/core/hosting/chess-workload-20261116/evidence/results.json), [raw memory samples](../chess/l3/core/hosting/chess-workload-20261116/evidence/memory-samples.csv).
+
+## 13 · Resolve cheaper monthly billing — 16 November
+
+The complete official OVH catalog distinguished default monthly pricing from annual-upfront marketing prices. It also exposed mandatory backup pricing and a conditional100% offer, so the shortlist retains a conservative undiscounted allowance. Netcup's exact one-month variants established smaller guaranteed-resource options without assuming a two-year commitment. Shared CPU does not justify weakening the engine; its hosted search time still needs measurement. No server was bought.
+
+**Evidence:** [Server comparison and source records](../chess/l3/core/hosting/chess-workload-20261116/HOSTING.md).

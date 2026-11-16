@@ -34,3 +34,14 @@ The earlier large AWS fleet is a public-availability reference, not a private-ch
 ## Claim policy
 
 A local benchmark is not a hosted acceptance test. A compiled replay artifact is not an executed proof. A native engine beside a node is not verified on-chain inference. Public execution requires receipts and deployed artifact identities. Each new result records the exact policy, runtime, hardware, resource scope and remaining gaps.
+
+
+## Full-strength chess memory result
+
+The two complete recorded game histories executed **72 Black decisions at the unchanged 24m-node policy**, matching every prior move, actual node count and completed depth. Five additional 24m searches verified exact retained-state recovery. One game engine peaked at490.14 MiB; the recovery probe peaked at1.46 GiB. The simultaneous workloads plus harness reached a **2.463 GiB sampled aggregate peak** on the24 GiB M5 host.
+
+This supports16 GB for the measured native engine workload; it is not a16 GB Linux acceptance test or a complete L3 chess/prover memory certificate. No new strength or win-rate games are claimed. [Full report](../chess/l3/core/hosting/chess-workload-20261116/README.md), [exact evidence](../chess/l3/core/hosting/chess-workload-20261116/evidence/results.json).
+
+![Exact memory data in GH0ST's dot-matrix style](assets/memory-results.svg)
+
+The lowest practical shared-CPU catalog candidate found is OVH8 GB at€8.49 base, conservatively€8.99/month before tax with the undiscounted backup allowance. For at least16 GB, its24 GB plan is€23.49 base, conservatively€24.49 before tax. A netcup8 GB guaranteed-resource alternative is about€25 including displayed19%VAT and IPv4. Stock, invoice eligibility, Linux parity and hosted performance remain unverified. [Pricing rows, terms and primary sources](../chess/l3/core/hosting/chess-workload-20261116/HOSTING.md).

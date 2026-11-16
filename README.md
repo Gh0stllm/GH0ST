@@ -19,7 +19,7 @@ Private, low-traffic compute. GH0ST as proposed native gas. Solidity and Stylus 
 | Nested rollup | Real Geth → Nitro parent → Nitro child; validated genesis and native mock-token deposit | Local three-layer functional rehearsal |
 | Parent inclusion | Exact signed child transaction decoded from posted parent batch2 | Actual local calldata and receipts |
 | Fresh child footprint | **179.25 MiB peak RSS · 2.08 MiB chain data** | Excludes model, validator/staker and prover work |
-| Full-strength chess | Full NNUE · **24m nodes · Hash 128 · one worker** | Full-game memory measurement running |
+| Full-strength chess | Full NNUE · **24m nodes · Hash 128 · one worker** | 72 complete-history decisions match exactly; native memory screen passed |
 
 [Receipt benchmark](research/chess/l3/core/node/evidence/receipt-benchmark.json) · [Rollup evidence](research/chess/l3/core/integration/README.md) · [Memory methodology](research/chess/l3/core/hosting/chess-workload-20261116/README.md)
 
@@ -52,9 +52,11 @@ The diagram shows the intended public topology. The completed test used a local 
 | [Core source](research/chess/l3/core/README.md) | Pinned standard base, native-gas work and deployment preparation |
 | [Preserved model experiments](research/chess/l3/llm/README.md) | Complete small-model arithmetic and custom-runtime research |
 
-## Immediate objective
+## Next build gate
 
-Measure the complete selected chess workload before choosing hardware. Keep the full neural network,24m-node budget, Hash 128, maximum skill and per-game retained state. Test recovery and track actual memory instead of assuming that generic public-sequencer hardware guidance is our minimum.
+The unchanged native chess memory screen passed: **72 exact decisions plus five recovery searches**, with **2.463 GiB sampled aggregate peak**.16 GB supports this measured engine workload. The fully on-chain L3 Stockfish transition/replay/prover is still unimplemented and must be integrated and measured before production capacity is certified. [Detailed result and server shortlist](research/chess/l3/core/hosting/chess-workload-20261116/README.md).
+
+![Measured GL3 research workload memory](research/gl3/assets/memory-results.svg)
 
 No server has been rented and no public GL3 chain has been funded. Parent posting still consumes ETH even if GL3 uses GH0ST for its own gas. Model integration, fee pricing, validator custody, finality, licensing and public deployment remain distinct review steps.
 

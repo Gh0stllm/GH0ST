@@ -13,12 +13,12 @@
 - [x] Separate the deployable child footprint from test-only Ethereum/RH-like parents.
 - [x] Create the dedicated GL3 research branch, notebook and visual identity.
 
-## Active experiment
+## Completed workload study
 
-- [ ] Complete unchanged24m-node Black inference across two whole published game histories.
-- [ ] Measure peak process memory, simultaneous searches and exact-state recovery.
-- [ ] Compare current low-cost hosting quotes with their real terms.
-- [ ] Record whether16 GB is supported by measured engine demand and which end-to-end workloads remain untested.
+- [x] Complete unchanged 24m-node Black inference across two whole published game histories.
+- [x] Measure peak process memory, simultaneous searches and exact-state recovery.
+- [x] Compare current low-cost hosting quotes with their real terms.
+- [x] Record whether16 GB is supported by measured engine demand and which end-to-end workloads remain untested.
 
 ## Before public base deployment
 
