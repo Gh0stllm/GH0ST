@@ -1,0 +1,99 @@
+{
+  "schema": "gh0st.core.actual-local-factory-validation.v1",
+  "recordedAt": "2026-11-16T06:46:55.855Z",
+  "status": "ACTUAL_LOCAL_NITRO_FACTORY_ROLLUP_AND_PARENT_DEPOSIT_VERIFIED_CHILD_BOOT_SEPARATE",
+  "localOnly": true,
+  "realSpendEth": "0",
+  "realSpendIcp": "0",
+  "syntheticPrecompileOverrides": false,
+  "helperSourceSha256": "23f0252219c1ab154b279f07335380330300b65358bb35da00108c6d9067277c",
+  "sourcePacketSha256": "fb8fc205589c1ab82e25f160bc3f157312627ccee315f7a474667e5e36f75d66",
+  "parent": {
+    "rpcUrl": "http://127.0.0.1:56608/",
+    "chainId": "4663",
+    "arbOSVersionRaw": 116,
+    "arbOSVersion": 61,
+    "arbSysChainId": "4663",
+    "arbBlockNumber": "2",
+    "l1BaseFeeEstimate": "50000000000",
+    "clientVersion": "gh0st-core-nitro/vlocal+unknown-unknown/darwin-arm64/go1.25.12"
+  },
+  "childChainId": 4663007,
+  "creationBlockNumber": 29,
+  "creationTransactionHash": "0x8d0d9de334cf745a5154bcd4f446501009eecf11ea9f501ce184aae140ed1dd7",
+  "rollup": "0x1Fe2E49EBE7dFffdC03d7976089bAf72B578cBC4",
+  "nativeToken": "0xba0Ed003e48bb11dCE0a4d0959E6bb16B6D9bC01",
+  "tokenLabel": "GH0ST LOCAL MOCK NOT REAL GH",
+  "create2Factory": {
+    "address": "0x0981D9aF9d51ae6B70dE2cDC849a848862416a69",
+    "canonicalAddress": "0x4e59b44847b379578588920cA78FbF26c0B4956C",
+    "route": "Explicitly supplied prior local CREATE2 factory, exact-runtime verified",
+    "canonicalKeylessGasLimit": "100000"
+  },
+  "genesisAssertionHash": "0x74de0e641ed121cf16c45d1e7f17e95ec3e9dc913ad9b15bf5ddbdd01bf4cb23",
+  "exactChainConfigSha256": "c9144874ce4e5a5b09ba004799128d061898d4ce508277e1fbe831bdbf5bac5f",
+  "parentDeposit": {
+    "status": "LOCAL_PARENT_DEPOSIT_CONFIRMED_CHILD_MINT_NOT_YET_VERIFIED",
+    "token": "0xba0Ed003e48bb11dCE0a4d0959E6bb16B6D9bC01",
+    "tokenLabel": "GHMOCK_NOT_REAL_GH",
+    "amount": "1000000000000000000",
+    "decimals": 18,
+    "expectedChildRecipient": "0x279e68F94FE60A37163dfee423A4b9A31a57DAbC",
+    "mintTransactionHash": "0x77d551f347c0752bb0b0e83506c0035466b147e8814001e3965398f5dfa86106",
+    "parentTransactionHash": "0x5dcae3c18550357d1aedda4e706f4a963971f332400138deccf390f763bc23a2",
+    "parentBlockNumber": 32,
+    "delayedMessageIndex": "1",
+    "bridgeEvent": {
+      "messageIndex": "1",
+      "beforeInboxAcc": "0x3139dc9a228d083f2d6e45f5a43ee4882a6495bc82020259153b9a60bc704b49",
+      "inbox": "0x0238de2B074e483426D24518B0BB96040474a109",
+      "kind": "12",
+      "sender": "0x38af68F94Fe60a37163dFee423a4b9a31a57EbCd",
+      "messageDataHash": "0x8b92071caa5a9bad0f4ea24c4623eb23a86416a02aca70319b137129b37efad1",
+      "baseFeeL1": "0",
+      "timestamp": "1794811422"
+    },
+    "inboxEvent": {
+      "messageNum": "1",
+      "data": "0x279e68f94fe60a37163dfee423a4b9a31a57dabc0000000000000000000000000000000000000000000000000de0b6b3a7640000"
+    }
+  },
+  "childNativeBalanceVerified": false,
+  "childOrdinaryTransferVerified": false,
+  "childBootClaim": false,
+  "localTransactionsIncludingPriorPrerequisiteAndReusedBridge": 32,
+  "gas": {
+    "totalGasIncludingL1Poster": "1391241945",
+    "totalL2ComputeGas": "81433945",
+    "localFakeEthFee": "0.1391241945",
+    "maxActualComputeGas": "7307563",
+    "posterFeeEstimationSources": [
+      "eth_estimateGas plus actual NodeInterface.gasEstimateL1Component",
+      "NodeInterface.gasEstimateComponents"
+    ]
+  },
+  "priorLocalPrerequisiteAndReusedBridgeReceipts": [
+    {
+      "hash": "0x86fa4faf909ae0545cfca5e6cf68018fb4f786870310df5ef71db538f7737e4a",
+      "status": "0x1",
+      "blockNumber": "1",
+      "gasUsed": "1476137",
+      "gasUsedForL1": "1408000",
+      "l2ComputeGasUsed": "68137",
+      "effectiveGasPrice": "100000000"
+    },
+    {
+      "hash": "0xef0d104b5566c6f9be04bcddeca139246ce3461c6811e79d1be4bfb27eb23736",
+      "status": "0x1",
+      "blockNumber": "2",
+      "gasUsed": "29935945",
+      "gasUsedForL1": "28432000",
+      "l2ComputeGasUsed": "1503945",
+      "effectiveGasPrice": "100000000"
+    }
+  ],
+  "limitations": [
+    "Native child boot, exact genesis validation at boot, child native mint, ordinary child transfer and public settlement remain separate evidence owned by the integration orchestrator",
+    "No real RH or real tokens; current spending ceilings not asserted"
+  ]
+}

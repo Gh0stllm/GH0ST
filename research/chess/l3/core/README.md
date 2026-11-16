@@ -1,6 +1,10 @@
 # GH0ST L3 core
 
-Build the base chain first: standard Nitro, Solidity and Stylus, Robinhood as parent, and GH0ST as native gas. LLM and chess product integration follows after the base chain works. Existing custom-runtime experiments remain separately preserved under `../nitro/`, `../bridge/` and `../llm/`; the initial production profile does not register their debug precompiles.
+Build the base chain first: standard Nitro, Solidity and Stylus, Robinhood as parent, and GH0ST as native gas. The user clarified that it is for GH0ST-operated inference with very few transactions, rather than a public RPC/transaction service. LLM and chess product integration follows after the base chain works. Existing custom-runtime experiments remain separately preserved under `../nitro/`, `../bridge/` and `../llm/`; the initial production profile does not register their debug precompiles.
+
+Current sizing and costs: [private workload](hosting/README.md). Operator-only access does not make data published by a Rollup confidential.
+
+The local end-to-end rollup now passes: actual Ethereum Geth1337 → connected Nitro4663 → Nitro4663007, with validated genesis, a GHMOCK parent deposit becoming child native gas, a mined child transaction and its exact bytes decoded from the posted parent batch. This uses local fake funds, not real GH0ST or a public deployment. [Functional evidence](integration/evidence/functional-evidence.json).
 
 ## Responsiveness
 

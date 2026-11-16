@@ -1,8 +1,8 @@
 # GH0ST L3
 
-Build the **fast base chain first**, then integrate the LLM and chess products. The initial core uses standard Nitro/Stylus, the official consensus-v61 machine, GH0ST native gas and Robinhood as parent. [Core build and configuration](core/README.md).
+Build the **fast base chain first**, for GH0ST-operated inference with very few transactions, then integrate the model/product execution. The initial core uses standard Nitro/Stylus, the official consensus-v61 machine, GH0ST native gas and Robinhood as parent. [Core build and configuration](core/README.md).
 
-The clean node is built and locally tested. **No public L3, hosted RPC, server order or real token movement has been completed.** Parent/child integration is being rehearsed with local nodes and a clearly labeled mock token. Experimental LLM debug precompiles are excluded from the initial core.
+The clean node is built and locally tested. **No public L3, hosted RPC, server order or real token movement has been completed.** Actual local Ethereum → Nitro parent → Nitro child integration now passes with a clearly labeled mock token, native-gas payment and the exact child transaction decoded from its parent batch. Experimental LLM debug precompiles are excluded from the initial core.
 
 ## Verified core work
 
@@ -14,6 +14,7 @@ The clean node is built and locally tested. **No public L3, hosted RPC, server o
 | Solidity/Stylus | Real contract deployment, activation and execution on the running clean node |
 | Factory route | Exact upstream templates and mock-token rollup initialized on a synthetic parent; 140 checks, ordinary code/initcode limits |
 | Parent token | Read-only Robinhood checks confirm the expected GH0ST runtime, 18 decimals and basic ERC20 behavior; not a full audit |
+| Local nested rollup | Both genesis assertions validated; parent token lock → child native credit → fee-paying child transfer → decoded parent batch, all local/mock |
 | Genesis proposal | Exact pinned SDK pure helpers generate a standard61/debug-off configuration; no provider, signer or broadcast |
 
 The burst fixture used eight concurrent senders and achieved about78 lightweight transactions/second. It is a bounded local workload, not maximum capacity, hosted latency or LLM throughput. The100ms setting is a minimum delay between non-empty blocks; execution and network conditions can make intervals longer. A sequencer receipt is separate from parent batch confirmation and final settlement. See [measured receipts](core/node/evidence/receipt-benchmark.json).
@@ -34,7 +35,7 @@ The SDK's1WETH validator bond is a configurable default, not a universal launch 
 
 ## Hosting and availability
 
-Use the current core hosting research rather than the earlier single-server chess candidate. A fast public service needs redundant nodes, coordinated sequencer leadership, replicated coordination state, restricted administration, backups and tested recovery. Multiple containers or mirrored disks on one host do not provide independent failure protection. No provider or configuration guarantees literal zero downtime.
+Use the [private workload sizing](core/hosting/README.md) rather than a public-RPC fleet or the earlier single-server chess candidate. Current provisional options are16GB/256GBNVMe at€46.81/month or32GB/512GB at€89.50, with the same model precision/work and no assumed hosted inference capacity. A redundant service still needs coordinated sequencer leadership, replicated coordination state, restricted administration, backups and tested recovery. Multiple containers or mirrored disks on one host do not provide independent failure protection. No provider or configuration guarantees literal zero downtime.
 
 ## Preserved future compute research
 

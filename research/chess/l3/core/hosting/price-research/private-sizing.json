@@ -1,0 +1,291 @@
+{
+  "scope": "Current private low-traffic GH0ST base-chain sizing proposal; replaces public-fleet recommendation, no order",
+  "checkedAtUTC": "2026-11-16T07:00:50.589355+00:00",
+  "recommendation": {
+    "primary": "Review smaller netcup dedicated-resource candidates, with separate single-host and two-same-capability-host options. No deployment option, availability tradeoff or financial term has been selected.",
+    "recommended32GBHardware": "NetcupRS4000G12.5:12 advertised dedicated CPU allocations,32GBDDR5ECC,512GBNVMe; KVM VM with guaranteed CPU/RAM, not a dedicated physical host",
+    "lowerCost16GBHardware": "NetcupRS2000G12.5:8 advertised dedicated CPU allocations,16GBDDR5ECC,256GBNVMe; conditional on full-workload peak measurements",
+    "computeBudgetRangeEURO": "Verified public one-month variants: EUR46.81 for16GB orEUR89.50 for32GB, including displayed19%VAT andIPv4. Independent backups extra; no user cap.",
+    "noModelQualityReductionRequired": true,
+    "sameLatencyProvenOnTheseHosts": false,
+    "productionCapacityValidated": false,
+    "providerTermsSelected": false,
+    "HetznerIsOnlyCheapOption": false,
+    "initialAvailabilityGoalWaivedByPrivateUsage": false,
+    "HetznerComparisonWithProviderBackupAndIPv4EURO": "103.69 for CCX23; 166.69 for CCX33; before tax",
+    "netcupBackupCost": "Independent offsite backup cost not selected; included COW snapshots are not an independent backup claim",
+    "listedPlansAreMinimumRequirements": false,
+    "baseOnlySmallerCandidate": "A4\u20138GB RAM,80\u2013160GB NVMe candidate can be benchmarked for the clean base; model, replay/prover peaks and retention must be measured before claiming full-workload capacity. No smaller hosting price verified here."
+  },
+  "measuredEvidence": {
+    "scope": "Actual deployable child in local three-layer functional rehearsal onAppleM5/24GiB; no model/prover workload",
+    "OSPeakRSSBytes": 187957248,
+    "OSPeakRSSMiB": 179.25,
+    "sampledPeakRSSKiB": 182512,
+    "chaindataKiB": 2132,
+    "chaindataMiB": 2.08203125,
+    "idleWindowSeconds": 10,
+    "source": "../../integration/evidence/resource-footprint.json",
+    "modelPeakRSSMeasured": false,
+    "proverPeakRSSMeasured": false,
+    "futureQwen2BCapacityClaimed": false
+  },
+  "qualityBoundary": {
+    "preserve": [
+      "Selected model weights and precision",
+      "Context and output policy",
+      "Deterministic execution and verification",
+      "Full requested inference work; schedule sequential jobs if needed"
+    ],
+    "cut": [
+      "Public-RPC fleet and public-feed scale",
+      "Enterprise orchestration and edge infrastructure where not needed by the chosen private topology"
+    ],
+    "tradeoff": "One host with manual checkpoint/restart recovery is an unselected option with a downtime tradeoff. Two same-capability hosts with proper coordination are an alternative; private usage does not mean the earlier availability goal was waived. Neither hosted latency nor HA is proven."
+  },
+  "hetzner": [
+    {
+      "plan": "CCX23",
+      "dedicatedVCPUThreads": 4,
+      "memoryGB": 16,
+      "includedNVMeGB": 160,
+      "region": "Germany/Finland",
+      "monthlyComputeEURExVATAndIPv4": "85.99",
+      "monthlyPrimaryIPv4EUR": ".50",
+      "monthlyProviderBackupEUR": "17.198",
+      "monthlyIncludingOneIPv4AndProviderBackupEUR": "103.69",
+      "twoSameSizeServersBothBackedUpWithIPv4EUR": "207.38",
+      "priceSource": "https://docs.hetzner.com/general/infrastructure-and-availability/price-adjustment/",
+      "effectiveDate": "2026-06-15",
+      "hardwareSource": "https://www.hetzner.com/cloud/general-purpose/",
+      "CPUIsolationSource": "https://docs.hetzner.com/cloud/servers/faq/",
+      "backupSource": "https://docs.hetzner.com/cloud/billing/faq/",
+      "IPSource": "https://docs.hetzner.com/cloud/servers/primary-ips/overview/",
+      "capacityAvailabilityVerified": false
+    },
+    {
+      "plan": "CCX33",
+      "dedicatedVCPUThreads": 8,
+      "memoryGB": 32,
+      "includedNVMeGB": 240,
+      "region": "Germany/Finland",
+      "monthlyComputeEURExVATAndIPv4": "138.49",
+      "monthlyPrimaryIPv4EUR": ".50",
+      "monthlyProviderBackupEUR": "27.698",
+      "monthlyIncludingOneIPv4AndProviderBackupEUR": "166.69",
+      "twoSameSizeServersBothBackedUpWithIPv4EUR": "333.38",
+      "priceSource": "https://docs.hetzner.com/general/infrastructure-and-availability/price-adjustment/",
+      "effectiveDate": "2026-06-15",
+      "hardwareSource": "https://www.hetzner.com/cloud/general-purpose/",
+      "CPUIsolationSource": "https://docs.hetzner.com/cloud/servers/faq/",
+      "backupSource": "https://docs.hetzner.com/cloud/billing/faq/",
+      "IPSource": "https://docs.hetzner.com/cloud/servers/primary-ips/overview/",
+      "capacityAvailabilityVerified": false
+    }
+  ],
+  "awsReference": [
+    {
+      "plan": "r7i.large",
+      "vCPU": 2,
+      "memory": "16 GiB",
+      "storage": "EBS only; no local NVMe included",
+      "hourlyLinuxOnDemandUSD": "0.1323000000",
+      "monthlyCompute730hUSD": "96.5790000000",
+      "monthlyOneNode256GBgp3IPv4And50GBS3USD": "121.86",
+      "monthlyTwoNodesSameRootAndIPv4PlusShared50GBS3USD": "242.57",
+      "region": "us-east-1",
+      "sku": "C8TP7NV93HBVY8JZ",
+      "capacityStatus": "Used",
+      "effectiveDate": "2026-11-01",
+      "source": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonEC2/current/us-east-1/index.csv",
+      "rootStorageAssumption": "256 GB gp3 at $.08/GB-month; network block storage is not equivalent to local NVMe",
+      "publicIPv4Assumption": "One $.005/hour IP per instance, restricted inbound access; direct outbound, no NAT gateway",
+      "backupAssumption": "50 GB S3 Standard at $.023/GB-month; requests/transfer additional",
+      "burstableCPU": false,
+      "dedicatedPhysicalHost": false
+    },
+    {
+      "plan": "r7i.xlarge",
+      "vCPU": 4,
+      "memory": "32 GiB",
+      "storage": "EBS only; no local NVMe included",
+      "hourlyLinuxOnDemandUSD": "0.2646000000",
+      "monthlyCompute730hUSD": "193.1580000000",
+      "monthlyOneNode256GBgp3IPv4And50GBS3USD": "218.44",
+      "monthlyTwoNodesSameRootAndIPv4PlusShared50GBS3USD": "435.73",
+      "region": "us-east-1",
+      "sku": "PRGSWU6294SJ3Z93",
+      "capacityStatus": "Used",
+      "effectiveDate": "2026-11-01",
+      "source": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonEC2/current/us-east-1/index.csv",
+      "rootStorageAssumption": "256 GB gp3 at $.08/GB-month; network block storage is not equivalent to local NVMe",
+      "publicIPv4Assumption": "One $.005/hour IP per instance, restricted inbound access; direct outbound, no NAT gateway",
+      "backupAssumption": "50 GB S3 Standard at $.023/GB-month; requests/transfer additional",
+      "burstableCPU": false,
+      "dedicatedPhysicalHost": false
+    }
+  ],
+  "OVHAlternative": {
+    "product": "SYS-3",
+    "primaryListingSource": "https://eco.ovhcloud.com/en-ie/",
+    "configuratorSource": "https://eco.ovhcloud.com/en-ie/soyoustart/sys-3/",
+    "listingStartingMonthlyEURExVAT": "41.99",
+    "listingSetupEURExVAT": "41.99",
+    "listingHardware": "Xeon E-2288G,8cores/16threads,3.7GHz/5GHz;32\u2013128GBDDR4ECC;2x960GBNVMe configurations",
+    "listingStockLabel": "Soon available",
+    "configuredPriceAndStockVerified": false,
+    "older7199EURQuoteVerified": false,
+    "recommendedAsAvailablePurchase": false,
+    "reason": "Configured quote/availability could not be verified; use only as a public starting-price discovery hint, not a confirmed orderable equivalent."
+  },
+  "optionalStandby": {
+    "recommendedDefault": "Present a single-host cost option and two same-capability-host cost option; do not assume manual downtime is accepted or select no spare.",
+    "sameSizeHostCost": "See per-plan two-server totals; separate fault domain, not two processes on one host",
+    "smallerStandby": "Permissible only if it can replay/recover and complete the actual chosen model unchanged; otherwise queued jobs wait for a full-size replacement.",
+    "automaticHASelected": false,
+    "noRedisRequiredForManualSingleSequencerRecovery": "Only applies if the single-sequencer/manual-recovery option is explicitly selected",
+    "automaticMultiSequencerFailoverStillRequiresCoordinatorDesign": true,
+    "zeroDowntimeGuaranteed": false
+  },
+  "unpricedOrExcluded": [
+    "Taxes",
+    "Parent-chain RPC service and settlement gas",
+    "Validator collateral/challenge bonds",
+    "Traffic over allowances and backup transfer/requests",
+    "Larger future model memory/prover peak and GPU needs",
+    "Operations/management labor"
+  ],
+  "priorPublicHAReference": "pricing.json and preceding public HA estimate retained for comparison only",
+  "ordersPlaced": 0,
+  "accountsAccessed": false,
+  "newUserSpendingCapsCreated": false,
+  "netcup": {
+    "generation": "CurrentG12.5, not olderG12",
+    "virtualization": "KVM",
+    "CPU": "AMD EPYC9645; guaranteed CPU/RAM allocations; advertised dedicated cores are not verified physical-core counts",
+    "memory": "DDR5 ECC per current overview",
+    "plans": [
+      {
+        "name": "RS2000G12.5",
+        "advertisedDedicatedCores": 8,
+        "memoryGB": 16,
+        "NVMeGB": 256,
+        "configured24MonthPriceEURIncluding19PercentVAT": "34.60",
+        "configuredContractMonths": 24,
+        "configuredBillingMonths": 24,
+        "displayedOneMonthSurchargeEUR": "12.21",
+        "derivedOneMonthPriceEURIncluding19PercentVAT": "46.81",
+        "oneMonthSelectedQuoteVerified": false,
+        "setupEUR": "0.00",
+        "source": "https://www.netcup.com/en/server/root-server/rs-2000-g12.5-iv-24m-eu",
+        "oneMonthPublicVariantPriceVerified": true,
+        "oneMonthPublicProductID": 6534,
+        "oneMonthContractMonths": 1,
+        "oneMonthBillingMonths": 1,
+        "oneMonthServerOnlyGrossPriceEUR": "46.21",
+        "oneMonthServerOnlyNetPriceEUR": "38.83",
+        "standardIPv4GrossPriceEUR": "0.60",
+        "verifiedOneMonthTotalEURIncluding19PercentVATAndIPv4": "46.81",
+        "oneMonthPriceEvidence": "netcup-public-variants-rs2000.json plus official networking explanation",
+        "oneMonthSource": "https://www.netcup.com/en/server/root-server/rs-2000-g12.5-iv-24m-eu#rs-2000-g12.5-iv-1m-eu"
+      },
+      {
+        "name": "RS4000G12.5",
+        "advertisedDedicatedCores": 12,
+        "memoryGB": 32,
+        "NVMeGB": 512,
+        "configured24MonthPriceEURIncluding19PercentVAT": "66.16",
+        "configuredContractMonths": 24,
+        "configuredBillingMonths": 24,
+        "displayedOneMonthSurchargeEUR": "23.34",
+        "derivedOneMonthPriceEURIncluding19PercentVAT": "89.50",
+        "oneMonthSelectedQuoteVerified": false,
+        "setupEUR": "0.00",
+        "source": "https://www.netcup.com/en/server/root-server/rs-4000-g12.5-iv-24m-eu",
+        "oneMonthPublicVariantPriceVerified": true,
+        "oneMonthPublicProductID": 6549,
+        "oneMonthContractMonths": 1,
+        "oneMonthBillingMonths": 1,
+        "oneMonthServerOnlyGrossPriceEUR": "88.90",
+        "oneMonthServerOnlyNetPriceEUR": "74.71",
+        "standardIPv4GrossPriceEUR": "0.60",
+        "verifiedOneMonthTotalEURIncluding19PercentVATAndIPv4": "89.50",
+        "oneMonthPriceEvidence": "netcup-public-variants.json plus configured-page surcharge and official networking explanation",
+        "oneMonthSource": "https://www.netcup.com/en/server/root-server/rs-4000-g12.5-iv-24m-eu#rs-4000-g12.5-iv-1m-eu"
+      }
+    ],
+    "region": "No preference Europe: automaticEuropeanlocation; namedcities/Singaporecostextra",
+    "networking": "IPv4+IPv6 included in configured pages",
+    "tax": "Page states19%GermanVAT; actual customer country changes tax; India invoice not quoted",
+    "snapshots": "Copy-on-write snapshots available, not claimed to be independent offsite backups",
+    "capacity": "Provisioning delay notices; not reserved",
+    "minimumAvailabilityStated": "99.9%; not end-to-end chain uptime",
+    "noContractOrCheckoutCommitted": true,
+    "overview": "https://www.netcup.com/en/server/root-server",
+    "IPv4ExplanationSource": "https://www.netcup.com/en/blog/root-server/extended-network-configuration"
+  },
+  "OVHVPSAlternatives": {
+    "source": "https://www.ovhcloud.com/en-ie/vps/",
+    "rangeBranding": "VPS2027 as currently displayed",
+    "quoteStatus": "Official starting prices only; selected configuration, term, region and current stock not verified",
+    "CPU": "Shared virtual infrastructure with allocated vCores; no claim of exclusive physical CPU or identical inference latency",
+    "plans": [
+      {
+        "name": "VPS-2",
+        "vCores": 4,
+        "memoryGB": 8,
+        "NVMeGB": 75,
+        "monthlyStartingEURExVAT": "7.21"
+      },
+      {
+        "name": "VPS-4",
+        "vCores": 8,
+        "memoryGB": 24,
+        "NVMeGB": 200,
+        "monthlyStartingEURExVAT": "19.96"
+      }
+    ],
+    "baseOnlyCandidate": true,
+    "samePerformanceClaimed": false,
+    "setup": "Public cheap-VPS listing says free; selected quote still needed",
+    "modelOrSearchReduced": false
+  },
+  "deploymentOptions": [
+    {
+      "name": "One private32GBhost",
+      "selected": false,
+      "derivedMonthlyComputeEURIncludingDisplayed19PercentVAT": "89.50",
+      "independentBackupIncluded": false,
+      "coordinationServicesIncluded": false,
+      "availabilityTradeoff": "Single failure domain and manual restore/restart downtime; not assumed accepted."
+    },
+    {
+      "name": "Two same-capability private32GBhosts",
+      "selected": false,
+      "derivedMonthlyComputeEURIncludingDisplayed19PercentVAT": "179.00",
+      "independentBackupIncluded": false,
+      "coordinationServicesIncluded": false,
+      "availabilityTradeoff": "Both hosts must replay/complete the same chosen model unchanged; automatic failover requires separate tested coordination and fault domains; no zero-downtime guarantee."
+    },
+    {
+      "name": "One16GBhost or same-sizepair",
+      "selected": false,
+      "derivedOneHostMonthlyEURIncludingDisplayed19PercentVAT": "46.81",
+      "derivedTwoHostsMonthlyEURIncludingDisplayed19PercentVAT": "93.62",
+      "condition": "Actual model/replay/prover peak must fit16GB without reducing model precision/context/fullwork; backup and HA coordination are additional."
+    }
+  ],
+  "earlierParentOnlyReference": {
+    "scope": "Native clean Nitro parent only, ArbOS61/debugOFF, approximately20minutes and33lighttransactions; not LLM or fraud-prover stress",
+    "RSSKiB": 134208,
+    "RSSMiB": "131.0625",
+    "chaindataKiB": 3132,
+    "chaindataMiB": "3.05859375",
+    "source": "Current native integration agent observation; final sizing/rehearsal artifact pending",
+    "currentSmallModelFixture": "Approx3.75M-parameter TinyStories / approx5 MB weight fixture, not a future2B model",
+    "modelPeakRSSMeasured": false,
+    "proverPeakRSSMeasured": false,
+    "futureQwen2BCapacityClaimed": false,
+    "baseOnly4To8GBCandidate": "Possible based on measured clean-base idle usage; full inference/replay/prover capacity must be measured separately, no guarantee"
+  }
+}

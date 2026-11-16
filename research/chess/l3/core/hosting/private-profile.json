@@ -1,0 +1,77 @@
+{
+  "scope": "Private, very-low-transaction-volume inference chain; provisional sizing, no hosting order",
+  "operatorOnly": true,
+  "publicRPCFleetRequired": false,
+  "baseNodeMeasurement": {
+    "scope": "Actual local nested L3 child, genesis/deposit/transfer/batch plus10sec idle; no model or prover execution",
+    "OSPeakRSSBytes": 187957248,
+    "OSPeakRSSMiB": 179.25,
+    "sampledPeakRSSKiB": 182512,
+    "chaindataKiB": 2132,
+    "chaindataMiB": 2.08203125,
+    "source": "../integration/evidence/resource-footprint.json",
+    "inferenceAndProverPeakPending": true
+  },
+  "leanCandidate": {
+    "dedicatedCPUAllocationsAdvertised": 8,
+    "RAMGB": 16,
+    "NVMeGB": 256,
+    "monthlyDisplayedEURIncludingVATAndIPv4": "46.81",
+    "minimumRequiredRAMClaimed": false
+  },
+  "headroomCandidate": {
+    "dedicatedCPUAllocationsAdvertised": 12,
+    "RAMGB": 32,
+    "NVMeGB": 512,
+    "monthlyDisplayedEURIncludingVATAndIPv4": "89.50",
+    "minimumRequiredRAMClaimed": false
+  },
+  "billing": {
+    "minimumContractMonths": 1,
+    "billingPeriodMonths": 1,
+    "setupEUR": "0",
+    "source": "price-research/private-sizing.json",
+    "orderPlaced": false
+  },
+  "preserve": [
+    "Selected model weights",
+    "Precision",
+    "Context policy",
+    "Full inference/search work",
+    "Committed state and verification"
+  ],
+  "modelPeakRAMAndDiskMeasured": false,
+  "hostedLatencyMeasured": false,
+  "availability": {
+    "goalWaivedByPrivateUsage": false,
+    "singleHostOptionSelected": false,
+    "twoHostOptionSelected": false,
+    "twoLeanHostsBaseMonthlyEUR": "93.62",
+    "twoHeadroomHostsBaseMonthlyEUR": "179.00",
+    "backupAndFailoverCoordinationIncluded": false,
+    "sameFailureDomainIsIndependent": false,
+    "automaticFailoverTested": false,
+    "zeroDowntimeGuaranteed": false
+  },
+  "oldPublicAWSFleet": {
+    "currentRecommendation": false,
+    "retainedAsReference": true
+  },
+  "oldFinancialCeilingsRemoved": true,
+  "newFiniteSpendingCeilingSelected": false,
+  "automaticTopups": false,
+  "baseOnlySmallerCandidate": {
+    "RAMGBRange": [
+      4,
+      8
+    ],
+    "NVMeGBRange": [
+      80,
+      160
+    ],
+    "status": "Candidate for clean base-node/recovery benchmarking only; not an inference/prover capacity claim",
+    "quotedProviderPlan": false,
+    "modelAndProverPeakMeasured": false,
+    "diskGrowthMeasured": false
+  }
+}

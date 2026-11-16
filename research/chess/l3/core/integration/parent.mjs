@@ -1,0 +1,24 @@
+// Historical negative diagnostic only, unused by run.mjs: standalone dev parent
+// has L1BlockNumber0, so a nested child sequencer correctly cannot initialize.
+// No existing keys or public connections.
+import fs from 'node:fs';import path from 'node:path';import net from 'node:net';import {fileURLToPath} from 'node:url';import {spawn} from 'node:child_process';import {Wallet} from 'ethers';
+const root=path.dirname(fileURLToPath(import.meta.url)),cache=path.join(root,'.cache');fs.mkdirSync(cache,{recursive:true});
+const nodeRoot=path.resolve(root,'../node'),source=path.join(nodeRoot,'.cache/nitro-core'),binary=path.join(nodeRoot,'.cache/gh0st-core-nitro');
+const session=fs.mkdtempSync(path.join(cache,'session-'));fs.chmodSync(session,0o700);const wallet=Wallet.createRandom();
+const keyFile=path.join(session,'ephemeral-parent-signer.json');fs.writeFileSync(keyFile,JSON.stringify({privateKey:wallet.privateKey,address:wallet.address})+'\n',{mode:0o600});
+const port=await new Promise(resolve=>{const s=net.createServer();s.listen(0,'127.0.0.1',()=>{const p=s.address().port;s.close(()=>resolve(p));});});
+const info=JSON.parse(fs.readFileSync(path.join(source,'cmd/chaininfo/arbitrum_chain_info.json'))).find(x=>x['chain-name']==='arb-dev-test');
+info['chain-name']='gh0st-real-nitro-parent-local';info['chain-config'].chainId=4663;info['chain-config'].arbitrum.InitialArbOSVersion=61;info['chain-config'].arbitrum.AllowDebugPrecompiles=false;info['chain-config'].arbitrum.InitialChainOwner=wallet.address;
+const childConfig=structuredClone(info['chain-config']);childConfig.chainId=4663007;Object.assign(childConfig.arbitrum,{InitialChainOwner:wallet.address,MaxCodeSize:24576,MaxInitCodeSize:49152});
+const configString=JSON.stringify(childConfig);fs.writeFileSync(path.join(session,'child-chain-config.json'),configString+'\n');
+fs.writeFileSync(path.join(session,'child-genesis.json'),JSON.stringify({gasLimit:'0x0',difficulty:'0x0',serializedChainConfig:configString,arbOSInit:{nativeTokenSupplyManagementEnabled:false,transactionFilteringEnabled:false,initialL1BaseFee:1},alloc:{}},null,2)+'\n');
+const fd=fs.openSync(path.join(session,'parent.log'),'w');const args=['--dev','--chain.id','4663','--chain.name',info['chain-name'],'--chain.info-json',JSON.stringify([info]),'--init.dev-init-address',wallet.address,'--persistent.chain',path.join(session,'parent-chain'),'--persistent.global-config',path.join(session,'parent-config'),'--execution.sequencer.max-block-speed','100ms','--execution.sequencer.poll-interval','5ms','--execution.stylus-target.allow-offchain-activation=false','--http.addr','127.0.0.1','--http.port',String(port),'--http.api=net,web3,eth,arb','--auth.addr=','--ipc.path=','--ws.addr=','--node.batch-poster.enable=false','--node.staker.enable=false','--execution.parent-chain-reader.enable=false','--version-alerter.enable=false','--file-logging.enable=false','--node.feed.output.enable=false'];
+const child=spawn(binary,args,{cwd:source,stdio:['ignore',fd,fd]});const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const url='http://127.0.0.1:'+port;async function rpc(method,params=[]){const j=await(await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({jsonrpc:'2.0',id:1,method,params})})).json();if(j.error)throw new Error(j.error.message);return j.result;}
+try{
+ let ready=false;for(let i=0;i<120;i++){if(child.exitCode!==null)throw new Error('parent exited');try{if(await rpc('eth_chainId')==='0x1237'){ready=true;break;}}catch{}await sleep(250);}if(!ready)throw new Error('parent startup timeout');
+ const readyInfo={parentRpcUrl:url,parentChainId:4663,childChainId:4663007,ephemeralSignerFile:keyFile,address:wallet.address,session,childConfig,chainConfigJSON:configString,genesisFile:path.join(session,'child-genesis.json'),processPid:child.pid,parentExternalConnectivity:false,publicChain:false};
+ fs.writeFileSync(path.join(session,'parent-ready.json'),JSON.stringify(readyInfo,null,2)+'\n',{mode:0o600});fs.writeFileSync(path.join(cache,'active-session.json'),JSON.stringify({session,parentReadyFile:path.join(session,'parent-ready.json')})+'\n');
+ console.log(JSON.stringify({parentReady:true,parentRpcUrl:url,parentChainId:4663,parentReadyFile:path.join(session,'parent-ready.json'),ephemeralSignerFile:keyFile,childGenesisFile:path.join(session,'child-genesis.json')}));
+ for(let i=0;i<3600&&!fs.existsSync(path.join(session,'STOP'));i++){if(child.exitCode!==null)throw new Error('parent exited while active');await sleep(1000);}
+}finally{child.kill('SIGINT');await Promise.race([new Promise(r=>child.once('exit',r)),sleep(10000)]);if(child.exitCode===null)child.kill('SIGKILL');fs.closeSync(fd);fs.writeFileSync(path.join(session,'parent-stopped.json'),JSON.stringify({processStopped:child.exitCode!==null,exitCode:child.exitCode})+'\n');console.log('Isolated parent stopped.');}

@@ -1,0 +1,11 @@
+'use strict';
+// Adapter for an isolated session created by parent.mjs; never public RPC/keys.
+const fs=require('node:fs'),path=require('node:path'),{createRequire}=require('node:module');
+const root=__dirname,repo=path.resolve(root,'../../../../..');const localRequire=createRequire(path.resolve(repo,'../bridge/package.json'));
+const {JsonRpcProvider,Wallet,parseEther}=localRequire('ethers');const {deployLocalNitroFactoryAndRollup,jsonSafe}=require('./factory/local-nitro-factory.cjs');
+(async()=>{const active=JSON.parse(fs.readFileSync(path.join(root,'.cache/active-session.json'))),context=JSON.parse(fs.readFileSync(active.parentReadyFile));const key=JSON.parse(fs.readFileSync(context.ephemeralSignerFile));
+ const provider=new JsonRpcProvider(context.parentRpcUrl,context.parentChainId,{staticNetwork:true,cacheTimeout:-1,batchMaxCount:1});provider.pollingInterval=50;const signer=new Wallet(key.privateKey,provider);
+ try{const deployment=await deployLocalNitroFactoryAndRollup({provider,signer,parentRpcUrl:context.parentRpcUrl,expectedParentChainId:context.parentChainId,childChainId:context.childChainId,chainConfigJSON:context.chainConfigJSON,genesisAssertionState:context.genesisAssertionState,existingCreate2FactoryAddress:context.existingCreate2FactoryAddress,genesisInboxCount:BigInt(context.genesisInboxCount),dataCostEstimate:BigInt(context.dataCostEstimate),onProgress:x=>console.log(JSON.stringify(jsonSafe(x)))});
+ fs.writeFileSync(path.join(context.session,'deployment-packet.json'),JSON.stringify(deployment.jsonPacket(),null,2)+'\n');const deposit=await deployment.fundAndDepositNativeGas({amount:parseEther('1'),expectedRecipient:signer.address});fs.writeFileSync(path.join(context.session,'deployment-packet.json'),JSON.stringify(deployment.jsonPacket(),null,2)+'\n');fs.writeFileSync(path.join(context.session,'native-gas-deposit.json'),JSON.stringify(jsonSafe(deposit),null,2)+'\n');console.log(JSON.stringify({factoryAndRollupCreated:true,creationBlock:deployment.packet.creationBlockNumber,packetFile:path.join(context.session,'deployment-packet.json'),deposit}));
+ }finally{provider.destroy();}
+})().catch(e=>{console.error(JSON.stringify({failed:true,message:e.shortMessage||e.message,rpcMessage:e.info?.error?.message||e.error?.message||null,stack:e.stack?.split('\n').slice(0,4).join('\n')}));process.exitCode=1;});

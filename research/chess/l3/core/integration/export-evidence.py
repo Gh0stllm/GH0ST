@@ -1,0 +1,37 @@
+"""Export sanitized, receipt-backed local protocol evidence. Never signs."""
+from pathlib import Path
+import json,hashlib,os,re,subprocess,socket,urllib.parse,sys
+r=Path(__file__).resolve().parent;active=json.loads((r/'.cache/active-session.json').read_text());s=Path(active['session']);out=r/'evidence';out.mkdir(exist_ok=True)
+def read(name):return json.loads((s/name).read_text())
+def clean(value):
+ if isinstance(value,dict):return {k:clean(v) for k,v in value.items() if k not in {'rpcUrl','parentRpcUrl','rootRpcUrl','childLogTail','nodeLogTail','ephemeralSignerFile','privateKey','private-key','session','dataDir','logPath','parentReadyFile','genesisFile'}}
+ if isinstance(value,list):return [clean(v) for v in value]
+ if isinstance(value,str) and str(s) in value:return '$PRIVATE_LOCAL_SESSION'
+ return value
+parent=read('deployment-packet.json');root=read('root-rollup-packet.json');result=read('child-integration-result.json');batches=read('parent-batches.json');decoded=read('decoded-batch-proof.json');assert result['passed'] and result['actualNativeGasDepositVerified'] and decoded['matchedMinedChildTransaction']
+matching=[x for x in decoded['records'] if x['matchesMinedChildReceipt']];assert len(matching)==1;match=matching[0];receipt=next(x for x in batches['batches'] if x['parentTransactionHash']==match['parentTransactionHash']);assert receipt['parentReceiptStatus']==1
+summary={'schema':'gh0st.core.private-nested-rehearsal.v1','status':'ACTUAL_LOCAL_THREE_LAYER_FUNCTIONAL_PATH_VERIFIED_NOT_PUBLIC_DEPLOYMENT','topology':['Actual local Ethereum Geth1337','Actual clean Nitro4663 parent','Actual clean Nitro4663007 child'],'privateRPCOnly':True,'publicDeployment':False,'syntheticPrecompileOverrides':False,'customSTF':False,'ArbOSVersion':61,'AllowDebugPrecompiles':False,'officialWasmModuleRoot':result['officialMachineRoot'],'genesisAssertions':{'parentHash':read('connected-parent-ready.json')['genesisHash'],'parentValidated':read('connected-parent-ready.json')['genesisAssertValidated'],'childHash':result['childGenesisHash'],'childValidatedAndMatchesParentContract':result['childGenesisHashMatchesActualParentAssertion']},'nativeGas':{'symbol':'GHMOCK','realGH0STUsed':False,'parentDepositTransactionHash':result['parentDeposit']['parentTransactionHash'],'parentDepositBlock':result['parentDeposit']['parentBlockNumber'],'delayedMessageIndex':result['parentDeposit']['delayedMessageIndex'],'amount':result['parentDeposit']['amount'],'parentBridgeLockedAmount':result['parentBridgeLockedAmount'],'childNativeCredit':result['childNativeBalanceAfterDeposit'],'ordinaryTransfer':result['childTransfer']},'ordinaryTransactionInPostedParentBatch':{**match,'parentBlockNumber':receipt['parentBlockNumber'],'parentBatchReceiptGasUsed':receipt['gasUsed'],'parentBatchCountFinal':batches['parentBatchCountFinal']},'earlierObservation':{'batchCountBefore':result['parentBatchCountBefore'],'batchCountAtFirstPostedDepositBatch':result['parentBatchCountAfter'],'meaning':'Sequence1 contained delayed metadata; exact ordinary transfer is sequence2, final count3'},'localOnlyFinalitySettings':result['localFinality'],'genesisParentFakeETHAllocation':'1000ETH explicit local genesis, no production backing claim','realSpend':{'ETH':'0','ICP':'0','GH0ST':'0'},'LLMExecuted':False,'proverChallengeExecuted':False,'parentOrEthereumFinalityProven':False,'serverOrdered':False}
+for name,value in [('functional-evidence.json',summary),('native-rollup-deployment.json',clean(parent)),('ethereum-root-rollup-deployment.json',clean(root)),('native-gas-deposit.json',clean(result['parentDeposit'])),('parent-batches.json',clean(batches)),('decoded-batch-inclusion.json',decoded)]:
+ (out/name).write_text(json.dumps(value,indent=2)+'\n')
+# Summarize comparable resource measurements over the SAME actual child idle window.
+targets=read('metrics-targets.json');samples=read('metrics-samples.json')['samples'];child='deployable-private-l3-child';window=[x for x in samples if x['phase']=='idle' and child in x['processes']];roles={}
+logs={'ethereum-root-local-test-only':read('root-l1-ready.json')['logPath'],'connected-nitro-parent':read('connected-parent-ready.json')['logPath'],child:str(max(s.glob('child-attempt-*/child.log'),key=lambda p:p.stat().st_mtime))}
+for name in logs:
+ rows=[x['processes'][name]['rssKiB'] for x in samples if name in x['processes']];idle=[x['processes'][name]['rssKiB'] for x in window if name in x['processes']];log=Path(logs[name]).read_text();m=re.search(r'(\d+)\s+maximum resident set size',log);f=re.search(r'(\d+)\s+peak memory footprint',log);du=subprocess.run(['du','-sk',targets[name]['dataDir']],capture_output=True,text=True)
+ roles[name]={'sampleCount':len(rows),'sampledPeakRSSKiB':max(rows),'idleWindowSamples':len(idle),'idleMinRSSKiB':min(idle),'idleMaxRSSKiB':max(idle),'OSPeakRSSBytes':int(m[1]) if m else None,'OSPeakMemoryFootprintBytes':int(f[1]) if f else None,'dataDirKiB':int(du.stdout.split()[0]),'productionHostingRequirement':name==child,'includesLLM':False,'includesProverExecution':False}
+resource={'scope':'Actual local three-layer rehearsal; AppleM5/24GiB darwin-arm64, not Linux server capacity certification','measurement':'ps RSS KiB at1sec, Darwin time-l OSpeakresidentbytes, duallocatedKiB','idleWindowSeconds':10,'roles':roles,'LLMOrProverPeakMeasured':False,'futureModelStateGrowthMeasured':False,'capacityProfiles':{'16GB_class_RAM_256GB_class_NVMe':'unselected provisional base-plus-future-headroom candidate','32GB_class_RAM_512GB_class_NVMe':'unselected provisional candidate','warmSpare':'unselected','zeroDowntimeGuaranteed':False},'modelOrSearchQualityChanged':False,'productionHostSizingProven':False,'stakerEnabled':False,'blockValidatorEnabled':False};(out/'resource-footprint.json').write_text(json.dumps(resource,indent=2)+'\n')
+checks={};pidroles={'ethereum-root':read('root-l1-ready.json')['nativePid'],'connected-nitro-parent':read('connected-parent-ready.json')['nativePid'],'nitro-child':result['childNativePid']}
+for role,pid in pidroles.items():
+ try:os.kill(pid,0);alive=True
+ except ProcessLookupError:alive=False
+ checks[role]={'nativePid':pid,'stillRunning':alive}
+assert not any(x['stillRunning'] for x in checks.values()),'An owned node is still running'
+cleanup={'scope':'Only explicitly spawned local rehearsal nodes checked; no user services touched','roles':checks,'rootExit':clean(read('root-l1-stopped.json')),'parentExit':clean(read('connected-parent-stopped.json')),'childStopped':result['childProcessStopped'],'allOwnedNativeNodesStopped':True,'privateKeysOrContextPathsPublished':False};(out/'cleanup.json').write_text(json.dumps(cleanup,indent=2)+'\n')
+# Fail closed if a generated private key accidentally entered any public file.
+key=json.loads(Path(read('parent-ready.json')['ephemeralSignerFile']).read_text())['privateKey'];bad=[]
+for p in r.rglob('*'):
+ if p.is_file() and '.cache' not in p.relative_to(r).parts and '__pycache__' not in p.relative_to(r).parts:
+  data=p.read_bytes()
+  if key.encode() in data or key[2:].encode() in data:bad.append(str(p.relative_to(r)))
+assert not bad,'Ephemeral key material found in public output'
+print(json.dumps({'functionalPathVerified':True,'exactChildTransactionInParentSequence':match['batchSequenceNumber'],'finalParentBatchCount':batches['parentBatchCountFinal'],'allOwnedNativeNodesStopped':True,'publicFilesCheckedForEphemeralKey':True,'childPeakRSSMiB':roles[child]['OSPeakRSSBytes']/1048576,'childDataDirMiB':roles[child]['dataDirKiB']/1024},indent=2))

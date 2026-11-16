@@ -1,10 +1,25 @@
-# Hosting and availability proposal
+# Private inference-chain hosting
 
-For the strongest managed availability lane, use AWS across multiple availability zones. The current priced baseline is two i7i.4xlarge nodes (16vCPU,128GiB,3.75TB local NVMe each), replicated Redis coordination, load balancing, lightweight relay/proxy workers and backups. Add an independent full validator/RPC node for better role and failure isolation. The exact region must be selected using Robinhood RPC and user latency measurements, stock and a complete quote.
+The current requirement is GH0ST-operated inference with very few transactions. A public RPC fleet, large Kubernetes cluster and several terabytes per node are not the initial sizing target. The actual local L3 child peaked at179.25MiB RSS and used2.08MiB of chain data in the small functional test; that excludes model loading, inference and prover peaks. Model weights, context, concurrent jobs and state history—not transaction count alone—determine the final memory/storage needs.
 
-[Current source-backed prices](price-research/README.md) are about$2,542/month for that baseline or$3,689 with the third full-size node, using730hours in us-east-1. These are estimates before variable traffic, monitoring, RPC services, operations/support, taxes and chain settlement; they are not a hosting order. A fully isolated RPC fleet or larger coordinator adds cost. Local NVMe is ephemeral, so replicas, durable recovery data and restoration tests are essential.
+The 16 GB and 32 GB plans below are priced provider options, not minimum requirements. For the clean base alone, 4–8 GB RAM and 80–160 GB NVMe are smaller candidates to benchmark. No full inference, prover peak or long-term disk growth was measured, so these smaller sizes are not yet a production capacity claim.
 
-Hetzner dedicated hardware is a lower-cost alternative with more operations owned by the project. Two currently priced AX102-1 machines total€514.60/month plus€258 setup, excluding VAT/IPv4; that SKU is128GB DDR5 **without ECC**. The ECC AX102-3 needs a separate verified quote. Do not describe one host, RAID or two colocated containers as high availability.
+Current verified netcup one-month options, with displayed19%VAT and IPv4, zero setup:
+
+| Plan | Advertised dedicated CPU allocation | RAM / NVMe | One host / month | Two matching hosts / month |
+|---|---|---|---:|---:|
+| RS2000G12.5 |8 |16GB /256GB |€46.81 |€93.62 |
+| RS4000G12.5 |12 |32GB /512GB |€89.50 |€179.00 |
+
+These are guaranteed-resource KVM instances, not exclusive physical servers. Price, automatic European location and availability are public configurations, not a reservation or purchase. Backups and automatic-failover coordination cost extra. [Verified price evidence](price-research/private-sizing.json), [comparison and sources](price-research/README.md).
+
+Preserve the chosen weights, precision, context and complete inference/search work. Cut unused RAM/disk and public-service infrastructure; do not substitute a weaker model or truncate work to fit a cheaper machine.16GB is a base-chain candidate, not proof that every future model fits.32GB provides headroom when the measured workload requires it. Hosted inference latency and peak memory remain unmeasured.
+
+The earlier AWSmulti-AZ fleet remains a public-service/managed-availability reference, not the recommendation for this low-traffic workload. Its priced baseline is about$2,542/month, or$3,689 with a third full-size node, before variable extras. It should not be used to imply that a private GH0ST chain requires128GB and3.75TB per machine.
+
+Single-host recovery and a two-host warm-spare setup are separate unselected options. Private usage does not waive the earlier availability goal. A single machine can preserve computation quality while still experiencing outages; two nodes require independent failure domains and tested coordination to improve availability. No literal zero-downtime promise is made.
+
+Production would host the GH0ST child and use Robinhood RPC remotely. The local Ethereum root and RH-like parent were rehearsal infrastructure, not three servers required for our deployed chain. [Resource evidence](../integration/evidence/resource-footprint.json).
 
 ## Failover design
 

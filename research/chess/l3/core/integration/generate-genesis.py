@@ -1,0 +1,9 @@
+"""Use unchanged standard Nitro to compute an exact local genesis assertion."""
+from pathlib import Path
+import argparse,hashlib,json,os,re,subprocess,time
+r=Path(__file__).resolve().parent;a=argparse.ArgumentParser();a.add_argument('genesis_file',type=Path);opt=a.parse_args();b=r/'.cache';binary=b/'genesis-generator';source=(r/'../node/.cache/nitro-core').resolve();go=(r/'../node/.cache/go-1.25.12/go/bin/go').resolve()
+gen=json.loads(opt.genesis_file.read_text());cfg=json.loads(gen['serializedChainConfig']);assert cfg['arbitrum']['InitialArbOSVersion']==61 and cfg['arbitrum']['AllowDebugPrecompiles'] is False;assert gen['arbOSInit']['initialL1BaseFee']==1
+if not binary.exists():subprocess.run([str(go),'build','-mod=mod','-o',str(binary),'./cmd/genesis-generator'],cwd=source,env={**os.environ,'GOTOOLCHAIN':'local'},check=True)
+p=subprocess.run([str(binary),'--genesis-json-file',str(opt.genesis_file.resolve())],capture_output=True,text=True);assert p.returncode==0,p.stderr
+match=re.search(r'BlockHash: (0x[0-9a-f]{64}), SendRoot: (0x[0-9a-f]{64}), Batch: (\d+), PosInBatch: (\d+)',p.stdout);assert match,p.stdout
+block,send,batch,pos=match.groups();out={'scope':'Unchanged pinned Nitro genesis-generator; exact serialized config and explicit local1wei initialdatafee','chainId':cfg['chainId'],'genesisFileSHA256':hashlib.sha256(opt.genesis_file.read_bytes()).hexdigest(),'chainConfigSHA256':hashlib.sha256(gen['serializedChainConfig'].encode()).hexdigest(),'genesisAssertionState':{'globalState':{'bytes32Vals':[block,send],'u64Vals':[int(batch),int(pos)]},'machineStatus':1,'endHistoryRoot':'0x'+'00'*32},'genesisInboxCount':0,'dataCostEstimate':'1','generatorBinarySHA256':hashlib.sha256(binary.read_bytes()).hexdigest(),'precomputedAllocIsExplicitLocalTestData':bool(gen['alloc']),'financialActions':False};dest=opt.genesis_file.with_suffix('.assertion.json');dest.write_text(json.dumps(out,indent=2)+'\n');print(json.dumps(out,indent=2))

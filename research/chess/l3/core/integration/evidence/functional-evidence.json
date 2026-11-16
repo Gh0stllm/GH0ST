@@ -1,0 +1,91 @@
+{
+  "schema": "gh0st.core.private-nested-rehearsal.v1",
+  "status": "ACTUAL_LOCAL_THREE_LAYER_FUNCTIONAL_PATH_VERIFIED_NOT_PUBLIC_DEPLOYMENT",
+  "topology": [
+    "Actual local Ethereum Geth1337",
+    "Actual clean Nitro4663 parent",
+    "Actual clean Nitro4663007 child"
+  ],
+  "privateRPCOnly": true,
+  "publicDeployment": false,
+  "syntheticPrecompileOverrides": false,
+  "customSTF": false,
+  "ArbOSVersion": 61,
+  "AllowDebugPrecompiles": false,
+  "officialWasmModuleRoot": "0xc10cd7ec6acaf1c441a3f6bd0900ad20f15855ba775a96f1939118cbc629dc97",
+  "genesisAssertions": {
+    "parentHash": "0xe8b0c571b68b277fd138245f9460270acb4c99e6ea304639a865abbd79721ece",
+    "parentValidated": true,
+    "childHash": "0x72dcd5980b7b2e4d8cf2c2250f19f7ea402c8efd6a8dc572aea1dae843d5282a",
+    "childValidatedAndMatchesParentContract": true
+  },
+  "nativeGas": {
+    "symbol": "GHMOCK",
+    "realGH0STUsed": false,
+    "parentDepositTransactionHash": "0x683c6c7b9e8fa29972d835e5f27cc53e42efbe60ddb7c72a9af1e85a82a927c3",
+    "parentDepositBlock": 35,
+    "delayedMessageIndex": "1",
+    "amount": "1000000000000000000",
+    "parentBridgeLockedAmount": "1000000000000000000",
+    "childNativeCredit": "1000000000000000000",
+    "ordinaryTransfer": {
+      "status": "ACTUAL_LOCAL_CHILD_ORDINARY_TRANSFER_VERIFIED",
+      "childChainId": "4663007",
+      "hash": "0xff96433326732c6aeb83d7d5f65a759266b6a5ad8a419662977195f736177d38",
+      "blockNumber": 2,
+      "from": "0x279e68F94FE60A37163dfee423A4b9A31a57DAbC",
+      "to": "0xcB4a220a8Ad0e5E934e19F7b4166EDbbBb825EA6",
+      "value": "1",
+      "recipientBefore": "0",
+      "recipientAfter": "1",
+      "gasUsed": "21000",
+      "l1PosterGasUsed": "0",
+      "l2ComputeGasUsed": "21000",
+      "gasEstimateComponents": {
+        "gasEstimate": "21000",
+        "gasEstimateForL1": "0",
+        "l2ComputeEstimate": "21000",
+        "baseFee": "100000000",
+        "l1BaseFeeEstimate": "1",
+        "source": "NodeInterface.gasEstimateComponents",
+        "estimatedGas": "21000",
+        "gasLimit": "35200"
+      },
+      "effectiveGasPrice": "100000000",
+      "localMockNativeGasFee": "2100000000000"
+    }
+  },
+  "ordinaryTransactionInPostedParentBatch": {
+    "batchSequenceNumber": "2",
+    "decodedChainId": "4663007",
+    "decodedChildTransactionHash": "0xff96433326732c6aeb83d7d5f65a759266b6a5ad8a419662977195f736177d38",
+    "decodedSender": "0x279e68F94FE60A37163dfee423A4b9A31a57DAbC",
+    "decodedValue": "1",
+    "matchesMinedChildReceipt": true,
+    "parentReceiptStatus": 1,
+    "parentTransactionHash": "0x285a449204a1a9a0e32f9fb46fa2081766407b033687ed25e64590df32c52f89",
+    "parentBlockNumber": 43,
+    "parentBatchReceiptGasUsed": "152331",
+    "parentBatchCountFinal": "3"
+  },
+  "earlierObservation": {
+    "batchCountBefore": "1",
+    "batchCountAtFirstPostedDepositBatch": "2",
+    "meaning": "Sequence1 contained delayed metadata; exact ordinary transfer is sequence2, final count3"
+  },
+  "localOnlyFinalitySettings": {
+    "delayedMessageFinalizeDistance": 0,
+    "useMergeFinality": false,
+    "productionFinalityProven": false
+  },
+  "genesisParentFakeETHAllocation": "1000ETH explicit local genesis, no production backing claim",
+  "realSpend": {
+    "ETH": "0",
+    "ICP": "0",
+    "GH0ST": "0"
+  },
+  "LLMExecuted": false,
+  "proverChallengeExecuted": false,
+  "parentOrEthereumFinalityProven": false,
+  "serverOrdered": false
+}

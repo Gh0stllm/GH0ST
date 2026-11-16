@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "status": "base_l3_first_clean_core_benchmark_verified_public_launch_pending",
+  "status": "private_base_l3_actual_local_nested_path_verified_public_deployment_pending",
   "asOfUserDateIST": "2026-11-16",
   "parentChainIdProposal": 4663,
   "nativeGasTokenProposal": "GH0ST",
@@ -131,7 +131,7 @@
   },
   "readyForProduction": false,
   "fullOnchainLLMExecutionDemonstrated": false,
-  "nextRequiredIntegration": "Complete actual local parent/child rollup and native mock-token gas flow; review self-hosted HA, validator/bond, fee-token pricing and public parent deployment configuration",
+  "nextRequiredIntegration": "Review private hosting/operator custody, fee-token price/bond and licensing, then configure real Robinhood deployment; model integration remains deferred",
   "persistentModelBridge": {
     "defaultPureGoInterpreter": "wazero 1.12.0",
     "runtimeAndModelHashesPinnedBeforeExecution": true,
@@ -167,7 +167,10 @@
     "baseL3First": true,
     "responsiveChain": true,
     "LLMIntegrationDeferred": true,
-    "oldFinancialCeilingsRemovedByUser": true
+    "oldFinancialCeilingsRemovedByUser": true,
+    "operatorOnlyInference": true,
+    "veryLowTransactionVolume": true,
+    "cutUnusedInfrastructureWithoutReducingModelWork": true
   },
   "coreBase": {
     "scope": "Clean standard Nitro/Stylus base, local evidence only",
@@ -191,11 +194,25 @@
     "syntheticTokenIsRealGH0ST": false,
     "parentTokenBasicPreflightPassed": true,
     "parentTokenFullAuditPassed": false,
-    "actualLocalNestedRollupIntegrationInProgress": true,
+    "actualLocalNestedRollupIntegrationInProgress": false,
     "liveRobinhoodRollupDeployed": false,
     "hostingOrdered": false,
     "nativeBinarySHA256": "04709c088f1f1814e6cdc2a21fb0d8c1190b5bcfb3ea31cec00b80cb8677f874",
     "hostingProposal": "core/hosting/README.md",
-    "zeroDowntimeGuaranteed": false
+    "zeroDowntimeGuaranteed": false,
+    "publicRPCRequired": false,
+    "privateHardwareProfile": "core/hosting/private-profile.json",
+    "actualLocalNestedRollupPassed": true,
+    "localChainIds": [
+      1337,
+      4663,
+      4663007
+    ],
+    "localMockNativeCreditUnits": "1000000000000000000",
+    "exactChildTransactionIncludedInPostedParentBatch": true,
+    "postedParentBatchSequence": "2",
+    "localChildOSPeakRSSBytes": 187957248,
+    "localChildDataDirKiB": 2132,
+    "modelOrProverPeakMeasured": false
   }
 }
