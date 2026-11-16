@@ -5,9 +5,12 @@ import argparse,base64,hashlib,json,re,struct,subprocess,time
 HERE=Path(__file__).resolve().parent
 OUT=HERE/'.cache/block'
 if __name__=='__main__':
- parser=argparse.ArgumentParser();parser.add_argument('--sliced',action='store_true');options=parser.parse_args()
- if options.sliced:OUT=HERE/'sliced/.cache/blocks'
- binary=HERE/('.cache/bin-sliced/replay-native' if options.sliced else '.cache/bin/replay-native')
+ parser=argparse.ArgumentParser();parser.add_argument('--sliced',action='store_true');parser.add_argument('--input-dir',type=Path);parser.add_argument('--variant',default='');options=parser.parse_args()
+ assert not options.variant or (options.sliced and re.fullmatch('[a-z0-9-]+',options.variant))
+ suffix='-'+options.variant if options.variant else ''
+ if options.sliced:OUT=HERE/('sliced/.cache/blocks'+suffix)
+ if options.input_dir:OUT=options.input_dir.resolve()
+ binary=HERE/('.cache/bin-sliced'+suffix+'/replay-native' if options.sliced else '.cache/bin/replay-native')
  source=OUT/'input.json';data=json.loads(source.read_text());start=data['StartState'];end=data['ExpectedEndState']
  assert set(data['PreimagesB64'])=={'0'} and len(data['BatchInfo'])==1
  with (OUT/'preimages.bin').open('wb') as f:

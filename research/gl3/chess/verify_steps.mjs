@@ -9,11 +9,12 @@ const here=path.dirname(fileURLToPath(import.meta.url)),repo=path.resolve(here,'
 const require=createRequire(path.join(repo,'research/chess/package.json'));
 const ganache=require('ganache');
 const {BrowserProvider,ContractFactory,ZeroAddress}=require('ethers');
-const stem=process.argv[2]||'prefix';
+const options=process.argv.slice(2),sliced=options.includes('--sliced');
+const stem=options.find(x=>!x.startsWith('--'))||'prefix';
 if(!/^[a-z0-9-]+$/.test(stem))throw Error('bad fixture name');
-const dir=path.join(here,'.cache/block');
-const proofPath=stem==='search-selected'?path.join(dir,'search-selected/selected-proofs.json'):stem==='complete'?path.join(dir,'complete-selected-proofs.json'):stem==='selected'?path.join(dir,'selected/selected-proofs.json'):path.join(dir,stem+'-proofs.json');
-const logPath=path.join(here,'prover-'+(stem==='complete'?'full':stem)+'.log');
+const dir=path.join(here,sliced?'sliced/.cache/blocks':'.cache/block');
+const proofPath=sliced?path.join(dir,'selected-proofs.json'):stem==='search-selected'?path.join(dir,'search-selected/selected-proofs.json'):stem==='complete'?path.join(dir,'complete-selected-proofs.json'):stem==='selected'?path.join(dir,'selected/selected-proofs.json'):path.join(dir,stem+'-proofs.json');
+const logPath=sliced?path.join(dir,'prover.log'):path.join(here,'prover-'+(stem==='complete'?'full':stem)+'.log');
 const rows=JSON.parse(fs.readFileSync(proofPath,'utf8'));
 const clean=fs.readFileSync(logPath,'utf8').replace(/\x1b\[[0-9;]*m/g,'');
 const logSteps=[...clean.matchAll(/Generating proof\s+\d+\s+\(inst\s+([\d,]+)\)/g)].map(x=>BigInt(x[1].replaceAll(',','')));
@@ -37,7 +38,8 @@ async function deploy(name,args=[]){
 try{
  const p0=await deploy('OneStepProver0'),mem=await deploy('OneStepProverMemory'),math=await deploy('OneStepProverMath'),io=await deploy('OneStepProverHostIo',[ZeroAddress]);
  const entry=await deploy('OneStepProofEntry',await Promise.all([p0,mem,math,io].map(x=>x.getAddress())));
- const root=fs.readFileSync(path.join(here,'.cache/machine/module-root.txt'),'utf8').trim();
+ const manifest=sliced&&fs.existsSync(path.join(dir,'proof-manifest.json'))?JSON.parse(fs.readFileSync(path.join(dir,'proof-manifest.json'),'utf8')):null;
+ const root=manifest?.moduleRoot||fs.readFileSync(path.join(here,sliced?'.cache/machine-sliced/module-root.txt':'.cache/machine/module-root.txt'),'utf8').trim();
  const context={maxInboxMessagesRead:1000000n,bridge:ZeroAddress,initialWasmModuleRoot:root};
  const records=[];
  for(let i=0;i<steps.length;i++){
@@ -51,6 +53,7 @@ try{
   if(!badProof)throw Error('corrupt witness accepted');
   records.push({step:String(steps[i]),reason:r.reason||null,moduleName:r.moduleName||null,functionName:r.functionName||null,location:location(r.proof),before:r.before,after:r.after,proofBytes:r.proof.length/2,corruptBeforeRejected:rejected,corruptProofRejected:badProof});
  }
- const report={passed:true,scope:['full','complete'].includes(stem)?'Real Solidity verification of sampled witnesses from complete replay; not a full BoLD challenge':'Real Solidity verification of bounded trace witnesses; no complete chess replay or engine-search proof implied',proofFileSHA256:createHash('sha256').update(fs.readFileSync(proofPath)).digest('hex'),moduleRoot:root,verifierSourceCommit:'4341b132cfbdcc980ead03765ca5224ff6cb5d97',artifacts,records,publicDeployment:false,realSpend:0};
+ const scope=sliced?'Real Solidity verification of sampled steps from the complete recorded sliced block; not a complete24m-move WAVM run or full BoLD dispute':['full','complete'].includes(stem)?'Real Solidity verification of sampled witnesses from complete replay; not a full BoLD challenge':'Real Solidity verification of bounded trace witnesses; no complete chess replay or engine-search proof implied';
+ const report={passed:true,scope,sliced,proofFileSHA256:createHash('sha256').update(fs.readFileSync(proofPath)).digest('hex'),moduleRoot:root,verifierSourceCommit:'4341b132cfbdcc980ead03765ca5224ff6cb5d97',artifacts,records,publicDeployment:false,realSpend:0};
  fs.writeFileSync(path.join(dir,stem+'-solidity-steps.json'),JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report,null,2));
 }finally{await server.disconnect()}

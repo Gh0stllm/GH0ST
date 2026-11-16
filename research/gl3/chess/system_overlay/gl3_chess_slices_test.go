@@ -204,6 +204,20 @@ func TestGL3ChessSlicesBlocksAndReplay(t *testing.T) {
 	encoded, e := input.Marshal()
 	Require(t, e)
 	Require(t, os.WriteFile(filepath.Join(outDir, "input.json"), encoded, 0600))
+	if os.Getenv("GL3_SLICES_CAPTURE_NEXT") == "1" {
+		// Immediately record the next computing block. It starts at the exact
+		// image root left in cache by the first recording, exposing cache-dependent
+		// metering and missing-preimage bugs that a cold first block cannot show.
+		nextNumber := rows[0]["block"].(*big.Int)
+		nextPos, e := arbutil.BlockNumberToMessageIndex(nextNumber.Uint64(), b.chainConfig.ArbitrumChainParams.GenesisBlockNum)
+		Require(t, e)
+		nextInput, e := b.L2.ConsensusNode.StatelessBlockValidator.ValidationInputsAt(ctx, nextPos, rawdb.LocalTarget(), rawdb.TargetWasm)
+		Require(t, e)
+		nextBytes, e := nextInput.Marshal()
+		Require(t, e)
+		Require(t, os.WriteFile(filepath.Join(outDir, "input-next.json"), nextBytes, 0600))
+		t.Logf("Consecutive recording inputs: first=%d bytes next=%d bytes", len(encoded), len(nextBytes))
+	}
 	header, e := b.L2.Client.HeaderByNumber(ctx, beginReceipt.BlockNumber)
 	Require(t, e)
 	report := map[string]any{"scope": "actual local Nitro blocks during a pending full-strength search; recorded complete first-slice block; not a complete chess game or fraud dispute", "passed": true, "blockTargetMS": 100, "singleComputeSlicePerBlock": true, "debugPrecompilesEnabled": false, "blockingA13Registered": false, "maxTxGas": 14000000, "maxBlockGas": 15000000, "researchGasTargetPerSecond": 150000000, "newGameSeconds": newGameSeconds, "coldBeginSeconds": beginSeconds, "chessRows": rows, "simultaneousOrdinaryTransfers": trafficCopy, "recordedBlock": beginReceipt.BlockNumber, "recordedBlockHash": header.Hash(), "recordedStateRoot": header.Root, "inputBytes": len(encoded), "fixedSearchTarget": sliced.TargetNodes, "pending": true, "publicDeployment": false, "realSpend": 0, "stateScheme": gethexec.BlockRecorderModeLegacy}

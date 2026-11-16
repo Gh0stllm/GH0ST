@@ -1,6 +1,8 @@
 # Chess without a single blocking search
 
-**Complete24m EVM decision and exact retained-state parity passed.** This lane is **not deployed**; actual mined cadence and complete new-lane replay/proofs remain gates.
+**The corrected build passes a complete 24m decision, exact gas equality and fresh replay of two consecutive blocks.** This lane is **not deployed**; complete WAVM proof execution and production acceptance remain gates.
+
+![Measured GL3 chess results](../../assets/chess-resume-results.png)
 
 The full pinned Stockfish19 network, Hash128 MiB, one worker, skill20 and retained per-game state stay unchanged. The internal scheduling quantum is2,048 nodes. One transaction groups up to four exact continuation steps; neither setting reduces the24,000,000-node target. An unfinished search has no playable result. No external engine result is accepted.
 
@@ -9,9 +11,9 @@ Binaryen Asyncify turns the recursive search into a portable continuation. Its s
 ## Acceptance gates
 
 - [x] Isolated continuation module builds without modifying the old full-replay run.
-- [x] Two consecutive complete24m searches match exact canonical checkpoints, with both scalar and accelerated portable modules.
+- [x] Two consecutive complete 24m searches match exact canonical checkpoints, with both scalar and accelerated portable modules.
 - [x] A fresh instance resumes suspended recursion with identical results.
-- [x] Actual local GL3 blocks commit bounded operations while127 independent transfers receive receipts during a pending search.
+- [x] Actual local GL3 blocks commit bounded operations while 128 independent transfers receive receipts during a pending search.
 - [x] Actual EVM retry, rollback, generation/cursor guards and restart checks pass; debug-mode corruption checks pass.
 - [ ] Matching direct Wasm replay and Solidity proof witnesses pass.
 - [ ] Measured cadence, storage growth and move latency fit the selected host.
@@ -63,3 +65,15 @@ The fixture explicitly used14m max transaction gas,15m max block gas and a150m-g
 [Actual receipts and configuration](evidence/mixed-traffic-blocks.json) · [Independent replay](evidence/native-sliced-block-replay.json) · [Pinned replay machine](evidence/sliced-machine-build.json) · [Compiler/interpreter state parity](evidence/compiler-interpreter-parity.json).
 
 SIMD headers are fetched by exact URL and SHA from Emscripten4.0.20 using [compat-lock.json](compat-lock.json). The inherited [Emscripten license](../../../chess/engine/LICENSE-EMSCRIPTEN.txt) and Stockfish GPL notices apply.
+
+## Cache correctness repair
+
+The R23 cold first block replayed correctly, but consecutive-block testing exposed two bugs. A warm invocation skipped19,200 gas of seed-metadata reads, and a recorder using that warm VM omitted dependencies from its proof input. The second input shrank from roughly362MiB to94KiB; a fresh replay produced the wrong end block hash. The earlier timings remain historical measurements, not evidence that those bugs were absent.
+
+The corrected loader charges the same seed reads with or without a cache. Both paths now use exactly12,320,567 gas for the tested operation and produce the identical VM root. Recording, replay and prefetch use a fresh isolated VM outside the live-cache lock, sharing a bounded memory reservation with RPC simulation. Recording always touches all state needed by a fresh prover. These changes preserve the engine program SHA, complete network,24m target and retained game state.
+
+The corrected full EVM experiment completed in143.22s and matched the entire canonical checkpoint. Its actual mixed-traffic run confirmed128 compute transactions and128 ordinary transfers: transfer median111.8ms / p95119.0ms, maximum120.3ms. Two independently recorded consecutive blocks now both reproduce all expected global-state fields in separate fresh native replay processes. The latest module root is`0x52c7d494becea047cd0ba0ed288a96f39544056ef573ff961f8268d5b43fa4e5`.
+
+[Reproduced failures](evidence/cache-regressions-before.json) · [Exact gas equality](evidence/cache-metering-fixed.json) · [Corrected API tests](evidence/cachefix-api.json) · [Complete24m decision](evidence/cachefix-full24m.json) · [Mixed traffic](evidence/cachefix-mixed-traffic.json) · [Fresh first block](evidence/cachefix-first-native-replay.json) · [Fresh next block](evidence/cachefix-next-native-replay.json).
+
+The still-running WAVM experiment belongs to the frozen R23 cold-first-block artifact. Its eventual result must retain that scope and cannot certify the corrected module above. Source/build variants keep both sets of artifacts separate.

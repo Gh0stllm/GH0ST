@@ -4,7 +4,7 @@ Uses previously verified clean Nitro/native dependencies and standard Wasm libra
 Generating a machine is a build gate; it does not execute a complete chess block.
 """
 from pathlib import Path
-import argparse,hashlib,json,os,subprocess,time
+import argparse,hashlib,json,os,subprocess,time,re
 
 HERE=Path(__file__).resolve().parent
 REPO=HERE.parents[2]
@@ -22,11 +22,13 @@ def run(args,**kw):return subprocess.run([str(x) for x in args],check=True,**kw)
 def record(p):return {'bytes':p.stat().st_size,'SHA256':hashlib.sha256(p.read_bytes()).hexdigest()}
 
 if __name__=='__main__':
- parser=argparse.ArgumentParser();parser.add_argument('--sliced',action='store_true');options=parser.parse_args()
+ parser=argparse.ArgumentParser();parser.add_argument('--sliced',action='store_true');parser.add_argument('--variant',default='');options=parser.parse_args()
+ assert not options.variant or (options.sliced and re.fullmatch('[a-z0-9-]+',options.variant))
+ suffix='-'+options.variant if options.variant else ''
  if options.sliced:
-  SOURCE=CACHE/'nitro-sliced';BIN=CACHE/'bin-sliced';MACHINE=CACHE/'machine-sliced'
+  SOURCE=CACHE/('nitro-sliced'+suffix);BIN=CACHE/('bin-sliced'+suffix);MACHINE=CACHE/('machine-sliced'+suffix)
  started=time.monotonic()
- run(['python3',HERE/'prepare_nitro.py',*(['--sliced'] if options.sliced else [])])
+ run(['python3',HERE/'prepare_nitro.py',*(['--sliced'] if options.sliced else []),*(['--variant',options.variant] if options.variant else [])])
  BIN.mkdir(exist_ok=True);MACHINE.mkdir(exist_ok=True)
  run([GO,'build','-mod=mod','-o',BIN/'nitro','./cmd/nitro'],cwd=SOURCE,env=env)
  run([GO,'build','-mod=mod','-o',BIN/'replay-native','./cmd/replay'],cwd=SOURCE,env=env)
@@ -40,7 +42,7 @@ if __name__=='__main__':
  if not options.sliced:args+=['-l',BIN/'gl3chess.wasm']
  run(args)
  if options.sliced:
-  layout=CACHE/'machines-sliced';layout.mkdir(exist_ok=True)
+  layout=CACHE/('machines-sliced'+suffix);layout.mkdir(exist_ok=True)
   for name in ['latest',(MACHINE/'module-root.txt').read_text().strip()]:
    link=layout/name
    if link.is_symlink():link.unlink()
@@ -49,5 +51,5 @@ if __name__=='__main__':
  artifacts=[BIN/'nitro',BIN/'replay-native',BIN/'replay.raw.wasm',BIN/'replay.wasm',MACHINE/'machine.v2.wavm.br',MACHINE/'until-host-io-state.bin']
  if not options.sliced:artifacts.append(BIN/'gl3chess.wasm')
  report={'scope':'Complete custom machine generated; full engine-bearing replay/proof not implied','sliced':options.sliced,'machineGenerated':True,'moduleRoot':(MACHINE/'module-root.txt').read_text().strip(),'artifacts':{p.name:record(p) for p in artifacts},'standardLibraries':{name:record(standard/(name+'.wasm')) for name in LIBS},'seconds':time.monotonic()-started,'publicDeployment':False,'realSpend':0}
- (CACHE/('sliced-replay-build.json' if options.sliced else 'replay-build.json')).write_text(json.dumps(report,indent=2)+'\n')
+ (CACHE/('sliced-replay-build'+suffix+'.json' if options.sliced else 'replay-build.json')).write_text(json.dumps(report,indent=2)+'\n')
  print(json.dumps(report,indent=2))

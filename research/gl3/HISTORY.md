@@ -159,3 +159,13 @@ An actual local custom Nitro node mined128 bounded compute transactions while127
 The test disabled ArbDebug, used14m/15m transaction/block gas caps and an explicit150m-gas/s research pricing configuration. A realistic artificial owner balance avoided the generic fixture's near-uint256 maximum overflowing when the owner also received fees. The recorded first compute block was included in a real local parent batch. Independent native replay reproduced all expected global-state fields in5.59s. The native compiler and interpreter also matched complete VM bytes/globals at early, middle and final search frames. Complete new-lane WAVM execution is now running; no full BoLD dispute or public deployment is claimed.
 
 **Evidence:** [Mixed-traffic receipts](chess/sliced/evidence/mixed-traffic-blocks.json), [independent native block replay](chess/sliced/evidence/native-sliced-block-replay.json), [exact backend frames](chess/sliced/evidence/compiler-interpreter-parity.json).
+
+## 24 · Fix warm-cache consensus gas and recording completeness — 16 November
+
+Consecutive-block testing found that a warm VM skipped19,200 gas of seed-metadata reads and caused the recorder to omit required state. R23's second recorded input was only94KiB; a fresh replay produced the wrong end block hash. A new regression measured12,301,367 gas warm versus12,320,567 cold despite identical VM roots. The first cold block's successful replay did not establish subsequent-block correctness.
+
+The repair charges the same seed reads on both paths and runs recording/replay/prefetch in fresh isolated VMs without the live-cache lock. The exact gas now matches, recording cannot evict the live search, and both consecutive recorded blocks replay correctly in fresh processes. The full24m decision still matches all canonical bytes, completing the corrected local experiment in143.22s. In its mixed-load run,128 regular transfers confirmed at111.8ms median /119.0ms p95 while128 compute operations progressed. These remain local confirmation measurements under the100ms target.
+
+The corrected module root is`0x52c7d494becea047cd0ba0ed288a96f39544056ef573ff961f8268d5b43fa4e5`. Its artifacts are isolated from the still-running R23 cold-block WAVM experiment. No public deployment, paid gameplay or completed BoLD dispute is claimed.
+
+**Evidence:** [Reproduced regressions](chess/sliced/evidence/cache-regressions-before.json), [corrected exact gas](chess/sliced/evidence/cache-metering-fixed.json), [complete policy match](chess/sliced/evidence/cachefix-full24m.json), [fresh next-block replay](chess/sliced/evidence/cachefix-next-native-replay.json), [measured figure](assets/chess-resume-results.png).

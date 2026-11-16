@@ -1,12 +1,15 @@
 """Prepare only the isolated custom chess source; never modifies the clean core."""
 from pathlib import Path
-import argparse,json,os,shutil,subprocess,hashlib,platform
-parser=argparse.ArgumentParser();parser.add_argument('--sliced',action='store_true');options=parser.parse_args()
-HERE=Path(__file__).resolve().parent;REPO=HERE.parents[2];source=HERE/('.cache/nitro-sliced' if options.sliced else '.cache/nitro-chess');core=REPO/'research/chess/l3/core/node';go=core/'.cache/go-1.25.12/go/bin/go'
+import argparse,json,os,shutil,subprocess,hashlib,platform,re
+parser=argparse.ArgumentParser();parser.add_argument('--sliced',action='store_true');parser.add_argument('--variant',default='');options=parser.parse_args()
+assert not options.variant or (options.sliced and re.fullmatch('[a-z0-9-]+',options.variant))
+suffix='-'+options.variant if options.variant else ''
+HERE=Path(__file__).resolve().parent;REPO=HERE.parents[2];source=HERE/(('.cache/nitro-sliced'+suffix) if options.sliced else '.cache/nitro-chess');core=REPO/'research/chess/l3/core/node';go=core/'.cache/go-1.25.12/go/bin/go'
 if not source.exists():
  if platform.system()=='Darwin':subprocess.run(['cp','-cR',str(core/'.cache/nitro-core'),str(source)],check=True)
  else:shutil.copytree(core/'.cache/nitro-core',source,symlinks=True)
 for p in (HERE/'overlay').glob('*.go'):shutil.copy2(p,source/'precompiles'/p.name)
+for p in (HERE/'arbos_overlay').glob('*.go'):shutil.copy2(p,source/'arbos'/p.name)
 for p in (HERE/'system_overlay').glob('*.go'):shutil.copy2(p,source/'system_tests'/p.name)
 # The pinned local Geth predates an optional deep-reorg test flag. No reorg is used here.
 p=source/'system_tests/external_l1.go';s=p.read_text();s=s.replace('"--engine.maxreorgdepth", "0",','// GL3 forward-only fixture retains the pinned Geth default reorg limit.');p.write_text(s)

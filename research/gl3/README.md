@@ -4,7 +4,7 @@
 
 [Open the full overview](../../README.md) · [History](HISTORY.md) · [Findings](FINDINGS.md) · [Roadmap](ROADMAP.md)
 
-This branch records the path from a full-strength chess workload to a private Robinhood-settled compute chain. The standard base works locally. The custom full-strength Stockfish transition and complete native block replay now work locally; complete WAVM replay and production acceptance remain active research.
+This branch records the path from a full-strength chess workload to a private Robinhood-settled compute chain. The standard base works locally. The full-strength Stockfish search now resumes across blocks: 128 independent transfers confirmed at about112ms median while it remained pending. The corrected cache passes exact gas equality and fresh replay of two consecutive blocks; complete WAVM replay and production acceptance remain active research.
 
 | Notebook | Read for |
 | --- | --- |
@@ -16,3 +16,5 @@ This branch records the path from a full-strength chess workload to a private Ro
 | [Chess memory study](../chess/l3/core/hosting/chess-workload-20261116/README.md) | Full network,24m nodes, retained state and hosting measurements |
 
 [Active full chess integration](chess/README.md) · [USD 100 hosting direction](chess/HOSTING.md)
+
+[Chess across fast blocks: measured results and replay fixes](chess/sliced/README.md)

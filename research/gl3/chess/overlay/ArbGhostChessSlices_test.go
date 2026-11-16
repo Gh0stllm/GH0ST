@@ -137,6 +137,7 @@ func TestGL3ChessSlicesDispatch(t *testing.T) {
 		limit = 13000
 	}
 	var simulationRoot any
+	var observerRoot any
 	for step < limit && v[1].(bool) {
 		start = time.Now()
 		var used uint64
@@ -157,6 +158,9 @@ func TestGL3ChessSlicesDispatch(t *testing.T) {
 		rows[len(rows)-1]["engineSteps"] = meta.Progress.Step
 		if step == 49 && simulationRoot != nil && v[2] != simulationRoot {
 			t.Fatal("RPC and real transition differ")
+		}
+		if step == 57 && observerRoot != nil && v[2] != observerRoot {
+			t.Fatal("recording and real transition differ")
 		}
 		if step%1000 == 0 {
 			t.Log("completed engine slices", step)
@@ -231,6 +235,25 @@ func TestGL3ChessSlicesDispatch(t *testing.T) {
 			config.ArbitrumChainParams.AllowDebugPrecompiles = false
 			add("debug arbitrary-code writer forces strict cache identity checks; fast profile disables it")
 		}
+		if step == 56 {
+			key := string(sliceNamespace(owner, job))
+			live := sliceCaches.Items[key]
+			root := live.Root
+			snapshot := evm.StateDB.Snapshot()
+			hook := evm.ProcessingHook
+			evm.ProcessingHook = arbos.NewTxProcessor(evm, &core.Message{From: owner, TxRunContext: core.NewMessageRecordingContext(nil)})
+			recorded, _, e := call(owner, false, budget, "advance", job, uint64(1), step)
+			if e != nil {
+				t.Fatal(e)
+			}
+			observerRoot = recorded[2]
+			evm.StateDB.RevertToSnapshot(snapshot)
+			evm.ProcessingHook = hook
+			if sliceCaches.Items[key] != live || live.Root != root {
+				t.Fatal("recording advanced or evicted live VM")
+			}
+			add("recording rebuilds a separate VM and leaves the live cache untouched")
+		}
 		if step == 96 {
 			before := evm.StateDB.IntermediateRoot(false)
 			snap := evm.StateDB.Snapshot()
@@ -259,6 +282,39 @@ func TestGL3ChessSlicesDispatch(t *testing.T) {
 			v = next
 			step++
 			add("OOG rolls back entire trie; discarded VM cache resumes exact next root from on-chain bytes")
+		}
+		if step == 80 {
+			// Consensus gas and output must be identical with a warm native VM
+			// and with a fresh VM reconstructed only from authenticated state.
+			snapshot := evm.StateDB.Snapshot()
+			warm, warmGas, e := call(owner, false, budget, "advance", job, uint64(1), step)
+			if e != nil {
+				t.Fatal(e)
+			}
+			evm.StateDB.RevertToSnapshot(snapshot)
+			sliceCaches.Lock()
+			for key, cache := range sliceCaches.Items {
+				cache.VM.Close()
+				delete(sliceCaches.Items, key)
+			}
+			sliceCaches.Unlock()
+			cold, coldGas, e := call(owner, false, budget, "advance", job, uint64(1), step)
+			if e != nil || warm[2] != cold[2] {
+				t.Fatal("cold output differs", e)
+			}
+			metering := map[string]any{"warmGas": warmGas, "coldGas": coldGas, "sameRoot": warm[2] == cold[2], "sameGas": warmGas == coldGas, "publicDeployment": false, "realSpend": 0}
+			if path := os.Getenv("GL3_CACHE_METERING_EVIDENCE"); path != "" {
+				b, _ := json.MarshalIndent(metering, "", "  ")
+				if e = os.WriteFile(path, append(b, '\n'), 0600); e != nil {
+					t.Fatal(e)
+				}
+			}
+			if warmGas != coldGas {
+				t.Fatal("consensus gas depends on native cache", warmGas, coldGas)
+			}
+			v = cold
+			step++
+			add("warm and cold execution match output root and exact gas")
 		}
 		// The node finalizes the EVM journal at each block. A long test must not
 		// retain thousands of historical 8MiB page journals in one open transaction.

@@ -141,6 +141,15 @@ func SeedGhostChessSlicesGenesis(db vm.StateDB, im sliced.Image) error {
 	return sliceMetaWrite(sliceStore(db, burn.NewSystemBurner(nil, false), sliceSeedNamespace), sliceMeta{Version: 2, Module: sliced.ModuleSHA, Root: tree.Root(len(im.Memory), im.Globals), MemoryBytes: uint32(len(im.Memory)), Globals: im.Globals, Generation: 1})
 }
 func sliceLoad(c ctx, evm mech, ns []byte, m sliceMeta) (*sliceCache, error) {
+	// Charge the exact same seed reads on every invocation. Moving these reads
+	// inside only the cache-miss path changes consensus gas and block hashes.
+	seed, e := sliceMetaRead(sliceStore(evm.StateDB, c, sliceSeedNamespace))
+	if e != nil {
+		return nil, e
+	}
+	if m.MemoryBytes < seed.MemoryBytes {
+		return nil, errGhostChess
+	}
 	key := string(ns)
 	if cached := sliceCaches.Items[key]; cached != nil && cached.Root == m.Root {
 		// Reorgs/OOG invalidate the root key. Check actual reserved code identities as
@@ -158,7 +167,7 @@ func sliceLoad(c ctx, evm mech, ns []byte, m sliceMeta) (*sliceCache, error) {
 		}
 		return cached, nil
 	}
-	out, e := sliceRestore(c, evm, m)
+	out, e := sliceRestoreSeed(evm, m, seed)
 	if e != nil {
 		return nil, e
 	}
@@ -180,6 +189,9 @@ func sliceRestore(c ctx, evm mech, m sliceMeta) (*sliceCache, error) {
 	if e != nil {
 		return nil, e
 	}
+	return sliceRestoreSeed(evm, m, seed)
+}
+func sliceRestoreSeed(evm mech, m sliceMeta, seed sliceMeta) (*sliceCache, error) {
 	if m.MemoryBytes < seed.MemoryBytes {
 		return nil, errGhostChess
 	}
@@ -197,7 +209,7 @@ func sliceRestore(c ctx, evm mech, m sliceMeta) (*sliceCache, error) {
 			copy(im.Memory[i*sliced.PageSize:], b)
 		}
 	}
-	if e = sliceApplyDeltas(evm.StateDB, m, im.Memory, codes); e != nil {
+	if e := sliceApplyDeltas(evm.StateDB, m, im.Memory, codes); e != nil {
 		return nil, e
 	}
 	tree := sliced.NewTree(im.Memory)
@@ -326,7 +338,7 @@ func (p ArbGhostChessSlices) ReleaseGame(c ctx, evm mech, job bytes32) (bool, er
 	if e = reservation.SetBytes(nil); e != nil {
 		return false, e
 	}
-	if !c.txProcessor.MsgIsNonMutating() {
+	if !c.txProcessor.MsgIsNonMutating() && !c.txProcessor.GhostChessIsObserver() {
 		sliceCaches.Lock()
 		if cached := sliceCaches.Items[string(ns)]; cached != nil {
 			cached.VM.Close()
@@ -362,10 +374,22 @@ func (p ArbGhostChessSlices) Advance(c ctx, evm mech, job bytes32, generation ui
 	}
 	if expectedStep > 0 && expectedStep+1 == m.Operation {
 		if evm.ChainConfig().ArbitrumChainParams.AllowDebugPrecompiles {
-			sliceCaches.Lock()
-			defer sliceCaches.Unlock()
-			if _, e = sliceLoad(c, evm, ns, m); e != nil {
-				return 0, false, bytes32{}, e
+			if c.txProcessor.MsgIsNonMutating() || c.txProcessor.GhostChessIsObserver() {
+				if !sliceTakeIsolated(c.txProcessor.MsgIsNonMutating()) {
+					return 0, false, bytes32{}, errGhostChess
+				}
+				defer func() { <-sliceSimulationTokens }()
+				cache, e := sliceRestore(c, evm, m)
+				if e != nil {
+					return 0, false, bytes32{}, e
+				}
+				cache.VM.Close()
+			} else {
+				sliceCaches.Lock()
+				defer sliceCaches.Unlock()
+				if _, e = sliceLoad(c, evm, ns, m); e != nil {
+					return 0, false, bytes32{}, e
+				}
 			}
 		}
 		return m.Operation, m.Progress.Pending, m.Root, nil
@@ -400,17 +424,17 @@ func sliceRun(c ctx, evm mech, ns []byte, m sliceMeta, begin bool, history strin
 	if e := c.Burn(multigas.ResourceKindComputation, uint64(sliced.Quantum*sliceGroup)*20+uint64(m.MemoryBytes/sliced.PageSize)*100); e != nil {
 		return fail(e)
 	}
-	simulation := c.txProcessor.MsgIsNonMutating()
+	rpc := c.txProcessor.MsgIsNonMutating()
+	isolated := rpc || c.txProcessor.GhostChessIsObserver()
 	var cache *sliceCache
-	if simulation {
-		// eth_call/estimateGas must not evict or advance a live replicated search.
-		// Its isolated VM uses the same authoritative bytes and same arithmetic.
-		select {
-		case sliceSimulationTokens <- struct{}{}:
-			defer func() { <-sliceSimulationTokens }()
-		default:
+	if isolated {
+		// Recording must read every proof dependency, even if another execution
+		// has a matching cached image. RPC/recording/replay/prefetch must also
+		// never evict the live cache or hold its lock during reconstruction.
+		if !sliceTakeIsolated(rpc) {
 			return fail(errGhostChess)
 		}
+		defer func() { <-sliceSimulationTokens }()
 		cache, e = sliceRestore(c, evm, m)
 		if e == nil {
 			defer cache.VM.Close()
@@ -425,7 +449,7 @@ func sliceRun(c ctx, evm mech, ns []byte, m sliceMeta, begin bool, history strin
 	}
 	// Invalidate BEFORE execution: a trap, OOG or outer EVM revert must never make
 	// an advanced process reachable under the old authoritative root.
-	if !simulation {
+	if !isolated {
 		delete(sliceCaches.Items, string(ns))
 	}
 	if begin {
@@ -462,10 +486,22 @@ func sliceRun(c ctx, evm mech, ns []byte, m sliceMeta, begin bool, history strin
 		cache.VM.Close()
 		return fail(e)
 	}
-	if !simulation {
+	if !isolated {
 		sliceCaches.Items[string(ns)] = cache
 	}
 	return m.Operation, m.Progress.Pending, m.Root, nil
+}
+func sliceTakeIsolated(rpc bool) bool {
+	if !rpc {
+		sliceSimulationTokens <- struct{}{}
+		return true
+	}
+	select {
+	case sliceSimulationTokens <- struct{}{}:
+		return true
+	default:
+		return false
+	}
 }
 func (p ArbGhostChessSlices) Inspect(c ctx, evm mech, job bytes32) (uint64, uint32, bool, uint64, string, uint64, uint32, bytes32, error) {
 	m, e := sliceMetaRead(sliceStore(evm.StateDB, c, sliceNamespace(c.caller, job)))
