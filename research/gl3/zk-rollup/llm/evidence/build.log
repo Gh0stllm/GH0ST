@@ -1,0 +1,108 @@
+Collecting numpy==2.3.5
+  Downloading numpy-2.3.5-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (62 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 62.1/62.1 kB 731.4 kB/s eta 0:00:00
+Collecting pycryptodome==3.23.0
+  Downloading pycryptodome-3.23.0-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (3.4 kB)
+Downloading numpy-2.3.5-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (16.6 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 16.6/16.6 MB 19.5 MB/s eta 0:00:00
+Downloading pycryptodome-3.23.0-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (2.3 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.3/2.3 MB 23.2 MB/s eta 0:00:00
+Installing collected packages: pycryptodome, numpy
+Successfully installed numpy-2.3.5 pycryptodome-3.23.0
+Requirement already satisfied: numpy==2.3.5 in /root/gl3-llm/venv/lib/python3.12/site-packages (2.3.5)
+Requirement already satisfied: pycryptodome==3.23.0 in /root/gl3-llm/venv/lib/python3.12/site-packages (3.23.0)
+{
+  "schema": "gl3.llm.stylus-build.v1",
+  "scope": "Runpod-only exact full existing model and genuine Stylus ABI adapter build; no validity proof",
+  "allExecutionOnRunpod": true,
+  "cpuAffinity": [
+    121,
+    123
+  ],
+  "modelBytes": 4401034,
+  "modelSHA256": "6dc6dd216d0c4b12b81b0844244423e53bb8d7e4c726b8e6205683708971ef1f",
+  "pageBytes": 24000,
+  "pageCount": 184,
+  "selectors": {
+    "modelInfo()": "0x4959e729",
+    "registerPage(uint32,address)": "0xb8fbe00d",
+    "infer(uint256,uint32[])": "0xd9052992",
+    "result(address)": "0x77302b0b"
+  },
+  "wasiSDK": {
+    "url": "https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-25/wasi-sdk-25.0-x86_64-linux.tar.gz",
+    "archiveSHA256": "52640dde13599bf127a95499e61d6d640256119456d1af8897ab6725bcf3d89c"
+  },
+  "command": [
+    "/root/gl3-llm/wasi-sdk-25.0-x86_64-linux/bin/clang++",
+    "-std=c++17",
+    "-O2",
+    "-fno-exceptions",
+    "-fno-rtti",
+    "-fwrapv",
+    "-fno-vectorize",
+    "-fno-slp-vectorize",
+    "-I",
+    "/workspace/gl3/zk-rollup/llm",
+    "/workspace/gl3/zk-rollup/llm/adapter.cpp",
+    "-nostartfiles",
+    "-Wl,--no-entry",
+    "-Wl,--export-memory",
+    "-Wl,--export=user_entrypoint",
+    "-Wl,--stack-first",
+    "-Wl,-z,stack-size=262144",
+    "-Wl,--initial-memory=8388608",
+    "-Wl,--max-memory=8388608",
+    "-o",
+    "/workspace/gl3/zk-rollup/llm/.cache/tinystories-stylus.wasm"
+  ],
+  "nativeOracleGoldens": [
+    {
+      "prompt": [
+        7454
+      ],
+      "nextToken": 2402,
+      "logitsSHA256": "44f7ac472b255db705be0be97f0ad9b820dd985530ac16fd3534363081b2787a",
+      "checkpointSHA256": "5972420b6f0fdc3fd42191dbb299e0dd8fafaeefca9023cf99db33c6d2da8f3a",
+      "logitsFile": "prompt-1-logits.bin",
+      "allLogitsCompared": 50257
+    },
+    {
+      "prompt": [
+        7454,
+        2402
+      ],
+      "nextToken": 257,
+      "logitsSHA256": "9486c642c70bd30a1a40589a5191ee9f60c89a7dea23850d309467575352fe4c",
+      "checkpointSHA256": "1a9e22a6638ccdc113dc4850c487437b432e8149039dd4c06785b1a3249497c3",
+      "logitsFile": "prompt-2-logits.bin",
+      "allLogitsCompared": 50257
+    }
+  ],
+  "artifacts": {
+    "adapter.cpp": {
+      "bytes": 6313,
+      "SHA256": "9cd4d3d76969291a318cbc3724349c7ae7983f7bc95a78d169d5ecb5cdd93a37"
+    },
+    "pinned_runtime.cpp": {
+      "bytes": 12588,
+      "SHA256": "ca9ba3e41edfcb911537814c6247fce1feecf9bc969b19dcea39e5ad387dc931"
+    },
+    "page_manifest.h": {
+      "bytes": 21833,
+      "SHA256": "cb78ff082182543cd4132a99308016890d9cb1c1fd6afb23f20646531598c683"
+    },
+    "model_layout.h": {
+      "bytes": 756,
+      "SHA256": "b7e3388f00a1032d672d22dfd33794c513c7d09d8f83f01ddc0e1b8fd9fec32b"
+    },
+    "tinystories-stylus.wasm": {
+      "bytes": 48344,
+      "SHA256": "014853fe1afc21252ff65a4c5393c5c9b26c3680365427e6736609a45e708643"
+    },
+    "runtime.wasm": {
+      "bytes": 39300,
+      "SHA256": "d7ebddffb302ab1ffe5a13edc2d06109d8375ab143bfa923d1af9e2c139052c5"
+    }
+  }
+}

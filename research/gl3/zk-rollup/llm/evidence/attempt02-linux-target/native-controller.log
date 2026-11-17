@@ -1,0 +1,58 @@
+{
+  "command": [
+    "/workspace/gl3/durable/toolchain/go/bin/go",
+    "test",
+    "-p=1",
+    "-vet=off",
+    "./precompiles",
+    "-run",
+    "^TestGH0STFullOrdinaryStylusLLM$",
+    "-count=1",
+    "-v",
+    "-timeout=12m"
+  ],
+  "sourcePathReadOnly": "/workspace/gl3/durable/nitro-clean",
+  "isolatedOverlayPath": "/workspace/gl3/zk-rollup/llm/.cache/nitro",
+  "returnCode": 1,
+  "wallSeconds": 19.92043924331665,
+  "cpuAffinity": [
+    121,
+    123
+  ],
+  "GOMEMLIMIT": "512MiB",
+  "GOMAXPROCS": 2,
+  "actualFullModelTestPassed": false,
+  "financialAction": false
+}
+=== RUN   TestGH0STFullOrdinaryStylusLLM
+--- FAIL: TestGH0STFullOrdinaryStylusLLM (0.13s)
+panic: failed to get compiled program for activated program, program: 0x0000000000000000000000000000000000003434, local target missing: true, err: <nil> [recovered, repanicked]
+
+goroutine 19 [running]:
+testing.tRunner.func1.2({0x1fa90c0, 0xc000311600})
+	/workspace/gl3/durable/toolchain/go/src/testing/testing.go:1872 +0x237
+testing.tRunner.func1()
+	/workspace/gl3/durable/toolchain/go/src/testing/testing.go:1875 +0x35b
+panic({0x1fa90c0?, 0xc000311600?})
+	/workspace/gl3/durable/toolchain/go/src/runtime/panic.go:783 +0x132
+github.com/offchainlabs/nitro/arbos/programs.handleProgramPrepare({0x2474350?, 0xc000260540?}, {0x2d, 0x5a, 0x6a, 0x81, 0x93, 0x59, 0x24, 0xb8, ...}, ...)
+	/workspace/gl3/zk-rollup/llm/.cache/nitro/arbos/programs/native.go:533 +0x1dd
+github.com/offchainlabs/nitro/arbos/programs.Programs.CallProgram({0x3c, 0xc000231500, 0xc000231560, 0xc0002315c0, 0xc000261340, 0xc0001d2d90, {{{0xa4, 0xb0, 0x5f, 0xff, ...}, ...}}}, ...)
+	/workspace/gl3/zk-rollup/llm/.cache/nitro/arbos/programs/programs.go:267 +0x825
+github.com/offchainlabs/nitro/arbos.(*TxProcessor).ExecuteWASM(0xc0002accf0, 0xc000013428, {0xc000263760, 0x4, 0x20}, 0xc000261180)
+	/workspace/gl3/zk-rollup/llm/.cache/nitro/arbos/tx_processor.go:141 +0x490
+github.com/ethereum/go-ethereum/core/vm.(*EVM).Run(0xc000261180, 0xc0001eb1e0, {0xc000263760, 0x4, 0x20}, 0x0)
+	/workspace/gl3/zk-rollup/llm/.cache/nitro/go-ethereum/core/vm/interpreter.go:170 +0x68d
+github.com/ethereum/go-ethereum/core/vm.(*EVM).Call(0xc000261180, {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, ...}, ...)
+	/workspace/gl3/zk-rollup/llm/.cache/nitro/go-ethereum/core/vm/evm.go:351 +0x11f1
+github.com/offchainlabs/nitro/precompiles_test.TestGH0STFullOrdinaryStylusLLM.func6(...)
+	/workspace/gl3/zk-rollup/llm/.cache/nitro/precompiles/GH0STFullStylusLLM_test.go:71
+github.com/offchainlabs/nitro/precompiles_test.TestGH0STFullOrdinaryStylusLLM(0xc000260380)
+	/workspace/gl3/zk-rollup/llm/.cache/nitro/precompiles/GH0STFullStylusLLM_test.go:74 +0x1a92
+testing.tRunner(0xc000260380, 0x22ee868)
+	/workspace/gl3/durable/toolchain/go/src/testing/testing.go:1934 +0xea
+created by testing.(*T).Run in goroutine 1
+	/workspace/gl3/durable/toolchain/go/src/testing/testing.go:1997 +0x465
+FAIL	github.com/offchainlabs/nitro/precompiles	0.155s
+FAIL
+

@@ -1,0 +1,35 @@
+{
+  "command": [
+    "/workspace/gl3/durable/toolchain/go/bin/go",
+    "test",
+    "-p=1",
+    "-vet=off",
+    "./precompiles",
+    "-run",
+    "^TestGH0STFullOrdinaryStylusLLM$",
+    "-count=1",
+    "-v",
+    "-timeout=12m"
+  ],
+  "sourcePathReadOnly": "/workspace/gl3/durable/nitro-clean",
+  "isolatedOverlayPath": "/workspace/gl3/zk-rollup/llm/.cache/nitro",
+  "returnCode": 0,
+  "wallSeconds": 10.546324014663696,
+  "cpuAffinity": [
+    121,
+    123
+  ],
+  "GOMEMLIMIT": "512MiB",
+  "GOMAXPROCS": 2,
+  "actualFullModelTestPassed": true,
+  "financialAction": false
+}
+=== RUN   TestGH0STFullOrdinaryStylusLLM
+    GH0STFullStylusLLM_test.go:96: actual ordinary Stylus prompt length 1: all 50,257 logits + full KV checkpoint + caller result match; gas=31690952 allowance=100000000 seconds=0.091247
+    GH0STFullStylusLLM_test.go:96: actual ordinary Stylus prompt length 2: all 50,257 logits + full KV checkpoint + caller result match; gas=43965756 allowance=100000000 seconds=0.150400
+    GH0STFullStylusLLM_test.go:96: actual ordinary Stylus prompt length 64: all 50,257 logits + full KV checkpoint + caller result match; gas=816486330 allowance=1000000000 seconds=2.791103
+    GH0STFullStylusLLM_test.go:111: full ordinary Stylus model: 150771 exact logits and 10 negative cases
+--- PASS: TestGH0STFullOrdinaryStylusLLM (3.31s)
+PASS
+ok  	github.com/offchainlabs/nitro/precompiles	3.329s
+

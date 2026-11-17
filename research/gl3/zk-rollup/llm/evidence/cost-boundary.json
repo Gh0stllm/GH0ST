@@ -1,0 +1,39 @@
+{
+  "schema": "gl3.llm.stylus-cost-boundary.v1",
+  "scope": "Actual direct vm.Call execution; no mined receipts or fee quote",
+  "pinnedNitroDefaultMaxTxGas": 32000000,
+  "pinnedNitroDefaultMaxBlockGas": 32000000,
+  "defaultLimitsSource": "https://github.com/OffchainLabs/nitro/blob/5f02f3f03076343061f167e81b8e82ec5518064b/arbos/l2pricing/model.go",
+  "activationDirectCallGas": 8281894,
+  "registrationDirectCallGas": 96975958,
+  "pageCodeDepositGasFormulaOnly": 880243600,
+  "pagePublicationTransactionsExecuted": false,
+  "inferenceTransactionsMined": false,
+  "calls": [
+    {
+      "promptTokens": 1,
+      "actualDirectCallGas": 31690952,
+      "privateAllowance": 100000000,
+      "exceedsPinnedDefaultTxLimit": false,
+      "nativeWallSeconds": 0.091247433
+    },
+    {
+      "promptTokens": 2,
+      "actualDirectCallGas": 43965756,
+      "privateAllowance": 100000000,
+      "exceedsPinnedDefaultTxLimit": true,
+      "nativeWallSeconds": 0.150400416
+    },
+    {
+      "promptTokens": 64,
+      "actualDirectCallGas": 816486330,
+      "privateAllowance": 1000000000,
+      "exceedsPinnedDefaultTxLimit": true,
+      "nativeWallSeconds": 2.791102538
+    }
+  ],
+  "sixtyFourTokenCallAt100MGasActuallyFailed": true,
+  "ordinaryStylusFullInferenceSemanticsVerified": true,
+  "canonicalZkvmExecutionOrProofVerified": false,
+  "productionGate": "review gas policy or implement resumable authenticated state; then mined receipts and validity proof"
+}

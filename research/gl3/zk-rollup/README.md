@@ -1,6 +1,6 @@
 # GL3 · ZK rollup integration
 
-**R55 · Canonical interpreter execution and scoped contract tests pass. Public mainnet is not deployed.**
+**R56 · Base mainnet first: RPC, native-GH0ST bridge and `scan.gh0st.fyi`. LLM proofs follow later. Public mainnet is not deployed.**
 
 The selected design preserves Nitro/ArbOS and Stylus execution, with `$GH0ST` as the child chain's native gas asset. A new zkVM guest must execute the canonical portable WAVM interpreter. The earlier ethrex EVM proof is a useful performance reference, but cannot authorize this chain's state or withdrawals.
 
@@ -9,7 +9,7 @@ The selected design preserves Nitro/ArbOS and Stylus execution, with `$GH0ST` as
 | State and data | 25 grouped registry/codec cases pass; 262-record range has constant-cost parent checking; coordinator compiles | Actual factory/bridge connection, guest agreement and proof-finalized transitions |
 | Native GH0ST bridge | 35 scoped parent-contract checks pass, including real canonical accumulator codecs and transfer rollback | Real deposit → executed credit → proved withdrawal root → parent payout, with reconciled balances |
 | Stylus execution | Linked portable guest actually executes canonical WAVM arithmetic in SP1 | Authenticated full machine, real Stylus execution and complete STF proof |
-| Full LLM | Existing complete 3,745,984-parameter model retained | Real Stylus adapter and unchanged full inference inside a verified transition |
+| Full LLM · deferred | Complete unchanged-model native Stylus adapter passes scoped execution/parity checks | Mined execution/gas policy and full validity proofs follow after base mainnet |
 | Operations | One retained Runpod test worker | Restart, replay, data recovery, force inclusion and production security review |
 
 ## How finalization must work
@@ -29,6 +29,8 @@ The coordinator must check the exact previous state, chain/deployment domain, pi
 [State and data envelope](STATEMENT.md) · [Registry source](contracts/GL3DataRegistry.sol) · [Stylus source audit](stylus/README.md) · [Bridge codec](bridge/canonical-codec.mjs)
 
 [Measured contract tests](contracts/README.md) · [Interpreter execution packet](stylus/portable-probe/execution/manifest.json) · [Proof-stack advisory sources](PROOF-SECURITY-SOURCES.md).
+
+[Base mainnet scope](launch/README.md) · [Captured ordinary transfer](stylus/base-capture/README.md) · [Guest / Solidity binding](binding/README.md) · [Deferred model results](llm/README.md).
 
 ## Boundaries
 

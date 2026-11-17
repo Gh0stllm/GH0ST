@@ -1,0 +1,23 @@
+   Compiling prover v0.1.0 (/root/gl3-stylus-portable/nitro/crates/prover)
+warning: unused import: `programs::meter::MeteredMachine`
+  --> crates/prover/src/machine.rs:35:9
+   |
+35 |         programs::meter::MeteredMachine,
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: method `get_const` is never used
+    --> crates/prover/src/machine.rs:1174:12
+     |
+1148 | impl PreimageResolverWrapper {
+     | ---------------------------- method in this implementation
+...
+1174 |     pub fn get_const(&self, context: u64, ty: PreimageType, hash: Bytes32) -> Option<CBytes> {
+     |            ^^^^^^^^^
+     |
+     = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `prover` (lib) generated 2 warnings (run `cargo fix --lib -p prover` to apply 1 suggestion)
+   Compiling gl3-image-loader v0.1.0 (/root/gl3-stylus-portable/nitro/gl3-image-loader)
+    Finished `release` profile [optimized + debuginfo] target(s) in 9.63s

@@ -2,6 +2,8 @@
 
 **Status: source audit and integration design. The existing ethrex EVM proofs do not prove Stylus, and no new Stylus or full-LLM validity proof is accepted.** Frozen EVM guests and prior benchmark evidence remain unchanged.
 
+The user has prioritized the base ZK chain, RPC, explorer and GH0ST bridge before LLM support. The current execution lane therefore targets an ordinary EVM transfer through the canonical ArbOS STF. Full Stylus and unchanged-model inference remain later acceptance gates; the model is not being reduced to meet this change in order.
+
 ## What the existing artifacts actually do
 
 | Artifact | Verified scope | Missing for this request |

@@ -1,0 +1,35 @@
+    Updating git repository `https://github.com/sp1-patches/RustCrypto-hashes`
+    Updating git repository `https://github.com/sp1-patches/tiny-keccak`
+     Locking 2 packages to latest compatible versions
+      Adding sha2 v0.10.9 (https://github.com/sp1-patches/RustCrypto-hashes?rev=0b1945eea7d9a776fd6e50ffd5fc51f0c5e6f155#0b1945ee)
+      Adding tiny-keccak v2.0.2 (https://github.com/sp1-patches/tiny-keccak?rev=d2ffd330259c8f290b07d99cc1ef1f74774382c2#d2ffd330)
+   Compiling tiny-keccak v2.0.2 (https://github.com/sp1-patches/tiny-keccak?rev=d2ffd330259c8f290b07d99cc1ef1f74774382c2#d2ffd330)
+   Compiling sha2 v0.10.9 (https://github.com/sp1-patches/RustCrypto-hashes?rev=0b1945eea7d9a776fd6e50ffd5fc51f0c5e6f155#0b1945ee)
+   Compiling sp1-primitives v5.2.4
+   Compiling arbutil v0.1.0 (/root/gl3-stylus-portable/nitro/crates/arbutil)
+   Compiling sp1-lib v5.2.4
+   Compiling sp1-zkvm v5.0.8
+   Compiling validation v0.1.0 (/root/gl3-stylus-portable/nitro/crates/validation)
+   Compiling prover v0.1.0 (/root/gl3-stylus-portable/nitro/crates/prover)
+warning: unused import: `programs::meter::MeteredMachine`
+  --> crates/prover/src/machine.rs:35:9
+   |
+35 |         programs::meter::MeteredMachine,
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: method `get_const` is never used
+    --> crates/prover/src/machine.rs:1174:12
+     |
+1148 | impl PreimageResolverWrapper {
+     | ---------------------------- method in this implementation
+...
+1174 |     pub fn get_const(&self, context: u64, ty: PreimageType, hash: Bytes32) -> Option<CBytes> {
+     |            ^^^^^^^^^
+     |
+     = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `prover` (lib) generated 2 warnings (run `cargo fix --lib -p prover` to apply 1 suggestion)
+   Compiling gl3-image-loader v0.1.0 (/root/gl3-stylus-portable/nitro/gl3-image-loader)
+    Finished `release` profile [optimized + debuginfo] target(s) in 10.54s

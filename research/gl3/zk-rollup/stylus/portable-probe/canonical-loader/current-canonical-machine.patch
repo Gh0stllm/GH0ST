@@ -1,0 +1,157 @@
+--- a/crates/prover/src/machine.rs
++++ b/crates/prover/src/machine.rs
+@@ -29,7 +29,7 @@
+ use wasmparser::{DataKind, ElementItems, ElementKind, Operator, RefType, TableType};
+ #[cfg(feature = "kzg")]
+ use {crate::kzg::prove_kzg_preimage, c_kzg::BYTES_PER_BLOB};
+-#[cfg(feature = "native")]
++#[cfg(any(feature = "native", feature = "portable-interpreter"))]
+ use {
+     crate::{
+         programs::meter::MeteredMachine,
+@@ -1135,7 +1135,7 @@
+ #[derive(Clone)]
+ struct PreimageResolverWrapper {
+     resolver: PreimageResolver,
+-    #[cfg(feature = "native")]
++    #[cfg(any(feature = "native", feature = "portable-interpreter"))]
+     last_resolved: Option<(Bytes32, CBytes)>,
+ }
+ 
+@@ -1149,12 +1149,12 @@
+     pub fn new(resolver: PreimageResolver) -> PreimageResolverWrapper {
+         PreimageResolverWrapper {
+             resolver,
+-            #[cfg(feature = "native")]
++            #[cfg(any(feature = "native", feature = "portable-interpreter"))]
+             last_resolved: None,
+         }
+     }
+ 
+-    #[cfg(feature = "native")]
++    #[cfg(any(feature = "native", feature = "portable-interpreter"))]
+     pub fn get(&mut self, context: u64, ty: PreimageType, hash: Bytes32) -> Option<&[u8]> {
+         // TODO: this is unnecessarily complicated by the rust borrow checker.
+         // This will probably be simplifiable when Polonius is shipped.
+@@ -1170,7 +1170,7 @@
+         }
+     }
+ 
+-    #[cfg(feature = "native")]
++    #[cfg(any(feature = "native", feature = "portable-interpreter"))]
+     pub fn get_const(&self, context: u64, ty: PreimageType, hash: Bytes32) -> Option<CBytes> {
+         if let Some(resolved) = &self.last_resolved
+             && resolved.0 == hash
+@@ -1353,7 +1353,7 @@
+ }
+ 
+ #[must_use]
+-#[cfg(feature = "native")]
++#[cfg(any(feature = "native", feature = "portable-interpreter"))]
+ fn exec_ibin_op<T>(a: T, b: T, op: IBinOpType) -> Option<T>
+ where
+     Wrapping<T>: ReinterpretAsSigned,
+@@ -1389,7 +1389,7 @@
+ }
+ 
+ #[must_use]
+-#[cfg(feature = "native")]
++#[cfg(any(feature = "native", feature = "portable-interpreter"))]
+ fn exec_iun_op<T>(a: T, op: IUnOpType) -> u32
+ where
+     T: PrimInt,
+@@ -1401,7 +1401,7 @@
+     }
+ }
+ 
+-#[cfg(feature = "native")]
++#[cfg(any(feature = "native", feature = "portable-interpreter"))]
+ fn exec_irel_op<T>(a: T, b: T, op: IRelOpType) -> Value
+ where
+     T: Ord,
+@@ -1423,7 +1423,7 @@
+ 
+ // Extracted so a test can pin the diagnostic (operator needs the hex hash
+ // to find the offending wasmdb key).
+-#[cfg(any(feature = "native", test))]
++#[cfg(any(feature = "native", feature = "portable-interpreter", test))]
+ pub(crate) fn format_missing_stylus_module_error(
+     hash: Bytes32,
+     modules: &HashMap<Bytes32, Vec<u8>>,
+@@ -1887,6 +1887,49 @@
+         Ok(mach)
+     }
+ 
++    /// Exact canonical constructor over authenticated bytes; caller binds SHA and module root.
++    #[cfg(feature = "portable-interpreter")]
++    pub fn new_from_wavm_bytes(wavm_binary: &[u8]) -> Result<Machine> {
++        let mut modules: Vec<Module> = {
++            let compressed = wavm_binary;
++            let Ok(modules) = brotli::decompress(compressed, Dictionary::Empty) else {
++                bail!("failed to decompress wavm binary");
++            };
++            bincode::deserialize(&modules)?
++        };
++
++        for module in modules.iter_mut() {
++            recompute_module_merkles(module)?;
++        }
++        let modules_merkle = Some(Merkle::new(
++            MerkleType::Module,
++            modules.iter().map(Module::hash).collect(),
++        ));
++        let mut mach = Machine {
++            status: MachineStatus::Running,
++            thread_state: ThreadState::Main,
++            steps: 0,
++            value_stacks: vec![vec![Value::RefNull, Value::I32(0), Value::I32(0)]],
++            internal_stack: Vec::new(),
++            frame_stacks: vec![Vec::new()],
++            modules,
++            modules_merkle,
++            global_state: Default::default(),
++            pc: ProgramCounter::default(),
++            stdio_output: Vec::new(),
++            inbox_contents: Default::default(),
++            first_too_far: 0,
++            preimage_resolver: PreimageResolverWrapper::new(get_empty_preimage_resolver()),
++            stylus_modules: HashMap::default(),
++            initial_hash: Bytes32::default(),
++            end_parent_chain_block_hash: Bytes32::default(),
++            context: 0,
++            debug_info: false,
++        };
++        mach.initial_hash = mach.hash();
++        Ok(mach)
++    }
++
+     pub fn serialize_binary<P: AsRef<Path>>(&self, path: P) -> Result<()> {
+         ensure!(
+             self.hash() == self.initial_hash,
+@@ -2171,7 +2214,7 @@
+         Some(self.pc)
+     }
+ 
+-    #[cfg(feature = "native")]
++    #[cfg(any(feature = "native", feature = "portable-interpreter"))]
+     fn test_next_instruction(func: &Function, pc: &ProgramCounter) {
+         let inst: usize = pc.inst.try_into().unwrap();
+         debug_assert!(func.code.len() > inst);
+@@ -2181,7 +2224,7 @@
+         self.steps
+     }
+ 
+-    #[cfg(feature = "native")]
++    #[cfg(any(feature = "native", feature = "portable-interpreter"))]
+     pub fn step_n(&mut self, n: u64) -> Result<()> {
+         if self.is_halted() {
+             return Ok(());
+@@ -2908,7 +2951,7 @@
+         Ok(())
+     }
+ 
+-    #[cfg(feature = "native")]
++    #[cfg(any(feature = "native", feature = "portable-interpreter"))]
+     fn host_call_hook(
+         value_stack: &[Value],
+         module: &Module,

@@ -1,0 +1,33 @@
+{
+  "command": [
+    "/workspace/gl3/durable/toolchain/go/bin/go",
+    "test",
+    "-p=1",
+    "-vet=off",
+    "./precompiles",
+    "-run",
+    "^TestGH0STFullOrdinaryStylusLLM$",
+    "-count=1",
+    "-v",
+    "-timeout=12m"
+  ],
+  "sourcePathReadOnly": "/workspace/gl3/durable/nitro-clean",
+  "isolatedOverlayPath": "/workspace/gl3/zk-rollup/llm/.cache/nitro",
+  "returnCode": 1,
+  "wallSeconds": 7.98981237411499,
+  "cpuAffinity": [
+    121,
+    123
+  ],
+  "GOMEMLIMIT": "512MiB",
+  "GOMAXPROCS": 2,
+  "actualFullModelTestPassed": false,
+  "financialAction": false
+}
+=== RUN   TestGH0STFullOrdinaryStylusLLM
+    GH0STFullStylusLLM_test.go:89: full ordinary Stylus prompt [7454 2402 257 640 11 612 373 257 1310 2576 3706 20037 13 1375 6151 284 711 2354 290 7301 262 995 1088 607 13 1881 1110 11 673 2497 257 1263 11 22441 3881 287 262 6766 13 1375 2227 284 766 644 373 2641 13 198 198 43 813 1965 607 1995 11 366 29252 1820 11 460 314 766 257 3881]: out of gas 
+--- FAIL: TestGH0STFullOrdinaryStylusLLM (0.80s)
+FAIL
+FAIL	github.com/offchainlabs/nitro/precompiles	0.818s
+FAIL
+

@@ -1,0 +1,10 @@
+[package]
+name = "gl3-brotli-probe"
+version = "0.1.0"
+edition = "2024"
+[dependencies]
+prover = { path = "../crates/prover", default-features = false, features = ["portable-interpreter", "cc_brotli"] }
+brotli = { path = "../crates/brotli", features = ["link", "cc_brotli"] }
+sp1-zkvm = "=5.0.8"
+wat = "1.0.56"
+hex = "0.4.3"

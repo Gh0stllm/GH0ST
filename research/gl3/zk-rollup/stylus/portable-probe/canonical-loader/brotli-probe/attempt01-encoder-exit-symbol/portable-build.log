@@ -1,0 +1,32 @@
+warning: unused import: `programs::meter::MeteredMachine`
+  --> crates/prover/src/machine.rs:35:9
+   |
+35 |         programs::meter::MeteredMachine,
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: method `get_const` is never used
+    --> crates/prover/src/machine.rs:1174:12
+     |
+1148 | impl PreimageResolverWrapper {
+     | ---------------------------- method in this implementation
+...
+1174 |     pub fn get_const(&self, context: u64, ty: PreimageType, hash: Bytes32) -> Option<CBytes> {
+     |            ^^^^^^^^^
+     |
+     = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `prover` (lib) generated 2 warnings (run `cargo fix --lib -p prover` to apply 1 suggestion)
+   Compiling gl3-brotli-probe v0.1.0 (/root/gl3-stylus-portable/nitro/gl3-brotli-probe)
+error: linking with `rust-lld` failed: exit status: 1
+  |
+  = note:  "rust-lld" "-flavor" "gnu" "/tmp/rustcH9snBl/symbols.o" "<2 object files omitted>" "--as-needed" "-Bstatic" "<sysroot>/lib/rustlib/riscv32im-succinct-zkvm-elf/lib/libpanic_abort-*.rlib" "/root/gl3-stylus-portable/target/riscv32im-succinct-zkvm-elf/release/deps/{libsp1_zkvm-da70ed8eeaed358b,libgetrandom-af6c97c5c74da5fc,liblibm-91a9e8d04cd5877f,libsp1_lib-043c0a8e4819b5a3,libsp1_primitives-187b2b860ff873b7,libbincode-c20d059705894a5c,libblake3-e699197530cb9d00,libconstant_time_eq-e3372654fad08c38,libarrayvec-e9734aa715652e25,libhex-6f038b48f7a779d8,libsha2-fb1ad05bfdd80176,libdigest-df2dbe6ed91b2c8e,libblock_buffer-79f3045399729a4e,libcrypto_common-cb6e5f6e97cc0ef7,libgeneric_array-6238009afe0ef693,libtypenum-4da1a451328eefbf,libp3_baby_bear-0692a11194b0e8db,libp3_poseidon2-4efe20c1bb179d5b,libgcd-b7134df423254692,libp3_mds-ff789315d860aba2,libp3_dft-268859e4d420cfa3,libtracing-0a9541b0b1e4d7a5,libpin_project_lite-ea80209f9f4b3d50,libtracing_core-629b216a1bb3fbb6,libonce_cell-f4e0ed2da8099936,libp3_matrix-f0cc67adc971df5f,libp3_maybe_rayon-78b5bf97010d1f78,libp3_symmetric-0ce93532a0d43dce,libp3_field-89ef1e4b2f994e6b,libp3_util-c179ef2411a67ab3,libitertools-eff53d73f8ad17f0,libeither-9e90c1022dec9c44,libnum_bigint-8477d18fb9eba151,libnum_integer-985dd2d85a4ca901,libnum_traits-230eb1e52b3b49da,libserde-43f8f8326f197c10,libserde_core-c23bfd6ca62914d7,librand-2ddfcc77576f10de,librand_chacha-c5f44a2b2590dedc,libppv_lite86-716d8b26498c30fc,libzerocopy-3214c2323751fb34,librand_core-5a5c65fdea8b2f3b,libgetrandom-805796de7807b2da,libcfg_if-c4a463e7ccd2e7cd,libbrotli-71c5961c224f32df,liblazy_static-3f10fd357b2be589,libnum_enum-891ac431493c91d4}.rlib" "<sysroot>/lib/rustlib/riscv32im-succinct-zkvm-elf/lib/{libstd-*,libcfg_if-*,librustc_demangle-*,libstd_detect-*,libhashbrown-*,librustc_std_workspace_alloc-*,libminiz_oxide-*,libadler2-*,libunwind-*,liblibc-*,librustc_std_workspace_core-*,liballoc-*,libcore-*,libcompiler_builtins-*}.rlib" "-L" "/tmp/rustcH9snBl/raw-dylibs" "-Bdynamic" "-z" "noexecstack" "-L" "/root/gl3-stylus-portable/target/riscv32im-succinct-zkvm-elf/release/build/brotli-268eadee9e8bdd75/out" "-o" "/root/gl3-stylus-portable/target/riscv32im-succinct-zkvm-elf/release/deps/gl3_brotli_probe-34acf7bdba45d8f3" "--gc-sections" "-O1" "-Ttext=0x00201000" "--image-base=0x00200800"
+  = note: some arguments are omitted. use `--verbose` to show all linker arguments
+  = note: rust-lld: warning: --image-base: address isn't multiple of page size: 0x00200800
+          rust-lld: error: undefined symbol: exit
+          >>> referenced by memory.c:54 (../../brotli/c/enc/memory.c:54)
+          >>>               f4f119ef3fbdc2e5-memory.o:(BrotliAllocate) in archive /root/gl3-stylus-portable/target/riscv32im-succinct-zkvm-elf/release/deps/libbrotli-71c5961c224f32df.rlib
+          
+
+error: could not compile `gl3-brotli-probe` (bin "gl3-brotli-probe") due to 1 previous error

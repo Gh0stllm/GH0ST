@@ -2,7 +2,7 @@
 
 # GH0ST L3 · GL3 research notebook
 
-**R55 · The canonical interpreter executes inside the zkVM.** A real SP1 execution of the original WAVM arithmetic interpreter passes; 25 state/data/codec and 35 parent bridge unit cases also pass on Runpod. A 262-record regression removes a data-range liveness cap. Full STF/Stylus/LLM proof finalization and a proof-backed payout remain open. [Active integration notebook](zk-rollup/README.md) · [Measured contract results](zk-rollup/contracts/README.md).
+**R56 · Base GL3 mainnet first; LLM proofs follow later.** The target is a native-GH0ST L3 on Robinhood with public RPC, proposed chain ID 4,663,001, and the confirmed explorer hostname `scan.gh0st.fyi`. These services are not live yet. A real private base EVM transfer and authenticated input capture pass; the complete canonical STF proof and proof-backed withdrawal remain the critical path. [Launch scope](zk-rollup/launch/README.md) · [Current ZK integration](zk-rollup/README.md).
 
 **Public GL3 is not deployed.** The earlier Nitro launch and chess work remain preserved research. The selected new guest must prove actual Nitro/ArbOS execution rather than substitute the previous EVM-only guest. Applicable Nitro licensing and final operational/security acceptance remain launch requirements.
 
