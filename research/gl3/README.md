@@ -2,13 +2,19 @@
 
 # GH0ST L3 · GL3 research notebook
 
-**R61 · The GL3 base chain is live.** Public signed-transaction RPC, the explorer, the dedicated bridge and the L3 introduction have genuine HTTPS and receipt-backed network checks. Exactly **1,000,000 GH0ST** was bridged and all nine fee/treasury/owner setup transactions are confirmed. A separate funded demo wallet is generating real contract, test-token and NFT activity without stopping the chain.
+**R62 · The GL3 base chain and Whispers-style introduction are live.** Public signed-transaction RPC, the explorer, the dedicated bridge and the L3 introduction have genuine HTTPS and receipt-backed network checks. Exactly **1,000,000 GH0ST** was bridged and all nine fee/treasury/owner setup transactions are confirmed. A separate funded demo wallet is generating real contract, test-token and NFT activity without stopping the chain.
 
 [**L3**](https://l3.gh0st.fyi/) · [**Bridge**](https://bridge.gh0st.fyi/) · [**Explorer**](https://scan.gh0st.fyi/) · [**RPC**](https://rpc.gh0st.fyi/) · [Launch evidence](same-day-mainnet/README.md)
 
 GL3 uses **official Nitro and project-run fast confirmation**. Its configured minimum block interval is 100 ms; the demo worker aims for roughly one heartbeat per second rather than maximum-speed traffic. The first 120-second sample contains **133 genuine demo transactions in 133 demo-containing blocks**, with a maximum gap of two seconds. The launch is **operator-trusted, not ZK-secured**; Robinhood safe/finalized checks remain enabled.
 
-The user has selected the live **Whispers design system** for the next L3 website: its exact colours, fonts and particle-animation style, with three individually interactive dot layers and stream pulses triggered by observed GL3 blocks. Earlier illustrated, metal/WebGL and ASCII designs are preserved as rejected checkpoints. The Whispers-based replacement is in progress and must pass actual desktop/mobile visual QC before publication. Add GL3 wallet controls are already published and checked across 24 pages, retaining each page's security policy or using an exact module-hash grant.
+The live L3 website now uses the **Whispers design system**: its exact colours and font files, with three individually interactive dot layers for GH0ST, Robinhood and Ethereum. Real observed GL3 block arrivals trigger traveling packets; the parent-layer routes are illustrative, not settlement receipts. The approved build is published as deployment **6afccad23191f00013791e3b**. Earlier illustrated, metal/WebGL and ASCII attempts remain dated, rejected checkpoints. Add GL3 controls are also published across 24 existing pages.
+
+![The published GL3 introduction](same-day-mainnet/network/evidence/whispers-theme-20261118/root-browser/public-live.jpg)
+
+[Website source](same-day-mainnet/network/l3/) · [Deployed artifact and release evidence](same-day-mainnet/network/evidence/whispers-theme-20261118/README.md)
+
+CPU checks ran on Runpod; actual browser review covered desktop, phones and the tablet reflow. The user approved the design and requested immediate publication with **no further QC**. No post-publication test campaign was run. The public page was opened to show the delivered result.
 
 The user also signed an additional **250,000 GH0ST** into the dedicated demo wallet, bringing cumulative funding to **350,000 GH0ST**. The revised worker sends one demo action at a time, preserves prior signed-intent history, nonce and fees, and stops on ambiguity. Its first 60 seconds contain **44 demo transactions in 44 separate demo-containing blocks**; the independent 137-receipt audit finds no duplicate demo-containing blocks. These observations are automated demonstrations, not organic adoption or a guarantee about other users' transactions.
 

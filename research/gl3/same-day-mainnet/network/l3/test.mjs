@@ -1,0 +1,25 @@
+import assert from'node:assert/strict';import{readFileSync}from'node:fs';import{NETWORK,GENESIS,quantity,native,verifyIdentity,verifyBlock,blockNumbers,STEPS,CONTRACTS}from'./core.mjs';
+let cases=0;function test(name,fn){fn();cases++;console.log('PASS '+name)}
+test('actual chain and genesis accepted',()=>assert.equal(verifyIdentity('0x4726d9',{hash:GENESIS}),true));
+test('wrong chain rejected',()=>assert.throws(()=>verifyIdentity('0x1237',{hash:GENESIS})));
+test('wrong genesis rejected',()=>assert.throws(()=>verifyIdentity(NETWORK.chainId,{hash:'0x'+'f'.repeat(64)})));
+test('missing genesis rejected',()=>assert.throws(()=>verifyIdentity(NETWORK.chainId,null)));
+test('decimal RPC quantity rejected',()=>assert.throws(()=>quantity('4663001')));
+test('negative quantity rejected',()=>assert.throws(()=>quantity('-0x1')));
+test('18 decimal fee arithmetic is exact',()=>assert.equal(native('0x'+10000000000001n.toString(16)),'0.000010000000000001'));
+test('whole native unit is exact',()=>assert.equal(native('0x'+(10n**18n).toString(16)),'1'));
+test('zero and large amounts exact',()=>{assert.equal(native('0x0'),'0');assert.equal(native('0x'+(999999999999999999999999999999999999n).toString(16)),'999999999999999999.999999999999999999')});
+test('genesis list never negative',()=>assert.deepEqual(blockNumbers('0x0'),['0x0']));
+test('bounded recent four blocks',()=>assert.deepEqual(blockNumbers('0x7'),['0x7','0x6','0x5','0x4']));
+test('actual block shape required',()=>assert.equal(verifyBlock({number:'0x1',hash:GENESIS,timestamp:'0x0',transactions:[]},'0x1').number,'0x1'));
+test('wrong returned block rejected',()=>assert.throws(()=>verifyBlock({number:'0x2',hash:GENESIS,timestamp:'0x0',transactions:[]},'0x1')));
+test('null returned block rejected',()=>assert.throws(()=>verifyBlock(null,'0x1')));
+test('wallet exact actual network payload',()=>assert.deepEqual(NETWORK,{chainId:'0x4726d9',chainName:'GH0ST GL3',nativeCurrency:{name:'GH0ST',symbol:'GH0ST',decimals:18},rpcUrls:['https://rpc.gh0st.fyi/'],blockExplorerUrls:['https://scan.gh0st.fyi/']}));
+test('all four lifecycle steps preserve trust distinction',()=>{assert.equal(STEPS.length,4);assert.match(STEPS[2].detail,/different checkpoints/);assert.match(STEPS[3].detail,/operator key is trusted/)});
+test('all real contract addresses well-formed',()=>{assert.equal(CONTRACTS.length,7);CONTRACTS.forEach(x=>assert.match(x[1],/^0x[0-9a-f]{40}$/i))});
+const html=readFileSync(new URL('./index.html',import.meta.url),'utf8'),css=readFileSync(new URL('./style.css',import.meta.url),'utf8')+readFileSync(new URL('./whispers-theme.css',import.meta.url),'utf8'),app=readFileSync(new URL('./app.mjs',import.meta.url),'utf8');
+test('all queried app IDs exist',()=>{for(const m of app.matchAll(/\$\('([^']+)'\)/g))assert.ok(html.includes('id="'+m[1]+'"'),m[1])});
+test('reduced motion and small-screen layouts',()=>{assert.match(css,/prefers-reduced-motion:reduce/);assert.match(css,/@media\(max-width:760px\)/);assert.match(html,/motion-toggle/)});
+test('no wallet accounts or signatures requested',()=>{assert.doesNotMatch(app,/eth_requestAccounts|personal_sign|eth_sign|sendTransaction/);assert.match(app,/eip6963:announceProvider/)});
+test('disclosures and live-data labels visible',()=>{assert.match(html,/ZK verification is not live/);assert.match(html,/not organic-user volume/);assert.match(html,/not a throughput estimate/)});
+console.log(JSON.stringify({passed:true,cases,scope:'Exact arithmetic, identity rejection, RPC block boundaries, wallet payload, accessible source wiring; actual browser layout and provider UX require separate QC'}));

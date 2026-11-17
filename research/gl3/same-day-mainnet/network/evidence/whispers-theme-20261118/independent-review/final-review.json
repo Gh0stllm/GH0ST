@@ -1,0 +1,58 @@
+{
+  "status": "INDEPENDENT_REVIEW_PASS",
+  "reviewComplete": true,
+  "publicationRecommendedForExactSources": true,
+  "publicationPerformedByReviewer": false,
+  "sourceBindings": {
+    "app.mjs": "b61a2ffbfccbe3c3d66c7539317956357d42faba15d4bbaa6910a50bf0cb3d03",
+    "style.css": "0c69f93ad34356fc20839d0772725c9750d0b1d921a7809b630ca380f42595f2",
+    "index.html": "311f1a601a65e1fe41dcd741a49bbcae1c5215b1d55545d094eca7e2679bcb73"
+  },
+  "CSSOnlyReviewedChangesFromR2": {
+    "sixThresholds760to1100": true,
+    "oneTailHideSelector": "@media(max-width:1100px){.channel-tail{display:none}}",
+    "exactExpectedTransform": true
+  },
+  "graphicsAndCoreUnchangedFromR2": {
+    "whispers-theme.css": true,
+    "whispers-layers.mjs": true,
+    "layer-controller.mjs": true,
+    "core.mjs": true,
+    "block-observation.mjs": true
+  },
+  "visualEvidence": "visual-review-r2.json",
+  "final768Evidence": {
+    "path": "output/gl3-same-day-mainnet-20261117/gl3-whispers-final-768.jpg",
+    "SHA256": "05cbfdaacfa7bafd1f01754c1af2cd9dadc78c3c435ffb8f1bf2e250ef2108ff",
+    "independentScreenshotJudgment": "Normal-flow CTA/art/caption/channels are separated and readable. The sole decorative tail overflow observed by root is hidden by the exact scoped final selector; no post-tail browser execution is claimed by reviewer."
+  },
+  "rootReportedActualChecks": {
+    "desktop1280AndMobile390320": "Screenshots independently viewed. Root separately measured viewport widths and nonoverlapping content rectangles.",
+    "pointerAndBlockStreams": "Root observed individual dot deformation and travelling packets on both rails. Reviewer independently reviewed matching source and still screenshots.",
+    "reducedMotion": "Root CDP test reports reduce toggled paused state/resume label, while verified live head advanced from 4779 to 4782; console logs were empty."
+  },
+  "independentRunpodTests": [
+    {
+      "report": "a11y/result.json",
+      "cases": 11,
+      "exitCode": 0,
+      "elapsedSeconds": 0.1052823169156909,
+      "scope": "Actual final app b61a source with minimal DOM/mocked RPC, including no connection announcement flap on repeated gas-only failures."
+    },
+    {
+      "report": "fallback/result.json",
+      "cases": 7,
+      "exitCode": 0,
+      "elapsedSeconds": 0.06593585084192455,
+      "scope": "Actual unchanged controller fallback path with mocked Canvas2D API, projection labels at 320/390/1280, bright emblem distinction, cleanup and persisted-pageshow policy."
+    }
+  ],
+  "preservedFailures": "visual-review-r1.json retains the rejected faint-emblem/caption/mobile-overlap evidence. Earlier source issues and first 5-case recovery regression remain separately recorded.",
+  "unresolvedMaterialReviewFindings": [],
+  "boundaries": [
+    "No actual screen-reader session by reviewer.",
+    "No reviewer CUA/GPU/browser execution; screenshot review and source plus Runpod tests only.",
+    "No frontend-owner files edited, no publication, DNS/node/wallet mutations or financial actions by reviewer.",
+    "Root owns final public production QC and publication."
+  ]
+}

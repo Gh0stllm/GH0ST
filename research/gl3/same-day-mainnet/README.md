@@ -1,6 +1,6 @@
 # GL3 · GH0ST on Robinhood
 
-**R61: the base chain, public transaction RPC and explorer are live. Exactly 1,000,000 GH0ST has been bridged and all nine setup transactions are confirmed.** GL3 uses official Nitro with native GH0ST gas and project-operated fast confirmation. ZK verification and full-model proofs remain separate research, not launch features.
+**R62: the base chain, public transaction RPC and explorer are live. Exactly 1,000,000 GH0ST has been bridged and all nine setup transactions are confirmed.** GL3 uses official Nitro with native GH0ST gas and project-operated fast confirmation. ZK verification and full-model proofs remain separate research, not launch features.
 
 [Live explorer](https://scan.gh0st.fyi/) · [Public RPC](https://rpc.gh0st.fyi/) · [Receipt evidence](network/evidence/live-mainnet-20261118/) · [Research history](../HISTORY.md)
 
@@ -14,7 +14,7 @@
 | RPC | `https://rpc.gh0st.fyi/`, public signed-transaction submission enabled |
 | Explorer | `https://scan.gh0st.fyi/`, actual RPC blocks and transactions |
 | Bridge destination | `https://bridge.gh0st.fyi/` — published; genuine hostname-valid HTTPS checked from Runpod |
-| Chain introduction | `https://l3.gh0st.fyi/` — published; replacement using the live Whispers theme and interactive dot layers is in progress |
+| Chain introduction | `https://l3.gh0st.fyi/` — published with the approved Whispers theme, interactive dot layers and observed-block pulses |
 | Parent backing token | `0x2eb2849cDE7957b86d0dFD4B59e450a9F9D15559` |
 | Canonical genesis | `0x17b5e6ba05003525c4f3c766d6b3120d88ee87dc7eeba84932027f8917da3483` |
 
@@ -59,3 +59,9 @@ The exact-profile private rehearsal completed a nonzero payout across a verified
 The user accepted the reviewed AEP terms: 10% of positive protocol net revenue; the native-GH0ST remittance destination remains unconfirmed and no payment is claimed. A single pod and persistent volume are running; encrypted operator recovery is verified off-pod. Automatic failover and a replacement-pod recovery rehearsal of the populated chain are not claimed. No automatic top-ups are configured.
 
 All CPU builds/tests run on Runpod. Public-site work and demo preparation must leave the live chain running. Historic fee-capped proposals and earlier failed experiments remain dated evidence; the user subsequently authorized fresh market gas without an aggregate fee ceiling.
+
+## Published L3 introduction
+
+The approved Whispers-derived design is live at [l3.gh0st.fyi](https://l3.gh0st.fyi/), deployment `6afccad23191f00013791e3b`. The existing Whispers CSS and font files are reused exactly; the particle geometry becomes three distinct interactive layers. Block packets follow verified, sampled GL3 headers, with stale/reset handling. The illustration does not establish Robinhood or Ethereum settlement.
+
+The release includes actual desktop/phone review, the corrected tablet flow, 45 core Runpod cases and separate independent polling/accessibility and static-fallback regressions. After approving the design, the user instructed immediate publication and no more QC; further test/probe work stopped. [Release record](network/evidence/whispers-theme-20261118/README.md) · [Source](network/l3/).
