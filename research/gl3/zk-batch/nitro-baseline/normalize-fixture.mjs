@@ -1,0 +1,22 @@
+// Convert the pinned ethrex folded genesis + actual transaction hashes to a shared public fixture.
+import fs from 'node:fs';import path from 'node:path';import assert from 'node:assert/strict';import {createRequire} from 'node:module';import {createHash} from 'node:crypto';
+const E=createRequire('/root/dispute/package.json')('ethers');
+assert.equal(process.platform,'linux');
+const [source,genesisPath,hashesPath,out]=process.argv.slice(2);assert(source&&genesisPath&&hashesPath&&out);
+const sha=b=>createHash('sha256').update(b).digest('hex'),word=x=>E.toBeHex(BigInt(x),32),be8=x=>E.getBytes(E.toBeHex(BigInt(x),8));
+const initSource=fs.readFileSync(path.join(source,'src/workloads/erc20.rs'),'utf8');const init=initSource.match(/TEST_TOKEN_INITCODE: &str = "([0-9a-f]+)"/)[1];
+const bytes=Buffer.from(init,'hex'),runtime='0x'+bytes.subarray(0x789,0x789+0xe8c).toString('hex');assert.equal(bytes.length,0x789+0xe8c);assert.equal(E.dataLength(runtime),0xe8c);
+const key=E.keccak256(E.concat([be8(0),E.toUtf8Bytes('ethrex-replay-sender'),be8(0),be8(0)])),sender=new E.Wallet(key),token=E.getCreateAddress({from:sender.address,nonce:0});
+const gRaw=fs.readFileSync(genesisPath),genesis=JSON.parse(gRaw),alloc=genesis.alloc;
+const address=x=>E.getAddress('0x'+x.replace(/^0x/,''));const entries=Object.entries(alloc).map(([a,v])=>[address(a),v]);
+const get=a=>{const rows=entries.filter(([x])=>x===a);assert.equal(rows.length,1);return rows[0][1];};
+const sa=get(sender.address),ta=get(token);assert.equal(Number(BigInt(sa.nonce)),2);assert.equal('0x'+String(ta.code).replace(/^0x/,''),runtime);
+const storage=Object.fromEntries(Object.entries(ta.storage).map(([k,v])=>[word('0x'+k.replace(/^0x/,'')),word(typeof v==='string'&&v.startsWith('0x')?v:'0x'+v)]));
+const balanceSlot=E.keccak256(E.AbiCoder.defaultAbiCoder().encode(['address','uint256'],[sender.address,0]));assert.equal(BigInt(storage[balanceSlot]),2n*10n**24n);assert.equal(BigInt(storage[word(2)]),2n*10n**24n);
+const ti=new E.Interface(['function transfer(address,uint256) returns(bool)']);const transactions=[];
+for(let i=0;i<16;i++){const recipient=E.getAddress('0x'+E.keccak256(E.concat([be8(0),E.toUtf8Bytes('address'),be8(i)])).slice(-40));const request={type:2,chainId:9,nonce:2+i,to:token,value:0,gasLimit:250000,maxFeePerGas:(1n<<64n)-1n,maxPriorityFeePerGas:10,data:ti.encodeFunctionData('transfer',[recipient,1]),accessList:[]};const raw=await sender.signTransaction(request);transactions.push({raw,hash:E.keccak256(raw),recipient,amount:'1',nonce:2+i});}
+const hRaw=fs.readFileSync(hashesPath),decoded=JSON.parse(hRaw),actualRaw=decoded.rawSignedTransactions,hashes=actualRaw?actualRaw.map(x=>E.keccak256(x)):(Array.isArray(decoded)?decoded:decoded.transactionHashes);
+if(actualRaw)assert.deepEqual(transactions.map(x=>x.raw.toLowerCase()),actualRaw.map(x=>x.toLowerCase()),'Actual ethrex signed bytes differ');
+assert.deepEqual(transactions.map(x=>x.hash.toLowerCase()),hashes.map(x=>String(x).toLowerCase()),'Independently signed bytes do not match actual ethrex transaction hashes');
+const fixture={schema:'gh0st.zk-batch.matched-erc20.v1',count:16,workload:'erc20-transfer',seed:0,nSenders:1,chainId:9,source:{repository:'ethrex-replay',sourcePath:source,erc20SourceSHA256:sha(Buffer.from(initSource)),workloadsSourceSHA256:sha(fs.readFileSync(path.join(source,'src/workloads/mod.rs'))),foldedGenesisSHA256:sha(gRaw),actualEthrexHashesSHA256:sha(hRaw),binding:'actual folded genesis plus independent signatures matched against actual ethrex transaction hashes'},sender:{address:sender.address,nonce:2,nativeBalance:String(BigInt(sa.balance)),derivation:'keccak(seedBE8 || ethrex-replay-sender || indexBE8 || attemptBE8), seed0/index0/attempt0; public deterministic test signer'},contract:{address:token,code:runtime,codeKeccak256:E.keccak256(runtime),account:{balance:E.toQuantity(BigInt(ta.balance||0)),nonce:E.toQuantity(BigInt(ta.nonce)),code:runtime,storage},senderTokenBalance:String(2n*10n**24n),totalSupply:String(2n*10n**24n)},transactions,expected:{senderTokenBalance:String(2n*10n**24n-16n),recipientBalance:'1',senderNonceAfter:18},scope:'Identical signed ERC20 calls and copied folded contract/sender prestate; Ethereum and ArbOS global state/header/fee systems differ'};
+fs.writeFileSync(out,JSON.stringify(fixture,null,2)+'\n');console.log(JSON.stringify({path:out,SHA256:sha(fs.readFileSync(out)),sender:sender.address,token,rawTransactionsMatched:16,nativeBalance:fixture.sender.nativeBalance}));

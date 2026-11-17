@@ -35,3 +35,21 @@ The actual sixteen-transfer generator/witness/native-replay job passed with exit
 One real CPU Groth16 proof started at **13:07:30 UTC**, with28 CPU cores allowed, a48GiB owned-RSS guard and56GB shared working-set guard. The saved13:08:32 snapshot is a running observation, not a finished-proof latency or final peak-RAM result. The guest and native EVM have different explicitly pinned source revisions; actual input/output compatibility was tested, rather than assuming identical source. [Frozen source, fixture, failures and measurements](source-evaluation/README.md) · [Actual160-byte binding](source-evaluation/run16/preproof-execution.json) · [Running snapshot](source-evaluation/run16/running-snapshot.json).
 
 The Runpod API still quotes **$1.12/hour compute** for the existing32-vCPU/64GB worker. Storage, chain fees and cold setup are separate; parallel lanes share one rental interval. [Dated compute quote and calculation rule](costs/compute-quote.json). Nitro's matching signed calls are running in a separate private fixture; no completed baseline is claimed in this snapshot.
+
+## R49 · matched Nitro baseline passes
+
+The private official Nitro run passes with direct wait4 exit0 in52.233 seconds including setup/teardown. It accepts the **same16 signed ERC20 transactions**, using copied token prestate, and independently re-executes their actual posted inbox batch on a follower without a sequencer feed.
+
+| Routine measurement | Actual result |
+| :--- | ---: |
+| Submit all16 calls → all receipts | 266.52 ms |
+| Token execution gas | 833,848, matching ethrex |
+| Child packing | 2 child blocks, 1 parent posting batch |
+| Compressed batch data / parent calldata | 1,542 / 2,052 bytes |
+| Parent receipt gas | 179,241 |
+| Post trigger → observed independent replay | 2,322.69 ms |
+| Sequencer / follower CPU windows | 0.04 / 0.09 seconds |
+
+Posting observations include a controlled restart to release a deliberately withheld batch. The native token is a synthetic neutral test asset; complete ArbOS/Ethereum state roots and fees differ, while signed calls, token prestate/outcomes and execution gas match. The follower matches Nitro's own header, state and all16 receipts exactly. These are one-run measurements, not throughput or production guarantees. [Full result, actual receipts, preserved setup failures and audit](nitro-baseline/README.md).
+
+The ZK proof remains active. Its final wrapper needs a cold download of the official3,025,985,400-byte circuit archive; download/install time will be identified in the complete pipeline result. No completed proof or ZK verification-gas result is claimed at this milestone.
