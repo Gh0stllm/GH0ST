@@ -23,13 +23,13 @@ The registry reads canonical `Bridge.sequencerInboxAccs` and `delayedInboxAccs`.
 
 Sequencer wire is the canonical 40-byte header plus batch bytes. The initial profile accepts header-only force inclusion and calldata/Brotli (`0x00`). DAS, blobs, custom and ZeroHeavy formats fail closed. Delayed wire is the canonical 113-byte header plus message data. Its message hash uses the packed 20-byte sender, not the padded wire sender, and a hash of the data. The encoded message index and sender padding are checked.
 
-Range seed:
+Each inbox type has a deployment-scoped prefix seed:
 
 ```
-keccak256(abi.encode(rangeDomain, chainDomain, uint64(start), uint64(end)))
+keccak256(abi.encode(rangeDomain, chainDomain))
 ```
 
-Sequencer step:
+Each registration must be the next contiguous index, or an identical already-registered record. The registry stores the following prefix steps. Sequencer:
 
 ```
 keccak256(abi.encode(previous, index, wireHash, beforeAcc, afterAcc,
@@ -43,9 +43,18 @@ keccak256(abi.encode(previous, index, wireHash, canonicalMessageHash,
                     beforeAcc, afterAcc))
 ```
 
-Domain labels are `GH0ST_GL3_SEQ_RANGE_V1` and `GH0ST_GL3_DELAY_RANGE_V1`, each Keccak-hashed. The guest must reconstruct the same commitments from authenticated records and serve only those records to the actual interpreter. No duplicate, omitted, substituted or extra record may be silently accepted. Missing data is not EOF. Delayed reads are tracked independently of the global state's sequencer cursor.
+The range commitment is:
 
-The draft registry caps each call/range at 256 records and each wire at 131,072 bytes. These are bounded research settings; canonical batch limits and adversarial empty-batch/lookahead liveness must be checked before deployment. A limit that makes a real transition unprovable is a launch blocker.
+```
+keccak256(abi.encode(rangeDomain, chainDomain, uint64(start), uint64(end),
+                    prefixBeforeStart, prefixAfterEnd))
+```
+
+The endpoints use the seed at position zero, otherwise the stored prefix after index `position - 1`. The parent checks only two stored endpoints; it does not loop over the entire range. Registration counts establish that no index is missing. The guest starts from the authenticated first prefix, reconstructs every requested record's prefix and checks the final endpoint before committing this range hash.
+
+Domain labels are `GH0ST_GL3_SEQ_RANGE_V1` and `GH0ST_GL3_DELAY_RANGE_V1`, each Keccak-hashed. The guest must serve only the committed records to the actual interpreter. No duplicate, omitted, substituted or extra record may be silently accepted. Missing data is not EOF. Delayed reads are tracked independently of the global state's sequencer cursor. Multiple transitions can read the same sequencer batch while its message position advances.
+
+The earlier draft's 256-record range limit is removed: a long sequence of empty batches must not become unprovable solely because parent verification loops over each record. A 262-record regression is being tested on Runpod. The wire cap remains 131,072 bytes; compatibility with the deployed Inbox/SequencerInbox limits and guest resource limits remains a launch gate.
 
 ## Proof and bridge acceptance
 

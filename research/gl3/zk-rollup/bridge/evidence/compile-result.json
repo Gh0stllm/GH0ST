@@ -1,0 +1,163 @@
+{
+  "passed": true,
+  "scope": "Compilation and ABI/storage-layout comparison only; no proof or chain execution",
+  "compiler": "0.8.17+commit.8df45f5f.Emscripten.clang",
+  "compilerModuleSHA256": "04184dd4a976c37a64c8d6470e25983cfdbb09b10ff371da9178f50d6e132745",
+  "sourceCommit": "4341b132cfbdcc980ead03765ca5224ff6cb5d97",
+  "evmVersion": "london",
+  "optimizerRuns": 2000,
+  "inputSHA256": "f88929831b5f40ce28da21908642d03fd25bff4220e89d689dda68efcf78c803",
+  "ownSourceSHA256": {
+    "src/bridge/GL3ExactERC20Bridge.sol": "cc3e92cedc4a0149b9f4604837381decfe0703f1cba8d68cb08537bb2cec2948",
+    "src/bridge/ERC20Bridge.sol": "c26270da3feae60d6ca9b1fa22a2a764711885845f3cdfb938a3b81588f2a93a",
+    "unit/UnitFixtures.sol": "16cc7b96f71e8b6fa113611a45c89547be6a6194a91ba81b7f72a0d42857fea8"
+  },
+  "importSHA256": {
+    "src/bridge/AbsBridge.sol": "8b0632c5fa3ea493d1d46248780b725781f7ebcf1b5b5669d1fdd69d0a4d2ec9",
+    "src/bridge/IERC20Bridge.sol": "973c603490c2153c480e7f43564d4e8763eef9696a479802490bdfb245185084",
+    "src/libraries/AddressAliasHelper.sol": "bde4e6942742c0763fa7ed910ae79da9ab7620eb4f8f5a101cb16a0bbd5ce91e",
+    "src/libraries/Error.sol": "82081c367e38630c0f0105507fe7bba252fd37ea69247b77a4e2e9a5e580fc66",
+    "src/libraries/Constants.sol": "991326e8c714914e38f1edf13bbd2e78b4849521e49e8408785fed6ef9edd7ff",
+    "@openzeppelin/contracts/token/ERC20/IERC20.sol": "94f23e4af51a18c2269b355b8c7cf4db8003d075c9c541019eb8dcf4122864d5",
+    "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol": "fa36a21bd954262006d806b988e4495562e7b50420775e2aa0deecb596fd1902",
+    "@openzeppelin/contracts/token/ERC20/ERC20.sol": "5031430cc2613c32736d598037d3075985a2a09e61592a013dbd09a5bc2041b8",
+    "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol": "af5c8a77965cc82c33b7ff844deb9826166689e55dc037a7f2f790d057811990",
+    "@openzeppelin/contracts/utils/Context.sol": "1458c260d010a08e4c20a4a517882259a23a4baa0b5bd9add9fb6d6a1549814a",
+    "@openzeppelin/contracts/token/ERC20/extensions/draft-IERC20Permit.sol": "3e7aa0e0f69eec8f097ad664d525e7b3f0a3fda8dcdd97de5433ddb131db86ef",
+    "@openzeppelin/contracts/utils/Address.sol": "1e0922f6c0bf6b1b8b4d480dcabb691b1359195a297bde6dc5172e79f3a1f826",
+    "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol": "cd823c76cbf5f5b6ef1bda565d58be66c843c37707cd93eb8fb5425deebd6756",
+    "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol": "35fb271561f3dc72e91b3a42c6e40c2bb2e788cd8ca58014ac43f6198b8d32ca",
+    "src/bridge/IBridge.sol": "3b8cb076fa43cf14755ed836e9cebacec15cdfaf27db07c974bb5069528bea7f",
+    "src/bridge/Messages.sol": "1240e227ee687c43a1a919ca97b68b53c0c246ae62b2c7038c2fd8714376adeb",
+    "src/libraries/DelegateCallAware.sol": "fbdb2d4ad7c07eac1c12925806e3f4ec59f613244e4f824fc3b2a7b44a84831d",
+    "src/libraries/MessageTypes.sol": "aa535ecc02f51e1567f846eb6a8d73cca4815479f1049263cc581e3077295490",
+    "src/bridge/IOwnable.sol": "49b5257ef1078a2a7aa8502189407872c14aba0d4faf0d2ee7d5bb5015f57d1b"
+  },
+  "storageLayoutMatchesCanonical": true,
+  "functionAndEventSignaturesMatchCanonical": true,
+  "canonicalStorage": [
+    {
+      "label": "_initialized",
+      "slot": "0",
+      "offset": 0,
+      "type": "uint8",
+      "encoding": "inplace",
+      "bytes": "1"
+    },
+    {
+      "label": "_initializing",
+      "slot": "0",
+      "offset": 1,
+      "type": "bool",
+      "encoding": "inplace",
+      "bytes": "1"
+    },
+    {
+      "label": "allowedDelayedInboxesMap",
+      "slot": "1",
+      "offset": 0,
+      "type": "mapping(address => struct AbsBridge.InOutInfo)",
+      "encoding": "mapping",
+      "bytes": "32"
+    },
+    {
+      "label": "allowedOutboxesMap",
+      "slot": "2",
+      "offset": 0,
+      "type": "mapping(address => struct AbsBridge.InOutInfo)",
+      "encoding": "mapping",
+      "bytes": "32"
+    },
+    {
+      "label": "allowedDelayedInboxList",
+      "slot": "3",
+      "offset": 0,
+      "type": "address[]",
+      "encoding": "dynamic_array",
+      "bytes": "32"
+    },
+    {
+      "label": "allowedOutboxList",
+      "slot": "4",
+      "offset": 0,
+      "type": "address[]",
+      "encoding": "dynamic_array",
+      "bytes": "32"
+    },
+    {
+      "label": "_activeOutbox",
+      "slot": "5",
+      "offset": 0,
+      "type": "address",
+      "encoding": "inplace",
+      "bytes": "20"
+    },
+    {
+      "label": "delayedInboxAccs",
+      "slot": "6",
+      "offset": 0,
+      "type": "bytes32[]",
+      "encoding": "dynamic_array",
+      "bytes": "32"
+    },
+    {
+      "label": "sequencerInboxAccs",
+      "slot": "7",
+      "offset": 0,
+      "type": "bytes32[]",
+      "encoding": "dynamic_array",
+      "bytes": "32"
+    },
+    {
+      "label": "rollup",
+      "slot": "8",
+      "offset": 0,
+      "type": "contract IOwnable",
+      "encoding": "inplace",
+      "bytes": "20"
+    },
+    {
+      "label": "sequencerInbox",
+      "slot": "9",
+      "offset": 0,
+      "type": "address",
+      "encoding": "inplace",
+      "bytes": "20"
+    },
+    {
+      "label": "sequencerReportedSubMessageCount",
+      "slot": "10",
+      "offset": 0,
+      "type": "uint256",
+      "encoding": "inplace",
+      "bytes": "32"
+    },
+    {
+      "label": "__gap",
+      "slot": "11",
+      "offset": 0,
+      "type": "uint256[40]",
+      "encoding": "inplace",
+      "bytes": "1280"
+    },
+    {
+      "label": "nativeToken",
+      "slot": "51",
+      "offset": 0,
+      "type": "address",
+      "encoding": "inplace",
+      "bytes": "20"
+    },
+    {
+      "label": "nativeTokenDecimals",
+      "slot": "51",
+      "offset": 20,
+      "type": "uint8",
+      "encoding": "inplace",
+      "bytes": "1"
+    }
+  ],
+  "forkRuntimeBytes": 9672,
+  "artifactsSHA256": "0eec8650697609562c1db4bd3099cf82a341b9708a740abdc1468f5bc9c93d39",
+  "seconds": 1.661
+}

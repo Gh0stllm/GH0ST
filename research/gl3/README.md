@@ -2,7 +2,7 @@
 
 # GH0ST L3 · GL3 research notebook
 
-**R54 · ZK is the selected GL3 path.** State/data binding, canonical native-GH0ST withdrawals and full Stylus/LLM proof support are now being integrated in parallel on Runpod. The portable canonical interpreter passes RV32 typechecking; guest linking/execution and a genuine full STF proof remain open. [Active integration notebook](zk-rollup/README.md) · [Statement and data binding](zk-rollup/STATEMENT.md).
+**R55 · The canonical interpreter executes inside the zkVM.** A real SP1 execution of the original WAVM arithmetic interpreter passes; 25 state/data/codec and 35 parent bridge unit cases also pass on Runpod. A 262-record regression removes a data-range liveness cap. Full STF/Stylus/LLM proof finalization and a proof-backed payout remain open. [Active integration notebook](zk-rollup/README.md) · [Measured contract results](zk-rollup/contracts/README.md).
 
 **Public GL3 is not deployed.** The earlier Nitro launch and chess work remain preserved research. The selected new guest must prove actual Nitro/ArbOS execution rather than substitute the previous EVM-only guest. Applicable Nitro licensing and final operational/security acceptance remain launch requirements.
 

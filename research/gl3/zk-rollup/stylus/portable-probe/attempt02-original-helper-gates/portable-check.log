@@ -1,0 +1,182 @@
+    Updating git repository `https://github.com/OffchainLabs/target-lexicon`
+     Locking 1 package to latest compatible version
+      Adding target-lexicon v0.13.5 (https://github.com/OffchainLabs/target-lexicon?rev=b36201fb3efd8babeb625c26217bfb4fb7af32a5#b36201fb)
+   Compiling serde_derive v1.0.228
+   Compiling tracing-attributes v0.1.31
+   Compiling darling_core v0.20.10
+   Compiling ptr_meta_derive v0.3.1
+    Checking hashbrown v0.16.1
+   Compiling proc-macro-crate v3.3.0
+    Checking rand v0.8.5
+   Compiling clap_derive v4.5.49
+   Compiling blake3 v1.8.7
+   Compiling bytecheck_derive v0.8.2
+   Compiling thiserror-impl v1.0.63
+   Compiling derive_more v0.99.18
+    Checking sha2 v0.10.9
+   Compiling munge_macro v0.4.7
+   Compiling target-lexicon v0.13.5 (https://github.com/OffchainLabs/target-lexicon?rev=b36201fb3efd8babeb625c26217bfb4fb7af32a5#b36201fb)
+    Checking digest v0.11.2
+   Compiling thiserror-impl v2.0.18
+   Compiling enum-iterator-derive v1.5.0
+    Checking ptr_meta v0.3.1
+   Compiling rkyv_derive v0.8.15
+    Checking rancor v0.1.1
+    Checking indexmap v2.13.0
+    Checking bumpalo v3.16.0
+    Checking tap v1.0.1
+   Compiling libm v0.2.16
+    Checking base64 v0.22.1
+    Checking itoa v1.0.11
+   Compiling getrandom v0.3.4
+    Checking bytecheck v0.8.2
+    Checking lock_api v0.4.12
+    Checking munge v0.4.7
+   Compiling num_enum_derive v0.7.3
+    Checking serde_json v1.0.149
+    Checking wast v245.0.1
+    Checking rend v0.5.3
+    Checking wyz v0.5.1
+    Checking sha2 v0.11.0-rc.5
+    Checking getrandom v0.4.2
+    Checking radium v0.7.0
+   Compiling syn v1.0.109
+    Checking num-rational v0.4.2
+    Checking enum-iterator v2.3.0
+    Checking num-iter v0.1.45
+    Checking num-complex v0.4.6
+    Checking funty v2.0.0
+    Checking more-asserts v0.3.1
+    Checking minimal-lexical v0.2.1
+    Checking nom v7.1.3
+    Checking thiserror v1.0.63
+    Checking num v0.4.3
+   Compiling num-derive v0.4.2
+    Checking fnv v1.0.7
+    Checking rustc-demangle v0.1.24
+    Checking num_enum v0.7.3
+    Checking tracing v0.1.44
+    Checking thiserror v2.0.18
+    Checking brotli v0.1.0 (/root/gl3-stylus-portable/nitro/crates/brotli)
+   Compiling clap v4.5.53
+   Compiling forward v0.1.0 (/root/gl3-stylus-portable/nitro/crates/wasm-libraries/forward)
+   Compiling prover v0.1.0 (/root/gl3-stylus-portable/nitro/crates/prover)
+   Compiling darling_macro v0.20.10
+    Checking serde v1.0.228
+    Checking ruint2 v1.9.0
+   Compiling darling v0.20.10
+   Compiling enumset_derive v0.10.0
+   Compiling serde_with_macros v3.9.0
+    Checking p3-util v0.2.3-succinct
+    Checking bincode v1.3.3
+    Checking smallvec v1.15.1
+    Checking wasmparser v0.245.1
+    Checking bitvec v1.0.1
+    Checking p3-field v0.2.3-succinct
+    Checking parking_lot_core v0.9.10
+   Compiling derivative v2.2.0
+    Checking parking_lot v0.12.3
+    Checking p3-matrix v0.2.3-succinct
+    Checking p3-symmetric v0.2.3-succinct
+    Checking rkyv v0.8.15
+    Checking enumset v1.1.5
+    Checking p3-dft v0.2.3-succinct
+    Checking serde_with v3.9.0
+    Checking p3-mds v0.2.3-succinct
+    Checking p3-poseidon2 v0.2.3-succinct
+    Checking p3-baby-bear v0.2.3-succinct
+    Checking sp1-primitives v5.2.4
+    Checking sp1-lib v5.2.4
+    Checking sp1-zkvm v5.0.8
+    Checking wat v1.245.1
+    Checking wasmer-types v7.1.0 (/root/gl3-stylus-portable/nitro/crates/tools/wasmer/lib/types)
+    Checking arbutil v0.1.0 (/root/gl3-stylus-portable/nitro/crates/arbutil)
+    Checking validation v0.1.0 (/root/gl3-stylus-portable/nitro/crates/validation)
+warning: unused imports: `IRelOpType`, `IUnOpType`, `ReinterpretAsSigned`, `ReinterpretAsUnsigned`, `Zero`, `num::Wrapping`, `programs::meter::MeteredMachine`, and `traits::PrimInt`
+  --> crates/prover/src/machine.rs:35:9
+   |
+35 |         programs::meter::MeteredMachine,
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+36 |         reinterpret::{ReinterpretAsSigned, ReinterpretAsUnsigned},
+   |                       ^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^
+37 |         value::IntegerValType,
+38 |         wavm::{IBinOpType, IRelOpType, IUnOpType, unpack_cross_module_call},
+   |                            ^^^^^^^^^^  ^^^^^^^^^
+39 |     },
+40 |     num::{Zero, traits::PrimInt},
+   |           ^^^^  ^^^^^^^^^^^^^^^
+41 |     std::{num::Wrapping, ops::Add},
+   |           ^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+error[E0425]: cannot find function `exec_irel_op` in this scope
+    --> crates/prover/src/machine.rs:2489:54
+     |
+2489 | ...                   value_stack.push(exec_irel_op(a as i32, b as i32, op));
+     |                                        ^^^^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find function `exec_irel_op` in this scope
+    --> crates/prover/src/machine.rs:2491:54
+     |
+2491 | ...                   value_stack.push(exec_irel_op(a, b, op));
+     |                                        ^^^^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find function `exec_irel_op` in this scope
+    --> crates/prover/src/machine.rs:2500:54
+     |
+2500 | ...                   value_stack.push(exec_irel_op(a as i64, b as i64, op));
+     |                                        ^^^^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find function `exec_irel_op` in this scope
+    --> crates/prover/src/machine.rs:2502:54
+     |
+2502 | ...                   value_stack.push(exec_irel_op(a, b, op));
+     |                                        ^^^^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find function `exec_iun_op` in this scope
+    --> crates/prover/src/machine.rs:2563:46
+     |
+2563 | ...                   value_stack.push(exec_iun_op(value, op).into());
+     |                                        ^^^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find function `exec_iun_op` in this scope
+    --> crates/prover/src/machine.rs:2569:57
+     |
+2569 | ...                   value_stack.push(Value::I64(exec_iun_op(value, op) as u64));
+     |                                                   ^^^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find function `exec_ibin_op` in this scope
+    --> crates/prover/src/machine.rs:2585:47
+     |
+2585 | ...                   let Some(value) = exec_ibin_op(a, b, op) else {
+     |                                         ^^^^^^^^^^^^ not found in this scope
+
+error[E0282]: type annotations needed
+    --> crates/prover/src/machine.rs:2588:46
+     |
+2588 | ...                   value_stack.push(value.into());
+     |                                        ^^^^^ cannot infer type
+
+error[E0425]: cannot find function `exec_ibin_op` in this scope
+    --> crates/prover/src/machine.rs:2598:47
+     |
+2598 | ...                   let Some(value) = exec_ibin_op(a, b, op) else {
+     |                                         ^^^^^^^^^^^^ not found in this scope
+
+error[E0282]: type annotations needed
+    --> crates/prover/src/machine.rs:2601:46
+     |
+2601 | ...                   value_stack.push(value.into());
+     |                                        ^^^^^ cannot infer type
+
+error[E0425]: cannot find function `format_missing_stylus_module_error` in this scope
+    --> crates/prover/src/machine.rs:2837:31
+     |
+2837 |                         bail!(format_missing_stylus_module_error(
+     |                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ not found in this scope
+
+Some errors have detailed explanations: E0282, E0425.
+For more information about an error, try `rustc --explain E0282`.
+warning: `prover` (lib) generated 1 warning
+error: could not compile `prover` (lib) due to 11 previous errors; 1 warning emitted

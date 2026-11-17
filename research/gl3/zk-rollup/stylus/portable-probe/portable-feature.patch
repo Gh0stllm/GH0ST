@@ -1,0 +1,128 @@
+--- a/crates/prover/Cargo.toml
++++ b/crates/prover/Cargo.toml
+@@ -60,6 +60,7 @@
+ crate-type = ["lib"]
+ 
+ [features]
++portable-interpreter = []
+ default = ["native", "rayon", "kzg", "dep:clap"]
+ cc_brotli = ["brotli/cc_brotli"]
+ counters = []
+--- a/crates/prover/src/lib.rs
++++ b/crates/prover/src/lib.rs
+@@ -17,7 +17,7 @@
+ pub mod prepare;
+ mod print;
+ pub mod programs;
+-#[cfg(feature = "native")]
++#[cfg(any(feature = "native", feature = "portable-interpreter"))]
+ mod reinterpret;
+ pub mod utils;
+ pub mod value;
+--- a/crates/prover/src/machine.rs
++++ b/crates/prover/src/machine.rs
+@@ -29,7 +29,7 @@
+ use wasmparser::{DataKind, ElementItems, ElementKind, Operator, RefType, TableType};
+ #[cfg(feature = "kzg")]
+ use {crate::kzg::prove_kzg_preimage, c_kzg::BYTES_PER_BLOB};
+-#[cfg(feature = "native")]
++#[cfg(any(feature = "native", feature = "portable-interpreter"))]
+ use {
+     crate::{
+         programs::meter::MeteredMachine,
+@@ -1135,7 +1135,7 @@
+ #[derive(Clone)]
+ struct PreimageResolverWrapper {
+     resolver: PreimageResolver,
+-    #[cfg(feature = "native")]
++    #[cfg(any(feature = "native", feature = "portable-interpreter"))]
+     last_resolved: Option<(Bytes32, CBytes)>,
+ }
+ 
+@@ -1149,12 +1149,12 @@
+     pub fn new(resolver: PreimageResolver) -> PreimageResolverWrapper {
+         PreimageResolverWrapper {
+             resolver,
+-            #[cfg(feature = "native")]
++            #[cfg(any(feature = "native", feature = "portable-interpreter"))]
+             last_resolved: None,
+         }
+     }
+ 
+-    #[cfg(feature = "native")]
++    #[cfg(any(feature = "native", feature = "portable-interpreter"))]
+     pub fn get(&mut self, context: u64, ty: PreimageType, hash: Bytes32) -> Option<&[u8]> {
+         // TODO: this is unnecessarily complicated by the rust borrow checker.
+         // This will probably be simplifiable when Polonius is shipped.
+@@ -1170,7 +1170,7 @@
+         }
+     }
+ 
+-    #[cfg(feature = "native")]
++    #[cfg(any(feature = "native", feature = "portable-interpreter"))]
+     pub fn get_const(&self, context: u64, ty: PreimageType, hash: Bytes32) -> Option<CBytes> {
+         if let Some(resolved) = &self.last_resolved
+             && resolved.0 == hash
+@@ -1353,7 +1353,7 @@
+ }
+ 
+ #[must_use]
+-#[cfg(feature = "native")]
++#[cfg(any(feature = "native", feature = "portable-interpreter"))]
+ fn exec_ibin_op<T>(a: T, b: T, op: IBinOpType) -> Option<T>
+ where
+     Wrapping<T>: ReinterpretAsSigned,
+@@ -1389,7 +1389,7 @@
+ }
+ 
+ #[must_use]
+-#[cfg(feature = "native")]
++#[cfg(any(feature = "native", feature = "portable-interpreter"))]
+ fn exec_iun_op<T>(a: T, op: IUnOpType) -> u32
+ where
+     T: PrimInt,
+@@ -1401,7 +1401,7 @@
+     }
+ }
+ 
+-#[cfg(feature = "native")]
++#[cfg(any(feature = "native", feature = "portable-interpreter"))]
+ fn exec_irel_op<T>(a: T, b: T, op: IRelOpType) -> Value
+ where
+     T: Ord,
+@@ -1423,7 +1423,7 @@
+ 
+ // Extracted so a test can pin the diagnostic (operator needs the hex hash
+ // to find the offending wasmdb key).
+-#[cfg(any(feature = "native", test))]
++#[cfg(any(feature = "native", feature = "portable-interpreter", test))]
+ pub(crate) fn format_missing_stylus_module_error(
+     hash: Bytes32,
+     modules: &HashMap<Bytes32, Vec<u8>>,
+@@ -2171,7 +2171,7 @@
+         Some(self.pc)
+     }
+ 
+-    #[cfg(feature = "native")]
++    #[cfg(any(feature = "native", feature = "portable-interpreter"))]
+     fn test_next_instruction(func: &Function, pc: &ProgramCounter) {
+         let inst: usize = pc.inst.try_into().unwrap();
+         debug_assert!(func.code.len() > inst);
+@@ -2181,7 +2181,7 @@
+         self.steps
+     }
+ 
+-    #[cfg(feature = "native")]
++    #[cfg(any(feature = "native", feature = "portable-interpreter"))]
+     pub fn step_n(&mut self, n: u64) -> Result<()> {
+         if self.is_halted() {
+             return Ok(());
+@@ -2908,7 +2908,7 @@
+         Ok(())
+     }
+ 
+-    #[cfg(feature = "native")]
++    #[cfg(any(feature = "native", feature = "portable-interpreter"))]
+     fn host_call_hook(
+         value_stack: &[Value],
+         module: &Module,

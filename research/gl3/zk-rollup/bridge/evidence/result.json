@@ -1,0 +1,293 @@
+{
+  "passed": true,
+  "scope": "Private parent-contract unit tests only. No child native mint, real ZK proof, canonical positive withdrawal root or E2E withdrawal is claimed.",
+  "realFunds": false,
+  "publicWrites": 0,
+  "positiveCanonicalWithdrawalRootsPublished": 0,
+  "internalTransferUnitOnly": {
+    "bridge": "0x32696d4e4c95E9942b89A266ade3feC440D7FCBC",
+    "caller": "0xD6AD037c491C51852E01777f3F8a78947d0F5585",
+    "canonicalOutbox": false,
+    "rootPublished": false,
+    "childCreditOrBurnExecuted": false
+  },
+  "contracts": {
+    "token": "0xdB7d6AB1f17c6b31909aE466702703dAEf9269Cf",
+    "authority": "0x880EC53Af800b5Cd051531672EF4fc4De233bD5d",
+    "bridge": "0x733f1083Fe476698001FA20D651376b7b3F1CA79",
+    "inbox": "0x2082c4FadeBbA1f6f3d4562F2672C55b58B6F248",
+    "outbox": "0xd1045aD442eEFa66F33fdEf0956bD8F6f974DBe4",
+    "sequencerInbox": "0x9194fB05436dCe7eC3519d8aF2e20e73C897F918",
+    "implementations": {
+      "bridge": "0x3Dc2cd8F2E345951508427872d8ac9f635fBe0EC",
+      "inbox": "0xe213D8b68cA3d01e51a6dBA669De59AC9A8359eE",
+      "outbox": "0xD91Fb8750Ea1decEf4cEE9D8314f4a60DE039457",
+      "sequencer": "0x2139B5Baf855EEE55Cdb5F19dF50583585581EaD"
+    }
+  },
+  "parentEscrowBalance": "5000000000000000001",
+  "delayedMessageCount": "2",
+  "sequencerBatchCount": "2",
+  "unitFeePolicy": "Synthetic ERC20, plain private Geth1337, zero batch-refund pricer; no Robinhood fee or native child supply claim",
+  "checks": [
+    {
+      "name": "immutable EIP1167 clones and sealed zero-owner/zero-admin roles",
+      "passed": true
+    },
+    {
+      "name": "actual deposit and delayed accumulator/113-byte guest wire",
+      "passed": true
+    },
+    {
+      "name": "incoming transfer tax atomically rejected",
+      "passed": true,
+      "decodedError": "InexactNativeTokenTransfer",
+      "minedStatus": 0,
+      "transactionHash": "0x795adc5a3a6adb4d5f9a6cd6acf76a683f38892c4885c6c8b65f3628f99d13a3",
+      "gasUsed": "140476"
+    },
+    {
+      "name": "incoming false-success no-transfer atomically rejected",
+      "passed": true,
+      "decodedError": "InexactNativeTokenTransfer",
+      "minedStatus": 0,
+      "transactionHash": "0x946dcb48b1cb93c0e4902f11eca8d25f6df76f9b798212229ae76eeba013d97f",
+      "gasUsed": "131230"
+    },
+    {
+      "name": "incoming ERC20 false-return atomically rejected",
+      "passed": true,
+      "decodedError": "Error",
+      "minedStatus": 0,
+      "transactionHash": "0xb41af7e52cffa79e841473cbe577a3c84feaf2822aa1f85f6766b63401d70d3e",
+      "gasUsed": "128969"
+    },
+    {
+      "name": "incoming excess debit atomically rejected",
+      "passed": true,
+      "decodedError": "InexactNativeTokenTransfer",
+      "minedStatus": 0,
+      "transactionHash": "0xe0bf3c75055348acdfc966fe764575d9c6de19d079493f15e20e6559644b156f",
+      "gasUsed": "109974"
+    },
+    {
+      "name": "canonical prefunding remains escrow-backed",
+      "passed": true
+    },
+    {
+      "name": "old bootstrapper cannot change Outbox",
+      "passed": true,
+      "decodedError": "NotRollupOrOwner",
+      "minedStatus": 0,
+      "transactionHash": "0x8dc11e1631e107e372f58823b9a5fc7e30893614f0b6726824979e100aa93247",
+      "gasUsed": "32562"
+    },
+    {
+      "name": "old bootstrapper cannot change rollup",
+      "passed": true,
+      "decodedError": "NotRollupOrOwner",
+      "minedStatus": 0,
+      "transactionHash": "0xece43828bc2b0bb8edd28b475061ee412bc1c8f02750e75f0c4fd21655ac3d70",
+      "gasUsed": "32308"
+    },
+    {
+      "name": "old bootstrapper cannot change sequencer",
+      "passed": true,
+      "decodedError": "NotRollupOrOwner",
+      "minedStatus": 0,
+      "transactionHash": "0xb28e59111f94a41797b05ed762996fa1c896cf05c58c082c650198d89982a4f9",
+      "gasUsed": "32331"
+    },
+    {
+      "name": "old bootstrapper cannot allow a new Inbox",
+      "passed": true,
+      "decodedError": "NotRollupOrOwner",
+      "minedStatus": 0,
+      "transactionHash": "0x54c0b872809b2f0247973bbb689decabe6e8816375d36186c1f7c6f65f1f5575",
+      "gasUsed": "32508"
+    },
+    {
+      "name": "old bootstrapper cannot pause Inbox",
+      "passed": true,
+      "decodedError": "NotRollupOrOwner",
+      "minedStatus": 0,
+      "transactionHash": "0x64804bea000d037794cd2d74e05b67abb994d92b8a3e735f8d7791709ffa25f1",
+      "gasUsed": "39557"
+    },
+    {
+      "name": "old bootstrapper cannot change batchposter",
+      "passed": true,
+      "decodedError": "NotBatchPosterManager",
+      "minedStatus": 0,
+      "transactionHash": "0xb2b283c2537fbe52ddf4280251cc79f0fad181caca0341c6b115b8e7ce2b3629",
+      "gasUsed": "34438"
+    },
+    {
+      "name": "untrusted caller cannot publish a root",
+      "passed": true,
+      "decodedError": "NotRollup",
+      "minedStatus": 0,
+      "transactionHash": "0x6760d81659c44faa25da1afa4708f64ca514a4436863a14cab1851eeee1b9033",
+      "gasUsed": "27394"
+    },
+    {
+      "name": "untrusted caller cannot release escrow",
+      "passed": true,
+      "decodedError": "NotOutbox",
+      "minedStatus": 0,
+      "transactionHash": "0x00f1d8858d424a2d7f1de242a1eb05f94669253aef50fe2feb90d9ef227618c9",
+      "gasUsed": "27345"
+    },
+    {
+      "name": "sealed bootstrap cannot reopen",
+      "passed": true,
+      "decodedError": "Error",
+      "minedStatus": 0,
+      "transactionHash": "0x956782d4a4b33cebd84c1da4986e997bfb39f17b96096fba35564196427cffd4",
+      "gasUsed": "23437"
+    },
+    {
+      "name": "Bridge cannot reinitialize",
+      "passed": true,
+      "decodedError": "Error",
+      "minedStatus": 0,
+      "transactionHash": "0xaa36c9aa7cf09fd17dc1691e123516da84243428fbfe87b7faba122fda3da1bb",
+      "gasUsed": "27499"
+    },
+    {
+      "name": "Inbox cannot reinitialize",
+      "passed": true,
+      "decodedError": "Error",
+      "minedStatus": 0,
+      "transactionHash": "0xf35c6c839b248e23b2e4b113b03e5c289194ead723db7e7584052ef83a21ccaa",
+      "gasUsed": "27499"
+    },
+    {
+      "name": "Outbox cannot reinitialize",
+      "passed": true,
+      "decodedError": "AlreadyInit",
+      "minedStatus": 0,
+      "transactionHash": "0x4971535905a337c89cdb393fe7918defaccb2431f50f697397b2c1bf6cad908e",
+      "gasUsed": "26680"
+    },
+    {
+      "name": "SequencerInbox cannot reinitialize",
+      "passed": true,
+      "decodedError": "AlreadyInit",
+      "minedStatus": 0,
+      "transactionHash": "0x122927f2aaa76b3d2585d87acda2f7eac451ca775b2242e78a2140bd08846afa",
+      "gasUsed": "28362"
+    },
+    {
+      "name": "logic contract cannot initialize without delegation",
+      "passed": true,
+      "decodedError": "Error",
+      "minedStatus": 0,
+      "transactionHash": "0xeacda4bc91253a4c6e2f04b2b9f0f58e849279387bb146590022fcefa9199495",
+      "gasUsed": "45086"
+    },
+    {
+      "name": "clone has no proxy-admin post-upgrade authority",
+      "passed": true,
+      "decodedError": "NotOwner",
+      "minedStatus": 0,
+      "transactionHash": "0x6347c3c18e26fb037499a3fda97b442213292630f945029a6c92ffcd5fffb432",
+      "gasUsed": "26217"
+    },
+    {
+      "name": "canonical ordered double-hashed Outbox leaf/proof equations",
+      "passed": true
+    },
+    {
+      "name": "unproved withdrawal root rejected",
+      "passed": true,
+      "decodedError": "UnknownRoot",
+      "minedStatus": 0,
+      "transactionHash": "0x180de97babbbff1cc52d639002d47e6454ede72bf1869e74a176941030cce322",
+      "gasUsed": "30446"
+    },
+    {
+      "name": "Outbox simulation entry rejects a real caller",
+      "passed": true,
+      "decodedError": "SimulationOnlyEntrypoint",
+      "minedStatus": 0,
+      "transactionHash": "0xb9530bc9fb020bb2493ea5438b236ce9209f15a28343745872929530ab6b9a33",
+      "gasUsed": "26516"
+    },
+    {
+      "name": "nonminimal path rejected",
+      "passed": true,
+      "decodedError": "PathNotMinimal",
+      "minedStatus": 0,
+      "transactionHash": "0xbc0d6af0625c3bc0d3674e73acbfb6deb6b0e9156646af58155c49b7adc32590",
+      "gasUsed": "28107"
+    },
+    {
+      "name": "oversized proof rejected",
+      "passed": true,
+      "decodedError": "ProofTooLong",
+      "minedStatus": 0,
+      "transactionHash": "0x72cb60384264a419a74baa53f256c76a76e3715e7f3610c152362b51f9336186",
+      "gasUsed": "108480"
+    },
+    {
+      "name": "actual SequencerInbox force-inclusion and calldata accumulators match exact codecs",
+      "passed": true
+    },
+    {
+      "name": "initial calldata-only codec rejects DAS/blob/custom/zero-heavy formats",
+      "passed": true
+    },
+    {
+      "name": "internal escrow exact payout unit, not a canonical withdrawal",
+      "passed": true
+    },
+    {
+      "name": "outgoing transfer tax atomically rejected in internal unit",
+      "passed": true,
+      "decodedError": "InexactNativeTokenTransfer",
+      "minedStatus": 0,
+      "transactionHash": "0xca95e50ccebb5e222eb3f38583f5679609ef4a2d017fc876c04dc226ded422a9",
+      "gasUsed": "68474"
+    },
+    {
+      "name": "outgoing false-success no-transfer atomically rejected in internal unit",
+      "passed": true,
+      "decodedError": "InexactNativeTokenTransfer",
+      "minedStatus": 0,
+      "transactionHash": "0xe5a1a455753f918590ffded73c7e415e96120ef2420b9a7f482f4dd182f289ba",
+      "gasUsed": "54428"
+    },
+    {
+      "name": "outgoing ERC20 false-return atomically rejected in internal unit",
+      "passed": true,
+      "decodedError": "Error",
+      "minedStatus": 0,
+      "transactionHash": "0xef45e39ae32832c4ddefbd707d7a4e7b6d511be4519d32d1e2fd06ce6fdf2c64",
+      "gasUsed": "52162"
+    },
+    {
+      "name": "outgoing excess debit atomically rejected in internal unit",
+      "passed": true,
+      "decodedError": "InexactNativeTokenTransfer",
+      "minedStatus": 0,
+      "transactionHash": "0xcd58994c813c154e4ff23811975de1f9740ddf5e7858a4b1ff834c8014b0dd9e",
+      "gasUsed": "68366"
+    },
+    {
+      "name": "canonical native-token call-target restriction retained",
+      "passed": true,
+      "decodedError": "CallTargetNotAllowed",
+      "minedStatus": 0,
+      "transactionHash": "0x10dc908948d2bcb0d39d7df0f07df3191cf8d7df181fecde9aa576b01f4672ce",
+      "gasUsed": "39362"
+    }
+  ],
+  "checkCount": 35,
+  "ownedGeth": {
+    "pid": 81784,
+    "exitCode": 0,
+    "signal": null
+  },
+  "asOfUTC": "2026-11-17T15:25:53.104Z"
+}

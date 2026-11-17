@@ -32,7 +32,12 @@ try:
   if got:break
   try:
    assert Path('/sys/fs/cgroup/memory.max').read_text().strip()=='64000000000'
-   st=os.statvfs('/root');free=st.f_bavail*st.f_frsize;owned=sum(max(x.stat().st_size,x.stat().st_blocks*512) for x in R.rglob('*') if x.is_file() and not x.is_symlink())
+   st=os.statvfs('/root');free=st.f_bavail*st.f_frsize;owned=0
+   for x in R.rglob('*'):
+    try:
+     if x.is_file() and not x.is_symlink():
+      size=x.stat();owned+=max(size.st_size,size.st_blocks*512)
+    except FileNotFoundError:pass # Owned Pebble files may be atomically rotated.
    rss=0
    for d in Path('/proc').iterdir():
     if not d.name.isdigit():continue

@@ -38,7 +38,8 @@ contract UnitNativeToken {
         require(to!=address(0),"zero");Fault f=from==faultFrom?fault:Fault.Exact;
         if(f==Fault.ReturnFalse)return false;
         if(f==Fault.NoTransfer)return true;
-        uint256 debit=value+(f==Fault.ExtraDebit?1:0),credit=value-(f==Fault.Tax&&value>0?1:0);
+        uint256 debit=value+(f==Fault.ExtraDebit?1:0);
+        uint256 credit=value-(f==Fault.Tax&&value>0?1:0);
         require(balanceOf[from]>=debit,"balance");balanceOf[from]-=debit;balanceOf[to]+=credit;
         totalSupply-=debit-credit;emit Transfer(from,to,credit);return true;
     }

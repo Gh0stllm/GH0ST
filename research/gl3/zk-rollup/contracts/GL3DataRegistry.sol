@@ -11,7 +11,6 @@ interface IGL3AccumulatorBridge {
 abstract contract GL3DataRegistry {
     bytes32 public constant SEQUENCER_RANGE_DOMAIN = keccak256("GH0ST_GL3_SEQ_RANGE_V1");
     bytes32 public constant DELAYED_RANGE_DOMAIN = keccak256("GH0ST_GL3_DELAY_RANGE_V1");
-    uint256 public constant MAX_RANGE_RECORDS = 256;
     uint256 public constant MAX_WIRE_BYTES = 131072;
 
     struct SequencerRecord {
@@ -33,6 +32,10 @@ abstract contract GL3DataRegistry {
 
     mapping(uint64 => SequencerRecord) public sequencerRecords;
     mapping(uint64 => DelayedRecord) public delayedRecords;
+    mapping(uint64 => bytes32) public sequencerPrefixAfter;
+    mapping(uint64 => bytes32) public delayedPrefixAfter;
+    uint64 public registeredSequencerCount;
+    uint64 public registeredDelayedCount;
 
     error Unsealed();
     error InvalidWire();
@@ -42,6 +45,7 @@ abstract contract GL3DataRegistry {
     error ConflictingRegistration();
     error MissingData(uint64 index);
     error InvalidRange();
+    error NoncontiguousRegistration();
 
     // Raw bytes are published in transaction calldata; only commitments are stored.
     event SequencerDataRegistered(uint64 indexed index, bytes32 indexed wireHash);
@@ -70,12 +74,19 @@ abstract contract GL3DataRegistry {
             if (record.wireHash != wireHash) revert ConflictingRegistration();
             return;
         }
+        if (index != registeredSequencerCount || index == type(uint64).max)
+            revert NoncontiguousRegistration();
         record.wireHash = wireHash;
         record.beforeAccumulator = beforeAcc;
         record.afterAccumulator = afterAcc;
         record.delayedAccumulator = delayedAcc;
         record.afterDelayedCount = delayedCount;
         record.registered = true;
+        bytes32 prefixBefore = index == 0 ?
+            keccak256(abi.encode(SEQUENCER_RANGE_DOMAIN, _registryDomain())) : sequencerPrefixAfter[index - 1];
+        sequencerPrefixAfter[index] = keccak256(abi.encode(prefixBefore, index, wireHash,
+            beforeAcc, afterAcc, delayedCount, delayedAcc));
+        registeredSequencerCount = index + 1;
         emit SequencerDataRegistered(index, wireHash);
     }
 
@@ -102,36 +113,40 @@ abstract contract GL3DataRegistry {
             if (record.wireHash != wireHash) revert ConflictingRegistration();
             return;
         }
+        if (index != registeredDelayedCount || index == type(uint64).max)
+            revert NoncontiguousRegistration();
         record.wireHash = wireHash;
         record.messageHash = messageHash;
         record.beforeAccumulator = beforeAcc;
         record.afterAccumulator = afterAcc;
         record.registered = true;
+        bytes32 prefixBefore = index == 0 ?
+            keccak256(abi.encode(DELAYED_RANGE_DOMAIN, _registryDomain())) : delayedPrefixAfter[index - 1];
+        delayedPrefixAfter[index] = keccak256(abi.encode(prefixBefore, index, wireHash,
+            messageHash, beforeAcc, afterAcc));
+        registeredDelayedCount = index + 1;
         emit DelayedDataRegistered(index, wireHash);
     }
 
     function sequencerRangeCommitment(uint64 start, uint64 end) public view returns (bytes32 value) {
         if (!_registrySealed()) revert Unsealed();
-        if (end < start || uint256(end) - start > MAX_RANGE_RECORDS) revert InvalidRange();
-        value = keccak256(abi.encode(SEQUENCER_RANGE_DOMAIN, _registryDomain(), start, end));
-        for (uint64 index = start; index < end; ++index) {
-            SequencerRecord storage record = sequencerRecords[index];
-            if (!record.registered) revert MissingData(index);
-            value = keccak256(abi.encode(value, index, record.wireHash,
-                record.beforeAccumulator, record.afterAccumulator,
-                record.afterDelayedCount, record.delayedAccumulator));
-        }
+        if (end < start) revert InvalidRange();
+        if (end > registeredSequencerCount) revert MissingData(registeredSequencerCount);
+        bytes32 seed = keccak256(abi.encode(SEQUENCER_RANGE_DOMAIN, _registryDomain()));
+        bytes32 beforePrefix = start == 0 ? seed : sequencerPrefixAfter[start - 1];
+        bytes32 afterPrefix = end == 0 ? seed : sequencerPrefixAfter[end - 1];
+        value = keccak256(abi.encode(SEQUENCER_RANGE_DOMAIN, _registryDomain(), start, end,
+            beforePrefix, afterPrefix));
     }
 
     function delayedRangeCommitment(uint64 start, uint64 end) public view returns (bytes32 value) {
         if (!_registrySealed()) revert Unsealed();
-        if (end < start || uint256(end) - start > MAX_RANGE_RECORDS) revert InvalidRange();
-        value = keccak256(abi.encode(DELAYED_RANGE_DOMAIN, _registryDomain(), start, end));
-        for (uint64 index = start; index < end; ++index) {
-            DelayedRecord storage record = delayedRecords[index];
-            if (!record.registered) revert MissingData(index);
-            value = keccak256(abi.encode(value, index, record.wireHash, record.messageHash,
-                record.beforeAccumulator, record.afterAccumulator));
-        }
+        if (end < start) revert InvalidRange();
+        if (end > registeredDelayedCount) revert MissingData(registeredDelayedCount);
+        bytes32 seed = keccak256(abi.encode(DELAYED_RANGE_DOMAIN, _registryDomain()));
+        bytes32 beforePrefix = start == 0 ? seed : delayedPrefixAfter[start - 1];
+        bytes32 afterPrefix = end == 0 ? seed : delayedPrefixAfter[end - 1];
+        value = keccak256(abi.encode(DELAYED_RANGE_DOMAIN, _registryDomain(), start, end,
+            beforePrefix, afterPrefix));
     }
 }
