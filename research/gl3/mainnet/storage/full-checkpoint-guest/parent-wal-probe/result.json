@@ -1,0 +1,51 @@
+{
+  "scope": "Standalone pinned private parent Geth startup/allocation probe, not another chain/engine/proof acceptance",
+  "gethSHA256": "daec86c874d2f31d70784f4c8e15faf786e8eebd3cd23e77be744c2c42273119",
+  "cacheMiB": 16,
+  "initArgs": [
+    "/root/terminal-acceptance/bin/geth",
+    "--cache",
+    "16",
+    "init",
+    "--datadir",
+    "/root/gl3-full-checkpoint-guest/parent-wal-probe/db",
+    "/root/gl3-full-checkpoint-guest/parent-wal-probe/genesis.json"
+  ],
+  "runArgs": [
+    "/root/terminal-acceptance/bin/geth",
+    "--cache",
+    "16",
+    "--syncmode",
+    "full",
+    "--nodiscover",
+    "--maxpeers",
+    "0",
+    "--port",
+    "0",
+    "--nat",
+    "none",
+    "--authrpc.port",
+    "0",
+    "--datadir",
+    "/root/gl3-full-checkpoint-guest/parent-wal-probe/db",
+    "--ipcpath",
+    "/root/gl3-full-checkpoint-guest/parent-wal-probe/probe.ipc",
+    "--verbosity",
+    "4"
+  ],
+  "initExitCode": 0,
+  "runExitCode": 0,
+  "seconds": 0.7967913057655096,
+  "walsWhileOpen": [
+    {
+      "path": "db/geth/chaindata/000005.log",
+      "bytes": 42,
+      "allocatedBytes": 4096
+    }
+  ],
+  "walAllocatedBytesWhileOpen": 4096,
+  "allExecutionOnRunpod": true,
+  "engineSearchExecuted": false,
+  "guestExecuted": false,
+  "freeBytes": 8522452992
+}

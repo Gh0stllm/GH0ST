@@ -1,0 +1,23 @@
+{
+  "pid": 191561,
+  "args": [
+    "/root/bounded-restore/toolchain/go/bin/go",
+    "build",
+    "-overlay",
+    "/root/gl3-full-checkpoint-guest/overlay-guest.json",
+    "-p",
+    "2",
+    "-mod=readonly",
+    "-tags=gl3aotproof,gl3_checkpoint_integration",
+    "-o",
+    "/root/gl3-full-checkpoint-guest/replay.raw.wasm",
+    "./cmd/replay"
+  ],
+  "cwd": "/root/bounded-restore/fast-comparison/C-combined/guest",
+  "cpuAffinity": [
+    2,
+    3
+  ],
+  "startedUTC": "2026-11-17T06:29:21Z",
+  "allExecutionOnRunpod": true
+}

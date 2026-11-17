@@ -1,0 +1,48 @@
+{
+  "guestSHA256": "fc5645ec7536ca7191c4eaa1db0fa381a67dafb46cdf844eb6403298516fed5d",
+  "toolSHA256": "cc5c9de07b2a739978e383cd4ac4baee3a1d49761c5c75ad414e12056cd7ab27",
+  "librarySHA256": {
+    "forward": "1c45bf8429ca216ea9fa8b6ef4251e859800f7091f3d5be57a9566ffeeca6c99",
+    "soft-float": "eed26863498c0b0a060da3bc42dc09dea84e8872cf763f91598e698fb54b604f",
+    "wasi_stub": "03a9679220dc6854bc86abbf9a4138bbd92371d1a77cf2155708d223fa26662c",
+    "host_io": "f524b7ca272ded1159c5c287c13c8754f8b10c98f0d31ee854d10096b3e0630f",
+    "user_host": "a7a523d2e71ce1a4c7ae7f984032331b0298ea939f1dc6ccdc80ff6135ba34ac",
+    "arbcompress": "31c244b2e373e2e6cc189853fb6824a0f1244061b61b9eb27b57df103cf96ada",
+    "arbcrypto": "3ca6af8045178453415ed53aaa5a58e789e9a22b97cce0f502cff775576ef094",
+    "program_exec": "dbadff49188bbc5a6477d6fef4dec17f210e4e08e9699aec986a050c029a3ecb",
+    "gl3aot": "b481f92a852a685411db42c8b51abd3a3f2c8cd8c5d0c1c8eed2962d986f5555"
+  },
+  "args": [
+    "/root/gl3-aot-jit/bin/prover-exact-final-steps",
+    "/root/gl3-full-checkpoint-guest/replay.wasm",
+    "--generate-binaries",
+    "/root/gl3-full-checkpoint-guest/machine-generation/machine",
+    "-l",
+    "/root/bounded-restore/machine-inputs/forward.wasm",
+    "-l",
+    "/root/bounded-restore/machine-inputs/soft-float.wasm",
+    "-l",
+    "/root/bounded-restore/machine-inputs/wasi_stub.wasm",
+    "-l",
+    "/root/bounded-restore/machine-inputs/host_io.wasm",
+    "-l",
+    "/root/bounded-restore/machine-inputs/user_host.wasm",
+    "-l",
+    "/root/bounded-restore/machine-inputs/arbcompress.wasm",
+    "-l",
+    "/root/bounded-restore/machine-inputs/arbcrypto.wasm",
+    "-l",
+    "/root/bounded-restore/machine-inputs/program_exec.wasm",
+    "-l",
+    "/root/bounded-restore/machine-inputs/gl3aot.wasm"
+  ],
+  "cpuAffinity": [
+    2,
+    3
+  ],
+  "allExecutionOnRunpod": true,
+  "replayOrProofExecuted": false,
+  "engineSearchExecuted": false,
+  "selected865Modified": false,
+  "productionAccepted": false
+}

@@ -1,12 +1,29 @@
 # Final artifact pairing
 
-> **A production release is not accepted by this packet.** The selected machine and consensus source match; ordinary final-profile binaries, the production genesis, authority/funding settings, complete dispute settlement and 20-game storage still need their own evidence.
+> **A production release is not accepted by this packet.** The ordinary source05 binaries, source identities and configuration parsing passed. Production transport settings, genesis, authority/funding settings, complete dispute settlement and 20-game storage remain separate gates.
 
 The ordinary native CLI `13ba3c…1f38` was rebuilt and exercised earlier, including the private cursor64 CLI crash rehearsal. A fresh Runpod hash still matches that exact executable. Its engine uses the original portable program `1d6504…5e5bc`, native archive `a8b46c…beebd` and 98,511,183-byte network `1a298a…dfc2`.
 
-The new source audit compares the actual Go-selected ordinary node and validator dependency closures: **6,195 records before, 6,201 after, exactly the eleven reviewed final03 host-cache changes**. It found no selected Geth, precompile, engine or runtime source drift. This is source pairing, not acceptance of an ungenerated production genesis.
+The source audit compares the actual Go-selected ordinary node and validator dependency closures: **6,195 original records, 6,201 for final03 and 6,202 for source05**. Source05 has exactly fourteen host changes: the eleven reviewed cache files plus the three operator-hook files. All 6,202 selected files were rehashed after compilation. There is no selected Geth, precompile, engine or runtime source drift. This is source pairing, not acceptance of an ungenerated production genesis.
 
-The first ordinary final03 build hit its explicit task-scratch guard and received an actual SIGTERM exit `−15`; it produced no final executable. The incomplete temporary directory was inventoried, checked for open owners, and deleted with root authorization. Logs and source evidence remain. That event is a resource stop, not a compiler or model failure. No ordinary retry is accepted here.
+The first ordinary final03 build hit its explicit task-scratch guard and received an actual SIGTERM exit `−15`; it produced no final executable. The incomplete temporary directory was inventoried, checked for open owners, and deleted with root authorization. Logs and source evidence remain. That event was a resource stop, not a compiler or model failure. The approved source05 retry used a three-billion-byte task guard, a six-billion-byte free-space floor and two CPU-affinity slots.
+
+## Ordinary binaries and smoke checks
+
+| Artifact | Actual result |
+|---|---|
+| Node | 387,901,976 bytes; SHA-256 `0724b8cc02c8205deb24eaad7b2c3b3a7f87778cdb35afa2cd884c48338a9e3d`; build exit0 in64.588s |
+| Validator | 353,097,184 bytes; SHA-256 `e26b0a9f8c4e61ff63d76749308981d546c4f71045c2ee9aa9644487fa61c083`; build exit0 in14.812s |
+| ELF stack | Both `GNU_STACK RW`, without execute permission |
+| Ordinary node parser | Default cache false/one entry/four hours; explicit enable parses true |
+| Help/version | Both help commands exit0; node version exit0, `local+unknown-unknown` |
+| Execution scope | Configuration parsing only; no node, chain, engine, prover or activation |
+
+[Complete results](ordinary05/evidence/results.json) · [artifact/input lock](ordinary05/artifact-lock.json) · [source closure](ordinary05/source-pairing-summary.json) · [native link/tool identities](ordinary05/native-inputs.json) · [Runpod build reproducer](build-ordinary05.py).
+
+Both ordinary binaries still default to `validation.use-jit=true`. The reviewed interpreter configuration must explicitly set it to false. The ordinary raw source05 profile also does not silently inherit the private fixture's before-conversion upload-admission/log-suppression helper or its explicit large-request cap. Production activation needs that transport, authentication and resource policy reviewed and composed deliberately.
+
+The binaries and exact selected865 machine/snapshot are preserved in an owner-only archive. All 63 decompressed members were byte/hash verified on Runpod: 713,234,002 compressed bytes, SHA-256 `67916f26c6e9e0fb9bef689c750d1ca6d25d9c93a9c733e9cf3d6aebf0dc363c`. [Backup receipt](ordinary05/backup-receipt.json). The binaries are not committed to Git.
 
 ## An explicit operator switch
 
@@ -38,8 +55,8 @@ The actual chain owner, upgrade/proxy custody, validator/fast-confirmer permissi
 
 | Gate | Current evidence | Still required |
 |---|---|---|
-| Consensus/model identity | Selected865 reference terminal replay; exact model/native identities; eleven-file host-only closure difference | Final ordinary operational binary and complete configured release pairing |
-| Operator activation | Source05 normal/race startup/config/ownership tests | Independent final source review, production configuration and ordinary binary smoke |
+| Consensus/model identity | Selected865 reference terminal replay; exact model/native identities; fourteen-file host-only closure difference | Complete configured release pairing |
+| Operator activation | Source05 normal/race startup/config/ownership tests and ordinary parser smoke | Final production transport/authentication/configuration and actual activation acceptance |
 | Genesis | Earlier private CLI and native-parent bridge fixtures, each with explicit scope | One final custom GH0ST-gas genesis, exact parent assertion, final roles |
 | Disputes | Terminal reference and authentic witness checks; complete lifecycle owned separately | Full natural dispute, exact terminal assertion confirmation and collateral reconciliation |
 | Capacity | Bounded tests and storage research | 20 games, challenge-safe retained data, measured production RAM/disk/throughput |

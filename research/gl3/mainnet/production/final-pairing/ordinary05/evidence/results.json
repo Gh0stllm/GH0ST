@@ -1,0 +1,278 @@
+{
+  "results": [
+    {
+      "label": "nitro-build",
+      "command": [
+        "/root/bounded-restore/toolchain/go/bin/go",
+        "build",
+        "-p",
+        "2",
+        "-mod=readonly",
+        "-ldflags=-extldflags=-Wl,-z,noexecstack",
+        "-o",
+        "/root/gl3-final-pairing/ordinary05/bin/nitro",
+        "./cmd/nitro"
+      ],
+      "actualExitCode": 0,
+      "seconds": 64.5882294178009,
+      "stoppedReason": null,
+      "affinityCPUs": [
+        118,
+        126
+      ],
+      "diskFreeAfter": 12164558848,
+      "taskScratchBytesAfter": 951664997
+    },
+    {
+      "label": "nitro-metadata",
+      "command": [
+        "/root/bounded-restore/toolchain/go/bin/go",
+        "version",
+        "-m",
+        "/root/gl3-final-pairing/ordinary05/bin/nitro"
+      ],
+      "actualExitCode": 0,
+      "seconds": 0.36052393913269043,
+      "stoppedReason": null,
+      "affinityCPUs": [
+        118,
+        126
+      ],
+      "diskFreeAfter": 12164526080,
+      "taskScratchBytesAfter": 951682236
+    },
+    {
+      "label": "nitro-elf",
+      "command": [
+        "readelf",
+        "-W",
+        "-l",
+        "/root/gl3-final-pairing/ordinary05/bin/nitro"
+      ],
+      "actualExitCode": 0,
+      "seconds": 0.36373400688171387,
+      "stoppedReason": null,
+      "affinityCPUs": [
+        118,
+        126
+      ],
+      "diskFreeAfter": 12164517888,
+      "taskScratchBytesAfter": 951685414
+    },
+    {
+      "label": "nitro-libraries",
+      "command": [
+        "ldd",
+        "/root/gl3-final-pairing/ordinary05/bin/nitro"
+      ],
+      "actualExitCode": 0,
+      "seconds": 0.3672809600830078,
+      "stoppedReason": null,
+      "affinityCPUs": [
+        118,
+        126
+      ],
+      "diskFreeAfter": 12164505600,
+      "taskScratchBytesAfter": 951686515
+    },
+    {
+      "label": "nitro-help",
+      "command": [
+        "/root/gl3-final-pairing/ordinary05/bin/nitro",
+        "--help"
+      ],
+      "actualExitCode": 0,
+      "seconds": 0.3693985939025879,
+      "stoppedReason": null,
+      "affinityCPUs": [
+        118,
+        126
+      ],
+      "diskFreeAfter": 12164337664,
+      "taskScratchBytesAfter": 951845427
+    },
+    {
+      "label": "nitro-version",
+      "command": [
+        "/root/gl3-final-pairing/ordinary05/bin/nitro",
+        "--version"
+      ],
+      "actualExitCode": 0,
+      "seconds": 0.36160755157470703,
+      "stoppedReason": null,
+      "affinityCPUs": [
+        118,
+        126
+      ],
+      "diskFreeAfter": 12164329472,
+      "taskScratchBytesAfter": 951846126
+    },
+    {
+      "label": "nitro-default-config",
+      "command": [
+        "/root/gl3-final-pairing/ordinary05/bin/nitro",
+        "--conf.dump",
+        "--chain.id=412346",
+        "--chain.info-files=/root/gl3-final-pairing/private-chain-info-smoke.json"
+      ],
+      "actualExitCode": 0,
+      "seconds": 0.3676466941833496,
+      "stoppedReason": null,
+      "affinityCPUs": [
+        118,
+        126
+      ],
+      "diskFreeAfter": 12164296704,
+      "taskScratchBytesAfter": 951870612
+    },
+    {
+      "label": "nitro-optin-config",
+      "command": [
+        "/root/gl3-final-pairing/ordinary05/bin/nitro",
+        "--conf.dump",
+        "--chain.id=412346",
+        "--chain.info-files=/root/gl3-final-pairing/private-chain-info-smoke.json",
+        "--node.block-validator.experimental-bold-execution-cache.enable"
+      ],
+      "actualExitCode": 0,
+      "seconds": 0.35957980155944824,
+      "stoppedReason": null,
+      "affinityCPUs": [
+        118,
+        126
+      ],
+      "diskFreeAfter": 12164268032,
+      "taskScratchBytesAfter": 951895331
+    },
+    {
+      "label": "nitro-val-build",
+      "command": [
+        "/root/bounded-restore/toolchain/go/bin/go",
+        "build",
+        "-p",
+        "2",
+        "-mod=readonly",
+        "-ldflags=-extldflags=-Wl,-z,noexecstack",
+        "-o",
+        "/root/gl3-final-pairing/ordinary05/bin/nitro-val",
+        "./cmd/nitro-val"
+      ],
+      "actualExitCode": 0,
+      "seconds": 14.811721086502075,
+      "stoppedReason": null,
+      "affinityCPUs": [
+        118,
+        126
+      ],
+      "diskFreeAfter": 11809067008,
+      "taskScratchBytesAfter": 1304993696
+    },
+    {
+      "label": "nitro-val-metadata",
+      "command": [
+        "/root/bounded-restore/toolchain/go/bin/go",
+        "version",
+        "-m",
+        "/root/gl3-final-pairing/ordinary05/bin/nitro-val"
+      ],
+      "actualExitCode": 0,
+      "seconds": 0.3537750244140625,
+      "stoppedReason": null,
+      "affinityCPUs": [
+        118,
+        126
+      ],
+      "diskFreeAfter": 11809038336,
+      "taskScratchBytesAfter": 1305007237
+    },
+    {
+      "label": "nitro-val-elf",
+      "command": [
+        "readelf",
+        "-W",
+        "-l",
+        "/root/gl3-final-pairing/ordinary05/bin/nitro-val"
+      ],
+      "actualExitCode": 0,
+      "seconds": 0.35142016410827637,
+      "stoppedReason": null,
+      "affinityCPUs": [
+        118,
+        126
+      ],
+      "diskFreeAfter": 11809030144,
+      "taskScratchBytesAfter": 1305010431
+    },
+    {
+      "label": "nitro-val-libraries",
+      "command": [
+        "ldd",
+        "/root/gl3-final-pairing/ordinary05/bin/nitro-val"
+      ],
+      "actualExitCode": 0,
+      "seconds": 0.36293554306030273,
+      "stoppedReason": null,
+      "affinityCPUs": [
+        118,
+        126
+      ],
+      "diskFreeAfter": 11809021952,
+      "taskScratchBytesAfter": 1305011550
+    },
+    {
+      "label": "nitro-val-help",
+      "command": [
+        "/root/gl3-final-pairing/ordinary05/bin/nitro-val",
+        "--help"
+      ],
+      "actualExitCode": 0,
+      "seconds": 0.3555619716644287,
+      "stoppedReason": null,
+      "affinityCPUs": [
+        118,
+        126
+      ],
+      "diskFreeAfter": 11808985088,
+      "taskScratchBytesAfter": 1305033767
+    },
+    {
+      "label": "nitro-val-default-config",
+      "command": [
+        "/root/gl3-final-pairing/ordinary05/bin/nitro-val",
+        "--conf.dump"
+      ],
+      "actualExitCode": 0,
+      "seconds": 0.35980701446533203,
+      "stoppedReason": null,
+      "affinityCPUs": [
+        118,
+        126
+      ],
+      "diskFreeAfter": 11808976896,
+      "taskScratchBytesAfter": 1305037042
+    }
+  ],
+  "complete": true,
+  "passed": true,
+  "artifacts": {
+    "nitro": {
+      "bytes": 387901976,
+      "SHA256": "0724b8cc02c8205deb24eaad7b2c3b3a7f87778cdb35afa2cd884c48338a9e3d",
+      "GNUStackLine": "GNU_STACK      0x000000 0x0000000000000000 0x0000000000000000 0x000000 0x000000 RW  0x10"
+    },
+    "nitro-val": {
+      "bytes": 353097184,
+      "SHA256": "e26b0a9f8c4e61ff63d76749308981d546c4f71045c2ee9aa9644487fa61c083",
+      "GNUStackLine": "GNU_STACK      0x000000 0x0000000000000000 0x0000000000000000 0x000000 0x000000 RW  0x10"
+    }
+  },
+  "sourceUnchanged": true,
+  "approvedHostSourceChanges": 14,
+  "defaultOffAndExplicitOptinConfigParsingPassed": true,
+  "configurationOnlyNoActivation": true,
+  "privateResearchChainInfoOnly": true,
+  "engineOrProverOrChainStarted": false,
+  "walletOrMainnetOperation": false,
+  "productionGenesisAccepted": false,
+  "allExecutionOnRunpod": true
+}

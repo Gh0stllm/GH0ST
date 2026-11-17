@@ -1,0 +1,1737 @@
+{
+  "status": "STATIC_AND_CONFIG_PARSER_REVIEW_NO_ACTIVATION",
+  "capturedAtUTC": "2026-11-17T06:52:55.292744+00:00",
+  "allExecutableSmokeWorkOnRunpod": true,
+  "sourceBase": "/root/gl3-final-pairing/source05",
+  "binaries": {
+    "nitro": {
+      "bytes": 387901976,
+      "SHA256": "0724b8cc02c8205deb24eaad7b2c3b3a7f87778cdb35afa2cd884c48338a9e3d",
+      "GNUStackLine": "GNU_STACK      0x000000 0x0000000000000000 0x0000000000000000 0x000000 0x000000 RW  0x10",
+      "path": "/root/gl3-final-pairing/ordinary05/bin/nitro",
+      "freshStatBytes": 387901976,
+      "SHA256Provenance": "existing ordinary05 artifact lock; no new binary rehash in this lane"
+    },
+    "nitro-val": {
+      "bytes": 353097184,
+      "SHA256": "e26b0a9f8c4e61ff63d76749308981d546c4f71045c2ee9aa9644487fa61c083",
+      "GNUStackLine": "GNU_STACK      0x000000 0x0000000000000000 0x0000000000000000 0x000000 0x000000 RW  0x10",
+      "path": "/root/gl3-final-pairing/ordinary05/bin/nitro-val",
+      "freshStatBytes": 353097184,
+      "SHA256Provenance": "existing ordinary05 artifact lock; no new binary rehash in this lane"
+    }
+  },
+  "moduleRoot": "0x865168ea04ee58578a710a5270c22495c90b1c0f2226d39fecbb9eac4ea3f086",
+  "machineAndModelBindingsFromOrdinaryLock": {
+    "portableEngine": {
+      "path": "/root/bounded-restore/chess/sliced/runtime/.cache/sliced.wasm",
+      "bytes": 102408379,
+      "SHA256": "1d650410655d93624801a0fa45d64d72ec5d209115672b5848f010037da5e5bc"
+    },
+    "nativeEngineArchive": {
+      "path": "/root/bounded-restore/chess/engine/.cache/libgl3chess.a",
+      "bytes": 99899664,
+      "SHA256": "a8b46cbe96923ef6592ba4f356ba488f574dc074605c83f16a90a1bf2fbbeebd"
+    },
+    "guest": {
+      "path": "/root/bounded-restore/fast-comparison/C-combined/replay.wasm",
+      "bytes": 29460460,
+      "SHA256": "8d18145460e5f4c649895728fa089a52a04ead2c3fa5e7d10789d72d7de42fbd"
+    },
+    "companion": {
+      "path": "/root/bounded-restore/machine-inputs/gl3aot.wasm",
+      "bytes": 105285289,
+      "SHA256": "b481f92a852a685411db42c8b51abd3a3f2c8cd8c5d0c1c8eed2962d986f5555"
+    },
+    "machine": {
+      "path": "/root/bounded-restore/fast-comparison/C-combined/machine/machine.v2.wavm.br",
+      "bytes": 90305946,
+      "SHA256": "4bf7fe54c28ad0b6f2620df3ee6b4c6d87452f9ab76ec8be294eb7d4c934770e"
+    },
+    "untilHostIo": {
+      "path": "/root/bounded-restore/fast-comparison/C-combined/machine/until-host-io-state.bin",
+      "bytes": 164300352,
+      "SHA256": "65c55710d8e19f00c53a4f7c84a203c66aa6564745211a7ee55b2460dd165c8a"
+    },
+    "libstylus": {
+      "path": "/root/bounded-restore/nitro/target/lib/libstylus.a",
+      "bytes": 637520088,
+      "SHA256": "42cc75b003aaab6686620da6ec947bb475fe221b605bd0ac1bf417a171f4546c"
+    }
+  },
+  "source05BuildLockCapturedAtUTC": "2026-11-17T06:45:14Z",
+  "source05OrdinaryClosureSHA256": "a391310a3090083016a987d12cc810454a16e6e1df113f71be32e82cae9ed34c",
+  "smokes": [
+    {
+      "name": "knownTransportAndJSONOnlyFields",
+      "actualExitCode": 0,
+      "source": "existing source05 ordinary executable",
+      "serviceOrChainOrWalletOrEngineStarted": false,
+      "configOnly": true,
+      "stdoutSHA256": "15b3ecff2bc786c076db1fca71bc02c7545f884cbe3a75996f3b0bc20e6eba95",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "selectedEffectiveKoanf": {
+        "log-level": "WARN",
+        "validation": {
+          "api-auth": true,
+          "api-public": false,
+          "arbitrator": {
+            "execution": {
+              "cached-challenge-machines": 2,
+              "experimental-max-recorded-hashes": 4096,
+              "experimental-recorded-hash-stride": 4294967296,
+              "experimental-refine-ranges": true,
+              "experimental-serialize-queries": true,
+              "initial-steps": "100000"
+            },
+            "execution-run-timeout": "5m",
+            "experimental-bound-execution-creations": true,
+            "output-path": "./target/output",
+            "redis-validation-server-config": {
+              "buffer-reads": true,
+              "consumer-config": {
+                "idletime-to-autoclaim": "5m0s",
+                "max-retry-count": -1,
+                "response-entry-timeout": "1h0m0s",
+                "retry": true
+              },
+              "module-roots": [],
+              "redis-url": "",
+              "stream-prefix": "",
+              "stream-timeout": "10m0s",
+              "workers": 0
+            },
+            "workers": 0
+          },
+          "jit": {
+            "cranelift": true,
+            "jit-path": "",
+            "max-execution-time": "10m0s",
+            "wasm-memory-usage-limit": 4294967296,
+            "workers": 0
+          },
+          "use-jit": false,
+          "wasm": {
+            "allowed-wasm-module-roots": [
+              "0x865168ea04ee58578a710a5270c22495c90b1c0f2226d39fecbb9eac4ea3f086"
+            ],
+            "enable-wasmroots-check": true,
+            "root-path": "/UNSELECTED/collection"
+          }
+        },
+        "node-block-validator": {
+          "validation-server": {
+            "arg-log-limit": 2048,
+            "connection-wait": "0s",
+            "jwtsecret": "/UNSELECTED/validation.jwt",
+            "retries": 0,
+            "retry-delay": "0s",
+            "retry-errors": "websocket: close.*|dial tcp .*|.*i/o timeout|.*connection reset by peer|.*connection refused",
+            "timeout": "0s",
+            "url": "ws://127.0.0.1:8549",
+            "websocket-message-size-limit": 268435456
+          },
+          "experimental-bold-execution-cache": {
+            "enable": true,
+            "idle-timeout": "4h",
+            "max-entries": 1
+          },
+          "current-module-root": "current",
+          "pending-upgrade-module-root": ""
+        }
+      },
+      "scope": "Node typed koanf decode passed before dump; final config Validate(), machine loading, JWT reading and transport startup are later and not exercised."
+    },
+    {
+      "name": "unknownWSServerCapJSON",
+      "actualExitCode": 1,
+      "source": "existing source05 ordinary executable",
+      "serviceOrChainOrWalletOrEngineStarted": false,
+      "configOnly": true,
+      "stdoutSHA256": "e69ee8d6cd587c0cb9cdb220f3227e92c958fae17dde16cb44fab425d4fbdda4",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "boundedErrorText": "local+unknown-unknown\nSample usage: /root/gl3-final-pairing/ordinary05/bin/nitro [OPTIONS] \n\nOptions:\n  --help\n  --dev: Start a default L2-only dev chain\n\nFatal configuration error: 1 error(s) decoding:\n\n* 'ws' has invalid keys: read-limit\n",
+      "scope": "Negative probe only; read-limit is not proposed as a real existing flag/key."
+    },
+    {
+      "name": "unknownWSServerCapCLI",
+      "actualExitCode": 1,
+      "source": "existing source05 ordinary executable",
+      "serviceOrChainOrWalletOrEngineStarted": false,
+      "configOnly": true,
+      "stdoutSHA256": "9b91ca6e508ca69a51161436429e58313cea1db6074683f815d8fbc1735b7753",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "boundedErrorText": "local+unknown-unknown\nSample usage: /root/gl3-final-pairing/ordinary05/bin/nitro-val --help \n\nFatal configuration error: unknown flag: --ws.read-limit\n",
+      "scope": "Negative probe only; read-limit is not proposed as a real existing flag/key."
+    }
+  ],
+  "sourcePins": {
+    "util/rpcclient/rpcclient.go": {
+      "SHA256": "0cb202d0e5790d24dc4ccd7a90e5545082ba1ab56bfbb9a51b790c5aa3f6a53a",
+      "remotePath": "/root/gl3-final-pairing/source05/util/rpcclient/rpcclient.go",
+      "excerpts": [
+        {
+          "start": 26,
+          "end": 35,
+          "lines": [
+            "type ClientConfig struct {",
+            "\tURL                       string        `json:\"url,omitempty\" koanf:\"url\"`",
+            "\tJWTSecret                 string        `json:\"jwtsecret,omitempty\" koanf:\"jwtsecret\"`",
+            "\tTimeout                   time.Duration `json:\"timeout,omitempty\" koanf:\"timeout\"`",
+            "\tRetries                   uint          `json:\"retries,omitempty\" koanf:\"retries\"`",
+            "\tConnectionWait            time.Duration `json:\"connection-wait,omitempty\" koanf:\"connection-wait\"`",
+            "\tArgLogLimit               uint          `json:\"arg-log-limit,omitempty\" koanf:\"arg-log-limit\"`",
+            "\tRetryErrors               string        `json:\"retry-errors,omitempty\" koanf:\"retry-errors\"`",
+            "\tRetryDelay                time.Duration `json:\"retry-delay,omitempty\" koanf:\"retry-delay\"`",
+            "\tWebsocketMessageSizeLimit int64         `json:\"websocket-message-size-limit,omitempty\" koanf:\"websocket-message-size-limit\"`"
+          ]
+        },
+        {
+          "start": 75,
+          "end": 84,
+          "lines": [
+            "func RPCClientAddOptions(prefix string, f *pflag.FlagSet, defaultConfig *ClientConfig) {",
+            "\tf.String(prefix+\".url\", defaultConfig.URL, \"url of server, use self for loopback websocket, self-auth for loopback with authentication\")",
+            "\tf.String(prefix+\".jwtsecret\", defaultConfig.JWTSecret, \"path to file with jwtsecret for validation - ignored if url is self or self-auth\")",
+            "\tf.Duration(prefix+\".connection-wait\", defaultConfig.ConnectionWait, \"how long to wait for initial connection\")",
+            "\tf.Duration(prefix+\".timeout\", defaultConfig.Timeout, \"per-response timeout (0-disabled)\")",
+            "\tf.Uint(prefix+\".arg-log-limit\", defaultConfig.ArgLogLimit, \"limit size of arguments in log entries\")",
+            "\tf.Uint(prefix+\".retries\", defaultConfig.Retries, \"number of retries in case of failure(0 mean one attempt)\")",
+            "\tf.String(prefix+\".retry-errors\", defaultConfig.RetryErrors, \"Errors matching this regular expression are automatically retried\")",
+            "\tf.Duration(prefix+\".retry-delay\", defaultConfig.RetryDelay, \"delay between retries\")",
+            "\tf.Int64(prefix+\".websocket-message-size-limit\", defaultConfig.WebsocketMessageSizeLimit, \"websocket message size limit used by the RPC client. 0 means no limit\")"
+          ]
+        },
+        {
+          "start": 111,
+          "end": 148,
+          "lines": [
+            "type limitedMarshal struct {",
+            "\tlimit uint",
+            "\tvalue any",
+            "}",
+            "",
+            "func (m limitedMarshal) String() string {",
+            "\tmarshalled, err := json.Marshal(m.value)",
+            "\tvar str string",
+            "\tif err != nil {",
+            "\t\tstr = \"\\\"CANNOT MARSHALL: \" + err.Error() + \"\\\"\"",
+            "\t} else {",
+            "\t\tstr = string(marshalled)",
+            "\t}",
+            "\t// #nosec G115",
+            "\tlimit := int(m.limit)",
+            "\tif m.limit <= 0 || len(str) <= limit {",
+            "\t\treturn str",
+            "\t}",
+            "\tprefix := str[:m.limit/2-1]",
+            "\tpostfix := str[len(str)-limit/2+1:]",
+            "\treturn fmt.Sprintf(\"%v..%v\", prefix, postfix)",
+            "}",
+            "",
+            "type limitedArgumentsMarshal struct {",
+            "\tlimit uint",
+            "\targs  []any",
+            "}",
+            "",
+            "func (m limitedArgumentsMarshal) String() string {",
+            "\tres := \"[\"",
+            "\tfor i, arg := range m.args {",
+            "\t\tres += limitedMarshal{m.limit, arg}.String()",
+            "\t\tif i < len(m.args)-1 {",
+            "\t\t\tres += \", \"",
+            "\t\t}",
+            "\t}",
+            "\tres += \"]\"",
+            "\treturn res"
+          ]
+        },
+        {
+          "start": 161,
+          "end": 220,
+          "lines": [
+            "func (c *RpcClient) CallContext(ctx_in context.Context, result interface{}, method string, args ...interface{}) error {",
+            "\tif c.client == nil {",
+            "\t\treturn errors.New(\"not connected\")",
+            "\t}",
+            "\tlogId := c.logId.Add(1)",
+            "\tlog.Trace(\"sending RPC request\", \"method\", method, \"logId\", logId, \"args\", limitedArgumentsMarshal{c.config().ArgLogLimit, args})",
+            "\tvar err error",
+            "\tfor i := uint(0); i < c.config().Retries+1; i++ {",
+            "\t\tretryDelay := c.config().RetryDelay",
+            "\t\tif i > 0 && retryDelay > 0 {",
+            "\t\t\tselect {",
+            "\t\t\tcase <-ctx_in.Done():",
+            "\t\t\t\treturn ctx_in.Err()",
+            "\t\t\tcase <-time.After(retryDelay):",
+            "\t\t\t}",
+            "\t\t}",
+            "\t\tif ctx_in.Err() != nil {",
+            "\t\t\treturn ctx_in.Err()",
+            "\t\t}",
+            "\t\tvar ctx context.Context",
+            "\t\tvar cancelCtx context.CancelFunc",
+            "\t\ttimeout := c.config().Timeout",
+            "\t\tif timeout > 0 {",
+            "\t\t\tctx, cancelCtx = context.WithTimeout(ctx_in, timeout)",
+            "\t\t} else {",
+            "\t\t\tctx, cancelCtx = context.WithCancel(ctx_in)",
+            "\t\t}",
+            "\t\terr = c.client.CallContext(ctx, result, method, args...)",
+            "",
+            "\t\tcancelCtx()",
+            "\t\tlogger := log.Trace",
+            "\t\tlimit := c.config().ArgLogLimit",
+            "\t\tif err != nil && !IsAlreadyKnownError(err) {",
+            "\t\t\tlogger = log.Info",
+            "\t\t}",
+            "\t\tlogEntry := []interface{}{",
+            "\t\t\t\"method\", method,",
+            "\t\t\t\"logId\", logId,",
+            "\t\t\t\"err\", err,",
+            "\t\t\t\"result\", limitedMarshal{limit, result},",
+            "\t\t\t\"attempt\", i,",
+            "\t\t\t\"args\", limitedArgumentsMarshal{limit, args},",
+            "\t\t}",
+            "\t\tvar dataErr rpc.DataError",
+            "\t\tif errors.As(err, &dataErr) {",
+            "\t\t\tlogEntry = append(logEntry, \"errorData\", limitedMarshal{limit, dataErr.ErrorData()})",
+            "\t\t}",
+            "\t\tlogger(\"rpc response\", logEntry...)",
+            "\t\tif err == nil {",
+            "\t\t\treturn nil",
+            "\t\t}",
+            "\t\tif errors.Is(err, context.DeadlineExceeded) {",
+            "\t\t\tcontinue",
+            "\t\t}",
+            "\t\tretryErrs := c.config().retryErrors",
+            "\t\tif retryErrs != nil && retryErrs.MatchString(err.Error()) {",
+            "\t\t\tcontinue",
+            "\t\t}",
+            "\t\treturn err",
+            "\t}"
+          ]
+        },
+        {
+          "start": 232,
+          "end": 274,
+          "lines": [
+            "func (c *RpcClient) Start(ctx_in context.Context) error {",
+            "\turl := c.config().URL",
+            "\tjwtPath := c.config().JWTSecret",
+            "\tif url == \"self\" {",
+            "\t\tif c.autoStack == nil {",
+            "\t\t\treturn errors.New(\"self not supported for this connection\")",
+            "\t\t}",
+            "\t\turl = c.autoStack.WSEndpoint()",
+            "\t\tjwtPath = \"\"",
+            "\t} else if url == \"self-auth\" {",
+            "\t\tif c.autoStack == nil {",
+            "\t\t\treturn errors.New(\"self-auth not supported for this connection\")",
+            "\t\t}",
+            "\t\turl = c.autoStack.WSAuthEndpoint()",
+            "\t\tjwtPath = c.autoStack.JWTPath()",
+            "\t} else if url == \"\" {",
+            "\t\treturn errors.New(\"no url provided for this connection\")",
+            "\t}",
+            "\tvar jwt *common.Hash",
+            "\tif jwtPath != \"\" {",
+            "\t\tvar err error",
+            "\t\tjwt, err = signature.LoadSigningKey(jwtPath)",
+            "\t\tif err != nil {",
+            "\t\t\treturn err",
+            "\t\t}",
+            "\t}",
+            "\tconnTimeout := time.After(c.config().ConnectionWait)",
+            "\tfor {",
+            "\t\tvar ctx context.Context",
+            "\t\tvar cancelCtx context.CancelFunc",
+            "\t\ttimeout := c.config().Timeout",
+            "\t\tif timeout > 0 {",
+            "\t\t\tctx, cancelCtx = context.WithTimeout(ctx_in, timeout)",
+            "\t\t} else {",
+            "\t\t\tctx, cancelCtx = context.WithCancel(ctx_in)",
+            "\t\t}",
+            "\t\tvar err error",
+            "\t\tvar client *rpc.Client",
+            "\t\tif jwt == nil {",
+            "\t\t\tclient, err = rpc.DialOptions(ctx, url, rpc.WithWebsocketMessageSizeLimit(c.config().WebsocketMessageSizeLimit))",
+            "\t\t} else {",
+            "\t\t\tclient, err = rpc.DialOptions(ctx, url, rpc.WithHTTPAuth(node.NewJWTAuth([32]byte(*jwt))), rpc.WithWebsocketMessageSizeLimit(c.config().WebsocketMessageSizeLimit))",
+            "\t\t}"
+          ]
+        }
+      ]
+    },
+    "cmd/genericconf/server.go": {
+      "SHA256": "f5cbc2a6724c0237bbfb2ba1ae9bcc940435432cb8756e035d77ff0f697d4ce0",
+      "remotePath": "/root/gl3-final-pairing/source05/cmd/genericconf/server.go",
+      "excerpts": [
+        {
+          "start": 14,
+          "end": 22,
+          "lines": [
+            "type HTTPConfig struct {",
+            "\tAddr           string                  `koanf:\"addr\"`",
+            "\tPort           int                     `koanf:\"port\"`",
+            "\tAPI            []string                `koanf:\"api\"`",
+            "\tRPCPrefix      string                  `koanf:\"rpcprefix\"`",
+            "\tCORSDomain     []string                `koanf:\"corsdomain\"`",
+            "\tVHosts         []string                `koanf:\"vhosts\"`",
+            "\tServerTimeouts HTTPServerTimeoutConfig `koanf:\"server-timeouts\"`",
+            "}"
+          ]
+        },
+        {
+          "start": 51,
+          "end": 62,
+          "lines": [
+            "func (c HTTPConfig) Apply(stackConf *node.Config) {",
+            "\tstackConf.HTTPHost = c.Addr",
+            "\tstackConf.HTTPPort = c.Port",
+            "\tstackConf.HTTPModules = c.API",
+            "\tstackConf.HTTPPathPrefix = c.RPCPrefix",
+            "\tstackConf.HTTPCors = c.CORSDomain",
+            "\tstackConf.HTTPVirtualHosts = c.VHosts",
+            "\tstackConf.HTTPTimeouts.ReadTimeout = c.ServerTimeouts.ReadTimeout",
+            "\tstackConf.HTTPTimeouts.ReadHeaderTimeout = c.ServerTimeouts.ReadHeaderTimeout",
+            "\tstackConf.HTTPTimeouts.WriteTimeout = c.ServerTimeouts.WriteTimeout",
+            "\tstackConf.HTTPTimeouts.IdleTimeout = c.ServerTimeouts.IdleTimeout",
+            "}"
+          ]
+        },
+        {
+          "start": 81,
+          "end": 115,
+          "lines": [
+            "type WSConfig struct {",
+            "\tAddr      string   `koanf:\"addr\"`",
+            "\tPort      int      `koanf:\"port\"`",
+            "\tAPI       []string `koanf:\"api\"`",
+            "\tRPCPrefix string   `koanf:\"rpcprefix\"`",
+            "\tOrigins   []string `koanf:\"origins\"`",
+            "\tExposeAll bool     `koanf:\"expose-all\"`",
+            "}",
+            "",
+            "var WSConfigDefault = WSConfig{",
+            "\tAddr:      node.DefaultConfig.WSHost,",
+            "\tPort:      8548,",
+            "\tAPI:       append(node.DefaultConfig.WSModules, \"eth\", \"arb\"),",
+            "\tRPCPrefix: node.DefaultConfig.WSPathPrefix,",
+            "\tOrigins:   []string{},",
+            "\tExposeAll: node.DefaultConfig.WSExposeAll,",
+            "}",
+            "",
+            "func (c WSConfig) Apply(stackConf *node.Config) {",
+            "\tstackConf.WSHost = c.Addr",
+            "\tstackConf.WSPort = c.Port",
+            "\tstackConf.WSModules = c.API",
+            "\tstackConf.WSPathPrefix = c.RPCPrefix",
+            "\tstackConf.WSOrigins = c.Origins",
+            "\tstackConf.WSExposeAll = c.ExposeAll",
+            "}",
+            "",
+            "func WSConfigAddOptions(prefix string, f *pflag.FlagSet) {",
+            "\tf.String(prefix+\".addr\", WSConfigDefault.Addr, \"WS-RPC server listening interface\")",
+            "\tf.Int(prefix+\".port\", WSConfigDefault.Port, \"WS-RPC server listening port\")",
+            "\tf.StringSlice(prefix+\".api\", WSConfigDefault.API, \"APIs offered over the WS-RPC interface\")",
+            "\tf.String(prefix+\".rpcprefix\", WSConfigDefault.RPCPrefix, \"WS path path prefix on which JSON-RPC is served. Use '/' to serve on all paths\")",
+            "\tf.StringSlice(prefix+\".origins\", WSConfigDefault.Origins, \"Origins from which to accept websockets requests\")",
+            "\tf.Bool(prefix+\".expose-all\", WSConfigDefault.ExposeAll, \"expose private api via websocket\")",
+            "}"
+          ]
+        },
+        {
+          "start": 156,
+          "end": 186,
+          "lines": [
+            "type AuthRPCConfig struct {",
+            "\tAddr      string   `koanf:\"addr\"`",
+            "\tPort      int      `koanf:\"port\"`",
+            "\tAPI       []string `koanf:\"api\"`",
+            "\tOrigins   []string `koanf:\"origins\"`",
+            "\tJwtSecret string   `koanf:\"jwtsecret\"`",
+            "}",
+            "",
+            "func (a AuthRPCConfig) Apply(stackConf *node.Config) {",
+            "\tstackConf.AuthAddr = a.Addr",
+            "\tstackConf.AuthPort = a.Port",
+            "\tstackConf.AuthVirtualHosts = []string{} // dont allow http access",
+            "\tstackConf.JWTSecret = a.JwtSecret",
+            "\tstackConf.AuthModules = a.API",
+            "\tstackConf.AuthOrigins = a.Origins",
+            "}",
+            "",
+            "var AuthRPCConfigDefault = AuthRPCConfig{",
+            "\tAddr:      \"127.0.0.1\",",
+            "\tPort:      8549,",
+            "\tAPI:       []string{\"validation\"},",
+            "\tOrigins:   []string{\"localhost\"},",
+            "\tJwtSecret: \"\",",
+            "}",
+            "",
+            "func AuthRPCConfigAddOptions(prefix string, f *pflag.FlagSet) {",
+            "\tf.String(prefix+\".addr\", AuthRPCConfigDefault.Addr, \"AUTH-RPC server listening interface\")",
+            "\tf.String(prefix+\".jwtsecret\", AuthRPCConfigDefault.JwtSecret, \"Path to file holding JWT secret (32B hex)\")",
+            "\tf.Int(prefix+\".port\", AuthRPCConfigDefault.Port, \"AUTH-RPC server listening port\")",
+            "\tf.StringSlice(prefix+\".origins\", AuthRPCConfigDefault.Origins, \"Origins from which to accept AUTH requests\")",
+            "\tf.StringSlice(prefix+\".api\", AuthRPCConfigDefault.API, \"APIs offered over the AUTH-RPC interface\")"
+          ]
+        }
+      ]
+    },
+    "cmd/genericconf/logging.go": {
+      "SHA256": "55336876db60fb21ab73f380a530438d08129892cd0a10d23853ac1c8550f48c",
+      "remotePath": "/root/gl3-final-pairing/source05/cmd/genericconf/logging.go",
+      "excerpts": [
+        {
+          "start": 116,
+          "end": 140,
+          "lines": [
+            "\thandler, err := HandlerFromLogType(logType, output)",
+            "\tif err != nil {",
+            "\t\tflag.Usage()",
+            "\t\treturn fmt.Errorf(\"error parsing log type when creating handler: %w\", err)",
+            "\t}",
+            "\tslogLevel, err := ToSlogLevel(logLevel)",
+            "\tif err != nil {",
+            "\t\tflag.Usage()",
+            "\t\treturn fmt.Errorf(\"error parsing log level: %w\", err)",
+            "\t}",
+            "",
+            "\t// Arm crash output only after the fallible parsing above, so a parse error",
+            "\t// can't leave the crash fd changed while the logger stays unconfigured. It",
+            "\t// gets its own .crash file: a dup'd fd to the rotated log would be orphaned.",
+            "\tif crashFile != \"\" {",
+            "\t\tif err := setCrashOutputFile(crashFile); err != nil {",
+            "\t\t\treturn fmt.Errorf(\"failed to set crash output file: %w\", err)",
+            "\t\t}",
+            "\t} else if err := debug.SetCrashOutput(nil, debug.CrashOptions{}); err != nil {",
+            "\t\treturn fmt.Errorf(\"failed to clear crash output file: %w\", err)",
+            "\t}",
+            "",
+            "\tglogger = log.NewGlogHandler(handler)",
+            "\tglogger.Verbosity(slogLevel)",
+            "\tlog.SetDefault(log.NewLogger(glogger))"
+          ]
+        }
+      ]
+    },
+    "cmd/nitro-val/nitro_val.go": {
+      "SHA256": "8e4ee4297932e3e7ea1e42546e1a82582171db7e98f62fd34847ecf1b6117c99",
+      "remotePath": "/root/gl3-final-pairing/source05/cmd/nitro-val/nitro_val.go",
+      "excerpts": [
+        {
+          "start": 49,
+          "end": 56,
+          "lines": [
+            "\tstackConf := DefaultValidationNodeStackConfig",
+            "\tstackConf.DataDir = \"\" // ephemeral",
+            "\tstackConf.HTTPBodyLimit = math.MaxInt",
+            "\tstackConf.WSReadLimit = math.MaxInt64",
+            "\tnodeConfig.HTTP.Apply(&stackConf)",
+            "\tnodeConfig.WS.Apply(&stackConf)",
+            "\tnodeConfig.Auth.Apply(&stackConf)",
+            "\tnodeConfig.IPC.Apply(&stackConf)"
+          ]
+        },
+        {
+          "start": 80,
+          "end": 92,
+          "lines": [
+            "\terr = genericconf.InitLog(nodeConfig.LogType, nodeConfig.LogLevel, &nodeConfig.FileLogging, pathResolver(nodeConfig.Persistent.LogDir))",
+            "\tif err != nil {",
+            "\t\tfmt.Fprintf(os.Stderr, \"Error initializing logging: %v\\n\", err)",
+            "\t\treturn 1",
+            "\t}",
+            "\tif stackConf.JWTSecret == \"\" && stackConf.AuthAddr != \"\" {",
+            "\t\tfilename := pathResolver(nodeConfig.Persistent.GlobalConfig)(\"jwtsecret\")",
+            "\t\tif err := genericconf.TryCreatingJWTSecret(filename); err != nil {",
+            "\t\t\tlog.Error(\"Failed to prepare jwt secret file\", \"err\", err)",
+            "\t\t\treturn 1",
+            "\t\t}",
+            "\t\tstackConf.JWTSecret = filename",
+            "\t}"
+          ]
+        },
+        {
+          "start": 181,
+          "end": 205,
+          "lines": [
+            "\tvar nodeConfig ValidationNodeConfig",
+            "\tif err := confighelpers.EndCommonParse(k, &nodeConfig); err != nil {",
+            "\t\treturn nil, err",
+            "\t}",
+            "",
+            "\t// Don't print wallet passwords",
+            "\tif nodeConfig.Conf.Dump {",
+            "\t\terr = confighelpers.DumpConfig(k, map[string]interface{}{",
+            "\t\t\t\"l1.wallet.password\":        \"\",",
+            "\t\t\t\"l1.wallet.private-key\":     \"\",",
+            "\t\t\t\"l2.dev-wallet.password\":    \"\",",
+            "\t\t\t\"l2.dev-wallet.private-key\": \"\",",
+            "\t\t})",
+            "\t\tif err != nil {",
+            "\t\t\treturn nil, err",
+            "\t\t}",
+            "\t}",
+            "",
+            "\t// Don't pass around wallet contents with normal configuration",
+            "",
+            "\terr = nodeConfig.Validate()",
+            "\tif err != nil {",
+            "\t\treturn nil, err",
+            "\t}",
+            "\treturn &nodeConfig, nil"
+          ]
+        }
+      ]
+    },
+    "cmd/nitro/config/config.go": {
+      "SHA256": "a9204c4f02a1d4f81120488438bd197092742e9b9395ef337f895635fb5d02b7",
+      "remotePath": "/root/gl3-final-pairing/source05/cmd/nitro/config/config.go",
+      "excerpts": [
+        {
+          "start": 270,
+          "end": 299,
+          "lines": [
+            "",
+            "\tvar nodeConfig NodeConfig",
+            "\tif err := confighelpers.EndCommonParse(k, &nodeConfig); err != nil {",
+            "\t\treturn nil, nil, err",
+            "\t}",
+            "\tnodeConfig.Init.SetResolvedGenesisJsonFile(resolvedGenesisJsonFile)",
+            "",
+            "\t// Migrate deprecated --node.data-availability.* to --node.da.anytrust.*",
+            "\tnodeConfig.Node.MigrateDeprecatedConfig()",
+            "",
+            "\t// Don't print wallet passwords",
+            "\tif nodeConfig.Conf.Dump {",
+            "\t\terr = confighelpers.DumpConfig(k, map[string]interface{}{",
+            "\t\t\t\"node.batch-poster.parent-chain-wallet.password\":    \"\",",
+            "\t\t\t\"node.batch-poster.parent-chain-wallet.private-key\": \"\",",
+            "\t\t\t\"node.staker.parent-chain-wallet.password\":          \"\",",
+            "\t\t\t\"node.staker.parent-chain-wallet.private-key\":       \"\",",
+            "\t\t\t\"chain.dev-wallet.password\":                         \"\",",
+            "\t\t\t\"chain.dev-wallet.private-key\":                      \"\",",
+            "\t\t})",
+            "\t\tif err != nil {",
+            "\t\t\treturn nil, nil, err",
+            "\t\t}",
+            "\t}",
+            "",
+            "\tif nodeConfig.Persistent.Chain == \"\" {",
+            "\t\treturn nil, nil, errors.New(\"--persistent.chain not specified\")",
+            "\t}",
+            "",
+            "\terr = nodeConfig.ResolveDirectoryNames()"
+          ]
+        }
+      ]
+    },
+    "cmd/nitro/nitro.go": {
+      "SHA256": "a86ea4ebbd9580a37ae1235d3d5de1bd162deba8416ddeb9282b3fe6fb23c1f7",
+      "remotePath": "/root/gl3-final-pairing/source05/cmd/nitro/nitro.go",
+      "excerpts": [
+        {
+          "start": 155,
+          "end": 163,
+          "lines": [
+            "\tstackConf := node.DefaultConfig",
+            "\tstackConf.DataDir = nodeConfig.Persistent.Chain",
+            "\tstackConf.DBEngine = nodeConfig.Persistent.DBEngine",
+            "\tnodeConfig.Rpc.Apply(&stackConf)",
+            "\tnodeConfig.HTTP.Apply(&stackConf)",
+            "\tnodeConfig.WS.Apply(&stackConf)",
+            "\tnodeConfig.Auth.Apply(&stackConf)",
+            "\tnodeConfig.IPC.Apply(&stackConf)",
+            "\tnodeConfig.GraphQL.Apply(&stackConf)"
+          ]
+        },
+        {
+          "start": 379,
+          "end": 383,
+          "lines": [
+            "\tvar sameProcessValidationNodeEnabled bool",
+            "\tif nodeConfig.Node.BlockValidator.Enable && (nodeConfig.Node.BlockValidator.ValidationServerConfigs[0].URL == \"self\" || nodeConfig.Node.BlockValidator.ValidationServerConfigs[0].URL == \"self-auth\") {",
+            "\t\tsameProcessValidationNodeEnabled = true",
+            "\t\tvalnode.EnsureValidationExposedViaAuthRPC(&stackConf)",
+            "\t}"
+          ]
+        },
+        {
+          "start": 422,
+          "end": 428,
+          "lines": [
+            "\t// Check that node is compatible with on-chain WASM module root on startup and before any ArbOS upgrades take effect to prevent divergences",
+            "\tif nodeConfig.Node.ParentChainReader.Enable && nodeConfig.Validation.Wasm.EnableWasmrootsCheck {",
+            "\t\terr := checkWasmModuleRootCompatibility(ctx, nodeConfig.Validation.Wasm, l1Client, rollupAddrs)",
+            "\t\tif err != nil {",
+            "\t\t\tlog.Error(\"failed to check if node is compatible with on-chain WASM module root\", \"err\", err)",
+            "\t\t}",
+            "\t}"
+          ]
+        },
+        {
+          "start": 780,
+          "end": 821,
+          "lines": [
+            "\t}",
+            "\tif (moduleRoot == common.Hash{}) {",
+            "\t\treturn errors.New(\"on-chain WASM module root is zero\")",
+            "\t}",
+            "\t// Check if the on-chain WASM module root belongs to the set of allowed module roots",
+            "\tallowedWasmModuleRoots := wasmConfig.AllowedWasmModuleRoots",
+            "\tif len(allowedWasmModuleRoots) > 0 {",
+            "\t\tmoduleRootMatched := false",
+            "\t\tfor _, root := range allowedWasmModuleRoots {",
+            "\t\t\tbytes, err := hex.DecodeString(strings.TrimPrefix(root, \"0x\"))",
+            "\t\t\tif err == nil {",
+            "\t\t\t\tif common.BytesToHash(bytes) == moduleRoot {",
+            "\t\t\t\t\tmoduleRootMatched = true",
+            "\t\t\t\t\tbreak",
+            "\t\t\t\t}",
+            "\t\t\t\tcontinue",
+            "\t\t\t}",
+            "\t\t\tlocator, locatorErr := server_common.NewMachineLocator(root)",
+            "\t\t\tif locatorErr != nil {",
+            "\t\t\t\tlog.Warn(\"allowed-wasm-module-roots: value not a hex nor valid path:\", \"value\", root, \"locatorErr\", locatorErr, \"decodeErr\", err)",
+            "\t\t\t\tcontinue",
+            "\t\t\t}",
+            "\t\t\tpath := locator.GetMachinePath(moduleRoot)",
+            "\t\t\tif _, err := os.Stat(path); err == nil {",
+            "\t\t\t\tmoduleRootMatched = true",
+            "\t\t\t\tbreak",
+            "\t\t\t}",
+            "\t\t}",
+            "\t\tif !moduleRootMatched {",
+            "\t\t\treturn errors.New(\"on-chain WASM module root did not match with any of the allowed WASM module roots\")",
+            "\t\t}",
+            "\t} else {",
+            "\t\t// If no allowed module roots were provided in config, check if we have a validator machine directory for the on-chain WASM module root",
+            "\t\tlocator, err := server_common.NewMachineLocator(wasmConfig.RootPath)",
+            "\t\tif err != nil {",
+            "\t\t\treturn fmt.Errorf(\"failed to create machine locator: %w\", err)",
+            "\t\t}",
+            "\t\tpath := locator.GetMachinePath(moduleRoot)",
+            "\t\tif _, err := os.Stat(path); err != nil {",
+            "\t\t\treturn fmt.Errorf(\"unable to find validator machine directory for the on-chain WASM module root: %w\", err)",
+            "\t\t}",
+            "\t}"
+          ]
+        }
+      ]
+    },
+    "validator/valnode/valnode.go": {
+      "SHA256": "d87b9613b29453832bf071d1deef80d7f0c93f076a542925532f7fe4e390542c",
+      "remotePath": "/root/gl3-final-pairing/source05/validator/valnode/valnode.go",
+      "excerpts": [
+        {
+          "start": 22,
+          "end": 37,
+          "lines": [
+            "type WasmConfig struct {",
+            "\tRootPath               string   `koanf:\"root-path\"`",
+            "\tEnableWasmrootsCheck   bool     `koanf:\"enable-wasmroots-check\"`",
+            "\tAllowedWasmModuleRoots []string `koanf:\"allowed-wasm-module-roots\"`",
+            "}",
+            "",
+            "func WasmConfigAddOptions(prefix string, f *pflag.FlagSet) {",
+            "\tf.String(prefix+\".root-path\", DefaultWasmConfig.RootPath, \"path to machine folders, each containing wasm files (machine.v2.wavm.br, replay.wasm)\")",
+            "\tf.Bool(prefix+\".enable-wasmroots-check\", DefaultWasmConfig.EnableWasmrootsCheck, \"enable check for compatibility of on-chain WASM module root with node\")",
+            "\tf.StringSlice(prefix+\".allowed-wasm-module-roots\", DefaultWasmConfig.AllowedWasmModuleRoots, \"list of WASM module roots or machine base paths to match against on-chain WasmModuleRoot\")",
+            "}",
+            "",
+            "var DefaultWasmConfig = WasmConfig{",
+            "\tRootPath:               \"\",",
+            "\tEnableWasmrootsCheck:   true,",
+            "\tAllowedWasmModuleRoots: []string{},"
+          ]
+        },
+        {
+          "start": 40,
+          "end": 75,
+          "lines": [
+            "type Config struct {",
+            "\tUseJit     bool                               `koanf:\"use-jit\"`",
+            "\tApiAuth    bool                               `koanf:\"api-auth\"`",
+            "\tApiPublic  bool                               `koanf:\"api-public\"`",
+            "\tArbitrator server_arb.ArbitratorSpawnerConfig `koanf:\"arbitrator\" reload:\"hot\"`",
+            "\tJit        server_jit.JitSpawnerConfig        `koanf:\"jit\" reload:\"hot\"`",
+            "\tWasm       WasmConfig                         `koanf:\"wasm\"`",
+            "}",
+            "",
+            "type ValidationConfigFetcher func() *Config",
+            "",
+            "var DefaultValidationConfig = Config{",
+            "\tUseJit:     true,",
+            "\tJit:        server_jit.DefaultJitSpawnerConfig,",
+            "\tApiAuth:    true,",
+            "\tApiPublic:  false,",
+            "\tArbitrator: server_arb.DefaultArbitratorSpawnerConfig,",
+            "\tWasm:       DefaultWasmConfig,",
+            "}",
+            "",
+            "var TestValidationConfig = Config{",
+            "\tUseJit:     true,",
+            "\tJit:        server_jit.DefaultJitSpawnerConfig,",
+            "\tApiAuth:    false,",
+            "\tApiPublic:  true,",
+            "\tArbitrator: server_arb.DefaultArbitratorSpawnerConfig,",
+            "\tWasm:       DefaultWasmConfig,",
+            "}",
+            "",
+            "func ValidationConfigAddOptions(prefix string, f *pflag.FlagSet) {",
+            "\tf.Bool(prefix+\".use-jit\", DefaultValidationConfig.UseJit, \"use jit for validation\")",
+            "\tf.Bool(prefix+\".api-auth\", DefaultValidationConfig.ApiAuth, \"validate is an authenticated API\")",
+            "\tf.Bool(prefix+\".api-public\", DefaultValidationConfig.ApiPublic, \"validate is a public API\")",
+            "\tserver_arb.ArbitratorSpawnerConfigAddOptions(prefix+\".arbitrator\", f)",
+            "\tserver_jit.JitSpawnerConfigAddOptions(prefix+\".jit\", f)",
+            "\tWasmConfigAddOptions(prefix+\".wasm\", f)"
+          ]
+        },
+        {
+          "start": 113,
+          "end": 141,
+          "lines": [
+            "\texecServer := NewExecServer(arbSpawner, arbConfigFetcher)",
+            "\tvar serverAPI *ExecServerAPI",
+            "\tvar jitSpawner *server_jit.JitSpawner",
+            "\tif config.UseJit {",
+            "\t\tjitConfigFetcher := func() *server_jit.JitSpawnerConfig { return &configFetcher().Jit }",
+            "\t\tvar err error",
+            "\t\tjitSpawner, err = server_jit.NewJitSpawner(locator, jitConfigFetcher, fatalErrChan)",
+            "\t\tif err != nil {",
+            "\t\t\treturn nil, err",
+            "\t\t}",
+            "\t\tserverAPI = NewExecServerAPI(jitSpawner, execServer)",
+            "\t} else {",
+            "\t\tserverAPI = NewExecServerAPI(arbSpawner, execServer)",
+            "\t}",
+            "\tvar redisConsumer *redis.ValidationServer",
+            "\tredisValidationConfig := arbConfigFetcher().RedisValidationServerConfig",
+            "\tif redisValidationConfig.Enabled() {",
+            "\t\tredisConsumer, err = redis.NewValidationServer(&redisValidationConfig, arbSpawner)",
+            "\t\tif err != nil {",
+            "\t\t\tlog.Error(\"Creating new redis validation server\", \"error\", err)",
+            "\t\t}",
+            "\t}",
+            "\tvalAPIs := []rpc.API{{",
+            "\t\tNamespace:     server_api.Namespace,",
+            "\t\tVersion:       \"1.0\",",
+            "\t\tService:       serverAPI,",
+            "\t\tPublic:        config.ApiPublic,",
+            "\t\tAuthenticated: config.ApiAuth,",
+            "\t}}"
+          ]
+        }
+      ]
+    },
+    "validator/valnode/validation_api.go": {
+      "SHA256": "dbee56184170d3ca65075addc647c6917fe379da7d578e81c64c8c6c1fe600de",
+      "remotePath": "/root/gl3-final-pairing/source05/validator/valnode/validation_api.go",
+      "excerpts": [
+        {
+          "start": 80,
+          "end": 118,
+          "lines": [
+            "func NewExecServer(execution validator.ExecutionSpawner, config server_arb.ArbitratorSpawnerConfigFetcher) *ExecServer {",
+            "\tserver := &ExecServer{",
+            "\t\texecSpawner: execution,",
+            "\t\tnextId:      rand.Uint64(), // good-enough to avoid reusing ids after reboot",
+            "\t\truns:        make(map[uint64]*execRunEntry),",
+            "\t\tconfig:      config,",
+            "\t}",
+            "\t// This private Go config is read once at construction, never from RPC.",
+            "\tif config().ExperimentalBoundExecutionCreations {",
+            "\t\tserver.experimentalCreation = newExperimentalCreationGate()",
+            "\t}",
+            "\treturn server",
+            "}",
+            "",
+            "func (s *ExecServer) CreateExecutionRun(ctx context.Context, wasmModuleRoot common.Hash, jsonInput *server_api.InputJSON, useBoldMachineOptional *bool) (uint64, error) {",
+            "\tif s.Stopped() {",
+            "\t\treturn 0, errors.New(\"ExecServer is stopped\")",
+            "\t}",
+            "\tif s.experimentalCreation != nil {",
+            "\t\treturn s.createExperimentalExecutionRun(ctx, wasmModuleRoot, jsonInput, useBoldMachineOptional)",
+            "\t}",
+            "\tinput, err := server_api.ValidationInputFromJson(jsonInput)",
+            "\tif err != nil {",
+            "\t\treturn 0, err",
+            "\t}",
+            "\tuseBoldMachine := false",
+            "\tif useBoldMachineOptional != nil {",
+            "\t\tuseBoldMachine = *useBoldMachineOptional",
+            "\t}",
+            "\texecRun, err := s.execSpawner.CreateExecutionRun(wasmModuleRoot, input, useBoldMachine).Await(ctx)",
+            "\tif err != nil {",
+            "\t\treturn 0, err",
+            "\t}",
+            "\ts.runIdLock.Lock()",
+            "\tdefer s.runIdLock.Unlock()",
+            "\tnewId := s.nextId",
+            "\ts.nextId++",
+            "\ts.runs[newId] = &execRunEntry{execRun, time.Now()}",
+            "\treturn newId, nil"
+          ]
+        },
+        {
+          "start": 255,
+          "end": 309,
+          "lines": [
+            "func (a *ExecServerAPI) Name() string {",
+            "\treturn a.valServerAPI.Name()",
+            "}",
+            "",
+            "func (a *ExecServerAPI) Capacity() int {",
+            "\treturn a.valServerAPI.Capacity()",
+            "}",
+            "",
+            "func (a *ExecServerAPI) Room() int {",
+            "\treturn a.valServerAPI.Room()",
+            "}",
+            "",
+            "func (a *ExecServerAPI) Validate(ctx context.Context, entry *server_api.InputJSON, moduleRoot common.Hash) (validator.GoGlobalState, error) {",
+            "\treturn a.valServerAPI.Validate(ctx, entry, moduleRoot)",
+            "}",
+            "",
+            "func (a *ExecServerAPI) WasmModuleRoots() ([]common.Hash, error) {",
+            "\treturn a.valServerAPI.WasmModuleRoots()",
+            "}",
+            "",
+            "func (a *ExecServerAPI) StylusArchs() ([]rawdb.WasmTarget, error) {",
+            "\treturn a.valServerAPI.StylusArchs()",
+            "}",
+            "",
+            "func (a *ExecServerAPI) CreateExecutionRun(ctx context.Context, wasmModuleRoot common.Hash, jsonInput *server_api.InputJSON, useBoldMachineOptional *bool) (uint64, error) {",
+            "\treturn a.execServer.CreateExecutionRun(ctx, wasmModuleRoot, jsonInput, useBoldMachineOptional)",
+            "}",
+            "",
+            "func (a *ExecServerAPI) GetStepAt(ctx context.Context, execid uint64, position uint64) (*server_api.MachineStepResultJson, error) {",
+            "\treturn a.execServer.GetStepAt(ctx, execid, position)",
+            "}",
+            "",
+            "func (a *ExecServerAPI) GetMachineHashesWithStepSize(ctx context.Context, execid, fromStep, stepSize, maxIterations uint64) ([]common.Hash, error) {",
+            "\treturn a.execServer.GetMachineHashesWithStepSize(ctx, execid, fromStep, stepSize, maxIterations)",
+            "}",
+            "",
+            "func (a *ExecServerAPI) GetProofAt(ctx context.Context, execid uint64, position uint64) (string, error) {",
+            "\treturn a.execServer.GetProofAt(ctx, execid, position)",
+            "}",
+            "",
+            "func (a *ExecServerAPI) PrepareRange(ctx context.Context, execid uint64, start, end uint64) error {",
+            "\treturn a.execServer.PrepareRange(ctx, execid, start, end)",
+            "}",
+            "",
+            "func (a *ExecServerAPI) ExecKeepAlive(ctx context.Context, execid uint64) error {",
+            "\treturn a.execServer.ExecKeepAlive(ctx, execid)",
+            "}",
+            "",
+            "func (a *ExecServerAPI) CheckAlive(ctx context.Context, execid uint64) error {",
+            "\treturn a.execServer.CheckAlive(ctx, execid)",
+            "}",
+            "",
+            "func (a *ExecServerAPI) CloseExec(execid uint64) {",
+            "\ta.execServer.CloseExec(execid)",
+            "}"
+          ]
+        }
+      ]
+    },
+    "validator/client/validation_client.go": {
+      "SHA256": "b1c2c5b94cc32f0f5b3a4140868791a305f3c797c13b915f909b4922169e93e5",
+      "remotePath": "/root/gl3-final-pairing/source05/validator/client/validation_client.go",
+      "excerpts": [
+        {
+          "start": 47,
+          "end": 53,
+          "lines": [
+            "func (c *ValidationClient) Launch(entry *validator.ValidationInput, moduleRoot common.Hash) validator.ValidationRun {",
+            "\tpromise := stopwaiter.LaunchPromiseThread[validator.GoGlobalState](c, func(ctx context.Context) (validator.GoGlobalState, error) {",
+            "\t\tinput := server_api.ValidationInputToJson(entry)",
+            "\t\tvar res validator.GoGlobalState",
+            "\t\terr := c.client.CallContext(ctx, &res, server_api.Namespace+\"_validate\", input, moduleRoot)",
+            "\t\treturn res, err",
+            "\t})"
+          ]
+        },
+        {
+          "start": 149,
+          "end": 166,
+          "lines": [
+            "func (c *ExecutionClient) CreateExecutionRun(",
+            "\twasmModuleRoot common.Hash,",
+            "\tinput *validator.ValidationInput,",
+            "\tuseBoldMachine bool,",
+            ") containers.PromiseInterface[validator.ExecutionRun] {",
+            "\treturn stopwaiter.LaunchPromiseThread(c, func(ctx context.Context) (validator.ExecutionRun, error) {",
+            "\t\tvar res uint64",
+            "\t\terr := c.client.CallContext(ctx, &res, server_api.Namespace+\"_createExecutionRun\", wasmModuleRoot, server_api.ValidationInputToJson(input), useBoldMachine)",
+            "\t\tif err != nil {",
+            "\t\t\treturn nil, err",
+            "\t\t}",
+            "\t\trun := &ExecutionClientRun{",
+            "\t\t\tclient: c,",
+            "\t\t\tid:     res,",
+            "\t\t}",
+            "\t\trun.Start(c.GetContext()) // note: not this temporary thread's context!",
+            "\t\treturn run, nil",
+            "\t})"
+          ]
+        }
+      ]
+    },
+    "validator/server_common/machine_locator.go": {
+      "SHA256": "2fc711c082e74afabf8fe230ef9eec80b89fa3aabaa1bd3c764ad6c71908e7c9",
+      "remotePath": "/root/gl3-final-pairing/source05/validator/server_common/machine_locator.go",
+      "excerpts": [
+        {
+          "start": 74,
+          "end": 97,
+          "lines": [
+            "\t\tfor _, file := range files {",
+            "\t\t\tmrFile := filepath.Join(dir, file.Name(), \"module-root.txt\")",
+            "\t\t\tif _, err := os.Stat(mrFile); err != nil {",
+            "\t\t\t\t// Skip if module-roots file does not exist.",
+            "\t\t\t\tcontinue",
+            "\t\t\t}",
+            "\t\t\tmrContent, err := os.ReadFile(mrFile)",
+            "\t\t\tif err != nil {",
+            "\t\t\t\tlog.Warn(\"Reading module roots file\", \"file path\", mrFile, \"error\", err)",
+            "\t\t\t\tcontinue",
+            "\t\t\t}",
+            "\t\t\tmoduleRoot := common.HexToHash(strings.TrimSpace(string(mrContent)))",
+            "\t\t\tif file.Name() != \"latest\" && file.Name() != moduleRoot.Hex() {",
+            "\t\t\t\tcontinue",
+            "\t\t\t}",
+            "\t\t\tmoduleRoots[moduleRoot] = true",
+            "\t\t\tif file.Name() == \"latest\" {",
+            "\t\t\t\tlatestModuleRoot = moduleRoot",
+            "\t\t\t}",
+            "\t\t\trootPath = dir",
+            "\t\t}",
+            "\t\tif rootPath != \"\" {",
+            "\t\t\tbreak",
+            "\t\t}"
+          ]
+        },
+        {
+          "start": 110,
+          "end": 115,
+          "lines": [
+            "func (l MachineLocator) GetMachinePath(moduleRoot common.Hash) string {",
+            "\tif moduleRoot == (common.Hash{}) || moduleRoot == l.latest {",
+            "\t\treturn filepath.Join(l.rootPath, \"latest\")",
+            "\t} else {",
+            "\t\treturn filepath.Join(l.rootPath, moduleRoot.String())",
+            "\t}"
+          ]
+        }
+      ]
+    },
+    "validator/server_arb/machine_loader.go": {
+      "SHA256": "0ba62d70feb7a4b73fad90a9aaf55693929e4ecee88d6a3dcb666bd4c8d7b5f8",
+      "remotePath": "/root/gl3-final-pairing/source05/validator/server_arb/machine_loader.go",
+      "excerpts": [
+        {
+          "start": 11,
+          "end": 21,
+          "lines": [
+            ")",
+            "",
+            "type ArbitratorMachineConfig struct {",
+            "\tWavmBinaryPath       string",
+            "\tUntilHostIoStatePath string",
+            "}",
+            "",
+            "var DefaultArbitratorMachineConfig = ArbitratorMachineConfig{",
+            "\tWavmBinaryPath:       \"machine.v2.wavm.br\",",
+            "\tUntilHostIoStatePath: \"until-host-io-state.bin\",",
+            "}"
+          ]
+        }
+      ]
+    },
+    "validator/server_arb/validator_spawner.go": {
+      "SHA256": "b03e387bc0c722c044fd16683cd0c183fe8de4da79327ce7c3c12b51551fd8b4",
+      "remotePath": "/root/gl3-final-pairing/source05/validator/server_arb/validator_spawner.go",
+      "excerpts": [
+        {
+          "start": 29,
+          "end": 53,
+          "lines": [
+            "type ArbitratorSpawnerConfig struct {",
+            "\tExperimentalBoundExecutionCreations bool                         `koanf:\"experimental-bound-execution-creations\"`",
+            "\tWorkers                             int                          `koanf:\"workers\" reload:\"hot\"`",
+            "\tOutputPath                          string                       `koanf:\"output-path\" reload:\"hot\"`",
+            "\tExecution                           MachineCacheConfig           `koanf:\"execution\" reload:\"hot\"` // hot reloading for new executions only",
+            "\tExecutionRunTimeout                 time.Duration                `koanf:\"execution-run-timeout\" reload:\"hot\"`",
+            "\tRedisValidationServerConfig         redis.ValidationServerConfig `koanf:\"redis-validation-server-config\"`",
+            "}",
+            "",
+            "type ArbitratorSpawnerConfigFetcher func() *ArbitratorSpawnerConfig",
+            "",
+            "var DefaultArbitratorSpawnerConfig = ArbitratorSpawnerConfig{",
+            "\tWorkers:                     0,",
+            "\tOutputPath:                  \"./target/output\",",
+            "\tExecution:                   DefaultMachineCacheConfig,",
+            "\tExecutionRunTimeout:         time.Minute * 15,",
+            "\tRedisValidationServerConfig: redis.DefaultValidationServerConfig,",
+            "}",
+            "",
+            "func ArbitratorSpawnerConfigAddOptions(prefix string, f *pflag.FlagSet) {",
+            "\tf.Int(prefix+\".workers\", DefaultArbitratorSpawnerConfig.Workers, \"number of concurrent validation threads\")",
+            "\tf.Duration(prefix+\".execution-run-timeout\", DefaultArbitratorSpawnerConfig.ExecutionRunTimeout, \"timeout before discarding execution run\")",
+            "\tf.String(prefix+\".output-path\", DefaultArbitratorSpawnerConfig.OutputPath, \"path to write machines to\")",
+            "\tMachineCacheConfigConfigAddOptions(prefix+\".execution\", f)",
+            "\tredis.ValidationServerConfigAddOptions(prefix+\".redis-validation-server-config\", f)"
+          ]
+        }
+      ]
+    },
+    "validator/server_arb/machine_cache.go": {
+      "SHA256": "62cf186d48a552cce92d2ed99d520f59d5c72cba98d2eaf8bd96d6adc1a9e56a",
+      "remotePath": "/root/gl3-final-pairing/source05/validator/server_arb/machine_cache.go",
+      "excerpts": [
+        {
+          "start": 37,
+          "end": 55,
+          "lines": [
+            "type MachineCacheConfig struct {",
+            "\tCachedChallengeMachines        uint64 `koanf:\"cached-challenge-machines\"`",
+            "\tInitialSteps                   uint64 `koanf:\"initial-steps\"`",
+            "\tExperimentalRecordedHashStride uint64 `koanf:\"experimental-recorded-hash-stride\"`",
+            "\tExperimentalMaxRecordedHashes  uint64 `koanf:\"experimental-max-recorded-hashes\"`",
+            "\tExperimentalSerializeQueries   bool   `koanf:\"experimental-serialize-queries\"`",
+            "\tExperimentalRefineRanges       bool   `koanf:\"experimental-refine-ranges\"`",
+            "}",
+            "",
+            "var DefaultMachineCacheConfig = MachineCacheConfig{",
+            "\tCachedChallengeMachines:       4,",
+            "\tInitialSteps:                  100000,",
+            "\tExperimentalMaxRecordedHashes: 4096,",
+            "}",
+            "",
+            "func MachineCacheConfigConfigAddOptions(prefix string, f *pflag.FlagSet) {",
+            "\tf.Uint64(prefix+\".initial-steps\", DefaultMachineCacheConfig.InitialSteps, \"initial steps between machines\")",
+            "\tf.Uint64(prefix+\".cached-challenge-machines\", DefaultMachineCacheConfig.CachedChallengeMachines, \"how many machines to store in cache while working on a challenge (should be even)\")",
+            "}"
+          ]
+        }
+      ]
+    },
+    "go-ethereum/rpc/handler.go": {
+      "SHA256": "2b5137226c87035a44790a761526a0655d8067236267120ad29aa39fac72fab2",
+      "remotePath": "/root/gl3-final-pairing/source05/go-ethereum/rpc/handler.go",
+      "excerpts": [
+        {
+          "start": 517,
+          "end": 542,
+          "lines": [
+            "// handleCallMsg executes a call message and returns the answer.",
+            "func (h *handler) handleCallMsg(ctx *callProc, msg *jsonrpcMessage) *jsonrpcMessage {",
+            "\tstart := time.Now()",
+            "\tswitch {",
+            "\tcase msg.isNotification():",
+            "\t\t// Notifications don't get a response written to the client, but the",
+            "\t\t// answer is returned so the caller can record errors on the SERVER span.",
+            "\t\tresp := h.handleCall(ctx, msg)",
+            "\t\th.log.Debug(\"Served \"+msg.Method, \"duration\", time.Since(start))",
+            "\t\treturn resp",
+            "",
+            "\tcase msg.isCall():",
+            "\t\tresp := h.handleCall(ctx, msg)",
+            "\t\tvar logctx []any",
+            "\t\tlogctx = append(logctx, \"reqid\", idForLog{msg.ID}, \"duration\", time.Since(start))",
+            "\t\tif resp.Error != nil {",
+            "\t\t\tje := resp.decodeError()",
+            "\t\t\tlogctx = append(logctx, \"err\", je.Message)",
+            "\t\t\tif je.Data != nil {",
+            "\t\t\t\tlogctx = append(logctx, \"errdata\", formatErrorData(je.Data))",
+            "\t\t\t}",
+            "\t\t\th.log.Warn(\"Served \"+msg.Method, logctx...)",
+            "\t\t} else {",
+            "\t\t\th.log.Debug(\"Served \"+msg.Method, logctx...)",
+            "\t\t}",
+            "\t\treturn resp"
+          ]
+        },
+        {
+          "start": 705,
+          "end": 733,
+          "lines": [
+            "type limitedBuffer struct {",
+            "\toutput []byte",
+            "\tlimit  int",
+            "}",
+            "",
+            "func (buf *limitedBuffer) Write(data []byte) (int, error) {",
+            "\tavail := buf.limit - len(buf.output)",
+            "\tif avail <= 0 {",
+            "\t\treturn 0, errTruncatedOutput",
+            "\t}",
+            "\tif len(data) <= avail {",
+            "\t\tbuf.output = append(buf.output, data...)",
+            "\t\treturn len(data), nil",
+            "\t}",
+            "\tbuf.output = append(buf.output, data[:avail]...)",
+            "\treturn avail, errTruncatedOutput",
+            "}",
+            "",
+            "func formatErrorData(v any) string {",
+            "\tbuf := limitedBuffer{limit: 1024}",
+            "\terr := json.NewEncoder(&buf).Encode(v)",
+            "\tswitch {",
+            "\tcase err == nil:",
+            "\t\treturn string(bytes.TrimRight(buf.output, \"\\n\"))",
+            "\tcase errors.Is(err, errTruncatedOutput):",
+            "\t\treturn fmt.Sprintf(\"%s... (truncated)\", buf.output)",
+            "\tdefault:",
+            "\t\treturn fmt.Sprintf(\"bad error data (err=%v)\", err)",
+            "\t}"
+          ]
+        }
+      ]
+    },
+    "go-ethereum/rpc/websocket.go": {
+      "SHA256": "612f1ca09d2a8c63ca000f232f969bb7a3e238fd4c6094f30eb3a6f158f714e0",
+      "remotePath": "/root/gl3-final-pairing/source05/go-ethereum/rpc/websocket.go",
+      "excerpts": [
+        {
+          "start": 36,
+          "end": 42,
+          "lines": [
+            "\twsReadBuffer       = 1024",
+            "\twsWriteBuffer      = 1024",
+            "\twsPingInterval     = 30 * time.Second",
+            "\twsPingWriteTimeout = 5 * time.Second",
+            "\twsPongTimeout      = 30 * time.Second",
+            "\twsDefaultReadLimit = 32 * 1024 * 1024",
+            ")"
+          ]
+        },
+        {
+          "start": 258,
+          "end": 262,
+          "lines": [
+            "\t\tmessageSizeLimit := int64(wsDefaultReadLimit)",
+            "\t\tif cfg.wsMessageSizeLimit != nil && *cfg.wsMessageSizeLimit >= 0 {",
+            "\t\t\tmessageSizeLimit = *cfg.wsMessageSizeLimit",
+            "\t\t}",
+            "\t\treturn newWebsocketCodec(conn, dialURL, header, messageSizeLimit), nil"
+          ]
+        },
+        {
+          "start": 294,
+          "end": 306,
+          "lines": [
+            "func newWebsocketCodec(conn *websocket.Conn, host string, req http.Header, readLimit int64) ServerCodec {",
+            "\tconn.SetReadLimit(readLimit)",
+            "\tvar buf []byte",
+            "\tencodeMsg := func(ctx context.Context, msg *jsonrpcMessage, isError bool) error {",
+            "\t\tbuf = appendMessage(buf[:0], msg)",
+            "\t\treturn conn.WriteMessage(websocket.TextMessage, buf)",
+            "\t}",
+            "\tencodeBatch := func(ctx context.Context, msgs []*jsonrpcMessage, isError bool) error {",
+            "\t\tbuf = appendBatch(buf[:0], msgs)",
+            "\t\treturn conn.WriteMessage(websocket.TextMessage, buf)",
+            "\t}",
+            "\twc := &websocketCodec{",
+            "\t\tjsonCodec:    NewFuncCodec(conn, encodeMsg, encodeBatch, conn.ReadJSON).(*jsonCodec),"
+          ]
+        }
+      ]
+    },
+    "go-ethereum/node/rpcstack.go": {
+      "SHA256": "dff7a0f7bade9b2aa46b80890d2751611c6eda5f19dc0836089829375afd9a8b",
+      "remotePath": "/root/gl3-final-pairing/source05/go-ethereum/node/rpcstack.go",
+      "excerpts": [
+        {
+          "start": 369,
+          "end": 380,
+          "lines": [
+            "\t\tsrv.SetHTTPBodyLimit(config.httpBodyLimit)",
+            "\t}",
+            "\tsrv.ApplyAPIFilter(config.apiFilter)",
+            "\tif config.wsReadLimit > 0 {",
+            "\t\tsrv.SetWebsocketReadLimit(config.wsReadLimit)",
+            "\t}",
+            "\tif err := RegisterApis(apis, config.Modules, srv); err != nil {",
+            "\t\treturn err",
+            "\t}",
+            "\th.wsConfig = config",
+            "\th.wsHandler.Store(&rpcHandler{",
+            "\t\tHandler: NewWSHandlerStack(srv.WebsocketHandler(config.Origins), config.jwtSecret),"
+          ]
+        },
+        {
+          "start": 478,
+          "end": 505,
+          "lines": [
+            "// ServeHTTP serves JSON-RPC requests over HTTP, implements http.Handler",
+            "func (h *virtualHostHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {",
+            "\t// if r.Host is not set, we can continue serving since a browser would set the Host header",
+            "\tif r.Host == \"\" {",
+            "\t\th.next.ServeHTTP(w, r)",
+            "\t\treturn",
+            "\t}",
+            "\thost, _, err := net.SplitHostPort(r.Host)",
+            "\tif err != nil {",
+            "\t\t// Either invalid (too many colons) or no port specified",
+            "\t\thost = r.Host",
+            "\t}",
+            "\thost = strings.ToLower(host)",
+            "\tif ipAddr := net.ParseIP(host); ipAddr != nil {",
+            "\t\t// It's an IP address, we can serve that",
+            "\t\th.next.ServeHTTP(w, r)",
+            "\t\treturn",
+            "\t}",
+            "\t// Not an IP address, but a hostname. Need to validate",
+            "\tif _, exist := h.vhosts[\"*\"]; exist {",
+            "\t\th.next.ServeHTTP(w, r)",
+            "\t\treturn",
+            "\t}",
+            "\tif _, exist := h.vhosts[host]; exist {",
+            "\t\th.next.ServeHTTP(w, r)",
+            "\t\treturn",
+            "\t}",
+            "\thttp.Error(w, \"invalid host specified\", http.StatusForbidden)"
+          ]
+        }
+      ]
+    },
+    "go-ethereum/node/node.go": {
+      "SHA256": "28e2cc4176fd109913ac6326ac0e2228ff5fc146eb1c4be17a9f142bd7fc99ad",
+      "remotePath": "/root/gl3-final-pairing/source05/go-ethereum/node/node.go",
+      "excerpts": [
+        {
+          "start": 451,
+          "end": 493,
+          "lines": [
+            "\tinitAuth := func(port int, secret []byte) error {",
+            "\t\t// Enable auth via HTTP",
+            "\t\tserver := n.httpAuth",
+            "\t\tif err := server.setListenAddr(n.config.AuthAddr, port); err != nil {",
+            "\t\t\treturn err",
+            "\t\t}",
+            "\t\tsharedConfig := rpcEndpointConfig{",
+            "\t\t\tjwtSecret:              secret,",
+            "\t\t\tbatchItemLimit:         engineAPIBatchItemLimit,",
+            "\t\t\tbatchResponseSizeLimit: engineAPIBatchResponseSizeLimit,",
+            "\t\t\thttpBodyLimit:          engineAPIBodyLimit,",
+            "\t\t}",
+            "\t\tif n.config.HTTPBodyLimit != 0 {",
+            "\t\t\tsharedConfig.httpBodyLimit = n.config.HTTPBodyLimit",
+            "\t\t}",
+            "\t\tif n.config.WSReadLimit != 0 {",
+            "\t\t\tsharedConfig.wsReadLimit = n.config.WSReadLimit",
+            "\t\t}",
+            "\t\terr := server.enableRPC(allAPIs, httpConfig{",
+            "\t\t\tCorsAllowedOrigins: DefaultAuthCors,",
+            "\t\t\tVhosts:             n.config.AuthVirtualHosts,",
+            "\t\t\tModules:            n.config.AuthModules,",
+            "\t\t\tprefix:             DefaultAuthPrefix,",
+            "\t\t\tdisableGzip:        true,",
+            "\t\t\trpcEndpointConfig:  sharedConfig,",
+            "\t\t})",
+            "\t\tif err != nil {",
+            "\t\t\treturn err",
+            "\t\t}",
+            "\t\tservers = append(servers, server)",
+            "",
+            "\t\t// Enable auth via WS",
+            "\t\tserver = n.wsServerForPort(port, true)",
+            "\t\tif err := server.setListenAddr(n.config.AuthAddr, port); err != nil {",
+            "\t\t\treturn err",
+            "\t\t}",
+            "\t\tif err := server.enableWS(allAPIs, wsConfig{",
+            "\t\t\tModules:           n.config.AuthModules,",
+            "\t\t\tOrigins:           n.config.AuthOrigins,",
+            "\t\t\tprefix:            DefaultAuthPrefix,",
+            "\t\t\trpcEndpointConfig: sharedConfig,",
+            "\t\t}); err != nil {",
+            "\t\t\treturn err"
+          ]
+        }
+      ]
+    },
+    "go-ethereum/log/logger.go": {
+      "SHA256": "4938457b053880e9bca8ff124ae37ad3ee8ff6b782342243cfc972ef7ffd8600",
+      "remotePath": "/root/gl3-final-pairing/source05/go-ethereum/log/logger.go",
+      "excerpts": [
+        {
+          "start": 159,
+          "end": 173,
+          "lines": [
+            "// Write logs a message at the specified level.",
+            "func (l *logger) Write(level slog.Level, msg string, attrs ...any) {",
+            "\tif !l.inner.Enabled(context.Background(), level) {",
+            "\t\treturn",
+            "\t}",
+            "",
+            "\tvar pcs [1]uintptr",
+            "\truntime.Callers(3, pcs[:])",
+            "",
+            "\tif len(attrs)%2 != 0 {",
+            "\t\tattrs = append(attrs, nil, errorKey, \"Normalized odd number of arguments by adding nil\")",
+            "\t}",
+            "\tr := slog.NewRecord(time.Now(), level, msg, pcs[0])",
+            "\tr.Add(attrs...)",
+            "\tl.inner.Handler().Handle(context.Background(), r)"
+          ]
+        }
+      ]
+    },
+    "go-ethereum/log/handler_glog.go": {
+      "SHA256": "a7bc5560033e6717cf86e4ff301ebfb8d66afad6039b3a503e3586ccb84b3fae",
+      "remotePath": "/root/gl3-final-pairing/source05/go-ethereum/log/handler_glog.go",
+      "excerpts": [
+        {
+          "start": 145,
+          "end": 151,
+          "lines": [
+            "// Enabled implements slog.Handler, reporting whether the handler handles records",
+            "// at the given level.",
+            "func (h *GlogHandler) Enabled(ctx context.Context, lvl slog.Level) bool {",
+            "\t// fast-track skipping logging if vmodule is not enabled or level too low",
+            "\tcfg := h.config.Load()",
+            "\treturn len(cfg.patterns) > 0 || cfg.level <= lvl",
+            "}"
+          ]
+        }
+      ]
+    },
+    "cmd/util/confighelpers/configuration.go": {
+      "SHA256": "fb8d0c7631602ca8a169e73fc4b986b5c6259f64a1af412df821c3fc538d6f9a",
+      "remotePath": "/root/gl3-final-pairing/source05/cmd/util/confighelpers/configuration.go",
+      "excerpts": [
+        {
+          "start": 270,
+          "end": 287,
+          "lines": [
+            "func EndCommonParse(k *koanf.Koanf, config interface{}) error {",
+            "\tdecoderConfig := mapstructure.DecoderConfig{",
+            "\t\tErrorUnused: true,",
+            "",
+            "\t\t// Default values",
+            "\t\tDecodeHook: mapstructure.ComposeDecodeHookFunc(",
+            "\t\t\tstringToSliceDurationHookFunc(\",\"),",
+            "\t\t\tmapstructure.StringToTimeDurationHookFunc()),",
+            "\t\tMetadata:         nil,",
+            "\t\tResult:           config,",
+            "\t\tWeaklyTypedInput: true,",
+            "\t}",
+            "\terr := k.UnmarshalWithConf(\"\", config, koanf.UnmarshalConf{DecoderConfig: &decoderConfig})",
+            "\tif err != nil {",
+            "\t\treturn err",
+            "\t}",
+            "",
+            "\treturn nil"
+          ]
+        },
+        {
+          "start": 320,
+          "end": 340,
+          "lines": [
+            "func DumpConfig(k *koanf.Koanf, extraOverrideFields map[string]interface{}) error {",
+            "\toverrideFields := map[string]interface{}{\"conf.dump\": false}",
+            "",
+            "\t// Don't keep printing configuration file",
+            "\tfor k, v := range extraOverrideFields {",
+            "\t\toverrideFields[k] = v",
+            "\t}",
+            "",
+            "\terr := k.Load(confmap.Provider(overrideFields, \".\"), nil)",
+            "\tif err != nil {",
+            "\t\treturn fmt.Errorf(\"error removing extra parameters before dump: %w\", err)",
+            "\t}",
+            "",
+            "\tc, err := k.Marshal(json.Parser())",
+            "\tif err != nil {",
+            "\t\treturn fmt.Errorf(\"unable to marshal config file to JSON: %w\", err)",
+            "\t}",
+            "",
+            "\tfmt.Println(string(c))",
+            "\tos.Exit(0)",
+            "\treturn fmt.Errorf(\"Unreachable\")"
+          ]
+        }
+      ]
+    }
+  },
+  "scope": {
+    "configurationResearchOnly": true,
+    "productionAccepted": false,
+    "licenseAccepted": false,
+    "newBuilds": 0,
+    "serviceBinds": 0,
+    "walletOrCredentialReads": 0,
+    "mainnetCalls": 0,
+    "activatedConfig": false,
+    "privateCache03LifecycleUntouched": true,
+    "source05OrdinaryBinariesModified": false,
+    "allExecutableChecksOnExistingRunpod": true
+  },
+  "proposedProfile": {
+    "status": "PROPOSED_FRAGMENTS_WITH_NULL_UNKNOWNS_NOT_A_RUNNABLE_CONFIG",
+    "dedicatedValidatorConfigFragment": {
+      "conf": {
+        "reload-interval": "0s"
+      },
+      "log-level": "WARN",
+      "log-type": "plaintext",
+      "http": {
+        "addr": "",
+        "api": []
+      },
+      "ws": {
+        "addr": "",
+        "api": [],
+        "expose-all": false
+      },
+      "ipc": {
+        "path": ""
+      },
+      "auth": {
+        "addr": "127.0.0.1",
+        "port": null,
+        "api": [
+          "validation"
+        ],
+        "origins": [
+          "localhost"
+        ],
+        "jwtsecret": null
+      },
+      "validation": {
+        "use-jit": false,
+        "api-auth": true,
+        "api-public": false,
+        "wasm": {
+          "root-path": null,
+          "enable-wasmroots-check": true,
+          "allowed-wasm-module-roots": [
+            "0x865168ea04ee58578a710a5270c22495c90b1c0f2226d39fecbb9eac4ea3f086"
+          ]
+        },
+        "arbitrator": {
+          "experimental-bound-execution-creations": true,
+          "workers": null,
+          "execution-run-timeout": "5m",
+          "output-path": null,
+          "execution": {
+            "cached-challenge-machines": 2,
+            "initial-steps": 100000,
+            "experimental-recorded-hash-stride": 4294967296,
+            "experimental-max-recorded-hashes": 4096,
+            "experimental-serialize-queries": true,
+            "experimental-refine-ranges": true
+          }
+        }
+      }
+    },
+    "nodeConfigTransportFragment": {
+      "conf": {
+        "reload-interval": "0s"
+      },
+      "log-level": "WARN",
+      "validation": {
+        "use-jit": false,
+        "wasm": {
+          "root-path": null,
+          "enable-wasmroots-check": true,
+          "allowed-wasm-module-roots": [
+            "0x865168ea04ee58578a710a5270c22495c90b1c0f2226d39fecbb9eac4ea3f086"
+          ]
+        }
+      },
+      "node": {
+        "block-validator": {
+          "enable": null,
+          "current-module-root": "current",
+          "pending-upgrade-module-root": "",
+          "validation-server-configs-list": "default",
+          "validation-server": {
+            "url": null,
+            "jwtsecret": null,
+            "timeout": "0s",
+            "retries": 0,
+            "arg-log-limit": 2048,
+            "websocket-message-size-limit": 268435456
+          },
+          "experimental-bold-execution-cache": {
+            "enable": true,
+            "max-entries": 1,
+            "idle-timeout": "4h"
+          }
+        }
+      }
+    },
+    "existingJSONOnlyFieldsWithoutCLIFlags": [
+      "validation.arbitrator.experimental-bound-execution-creations",
+      "validation.arbitrator.execution.experimental-recorded-hash-stride",
+      "validation.arbitrator.execution.experimental-max-recorded-hashes",
+      "validation.arbitrator.execution.experimental-serialize-queries",
+      "validation.arbitrator.execution.experimental-refine-ranges"
+    ],
+    "desiredServerWSRequestLimitBytes": 3221225472,
+    "existingServerWSRequestLimitConfigKey": null,
+    "existingServerWSRequestLimitCLIFlag": null,
+    "ordinaryValidatorHardcodedWSRequestLimitBytes": 9223372036854775807,
+    "ordinaryNodeDefaultWSRequestLimitBytes": 33554432,
+    "clientResponseReadLimitIsNotServerRequestLimit": true,
+    "sharedBeforeConversionUploadAdmissionConfigKey": null,
+    "clientConversionGateImplementedInOrdinarySource05": false,
+    "serverCreationGateIsNotSharedUploadGate": true,
+    "serverCreationGateDoesNotCoverValidationValidate": true,
+    "boundedUploadDeadlineSeconds": null,
+    "timeoutZeroIsProvisionalUntilOuterDeadlineChosen": true,
+    "positiveResponseTimeoutCanBeConfiguredButAppliesToAllCalls": true,
+    "observedFixtureUploadInitializationCloseSeconds": 43.865702031,
+    "observedFixtureRequestBytes": 2569360144,
+    "capMarginForObservedFixtureBytes": 651865328,
+    "nullsMustBeResolvedBeforeGeneratingRunnableConfig": true,
+    "nodeOtherRolesAuthAndFinancialConfigurationNotSelectedByThisPacket": true
+  },
+  "loggingReview": {
+    "knownPayloadClientMethods": [
+      "validation_validate",
+      "validation_createExecutionRun"
+    ],
+    "otherPotentiallyLargeResultMethods": [
+      "validation_getProofAt",
+      "validation_getMachineHashesWithStepSize"
+    ],
+    "requestLogLevel": "TRACE",
+    "successfulResponseLogLevel": "TRACE",
+    "ordinaryErrorResponseLogLevel": "INFO",
+    "knownAlreadyErrorResponseLogLevel": "TRACE",
+    "rawClientAttributeKeys": [
+      "args",
+      "result",
+      "errorData"
+    ],
+    "fallbackArgLogLimitPerArgument": 2048,
+    "limitBoundsMarshalAllocation": false,
+    "clientLazyPayloadFormattingSkippedAtStableWARNOrERROR": true,
+    "warnAlsoSuppressesInfoOperationalMetadata": true,
+    "infoOrTraceRetentionRequiresPreFormatterPayloadFilter": true,
+    "ordinarySource05HasFixturePayloadFilter": false,
+    "allPathNoLargeFormattingGuaranteedByERROR": false,
+    "conditionalServerPath": {
+      "callsite": "go-ethereum/rpc/handler.go:533-538",
+      "formatter": "formatErrorData",
+      "formattedBeforeLogLevelCheck": true,
+      "errorDataOutputLimitBytes": 1024,
+      "outputLimitBoundsEncoderAllocation": false,
+      "postRecordSlogFilterCanUndoEagerFormatting": false,
+      "serverAttributeKey": "errdata",
+      "serverMessagePrefix": "Served validation_",
+      "largeValidationDataErrorObserved": false,
+      "reviewedValidationAPIIntentionallyConstructsRawInputDataError": false,
+      "pinnedGoEncoderSource": "/root/bounded-restore/toolchain/go/src/encoding/json/stream.go:204-235"
+    },
+    "logRotationOrOutputFormatIsNotAllocationGuard": true,
+    "moreVerboseHotReloadOrModuleOverrideWouldInvalidateClientSuppressionAssumption": true
+  },
+  "authenticationReview": {
+    "requiresExplicitLoopbackAuthenticatedURLForSeparateProcess": true,
+    "selfAuthMeansSameProcessAttachedStack": true,
+    "secretContentsRead": false,
+    "chosenSecretPath": null,
+    "chosenCoordinatedAuthPort": null,
+    "originsAreAuthentication": false,
+    "authListenerAlsoRegistersHTTP": true,
+    "emptyPublicHTTPAddrDisablesAuthHTTP": false,
+    "emptyAuthVirtualHostsBlocksIPLiteralHTTPHosts": false,
+    "authenticationOrHandshakeTestedByThisLane": false
+  },
+  "machineReview": {
+    "existingMachineDirectoryIsCollectionRoot": false,
+    "productionCollectionRoot": null,
+    "requiredLayout": "<collection>/<exact module-root hex or latest>/module-root.txt plus machine.v2.wavm.br and until-host-io-state.bin",
+    "stagedMachineCollectionCreated": false,
+    "useExistingMachineBytesAndRootRequired": true,
+    "nodeStartupCompatibilityCheckLogsAndContinuesOnError": true,
+    "configurationAloneIsFailClosedParentRootBinding": false,
+    "deployedParentGenesisRootBindingAccepted": false
+  },
+  "priorEvidence": {
+    "loggingTransportReview": "research/gl3/mainnet/dispute/full-lifecycle/logging-transport-review/README.md",
+    "originalAuthoritativeLogBytes": 5148013867,
+    "giantLines": 2,
+    "eachGiantLineBytes": 2570970862,
+    "connectionResetsConsistentWith32MiBLimitNotSeparateServerLimitReceipt": true,
+    "passedFullSizeInitializationOnlyPreflight": "research/gl3/mainnet/dispute/full-lifecycle/large-input-preflight/README.md",
+    "candidate03CompositionReview": "research/gl3/mainnet/dispute/host-cache-integration/candidate03-review.json",
+    "testOnlyHelpersAreNotOrdinaryReleaseEvidence": true
+  },
+  "blockingGaps": [
+    {
+      "id": "native-3gib-server-request-cap",
+      "existingKnob": null,
+      "resolved": false
+    },
+    {
+      "id": "shared-before-conversion-client-admission",
+      "existingKnob": null,
+      "resolved": false
+    },
+    {
+      "id": "coordinated-endpoint-secret-and-staged-machine-paths",
+      "selectedValues": null,
+      "resolved": false
+    },
+    {
+      "id": "bounded-upload-deadline",
+      "selectedValue": null,
+      "resolved": false
+    },
+    {
+      "id": "global-no-large-error-data-formatting",
+      "existingLevelOnlyGuarantee": false,
+      "resolved": false
+    }
+  ],
+  "pinnedGoEncoderEvidence": {
+    "remotePath": "/root/bounded-restore/toolchain/go/src/encoding/json/stream.go",
+    "SHA256": "bb26b2442db6a686fc7f823ea9cc89babe26ac988ec7d8caf4a157aeb60d92f2",
+    "start": 204,
+    "end": 235,
+    "lines": [
+      "func (enc *Encoder) Encode(v any) error {",
+      "\tif enc.err != nil {",
+      "\t\treturn enc.err",
+      "\t}",
+      "",
+      "\te := newEncodeState()",
+      "\tdefer encodeStatePool.Put(e)",
+      "",
+      "\terr := e.marshal(v, encOpts{escapeHTML: enc.escapeHTML})",
+      "\tif err != nil {",
+      "\t\treturn err",
+      "\t}",
+      "",
+      "\t// Terminate each value with a newline.",
+      "\t// This makes the output look a little nicer",
+      "\t// when debugging, and some kind of space",
+      "\t// is required if the encoded value was a number,",
+      "\t// so that the reader knows there aren't more",
+      "\t// digits coming.",
+      "\te.WriteByte('\\n')",
+      "",
+      "\tb := e.Bytes()",
+      "\tif enc.indentPrefix != \"\" || enc.indentValue != \"\" {",
+      "\t\tenc.indentBuf, err = appendIndent(enc.indentBuf[:0], b, enc.indentPrefix, enc.indentValue)",
+      "\t\tif err != nil {",
+      "\t\t\treturn err",
+      "\t\t}",
+      "\t\tb = enc.indentBuf",
+      "\t}",
+      "\tif _, err = enc.w.Write(b); err != nil {",
+      "\t\tenc.err = err",
+      "\t}"
+    ]
+  }
+}

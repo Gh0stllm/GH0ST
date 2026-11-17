@@ -1,6 +1,10 @@
 # GL3 · Linux acceptance notebook
 
-**R40: candidate03 and corrected no-engine batch sealing pass their scoped checks. The corrected private lifecycle is now RUNNING_NOT_ACCEPTED after new source/geometry review and authorization. The first stopped trial and its failure remain preserved; 20-game storage and production deployment are unaccepted.**
+**R41: ordinary source05 binaries and parser checks pass; the corrected candidate03 dispute and separate checkpoint progress replay are RUNNING_NOT_ACCEPTED. The 20-game storage and production gates remain open.**
+
+[Ordinary binaries](production/final-pairing/README.md) · [Checkpoint guest experiment](storage/full-checkpoint-guest/README.md) · [R41 history](../HISTORY.md#41--build-ordinary-operator-binaries-and-isolate-a-checkpoint-guest--17-november)
+
+The R40 paragraphs below preserve that milestone’s scoped results. R41 adds builds and the isolated checkpoint experiment; it grants no deployment acceptance.
 
 The fixed candidate passes **24 top-level tests plus 25 subtests in each normal and Go race suite**. Actual one-minute renewal passes in **60.056 s** under a **300 s server TTL**; transport-first shutdown fallback passes normally and under race detection and is recovered by server idle expiry. The final fixture compiles in **21.416 s** and its actual parent getter/binding check exits 0 in **0.465 s**. These are scoped host and configuration passes, not a completed dispute. [Candidate03 evidence](dispute/host-cache-integration/CANDIDATE-03.md).
 

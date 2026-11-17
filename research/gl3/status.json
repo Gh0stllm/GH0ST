@@ -480,7 +480,7 @@
     "twentyGamesCapacityAccepted": false,
     "evidence": "mainnet/storage/checkpoint-study/README.md"
   },
-  "currentResearchMilestone": "R40 candidate03/private review and corrected no-engine seal pass; corrected kit3 fullretry RUNNING_NOT_ACCEPTED; source05 focused normal/race pass, production pairing and20-game storage blocked",
+  "currentResearchMilestone": "R41 ordinarysource05 builds/parser pass; source06 host transport integration in development; corrected03 full dispute and checkpoint progress replay RUNNING_NOT_ACCEPTED;20game storage/production unaccepted",
   "activeBoundedInterpreter": {
     "status": "PASSED_ONE_TERMINAL_BLOCK_REFERENCE_ONLY",
     "passed": true,
@@ -901,7 +901,7 @@
   "historicalStoppedFullLifecycleExitCode": -15,
   "historicalStoppedFullLifecycleTerminationReason": "Matching independent guest failed; preserve exact snapshots and stop dependent trial",
   "currentPrivateLifecycle": {
-    "stage": 40,
+    "stage": 41,
     "hostCandidate": "experimental-host-cache-03",
     "hostCandidateManifestSHA256": "4ed531f0d90ff3234cf457f98184b0103dcdd8e6c1f83597c4a7f3ceb56ee38e",
     "moduleRoot": "0x865168ea04ee58578a710a5270c22495c90b1c0f2226d39fecbb9eac4ea3f086",
@@ -973,7 +973,7 @@
     "runID": "c1af59a6b57f48d3a268f8b4ec6ee2a4",
     "controllerPID": 191134,
     "testPID": 191190,
-    "gethPID": null,
+    "gethPID": 191228,
     "remoteEvidence": "/root/future-lifecycle-865-hostcache-v2/runs/c1af59a6b57f48d3a268f8b4ec6ee2a4/evidence",
     "scope": "Corrected kit3 private selected865 geometry43 retry after no-engine seal pass; new private composition/root review authorizes this run only, not production or a completed dispute",
     "privateGeometryAndSourceReviewAccepted": true,
@@ -982,12 +982,12 @@
     "binarySHA256": "9c47efc951eadd55c2349151ed2c726ad7d3a61f4ff618117b7be27f035dadc6",
     "finalBinaryBindingGetterTestExitCode": 0,
     "finalBinaryBindingGetterTestSeconds": 0.4585583,
-    "strictAuditStatus": "PENDING_TERMINAL_INPUT",
+    "strictAuditStatus": "EXACT_PAIR_FOUND_WAITING_PROOF_CONFIRMATION_REFUND",
     "actualExitCode": null,
     "processSeconds": null,
     "processActive": true,
-    "terminalInputSHA256": null,
-    "terminalInputBytesVerified": false,
+    "terminalInputSHA256": "845e9b44b55520d07bad7a89a4d0481ada032191ea507c1b287cba12a49478c2",
+    "terminalInputBytesVerified": true,
     "exactTargetOneStepAncestryAccepted": false,
     "exactTargetAssertionConfirmationAccepted": false,
     "exactEdgeCollateralRefundAccepted": false,
@@ -1204,19 +1204,24 @@
     "controllerKit3CompileSeconds": 13.748695
   },
   "productionOperator05": {
-    "status": "FOCUSED_GUARDS_PASSED_ORDINARY_ACTIVATED_BUILD_AND_GENESIS_PAIRING_PENDING",
+    "status": "ORDINARY_BINARIES_AND_PARSER_PASSED_NOT_ACTIVATED",
     "normalTopLevelPasses": 10,
     "normalSubtestPasses": 24,
     "raceTopLevelPasses": 10,
     "raceSubtestPasses": 24,
     "fixesSource04RPCStartFailureTransportCleanupGap": true,
     "actualLoopbackFailedHandshakeCovered": true,
-    "ordinaryNewCLIEmitted": false,
+    "ordinaryNewCLIEmitted": true,
     "productionClientMachineGenesisPairAccepted": false,
     "completeChainStartupAccepted": false,
     "productionAccepted": false,
     "evidence": "mainnet/production/final-pairing/source05/evidence/acceptance.json",
-    "allExecutionOnRunpod": true
+    "allExecutionOnRunpod": true,
+    "ordinaryNodeSHA256": "0724b8cc02c8205deb24eaad7b2c3b3a7f87778cdb35afa2cd884c48338a9e3d",
+    "ordinaryValidatorSHA256": "e26b0a9f8c4e61ff63d76749308981d546c4f71045c2ee9aa9644487fa61c083",
+    "compiledSourceRecordsRehashedAfterBuild": 6202,
+    "ordinaryServiceActivated": false,
+    "artifactEvidence": "mainnet/production/final-pairing/ordinary05/artifact-lock.json"
   },
   "currentR40ObservedProgress": {
     "evidence": "mainnet/dispute/host-cache-lifecycle/evidence/retry-current-observation.json",
@@ -1235,5 +1240,50 @@
     "fullLifecyclePassed": false,
     "productionAccepted": false,
     "publicDeployment": false
+  },
+  "currentR41ObservedProgress": {
+    "evidence": "mainnet/dispute/host-cache-lifecycle/evidence/retry-r41-observation.json",
+    "asOfUTC": "2026-11-17T07:28:20.100075+00:00",
+    "runID": "c1af59a6b57f48d3a268f8b4ec6ee2a4",
+    "status": "RUNNING_NOT_ACCEPTED",
+    "exactTargetPairs": 1,
+    "cacheRecording": {
+      "RequestedSteps": 863288426496,
+      "ActualSteps": 858993459200,
+      "StepCalls": 225,
+      "HashCalls": 201,
+      "RecordedPoints": 201,
+      "Complete": false,
+      "Disabled": false,
+      "FinalStep": 0
+    },
+    "registeredRuns": 1,
+    "proofAccepted": false,
+    "confirmationAccepted": false,
+    "edgeCollateralRefundAccepted": false
+  },
+  "checkpointGuestProfile": {
+    "evidence": "mainnet/storage/full-checkpoint-guest/README.md",
+    "status": "PROGRESS_BLOCK_INTERPRETER_RUNNING_NOT_ACCEPTED",
+    "nativeTopLevelPasses": 6,
+    "nativeSubtestPasses": 50,
+    "moduleRoot": "0x2a423e3e57903ae5bcb7385608d05387201b5cde24a7d4138d5b7ec09cb9e608",
+    "nativeCaptureExitCode": 0,
+    "nativeCaptureSeconds": 44.89900662191212,
+    "nativeInputBytes": 600010302,
+    "originalEngineQuanta": 4,
+    "engineDecisionStillPending": true,
+    "full24mSearchExecuted": false,
+    "proofAccepted": false,
+    "productionAccepted": false,
+    "twentyGamesAccepted": false,
+    "enginePolicyChanged": false,
+    "selected865Changed": false
+  },
+  "productionTransport06": {
+    "status": "ISOLATED_HOST_ONLY_IMPLEMENTATION_IN_PROGRESS",
+    "source05BinariesInclude06": false,
+    "current03RunChanged": false,
+    "productionAccepted": false
   }
 }
