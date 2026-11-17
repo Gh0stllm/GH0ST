@@ -2,9 +2,11 @@
 
 # GH0ST L3 · GL3 research notebook
 
-**R53 · Warm proof optimization passes.** The selected same-source native-CPU build proves the fixed sixteen-transfer EVM batch in215.09 seconds, versus360.96 seconds for the warm generic build:40.41% less full-call time and compute allocation. All three fresh proofs pass SDK and actual Solidity verification, including meaningful rejection checks. [Warm results and receipts](zk-batch/warm-optimization/README.md) · [Earlier cold/Nitro comparison](zk-batch/costs/README.md).
+**R54 · ZK is the selected GL3 path.** State/data binding, canonical native-GH0ST withdrawals and full Stylus/LLM proof support are now being integrated in parallel on Runpod. The portable canonical interpreter passes RV32 typechecking; guest linking/execution and a genuine full STF proof remain open. [Active integration notebook](zk-rollup/README.md) · [Statement and data binding](zk-rollup/STATEMENT.md).
 
-**The Nitro base launch remains at its separately tested R44 profile.** Its full private dispute, nonzero stake refund/replay rejection and11-case supervisor regression pass. Native-GH0ST recovery/withdrawal is a separate passed fixture. The user selected project-operated validators; exact custody/collateral, pricing and applicable license inputs remain unresolved. Public GL3 is not deployed, and the ZK benchmark does not yet cover production state/data coordination, withdrawals or Stylus/LLM proofs.
+**Public GL3 is not deployed.** The earlier Nitro launch and chess work remain preserved research. The selected new guest must prove actual Nitro/ArbOS execution rather than substitute the previous EVM-only guest. Applicable Nitro licensing and final operational/security acceptance remain launch requirements.
+
+**Completed performance reference:** the fixed sixteen-transfer EVM batch proves in215.09 seconds using the selected native-CPU build,40.41% below the warm generic reference. All three fresh reference proofs pass SDK and actual Solidity verification. This timing does not estimate full Stylus/STF proving. [Warm results and receipts](zk-batch/warm-optimization/README.md).
 
 [Base-chain work](base/README.md) · [ZK cost experiment](zk-batch/README.md) · [Sequential history](HISTORY.md)
 

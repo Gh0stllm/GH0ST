@@ -547,3 +547,13 @@ The final verifier job exits0 in40.947 seconds. Independent raw receipt/calldata
 All heavy work stays on Runpod. The selected binary requires compatible CPU features or a rebuild; warm cache is worker-local. The fixed-input alternatives do not represent three appended production batches. State/data coordination, withdrawals, Stylus/LLM proof coverage and public deployment remain separate gates. The original Nitro/chess builds are unchanged.
 
 [Final measurements, selected profile and all receipts](zk-batch/warm-optimization/README.md).
+
+## 54 · Select ZK and start canonical state/data, bridge and Stylus integration — 17 November
+
+The user selects ZK for GL3 and requests state/data binding, withdrawals and Stylus/LLM proof support, with all tests on Runpod and incremental GitHub updates. The chosen research route proves the canonical Nitro portable WAVM interpreter, retaining ArbOS/Stylus semantics and native GH0ST gas. The earlier ethrex EVM guest remains a performance reference; its160-byte statement cannot authorize the new chain.
+
+Source review distinguishes mocked SP1 scaffolding in Nitro3.12.2 from the newer upstream RV64 executor research. The latter has unbound host-provided AOT artifacts and incomplete activation handling, so it is not promoted to production. An isolated compile-gate-only portable interpreter experiment passes RV32 typechecking; the actual ELF link then fails on missing RV32 Brotli libraries. Pinned cross-compilation is in progress, with no decompression stub or accepted full guest proof.
+
+The proposed23-word statement binds all four GlobalState hashes, both cursors, machine/profile identity, deployment domain and authenticated inbox ranges. Registry source checks public sequencer/delayed bytes against canonical bridge accumulators. Native GH0ST bridge work preserves canonical ordered outbox proofs and adds exact token-transfer accounting. Coordinator/bridge units, real guest execution, full unchanged-model Stylus inference and a real proof-finalized withdrawal remain open gates. No public deployment, agreement acceptance or real funds move.
+
+[Active ZK integration](zk-rollup/README.md) · [Public statement and data codec](zk-rollup/STATEMENT.md) · [Pinned Stylus source audit](zk-rollup/stylus/README.md).
