@@ -2,6 +2,8 @@
 
 **Complete private benchmark passed: sixteen ERC20 transfers → real Groth16 proof → actual Solidity verification and three mined rejection tests.** All builds, execution, proofs and private-chain verification ran on Runpod. The tested Nitro build and its frozen deployment profile remain unchanged.
 
+**Latest R53:** the selected native-CPU warm profile reduces full-call time from360.96 to215.09 seconds and compute allocation from$0.11230 to$0.06692. Three fresh A/B proofs pass SDK and actual Solidity verification. [Warm optimization report](warm-optimization/README.md).
+
 | Final measured result | Value |
 | :--- | ---: |
 | Cold full proof, including official circuit fetch and final wrapping | **591.23 seconds** |

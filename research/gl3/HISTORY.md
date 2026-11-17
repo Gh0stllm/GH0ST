@@ -535,3 +535,15 @@ The isolated same-binary warm run passes actual SDK verification with exit0 and 
 The same-source native-CPU build passes with exit0 in141.174 seconds, matching the complete original guest and showing the CPU flags in actual dependency fingerprints. Its first launch stops before proving on a runner-affinity assertion; the failed preflight is preserved and a scoped corrected controller starts a fresh native28 run. A one-thread-per-physical-core comparison is queued next. No optimized timing is accepted at this milestone, and proof security/circuit/guest remain unchanged.
 
 [Warm measurements and raw results](zk-batch/warm-optimization/README.md).
+
+## 53 · Select the faster CPU profile and verify every fresh proof on chain — 17 November
+
+All three controlled warm proofs pass. Full Groth16 calls take360.960028 seconds with the generic28-thread binary,215.093034 seconds with the native28-thread binary and258.122034 seconds with16 distinct-core threads. The native28 profile is selected:40.410844% less full-call time and compute allocation than the warm reference. At the current$1.12/hour worker rate its call allocates$0.066918 compute, versus$0.112299. Sampled owned RSS peaks are38.335/38.793/42.704GB respectively. The141.174-second native build is separate setup cost; hourly rent is unchanged. These are single-batch samples, not guaranteed steady-state distributions or a minimum-memory test.
+
+The exact guest, circuit, program key, proof security and all160 public bytes remain fixed. Each260-byte proof is newly generated and SDK verified. An unchanged Solidity verifier then actually mines successful verification for all three alternatives; selected native28 uses227,287 gas, the others227,299 each. Three valid-curve changed-proof/output/key negatives actually mine status0 with `ProofInvalid`, well below the8m cap. Exact raw16 data publication uses59,152 gas, giving286,439 for selected verification plus separate data. These private components charge zero poster gas and are not all-in mainnet fees.
+
+The final verifier job exits0 in40.947 seconds. Independent raw receipt/calldata/source/cleanup checks pass, including every alternative proof. The145-member public capsule is306,369 bytes, SHA256 `9c9bd0d3b8b9d4b8804198d308682137d98468056b48b06756edb002460ae0a4`, with round-trip verification on Runpod and compressed-byte verification after transfer. No private key/config or database is published. A pre-proof affinity failure and two pre-chain verifier setup failures remain preserved; no expensive proof is rebuilt. Cumulative OOM counters remain zero, with recorded memory-limit cache reclamation events.
+
+All heavy work stays on Runpod. The selected binary requires compatible CPU features or a rebuild; warm cache is worker-local. The fixed-input alternatives do not represent three appended production batches. State/data coordination, withdrawals, Stylus/LLM proof coverage and public deployment remain separate gates. The original Nitro/chess builds are unchanged.
+
+[Final measurements, selected profile and all receipts](zk-batch/warm-optimization/README.md).

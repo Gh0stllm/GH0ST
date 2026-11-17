@@ -2,7 +2,7 @@
 
 # GH0ST L3 · GL3 research notebook
 
-**R50 · Complete EVM ZK-batch benchmark passes.** Sixteen ERC20 transfers reach a real260-byte Groth16 proof and actual Solidity verification, including three meaningful mined rejection tests. The cold proof takes591.23 seconds with41.34GB sampled peak RAM and about$0.184 compute; verification uses227,263 gas. Matched Nitro batching/replay also passes. [Measured comparison and exact boundaries](zk-batch/costs/README.md) · [Proof and receipts](zk-batch/README.md).
+**R53 · Warm proof optimization passes.** The selected same-source native-CPU build proves the fixed sixteen-transfer EVM batch in215.09 seconds, versus360.96 seconds for the warm generic build:40.41% less full-call time and compute allocation. All three fresh proofs pass SDK and actual Solidity verification, including meaningful rejection checks. [Warm results and receipts](zk-batch/warm-optimization/README.md) · [Earlier cold/Nitro comparison](zk-batch/costs/README.md).
 
 **The Nitro base launch remains at its separately tested R44 profile.** Its full private dispute, nonzero stake refund/replay rejection and11-case supervisor regression pass. Native-GH0ST recovery/withdrawal is a separate passed fixture. The user selected project-operated validators; exact custody/collateral, pricing and applicable license inputs remain unresolved. Public GL3 is not deployed, and the ZK benchmark does not yet cover production state/data coordination, withdrawals or Stylus/LLM proofs.
 
