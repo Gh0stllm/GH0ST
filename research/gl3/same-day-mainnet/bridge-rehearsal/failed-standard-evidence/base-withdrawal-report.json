@@ -1,0 +1,118 @@
+{
+  "passed": false,
+  "publicDeployment": false,
+  "publicWrites": 0,
+  "realChainSpend": 0,
+  "allExecutionOnRunpod": true,
+  "chessPolicyChanged": false,
+  "parentNativeArbSysNotOverridden": true,
+  "scope": "Standard Nitro project-validator private native GH0ST bridge; actual Nitro parent and exact proposed zero-owner/zero-allocation child genesis; observed runtime snapshot and explicit synthetic32token remap",
+  "modelOrEngineExecuted": false,
+  "fastConfirmationPrivileged": false,
+  "executionHistoryCommitmentVerified": false,
+  "permissionlessFinalityTested": false,
+  "standardProjectValidatorRehearsal": true,
+  "steps": [
+    {
+      "label": "Fake root ETH funding",
+      "hash": "0x904630b16bb3503e44812784be347f4190c7aa5b1477464d9d6bc9039c6ac2b8",
+      "blockNumber": 2,
+      "gasUsed": "21000"
+    }
+  ],
+  "assertions": [],
+  "source": {
+    "scope": "Private synthetic balance-owner remap of frozen observed GH0ST sparse state; no canonical ledger or current public-state claim",
+    "publicChainId": 4663,
+    "publicBlockNumber": 116103301,
+    "publicBlockHash": "0x191ea361b84d5ae74969b74b8a46b7835d9efc3998ac6cbc00e00c302f7cf6a8",
+    "publicStateRoot": "0x2726fe2b93ead5585b271282396bad126188fdce57627a056656ca0540854f47",
+    "privateForkChainId": 94663007,
+    "privateSnapshotBlock": 116103304,
+    "privateFundingTransaction": "0x195127b84e2862fcbd1ebdc54a58bf3056611d94fde5f662a4c9cd425ca49626",
+    "privateFundingAmount": "32000000000000000000",
+    "holder": "0x1DE308660D70d15dac839c7f915cBcDCB2C341ea",
+    "originalPublicHolder": "0x8D6B11CFdF079e27C17e05Cb7Ea81235887691c6",
+    "token": "0x2eb2849cDE7957b86d0dFD4B59e450a9F9D15559",
+    "runtimeCodeHash": "0x7c38fa1b069b5e677034bab6219dd2f519f219f7637910131d9a0f58a05ae164",
+    "metadata": {
+      "name": "GH0ST",
+      "symbol": "GH0ST",
+      "decimals": 18,
+      "totalSupply": "997000000000000000000000000",
+      "source": "Read-only actual Robinhood calls at the pinned public block; native clone getters must match"
+    },
+    "initialStorageKeyCount": 34,
+    "tokenOwnerRolesFabricated": false,
+    "fullCanonicalStateCloned": false,
+    "canonicalMerkleProofVerificationPerformed": false,
+    "publicWrites": 0,
+    "balanceRemap": {
+      "oldHolder": "0xD8A479C1A3CA216CF780D8E34ED5DE3744ae9cb4",
+      "newHolder": "0x1DE308660D70d15dac839c7f915cBcDCB2C341ea",
+      "oldKey": "0x0e5c65a20c36428e60a303e6ab01ec56472e8836036ea1f97c576862c07f3e1f",
+      "newKey": "0x3cbae37030881d266d5248b6f54413d943969313352aa82a7be73e3ebcf763cb",
+      "amount": "32000000000000000000",
+      "slot": 0,
+      "totalSupplyUnchanged": true
+    },
+    "publicRPCUsed": false
+  },
+  "actorRoles": {
+    "owner": "0x1DE308660D70d15dac839c7f915cBcDCB2C341ea",
+    "player": "0x66e93D6d8120e3E462bD81EbC69735E6475c164c",
+    "batchPoster": "0x7A0576A359ad00C68bC5b4B0ce4aE467276aAe7e",
+    "allDistinct": true
+  },
+  "genesisSetup": {
+    "parentFakeETHAllocationExplicit": true,
+    "childNativeAllocationEmpty": true,
+    "tokenRuntimeAndFrozenSlotsWithExplicitBalanceRemap": true,
+    "originalPublicSourceRequeried": false,
+    "reusedPrivateFixtureFromPreviousAttempt": false,
+    "exactGenesisInputSHA256": {
+      "parent": "bbbdfccb01106d9867756bcbe2a9726960121a7363bb5c53545567288431c1b1",
+      "child": "3aa5dbefe94b57c6cdf50407581950a5780b4b3297d1de115534b360d52794b6"
+    },
+    "genesisGeneratorSHA256": "0c797bd8ecf079669ade4ddcd34d2000ec263c51e21831cea3fec71f0618e678",
+    "officialNativeBinarySHA256": "d9e778d3c513e106dab9de8ef04be9500093b0638cfd463e4d4ec542c214c4ed"
+  },
+  "parent": {
+    "actualNative": true,
+    "genesisHash": "0x7cf8a920122d88b4f6127596e9f2210cafc64730e8b562e655a55e5b32bea706",
+    "genesisStateRoot": "0x5f3ac5e66033726654e42dd0d0935c4df707da2d331903611052919c5b2c679e",
+    "hashAndStateRootMatchComputed": true,
+    "genesisValidationLogged": true,
+    "configuredMachineRoot": "0xc10cd7ec6acaf1c441a3f6bd0900ad20f15855ba775a96f1939118cbc629dc97",
+    "childToken": "0x0000000000000000000000000000000000000000",
+    "nativeArbSys": {
+      "reportedVersion": "116",
+      "chainId": "4663",
+      "arbBlockNumber": "0",
+      "code": "0xfe",
+      "notOverridden": true
+    }
+  },
+  "error": {
+    "message": "This integration helper is scoped to isolated local child4663007",
+    "stack": "AssertionError [ERR_ASSERTION]: This integration helper is scoped to isolated local child4663007\n    at Object.deployLocalNitroFactoryAndRollup (/workspace/gl3/same-day-mainnet/bridge-rehearsal/source/adapters/native-factory.cjs:180:10)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async file:///workspace/gl3/same-day-mainnet/bridge-rehearsal/source/run.mjs:50:14",
+    "rpc": null
+  },
+  "publicRPCMethods": [],
+  "ownedProcessExits": [
+    {
+      "label": "geth",
+      "pid": 101172,
+      "exitCode": 0,
+      "signal": null
+    },
+    {
+      "label": "parent",
+      "pid": 101193,
+      "exitCode": 0,
+      "signal": null
+    }
+  ],
+  "ownedProcessesRemaining": 0,
+  "asOfUTC": "2026-11-17T16:43:57.375Z"
+}

@@ -1,0 +1,9 @@
+# Local signing review — draft, not started
+
+The local review server and browser source are being prepared for the exact receipt-bound launch plan. They refuse to start without content-bound technical-gate evidence for the bridge rehearsal, genuine assertion and fast-confirm path, exact payout/replay rejection, minimum assertion period zero and the per-step runtime verifier. No real key or credential is embedded. The encrypted cold keystore stays on the Mac; only explicit user interaction in its localhost tab can unlock and sign. All build and test execution belongs on Runpod.
+
+The initial 30-action zero-owner candidate is superseded by the fee-calibrated temporary-owner setup plan. Do not build/start this review from the superseded candidate. The final reviewed plan must include or separately bind the temporary setup, fee recipients, authority removal and small pilot funding before public activation. Fixed budgets in this draft must be regenerated and reviewed against that exact candidate; an unsigned proposal is not spending approval.
+
+The full current AEP terms must be served as the actual pinned PDF. The operator person/entity and explicit terms, security and funding acceptance are collected only in the private local consent record. No agent accepts terms. Native-GH0ST payment routing remains separately unresolved; no burn or reserve is represented as satisfying the revenue-share obligation.
+
+The per-action verifier must authenticate pinned artifacts, all immutable values, constructor roles/getters, proxies and the actual RollupCreated receipt before a later transaction is broadcast. Signed bytes are journaled durably before broadcast; an uncertain result requires reconciliation of the same hashes, never a newly generated nonce or replacement. The public bridge remains disabled until final live readbacks match the selected profile.

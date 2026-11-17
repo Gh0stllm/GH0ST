@@ -1,0 +1,70 @@
+{
+  "status": "API_plan_unused_authorized_UI_changes_completed",
+  "domain": "gh0st.fyi",
+  "authoritativeProviderObserved": "Porkbun",
+  "source": "https://porkbun.com/llms/dns",
+  "existingAuthorizedPorkbunAccess": "User explicitly logged into OperaGX and authorized the two additions",
+  "credentialPolicy": "Only explicit runtime credentials or an already authorized UI/connector session; no credential search or printing",
+  "runtimeHeaderNames": [
+    "X-API-Key",
+    "X-Secret-API-Key"
+  ],
+  "readOnlyPreflight": [
+    {
+      "method": "GET",
+      "url": "https://api.porkbun.com/api/json/v3/dns/preflight/gh0st.fyi"
+    },
+    {
+      "method": "GET",
+      "url": "https://api.porkbun.com/api/json/v3/dns/retrieve/gh0st.fyi"
+    }
+  ],
+  "recordsForReview": [
+    {
+      "name": "rpc",
+      "type": "CNAME",
+      "content": "gh0st-gl3-rpc.netlify.app",
+      "contentSource": "Actual separate RPC Netlify site URL hostname"
+    },
+    {
+      "name": "scan",
+      "type": "CNAME",
+      "content": "gh0st-gl3-scan.netlify.app",
+      "contentSource": "Actual separate static Scan Netlify site URL hostname"
+    }
+  ],
+  "reviewedWriteShapeOnly": {
+    "method": "POST",
+    "url": "https://api.porkbun.com/api/json/v3/dns/create/gh0st.fyi",
+    "headers": {
+      "Idempotency-Key": "one persisted UUID per exact reviewed record operation"
+    },
+    "body": {
+      "name": null,
+      "type": "CNAME",
+      "content": null,
+      "ttl": 600,
+      "dryRun": true
+    },
+    "executionNote": "After explicit root review and ownership/conflict readback, dryRun can be removed for the exact two reviewed records. This file performs nothing."
+  },
+  "safetyConditions": [
+    "Nameservers must still be authoritative Porkbun; inspect provider warnings",
+    "Actual Netlify site names and hostname bindings must exist and be verified",
+    "Read existing records before creating; do not duplicate or overwrite an existing hostname blindly",
+    "Never change apex, www, mail, mint records or nameservers for this task",
+    "Compare record IDs as strings and retain exact readback",
+    "Verify public resolution and HTTPS independently before claiming the subdomain is active"
+  ],
+  "workingExistingDomainFallbackAfterReviewedDeployment": {
+    "rpc": "https://gh0st.fyi/gl3/rpc",
+    "scan": "https://gh0st.fyi/gl3/scan/",
+    "bridge": "https://gh0st.fyi/gl3/bridge/"
+  },
+  "newAccountCreated": false,
+  "keysGeneratedOrRead": false,
+  "currentExecutionChoice": "Specific two CNAMEs completed through authorized logged-in OperaGX UI",
+  "actualUiChangesEvidence": "evidence/dns-created-and-verified.json",
+  "dnsWriteSentViaThisApiPlan": false,
+  "dnsUiWritesCompleted": 2
+}

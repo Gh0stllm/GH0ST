@@ -1,0 +1,87 @@
+{
+  "schema": "gh0st.gl3.child-fee-bootstrap.v1",
+  "chainId": 4663001,
+  "temporaryProductionOwner": "0x8D6B11CFdF079e27C17e05Cb7Ea81235887691c6",
+  "treasury": "0x8D6B11CFdF079e27C17e05Cb7Ea81235887691c6",
+  "nativeTokenBaseUnitsPerToken": "1000000000000000000",
+  "currentBaseFeeUnits": "10000000000000",
+  "minimumBaseFeeUnits": "10000000000000",
+  "EOAComputeFloorGH0ST": "0.21",
+  "rpcTransactionFeeCapGH0ST": 1000,
+  "rpcGasCapUnchanged": true,
+  "protocolComputeLimitsUnchanged": true,
+  "ownerPrecompile": "0x0000000000000000000000000000000000000070",
+  "orderedCalls": [
+    {
+      "method": "setMinimumL2BaseFee(uint256)",
+      "args": [
+        "10000000000000"
+      ],
+      "afterReceiptBarrier": "Wait genuine batch report/header; do not forge time or change RPC caps"
+    },
+    {
+      "method": "setL2BaseFee(uint256)",
+      "args": [
+        "10000000000000"
+      ],
+      "afterReceiptBarrier": "Wait genuine batch report/header with calibrated current quote/header before remaining calls"
+    },
+    {
+      "method": "setNetworkFeeAccount(address)",
+      "args": [
+        "0x8D6B11CFdF079e27C17e05Cb7Ea81235887691c6"
+      ]
+    },
+    {
+      "method": "setInfraFeeAccount(address)",
+      "args": [
+        "0x8D6B11CFdF079e27C17e05Cb7Ea81235887691c6"
+      ]
+    },
+    {
+      "method": "setL1PricingRewardRecipient(address)",
+      "args": [
+        "0x8D6B11CFdF079e27C17e05Cb7Ea81235887691c6"
+      ]
+    },
+    {
+      "method": "addChainOwner(address)",
+      "args": [
+        "0x0000000000000000000000000000000000000000"
+      ]
+    },
+    {
+      "method": "removeChainOwner(address)",
+      "args": [
+        "0x8D6B11CFdF079e27C17e05Cb7Ea81235887691c6"
+      ]
+    }
+  ],
+  "postconditions": {
+    "chainOwners": [
+      "0x0000000000000000000000000000000000000000"
+    ],
+    "coldOwnerIsChainOwner": false,
+    "nativeTokenOwners": [],
+    "nativeTokenManagementFrom": "0",
+    "ArbOSUpgrade": [
+      "0",
+      "0"
+    ],
+    "latestHeaderBaseFeeAtLeast": "10000000000000",
+    "minimumGasPrice": "10000000000000",
+    "networkFeeAccount": "0x8D6B11CFdF079e27C17e05Cb7Ea81235887691c6",
+    "infraFeeAccount": "0x8D6B11CFdF079e27C17e05Cb7Ea81235887691c6",
+    "L1RewardRecipient": "0x8D6B11CFdF079e27C17e05Cb7Ea81235887691c6"
+  },
+  "accounting": {
+    "networkAndInfraFees": "Native GH0ST revenue collected by the cold treasury; no assumed automatic license split",
+    "L1Reward": "Separate small per-data-unit reward; not reimbursement of parent posting costs",
+    "posterRefund": "Actual batch report opens actual poster with PayTo=self, then pays genuine reported cost subject to L1FeesAvailable; measure actual balances and liabilities",
+    "ETHReserve": "Operator still needs ETH on Robinhood. Child GH0ST reimbursement is not automatic conversion or ETH replenishment.",
+    "licenseComplianceClaimed": false
+  },
+  "privateRehearsal": "Use generated TEST temporary owner/treasury with identical policy; distinguish its genesis hash from production cold-owner genesis.",
+  "coldKeyMayLeaveLocalWallet": false,
+  "activationApproved": false
+}

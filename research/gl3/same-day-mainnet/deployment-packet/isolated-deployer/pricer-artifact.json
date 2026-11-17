@@ -1,0 +1,202 @@
+{
+  "contractName": "GH0STManualFeeTokenPricer",
+  "sourceSHA256": "e5b3735441135a3f6a66a164ef221e58534835b06a0a6156b8775232931edf9f",
+  "compiler": "0.8.30+commit.73712a01.Emscripten.clang",
+  "settings": {
+    "optimizer": {
+      "enabled": true,
+      "runs": 2000
+    },
+    "evmVersion": "london",
+    "metadata": {
+      "bytecodeHash": "none"
+    },
+    "outputSelection": {
+      "*": {
+        "*": [
+          "abi",
+          "evm.bytecode.object",
+          "evm.deployedBytecode.object"
+        ]
+      }
+    }
+  },
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "owner_",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "initialExchangeRate",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "inputs": [],
+      "name": "Unauthorized",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "ZeroOwner",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "ZeroRate",
+      "type": "error"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "oldRate",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "newRate",
+          "type": "uint256"
+        }
+      ],
+      "name": "ExchangeRateSet",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousOwner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipAccepted",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "proposedOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipProposed",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "acceptOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "exchangeRate",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getExchangeRate",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "pendingOwner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "proposedOwner",
+          "type": "address"
+        }
+      ],
+      "name": "proposeOwner",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "newRate",
+          "type": "uint256"
+        }
+      ],
+      "name": "setExchangeRate",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x608060405234801561001057600080fd5b506040516104cd3803806104cd83398101604081905261002f91610105565b6001600160a01b03821661005657604051639905827b60e01b815260040160405180910390fd5b80600003610077576040516314cee7cd60e11b815260040160405180910390fd5b600080546001600160a01b0319166001600160a01b038416908117825560028390556040519091907f357bdeb5828fa83945f38a88510ce5cd7d628dafb346d767efbc693149fdd97c908290a36040805160008152602081018390527ffdc7afada07c13f476d01041c5b7881beb960152c06d6d1df57fca179f221d69910160405180910390a1505061013f565b6000806040838503121561011857600080fd5b82516001600160a01b038116811461012f57600080fd5b6020939093015192949293505050565b61037f8061014e6000396000f3fe608060405234801561001057600080fd5b506004361061007d5760003560e01c8063b5ed298a1161005b578063b5ed298a146100d3578063db068e0e146100e6578063e30c3978146100f9578063e6aa216c1461010c57600080fd5b80633ba0b9a91461008257806379ba50971461009e5780638da5cb5b146100a8575b600080fd5b61008b60025481565b6040519081526020015b60405180910390f35b6100a6610114565b005b6000546100bb906001600160a01b031681565b6040516001600160a01b039091168152602001610095565b6100a66100e1366004610329565b6101ad565b6100a66100f4366004610359565b610280565b6001546100bb906001600160a01b031681565b60025461008b565b6001546001600160a01b0316331461013e576040516282b42960e81b815260040160405180910390fd5b60008054337fffffffffffffffffffffffff0000000000000000000000000000000000000000808316821784556001805490911690556040516001600160a01b0390921692909183917f357bdeb5828fa83945f38a88510ce5cd7d628dafb346d767efbc693149fdd97c91a350565b6000546001600160a01b031633146101d7576040516282b42960e81b815260040160405180910390fd5b6001600160a01b038116610217576040517f9905827b00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b600180547fffffffffffffffffffffffff0000000000000000000000000000000000000000166001600160a01b0383811691821790925560008054604051929316917fb51454ce8c7f26becd312a46c4815553887f2ec876a0b8dc813b87f62edf6f809190a350565b6000546001600160a01b031633146102aa576040516282b42960e81b815260040160405180910390fd5b806000036102e4576040517f299dcf9a00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b600280549082905560408051828152602081018490527ffdc7afada07c13f476d01041c5b7881beb960152c06d6d1df57fca179f221d69910160405180910390a15050565b60006020828403121561033b57600080fd5b81356001600160a01b038116811461035257600080fd5b9392505050565b60006020828403121561036b57600080fd5b503591905056fea164736f6c634300081e000a",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b506004361061007d5760003560e01c8063b5ed298a1161005b578063b5ed298a146100d3578063db068e0e146100e6578063e30c3978146100f9578063e6aa216c1461010c57600080fd5b80633ba0b9a91461008257806379ba50971461009e5780638da5cb5b146100a8575b600080fd5b61008b60025481565b6040519081526020015b60405180910390f35b6100a6610114565b005b6000546100bb906001600160a01b031681565b6040516001600160a01b039091168152602001610095565b6100a66100e1366004610329565b6101ad565b6100a66100f4366004610359565b610280565b6001546100bb906001600160a01b031681565b60025461008b565b6001546001600160a01b0316331461013e576040516282b42960e81b815260040160405180910390fd5b60008054337fffffffffffffffffffffffff0000000000000000000000000000000000000000808316821784556001805490911690556040516001600160a01b0390921692909183917f357bdeb5828fa83945f38a88510ce5cd7d628dafb346d767efbc693149fdd97c91a350565b6000546001600160a01b031633146101d7576040516282b42960e81b815260040160405180910390fd5b6001600160a01b038116610217576040517f9905827b00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b600180547fffffffffffffffffffffffff0000000000000000000000000000000000000000166001600160a01b0383811691821790925560008054604051929316917fb51454ce8c7f26becd312a46c4815553887f2ec876a0b8dc813b87f62edf6f809190a350565b6000546001600160a01b031633146102aa576040516282b42960e81b815260040160405180910390fd5b806000036102e4576040517f299dcf9a00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b600280549082905560408051828152602081018490527ffdc7afada07c13f476d01041c5b7881beb960152c06d6d1df57fca179f221d69910160405180910390a15050565b60006020828403121561033b57600080fd5b81356001600160a01b038116811461035257600080fd5b9392505050565b60006020828403121561036b57600080fd5b503591905056fea164736f6c634300081e000a",
+  "runtimeKeccak256": "0x9b33e85d8164da0a65419d0d23fc2a39d6aa091b2b1914d2c5c53d09b77e82f3"
+}

@@ -1,0 +1,56 @@
+{
+  "status": "two_authorized_dns_records_created_and_verified_root_netlify_tls_followup",
+  "existingMainWebsite": {
+    "siteId": "1460fb0c-b81d-4624-aac5-b78658310ce0",
+    "primaryDomain": "gh0st.wiki",
+    "preserveAliases": [
+      "www.gh0st.wiki",
+      "gh0st.fyi",
+      "www.gh0st.fyi",
+      "mint.gh0st.fyi"
+    ],
+    "additivePathOnly": "/gl3/bridge/",
+    "replaceMainSiteWithRpcPackage": false
+  },
+  "rpc": {
+    "hostname": "rpc.gh0st.fyi",
+    "separateNetlifySiteId": "cda71aa3-eb0f-40be-ac67-d24c7545a703",
+    "actualNetlifySubdomain": "gh0st-gl3-rpc.netlify.app",
+    "dnsCnameTarget": "gh0st-gl3-rpc.netlify.app",
+    "actualRunpodHttpsProxyUrl": null,
+    "verifiedExposedPortReadback": null,
+    "requiredRuntimeVariables": [
+      "GL3_RPC_ENABLED",
+      "GL3_CHAIN_ID",
+      "GL3_GENESIS_HASH",
+      "GL3_RPC_UPSTREAM_HTTPS_URL"
+    ]
+  },
+  "explorer": {
+    "hostname": "scan.gh0st.fyi",
+    "separateNetlifySiteId": "60e107a7-2bda-498a-8790-b757a2321a5e",
+    "actualNetlifySubdomain": "gh0st-gl3-scan.netlify.app",
+    "dnsCnameTarget": "gh0st-gl3-scan.netlify.app",
+    "actualExplorerHttpsOrigin": null,
+    "requiredExplorerBaseUrl": "https://scan.gh0st.fyi"
+  },
+  "stepsForOperatorReview": [
+    "Read current DNS-zone ownership and exact records before changes",
+    "Read actual approved Runpod port exposure and HTTPS URL",
+    "Create or identify separate RPC site, deploy reviewed rpc package and bind runtime values",
+    "Confirm returned Netlify site hostname and provision rpc.gh0st.fyi using that exact target",
+    "Check live TLS, JSON-RPC chain and genesis, and denied debug/admin methods",
+    "Enable scan domain only for a healthy real explorer with correct final base URL",
+    "Create additive main-site draft from fresh production digest and verify preserved functions/routes",
+    "Publish that reviewed draft only after new-genesis, final-owner/minter, fees and license review"
+  ],
+  "agentChangedDns": true,
+  "agentDeployed": false,
+  "siteCreationEvidence": "Root verified actual Netlify CLI responses under account leothemuser; no agent-side site creation",
+  "currentLaunchChoice": "DNS now points rpc/scan at actual separate sites; existing-host fallbacks remain available pending live Netlify/TLS checks",
+  "rootDomainUpdateAttempts": "Earlier422 before DNS creation; root may now retry",
+  "rootCreatedSeparateSites": true,
+  "thisSubtaskCreatedSite": false,
+  "dnsUiEvidence": "evidence/dns-created-and-verified.json",
+  "thisSubtaskChangedDns": true
+}

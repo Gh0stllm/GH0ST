@@ -42,18 +42,29 @@ def stop(p):
   except subprocess.TimeoutExpired:os.killpg(p.pid,signal.SIGKILL);p.wait(timeout=5)
  return p.returncode
 def run():
- ap=argparse.ArgumentParser();ap.add_argument('--handoff',required=True);a=ap.parse_args()
+ ap=argparse.ArgumentParser();ap.add_argument('--handoff',required=True);ap.add_argument('--attempt',type=int,default=1);a=ap.parse_args();assert 1<=a.attempt<=3
  assert os.uname().nodename=='cc91695a75f7','Runpod only'
  hp=pathlib.Path(a.handoff).resolve();scope=pathlib.Path('/workspace/gl3/same-day-mainnet/bridge-rehearsal').resolve()
  assert hp.is_relative_to(scope) and hp.name=='validator-handoff.private.json'
- h=json.loads(hp.read_text());out=hp.parent;work=BASE/('private-'+out.name);work.mkdir(mode=0o700,exist_ok=False)
+ h=json.loads(hp.read_text());out=hp.parent;work=BASE/('private-'+out.parent.name+'-'+out.name+'-attempt'+str(a.attempt));work.mkdir(mode=0o700,exist_ok=False)
  for url in [h['parentRPC'],h['childRPC']]:assert urllib.parse.urlparse(url).hostname in ['127.0.0.1','localhost']
  fast=h.get('confirmationMode')=='operator-fast'
  assert h['chainId']==4663001 and h['parentChainId']==4663
  assert h['fastConfirmer'].lower()==(h['validatorAddress'].lower() if fast else '0x'+'00'*20)
  keypath=pathlib.Path(h['validatorKeyFile']).resolve();assert keypath.is_relative_to(out) and keypath.stat().st_mode&0o077==0
  key=json.loads(keypath.read_text());assert key['address'].lower()==h['validatorAddress'].lower()
- assert sha(h['genesisPath'])=='3aa5dbefe94b57c6cdf50407581950a5780b4b3297d1de115534b360d52794b6'
+ genesis=json.loads(pathlib.Path(h['genesisPath']).read_text());chaincfg=json.loads(genesis['serializedChainConfig'])
+ assert chaincfg['chainId']==4663001 and chaincfg['arbitrum']['InitialArbOSVersion']==61 and chaincfg['arbitrum']['AllowDebugPrecompiles'] is False
+ assert genesis['alloc']=={} and genesis['arbOSInit']['nativeTokenSupplyManagementEnabled'] is False
+ assert str(genesis['arbOSInit']['initialL1BaseFee'])=='1448348398190243'
+ assert chaincfg['arbitrum']['InitialChainOwner'].lower()==h.get('temporaryOwner',h['validatorAddress']).lower()
+ assert h['genesisSHA256']==sha(h['genesisPath']) and h['temporaryAdminPolicy'] is True
+ policyPath=pathlib.Path(h['finalAdminPolicyPath']).resolve();assert policyPath.is_relative_to(out)
+ policy=json.loads(policyPath.read_text());assert policy['finalOwners']==['0x'+'00'*20] and policy['formerOwnerMember'] is False and policy['zeroMember'] is True
+ assert policy['minters']==[] and policy['nativeManagementFrom']=='0' and policy['scheduledUpgrade']==['0','0']
+ assert policy['minimumBaseFee']=='10000000000000' and int(policy['currentBaseFee'])>=10**13 and int(policy['ethGasPrice'])>=10**13
+ assert all(policy[x].lower()==chaincfg['arbitrum']['InitialChainOwner'].lower() for x in ['networkFeeAccount','infraFeeAccount','L1RewardRecipient'])
+ assert policy['allAdminCompletedBeforePlayerDeposit'] is True and len(policy['actualCalls'])==7
  for p,s in PINS.items():assert sha(p)==s,p
  cpus=sorted(os.sched_getaffinity(0));os.sched_setaffinity(0,cpus[:8]);os.environ['GOMAXPROCS']='8'
  jwt=work/'jwt.private';jwt.write_text(os.urandom(32).hex());jwt.chmod(0o600)
@@ -61,13 +72,14 @@ def run():
  val={'log-level':'WARN','validation':{'use-jit':True,'api-auth':True,'api-public':False,'wasm':{'root-path':MACHINES,'enable-wasmroots-check':True,'allowed-wasm-module-roots':[ROOT]},'jit':{'workers':2,'jit-path':str(BASE/'bin/jit'),'max-execution-time':'10m'},'arbitrator':{'workers':2}},'auth':{'addr':'127.0.0.1','port':vp,'jwtsecret':str(jwt)},'persistent':{'global-config':str(work/'validator-config')},'http':{'addr':''},'ws':{'addr':''},'ipc':{'path':''},'file-logging':{'enable':False}}
  save(work/'validator.json',val)
  c=json.loads(pathlib.Path(h['childConfigFile']).read_text());c['log-level']='INFO';c['persistent'].update({'chain':str(work/'chain'),'global-config':str(work/'config')});c['http'].update({'port':np,'api':['eth','net','web3','arb']});c['ipc']['path']=str(work/'node.ipc')
- c['node']['sequencer']=False;c['execution']['sequencer']['enable']=False;c['node']['batch-poster']={'enable':False};c['node']['delayed-sequencer']['enable']=False
+ c['node']['sequencer']=False;c['execution']['sequencer']['enable']=False;c['execution']['forwarding-target']='null';c['node']['batch-poster']={'enable':False};c['node']['delayed-sequencer']['enable']=False
  c['node']['staker']={'enable':True,'strategy':'MakeNodes','use-smart-contract-wallet':False,'disable-challenge':False,'enable-fast-confirmation':fast,'start-validation-from-staked':False,'staker-interval':'200ms','make-assertion-interval':'1s','parent-chain-wallet':{'private-key':key['privateKey'].removeprefix('0x')}}
  c['node']['bold']={'assertion-posting-interval':'1s','assertion-scanning-interval':'200ms','assertion-confirming-interval':'200ms','minimum-gap-to-parent-assertion':'0s','check-staker-switch-interval':'200ms','rpc-block-number':'latest','enable-fast-confirmation':fast,'start-validation-from-staked':False,'parent-chain-block-time':'100ms','state-provider-config':{'validator-name':'GL3-private-standard','check-batch-finality':False,'machine-leaves-cache-path':str(work/'machine-hashes')}}
  c['node']['block-validator']={'enable':True,'current-module-root':ROOT,'pending-upgrade-module-root':ROOT,'failure-is-fatal':True,'validation-poll':'100ms','validation-sent-limit':4,'prerecorded-blocks':4,'validation-server':{'url':'ws://127.0.0.1:'+str(vp),'jwtsecret':str(jwt),'timeout':'10m','retries':0,'arg-log-limit':0}}
  save(work/'node.private.json',c,True);pub=copy.deepcopy(c);pub['node']['staker']['parent-chain-wallet']['private-key']='$GENERATED_TEST_KEY_REDACTED';save(work/'node-public.json',pub)
  del key,c
- report={'schema':'gh0st.gl3.standard-validator.private.v1','passed':False,'publicWrites':0,'privateFixtureOnly':True,'officialModuleRoot':ROOT,'artifacts':PINS,'privateGeneratedTestWalletOnly':True,'fastConfirmationEnabled':fast,'confirmationMode':'operator-fast' if fast else 'standard-deadline','dangerousAssumeValidEnabled':False,'genuineHistoryRequiredByBridgeConsumer':True,'fixtureOverrides':{'latestParent':True,'batchFinalityCheck':False,'shortPolling':True,'publicProductionSettingsAccepted':False},'sourceSHA256':sha(__file__),'startedUTC':time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime()),'processes':[]}
+ report={'schema':'gh0st.gl3.standard-validator.private.v1','passed':False,'publicWrites':0,'privateFixtureOnly':True,'officialModuleRoot':ROOT,'artifacts':PINS,'privateGeneratedTestWalletOnly':True,'fastConfirmationEnabled':fast,'confirmationMode':'operator-fast' if fast else 'standard-deadline','dangerousAssumeValidEnabled':False,'genuineHistoryRequiredByBridgeConsumer':True,'genesisJSONSHA256':sha(h['genesisPath']),'initialTestOwner':chaincfg['arbitrum']['InitialChainOwner'],'productionGenesisIdentical':False,'finalOwnerAndFeePolicyEnforcedByBridgeConsumer':True,'fixtureOverrides':{'latestParent':True,'batchFinalityCheck':False,'shortPolling':True,'publicProductionSettingsAccepted':False},'sourceSHA256':sha(__file__),'startedUTC':time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime()),'processes':[]}
+ report['configureRenouncePolicySHA256']=sha(policyPath)
  owned=[];fds=[];started=time.monotonic();peak=0;reason=None;known={}
  def remember():
   for owner in owned:
