@@ -1,0 +1,97 @@
+=== RUN   TestGL3IntegrationExecServerNullDecodeCannotLeakAdmission
+=== RUN   TestGL3IntegrationExecServerNullDecodeCannotLeakAdmission/null-input
+    gl3_valnode_integration_test.go:374: malformed nullable decoded input caused panic: runtime error: invalid memory address or nil pointer dereference
+    gl3_valnode_integration_test.go:377: malformed nullable decoded input did not return error
+    gl3_valnode_integration_test.go:380: malformed input retained admission or spawned work: {Enabled:true Charged:1 Pending:1 Registered:0 PeakCharged:1 Rejected:0 CanceledBeforeRegister:0 LateClosed:0} calls=0
+=== RUN   TestGL3IntegrationExecServerNullDecodeCannotLeakAdmission/null-preimage-group
+    gl3_valnode_integration_test.go:374: malformed nullable decoded input caused panic: runtime error: invalid memory address or nil pointer dereference
+    gl3_valnode_integration_test.go:377: malformed nullable decoded input did not return error
+    gl3_valnode_integration_test.go:380: malformed input retained admission or spawned work: {Enabled:true Charged:1 Pending:1 Registered:0 PeakCharged:1 Rejected:0 CanceledBeforeRegister:0 LateClosed:0} calls=0
+--- FAIL: TestGL3IntegrationExecServerNullDecodeCannotLeakAdmission (0.00s)
+    --- FAIL: TestGL3IntegrationExecServerNullDecodeCannotLeakAdmission/null-input (0.00s)
+    --- FAIL: TestGL3IntegrationExecServerNullDecodeCannotLeakAdmission/null-preimage-group (0.00s)
+=== RUN   TestGL3IntegrationActualRPCNullInputCannotLeakAdmission
+=== RUN   TestGL3IntegrationActualRPCNullInputCannotLeakAdmission/null-input
+ERROR[11-17|05:06:28.842] RPC method validation_createExecutionRun crashed: runtime error: invalid memory address or nil pointer dereference
+goroutine 24 [running]:
+github.com/ethereum/go-ethereum/rpc.(*callback).call.func1()
+	/root/gl3-host-cache-integration/candidate02-null-http/nitro/go-ethereum/rpc/service.go:242 +0x85
+panic({0x1ffbf00?, 0x3447ac0?})
+	/root/bounded-restore/toolchain/go/src/runtime/panic.go:783 +0x132
+github.com/offchainlabs/nitro/validator/server_api.ValidationInputFromJson(0x0)
+	/root/gl3-host-cache-integration/candidate02-null-http/nitro/validator/server_api/json.go:126 +0x3a
+github.com/offchainlabs/nitro/validator/valnode.(*ExecServer).createExperimentalExecutionRun(0xc0000002a0, {0x2535f30, 0xc0002babe0}, {0x9, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, ...}, ...)
+	/root/gl3-host-cache-integration/candidate02-null-http/nitro/validator/valnode/experimental_creation.go:126 +0x153
+github.com/offchainlabs/nitro/validator/valnode.(*ExecServer).CreateExecutionRun(0xc0000002a0, {0x2535f30, 0xc0002babe0}, {0x9, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, ...}, ...)
+	/root/gl3-host-cache-integration/candidate02-null-http/nitro/validator/valnode/validation_api.go:99 +0x345
+github.com/offchainlabs/nitro/validator/valnode.(*ExecServerAPI).CreateExecutionRun(0x57ad75?, {0x2535f30?, 0xc0002babe0?}, {0x9, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, ...}, ...)
+	/root/gl3-host-cache-integration/candidate02-null-http/nitro/validator/valnode/validation_api.go:280 +0x3a
+reflect.Value.call({0xc0003e0930?, 0xc000064238?, 0xc000071a28?}, {0x21a5c37, 0x4}, {0xc000255c80, 0x5, 0x25313e0?})
+	/root/bounded-restore/toolchain/go/src/reflect/value.go:581 +0xcca
+reflect.Value.Call({0xc0003e0930?, 0xc000064238?, 0x7a64d5880c68?}, {0xc000255c80?, 0x0?, 0x7a64d5880c68?})
+	/root/bounded-restore/toolchain/go/src/reflect/value.go:365 +0xb9
+github.com/ethereum/go-ethereum/rpc.(*callback).call(0xc0003e79e0, {0x2535f30, 0xc0002babe0}, {0xc00028a3c0, 0x1d}, {0xc0002bac30, 0x3, 0x0?})
+	/root/gl3-host-cache-integration/candidate02-null-http/nitro/go-ethereum/rpc/service.go:248 +0x2fd
+github.com/ethereum/go-ethereum/rpc.(*handler).runMethod(0xc0002afce0, {0x2535f30, 0xc0002babe0}, 0xc000255c00, 0xc0003e79e0, {0xc0002bac30, 0x3, 0x3}, {0x0, 0x0, ...})
+	/root/gl3-host-cache-integration/candidate02-null-http/nitro/go-ethereum/rpc/handler.go:667 +0xa8
+github.com/ethereum/go-ethereum/rpc.(*handler).handleCall(0xc0002afce0, 0xc0002c2b10, 0xc000255c00)
+	/root/gl3-host-cache-integration/candidate02-null-http/nitro/go-ethereum/rpc/handler.go:586 +0x457
+github.com/ethereum/go-ethereum/rpc.(*handler).handleCallMsg(0xc0002afce0, 0xc0002c2b10, 0xc000255c00)
+	/root/gl3-host-cache-integration/candidate02-null-http/nitro/go-ethereum/rpc/handler.go:529 +0x237
+github.com/ethereum/go-ethereum/rpc.(*handler).handleNonBatchCall(0xc0002afce0, 0xc0002c2b10, 0xc000255c00)
+	/root/gl3-host-cache-integration/candidate02-null-http/nitro/go-ethereum/rpc/handler.go:340 +0x30a
+github.com/ethereum/go-ethereum/rpc.(*handler).handleMsg.func1.1(0x2535f30?)
+	/root/gl3-host-cache-integration/candidate02-null-http/nitro/go-ethereum/rpc/handler.go:303 +0x25
+github.com/ethereum/go-ethereum/rpc.(*handler).startCallProc.func1()
+	/root/gl3-host-cache-integration/candidate02-null-http/nitro/go-ethereum/rpc/handler.go:444 +0xbb
+created by github.com/ethereum/go-ethereum/rpc.(*handler).startCallProc in goroutine 22
+	/root/gl3-host-cache-integration/candidate02-null-http/nitro/go-ethereum/rpc/handler.go:440 +0x76
+
+WARN [11-17|05:06:28.842] Served validation_createExecutionRun     conn=127.0.0.1:38606 reqid=1 duration="189.081µs" err="method handler crashed"
+    gl3_valnode_integration_test.go:417: RPC-recovered nullable-input failure leaked admission: {Enabled:true Charged:1 Pending:1 Registered:0 PeakCharged:1 Rejected:0 CanceledBeforeRegister:0 LateClosed:0} calls=0
+WARN [11-17|05:06:28.843] Served validation_createExecutionRun     conn=127.0.0.1:38606 reqid=2 duration="29.88µs" err="experimental execution server capacity busy"
+    gl3_valnode_integration_test.go:420: valid RPC creation after malformed request blocked: experimental execution server capacity busy
+=== RUN   TestGL3IntegrationActualRPCNullInputCannotLeakAdmission/null-preimage-group
+ERROR[11-17|05:06:28.843] RPC method validation_createExecutionRun crashed: runtime error: invalid memory address or nil pointer dereference
+goroutine 29 [running]:
+github.com/ethereum/go-ethereum/rpc.(*callback).call.func1()
+	/root/gl3-host-cache-integration/candidate02-null-http/nitro/go-ethereum/rpc/service.go:242 +0x85
+panic({0x1ffbf00?, 0x3447ac0?})
+	/root/bounded-restore/toolchain/go/src/runtime/panic.go:783 +0x132
+github.com/offchainlabs/nitro/validator/server_api.ValidationInputFromJson(0xc000163e00)
+	/root/gl3-host-cache-integration/candidate02-null-http/nitro/validator/server_api/json.go:127 +0xa4
+github.com/offchainlabs/nitro/validator/valnode.(*ExecServer).createExperimentalExecutionRun(0xc000000380, {0x2535f30, 0xc0002bb040}, {0x9, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, ...}, ...)
+	/root/gl3-host-cache-integration/candidate02-null-http/nitro/validator/valnode/experimental_creation.go:126 +0x153
+github.com/offchainlabs/nitro/validator/valnode.(*ExecServer).CreateExecutionRun(0xc000000380, {0x2535f30, 0xc0002bb040}, {0x9, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, ...}, ...)
+	/root/gl3-host-cache-integration/candidate02-null-http/nitro/validator/valnode/validation_api.go:99 +0x345
+github.com/offchainlabs/nitro/validator/valnode.(*ExecServerAPI).CreateExecutionRun(0x57ad75?, {0x2535f30?, 0xc0002bb040?}, {0x9, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, ...}, ...)
+	/root/gl3-host-cache-integration/candidate02-null-http/nitro/validator/valnode/validation_api.go:280 +0x3a
+reflect.Value.call({0xc0003e0930?, 0xc000064450?, 0xc000177a28?}, {0x21a5c37, 0x4}, {0xc000480000, 0x5, 0xc000480030?})
+	/root/bounded-restore/toolchain/go/src/reflect/value.go:581 +0xcca
+reflect.Value.Call({0xc0003e0930?, 0xc000064450?, 0x0?}, {0xc000480000?, 0x0?, 0x0?})
+	/root/bounded-restore/toolchain/go/src/reflect/value.go:365 +0xb9
+github.com/ethereum/go-ethereum/rpc.(*callback).call(0xc00040a840, {0x2535f30, 0xc0002bb040}, {0xc00028a520, 0x1d}, {0xc0002bb090, 0x3, 0x0?})
+	/root/gl3-host-cache-integration/candidate02-null-http/nitro/go-ethereum/rpc/service.go:248 +0x2fd
+github.com/ethereum/go-ethereum/rpc.(*handler).runMethod(0xc0002afe40, {0x2535f30, 0xc0002bb040}, 0xc000255f00, 0xc00040a840, {0xc0002bb090, 0x3, 0x3}, {0x0, 0x0, ...})
+	/root/gl3-host-cache-integration/candidate02-null-http/nitro/go-ethereum/rpc/handler.go:667 +0xa8
+github.com/ethereum/go-ethereum/rpc.(*handler).handleCall(0xc0002afe40, 0xc0002c3830, 0xc000255f00)
+	/root/gl3-host-cache-integration/candidate02-null-http/nitro/go-ethereum/rpc/handler.go:586 +0x457
+github.com/ethereum/go-ethereum/rpc.(*handler).handleCallMsg(0xc0002afe40, 0xc0002c3830, 0xc000255f00)
+	/root/gl3-host-cache-integration/candidate02-null-http/nitro/go-ethereum/rpc/handler.go:529 +0x237
+github.com/ethereum/go-ethereum/rpc.(*handler).handleNonBatchCall(0xc0002afe40, 0xc0002c3830, 0xc000255f00)
+	/root/gl3-host-cache-integration/candidate02-null-http/nitro/go-ethereum/rpc/handler.go:340 +0x30a
+github.com/ethereum/go-ethereum/rpc.(*handler).handleMsg.func1.1(0x2535f30?)
+	/root/gl3-host-cache-integration/candidate02-null-http/nitro/go-ethereum/rpc/handler.go:303 +0x25
+github.com/ethereum/go-ethereum/rpc.(*handler).startCallProc.func1()
+	/root/gl3-host-cache-integration/candidate02-null-http/nitro/go-ethereum/rpc/handler.go:444 +0xbb
+created by github.com/ethereum/go-ethereum/rpc.(*handler).startCallProc in goroutine 25
+	/root/gl3-host-cache-integration/candidate02-null-http/nitro/go-ethereum/rpc/handler.go:440 +0x76
+
+WARN [11-17|05:06:28.843] Served validation_createExecutionRun     conn=127.0.0.1:55682 reqid=1 duration="122.94µs" err="method handler crashed"
+    gl3_valnode_integration_test.go:417: RPC-recovered nullable-input failure leaked admission: {Enabled:true Charged:1 Pending:1 Registered:0 PeakCharged:1 Rejected:0 CanceledBeforeRegister:0 LateClosed:0} calls=0
+WARN [11-17|05:06:28.844] Served validation_createExecutionRun     conn=127.0.0.1:55682 reqid=2 duration="18.78µs" err="experimental execution server capacity busy"
+    gl3_valnode_integration_test.go:420: valid RPC creation after malformed request blocked: experimental execution server capacity busy
+--- FAIL: TestGL3IntegrationActualRPCNullInputCannotLeakAdmission (0.00s)
+    --- FAIL: TestGL3IntegrationActualRPCNullInputCannotLeakAdmission/null-input (0.00s)
+    --- FAIL: TestGL3IntegrationActualRPCNullInputCannotLeakAdmission/null-preimage-group (0.00s)
+FAIL

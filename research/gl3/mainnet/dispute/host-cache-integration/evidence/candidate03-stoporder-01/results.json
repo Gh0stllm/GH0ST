@@ -1,0 +1,73 @@
+{
+  "complete": true,
+  "results": [
+    {
+      "phase": "compile",
+      "race": false,
+      "exitCode": 0,
+      "seconds": 20.391077359672636,
+      "command": [
+        "go",
+        "test",
+        "-c",
+        "-p",
+        "2",
+        "-mod=readonly",
+        "-buildvcs=false",
+        "-ldflags=-extldflags=-Wl,-z,noexecstack",
+        "-o",
+        "/root/gl3-host-cache-integration/candidate03-stoporder-01/normal.test",
+        "./validator/valnode"
+      ],
+      "binarySHA256": "f9aa6a6135b14d81c67c452a47c6469e20794a4650e03b097d6c735d53601b27"
+    },
+    {
+      "phase": "tests",
+      "race": false,
+      "exitCode": 0,
+      "seconds": 0.509007484652102,
+      "command": [
+        "/root/gl3-host-cache-integration/candidate03-stoporder-01/normal.test",
+        "-test.v",
+        "-test.timeout=10s",
+        "-test.run=^TestGL3IntegrationActualRPCSpawnerStopBeforePoolIdleFallback$"
+      ],
+      "binarySHA256": "f9aa6a6135b14d81c67c452a47c6469e20794a4650e03b097d6c735d53601b27"
+    },
+    {
+      "phase": "compile",
+      "race": true,
+      "exitCode": 0,
+      "seconds": 22.673742348793894,
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-c",
+        "-p",
+        "2",
+        "-mod=readonly",
+        "-buildvcs=false",
+        "-ldflags=-extldflags=-Wl,-z,noexecstack",
+        "-o",
+        "/root/gl3-host-cache-integration/candidate03-stoporder-01/race.test",
+        "./validator/valnode"
+      ],
+      "binarySHA256": "06f89bc3ca9204413cc2058e0cb9d411d30407ba8adb367d2f1644580b4d3b35"
+    },
+    {
+      "phase": "tests",
+      "race": true,
+      "exitCode": 0,
+      "seconds": 1.627416050992906,
+      "command": [
+        "/root/gl3-host-cache-integration/candidate03-stoporder-01/race.test",
+        "-test.v",
+        "-test.timeout=10s",
+        "-test.run=^TestGL3IntegrationActualRPCSpawnerStopBeforePoolIdleFallback$"
+      ],
+      "binarySHA256": "06f89bc3ca9204413cc2058e0cb9d411d30407ba8adb367d2f1644580b4d3b35"
+    }
+  ],
+  "passed": true
+}

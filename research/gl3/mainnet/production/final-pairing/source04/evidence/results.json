@@ -1,0 +1,91 @@
+{
+  "results": [
+    {
+      "command": [
+        "/root/bounded-restore/toolchain/go/bin/go",
+        "test",
+        "-c",
+        "-p",
+        "2",
+        "-mod=readonly",
+        "-buildvcs=false",
+        "-ldflags=-extldflags=-Wl,-z,noexecstack",
+        "-o",
+        "/root/gl3-final-pairing/operator-tests/normal.test",
+        "./staker"
+      ],
+      "actualExitCode": 0,
+      "seconds": 52.98960828781128,
+      "stoppedReason": null,
+      "affinityCPUs": [
+        118,
+        126
+      ],
+      "diskFreeAfter": 18224332800,
+      "taskScratchBytesAfter": 214744263
+    },
+    {
+      "command": [
+        "/root/gl3-final-pairing/operator-tests/normal.test",
+        "-test.v",
+        "-test.timeout=30s",
+        "-test.run=^TestGL3Operator"
+      ],
+      "actualExitCode": 0,
+      "seconds": 0.2908518314361572,
+      "stoppedReason": null,
+      "affinityCPUs": [
+        118,
+        126
+      ],
+      "diskFreeAfter": 18224316416,
+      "taskScratchBytesAfter": 214749052
+    },
+    {
+      "command": [
+        "/root/bounded-restore/toolchain/go/bin/go",
+        "test",
+        "-c",
+        "-p",
+        "2",
+        "-mod=readonly",
+        "-buildvcs=false",
+        "-race",
+        "-ldflags=-extldflags=-Wl,-z,noexecstack",
+        "-o",
+        "/root/gl3-final-pairing/operator-tests/race.test",
+        "./staker"
+      ],
+      "actualExitCode": 0,
+      "seconds": 56.93294429779053,
+      "stoppedReason": null,
+      "affinityCPUs": [
+        118,
+        126
+      ],
+      "diskFreeAfter": 17607782400,
+      "taskScratchBytesAfter": 281682695
+    },
+    {
+      "command": [
+        "/root/gl3-final-pairing/operator-tests/race.test",
+        "-test.v",
+        "-test.timeout=30s",
+        "-test.run=^TestGL3Operator"
+      ],
+      "actualExitCode": 0,
+      "seconds": 1.1577892303466797,
+      "stoppedReason": null,
+      "affinityCPUs": [
+        118,
+        126
+      ],
+      "diskFreeAfter": 17607774208,
+      "taskScratchBytesAfter": 281687467
+    }
+  ],
+  "complete": true,
+  "passed": true,
+  "allExecutionOnRunpod": true,
+  "engineOrProverExecuted": false
+}

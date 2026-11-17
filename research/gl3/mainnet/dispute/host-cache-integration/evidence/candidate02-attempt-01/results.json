@@ -1,0 +1,105 @@
+{
+  "complete": true,
+  "results": [
+    {
+      "phase": "compile",
+      "package": "server_arb",
+      "exitCode": 0,
+      "seconds": 19.078853298909962,
+      "command": [
+        "go",
+        "test",
+        "-c",
+        "-p",
+        "2",
+        "-mod=readonly",
+        "-buildvcs=false",
+        "-ldflags=-extldflags=-Wl,-z,noexecstack",
+        "-o",
+        "/root/gl3-host-cache-integration/candidate02-attempt-01/server_arb.test",
+        "./validator/server_arb"
+      ],
+      "binarySHA256": "2e4833b9a80ffd0e2bdd3f073e534bfad89f10722a6e68081fcf2d0cc2d18407"
+    },
+    {
+      "phase": "tests",
+      "package": "server_arb",
+      "exitCode": 0,
+      "seconds": 0.04959110217168927,
+      "command": [
+        "/root/gl3-host-cache-integration/candidate02-attempt-01/server_arb.test",
+        "-test.v",
+        "-test.timeout=90s",
+        "-test.run=^TestGL3Integration"
+      ],
+      "binarySHA256": "2e4833b9a80ffd0e2bdd3f073e534bfad89f10722a6e68081fcf2d0cc2d18407"
+    },
+    {
+      "phase": "compile",
+      "package": "client",
+      "exitCode": 0,
+      "seconds": 3.798410088289529,
+      "command": [
+        "go",
+        "test",
+        "-c",
+        "-p",
+        "2",
+        "-mod=readonly",
+        "-buildvcs=false",
+        "-ldflags=-extldflags=-Wl,-z,noexecstack",
+        "-o",
+        "/root/gl3-host-cache-integration/candidate02-attempt-01/client.test",
+        "./validator/client"
+      ],
+      "binarySHA256": "9e2723b80a0e6414b46139405ebe3fe4f9b0499a2c1a4e9cad96e81d848ec6d3"
+    },
+    {
+      "phase": "tests",
+      "package": "client",
+      "exitCode": 0,
+      "seconds": 0.052557255141437054,
+      "command": [
+        "/root/gl3-host-cache-integration/candidate02-attempt-01/client.test",
+        "-test.v",
+        "-test.timeout=90s",
+        "-test.run=^TestGL3Integration"
+      ],
+      "binarySHA256": "9e2723b80a0e6414b46139405ebe3fe4f9b0499a2c1a4e9cad96e81d848ec6d3"
+    },
+    {
+      "phase": "compile",
+      "package": "valnode",
+      "exitCode": 0,
+      "seconds": 8.323846879415214,
+      "command": [
+        "go",
+        "test",
+        "-c",
+        "-p",
+        "2",
+        "-mod=readonly",
+        "-buildvcs=false",
+        "-ldflags=-extldflags=-Wl,-z,noexecstack",
+        "-o",
+        "/root/gl3-host-cache-integration/candidate02-attempt-01/valnode.test",
+        "./validator/valnode"
+      ],
+      "binarySHA256": "a7e586f5aec8533e8470eb3475f751b7c6e27f5db95b71ecf76dd6856bc267f4"
+    },
+    {
+      "phase": "tests",
+      "package": "valnode",
+      "exitCode": 1,
+      "seconds": 10.05085697490722,
+      "command": [
+        "/root/gl3-host-cache-integration/candidate02-attempt-01/valnode.test",
+        "-test.v",
+        "-test.timeout=90s",
+        "-test.run=^TestGL3Integration"
+      ],
+      "binarySHA256": "a7e586f5aec8533e8470eb3475f751b7c6e27f5db95b71ecf76dd6856bc267f4"
+    }
+  ],
+  "passed": false
+}

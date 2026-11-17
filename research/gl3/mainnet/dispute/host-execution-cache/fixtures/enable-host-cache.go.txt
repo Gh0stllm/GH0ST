@@ -1,0 +1,48 @@
+// Private fixture integration snippet, not a standalone test or a claim of
+// production readiness. Root owns the actual lifecycle fixture/controller.
+// Imports: testing, time, validator/client, staker.
+
+// Before createTestValidationNode:
+valConf.Arbitrator.Execution.CachedChallengeMachines = 2
+valConf.Arbitrator.Execution.InitialSteps = 100000
+valConf.Arbitrator.Execution.ExperimentalRecordedHashStride = 1 << 32
+valConf.Arbitrator.Execution.ExperimentalMaxRecordedHashes = 4096
+valConf.Arbitrator.Execution.ExperimentalSerializeQueries = true
+valConf.Arbitrator.Execution.ExperimentalRefineRanges = true
+valConf.Arbitrator.ExperimentalBoundExecutionCreations = true
+
+// The historical fixture timeout was four hours. The final controller must
+// explicitly review the server's idle expiry separately from the full-run
+// deadline. Real ExecutionClientRun sends KeepAlive every minute; active
+// query health checks use the existing ten-second cadence/five-second timeout.
+// A shorter reviewed server idle expiry bounds an orphan whose ID/Close RPC
+// was lost. No physical cleanup acknowledgment is provided by Close().
+
+// After each builder's Build(t), before challenge actors admit native work:
+clients := gl3EnableHostExecutionCache(t, b.L2.ConsensusNode.StatelessBlockValidator)
+// Use the same hook for an independent evil builder if it owns a BOLD client.
+// Its heavy calls must still delegate to the one existing honest provider.
+
+func gl3EnableHostExecutionCache(t *testing.T, v *staker.StatelessBlockValidator) []*client.BOLDExecutionClient {
+    t.Helper()
+    if v == nil { t.Fatal("stateless validator missing") }
+    var clients []*client.BOLDExecutionClient
+    for _, spawner := range v.BOLDExecutionSpawners() {
+        cached, ok := spawner.(*client.BOLDExecutionClient)
+        if !ok { t.Fatal("unexpected BOLD execution spawner type") }
+        // Existing StatelessBlockValidator.Start starts the underlying clients
+        // and BOLD clients before this hook; Enable fails closed otherwise.
+        if err := cached.EnableExperimentalRunCache(client.ExperimentalRunCacheConfig{
+            MaxEntries: 1, IdleTimeout: 4 * time.Hour,
+        }); err != nil { t.Fatal(err) }
+        clients = append(clients, cached)
+    }
+    if len(clients) == 0 { t.Fatal("no cached BOLD client enabled") }
+    return clients
+}
+
+// Read-only Go telemetry, not a new RPC API:
+// clients[i].ExperimentalRunCacheStats()
+// valNode.ExperimentalHostCacheStats()
+// The latter reports charged/pending/registered creation leases and native
+// ActualSteps, StepCalls, AlignedListHits, Refinements, and recorded hashes.

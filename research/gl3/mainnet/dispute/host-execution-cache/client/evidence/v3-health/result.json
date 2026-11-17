@@ -1,0 +1,42 @@
+{
+  "results": [
+    {
+      "profile": "normal",
+      "command": [
+        "go",
+        "test",
+        "-p",
+        "2",
+        "-mod=readonly",
+        "-count=1",
+        "-timeout=90s",
+        "-v",
+        "-run",
+        "^TestGL3Pool",
+        "./validator/client"
+      ],
+      "exitCode": 0,
+      "seconds": 42.86902046203613
+    },
+    {
+      "profile": "race",
+      "command": [
+        "go",
+        "test",
+        "-p",
+        "2",
+        "-mod=readonly",
+        "-race",
+        "-count=1",
+        "-timeout=90s",
+        "-v",
+        "-run",
+        "^TestGL3Pool",
+        "./validator/client"
+      ],
+      "exitCode": 0,
+      "seconds": 39.97363758087158
+    }
+  ],
+  "passed": true
+}

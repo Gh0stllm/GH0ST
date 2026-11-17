@@ -1,0 +1,91 @@
+{
+  "results": [
+    {
+      "command": [
+        "/root/bounded-restore/toolchain/go/bin/go",
+        "test",
+        "-c",
+        "-p",
+        "2",
+        "-mod=readonly",
+        "-buildvcs=false",
+        "-ldflags=-extldflags=-Wl,-z,noexecstack",
+        "-o",
+        "/root/gl3-final-pairing/operator-tests05/normal.test",
+        "./staker"
+      ],
+      "actualExitCode": 0,
+      "seconds": 20.105621099472046,
+      "stoppedReason": null,
+      "affinityCPUs": [
+        118,
+        126
+      ],
+      "diskFreeAfter": 14212014080,
+      "taskScratchBytesAfter": 473954521
+    },
+    {
+      "command": [
+        "/root/gl3-final-pairing/operator-tests05/normal.test",
+        "-test.v",
+        "-test.timeout=30s",
+        "-test.run=^TestGL3Operator"
+      ],
+      "actualExitCode": 0,
+      "seconds": 0.3452572822570801,
+      "stoppedReason": null,
+      "affinityCPUs": [
+        118,
+        126
+      ],
+      "diskFreeAfter": 14211997696,
+      "taskScratchBytesAfter": 473959952
+    },
+    {
+      "command": [
+        "/root/bounded-restore/toolchain/go/bin/go",
+        "test",
+        "-c",
+        "-p",
+        "2",
+        "-mod=readonly",
+        "-buildvcs=false",
+        "-race",
+        "-ldflags=-extldflags=-Wl,-z,noexecstack",
+        "-o",
+        "/root/gl3-final-pairing/operator-tests05/race.test",
+        "./staker"
+      ],
+      "actualExitCode": 0,
+      "seconds": 20.353818655014038,
+      "stoppedReason": null,
+      "affinityCPUs": [
+        118,
+        126
+      ],
+      "diskFreeAfter": 13978271744,
+      "taskScratchBytesAfter": 541197807
+    },
+    {
+      "command": [
+        "/root/gl3-final-pairing/operator-tests05/race.test",
+        "-test.v",
+        "-test.timeout=30s",
+        "-test.run=^TestGL3Operator"
+      ],
+      "actualExitCode": 0,
+      "seconds": 1.3233726024627686,
+      "stoppedReason": null,
+      "affinityCPUs": [
+        118,
+        126
+      ],
+      "diskFreeAfter": 13978259456,
+      "taskScratchBytesAfter": 541203221
+    }
+  ],
+  "complete": true,
+  "passed": true,
+  "allExecutionOnRunpod": true,
+  "engineOrProverExecuted": false
+}

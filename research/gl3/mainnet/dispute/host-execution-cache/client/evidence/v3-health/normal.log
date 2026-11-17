@@ -1,0 +1,56 @@
+=== RUN   TestGL3PoolReuseLeaseAndCopiedResults
+--- PASS: TestGL3PoolReuseLeaseAndCopiedResults (0.00s)
+=== RUN   TestGL3PoolOwnedInputsAndRootSeparation
+--- PASS: TestGL3PoolOwnedInputsAndRootSeparation (0.00s)
+=== RUN   TestGL3PoolSerializesOneEntry
+--- PASS: TestGL3PoolSerializesOneEntry (0.00s)
+=== RUN   TestGL3PoolQueryErrorInvalidatesAndRecreates
+--- PASS: TestGL3PoolQueryErrorInvalidatesAndRecreates (0.00s)
+=== RUN   TestGL3PoolCanceledQueryInvalidates
+--- PASS: TestGL3PoolCanceledQueryInvalidates (0.00s)
+=== RUN   TestGL3PoolWaitingCancellationPreservesActiveOwner
+--- PASS: TestGL3PoolWaitingCancellationPreservesActiveOwner (0.00s)
+=== RUN   TestGL3PoolCreationWaiterCancellationPreservesOtherBorrower
+--- PASS: TestGL3PoolCreationWaiterCancellationPreservesOtherBorrower (0.00s)
+=== RUN   TestGL3PoolBusyCapacityAndLeaseClose
+--- PASS: TestGL3PoolBusyCapacityAndLeaseClose (0.00s)
+=== RUN   TestGL3PoolPendingCreationBoundAndLateClose
+--- PASS: TestGL3PoolPendingCreationBoundAndLateClose (0.02s)
+=== RUN   TestGL3PoolCreationErrorAndNilMaster
+--- PASS: TestGL3PoolCreationErrorAndNilMaster (0.00s)
+=== RUN   TestGL3PoolIdleAndCapacityEviction
+=== RUN   TestGL3PoolIdleAndCapacityEviction/idle
+=== RUN   TestGL3PoolIdleAndCapacityEviction/capacity
+--- PASS: TestGL3PoolIdleAndCapacityEviction (0.02s)
+    --- PASS: TestGL3PoolIdleAndCapacityEviction/idle (0.02s)
+    --- PASS: TestGL3PoolIdleAndCapacityEviction/capacity (0.00s)
+=== RUN   TestGL3PoolOwnerContextAndConfig
+--- PASS: TestGL3PoolOwnerContextAndConfig (0.00s)
+=== RUN   TestGL3PoolPreservesLegacyHealthCancellation
+=== RUN   TestGL3PoolPreservesLegacyHealthCancellation/hashes/failure
+=== PAUSE TestGL3PoolPreservesLegacyHealthCancellation/hashes/failure
+=== RUN   TestGL3PoolPreservesLegacyHealthCancellation/hashes/timeout
+=== PAUSE TestGL3PoolPreservesLegacyHealthCancellation/hashes/timeout
+=== RUN   TestGL3PoolPreservesLegacyHealthCancellation/proof/failure
+=== PAUSE TestGL3PoolPreservesLegacyHealthCancellation/proof/failure
+=== RUN   TestGL3PoolPreservesLegacyHealthCancellation/proof/timeout
+=== PAUSE TestGL3PoolPreservesLegacyHealthCancellation/proof/timeout
+=== CONT  TestGL3PoolPreservesLegacyHealthCancellation/hashes/failure
+=== CONT  TestGL3PoolPreservesLegacyHealthCancellation/proof/timeout
+=== NAME  TestGL3PoolPreservesLegacyHealthCancellation/hashes/failure
+    health_regression_test.go:84: method=hashes deadline=false elapsed=10.009074273s checks=1 closes=1
+=== CONT  TestGL3PoolPreservesLegacyHealthCancellation/proof/failure
+=== NAME  TestGL3PoolPreservesLegacyHealthCancellation/proof/timeout
+    health_regression_test.go:84: method=proof deadline=true elapsed=15.013131001s checks=1 closes=1
+=== CONT  TestGL3PoolPreservesLegacyHealthCancellation/hashes/timeout
+=== NAME  TestGL3PoolPreservesLegacyHealthCancellation/proof/failure
+    health_regression_test.go:84: method=proof deadline=false elapsed=10.004456145s checks=1 closes=1
+=== NAME  TestGL3PoolPreservesLegacyHealthCancellation/hashes/timeout
+    health_regression_test.go:84: method=hashes deadline=true elapsed=15.008583124s checks=1 closes=1
+--- PASS: TestGL3PoolPreservesLegacyHealthCancellation (0.00s)
+    --- PASS: TestGL3PoolPreservesLegacyHealthCancellation/hashes/failure (10.01s)
+    --- PASS: TestGL3PoolPreservesLegacyHealthCancellation/proof/timeout (15.01s)
+    --- PASS: TestGL3PoolPreservesLegacyHealthCancellation/proof/failure (10.00s)
+    --- PASS: TestGL3PoolPreservesLegacyHealthCancellation/hashes/timeout (15.01s)
+PASS
+ok  	github.com/offchainlabs/nitro/validator/client	30.066s

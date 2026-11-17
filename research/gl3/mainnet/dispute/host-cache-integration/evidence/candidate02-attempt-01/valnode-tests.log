@@ -1,0 +1,35 @@
+=== RUN   TestGL3IntegrationExecServerAdmissionBeforeDecodeAndClose
+--- PASS: TestGL3IntegrationExecServerAdmissionBeforeDecodeAndClose (0.00s)
+=== RUN   TestGL3IntegrationExecServerCanceledLateCreationStaysCharged
+--- PASS: TestGL3IntegrationExecServerCanceledLateCreationStaysCharged (0.00s)
+=== RUN   TestGL3IntegrationExecServerLostResponseIdleAndStopCleanup
+=== RUN   TestGL3IntegrationExecServerLostResponseIdleAndStopCleanup/idle-expiry
+=== RUN   TestGL3IntegrationExecServerLostResponseIdleAndStopCleanup/stop
+=== RUN   TestGL3IntegrationExecServerLostResponseIdleAndStopCleanup/pending-stop
+--- PASS: TestGL3IntegrationExecServerLostResponseIdleAndStopCleanup (0.03s)
+    --- PASS: TestGL3IntegrationExecServerLostResponseIdleAndStopCleanup/idle-expiry (0.03s)
+    --- PASS: TestGL3IntegrationExecServerLostResponseIdleAndStopCleanup/stop (0.00s)
+    --- PASS: TestGL3IntegrationExecServerLostResponseIdleAndStopCleanup/pending-stop (0.00s)
+=== RUN   TestGL3IntegrationActualRPCSharedBorrowerCancellation
+INFO [11-17|05:05:35.930] connected to validation server           name="independent bounded ExecServer fixture" maxWorkers=2
+--- PASS: TestGL3IntegrationActualRPCSharedBorrowerCancellation (0.00s)
+=== RUN   TestGL3IntegrationActualRPCHealthFailureClosesMaster
+INFO [11-17|05:05:35.934] connected to validation server           name="independent bounded ExecServer fixture" maxWorkers=2
+WARN [11-17|05:05:45.934] Served validation_checkAlive             conn=127.0.0.1:48468 reqid=8 duration="65.991µs" err="injected actual RPC health failure"
+INFO [11-17|05:05:45.934] rpc response                             method=validation_checkAlive logId=8 err="injected actual RPC health failure" result=null attempt=0 args=[14038678895828747867] errorData=null
+INFO [11-17|05:05:45.934] rpc response                             method=validation_getProofAt logId=7 err="Post \"http://127.0.0.1:39429\": context canceled" result="\"\"" attempt=0 args="[14038678895828747867, 3]"
+WARN [11-17|05:05:45.935] Served validation_getProofAt             conn=127.0.0.1:48480 reqid=7 duration=10.000698731s err="context canceled"
+--- PASS: TestGL3IntegrationActualRPCHealthFailureClosesMaster (10.00s)
+=== RUN   TestGL3IntegrationExecServerNullDecodeCannotLeakAdmission
+=== RUN   TestGL3IntegrationExecServerNullDecodeCannotLeakAdmission/null-input
+    gl3_valnode_integration_test.go:374: malformed nullable decoded input caused panic: runtime error: invalid memory address or nil pointer dereference
+    gl3_valnode_integration_test.go:377: malformed nullable decoded input did not return error
+    gl3_valnode_integration_test.go:380: malformed input retained admission or spawned work: {Enabled:true Charged:1 Pending:1 Registered:0 PeakCharged:1 Rejected:0 CanceledBeforeRegister:0 LateClosed:0} calls=0
+=== RUN   TestGL3IntegrationExecServerNullDecodeCannotLeakAdmission/null-preimage-group
+    gl3_valnode_integration_test.go:374: malformed nullable decoded input caused panic: runtime error: invalid memory address or nil pointer dereference
+    gl3_valnode_integration_test.go:377: malformed nullable decoded input did not return error
+    gl3_valnode_integration_test.go:380: malformed input retained admission or spawned work: {Enabled:true Charged:1 Pending:1 Registered:0 PeakCharged:1 Rejected:0 CanceledBeforeRegister:0 LateClosed:0} calls=0
+--- FAIL: TestGL3IntegrationExecServerNullDecodeCannotLeakAdmission (0.00s)
+    --- FAIL: TestGL3IntegrationExecServerNullDecodeCannotLeakAdmission/null-input (0.00s)
+    --- FAIL: TestGL3IntegrationExecServerNullDecodeCannotLeakAdmission/null-preimage-group (0.00s)
+FAIL
