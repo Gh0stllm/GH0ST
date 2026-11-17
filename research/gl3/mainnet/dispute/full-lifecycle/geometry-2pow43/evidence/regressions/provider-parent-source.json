@@ -1,0 +1,67 @@
+{
+  "scope": "Exact compiled pinned provider and parent deployment source; both consume fixture globals; no provider search executed",
+  "sources": {
+    "system_tests/common_test.go": {
+      "SHA256": "bebd9a1781f06f5f26736dcf1c335d97f3baa9f0d11c742f5d3dc54cd1410fc0",
+      "matches": [
+        {
+          "line": 1952,
+          "excerpt": "var (\n\tblockChallengeLeafHeight     = uint64(1 << 5) // 32\n\tbigStepChallengeLeafHeight   = uint64(1 << 10)\n\tsmallStepChallengeLeafHeight = uint64(1 << 10)\n)\n"
+        },
+        {
+          "line": 2061,
+          "excerpt": "\t\t_, err = EnsureTxSucceeded(ctx, parentChainReader.Client(), tx)\n\t\tRequire(t, err)\n\t\tminiStakeValues := []*big.Int{big.NewInt(5), big.NewInt(4), big.NewInt(3), big.NewInt(2), big.NewInt(1)}\n\t\tgenesisExecutionState := rollupgen.AssertionState{\n\t\t\tGlobalState:    rollupgen.GlobalState{},\n\t\t\tMachineStatus:  1, // Finished"
+        },
+        {
+          "line": 2091,
+          "excerpt": "\t\t\t},\n\t\t\tLayerZeroBlockEdgeHeight:     new(big.Int).SetUint64(blockChallengeLeafHeight),\n\t\t\tLayerZeroBigStepEdgeHeight:   new(big.Int).SetUint64(bigStepChallengeLeafHeight),\n\t\t\tLayerZeroSmallStepEdgeHeight: new(big.Int).SetUint64(smallStepChallengeLeafHeight),\n\t\t\tGenesisAssertionState:        genesisExecutionState,\n\t\t\tGenesisInboxCount:            common.Big0,"
+        },
+        {
+          "line": 2096,
+          "excerpt": "\t\t\tGenesisInboxCount:            common.Big0,\n\t\t\tAnyTrustFastConfirmer:        common.Address{},\n\t\t\tNumBigStepLevel:              3,\n\t\t\tChallengeGracePeriodBlocks:   3,\n\t\t\tBufferConfig:                 bufferConfig,\n\t\t\tDataCostEstimate:             big.NewInt(0),"
+        }
+      ]
+    },
+    "system_tests/bold_new_challenge_test.go": {
+      "SHA256": "1565ea17ec3233c9d9a6fb64adac8524899cd2472bfa69f688481a198a0cbacb",
+      "matches": [
+        {
+          "line": 290,
+          "excerpt": "\t\tnode.ConsensusNode.BlockValidator,\n\t\tnode.ConsensusNode.StatelessBlockValidator,\n\t\tstate.Height(blockChallengeLeafHeight),\n\t\t&bold.StateProviderConfig{\n\t\t\tValidatorName:          addressName,\n\t\t\tMachineLeavesCachePath: cacheDir,"
+        },
+        {
+          "line": 313,
+          "excerpt": "\t\tstateManager,\n\t\t[]state.Height{\n\t\t\tstate.Height(blockChallengeLeafHeight),\n\t\t\tstate.Height(bigStepChallengeLeafHeight),\n\t\t\tstate.Height(bigStepChallengeLeafHeight),\n\t\t\tstate.Height(bigStepChallengeLeafHeight),"
+        },
+        {
+          "line": 314,
+          "excerpt": "\t\t[]state.Height{\n\t\t\tstate.Height(blockChallengeLeafHeight),\n\t\t\tstate.Height(bigStepChallengeLeafHeight),\n\t\t\tstate.Height(bigStepChallengeLeafHeight),\n\t\t\tstate.Height(bigStepChallengeLeafHeight),\n\t\t\tstate.Height(smallStepChallengeLeafHeight),"
+        },
+        {
+          "line": 315,
+          "excerpt": "\t\t\tstate.Height(blockChallengeLeafHeight),\n\t\t\tstate.Height(bigStepChallengeLeafHeight),\n\t\t\tstate.Height(bigStepChallengeLeafHeight),\n\t\t\tstate.Height(bigStepChallengeLeafHeight),\n\t\t\tstate.Height(smallStepChallengeLeafHeight),\n\t\t},"
+        },
+        {
+          "line": 316,
+          "excerpt": "\t\t\tstate.Height(bigStepChallengeLeafHeight),\n\t\t\tstate.Height(bigStepChallengeLeafHeight),\n\t\t\tstate.Height(bigStepChallengeLeafHeight),\n\t\t\tstate.Height(smallStepChallengeLeafHeight),\n\t\t},\n\t\tstateManager,"
+        },
+        {
+          "line": 317,
+          "excerpt": "\t\t\tstate.Height(bigStepChallengeLeafHeight),\n\t\t\tstate.Height(bigStepChallengeLeafHeight),\n\t\t\tstate.Height(smallStepChallengeLeafHeight),\n\t\t},\n\t\tstateManager,\n\t\tcontainers.None[db.Database](), // Api db"
+        }
+      ]
+    }
+  },
+  "configuredGlobals": {
+    "blockChallengeLeafHeight": 8192,
+    "bigStepChallengeLeafHeight": 2048,
+    "smallStepChallengeLeafHeight": 1024
+  },
+  "expandedProviderAndContractHeights": [
+    8192,
+    2048,
+    2048,
+    2048,
+    1024
+  ]
+}

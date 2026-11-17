@@ -45,6 +45,18 @@ library and unchanged original input. It deliberately leaves
 false, with no invented final counter. Source/report hashes and actual process
 exits are retained.
 
+The later terminal interpreter has now finished with exact raw
+`H = 1,444,459,006,817`, hence wrapped finish
+`F = 1,444,459,006,818`. The separate
+[geometry review draft](geometry-review-draft.json) binds that completed result
+to this measured offset/cap, the proposed vector
+`[8192, 2048, 2048, 2048, 1024]`, actual private contract readbacks and compiled
+provider/config source parity. Its per-block capacity is `2^43`; both
+`F <= capacity` and `F < protocol cap` hold. It remains **DRAFT_NOT_AUTHORIZED**:
+independent eight-witness contract review, final geometry acceptance and root
+launch authorization are separate. The original boundary receipt is historical
+and is not rewritten into a later approval.
+
 The original input was captured under the older `d453…613b` parent configuration.
 It remains unmodified. This test loads the new candidate machine with that
 original start state; it does not rewrite the old capture into a claim that its

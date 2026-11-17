@@ -1,0 +1,165 @@
+=== RUN   TestGL3Cursor64CLIProcessCrashRecovery
+INFO [11-17|02:42:33.025] New Key                                  name=Owner Address=0x26E554a8acF9003b83495c7f45F06edCB803d4e3
+INFO [11-17|02:42:33.025] New Key                                  name=Faucet Address=0xaF24Ca6c2831f4d4F629418b50C227DF0885613A
+INFO [11-17|02:42:36.318] New Key                                  name=Faucet Address=0xaF24Ca6c2831f4d4F629418b50C227DF0885613A
+INFO [11-17|02:42:36.318] New Key                                  name=RollupOwner Address=0x57Ff0F473737a1c161bfF9efDF016F7991585088
+INFO [11-17|02:42:36.318] New Key                                  name=Sequencer   Address=0xb386a74Dcab67b66F8AC07B4f08365d37495Dd23
+INFO [11-17|02:42:36.318] New Key                                  name=Validator   Address=0x83FFCFaCE2Fb0E1286686815503608A16EF41e47
+INFO [11-17|02:42:36.318] New Key                                  name=User        Address=0x7E23C8862920797d81916d62c274dd9217113e28
+    common_test.go:923: Using external L1 from /root/terminal-acceptance/bin/geth
+    common_test.go:943: BuildL1 deployConfig: DeployBold=false, DeployReferenceDAContracts=false
+INFO [11-17|02:42:36.987] Read serialized chain config from init message json="{\"chainId\":412346,\"homesteadBlock\":0,\"daoForkSupport\":true,\"eip150Block\":0,\"eip155Block\":0,\"eip158Block\":0,\"byzantiumBlock\":0,\"constantinopleBlock\":0,\"petersburgBlock\":0,\"istanbulBlock\":0,\"muirGlacierBlock\":0,\"berlinBlock\":0,\"londonBlock\":0,\"depositContractAddress\":\"0x0000000000000000000000000000000000000000\",\"clique\":{\"period\":0,\"epoch\":0},\"arbitrum\":{\"EnableArbOS\":true,\"AllowDebugPrecompiles\":false,\"DataAvailabilityCommittee\":false,\"InitialArbOSVersion\":61,\"InitialChainOwner\":\"0x26e554a8acf9003b83495c7f45f06edcb803d4e3\",\"GenesisBlockNum\":0}}"
+    gl3_cli_recovery_test.go:408: CLI exited before readiness cli-a <nil>
+    external_l1.go:429: External geth log tail:
+        Submitted contract creation              hash=0xf11a93dd4b3b2ee38752393a7598679f739f298799bd80e8fda5dd40059b1a83 from=0x57Ff0F473737a1c161bfF9efDF016F7991585088 nonce=21 contract=0x5E6d7135B0a5F12bF935A83B7d5b5e4a8BFf112d value=0
+        DEBUG[11-17|02:42:36.927] Served eth_sendRawTransaction            reqid=301 duration="216.632µs"
+        DEBUG[11-17|02:42:36.927] Served eth_getBlockByNumber              reqid=302 duration="22.42µs"
+        DEBUG[11-17|02:42:36.928] Committed block data                     size=7.26KiB  elapsed="25.57µs"
+        DEBUG[11-17|02:42:36.928] Created new diff layer                   id=27               block=26 nodesize=3.10KiB statesize=1.26KiB
+        INFO [11-17|02:42:36.928] Imported new potential chain segment     number=26 hash=3af464..fd7df7 blocks=1 txs=1 mgas=1.433 elapsed="345.104µs" mgasps=4153.606 triediffs=97.10KiB triedirty=0.00B
+        INFO [11-17|02:42:36.928] Chain head was updated                   number=26 hash=3af464..fd7df7 root=e0d6eb..e42a82 elapsed="21.68µs"
+        DEBUG[11-17|02:42:36.928] Served testing_commitBlockV1             reqid=303 duration="761.096µs"
+        DEBUG[11-17|02:42:36.928] Reinjecting stale transactions           count=0
+        WARN [11-17|02:42:36.929] Nil finalized block cannot evict old blobs
+        DEBUG[11-17|02:42:36.935] Served eth_getTransactionReceipt         reqid=304 duration="201.292µs"
+        DEBUG[11-17|02:42:36.935] Served eth_getBlockByNumber              reqid=305 duration="122.651µs"
+        DEBUG[11-17|02:42:36.936] Served eth_getBlockByNumber              reqid=306 duration="27.86µs"
+        DEBUG[11-17|02:42:36.936] Executing EVM call finished              runtime="829.376µs"
+        DEBUG[11-17|02:42:36.937] Served eth_call                          reqid=307 duration="869.646µs"
+        DEBUG[11-17|02:42:36.937] Served eth_getBlockByHash                reqid=308 duration="58.6µs"
+        DEBUG[11-17|02:42:36.937] Served eth_getBlockByNumber              reqid=309 duration="29.29µs"
+        DEBUG[11-17|02:42:36.938] Served eth_maxPriorityFeePerGas          reqid=310 duration="208.321µs"
+        DEBUG[11-17|02:42:36.938] Served eth_estimateGas                   reqid=311 duration="330.852µs"
+        DEBUG[11-17|02:42:36.939] Served eth_getTransactionCount           reqid=312 duration="24.46µs"
+        INFO [11-17|02:42:36.939] Submitted contract creation              hash=0x200ff44e0acb3eb5cbcc16d6ba8af87272939ad12e53008a3a4058ae408e5d71 from=0x57Ff0F473737a1c161bfF9efDF016F7991585088 nonce=22 contract=0xa433f59F800E7c1478a6D92d49e18791D5e73A1b value=0
+        DEBUG[11-17|02:42:36.939] Served eth_sendRawTransaction            reqid=313 duration="282.342µs"
+        DEBUG[11-17|02:42:36.939] Served eth_getBlockByNumber              reqid=314 duration="32.811µs"
+        DEBUG[11-17|02:42:36.940] Committed block data                     size=10.34KiB elapsed="24.91µs"
+        DEBUG[11-17|02:42:36.940] Created new diff layer                   id=28               block=27 nodesize=3.11KiB statesize=997.00B
+        INFO [11-17|02:42:36.940] Imported new potential chain segment     number=27 hash=b31371..26949e blocks=1 txs=1 mgas=2.140 elapsed="394.084µs" mgasps=5430.758 triediffs=101.19KiB triedirty=0.00B
+        INFO [11-17|02:42:36.940] Chain head was updated                   number=27 hash=b31371..26949e root=dd05ae..593743 elapsed="22.23µs"
+        DEBUG[11-17|02:42:36.940] Served testing_commitBlockV1             reqid=315 duration="850.467µs"
+        DEBUG[11-17|02:42:36.942] Reinjecting stale transactions           count=0
+        WARN [11-17|02:42:36.942] Nil finalized block cannot evict old blobs
+        DEBUG[11-17|02:42:36.942] Served eth_getTransactionReceipt         reqid=316 duration="135.091µs"
+        DEBUG[11-17|02:42:36.942] Served eth_getBlockByNumber              reqid=317 duration="98.761µs"
+        DEBUG[11-17|02:42:36.943] Served eth_getBlockByHash                reqid=318 duration="54.36µs"
+        DEBUG[11-17|02:42:36.944] Served eth_getBlockByNumber              reqid=319 duration="23.941µs"
+        DEBUG[11-17|02:42:36.944] Served eth_maxPriorityFeePerGas          reqid=320 duration="144.601µs"
+        DEBUG[11-17|02:42:36.945] Served eth_estimateGas                   reqid=321 duration="498.723µs"
+        DEBUG[11-17|02:42:36.945] Served eth_getTransactionCount           reqid=322 duration="15.71µs"
+        INFO [11-17|02:42:36.946] Submitted contract creation              hash=0xc1b0ffa99fd656ab4327b2fa339bc85de45efae43168e1899709d6000e2245ed from=0x57Ff0F473737a1c161bfF9efDF016F7991585088 nonce=23 contract=0xB211efa485d87C29b9486E7631D3140e16D28E08 value=0
+        DEBUG[11-17|02:42:36.946] Served eth_sendRawTransaction            reqid=323 duration="343.082µs"
+        DEBUG[11-17|02:42:36.946] Served eth_getBlockByNumber              reqid=324 duration="23.02µs"
+        DEBUG[11-17|02:42:36.947] Committed block data                     size=16.61KiB elapsed="284.102µs"
+        DEBUG[11-17|02:42:36.948] Created new diff layer                   id=29               block=28 nodesize=4.21KiB statesize=1.40KiB
+        INFO [11-17|02:42:36.948] Imported new potential chain segment     number=28 hash=2e638e..2403da blocks=1 txs=1 mgas=3.522 elapsed=1.272ms     mgasps=2767.861 triediffs=106.79KiB triedirty=0.00B
+        INFO [11-17|02:42:36.948] Chain head was updated                   number=28 hash=2e638e..2403da root=6017b7..bc05bd elapsed="46.17µs"
+        DEBUG[11-17|02:42:36.948] Served testing_commitBlockV1             reqid=325 duration=1.872204ms
+        DEBUG[11-17|02:42:36.956] Reinjecting stale transactions           count=0
+        DEBUG[11-17|02:42:36.956] Served eth_getTransactionReceipt         reqid=326 duration="213.932µs"
+        WARN [11-17|02:42:36.956] Nil finalized block cannot evict old blobs
+        DEBUG[11-17|02:42:36.956] Served eth_getBlockByNumber              reqid=327 duration="36.711µs"
+        DEBUG[11-17|02:42:36.957] Executing EVM call finished              runtime="204.931µs"
+        DEBUG[11-17|02:42:36.957] Served eth_call                          reqid=328 duration="237.622µs"
+        DEBUG[11-17|02:42:36.957] Executing EVM call finished              runtime="42.25µs"
+        DEBUG[11-17|02:42:36.957] Served eth_call                          reqid=329 duration="61.2µs"
+        DEBUG[11-17|02:42:36.957] Served eth_getTransactionReceipt         reqid=330 duration="39.061µs"
+        DEBUG[11-17|02:42:36.957] Served eth_getBlockByNumber              reqid=331 duration="134.881µs"
+        DEBUG[11-17|02:42:36.958] Served eth_getBlockByHash                reqid=332 duration="71.691µs"
+        DEBUG[11-17|02:42:36.959] Served eth_getBlockByNumber              reqid=333 duration="20.18µs"
+        DEBUG[11-17|02:42:36.959] Served eth_maxPriorityFeePerGas          reqid=334 duration="151.941µs"
+        DEBUG[11-17|02:42:36.960] Served eth_estimateGas                   reqid=335 duration="219.652µs"
+        DEBUG[11-17|02:42:36.960] Served eth_getTransactionCount           reqid=336 duration="14.75µs"
+        INFO [11-17|02:42:36.960] Submitted contract creation              hash=0x307c89c6b1935d3da44f2de4b64db6f7d4353203e65a97983474668489c6cbd1 from=0x57Ff0F473737a1c161bfF9efDF016F7991585088 nonce=24 contract=0xC2d0919123a6A49A51CBe51663C0C2442DEeA04C value=0
+        DEBUG[11-17|02:42:36.960] Served eth_sendRawTransaction            reqid=337 duration="230.091µs"
+        DEBUG[11-17|02:42:36.960] Served eth_getBlockByNumber              reqid=338 duration="22.87µs"
+        DEBUG[11-17|02:42:36.961] Committed block data                     size=7.09KiB  elapsed="17.58µs"
+        DEBUG[11-17|02:42:36.961] Created new diff layer                   id=30               block=29 nodesize=3.25KiB statesize=997.00B
+        INFO [11-17|02:42:36.961] Imported new potential chain segment     number=29 hash=ba848d..227b46 blocks=1 txs=1 mgas=1.420 elapsed="314.713µs" mgasps=4511.800 triediffs=111.01KiB triedirty=0.00B
+        INFO [11-17|02:42:36.961] Chain head was updated                   number=29 hash=ba848d..227b46 root=558ea4..f4ea95 elapsed="20.18µs"
+        DEBUG[11-17|02:42:36.961] Served testing_commitBlockV1             reqid=339 duration="708.195µs"
+        DEBUG[11-17|02:42:36.963] Reinjecting stale transactions           count=0
+        WARN [11-17|02:42:36.963] Nil finalized block cannot evict old blobs
+        DEBUG[11-17|02:42:36.963] Served eth_getTransactionReceipt         reqid=340 duration="103.841µs"
+        DEBUG[11-17|02:42:36.963] Executing EVM call finished              runtime="174.671µs"
+        DEBUG[11-17|02:42:36.963] Served eth_call                          reqid=341 duration="201.471µs"
+        DEBUG[11-17|02:42:36.963] Served eth_getBlockByNumber              reqid=342 duration="92.631µs"
+        DEBUG[11-17|02:42:36.964] Served eth_getBlockByHash                reqid=343 duration="36.571µs"
+        DEBUG[11-17|02:42:36.964] Served eth_getBlockByNumber              reqid=344 duration="19.31µs"
+        DEBUG[11-17|02:42:36.965] Served eth_maxPriorityFeePerGas          reqid=345 duration="140.811µs"
+        DEBUG[11-17|02:42:36.965] Served eth_getCode                       reqid=346 duration="70.79µs"
+        DEBUG[11-17|02:42:36.965] Served eth_estimateGas                   reqid=347 duration="266.172µs"
+        DEBUG[11-17|02:42:36.965] Served eth_getTransactionCount           reqid=348 duration="13.28µs"
+        INFO [11-17|02:42:36.966] Submitted transaction                    hash=0xeea72ef6e13e3c8013de5dd6197f7e38b3914d1a6690e117e8a394ffb40c56c8 from=0x57Ff0F473737a1c161bfF9efDF016F7991585088 nonce=25 recipient=0x454Df6179dEbE92aC81Bfb974a4ad731Cd7dB628 value=0
+        DEBUG[11-17|02:42:36.966] Served eth_sendRawTransaction            reqid=349 duration="126.171µs"
+        DEBUG[11-17|02:42:36.966] Served eth_getBlockByNumber              reqid=350 duration="21.27µs"
+        DEBUG[11-17|02:42:36.967] Committed block data                     size=1.24KiB  elapsed="17.91µs"
+        DEBUG[11-17|02:42:36.968] Created new diff layer                   id=31               block=30 nodesize=4.31KiB statesize=2.38KiB
+        INFO [11-17|02:42:36.968] Imported new potential chain segment     number=30 hash=0902e1..a34b77 blocks=1 txs=1 mgas=0.228 elapsed=1.691ms     mgasps=134.572  triediffs=117.71KiB triedirty=0.00B
+        INFO [11-17|02:42:36.968] Chain head was updated                   number=30 hash=0902e1..a34b77 root=fc514b..421857 elapsed="36.2µs"
+        DEBUG[11-17|02:42:36.968] Served testing_commitBlockV1             reqid=351 duration=2.051434ms
+        DEBUG[11-17|02:42:36.970] Reinjecting stale transactions           count=0
+        WARN [11-17|02:42:36.970] Nil finalized block cannot evict old blobs
+        DEBUG[11-17|02:42:36.972] Served eth_getTransactionReceipt         reqid=352 duration="111.781µs"
+        DEBUG[11-17|02:42:36.972] Executing EVM call finished              runtime="191.121µs"
+        DEBUG[11-17|02:42:36.972] Served eth_call                          reqid=353 duration="226.962µs"
+        DEBUG[11-17|02:42:36.972] Served eth_getBlockByNumber              reqid=354 duration="76.261µs"
+        DEBUG[11-17|02:42:36.972] Served eth_getBlockByHash                reqid=355 duration="24.4µs"
+        DEBUG[11-17|02:42:36.973] Served eth_getBlockByNumber              reqid=356 duration="20.101µs"
+        DEBUG[11-17|02:42:36.973] Served eth_maxPriorityFeePerGas          reqid=357 duration="163.621µs"
+        DEBUG[11-17|02:42:36.973] Served eth_getCode                       reqid=358 duration="69.551µs"
+        DEBUG[11-17|02:42:36.977] Served eth_estimateGas                   reqid=359 duration=3.607465ms
+        DEBUG[11-17|02:42:36.977] Served eth_getTransactionCount           reqid=360 duration="18.81µs"
+        INFO [11-17|02:42:36.978] Submitted transaction                    hash=0x9b1370ca0a8993a0bd1a15ea71a652e1c4bca7225472eb391906efd53ba4eb03 from=0x57Ff0F473737a1c161bfF9efDF016F7991585088 nonce=26 recipient=0x454Df6179dEbE92aC81Bfb974a4ad731Cd7dB628 value=0
+        DEBUG[11-17|02:42:36.978] Served eth_sendRawTransaction            reqid=361 duration="164.611µs"
+        DEBUG[11-17|02:42:36.978] Served eth_getBlockByNumber              reqid=362 duration="23.89µs"
+        DEBUG[11-17|02:42:36.982] Committed block data                     size=8.05KiB  elapsed="42.58µs"
+        DEBUG[11-17|02:42:36.982] Created new diff layer                   id=32               block=31 nodesize=16.64KiB statesize=13.78KiB
+        INFO [11-17|02:42:36.982] Imported new potential chain segment     number=31 hash=15b435..d34741 blocks=1 txs=1 mgas=6.508 elapsed=2.901ms     mgasps=2243.116 triediffs=148.13KiB triedirty=0.00B
+        INFO [11-17|02:42:36.983] Chain head was updated                   number=31 hash=15b435..d34741 root=cef64f..5ed6ad elapsed="151.981µs"
+        DEBUG[11-17|02:42:36.983] Served testing_commitBlockV1             reqid=363 duration=4.695823ms
+        DEBUG[11-17|02:42:36.983] Served eth_getTransactionReceipt         reqid=364 duration="572.044µs"
+        DEBUG[11-17|02:42:36.985] Served eth_getBlockByNumber              reqid=365 duration="126.251µs"
+        DEBUG[11-17|02:42:36.985] Served eth_getBlockByNumber              reqid=366 duration="30.13µs"
+        DEBUG[11-17|02:42:36.986] Executing EVM call finished              runtime="563.874µs"
+        DEBUG[11-17|02:42:36.986] Served eth_call                          reqid=367 duration="604.574µs"
+        DEBUG[11-17|02:42:36.986] Served eth_getBlockByHash                reqid=368 duration="51.631µs"
+        DEBUG[11-17|02:42:36.986] Performing unindexed log search          begin=31 end=31
+        DEBUG[11-17|02:42:36.986] Performed unindexed log search           begin=31 end=31 matches=1 elapsed="92.151µs"
+        DEBUG[11-17|02:42:36.986] Served eth_getLogs                       reqid=369 duration="191.251µs"
+        DEBUG[11-17|02:42:36.987] Performing unindexed log search          begin=31 end=31
+        DEBUG[11-17|02:42:36.987] Performed unindexed log search           begin=31 end=31 matches=1 elapsed="13.15µs"
+        DEBUG[11-17|02:42:36.987] Served eth_getLogs                       reqid=370 duration="70.751µs"
+        DEBUG[11-17|02:42:36.987] Served eth_getBlockByHash                reqid=371 duration="28.61µs"
+        DEBUG[11-17|02:42:36.987] Served eth_unsubscribe                   reqid=372 duration="8.33µs"
+        DEBUG[11-17|02:42:37.009] Reinjecting stale transactions           count=0
+        WARN [11-17|02:42:37.009] Nil finalized block cannot evict old blobs
+        DEBUG[11-17|02:42:38.767] Served eth_chainId                       reqid=373 duration="41.861µs"
+        DEBUG[11-17|02:42:39.019] Served eth_chainId                       reqid=374 duration="39.34µs"
+        DEBUG[11-17|02:42:39.019] Served eth_getCode                       reqid=375 duration="73.55µs"
+        DEBUG[11-17|02:42:39.021] Executing EVM call finished              runtime="211.862µs"
+        DEBUG[11-17|02:42:39.021] Served eth_call                          reqid=376 duration="254.742µs"
+        DEBUG[11-17|02:42:39.026] Served eth_getLogs                       reqid=377 duration="296.662µs"
+        DEBUG[11-17|02:42:39.026] Served eth_getLogs                       reqid=378 duration="121.781µs"
+        DEBUG[11-17|02:42:39.026] Served eth_getBlockByHash                reqid=379 duration="48.331µs"
+        DEBUG[11-17|02:42:42.415] Executing EVM call finished              runtime="166.121µs"
+        WARN [11-17|02:42:42.415] Served eth_call                          reqid=380 duration="272.902µs" err="execution reverted"                  errdata="\"0x\""
+        DEBUG[11-17|02:42:42.419] Served eth_config                        reqid=381 duration="242.502µs"
+        DEBUG[11-17|02:42:42.420] Served eth_getCode                       reqid=382 duration="48.11µs"
+        DEBUG[11-17|02:42:42.420] Served eth_getCode                       reqid=383 duration="37.35µs"
+        DEBUG[11-17|02:42:42.424] Executing EVM call finished              runtime=3.888738ms
+        DEBUG[11-17|02:42:42.424] Served eth_call                          reqid=384 duration=3.928258ms
+        DEBUG[11-17|02:42:42.426] Served eth_getBlockByNumber              reqid=385 duration="63.91µs"
+        WARN [11-17|02:42:42.427] Served eth_getBlockByNumber              reqid=386 duration="25.09µs"   err="finalized block not found"
+        DEBUG[11-17|02:42:46.542] Tx tracker status                        need-resubmit=0 stale=31 ok=0
+        DEBUG[11-17|02:42:57.428] Served eth_getBlockByNumber              reqid=387 duration="112.55µs"
+        WARN [11-17|02:42:57.429] Served eth_getBlockByNumber              reqid=388 duration="23.981µs"  err="finalized block not found"
+        DEBUG[11-17|02:43:12.430] Served eth_getBlockByNumber              reqid=389 duration="111.27µs"
+        DEBUG[11-17|02:43:27.435] Served eth_getBlockByNumber              reqid=390 duration="108.82µs"
+        DEBUG[11-17|02:43:36.432] Current full block not old enough to freeze err="freezing threshold is not available"
+        DEBUG[11-17|02:43:42.436] Served eth_getBlockByNumber              reqid=391 duration="94.371µs"
+        DEBUG[11-17|02:43:46.543] Tx tracker status                        need-resubmit=0 stale=0  ok=0
+        DEBUG[11-17|02:43:57.437] Served eth_getBlockByNumber              reqid=392 duration="108.131µs"
+--- FAIL: TestGL3Cursor64CLIProcessCrashRecovery (96.06s)
+FAIL

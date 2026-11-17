@@ -1,0 +1,18 @@
+=== RUN   TestGL3OriginalFullInputValidationTransport
+    gl3_large_input_transport_test.go:510: goroutine 5 [running]:
+        runtime/debug.Stack()
+        	/root/bounded-restore/toolchain/go/src/runtime/debug/stack.go:26 +0x5e
+        github.com/offchainlabs/nitro/util/testhelpers.RequireImpl({0x49ea7b0, 0xc0001028c0}, {0x499e3a0, 0xc000808350}, {0x0, 0x0, 0x0})
+        	/root/gl3-large-input-preflight-v1/nitro/util/testhelpers/testhelpers.go:31 +0x55
+        github.com/offchainlabs/nitro/system_tests.Require(0xc0001028c0, {0x499e3a0, 0xc000808350}, {0x0, 0x0, 0x0})
+        	/root/gl3-large-input-preflight-v1/nitro/system_tests/test_info.go:40 +0x5d
+        github.com/offchainlabs/nitro/system_tests.TestGL3OriginalFullInputValidationTransport(0xc0001028c0)
+        	/root/gl3-large-input-preflight-v1/nitro/system_tests/gl3_large_input_transport_test.go:510 +0x1b85
+        testing.tRunner(0xc0001028c0, 0x45729d0)
+        	/root/bounded-restore/toolchain/go/src/testing/testing.go:1934 +0xea
+        created by testing.(*T).Run in goroutine 1
+        	/root/bounded-restore/toolchain/go/src/testing/testing.go:1997 +0x465
+        
+    gl3_large_input_transport_test.go:510: [31;1m [] service *arbtest.gl3AuditedTransportAPI doesn't have any suitable methods/subscriptions to expose [0;0m
+--- FAIL: TestGL3OriginalFullInputValidationTransport (25.17s)
+FAIL

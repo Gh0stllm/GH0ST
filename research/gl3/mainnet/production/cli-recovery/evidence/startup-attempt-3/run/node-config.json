@@ -1,0 +1,120 @@
+{
+  "auth": {
+    "addr": ""
+  },
+  "chain": {
+    "id": 412346,
+    "info-files": [
+      "/root/gl3-cli-recovery/cli64-v1/attempt-a86875efe07342b1ae4a4c917167a831/run/chain-info.json"
+    ]
+  },
+  "execution": {
+    "caching": {
+      "archive": true,
+      "max-amount-of-gas-to-skip-state-saving": 0,
+      "max-number-of-blocks-to-skip-state-saving": 0,
+      "state-scheme": "hash"
+    },
+    "rpc": {
+      "evm-timeout": "60s"
+    },
+    "rpc-server": {
+      "authenticated": false,
+      "enable": true,
+      "public": false
+    },
+    "sequencer": {
+      "enable": true,
+      "max-block-speed": "100ms",
+      "max-revert-gas-reject": 0,
+      "queue-timeout": "60s"
+    }
+  },
+  "http": {
+    "addr": "127.0.0.1",
+    "api": [
+      "eth",
+      "net",
+      "web3",
+      "arb"
+    ],
+    "port": 36473,
+    "vhosts": [
+      "127.0.0.1",
+      "localhost"
+    ]
+  },
+  "init": {
+    "accounts-per-sync": 10000,
+    "import-file": "/root/gl3-cli-recovery/cli64-v1/attempt-a86875efe07342b1ae4a4c917167a831/run/import.json",
+    "validate-genesis-assertion": true
+  },
+  "ipc": {
+    "path": "/root/gl3-cli-recovery/cli64-v1/attempt-a86875efe07342b1ae4a4c917167a831/run/nitro.ipc"
+  },
+  "log-level": "INFO",
+  "node": {
+    "batch-poster": {
+      "enable": false
+    },
+    "block-validator": {
+      "enable": false
+    },
+    "dangerous": {
+      "disable-blob-reader": true,
+      "no-sequencer-coordinator": true
+    },
+    "delayed-sequencer": {
+      "enable": false
+    },
+    "feed": {
+      "input": {
+        "url": []
+      },
+      "output": {
+        "enable": false,
+        "signed": false
+      }
+    },
+    "message-extraction": {
+      "enable": false
+    },
+    "parent-chain-reader": {
+      "enable": true,
+      "old-header-timeout": "10m",
+      "poll-only": true
+    },
+    "seq-coordinator": {
+      "enable": false
+    },
+    "sequencer": true,
+    "staker": {
+      "enable": false
+    }
+  },
+  "parent-chain": {
+    "connection": {
+      "url": "http://127.0.0.1:46133"
+    },
+    "id": 1337
+  },
+  "persistent": {
+    "chain": "/root/gl3-cli-recovery/cli64-v1/attempt-a86875efe07342b1ae4a4c917167a831/run/persistent-l2",
+    "db-engine": "pebble",
+    "pebble": {
+      "max-concurrent-compactions": 2,
+      "sync-mode": true
+    }
+  },
+  "validation": {
+    "wasm": {
+      "root-path": "/root/future-lifecycle-865-build/machines"
+    }
+  },
+  "version-alerter": {
+    "enable": false
+  },
+  "ws": {
+    "addr": ""
+  }
+}

@@ -1,0 +1,33 @@
+--- selected-native/validator/client/validation_client.go
++++ future-host/validator/client/validation_client.go
+@@ -45,9 +45,14 @@
+ 
+ func (c *ValidationClient) Launch(entry *validator.ValidationInput, moduleRoot common.Hash) validator.ValidationRun {
+ 	promise := stopwaiter.LaunchPromiseThread[validator.GoGlobalState](c, func(ctx context.Context) (validator.GoGlobalState, error) {
++		release, err := gl3AcquireValidationUpload(ctx)
++		if err != nil {
++			return validator.GoGlobalState{}, err
++		}
++		defer release()
+ 		input := server_api.ValidationInputToJson(entry)
+ 		var res validator.GoGlobalState
+-		err := c.client.CallContext(ctx, &res, server_api.Namespace+"_validate", input, moduleRoot)
++		err = c.client.CallContext(ctx, &res, server_api.Namespace+"_validate", input, moduleRoot)
+ 		return res, err
+ 	})
+ 	return server_common.NewValRun(promise, moduleRoot)
+@@ -151,8 +156,13 @@
+ 	useBoldMachine bool,
+ ) containers.PromiseInterface[validator.ExecutionRun] {
+ 	return stopwaiter.LaunchPromiseThread(c, func(ctx context.Context) (validator.ExecutionRun, error) {
++		release, err := gl3AcquireValidationUpload(ctx)
++		if err != nil {
++			return nil, err
++		}
++		defer release()
+ 		var res uint64
+-		err := c.client.CallContext(ctx, &res, server_api.Namespace+"_createExecutionRun", wasmModuleRoot, server_api.ValidationInputToJson(input), useBoldMachine)
++		err = c.client.CallContext(ctx, &res, server_api.Namespace+"_createExecutionRun", wasmModuleRoot, server_api.ValidationInputToJson(input), useBoldMachine)
+ 		if err != nil {
+ 			return nil, err
+ 		}
