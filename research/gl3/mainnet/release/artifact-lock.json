@@ -37,10 +37,10 @@
   "parentRollup": null,
   "publicRPC": null,
   "productionRPCSecretLocation": null,
-  "evidenceScope": "Bounded historical-code repair passes native terminal/accessor/witness/recorder/journal/delta/canonical checks; guarded guest replay running and full-lifecycle candidate compiled and running; production pairing and acceptance open",
+  "evidenceScope": "Native repair parity passes; guarded c03c late-state guest failed exit1; dependent lifecycle stopped without acceptance; diagnostics and offline checkpoint study are narrow only",
   "standardOfficialMachinePermittedForCustomA14": false,
   "productionProofMachineAccepted": false,
-  "proofMachineStatus": "GUARDED_TERMINAL_REPLAY_RUNNING_NOT_ACCEPTED",
+  "proofMachineStatus": "FAILED_GUEST_ADDRESS_SPACE_EXIT1",
   "failedTerminalReplay": {
     "evidence": "../dispute/evidence/terminal-wavm-failure/replay-result.json",
     "exitCode": 1,
@@ -50,7 +50,7 @@
     "allFourGlobalStateFieldsMatch": false
   },
   "replacementMachineRoot": "0xc03cf6f44fe1ca3c0826064ba7e5a3c134dc0013a9b994f3355f2ba185116c00",
-  "replacementFixStatus": "NATIVE_REGRESSIONS_PASSED_GUARDED_GUEST_RUNNING_NOT_ACCEPTED",
+  "replacementFixStatus": "NATIVE_PASSES_GUARDED_C03C_FAILED_NOT_ACCEPTED",
   "nativeParentObservedStateParityPassed": true,
   "nativeParentObservedStateParityScope": "Private genuine native Nitro parent/child with observed sparse GH0ST account clone; no complete canonical ledger or permissionless finality",
   "nativeParentObservedStateParityEvidence": "../withdrawal/parent-parity/evidence/summary.json",
@@ -68,6 +68,73 @@
   "guestSoftMemoryLimitBytes": 3221225472,
   "cacheOnlyReferenceMachineRoot": "0x70f2954895a54120f0aaff6eafdfdb382d9ab7fcea110d6fb295626e11fd5ce7",
   "cacheOnlyReferenceLongReplayExecuted": false,
-  "fullLifecycleCandidate": "RUNNING_NOT_ACCEPTED",
-  "fullLifecyclePassed": false
+  "fullLifecycleCandidate": "STOPPED_NOT_ACCEPTED_MATCHING_GUEST_FAILED",
+  "fullLifecyclePassed": false,
+  "futureControllerAcceptanceGuards": {
+    "syntaxPassed": true,
+    "normalTestsPassed": 87,
+    "optimizedPythonTestsPassed": 87,
+    "actualExitCode": 0,
+    "allExecutionOnRunpod": true,
+    "evidence": "../dispute/full-lifecycle/controller-tests/transition-evidence/result.json",
+    "testedControllerSHA256": "433420e08ea819527b43ce46720c5cb7c927ae749c384331db8d1942ad13f487",
+    "testedGuardsSHA256": "246f832e8c4fbe7943ed53a519ea1c40f4e4172c134e56e974da64421470425e",
+    "futureGoNonceSourceCloudCompiled": true,
+    "futureGoIntegrationPassed": false,
+    "activeFixtureUsesDifferentFrozenSource": true
+  },
+  "strictLifecycleAcceptance": {
+    "status": "STOPPED_NOT_ACCEPTED",
+    "exactTargetBound": true,
+    "realBlockBisectionLevels": 13,
+    "disagreementInterval": [
+      4920,
+      4921
+    ],
+    "freshInputSHA256": "c419b88eec6e62cffc6afed5c6a38b7bce26e13512ab8ed7982ffb793f781f48",
+    "freshInputBytes": 2574999142,
+    "terminalBlock": 4921,
+    "originalGuardedReplayInputSHA256": "bd81988d132f689a5efd3e6aa08a542d7ddf630cc227f56a10b340ff8cc08e90",
+    "required": [
+      "exact honest-root one-step ancestry",
+      "exact honest target assertion confirmation after proof",
+      "exact nonzero edge-collateral refund with successful receipt/transfer and independent balance reconciliation"
+    ],
+    "broadFixtureReportSufficient": false,
+    "assertionStakeWithdrawalCovered": false,
+    "evidence": "../dispute/full-lifecycle/audit/evidence/stopped-current/stopped-summary.json",
+    "capturedEdges": 48,
+    "acceptedOneStepEvents": 0,
+    "targetConfirmations": 0,
+    "auditedRefunds": 0,
+    "fixtureActualExitCode": -15,
+    "fixtureSeconds": 3135.089
+  },
+  "futureGoEntrypointRefusalChecksPassed": 2,
+  "futureGoEntrypointEvidence": "../dispute/full-lifecycle/controller-tests/entrypoint-evidence/result.json",
+  "futureAuditorPureTransitionRegressionsPassed": 8,
+  "futureAuditorRealOneStepTransitionPositivePassed": false,
+  "finalFutureControllerSyntaxAndMissingAuxiliaryRefusalPassed": true,
+  "finalFutureControllerSHA256": "1dad5a33140388555055f8849f501bea1e3898e56c6ee2c6df13164c4ebb772f",
+  "guardedGuestAcceptance": false,
+  "guardedGuestReplayStatus": "FAILED_GUEST_ADDRESS_SPACE_EXIT1",
+  "fullBoLDLifecycleAcceptance": false,
+  "fullBoLDLifecycleStatus": "STOPPED_NOT_ACCEPTED",
+  "guardedReplayFailureEvidence": "../production/bounded-restore/evidence/guarded-replay-failure/replay-result.json",
+  "guardedReplayFailure": {
+    "evidence": "../production/bounded-restore/evidence/guarded-replay-failure/replay-result.json",
+    "exitCode": 1,
+    "seconds": 3575.3639305480756,
+    "guestBytesInUse": 4227235840,
+    "allocationBytes": 4194304,
+    "accessorActuallyUsed": true,
+    "allFourFieldsMatch": false
+  },
+  "checkpointStudy": {
+    "scope": "PRETERMINAL_OFFLINE_ONLY",
+    "evidence": "../storage/checkpoint-study/README.md",
+    "allByteRoundTripPassed": true,
+    "productionAccepted": false,
+    "twentyGamesCapacityAccepted": false
+  }
 }

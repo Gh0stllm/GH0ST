@@ -71,7 +71,7 @@
   },
   "neededAcceptanceEvidence": [
     "same-client-machine-genesis rehearsal",
-    "completed guarded terminal guest replay under matching machine after native repair pass, then complete incorrect-engine assertion/challenge lifecycle (candidate compiled and running, unaccepted)",
+    "repair and accept a new terminal guest after c03c failure, then execute a fresh exact assertion/challenge/refund lifecycle; previous dependent fixture stopped without acceptance",
     "production native-token backing/configuration acceptance after the bounded native-parent observed-state flow pass",
     "graceful and process-level recovery boundaries",
     "long-history live-state retention and resource rejection",
@@ -89,8 +89,8 @@
     "nativeParentFastConfirmationPrivileged": true,
     "terminalNativeCapturePassed": true,
     "terminalGuestReplayPassed": false,
-    "terminalGuestReplayStatus": "GUARDED_REPLAY_RUNNING_NOT_ACCEPTED",
-    "boundedRestoreCandidate": "NATIVE_REGRESSIONS_PASSED_GUARDED_GUEST_RUNNING_NOT_ACCEPTED",
+    "terminalGuestReplayStatus": "FAILED_GUEST_ADDRESS_SPACE_EXIT1",
+    "boundedRestoreCandidate": "NATIVE_PASSES_GUARDED_C03C_FAILED_NOT_ACCEPTED",
     "fullIncorrectEngineBoLDDisputePassed": false,
     "previousTerminalGuestReplayStatus": "FAILED_WASM32_GUEST_HEAP_EXHAUSTION",
     "previousTerminalGuestReplayEvidence": "../dispute/evidence/terminal-wavm-failure/replay-result.json",
@@ -99,6 +99,65 @@
     "boundedRestoreNativeGasUsed": 12306935,
     "boundedRestoreCanonicalBytes": 163085439,
     "guardedMachineRoot": "0xc03cf6f44fe1ca3c0826064ba7e5a3c134dc0013a9b994f3355f2ba185116c00",
-    "fullLifecycleCandidate": "RUNNING_NOT_ACCEPTED"
+    "fullLifecycleCandidate": "STOPPED_NOT_ACCEPTED_MATCHING_GUEST_FAILED",
+    "terminalGuestReplayEvidence": "../production/bounded-restore/evidence/guarded-replay-failure/replay-result.json"
+  },
+  "futureControllerAcceptanceGuards": {
+    "syntaxPassed": true,
+    "normalTestsPassed": 87,
+    "optimizedPythonTestsPassed": 87,
+    "actualExitCode": 0,
+    "allExecutionOnRunpod": true,
+    "evidence": "../dispute/full-lifecycle/controller-tests/transition-evidence/result.json",
+    "testedControllerSHA256": "433420e08ea819527b43ce46720c5cb7c927ae749c384331db8d1942ad13f487",
+    "testedGuardsSHA256": "246f832e8c4fbe7943ed53a519ea1c40f4e4172c134e56e974da64421470425e",
+    "futureGoNonceSourceCloudCompiled": true,
+    "futureGoIntegrationPassed": false,
+    "activeFixtureUsesDifferentFrozenSource": true
+  },
+  "strictLifecycleAcceptance": {
+    "status": "STOPPED_NOT_ACCEPTED",
+    "exactTargetBound": true,
+    "realBlockBisectionLevels": 13,
+    "disagreementInterval": [
+      4920,
+      4921
+    ],
+    "freshInputSHA256": "c419b88eec6e62cffc6afed5c6a38b7bce26e13512ab8ed7982ffb793f781f48",
+    "freshInputBytes": 2574999142,
+    "terminalBlock": 4921,
+    "originalGuardedReplayInputSHA256": "bd81988d132f689a5efd3e6aa08a542d7ddf630cc227f56a10b340ff8cc08e90",
+    "required": [
+      "exact honest-root one-step ancestry",
+      "exact honest target assertion confirmation after proof",
+      "exact nonzero edge-collateral refund with successful receipt/transfer and independent balance reconciliation"
+    ],
+    "broadFixtureReportSufficient": false,
+    "assertionStakeWithdrawalCovered": false,
+    "evidence": "../dispute/full-lifecycle/audit/evidence/stopped-current/stopped-summary.json",
+    "capturedEdges": 48,
+    "acceptedOneStepEvents": 0,
+    "targetConfirmations": 0,
+    "auditedRefunds": 0,
+    "fixtureActualExitCode": -15,
+    "fixtureSeconds": 3135.089
+  },
+  "futureGoEntrypointRefusalChecksPassed": 2,
+  "futureGoEntrypointEvidence": "../dispute/full-lifecycle/controller-tests/entrypoint-evidence/result.json",
+  "futureAuditorPureTransitionRegressionsPassed": 8,
+  "futureAuditorRealOneStepTransitionPositivePassed": false,
+  "finalFutureControllerSyntaxAndMissingAuxiliaryRefusalPassed": true,
+  "finalFutureControllerSHA256": "1dad5a33140388555055f8849f501bea1e3898e56c6ee2c6df13164c4ebb772f",
+  "guardedGuestAcceptance": false,
+  "guardedGuestReplayStatus": "FAILED_GUEST_ADDRESS_SPACE_EXIT1",
+  "fullBoLDLifecycleAcceptance": false,
+  "fullBoLDLifecycleStatus": "STOPPED_NOT_ACCEPTED",
+  "guardedReplayFailureEvidence": "../production/bounded-restore/evidence/guarded-replay-failure/replay-result.json",
+  "checkpointStudy": {
+    "scope": "PRETERMINAL_OFFLINE_ONLY",
+    "evidence": "../storage/checkpoint-study/README.md",
+    "allByteRoundTripPassed": true,
+    "productionAccepted": false,
+    "twentyGamesCapacityAccepted": false
   }
 }

@@ -1,0 +1,12 @@
+// Boundary unit cases only. These do not create or prove an on-chain challenge.
+import test from 'node:test';import assert from 'node:assert/strict';import {verifyTerminalTransition} from './terminal-transition.mjs';
+const H=n=>'0x'+n.toString(16).padStart(64,'0'),state=(block,batch,pos=0)=>[[[H(block),H(0)],[String(batch),String(pos)]],'1',H(batch?9:0)];
+function fixture(){const initial=state(0,0),boot=state(100,1),terminal=state(200,2470),claims=[{hash:H(1),parent:H(0),after:initial},{hash:H(2),parent:H(1),before:initial,after:boot},{hash:H(3),parent:H(2),before:boot,after:terminal}];return {manifest:{completed:true,requested:true,blockNumber:4921,blockHash:H(200),terminalComputeTx:H(300),expectedEndState:{BlockHash:H(200),SendRoot:H(0),Batch:2470,PosInBatch:0},parentBatch:2469,parentBatchMetadata:{MessageCount:4922}},proof:{path:[{from:H(4),to:H(5),kind:'subchallenge-claim'}]},states:{[H(4)]:{level:'0',startHeight:'4920',endHeight:'4921'},[H(5)]:{level:'1',claimId:H(4)}},claims,honestAssertionHash:H(3)};}
+test('synthetic boundary unit: exact genesis-zero terminal interval binds',()=>{const r=verifyTerminalTransition(fixture());assert.deepEqual([r.verified,r.terminalBlockNumber,r.startHeight,r.endHeight],[true,4921,4920,4921]);});
+test('different length-one interval rejects',()=>{const x=fixture();x.states[H(4)].startHeight='4921';x.states[H(4)].endHeight='4922';assert.throws(()=>verifyTerminalTransition(x),/different terminal transition/);});
+test('same terminal end but wider interval rejects',()=>{const x=fixture();x.states[H(4)].startHeight='4919';assert.throws(()=>verifyTerminalTransition(x),/different terminal transition/);});
+test('different receipt hash rejects',()=>{const x=fixture();x.manifest.blockHash=H(201);assert.throws(()=>verifyTerminalTransition(x),/receipt\/expected-state/);});
+test('wrong subchallenge claim link rejects',()=>{const x=fixture();x.states[H(5)].claimId=H(6);assert.throws(()=>verifyTerminalTransition(x),/different block edge/);});
+test('non-genesis start cannot silently reuse genesis-zero offset',()=>{const x=fixture();x.claims[1].after=state(101,20);x.claims[2].before=state(101,20);assert.throws(()=>verifyTerminalTransition(x),/genesis-finished/);});
+test('unrelated predecessor rejects',()=>{const x=fixture();x.claims[2].before=state(101,1);assert.throws(()=>verifyTerminalTransition(x),/predecessor after-state/);});
+test('missing first block-to-machine link rejects',()=>{const x=fixture();x.proof.path=[];assert.throws(()=>verifyTerminalTransition(x),/No block-to-machine/);});

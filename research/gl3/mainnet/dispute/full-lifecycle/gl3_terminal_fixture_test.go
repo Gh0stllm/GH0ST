@@ -38,6 +38,7 @@ import (
 // This fixture is derived from the accepted full-strength native capture.
 // Only the test-chain deployment and subsequent challenge lifecycle differ.
 func TestGL3TerminalResultBoLDLifecycle(t *testing.T) {
+ if os.Getenv("GL3_LIFECYCLE_RUN_ID") == "" { t.Fatal("explicit fresh lifecycle run ID required") }
  blockChallengeLeafHeight = 8192
  runGL3DisputeNodeFixture(t, false)
 }

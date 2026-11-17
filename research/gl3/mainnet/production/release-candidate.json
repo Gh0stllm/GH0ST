@@ -47,8 +47,8 @@
     "standardOfficialRootForCustomA14Allowed": false,
     "productionLinuxArtifactAccepted": false,
     "terminalBlockReplayPassed": false,
-    "terminalBlockReplayStatus": "GUARDED_REPLAY_RUNNING_NOT_ACCEPTED",
-    "terminalBlockReplayActualExit": null,
+    "terminalBlockReplayStatus": "FAILED_GUEST_ADDRESS_SPACE_EXIT1",
+    "terminalBlockReplayActualExit": 1,
     "replacementCacheFixAccepted": false,
     "nativeELFNonExecutableStackVerified": true,
     "nativeExecutableStackAllowed": false,
@@ -65,8 +65,11 @@
     "replacementNativeEvidence": "bounded-restore/README.md",
     "guestSoftMemoryLimitBytes": 3221225472,
     "matchingProductionNativeClientSHA256": null,
-    "fullLifecycleCandidate": "COMPILING_UNTESTED",
-    "fullBoLDLifecyclePassed": false
+    "fullLifecycleCandidate": "STOPPED_NOT_ACCEPTED_MATCHING_GUEST_FAILED",
+    "fullBoLDLifecyclePassed": false,
+    "terminalBlockReplaySeconds": 3575.3639305480756,
+    "terminalBlockReplayEvidence": "bounded-restore/evidence/guarded-replay-failure/replay-result.json",
+    "guestAllocationFailureBytesInUse": 4227235840
   },
   "operations": {
     "recurringServerBudgetUSD": 100,
@@ -88,5 +91,10 @@
       "native liabilities versus bridge backing",
       "live immutable delta growth and replay retention"
     ]
-  }
+  },
+  "guardedGuestAcceptance": false,
+  "guardedGuestReplayStatus": "FAILED_GUEST_ADDRESS_SPACE_EXIT1",
+  "fullBoLDLifecycleAcceptance": false,
+  "fullBoLDLifecycleStatus": "STOPPED_NOT_ACCEPTED",
+  "guardedReplayFailureEvidence": "../production/bounded-restore/evidence/guarded-replay-failure/replay-result.json"
 }

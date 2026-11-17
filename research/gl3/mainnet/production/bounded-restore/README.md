@@ -2,7 +2,7 @@
 
 The old terminal WAVM replay hit WASM32's 4 GiB guest heap while restoring sealed historical deltas. It was not a 128 GB host-memory failure. This candidate removes clean historical code retention in account objects and adds a separately tracked, guest-only 3 GiB soft memory limit. The engine, NNUE, search policy, authenticated reads and consensus gas remain unchanged.
 
-**Status: native regressions passed; the new guarded terminal WAVM replay is running.** This directory does not claim a completed BoLD dispute or mainnet readiness.
+**Status: native regressions passed; the new guarded terminal WAVM replay failed with another WASM32 guest heap exhaustion.** This directory does not claim a completed BoLD dispute or mainnet readiness.
 
 | Check | Verified result |
 | --- | --- |
@@ -15,7 +15,7 @@ The old terminal WAVM replay hit WASM32's 4 GiB guest heap while restoring seale
 | Exact terminal replay | Original 2,574,999,906-byte input; all four end-state fields match; actual exit 0 |
 | Consensus gas | Baseline, cache-fixed and guarded native executions each use **12,306,935 gas**, with identical block/state/receipt hashes |
 | Full canonical engine state | Cold reconstruction of 2,464 deltas yields 163,085,439 bytes, SHA-256 `5f9762c73c1309824a365e47f936d27975c6233770672803bcc6ffbba30f28c6` |
-| New proof root | Guarded root generated; terminal interpreter/proof execution pending |
+| New proof root | Guarded root generated; terminal replay failed after 3,575.36 s. The guest could not allocate 4 MiB with 4,227,235,840 bytes in use; no successful terminal/engine witness export |
 
 ## What changes
 
@@ -35,6 +35,8 @@ The pinned replay guest uses `GOGC=1000`. Its native diagnostic left about 392 M
 - Original terminal input SHA-256: `bd81988d132f689a5efd3e6aa08a542d7ddf630cc227f56a10b340ff8cc08e90`
 - Unchanged C companion SHA-256: `b481f92a852a685411db42c8b51abd3a3f2c8cd8c5d0c1c8eed2962d986f5555`
 - Base Nitro: `v3.12.2`; base Geth: `30456d24d3cff444d3b0f246e9c7609477c7d4a1`; Linux Go `1.25.12`.
+
+The [failed guarded replay](evidence/guarded-replay-failure/replay-result.json) preserves the actual exit, unchanged input identity, guest failure and partial proof-file hash. The new accessor was reached, but the 3 GiB soft limit did not prevent exhaustion. It is not a mainnet-ready fix.
 
 The [source/build manifest](evidence/build-source-manifest.json), [numeric header comparison](evidence/native-header-comparison.json), [canonical reconstruction](evidence/native-canonical-result.json), [cache-only build](evidence/machine-build-result.json) and [guarded build](evidence/guard-machine-build-result.json) contain the full identities. Original failed fixture-development attempts are preserved in the scripts directory/logs and are not treated as accepted tests.
 

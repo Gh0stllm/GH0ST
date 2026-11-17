@@ -66,8 +66,11 @@ func (s *gl3FalseTerminalClaim) CollectMachineHashes(ctx context.Context,cfg *st
 func gl3RunTerminalChallenge(t *testing.T,ctx context.Context,b *NodeBuilder,terminal *types.Receipt,final validator.GoGlobalState,out string) {
  t.Helper()
  started:=time.Now()
+ runID:=os.Getenv("GL3_LIFECYCLE_RUN_ID");if runID=="" {t.Fatal("missing fresh run ID")}
  write:=func(name string,value any){data,err:=json.MarshalIndent(value,"","  ");Require(t,err);Require(t,os.WriteFile(filepath.Join(out,name),append(data,'\n'),0600))}
  report:=map[string]any{"passed":false,"scope":"Actual private BoLD assertion/history/one-step lifecycle over a deliberately false completed-engine-block claim; unchanged full24m native decision; no public funds","fullStrengthDecisionVerified":true,"terminalComputeBlock":terminal.BlockHash,"moduleRoot":"0xc03cf6f44fe1ca3c0826064ba7e5a3c134dc0013a9b994f3355f2ba185116c00","seededChallengeEdges":false,"syntheticHistorySiblings":false,"privilegedFastConfirmation":false,"publicDeployment":false,"enginePolicyChanged":false,"allExecutionOnRunpod":true,"backgroundAllBlocksValidatorEnabled":false,"backgroundValidationGateAssumedByFixture":true,"stakeSettlementPassed":false,"assertionConfirmationPassed":false,"honestOneStepWinner":false}
+ report["runID"]=runID
+ report["strictIndependentTargetAndSettlementAuditRequired"]=true
  defer func(){report["seconds"]=time.Since(started).Seconds();write("full-lifecycle-result.json",report)}()
  write("full-lifecycle-progress.json",map[string]any{"phase":"STARTING_REAL_CHALLENGE_STACKS","terminal":terminal.BlockHash})
  evilConfig:=arbnode.ConfigDefaultL1NonSequencerTest()
