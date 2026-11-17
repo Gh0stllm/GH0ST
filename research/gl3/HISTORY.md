@@ -485,3 +485,11 @@ A concise X update and a new amber/white dot-matrix poster report the successful
 The user authorizes a full ZK batch on Runpod, including measured RAM, proof time and verification gas, compared with Nitro. The acceptance target is16 genuine ERC20 EVM calls followed by complete final proof wrapping and actual Solidity verification. Exact fixtures/source identities are being prepared; no new proof is accepted at this point. Ordinary Nitro batch/parent posting/validation is the comparator, rather than its prior236-second adversarial dispute. All heavy work remains remote, the frozen Nitro deployment is preserved, and no public transaction or real wallet is used.
 
 [Live experiment notebook](zk-batch/README.md) · [Exact experiment plan](zk-batch/plan.json).
+
+## 47 · Compile the real verifier and remove proof-build storage bottlenecks — 17 November
+
+The unmodified MIT-licensed SP1 v5.0.0 Solidity verifier compiles on Runpod with actual exit0 in1.961 seconds and kernel maximum RSS371,332 KiB. Its deployed bytecode is6,260 bytes, Keccak `0xb3f9675d216042c6847cc54900be951525384faf4b95f60efc894083b524ec43`. Exact upstream source, compiler/settings and artifact are published. This is compilation only; no new full EVM proof, Solidity proof acceptance or verification-gas measurement is claimed.
+
+The pinned CPU/native-gnark EVM proof build continues. A broad optional fetch was stopped and preserved; network-mounted Cargo metadata waits were diagnosed and this task's cached registry/target moved to fast local storage. Cached outputs are reused, with no guest/proof-math changes or production Nitro substitution. Proof setup/build time remains separate from eventual proof time. The matched Nitro routine-batch and actual-verifier drivers are prepared in parallel; no mainnet, license acceptance, real wallet or fund movement occurs.
+
+[Verifier source and actual compilation evidence](zk-batch/verifier/README.md) · [Experiment status](zk-batch/README.md).
