@@ -479,3 +479,9 @@ The user explicitly selects project-operated validators for the initial chain. T
 The current exact Nitro v3.12.2 license and official AEP documentation were checked, including the recursive covered-chain definition and Robinhood's Ethereum-L2 architecture. AEP is the documented route for this proposed parent unless separate permission or an applicable exemption is established. Project-run validation does not remove the licensing distinction; the published fee is 10% of positive protocol net revenue after the defined settlement/data costs. No agreement is submitted or accepted.
 
 A concise X update and a new amber/white dot-matrix poster report the successful private dispute, with **PRIVATE RUN / MAINNET PENDING** visibly retained. The post fits a single standard X post using normal URL weighting. No message is posted to X automatically. [Post](assets/gl3-private-dispute-update-20261117.post.txt) · [Image](assets/gl3-private-dispute-update-20261117.png) · [Prompt](assets/gl3-private-dispute-update-20261117.prompt.txt) · [Validator decision and licensing sources](base/launch/decisions/AEP-NOTES.md).
+
+## 46 · Begin the complete ZK-batch cost experiment — 17 November
+
+The user authorizes a full ZK batch on Runpod, including measured RAM, proof time and verification gas, compared with Nitro. The acceptance target is16 genuine ERC20 EVM calls followed by complete final proof wrapping and actual Solidity verification. Exact fixtures/source identities are being prepared; no new proof is accepted at this point. Ordinary Nitro batch/parent posting/validation is the comparator, rather than its prior236-second adversarial dispute. All heavy work remains remote, the frozen Nitro deployment is preserved, and no public transaction or real wallet is used.
+
+[Live experiment notebook](zk-batch/README.md) · [Exact experiment plan](zk-batch/plan.json).

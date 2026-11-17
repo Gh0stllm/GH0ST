@@ -1,0 +1,50 @@
+{
+  "schema": "gh0st.gl3.zk-batch-plan.v1",
+  "createdUTC": "2026-11-17T12:29:16.985522+00:00",
+  "status": "PREPARING_NOT_PROVEN",
+  "userRequest": "Test a full ZK batch on Runpod; measure RAM, proof time and gas; compare Nitro and update GitHub quickly",
+  "scope": "Complete genuine EVM batch execution proof, final EVM-compatible proof and Solidity verification; no mainnet deployment",
+  "workload": {
+    "transactions": 16,
+    "kind": "ERC20 transfer calls",
+    "seed": 0,
+    "senders": 1,
+    "tokenDeploymentAndInitialMintOutsideTimedWindow": true,
+    "exactFixturePendingSourceBinding": true
+  },
+  "requiredMeasurements": [
+    "Source/compiler/guest/verifier/parameters hashes",
+    "Cold setup downloads and builds separately",
+    "Execution and witness time",
+    "Base proving, recursion and final EVM wrapping time",
+    "Whole proof pipeline wall time",
+    "Actual sampled group/cgroup RAM and kernel peak where available",
+    "Final proof size/public values/state-root binding",
+    "Actual private Nitro-parent4663 verification gas and calldata bytes",
+    "Invalid proof and altered public-values rejection",
+    "Matched routine Nitro batching/posting/validation measurements",
+    "Compute and parent-fee cost calculations with explicit assumptions"
+  ],
+  "acceptance": {
+    "actualCompleteProofRequired": true,
+    "mockProofAllowed": false,
+    "precomputedThirdPartyProofCountsAsNewProof": false,
+    "fibonacciOnlyCountsAsEVMProof": false,
+    "SNARKWrapperMayBeOmitted": false,
+    "publicChainWritesAllowed": false,
+    "realWalletUseAllowed": false,
+    "fullZKChainProductionClaim": false
+  },
+  "resources": {
+    "existingRunpod": "9fu9ldfpioy14f",
+    "CPU": 32,
+    "RAMGB": 64,
+    "computeUSDPerHour": 1.12,
+    "additionalResourceNotCreated": true
+  },
+  "baseline": "Routine measured batch costs; the prior235.945s Nitro dispute is not routine cost",
+  "candidate": "ethrex genuine EVM replay plus pinned SP1 complete final proof path; compatibility under evaluation",
+  "allBuildsAndTestsOnRunpod": true,
+  "selectedNitroProductionBuildChanged": false,
+  "chessRemainsDeferred": true
+}
