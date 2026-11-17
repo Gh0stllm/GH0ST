@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src https://rpc.mainnet.chain.robinhood.com https://api.drand.sh https://api2.drand.sh https://api3.drand.sh; base-uri 'none'; form-action 'none'">
+  <meta name="description" content="Seal a message for later and lock a GH0ST reward for its recipient on Robinhood Chain.">
+  <title>GH0ST Dead Drop</title>
+  <link rel="stylesheet" href="./style.css">
+  <script type="module" src="./app.js"></script>
+</head>
+<body>
+  <header class="masthead">
+    <a class="brand" href="https://gh0st.fyi/" aria-label="GH0ST home">[··] GH0ST</a>
+    <span>PROTOCOL 01</span>
+    <button id="wallet" class="secondary" type="button">Connect wallet</button>
+  </header>
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="kicker"><i></i> ROBINHOOD CHAIN · TIMED RELEASE</p>
+        <h1>Dead Drop<span>.</span></h1>
+        <p>Seal a message for later. Leave <strong>$GH0ST</strong> for the wallet that’s meant to receive it.</p>
+        <div class="hero-links"><a href="#compose">Seal a drop ↓</a><a href="#inbox">Open a drop ↗</a></div>
+      </div>
+      <figure><img src="./mark.png" width="1254" height="1254" alt="Amber dot-matrix envelope around the GH0ST bracket-face"></figure>
+    </section>
+    <div id="status" class="status" role="status" aria-live="polite">Ready.</div>
+    <div id="actions" class="panels">
+      <section class="panel" aria-labelledby="compose-title">
+        <p class="kicker">01 / OUTBOUND</p>
+        <h2 id="compose-title">Seal a drop</h2>
+        <p>Your browser encrypts the message. Robinhood Chain holds the reward until the unlock time.</p>
+        <form id="compose">
+          <label>Recipient wallet <input id="recipient" required maxlength="42" placeholder="0x…" spellcheck="false" autocomplete="off"></label>
+          <div class="split">
+            <label>Reward in $GH0ST <input id="amount" required inputmode="decimal" placeholder="1000" autocomplete="off"></label>
+            <label>Unlock date and time <input id="unlock" required type="datetime-local"></label>
+          </div>
+          <p class="hint">Uses your local timezone. The recipient has 30 days to claim after unlock.</p>
+          <label>Message <textarea id="message" required rows="4" maxlength="1024" autocomplete="off" placeholder="Leave something for later."></textarea></label>
+          <button class="primary" type="submit">Seal &amp; fund</button>
+        </form>
+        <div id="share" class="share" hidden>
+          <label>Private link <input id="share-link" readonly spellcheck="false"></label>
+          <p class="hint">Save this link. Anyone with it can read the message after unlock. Only the named wallet can claim the reward.</p>
+          <button id="copy" class="secondary" type="button">Copy link</button>
+          <a id="seal-receipt" target="_blank" rel="noopener noreferrer" hidden>View receipt ↗</a>
+        </div>
+        <details><summary>Recover a draft or clear allowance</summary>
+          <div class="button-row">
+            <button id="resume" class="secondary" type="button">Resume last drop</button>
+            <button id="discard" class="secondary" type="button">Discard draft</button>
+            <button id="revoke" class="secondary" type="button">Clear allowance</button>
+          </div>
+        </details>
+      </section>
+      <section id="inbox" class="panel" aria-labelledby="inbox-title">
+        <p class="kicker">02 / INBOUND</p>
+        <h2 id="inbox-title">Open a drop</h2>
+        <p>Use the private link to read the message after unlock, or the drop ID to check the reward.</p>
+        <form id="lookup">
+          <label>Private link or drop ID <input id="reference" required placeholder="Paste a Dead Drop link" autocomplete="off" spellcheck="false"></label>
+          <button class="secondary" type="submit">Find or refresh drop</button>
+        </form>
+        <div id="drop-detail" class="drop" hidden>
+          <p id="drop-status" class="kicker"></p>
+          <dl>
+            <dt>Reward</dt><dd id="drop-amount"></dd>
+            <dt>Unlocks</dt><dd id="drop-date"></dd>
+            <dt>Claim ends</dt><dd id="drop-expiry"></dd>
+            <dt>Recipient</dt><dd id="drop-recipient"></dd>
+            <dt>Creator</dt><dd id="drop-creator"></dd>
+            <dt>Drop ID</dt><dd id="drop-id"></dd>
+          </dl>
+          <div class="button-row">
+            <button id="reveal" class="secondary" type="button">Reveal message</button>
+            <button id="claim" class="primary" type="button">Claim $GH0ST</button>
+            <button id="refund" class="secondary" type="button">Reclaim expired reward</button>
+          </div>
+          <pre id="plaintext" hidden></pre>
+        </div>
+      </section>
+    </div>
+    <footer><span>GH0ST PROTOCOL / DEAD DROP</span><a id="escrow-link" target="_blank" rel="noopener noreferrer" hidden>Robinhood escrow ↗</a><span>ENCRYPTED MESSAGE · ONCHAIN REWARD</span></footer>
+  </main>
+
+<script type="module" src="/gh0st-network-wallet.mjs" integrity="sha256-dbRFbGiVvs0IahP4sNlXnfIjdTl+TkkZzpbdu5BegsQ="></script>
+</body>
+</html>

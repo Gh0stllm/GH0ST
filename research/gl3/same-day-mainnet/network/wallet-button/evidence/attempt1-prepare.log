@@ -1,0 +1,24 @@
+Traceback (most recent call last):
+  File "/workspace/gl3/same-day-mainnet/network/wallet-button/prepare.py", line 90, in <module>
+    if __name__=='__main__':print(json.dumps(prepare(json.loads(Path(sys.argv[1]).read_text()),Path(sys.argv[2]))))
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/gl3/same-day-mainnet/network/wallet-button/prepare.py", line 70, in prepare
+    for key,path,raw in pool.map(fetch_html,tasks):originals[key,path]=raw
+  File "/usr/lib/python3.12/concurrent/futures/_base.py", line 619, in result_iterator
+    yield _result_or_cancel(fs.pop())
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/concurrent/futures/_base.py", line 317, in _result_or_cancel
+    return fut.result(timeout)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/concurrent/futures/_base.py", line 449, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/concurrent/futures/_base.py", line 401, in __get_result
+    raise self._exception
+  File "/usr/lib/python3.12/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/gl3/same-day-mainnet/network/wallet-button/prepare.py", line 51, in fetch_html
+    if sha1(raw)!=snapshot['files'][path]:raise ValueError('Served HTML differs from original manifest: '+key+path)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: Served HTML differs from original manifest: main/index.html

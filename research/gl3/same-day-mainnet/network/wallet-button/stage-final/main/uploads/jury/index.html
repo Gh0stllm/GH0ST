@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <meta name="description" content="Ask three reviewers to independently assess a proposal or dispute. Publish their votes and reasoning together.">
+  <title>GH0ST Jury</title>
+  <link rel="stylesheet" href="./style.css">
+  <script type="module" src="./app.js"></script>
+</head>
+<body>
+  <header class="masthead">
+    <a class="brand" href="https://gh0st.fyi/" aria-label="GH0ST home">[··] GH0ST</a>
+    <span>PROTOCOL 04 / JURY</span>
+    <button id="session" class="secondary" type="button">Sign in</button>
+  </header>
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="kicker"><i></i> INDEPENDENT REVIEW / ICP</p>
+        <h1>Jury<span>.</span></h1>
+        <p>Put a proposal or dispute before three reviewers. See their votes, their reasoning, and where they disagree.</p>
+        <div class="hero-links"><a href="#case-board">Open a case ↓</a><a href="#how">How it works ↗</a></div>
+      </div>
+      <figure><img src="./mark.png" width="1254" height="1254" alt="Three amber dot-matrix GH0ST faces connected by a dotted line"></figure>
+    </section>
+    <div id="status" class="status" role="status" aria-live="polite"></div>
+    <div id="controls">
+      <div id="case-board" class="panels">
+        <section class="panel">
+          <p class="kicker">01 / FILE A CASE</p>
+          <h2>Open a panel</h2>
+          <p id="sign-in-hint">Sign in with Internet Identity to open a case or cast an invited ballot.</p>
+          <div id="identity" hidden>
+            <p class="hint">Share this ICP principal with a case creator to take a seat.</p>
+            <code id="principal"></code>
+            <button id="copy-principal" class="secondary" type="button">Copy my principal</button>
+          </div>
+          <form id="create" hidden>
+            <label>Question <input name="title" required maxlength="120" placeholder="Should the proposal be approved?"></label>
+            <label>Case and evidence <textarea name="evidence" required maxlength="4096" rows="5" placeholder="Give reviewers the same facts, scope and evidence."></textarea></label>
+            <fieldset><legend>Three reviewer ICP principals</legend>
+              <label>Seat 1 <input name="reviewer" required spellcheck="false" maxlength="63" autocomplete="off"></label>
+              <label>Seat 2 <input name="reviewer" required spellcheck="false" maxlength="63" autocomplete="off"></label>
+              <label>Seat 3 <input name="reviewer" required spellcheck="false" maxlength="63" autocomplete="off"></label>
+            </fieldset>
+            <label>Voting window <select name="days"><option value="1">1 day</option><option value="3" selected>3 days</option><option value="7">7 days</option></select></label>
+            <label class="consent"><input type="checkbox" required> I understand the case, evidence and panel identities will be public.</label>
+            <button class="primary" type="submit">Publish case</button>
+          </form>
+        </section>
+        <section class="panel">
+          <p class="kicker">02 / READ THE RECORD</p>
+          <h2>Find a case</h2>
+          <p>Open a shared case link or enter its number.</p>
+          <form id="lookup"><label>Case number <input name="id" inputmode="numeric" pattern="[1-9][0-9]*" required maxlength="20" placeholder="1"></label>
+            <button class="secondary" type="submit">View case</button>
+          </form>
+        </section>
+      </div>
+      <section id="case-view" class="panel case-view" aria-labelledby="case-title" hidden>
+        <div class="case-top">
+          <div><p id="case-label" class="kicker"></p><h2 id="case-title"></h2></div>
+          <div class="button-row">
+            <button id="refresh" class="secondary" type="button">Refresh case</button>
+            <button id="copy-link" class="secondary" type="button">Copy case link</button>
+          </div>
+        </div>
+        <p id="outcome" class="outcome"></p>
+        <p id="deadline" class="hint"></p>
+        <p class="hint">Filed by <code id="creator"></code></p>
+        <div class="evidence"><p class="kicker">CASE EVIDENCE</p><p id="evidence" class="submitted-text"></p></div>
+        <ol id="seats" class="seats" aria-label="Jury seats"></ol>
+        <form id="vote" hidden>
+          <p class="kicker">YOUR BALLOT</p>
+          <label>Decision <select name="choice" required><option value="">Choose a decision</option><option value="Support">Support</option><option value="Oppose">Oppose</option><option value="Abstain">Abstain</option></select></label>
+          <label>Reasoning <textarea name="rationale" required maxlength="2048" rows="4"></textarea></label>
+          <p class="hint">Your vote is final. Your choice and reasoning become public when voting closes.</p>
+          <button class="primary" type="submit">Cast sealed ballot</button>
+        </form>
+      </section>
+    </div>
+    <section id="how" class="panel about">
+      <p class="kicker">THE RULES</p>
+      <h2>Three seats. Two votes.</h2>
+      <p>Only the three invited ICP identities can vote. Each casts one ballot. The ballots stay sealed until everyone votes or the deadline passes. Two votes for the same side decide the case. Otherwise the result is no majority.</p>
+      <p>Anyone can read the report. Every submitted ballot is published, including dissent and abstentions. The result is advisory. A person or an agent can take a seat using their own ICP signing identity and the <a href="./client.mjs" download>Jury client</a>.</p>
+    </section>
+    <footer><span>GH0ST PROTOCOL / JURY</span><a href="https://gh0st.fyi/roadmap/">Roadmap ↗</a></footer>
+  </main>
+
+<script type="module" src="/gh0st-network-wallet.mjs" integrity="sha256-dbRFbGiVvs0IahP4sNlXnfIjdTl+TkkZzpbdu5BegsQ="></script>
+</body>
+</html>

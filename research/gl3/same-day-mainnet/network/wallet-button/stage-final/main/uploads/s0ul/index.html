@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080808">
+  <meta name="description" content="Inspect any Robinhood Chain address with S0UL. Read live on-chain facts without a wallet, with optional token and pool watches.">
+  <title>S0UL — On-chain intelligence · GH0ST</title>
+  <link rel="canonical" href="https://gh0st.wiki/s0ul/">
+  <link rel="preload" href="/fonts/grotesk.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/mono.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/s0ul-agent.css">
+  <link rel="stylesheet" href="/s0ul-page.css">
+  <link rel="stylesheet" href="/s0ul-intel.css">
+</head>
+<body class="soul-page">
+  <a class="soul-skip" href="#intel">Skip to address analysis</a>
+
+  <header class="soul-header">
+    <div class="soul-wrap soul-navigation">
+      <a class="soul-brand" href="/" aria-label="GH0ST Observatory home">
+        <span class="soul-brand-name">GH0ST</span>
+        <span class="soul-back"><span aria-hidden="true">←</span> Observatory</span>
+      </a>
+      <nav class="soul-nav" aria-label="Main navigation">
+        <a href="/s0ul/" aria-current="page">S0UL<span class="soul-nav-dot" aria-hidden="true"></span></a>
+        <a href="#intel">Analyze</a>
+        <a href="#proof">Proof <span aria-hidden="true">↗</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="soul-hero soul-wrap" aria-labelledby="soul-hello">
+      <div class="soul-hero-grid">
+        <div class="soul-introduction">
+          <p class="soul-eyebrow">S0UL / On-chain intelligence</p>
+          <h1 id="soul-hello">HELLO,<br><span class="soul-dot-type">WORLD.</span></h1>
+          <p class="soul-description">Paste an address. Read its live on-chain facts.</p>
+        </div>
+
+        <figure class="soul-portrait">
+          <div id="s0ul-character" class="soul-character" aria-label="Interactive white and amber dot-matrix portrait of S0UL"></div>
+          <figcaption class="soul-portrait-caption">
+            <details class="soul-portrait-tools">
+              <summary>Portrait controls</summary>
+            <div class="soul-character-controls">
+              <button id="s0ul-character-greet" class="soul-character-button" type="button">Wave hello <span aria-hidden="true">↗</span></button>
+              <button id="s0ul-character-pause" class="soul-character-button soul-character-button-quiet" type="button">Pause animation</button>
+            </div>
+            <p id="s0ul-character-status" class="soul-character-status" aria-live="polite">Move your pointer. S0UL follows along.</p>
+            </details>
+          </figcaption>
+        </figure>
+      </div>
+
+    </section>
+
+    <section id="intel" class="soul-terminal soul-wrap" aria-label="S0UL on-chain intelligence">
+      <div id="s0ul-intel-root"><p class="soul-loading">Opening address analysis…</p></div>
+      <noscript><p class="soul-noscript">Enable JavaScript to inspect a Robinhood Chain address. Reading needs no wallet. Optional watches require a fee preview and wallet approval.</p></noscript>
+    </section>
+
+    <details id="agent" class="soul-legacy soul-wrap" aria-label="Original S0UL-1M agent">
+      <summary><span>Original S0UL-1M agent</span><span class="soul-disclosure-icon" aria-hidden="true">+</span></summary>
+      <div class="soul-disclosure-content">
+        <div id="s0ul-agent-root"><p class="soul-loading">Opening the S0UL terminal…</p></div>
+        <noscript><p class="soul-noscript">Enable JavaScript to connect a wallet and use the original agent. Source and recorded proofs remain available below.</p></noscript>
+      </div>
+    </details>
+
+    <details id="proof" class="soul-proof soul-wrap" aria-labelledby="soul-proof-title">
+      <summary><span id="soul-proof-title">Contracts &amp; proof</span><span class="soul-disclosure-icon" aria-hidden="true">+</span></summary>
+      <div class="soul-proof-content">
+        <p>Open source, training evidence and recorded on-chain execution.</p>
+      <div class="soul-proof-links">
+        <a href="https://github.com/Gh0stllm/GH0ST/blob/main/s0ul-1m/AGENT.md" target="_blank" rel="noopener noreferrer"><span class="soul-proof-number soul-mono">01</span><span><strong>The agent guide</strong><small>Tools, boundaries, and source</small></span><span class="soul-proof-arrow" aria-hidden="true">↗</span></a>
+        <a href="https://repo.sourcify.dev/4663/0x9F92776e33087DCF0d77b9BE23145efAC6cE695D" target="_blank" rel="noopener noreferrer"><span class="soul-proof-number soul-mono">02</span><span><strong>Verified controller</strong><small>Inspect the deployed Solidity contract</small></span><span class="soul-proof-arrow" aria-hidden="true">↗</span></a>
+        <a href="https://github.com/Gh0stllm/GH0ST/blob/main/s0ul-1m/reports/robinhood-mainnet-agent-check.json" target="_blank" rel="noopener noreferrer"><span class="soul-proof-number soul-mono">03</span><span><strong>A real mainnet run</strong><small>From model inference to owner memory</small></span><span class="soul-proof-arrow" aria-hidden="true">↗</span></a>
+        <a href="https://github.com/Gh0stllm/GH0ST/blob/main/s0ul-1m/INTELLIGENCE.md" target="_blank" rel="noopener noreferrer"><span class="soul-proof-number soul-mono">04</span><span><strong>Intelligence evidence</strong><small>Readers, numeric head and on-chain reports</small></span><span class="soul-proof-arrow" aria-hidden="true">↗</span></a>
+      </div>
+      </div>
+    </details>
+  </main>
+
+  <footer class="soul-footer soul-wrap">
+    <a class="soul-footer-brand" href="/">GH0ST <span aria-hidden="true">/</span> S0UL</a>
+    <a class="soul-footer-back" href="/">Back to the Observatory <span aria-hidden="true">↗</span></a>
+  </footer>
+
+  <script type="module" src="/s0ul-character.mjs"></script>
+  <script type="module" src="/s0ul-ui.mjs"></script>
+  <script type="module" src="/s0ul-intel.mjs"></script>
+
+<script type="module" src="/gh0st-network-wallet.mjs" integrity="sha256-dbRFbGiVvs0IahP4sNlXnfIjdTl+TkkZzpbdu5BegsQ="></script>
+</body>
+</html>

@@ -1,6 +1,6 @@
 # GL3 · GH0ST on Robinhood
 
-**R60: the base chain, public transaction RPC and explorer are live. Exactly 1,000,000 GH0ST has been bridged and all nine setup transactions are confirmed.** GL3 uses official Nitro with native GH0ST gas and project-operated fast confirmation. ZK verification and full-model proofs remain separate research, not launch features.
+**R61: the base chain, public transaction RPC and explorer are live. Exactly 1,000,000 GH0ST has been bridged and all nine setup transactions are confirmed.** GL3 uses official Nitro with native GH0ST gas and project-operated fast confirmation. ZK verification and full-model proofs remain separate research, not launch features.
 
 [Live explorer](https://scan.gh0st.fyi/) · [Public RPC](https://rpc.gh0st.fyi/) · [Receipt evidence](network/evidence/live-mainnet-20261118/) · [Research history](../HISTORY.md)
 
@@ -13,8 +13,8 @@
 | Native currency | **GH0ST**, 18 decimals |
 | RPC | `https://rpc.gh0st.fyi/`, public signed-transaction submission enabled |
 | Explorer | `https://scan.gh0st.fyi/`, actual RPC blocks and transactions |
-| Bridge destination | `https://bridge.gh0st.fyi/` — requested dedicated domain; dedicated publication and DNS checks in progress at R60; the working bridge is already published at [gh0st.fyi/gl3/bridge/](https://gh0st.fyi/gl3/bridge/) |
-| Chain introduction | `https://l3.gh0st.fyi/` — new animated introduction and FAQ in progress at R60 |
+| Bridge destination | `https://bridge.gh0st.fyi/` — published; genuine hostname-valid HTTPS checked from Runpod |
+| Chain introduction | `https://l3.gh0st.fyi/` — published; replacement using the live Whispers theme and interactive dot layers is in progress |
 | Parent backing token | `0x2eb2849cDE7957b86d0dFD4B59e450a9F9D15559` |
 | Canonical genesis | `0x17b5e6ba05003525c4f3c766d6b3120d88ee87dc7eeba84932027f8917da3483` |
 
@@ -32,7 +32,11 @@ The public RPC independently returns the exact chain ID and genesis and forwards
 
 The configured block-speed target is **100 ms**, approximately ten blocks per second when transaction demand permits. Nitro produces blocks for actual messages/transactions; an idle chain does not continuously create empty blocks. This is a target, not a measured throughput guarantee.
 
-A separate, clearly labelled demo activity worker is being prepared on the existing pod, with counter, NFT and test-token examples. It will use a dedicated finite wallet, persisted transaction intents and balance/pending-queue guards. At R60 no demo wallet is funded and no demo transaction is claimed. The running chain is not stopped or reconfigured for this work.
+A separate, clearly labelled demo activity worker runs on the existing pod. The user signed native transfers of 100,000 GH0ST and an additional 250,000 GH0ST into its dedicated wallet, for **350,000 GH0ST cumulative funding**. This is a reserve allocation, not a claim that 350,000 tokens were consumed. Three genuine contracts are deployed: pulse/counter, test ERC-20 and ERC-721 demo NFT.
+
+The original worker's first 120-second sample contains 133 demo transactions across 133 demo-containing blocks. At the user's request, version 2 now sends **one demo action at a time**, with at most one pending transaction and the prior canonical receipt checked before another send. Migration preserves the old journal prefix, nonce 2292 and 10,679.57348 GH0ST in prior paid fees. Its first 60 seconds contain **44 transactions in 44 separate demo-containing blocks**, costing 298.72514 GH0ST. The independent audit through block 2573 checks 137 new canonical receipts and finds no duplicate demo-containing blocks. These are fixed observations, not an assurance that other transactions or protocol messages cannot share a block.
+
+The worker keeps a 100-GH0ST reserve and a 24-hour wall deadline, with the cumulative funding limit accounting for both versions. It persists exact signed intents before sending and stops on uncertain state, reorgs, low balance or duplicate demo receipt blocks. No automatic top-ups, retries or replacement transactions. The chain processes and configuration were not stopped or changed. [Actual v2 migration and live receipts](ops/demo-activity/v2/evidence/) · [Additional funding receipt](ops/demo-funding/topup-250k/evidence/funding-confirmation.json)
 
 ## Withdrawals and trust
 

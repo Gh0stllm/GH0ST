@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#080a09"><meta name="gh0st-runtime-mode" content="public"><title>Access & self-hosting · GH0ST Agent Kit</title><link rel="stylesheet" href="/Agentkit/integrate.css"><link rel="stylesheet" href="/Agentkit/docs.css"></head>
+<body><a class="skip-link" href="#setup">Skip to setup</a><div class="page-shell docs-shell"><header class="site-header"><a class="brand" href="/Agentkit"><span class="brand-face" aria-hidden="true">[<i>··</i>]</span><span>GH0ST<small>THE DEVELOPER KIT</small></span></a><a class="header-download" href="/Agentkit/downloads/gh0st-agent-kit-0.3.0-alpha.1.tgz">Download 0.3.0-alpha.1 <span aria-hidden="true">↗</span></a></header><main>
+<section class="docs-intro"><p class="eyebrow">ACCESS STATUS / OPTIONAL SELF-HOSTING</p><h1>Make it<br><em>your own.</em></h1><p>Check the public-access status, or explore the optional advanced self-hosting guide.</p><p class="docs-quiet">Public developer request access is in preparation. Self-hosting is an alternative for developers who want to run their own model instance.</p></section>
+<section id="access" class="docs-section"><p class="eyebrow">PUBLIC DEVELOPER ACCESS</p><h2>Access is<br><em>in preparation.</em></h2><p>GH0ST has an existing controlled Robinhood → ICP → Robinhood inference route. General developer requests are not yet publicly admitted.</p><p>The selected public integration uses GH0ST-paid on-chain requests. Its reviewed deployment is not active yet. This advanced page describes an optional independent local runtime.</p><p>The download contains developer clients, source and examples. The advanced instructions below describe an optional self-hosted runtime; they do not connect to the existing GH0ST canister deployment.</p><a class="action-link" href="/Agentkit">Back to the developer preview <span aria-hidden="true">↗</span></a></section><nav class="docs-nav" aria-label="Guide sections"><a href="#access">Access status</a><a href="#setup">Advanced self-hosting</a><a href="#javascript">JavaScript</a><a href="#python">Python</a><a href="#http">HTTP</a><a href="#tools">Tools</a><a href="#limits">Limits</a></nav>
+<section id="setup" class="docs-section"><p class="eyebrow">01 / ADVANCED SELF-HOSTING OPTION</p><h2>A local runtime.<br><em>A real response.</em></h2><p>You need Node.js 22 or later, Python 3.10 or later with venv/pip, and a C++ build toolchain. The native CPU runtime is built on your machine. Model setup downloads about 1.11 GB from the pinned upstream source and verifies its complete SHA-256.</p><pre tabindex="0"><code>curl --fail --location --output gh0st-agent-kit-0.3.0-alpha.1.tgz \
+  https://gh0st.fyi/Agentkit/downloads/gh0st-agent-kit-0.3.0-alpha.1.tgz
+
+mkdir gh0st-agent-kit
+tar -xzf gh0st-agent-kit-0.3.0-alpha.1.tgz -C gh0st-agent-kit --strip-components=1
+cd gh0st-agent-kit
+npm install --ignore-scripts --no-audit --no-fund
+npm run runtime:setup
+npm run model:setup
+npm run api</code></pre><p>Wait for <code>Qwen is ready.</code> The API listens on <code>http://127.0.0.1:8790/v1</code>. Keep that terminal running while your project makes requests.</p><p>If your current <code>python3</code> is older than 3.10, select a supported executable explicitly:</p><pre tabindex="0"><code>GH0ST_QWEN_SETUP_PYTHON=/absolute/path/to/python3.12 npm run runtime:setup</code></pre><p>The archive contains source, clients and examples. It does not contain model weights or a prebuilt native environment. Model and runtime setup are required on each inference machine.</p></section>
+<section id="javascript" class="docs-section"><p class="eyebrow">02 / JAVASCRIPT & TYPESCRIPT</p><h2>A few lines.<br><em>Your application.</em></h2><p>In your own project, install the downloadable package directly. This alpha is distributed as a tarball; it is not an npm-registry release.</p><pre tabindex="0"><code>npm install https://gh0st.fyi/Agentkit/downloads/gh0st-agent-kit-0.3.0-alpha.1.tgz</code></pre><p>Create <code>example.mjs</code>, then run it with <code>node example.mjs</code> while the local API is running:</p><pre tabindex="0"><code>import { createQwenClient } from '@gh0st/agent-kit/client';
+
+const qwen = createQwenClient({
+  baseURL: 'http://127.0.0.1:8790/v1'
+});
+
+const response = await qwen.generate(
+  'Give this idea a voice.'
+);
+
+console.log(response.content);</code></pre><p>The client returns <code>content</code>, <code>finishReason</code>, token <code>usage</code> and <code>gh0st</code> metadata. TypeScript declarations are included. Supply the full conversation through <code>qwen.chat({ messages, maxTokens, temperature })</code> when you need context.</p></section>
+<section id="python" class="docs-section"><p class="eyebrow">03 / PYTHON</p><h2>The same model.<br><em>Your language.</em></h2><p>From the extracted kit directory, install the Python client into your project's Python environment:</p><pre tabindex="0"><code>python3 -m pip install ./python</code></pre><pre tabindex="0"><code>from gh0st_qwen import GH0STQwen
+
+qwen = GH0STQwen(
+    base_url=&quot;http://127.0.0.1:8790/v1&quot;
+)
+
+print(qwen.generate(&quot;Give this idea a voice.&quot;))</code></pre><p><code>generate()</code> returns text. <code>chat(messages, max_tokens=256, temperature=0.3)</code> returns the complete JSON response. The Python client has no runtime dependencies beyond the standard library.</p></section>
+<section id="http" class="docs-section"><p class="eyebrow">04 / HTTP</p><h2>Your client.<br><em>A small interface.</em></h2><p>Use the local API from any backend that can send JSON over HTTP:</p><pre tabindex="0"><code>curl --fail-with-body --silent --show-error \
+  http://127.0.0.1:8790/v1/chat/completions \
+  -H 'Content-Type: application/json' \
+  --data '{
+    &quot;model&quot;: &quot;gh0st-qwen3-1.7b&quot;,
+    &quot;messages&quot;: [{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Welcome a new developer in one sentence.&quot;}],
+    &quot;max_tokens&quot;: 128,
+    &quot;temperature&quot;: 0.3,
+    &quot;stream&quot;: false
+  }'</code></pre><p>Read answer text at <code>choices[0].message.content</code>. The response includes actual token usage and model-artifact metadata. <code>GET /v1/models</code> lists the supported model ID.</p></section>
+<section id="tools" class="docs-section"><p class="eyebrow">05 / BOUNDED TOOLS</p><h2>Let the model ask.<br><em>Your code decides.</em></h2><p>The kit's application-side tool loop accepts registered functions with argument validation, step limits and approval rules. The model proposes bounded JSON actions; generated text is never evaluated as code.</p><pre tabindex="0"><code>npm run example:agent</code></pre><p>The included project-catalog example runs against your local API. Native tool-call fields and tool-role messages are not supported by the HTTP endpoint; tool orchestration happens in your application through <code>@gh0st/agent-kit/agent</code>.</p></section>
+<section id="limits" class="docs-section"><p class="eyebrow">06 / WHAT THIS ALPHA SUPPORTS</p><h2>Know the<br><em>boundaries.</em></h2><dl class="docs-facts"><div><dt>Model</dt><dd>Qwen3-1.7B Q4_K_M · gh0st-qwen3-1.7b</dd></div><div><dt>Context / output</dt><dd>4,096 context tokens · up to 512 output tokens</dd></div><div><dt>Messages</dt><dd>Text-only system, user and assistant messages</dd></div><div><dt>Delivery</dt><dd>Non-streaming. The API does not retain conversations.</dd></div><div><dt>Execution / payment</dt><dd>Local inference. No production GH0ST-token billing.</dd></div></dl><p>Model output is untrusted text. The model hash identifies an artifact; it is not an ICP execution proof or proof that an answer is correct. Hosted inference, public capacity guarantees and production billing are separate work.</p><p>The server binds to loopback. An optional <code>GH0ST_QWEN_API_KEY</code> requires a matching bearer key in your client. Remote hosting, TLS and access control are separate deployment work.</p><p>GH0ST supplies this integration layer. Qwen is an upstream model; review the <a href="https://huggingface.co/Qwen/Qwen3-1.7B">upstream model card</a> and <a href="https://huggingface.co/unsloth/Qwen3-1.7B-GGUF">quantized model source</a> for their licensing and attribution.</p><p class="raw-links"><a href="/Agentkit/docs/integration-guide.md">Full integration notes ↗</a><a href="/Agentkit/docs/local-model.md">Pinned model details ↗</a><a href="/Agentkit/docs/python-client.md">Python client guide ↗</a></p></section>
+</main><footer class="site-footer"><a class="footer-brand" href="/">GH0ST <span>ROBINHOOD IS HOME.</span></a><p>Local alpha. Source, clients and examples.</p><a href="/Agentkit">Back to the kit <span aria-hidden="true">↗</span></a></footer></div>
+<script type="module" src="/gh0st-network-wallet.mjs" integrity="sha256-dbRFbGiVvs0IahP4sNlXnfIjdTl+TkkZzpbdu5BegsQ="></script>
+</body></html>

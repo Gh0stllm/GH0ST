@@ -1,0 +1,34 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#080a09"><title>GH0ST-paid requests · Developer guide</title><link rel="stylesheet" href="/Agentkit/integrate.css"><link rel="stylesheet" href="/Agentkit/docs.css"></head><body><a class="skip-link" href="#access">Skip to access status</a><div class="page-shell docs-shell"><header class="site-header"><a class="brand" href="/Agentkit"><span class="brand-face" aria-hidden="true">[<i>··</i>]</span><span>GH0ST<small>PAID DEVELOPER ROUTE</small></span></a><a class="header-download" href="/Agentkit/downloads/gh0st-agent-kit-0.3.0-alpha.1.tgz">Get the source <span aria-hidden="true">↗</span></a></header><main><section class="docs-intro"><p class="eyebrow">GH0ST / ROBINHOOD / ICP</p><h1>A request.<br><em>A result.</em></h1><p>Fund bounded on-chain requests with GH0ST. Receive a canister-signed Qwen result recorded on Robinhood.</p><p class="docs-quiet">The SDK and payment flow are being prepared. Public paid access is not active.</p></section><nav class="docs-nav" aria-label="Guide sections"><a href="#access">Access</a><a href="#flow">Payment flow</a><a href="#javascript">SDK</a><a href="#refunds">Refunds</a><a href="#trust">Trust</a><a href="/Agentkit/docs/self-hosted/#setup">Optional self-hosting</a></nav><section id="access" class="docs-section"><p class="eyebrow">01 / ACCESS STATUS</p><h2>Paid access is<br><em>in preparation.</em></h2><p>This pilot requires an admitted owner wallet, a pre-registered agent and a reviewed deployment manifest. Open signup is not available. Contract addresses, recipient roles, prices, capacity, canister permissions and funding must be reviewed before activation.</p><p>No price is invented by the interface. An incomplete or candidate manifest disables wallet and transaction controls before any wallet or RPC call.</p><p><a href="/Agentkit/paid-deployment.json">Inspect the pending deployment manifest ↗</a></p><p>Your prompt and answer will be public on-chain. Do not include private information.</p></section><section id="flow" class="docs-section"><p class="eyebrow">02 / ONE STEP AT A TIME</p><h2>A bounded<br><em>commitment.</em></h2><pre tabindex="0"><code>01  Check the reviewed deployment.
+02  Connect the registered owner wallet.
+03  Read the on-chain GH0ST fee policy.
+04  Review an exact, bounded token approval.
+05  Deposit into the agent budget separately.
+06  Submit a public prompt and reserve its fee.
+07  Track the confirmed result or eligible refund.</code></pre><p>Approval sets only an exact token allowance; it does not fund a request. Deposit and request are separate reviewed transactions. Every step shows chain, target and amount before the wallet opens. Robinhood network gas is paid separately in ETH.</p></section><section id="javascript" class="docs-section"><p class="eyebrow">03 / JAVASCRIPT SDK</p><h2>Your application.<br><em>Shared infrastructure.</em></h2><pre tabindex="0"><code>npm install https://gh0st.fyi/Agentkit/downloads/gh0st-agent-kit-0.3.0-alpha.1.tgz</code></pre><pre tabindex="0"><code>import { GH0STPaidClient } from '@gh0st/agent-kit/paid';
+import { inspectPaidManifest } from '@gh0st/agent-kit/paid/manifest';
+
+const access = inspectPaidManifest(reviewedDeployment);
+if (!access.activationReady) {
+  throw new Error('Paid access is still in preparation.');
+}
+
+// After the owner explicitly connects their wallet:
+const paid = new GH0STPaidClient({
+  provider, signer, manifest: access.manifest
+});
+const quote = await paid.getQuote(registeredAgentId);
+// Show the on-chain quote before any wallet action.</code></pre><p>The SDK reads the quote and fee policy directly from the pinned contract. It verifies runtime hashes, token decimals, model/artifact/signer bindings and admission. It never assumes a deployed payment address or a service price.</p><p>Use <code>prepareApproval</code>, <code>prepareDeposit</code> and <code>prepareRequest</code> to build separate reviews. Only <code>executeTransaction(plan, { execute: true })</code> can request a wallet transaction. The SDK rereads the account, chain, deployment and intent immediately before signing.</p><p><a href="/Agentkit/docs/paid-integration.md">Full paid-client integration and browser component guide ↗</a></p></section><section id="refunds" class="docs-section"><p class="eyebrow">04 / ACCEPTANCE & REFUNDS</p><h2>Know what<br><em>is reserved.</em></h2><pre tabindex="0"><code>Prices come from the reviewed payment contract.
+
+Before acceptance:
+  The full reservation is refundable.
+
+After acceptance:
+  The disclosed acceptance charge may remain
+  even when no answer is delivered.
+
+Refunds return to the agent budget.
+Owner withdrawal is a separate transaction.
+
+Robinhood network gas is paid separately in ETH.</code></pre><p>The configured operator accepts work on-chain before paid compute begins. A fulfilled request charges the full service reservation. An accepted request can retain its disclosed acceptance charge even when no answer is delivered.</p><p>Refunds credit the agent budget. The owner can withdraw available, unlocked funds separately. New-request pauses do not remove those exits while the deployment pins remain valid.</p></section><section id="trust" class="docs-section"><p class="eyebrow">05 / PUBLIC, INSPECTABLE RESULTS</p><h2>Read the result.<br><em>Inspect the record.</em></h2><p>Result text is displayed only after its canonical confirmed fulfillment receipt matches the stored answer hash and output limit. A canister signature authenticates the configured signer and declared artifact; it is not a zero-knowledge execution proof or a guarantee that an answer is correct.</p><p>GH0ST supplies the integration layer. Qwen is an upstream model. <a href="https://huggingface.co/Qwen/Qwen3-1.7B">Review the Qwen model card</a> and <a href="https://huggingface.co/unsloth/Qwen3-1.7B-GGUF">quantized model source</a> for licensing and attribution.</p><p>The source also includes an <a href="/Agentkit/docs/self-hosted/#setup">optional self-hosted runtime guide</a>. It is separate from this GH0ST-paid on-chain route.</p><p><a href="/Agentkit/kit-fonts/FONT-LICENSES.txt">Font license notices ↗</a></p></section></main><footer class="site-footer"><a class="footer-brand" href="/">GH0ST <span>ROBINHOOD IS HOME.</span></a><p>Paid access in preparation. No transaction is available from the public preview.</p><a href="/Agentkit">Back to the kit <span aria-hidden="true">↗</span></a></footer></div>
+<script type="module" src="/gh0st-network-wallet.mjs" integrity="sha256-dbRFbGiVvs0IahP4sNlXnfIjdTl+TkkZzpbdu5BegsQ="></script>
+</body></html>

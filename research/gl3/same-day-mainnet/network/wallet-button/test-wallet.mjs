@@ -1,0 +1,33 @@
+// All wallet requests use unsigned mocks. No HTTP, accounts or wallet opens.
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+import { NETWORK, addNetwork, discoverWallets, walletName, networkDetails } from './gh0st-network-wallet.mjs';
+const cases=[];
+async function test(name,fn){await fn();cases.push({name,passed:true});}
+const mock = errorAt => { const calls=[];return { calls, async request(r){calls.push(structuredClone(r));if(errorAt===calls.length)throw {code:4001};return null;} }; };
+await test('exact GL3 chain and currency',()=>{assert.equal(NETWORK.chainId,'0x4726d9');assert.equal(BigInt(NETWORK.chainId),4663001n);assert.deepEqual(NETWORK.nativeCurrency,{name:'GH0ST',symbol:'GH0ST',decimals:18});assert.deepEqual(NETWORK.rpcUrls,['https://rpc.gh0st.fyi']);assert.deepEqual(NETWORK.blockExplorerUrls,['https://scan.gh0st.fyi']);});
+await test('explicit approval adds then switches in order',async()=>{const p=mock();assert.equal(p.calls.length,0);const r=await addNetwork(p);assert.equal(r.status,'switched');assert.deepEqual(p.calls,[{method:'wallet_addEthereumChain',params:[NETWORK]},{method:'wallet_switchEthereumChain',params:[{chainId:'0x4726d9'}]}]);});
+await test('no switch until add request resolves',async()=>{let release;const calls=[];const p={request:r=>{calls.push(r);return calls.length===1?new Promise(resolve=>{release=resolve}):Promise.resolve(null)}};const pending=addNetwork(p);assert.equal(calls.length,1);release();await pending;assert.equal(calls.length,2);});
+await test('visitor may add without switching',async()=>{const p=mock();const r=await addNetwork(p,false);assert.equal(r.status,'added');assert.equal(p.calls.length,1);});
+await test('declined add never switches or requests accounts',async()=>{const p=mock(1);assert.equal((await addNetwork(p)).status,'declined');assert.equal(p.calls.length,1);});
+for(const code of [4200,-32601])await test('unsupported add '+code,async()=>{const calls=[];const r=await addNetwork({request:async q=>{calls.push(q);throw {code}}});assert.equal(r.status,'unsupported');assert.equal(r.added,false);assert.equal(calls.length,1);});
+await test('unknown add error exposes no raw message',async()=>{const r=await addNetwork({request:async()=>{throw {code:-1,message:'SENSITIVE-WALLET-DETAIL'}}});assert.equal(r.status,'error');assert(!r.message.includes('SENSITIVE'));});
+await test('switch rejection preserves added status',async()=>{const p=mock(2);const r=await addNetwork(p);assert.equal(r.status,'switch-declined');assert.equal(r.added,true);assert.equal(r.switched,false);});
+await test('unsupported switch does not retry',async()=>{const calls=[];const r=await addNetwork({request:async q=>{calls.push(q);if(calls.length===2)throw {code:4200}}});assert.equal(r.status,'switch-unavailable');assert.equal(r.added,true);assert.equal(calls.length,2);});
+await test('missing provider gives copy fallback',async()=>{assert.equal((await addNetwork(null)).status,'unsupported');});
+await test('wallet mutation cannot corrupt next request metadata',async()=>{await addNetwork({request:async r=>{if(r.method==='wallet_addEthereumChain'){r.params[0].chainId='0x9';r.params[0].rpcUrls[0]='https://evil.example';r.params[0].nativeCurrency.decimals=0}}},false);const p=mock();await addNetwork(p,false);assert.equal(p.calls[0].params[0].chainId,'0x4726d9');assert.deepEqual(p.calls[0].params[0].rpcUrls,['https://rpc.gh0st.fyi']);assert.equal(p.calls[0].params[0].nativeCurrency.decimals,18);});
+function target(){const t=new EventTarget();t.Event=Event;return t;}
+function announce(t,provider,info={name:'Wallet'}){const e=new Event('eip6963:announceProvider');e.detail={provider,info};t.dispatchEvent(e);}
+await test('discovery alone requests no wallet action',()=>{const t=target(),p=mock();t.ethereum=p;const d=discoverWallets(t);assert.equal(d.providers().length,1);assert.equal(p.calls.length,0);d.close();});
+await test('EIP6963 multiple wallets require distinct choices',()=>{const t=target(),a=mock(),b=mock();const d=discoverWallets(t);announce(t,a,{name:'Alpha'});announce(t,b,{name:'Beta'});assert.deepEqual(d.providers().map(x=>x.name),['Alpha','Beta']);assert.equal(a.calls.length+b.calls.length,0);d.close();});
+await test('requestProvider discovery event catches synchronous announcement',()=>{const t=target(),p=mock();t.addEventListener('eip6963:requestProvider',()=>announce(t,p,{name:'Announced'}));const d=discoverWallets(t);assert.equal(d.providers()[0].name,'Announced');d.close();});
+await test('same provider announcement deduplicated',()=>{const t=target(),p=mock();t.ethereum=p;const d=discoverWallets(t);announce(t,p);announce(t,p);assert.equal(d.providers().length,1);d.close();});
+await test('legacy multiple providers retained without auto-selection',()=>{const t=target();t.ethereum={providers:[mock(),mock()]};const d=discoverWallets(t);assert.equal(d.providers().length,2);d.close();});
+await test('malformed announcements ignored',()=>{const t=target(),d=discoverWallets(t);announce(t,null);announce(t,{});t.dispatchEvent(new Event('eip6963:announceProvider'));assert.equal(d.providers().length,0);d.close();});
+await test('external provider icons are never read or fetched',()=>{const t=target(),p=mock(),d=discoverWallets(t);announce(t,p,{name:'Text only',get icon(){throw Error('external icon must not be accessed')}});assert.equal(d.providers()[0].name,'Text only');d.close();});
+await test('discovery is capped and cleanup removes listener',()=>{const t=target(),d=discoverWallets(t);for(let i=0;i<30;i++)announce(t,mock(),{name:String(i)});assert.equal(d.providers().length,20);d.close();announce(t,mock());assert.equal(d.providers().length,20);});
+await test('returned provider list has no mutable collection alias',()=>{const t=target(),d=discoverWallets(t);announce(t,mock());d.providers().length=0;assert.equal(d.providers().length,1);d.close();});
+await test('wallet label controls stripped and length bounded',()=>{assert.equal(walletName({name:'\u0000Nice\nWallet'}),'NiceWallet');assert.equal(walletName({name:'x'.repeat(1000)}).length,64);assert.equal(walletName({name:''}),'Browser wallet');});
+await test('copy details include exact decimal and hexadecimal chain IDs',()=>{const s=networkDetails();for(const v of ['4663001','0x4726d9','https://rpc.gh0st.fyi','https://scan.gh0st.fyi','GH0ST (18 decimals)'])assert(s.includes(v));});
+const report={passed:true,cases:cases.length,tests:cases,scope:'Unsigned mock provider/event tests. No HTTP/server/wallet connection/accounts/signatures/transactions.',walletRequestsAreMocks:true,transactionsSubmitted:0};
+fs.writeFileSync(process.argv[2],JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify({passed:true,cases:cases.length}));

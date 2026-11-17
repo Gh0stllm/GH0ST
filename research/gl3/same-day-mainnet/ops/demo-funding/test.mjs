@@ -1,0 +1,10 @@
+import assert from 'node:assert/strict';
+import {OWNER,DEMO,GENESIS,VALUE,validatePlan,unsigned,validateSigned} from './policy.mjs';
+const now=1794947000000,sha='a'.repeat(64),p={schema:'gh0st.gl3.demo-funding.v1',chainId:4663001,genesis:GENESIS,from:OWNER,to:DEMO,value:VALUE.toString(),nonce:7,expiresAt:now+3600000},q={planSHA:sha,expiresAt:now+60000,nonce:7,gasLimit:'600000',gasPrice:'12000000000000',observedPrice:'10000000000000'};
+let passed=0;const yes=(label,f)=>{f();passed++;},no=(label,f)=>{assert.throws(f);passed++;};
+yes('exact reviewed plan',()=>validatePlan(p,now));const tx={...unsigned(p,q,sha,now),from:OWNER,signature:{}};
+yes('exact signed-envelope fields',()=>validateSigned(tx,p,q,sha,now));
+for(const [k,v]of [['to',OWNER],['from',DEMO],['value','1'],['chainId',4663],['genesis','0x'+'00'.repeat(32)],['nonce',-1],['expiresAt',now-1]])no('plan tamper '+k,()=>validatePlan({...p,[k]:v},now));
+no('wrong plan digest',()=>unsigned(p,{...q,planSHA:'b'.repeat(64)},sha,now));no('expired quote',()=>unsigned(p,q,sha,now+60001));no('wrong nonce',()=>unsigned(p,{...q,nonce:8},sha,now));no('zero price',()=>unsigned(p,{...q,observedPrice:'0'},sha,now));no('gas too large',()=>unsigned(p,{...q,gasLimit:'16777217'},sha,now));
+for(const[k,v]of [['from',DEMO],['to',OWNER],['value',1n],['chainId',4663n],['nonce',8],['data','0x00'],['gasPrice',1n],['gasLimit',21000n],['signature',null],['type',2],['accessList',[]]])no('signed envelope '+k,()=>validateSigned({...tx,[k]:v},p,q,sha,now));
+console.log(JSON.stringify({passed,financialSends:0,scope:'single-transfer policy mutation/replay protections; test fixtures only'}));

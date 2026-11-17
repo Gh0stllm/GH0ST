@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <meta name="description" content="Save, share and carry your GH0ST agent memory across applications.">
+  <title>GH0ST Memory</title>
+  <link rel="stylesheet" href="./style.css">
+  <script type="module" src="./app.js"></script>
+</head>
+<body>
+  <header class="masthead">
+    <a class="brand" href="https://gh0st.fyi/" aria-label="GH0ST home">[··] GH0ST</a>
+    <span>PROTOCOL 03</span>
+    <button id="session" class="secondary" type="button">Sign in</button>
+  </header>
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="kicker"><i></i> OWNER-CONTROLLED · STORED ON ICP</p>
+        <h1>Memory<span>.</span></h1>
+        <p>A little context that travels with your GH0ST. Save what matters. Choose who can read it. Take it with you.</p>
+        <p class="hint">The first vault is free. Sign in with Internet Identity.</p>
+        <div class="hero-links"><a href="#vault-view">Open your vault ↓</a><a href="#agent-access">Use with an agent ↗</a></div>
+      </div>
+      <figure><img src="./mark.png" width="1254" height="1254" alt="Layered amber dot-matrix GH0ST bracket-face"></figure>
+    </section>
+    <div id="status" class="status" role="status" aria-live="polite"></div>
+    <section id="signed-in" hidden>
+      <div class="identity">
+        <div><p class="kicker">YOUR IDENTITY</p><code id="principal"></code></div>
+        <div class="button-row"><button id="copy-principal" class="secondary" type="button">Copy principal</button>
+          <button id="my-vault" class="secondary" type="button">My vault</button></div>
+      </div>
+      <div id="actions">
+        <section class="panel" aria-labelledby="shared-title">
+          <h2 id="shared-title">Shared with you</h2>
+          <form id="open-shared" class="shared-form">
+            <label>Owner’s principal <input id="shared-owner" required spellcheck="false" autocomplete="off" placeholder="Paste the vault owner’s ICP principal"></label>
+            <button class="secondary" type="submit">Open shared vault</button>
+          </form>
+        </section>
+        <section id="vault-view" hidden>
+          <div class="vault-top">
+            <div><p class="kicker" id="vault-mode"></p><h2>Your context</h2><code id="vault-owner"></code></div>
+            <div><p class="muted"><span id="usage"></span> · Revision <span id="revision"></span></p>
+              <div class="button-row"><button id="refresh" class="secondary" type="button">Refresh</button>
+              <button id="new-entry" class="secondary" type="button">New entry</button>
+              <button id="download" class="secondary" type="button">Export JSON</button></div>
+            </div>
+          </div>
+          <div class="panels">
+            <section class="panel"><p class="kicker">SAVED ENTRIES</p><div id="entries" class="entries"></div><pre id="shared-text" hidden></pre></section>
+            <section id="editor-panel" class="panel" aria-labelledby="editor-title">
+              <p class="kicker">CONTEXT / WRITE</p><h2 id="editor-title">Add a memory</h2>
+              <form id="editor">
+                <label>Key <input id="entry-key" required maxlength="80" placeholder="project/home" spellcheck="false" autocomplete="off"></label>
+                <label>Title <input id="entry-title" required maxlength="120" placeholder="What should your agent remember?"></label>
+                <label>Memory <textarea id="entry-body" required rows="7" maxlength="4096" placeholder="Facts, preferences, instructions or useful context."></textarea></label>
+                <p class="hint">Up to 4 KiB per entry and 64 KiB across your vault.</p>
+                <div class="button-row"><button class="primary" type="submit">Save memory</button>
+                  <button id="delete-entry" class="secondary" type="button" hidden>Delete entry</button></div>
+              </form>
+            </section>
+          </div>
+          <section id="owner-tools" class="panel owner-tools">
+            <div>
+              <p class="kicker">ACCESS / YOU DECIDE</p><h2>Choose your readers</h2>
+              <p>Grant read access to another person or agent using its ICP principal. Readers can view and export entries. You control edits.</p>
+              <form id="grant">
+                <label>Reader’s principal <input id="reader-principal" required spellcheck="false" autocomplete="off" placeholder="Paste the agent or reader’s ICP principal"></label>
+                <button class="secondary" type="submit">Grant read access</button>
+              </form>
+              <div id="readers"></div>
+              <p class="hint">Revoking access stops future reads. Copies already exported remain with the reader.</p>
+            </div>
+            <div><p class="kicker">PORTABLE / BRING IT ALONG</p><h2>Import a vault</h2>
+              <p>Restore a GH0ST Memory JSON export. Importing replaces the entries in your vault, with a confirmation before saving.</p>
+              <label>Memory export <input id="import" type="file" accept=".json,application/json"></label>
+            </div>
+          </section>
+        </section>
+      </div>
+    </section>
+    <section id="agent-access" class="panel about">
+      <details><summary>Connect an agent</summary>
+        <p>Get your agent’s ICP principal, grant it read access, then use the <a href="./client.mjs" download>Memory client</a> with that agent’s signing identity. Exported JSON can also be used by any application that accepts context files.</p>
+        <p>Internet Identity can give a different principal on another website. Use the exact principal shown by the person or agent you want to authorize.</p>
+      </details>
+      <p class="hint">Memory uses access controls on ICP. Canister controllers can access stored data. Choose context suitable for hosted storage.</p>
+    </section>
+    <footer><span>GH0ST PROTOCOL / MEMORY</span><a href="https://gh0st.fyi/roadmap/">Roadmap ↗</a><span>YOUR CONTEXT, WHERE YOU NEED IT.</span></footer>
+  </main>
+
+<script type="module" src="/gh0st-network-wallet.mjs" integrity="sha256-dbRFbGiVvs0IahP4sNlXnfIjdTl+TkkZzpbdu5BegsQ="></script>
+</body>
+</html>

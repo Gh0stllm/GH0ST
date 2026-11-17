@@ -1,0 +1,33 @@
+import fs from 'node:fs';import path from 'node:path';import assert from 'node:assert/strict';import {createHash} from 'node:crypto';
+import {requestSpec} from './netlify-wallet-once.mjs';
+const sha=b=>createHash('sha256').update(b).digest('hex'),sha1=b=>createHash('sha1').update(b).digest('hex');
+const stage=path.resolve(process.argv[2]),original=JSON.parse(fs.readFileSync(stage+'/main/plan.json')),rows=[];
+function input(planPath,operation='createWalletDraft',extra={}){return{operation,siteId:original.siteId,planPath,planSHA256:sha(fs.readFileSync(planPath)),...extra};}
+function test(name,fn){fn();rows.push({name,passed:true});}
+let temp=fs.mkdtempSync('/tmp/gl3-wallet-guard-');
+function mutated(change){const p=structuredClone(original);change(p);const file=temp+'/main/plan.json';fs.mkdirSync(path.dirname(file),{recursive:true});fs.writeFileSync(file,JSON.stringify(p));return[file,p];}
+try{
+ test('actual frozen manifest admitted draft-only',()=>{const s=requestSpec(input(stage+'/main/plan.json'));assert.equal(s.method,'POST');assert.equal(JSON.parse(s.body).draft,true);});
+ for(const[name,change]of[
+  ['unknown site',p=>p.siteId='11111111-1111-1111-1111-111111111111'],['not draft',p=>p.body.draft=false],['added environment mutation',p=>p.body.environment={X:'1'}],
+  ['dropped original file',p=>delete p.body.files[Object.keys(p.originalFiles)[0]]],['changed nonHTML file',p=>{const k=Object.keys(p.originalFiles).find(k=>!k.endsWith('.html'));p.body.files[k]='0'.repeat(40)}],
+  ['additional unapproved file',p=>p.body.files['/evil.js']='0'.repeat(40)],['missing HTML augmentation',p=>delete p.changes['/index.html']],
+  ['changed original function digest',p=>p.body.functions['live-stats']='b'.repeat(64)],['removed function',p=>delete p.body.functions['watcher-scans']],
+  ['changed function memory',p=>p.body.functions_config['live-stats'].memory=512],['changed function route',p=>p.body.functions_config['live-stats'].routes=[]],
+  ['changed function stream build data',p=>p.body.functions_config['live-stats'].build_data={runtimeAPIVersion:1}],['changed schedules',p=>p.body.function_schedules=[{name:'live-stats',cron:'* * * * *'}]],
+ ])test('refuse '+name,()=>{const[file]=mutated(change);assert.throws(()=>requestSpec(input(file)));});
+ test('changed plan bytes refused',()=>{const i=input(stage+'/main/plan.json');i.planSHA256='0'.repeat(64);assert.throws(()=>requestSpec(i));});
+ test('unknown operation refused',()=>assert.throws(()=>requestSpec(input(stage+'/main/plan.json','deleteSite',{deployId:'a'.repeat(24)}))));
+ test('actual processed-index insertion admitted',()=>{const s=requestSpec(input(stage+'/main/plan.json','uploadWalletFile',{deployId:'a'.repeat(24),path:'/index.html'}));assert.equal(s.method,'PUT');assert(s.body.includes(Buffer.from('/gh0st-network-wallet.mjs')));});
+ test('actual Roadmap exact-hash CSP and SRI admitted',()=>{const s=requestSpec(input(stage+'/main/plan.json','uploadWalletFile',{deployId:'a'.repeat(24),path:'/roadmap/index.html'}));assert(s.body.includes(Buffer.from("script-src 'sha256-")));assert(s.body.includes(Buffer.from('integrity="sha256-')));assert(!s.body.includes(Buffer.from("script-src 'self'")));});
+ test('Roadmap broad script policy refused even with recomputed upload hashes',()=>{const[file,p]=mutated(()=>{}),c=p.changes['/roadmap/index.html'];let raw=fs.readFileSync(stage+'/'+c.file);raw=Buffer.from(raw.toString().replace(c.CSPAdjustment.replacement,c.CSPAdjustment.original+"; script-src 'self'"));const to=temp+'/'+c.file;fs.mkdirSync(path.dirname(to),{recursive:true});fs.writeFileSync(to,raw);c.CSPAdjustment.replacement=c.CSPAdjustment.original+"; script-src 'self'";c.SHA256=sha(raw);c.SHA1=sha1(raw);p.body.files['/roadmap/index.html']=c.SHA1;fs.writeFileSync(file,JSON.stringify(p));assert.throws(()=>requestSpec(input(file,'uploadWalletFile',{deployId:'a'.repeat(24),path:'/roadmap/index.html'})));});
+ test('undeclared upload refused',()=>assert.throws(()=>requestSpec(input(stage+'/main/plan.json','uploadWalletFile',{deployId:'a'.repeat(24),path:'/unknown.html'}))));
+ test('HTML tampering refused even with recomputed upload hashes',()=>{const[file,p]=mutated(()=>{}),c=p.changes['/index.html'];const raw=Buffer.concat([Buffer.from('tampered'),fs.readFileSync(stage+'/'+c.file)]);const to=temp+'/'+c.file;fs.mkdirSync(path.dirname(to),{recursive:true});fs.writeFileSync(to,raw);c.SHA256=sha(raw);c.SHA1=sha1(raw);p.body.files['/index.html']=c.SHA1;fs.writeFileSync(file,JSON.stringify(p));assert.throws(()=>requestSpec(input(file,'uploadWalletFile',{deployId:'a'.repeat(24),path:'/index.html'})));});
+ test('symlink plan refused',()=>{const p=temp+'/symlink.json';fs.symlinkSync(stage+'/main/plan.json',p);assert.throws(()=>requestSpec(input(p)));});
+ test('missing publication review refuses',()=>assert.throws(()=>requestSpec(input(stage+'/main/plan.json','publishWalletDraft',{deployId:'a'.repeat(24)}))));
+ const r={schema:'gh0st.gl3.wallet-button-publication-review.v1',publicationApproved:true,siteId:original.siteId,baseDeployId:original.baseDeployId,draftDeployId:'a'.repeat(24),planSHA256:sha(fs.readFileSync(stage+'/main/plan.json')),originalNonHTMLFilesPreserved:true,allHTMLBaselineBytesPreservedOutsideDeclaredEdits:true,originalFunctionsAndSchedulesPreserved:true,actualDraftHTTPHashesVerified:true,walletMockTestsPassed:true,injectionTestsPassed:true,processedIndexBoundary:original.processedIndexBoundary,roadmapCSPAdjustment:original.roadmapCSPAdjustment,actualDraftEvidenceSHA256:'b'.repeat(64)};
+ function reviewInput(change){const x=structuredClone(r);change(x);const f=temp+'/review.json';fs.writeFileSync(f,JSON.stringify(x));return input(stage+'/main/plan.json','publishWalletDraft',{deployId:'a'.repeat(24),reviewFile:f,reviewSHA256:sha(fs.readFileSync(f))});}
+ test('exact completed publication review accepted',()=>assert.equal(requestSpec(reviewInput(()=>{})).method,'POST'));
+ for(const[name,change]of[['unapproved',x=>x.publicationApproved=false],['wrong base',x=>x.baseDeployId='f'.repeat(24)],['missing HTTP evidence',x=>x.actualDraftHTTPHashesVerified=false],['missing function preservation',x=>x.originalFunctionsAndSchedulesPreserved=false],['omitted processing boundary',x=>x.processedIndexBoundary=null]])test('publication refuses '+name,()=>assert.throws(()=>requestSpec(reviewInput(change))));
+}finally{fs.rmSync(temp,{recursive:true,force:true});}
+fs.writeFileSync(process.argv[3],JSON.stringify({passed:true,cases:rows.length,tests:rows,scope:'Read-only source/manifest guard tests with temporary unsigned fixtures. No Netlify API/auth call or public mutation.'},null,2)+'\n');console.log(JSON.stringify({passed:true,cases:rows.length}));
