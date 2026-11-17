@@ -1,0 +1,57 @@
+{
+  "schema": "gl3-resource-cleanup-v1",
+  "verifiedUTC": "2026-11-17T09:56:48.558Z",
+  "scope": "Only conversation-created Runpod workers; base GL3 first, chess deferred",
+  "deletedPod": "cy11xoyxqedglf",
+  "before": {
+    "id": "cy11xoyxqedglf",
+    "status": "RUNNING",
+    "costUSDPerHour": 1.04
+  },
+  "deleteHTTPStatus": 204,
+  "readAfter": {
+    "detail": "pod not found",
+    "status": 404,
+    "title": "Not Found",
+    "hint": "No such resource on this account: verify the id with the matching list- tool before retrying."
+  },
+  "remainingPods": [
+    {
+      "id": "9fu9ldfpioy14f",
+      "name": "gh0st-gl3-chain-mainnet",
+      "status": "RUNNING",
+      "cpu": {
+        "id": "cpu5c",
+        "memory": 64,
+        "vcpuCount": 32
+      },
+      "computeUSDPerHour": 1.12,
+      "workingDiskGB": 64,
+      "mounts": {
+        "network": [
+          {
+            "path": "/workspace",
+            "volumeId": "hb0wpuifqx"
+          }
+        ]
+      }
+    }
+  ],
+  "keptVolume": {
+    "dataCenter": "EUR-IS-1",
+    "id": "hb0wpuifqx",
+    "name": "gh0st-gl3-mainnet-data-20261117",
+    "size": 1000,
+    "tags": [],
+    "type": "STANDARD"
+  },
+  "requiredArtifactsVerifiedBeforeDeletion": true,
+  "uniqueDeferredResearchBackedUp": true,
+  "optionalWarmCacheTransferStopped": true,
+  "oldDependencyOwnerClearances": [
+    "gl3_production_readiness",
+    "gl3_hosting_capacity",
+    "gl3_withdrawals"
+  ],
+  "publicChainDeployed": false
+}

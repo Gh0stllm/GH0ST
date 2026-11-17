@@ -31,7 +31,9 @@ export async function createSource(out){
  const raw=fs.readFileSync(new URL('./frozen-token-source.json',import.meta.url));
  const frozen=JSON.parse(raw),snapshot=structuredClone(frozen);
  assert.equal(E.keccak256(frozen.account.code),TOKEN_HASH);
- const wallets={owner:E.Wallet.createRandom(),player:E.Wallet.createRandom(),poster:E.Wallet.createRandom()};
+ let wallets;const reuse=process.env.GL3_REUSE_PRIVATE_FIXTURE;
+ if(reuse){assert.equal(reuse,'/workspace/gl3/testnet/withdrawal-recovery/attempts/01-ethers-ipc-close/evidence');const prior=JSON.parse(fs.readFileSync(reuse+'/source-wallets.private.json'));wallets=Object.fromEntries(Object.entries(prior).map(([name,x])=>{const w=new E.Wallet(x.privateKey);assert.equal(w.address,x.address);return [name,w];}));assert.deepEqual(Object.keys(wallets),['owner','player','poster']);}
+ else wallets={owner:E.Wallet.createRandom(),player:E.Wallet.createRandom(),poster:E.Wallet.createRandom()};
  const balanceKey=a=>E.keccak256(E.AbiCoder.defaultAbiCoder().encode(['address','uint256'],[a,0]));
  const oldKey=balanceKey(frozen.holder),newKey=balanceKey(wallets.owner.address),amount=E.parseEther('32');
  assert.equal(BigInt(snapshot.account.storage[oldKey]),amount);assert(!(newKey in snapshot.account.storage));
@@ -39,5 +41,6 @@ export async function createSource(out){
  Object.assign(snapshot,{scope:'Private synthetic balance-owner remap of frozen observed GH0ST sparse state; no canonical ledger or current public-state claim',holder:wallets.owner.address,balanceRemap:{oldHolder:frozen.holder,newHolder:wallets.owner.address,oldKey,newKey,amount:String(amount),slot:0,totalSupplyUnchanged:true},publicRPCUsed:false});
  fs.writeFileSync(out+'/source-snapshot.json',JSON.stringify(snapshot,null,2)+'\n');
  fs.writeFileSync(out+'/source-wallets.private.json',JSON.stringify(Object.fromEntries(Object.entries(wallets).map(([n,w])=>[n,{address:w.address,privateKey:w.privateKey}])),null,2)+'\n',{mode:0o600});
- return {snapshot,wallets,methods:new Set(),read:async key=>snapshot.account.storage[key]||word('0x0'),close:async()=>{}};
+ if(reuse)assert.deepEqual(snapshot,JSON.parse(fs.readFileSync(reuse+'/source-snapshot.json')),'Frozen private token/genesis fixture drift');
+ return {snapshot,wallets,reusedPrivateFixture:!!reuse,methods:new Set(),read:async key=>snapshot.account.storage[key]||word('0x0'),close:async()=>{}};
 }

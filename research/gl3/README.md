@@ -2,7 +2,7 @@
 
 # GH0ST L3 · GL3 research notebook
 
-**R42 · GL3 first, without chess.** The clean official base passes its fresh private Solidity/Stylus test; native-GH0ST withdrawal/recovery and full dispute settlement are the next base gates. The new32 vCPU/64 GB/1TB host is provisioned; public mainnet is not deployed.
+**R43 · Private native-GH0ST flow and abrupt recovery pass.** Deposit, transfer, withdrawal and four rejected withdrawal cases pass on the sole retained Runpod host. Exact same-database recovery takes 743 ms; 100 basic transfers measure 101 ms median / 109 ms p95. Full permissionless dispute settlement and production deployment remain pending. Chess is deferred.
 
 [Open the active base-chain work](base/README.md) · [Sequential history](HISTORY.md)
 

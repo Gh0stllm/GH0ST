@@ -1,0 +1,64 @@
+{
+  "passed": true,
+  "scope": "Independent post-run checks of captured data and still-closed persistent DB identities; no new chain execution",
+  "sameDBInodesAndDevices": {
+    "arbitrumdata": {
+      "path": "/workspace/gl3/testnet/withdrawal-recovery/evidence/child-chain/nitro/arbitrumdata",
+      "dev": 93,
+      "ino": 22410042,
+      "stillMatchesBothCapturedSnapshots": true
+    },
+    "l2chaindata": {
+      "path": "/workspace/gl3/testnet/withdrawal-recovery/evidence/child-chain/nitro/l2chaindata",
+      "dev": 93,
+      "ino": 22344453,
+      "stillMatchesBothCapturedSnapshots": true
+    },
+    "wasm": {
+      "path": "/workspace/gl3/testnet/withdrawal-recovery/evidence/child-chain/nitro/wasm",
+      "dev": 93,
+      "ino": 22373641,
+      "stillMatchesBothCapturedSnapshots": true
+    }
+  },
+  "sameCLIArgsConfigHashHeadRootMessageNonceBalances": true,
+  "actualSIGKILLBoundToBeforePID": true,
+  "postRecoveryOnlyBatchPosterFlagDiffVerified": true,
+  "syncArchiveEveryBlockVerified": true,
+  "negativeDecodedReasons": {
+    "Unconfirmed root rejects": "UnknownRoot(bytes32)",
+    "Non-rollup root registration rejects": "NotRollup(address,address)",
+    "Altered withdrawal amount rejects": "UnknownRoot(bytes32)",
+    "Repeated withdrawal rejects": "AlreadySpent(uint256)"
+  },
+  "samePriorGenesisJSONVerified": true,
+  "runtimeSourceHashesUnchanged": true,
+  "processCleanup": [
+    {
+      "pid": 20875,
+      "exists": false
+    },
+    {
+      "pid": 20896,
+      "exists": false
+    },
+    {
+      "pid": 20905,
+      "exists": false
+    },
+    {
+      "pid": 20918,
+      "exists": false
+    },
+    {
+      "pid": 20940,
+      "exists": false
+    },
+    {
+      "pid": 20848,
+      "exists": false
+    }
+  ],
+  "fullRPCTransactionReceiptJSONCaptured": false,
+  "capturedReceiptScope": "Actual hash/block/gas rows plus assertion/outbox event and trace fields; not every complete RPC receipt JSON"
+}

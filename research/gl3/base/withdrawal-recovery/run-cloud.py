@@ -44,11 +44,11 @@ assert file_sha(ROOT/'bin/genesis-diagnostics')==helper['SHA256']
 save('preflight-identities.json',{'officialNode':lock['officialNode'],'moduleRoot':lock['moduleRoot'],'machineFiles':lock['machineFiles'],'genesisDiagnostic':helper,'actualGenesisDiagnosticPath':str(ROOT/'bin/genesis-diagnostics'),'allFilesVerifiedBeforeScenario':True})
 manifest={str(p.relative_to(ROOT)):file_sha(p) for p in ROOT.glob('source/**/*') if p.is_file() and '__pycache__' not in p.parts}
 save('source-manifest.json',manifest)
-save('runtime-context.json',{'host':socket.gethostname(),'podID':'9fu9ldfpioy14f','CPUaffinity':sorted(os.sched_getaffinity(0)),'nice':os.getpriority(os.PRIO_PROCESS,0),'cgroupV2MemoryMaxBytes':64000000000,'persistentPrefix':str(ROOT),'persistentDevice':ROOT.stat().st_dev,'workingDevice':Path('/root').stat().st_dev,'persistentVolumeID':'hb0wpuifqx','persistentAPIQuotaGB':1000,'quotaAuthority':'Root-verified Runpod API configuration; filesystem df pool is not the quota','ownedLimitBytes':1750000000,'workingDiskFreeFloorBytes':6000000000,'wallSeconds':1200,'cgroupCurrentCeilingBytes':56000000000})
+save('runtime-context.json',{'host':socket.gethostname(),'podID':'9fu9ldfpioy14f','CPUaffinity':sorted(os.sched_getaffinity(0)),'nice':os.getpriority(os.PRIO_PROCESS,0),'cgroupV2MemoryMaxBytes':64000000000,'persistentPrefix':str(ROOT),'persistentDevice':ROOT.stat().st_dev,'workingDevice':Path('/root').stat().st_dev,'persistentVolumeID':'hb0wpuifqx','persistentAPIQuotaGB':1000,'quotaAuthority':'Root-verified Runpod API configuration; filesystem df pool is not the quota','ownedLimitBytes':8589934592,'workingDiskFreeFloorBytes':6000000000,'wallSeconds':1200,'cgroupCurrentCeilingBytes':56000000000})
 free,allocated,logical,memory=guards()
-assert free>=6000000000 and max(allocated,logical)<=1750000000 and memory<56000000000
+assert free>=6000000000 and max(allocated,logical)<=8589934592 and memory<56000000000
 for p in (ROOT/'source').rglob('*.mjs'):subprocess.run(['node','--check',str(p)],check=True)
-env={**os.environ,'GL3_PARITY_BASE':str(ROOT),'GL3_PRIVATE_OUTPUT':str(OUT),'GL3_NODE_PACKAGE':'/root/dispute/package.json','GOMAXPROCS':'2'}
+env={**os.environ,'GL3_PARITY_BASE':str(ROOT),'GL3_PRIVATE_OUTPUT':str(OUT),'GL3_NODE_PACKAGE':'/root/dispute/package.json','GL3_REUSE_PRIVATE_FIXTURE':str(ROOT/'attempts/01-ethers-ipc-close/evidence'),'GOMAXPROCS':'2'}
 cancelled=None
 def cancel(signum,frame):
  global cancelled
@@ -68,7 +68,7 @@ try:
    writer.writerow([time.monotonic()-start,free,allocated,logical,memory]);samples.flush()
    if cancelled:reason=cancelled
    if free<6000000000:reason='6GB working disk free floor'
-   if max(allocated,logical)>1750000000:reason='1.75GB owned allocation/logical guard'
+   if max(allocated,logical)>8589934592:reason='8GiB owned allocation/logical guard'
    if memory>=56000000000:reason='56GB shared cgroup memory reserve'
    if time.monotonic()-start>1200:reason='20min wall guard'
   except Exception as e:reason='guard read failure '+str(e)

@@ -1,3 +1,28 @@
+<p align="center"><img src="research/gl3/assets/gl3-cover.png" alt="GH0ST GL3 — amber dot matrix identity" width="100%"></p>
+
+# GH0ST L3 · GL3
+
+**Chain first. Robinhood as the intended settlement layer. $GH0ST as native gas.**
+
+The active build uses official Nitro 3.12.2, ArbOS 61, Solidity and standard Stylus. Chess and custom model execution are deferred. Public GL3 mainnet is not deployed.
+
+[Active chain build](research/gl3/base/README.md) · [Sequential findings](research/gl3/HISTORY.md) · [Machine-readable status](research/gl3/status.json)
+
+| Verified on Runpod | Result |
+| :--- | :--- |
+| Solidity and Stylus | EVM return **42**; activated Stylus signed dot product **−31**; **16/16** measured transactions succeeded |
+| Native $GH0ST private flow | Deposit, native transfer, withdrawal and four rejected withdrawal cases passed |
+| Abrupt process recovery | Same persistent databases recovered the exact acknowledged head and state in **743 ms** |
+| Basic transfer sample | **100 transactions**, median **101 ms**, p95 **109 ms** |
+| Infrastructure | One retained **32-vCPU / 64-GB** worker and **1,000-GB** persistent volume; old workers deleted |
+
+These are bounded private-chain observations. The GH0ST fixture includes an explicit balance-owner remap and privileged assertion confirmation. Permissionless dispute settlement, final production configuration and public Robinhood deployment remain separate gates. The 100-ms minimum block spacing is a configuration target, not public finality or maximum throughput.
+
+[Withdrawal and recovery evidence](research/gl3/base/withdrawal-recovery/) · [Dispute work](research/gl3/base/dispute-readiness/) · [Infrastructure cleanup](research/gl3/base/infrastructure/cleanup-only-big.json)
+
+<details>
+<summary>Earlier research and chess experiments</summary>
+
 <p align="center"><img src="research/gl3/assets/gl3-cover.png" alt="GH0ST GL3 — amber dot-matrix bracket face within three nested layers" width="100%"></p>
 
 # GH0ST L3 · GL3
@@ -70,3 +95,5 @@ No server has been rented and no public GL3 chain has been funded. Parent postin
 ---
 
 [Original GH0ST project overview](https://github.com/Gh0stllm/GH0ST/blob/b27fcb92e93d07073b4859b2c834909a03fc42b5/README.md) · [GH0ST website](https://gh0st.fyi/) · [Artwork brief](research/gl3/assets/ARTWORK.md)
+
+</details>

@@ -22,7 +22,7 @@
   "fullL3StockfishReplayAndFraudProofExecuted": false,
   "modelQualityReduced": false,
   "automaticTopups": false,
-  "next": "Complete base-only nativeGH0ST recovery/withdrawal +fullBoLD confirmation/refund on selected persistent host; finalize production packet and required approvals",
+  "next": "Complete pinned-parent-tooling full BoLD test; finalize gas pricer, production genesis, operational bootstrap and reviewable deployment packet.",
   "completeBlackDecisions": 72,
   "exactMoveNodesDepthMatches": 72,
   "additionalFullRecoverySearches": 5,
@@ -1317,10 +1317,32 @@
       "receiptP95MS": 105.65,
       "scope": "Private development chain Solidity/Stylus sample only; no publicparent/nativeGH0STgas acceptance"
     },
-    "freshWithdrawalRecoveryPassed": false,
+    "freshWithdrawalRecoveryPassed": true,
     "freshFullDisputeSettlementPassed": false,
     "mainnetDeployed": false,
-    "infrastructure": "base/infrastructure/runpod-allocation.json"
+    "infrastructure": "base/infrastructure/runpod-allocation.json",
+    "privateWithdrawalRecovery": {
+      "evidence": "base/withdrawal-recovery/evidence/result.json",
+      "independentAudit": "base/withdrawal-recovery/evidence/post-run-audit.json",
+      "actualExit": 0,
+      "seconds": 68.4134846990928,
+      "SIGKILLRecoveryMilliseconds": 743,
+      "lightTransfers": 100,
+      "medianMilliseconds": 101.0,
+      "p95Milliseconds": 109,
+      "allocatedDatabaseGrowthBytes": 1013760,
+      "sameThreePersistentDatabases": true,
+      "syntheticBalanceOwnerRemap": true,
+      "privilegedFastConfirmation": true,
+      "permissionlessFinalityTested": false,
+      "fullRPCReceiptJSONCaptured": false,
+      "ownedProcessesRemaining": 0,
+      "mainnetDeployed": false
+    },
+    "disputeStatus": "BUILDING_EXACT_UPSTREAM_PARENT_GETH_AFTER_TWO_SETUP_FAILURES_NO_FULL_TEST_PASS",
+    "soleRetainedPod": "9fu9ldfpioy14f",
+    "cleanupEvidence": "base/infrastructure/cleanup-only-big.json"
   },
-  "productionChessStorageIsBaseLaunchGate": false
+  "productionChessStorageIsBaseLaunchGate": false,
+  "currentRevision": 43
 }
