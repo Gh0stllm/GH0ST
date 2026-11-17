@@ -1,0 +1,29 @@
+{
+  "sourceCommit": "4341b132cfbdcc980ead03765ca5224ff6cb5d97",
+  "files": {
+    "EdgeChallengeManager.sol": {
+      "SHA256": "408b64d6ac8a61f656ef94cff2f61537714e373ef38129bd734136aa3f45bfb9",
+      "line": 448,
+      "fragment": "function getLayerZeroEndHeight(\n        EdgeType eType\n    ) public view returns (uint256) {\n        if (eType == EdgeType.Block) {\n            return LAYERZERO_BLOCKEDGE_HEIGHT;\n        } else if (eType == EdgeType.BigStep) {\n            return LAYERZERO_BIGSTEPEDGE_HEIGHT;\n        } else if (eType == EdgeType.SmallStep) {\n            return LAYERZERO_SMALLSTEPEDGE_HEIGHT;\n        } else {\n            revert InvalidEdgeType(eType);\n        }\n    }\n\n    /// @inheritdoc IEdgeChallengeManager\n    function calculateEdgeId(\n        uint8 level,\n        bytes32 originId,\n        uint256 startHeight,\n        bytes32 startHistoryRoot,\n        uint25"
+    },
+    "libraries/ChallengeEdgeLib.sol": {
+      "SHA256": "8fdf463f01f1608ca7030725f25868d5e96fda961ef6a282c2f900ef4477431e",
+      "line": 263,
+      "fragment": "function levelToType(\n        uint8 level,\n        uint8 numBigStepLevels\n    ) internal pure returns (EdgeType eType) {\n        if (level == 0) {\n            return EdgeType.Block;\n        } else if (level <= numBigStepLevels) {\n            return EdgeType.BigStep;\n        } else if (level == numBigStepLevels + 1) {\n            return EdgeType.SmallStep;\n        } else {\n            revert LevelTooHigh(level, numBigStepLevels);\n        }\n    }\n}\n"
+    },
+    "libraries/Enums.sol": {
+      "SHA256": "07ee115c08d2af9f90e4c8629c133365c285ad61d70d2d0cae9cfe8f08b0029d",
+      "line": 22,
+      "fragment": "enum EdgeType {\n    Block,\n    BigStep,\n    SmallStep\n}\n"
+    }
+  },
+  "derivedLevelVector": [
+    8192,
+    1024,
+    1024,
+    1024,
+    1024
+  ],
+  "derivedStepsPerBlockCapacity": 1099511627776,
+  "scope": "Pinned source mapping and compiled future readback; no live lifecycle/configuration acceptance"
+}

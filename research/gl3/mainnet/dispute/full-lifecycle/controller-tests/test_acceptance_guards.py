@@ -8,7 +8,9 @@ import unittest
 if platform.system() != "Linux":
     raise RuntimeError("Run these regressions on Runpod Linux, never the local Mac")
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from acceptance_guards import AcceptanceError, validate_acceptance, validate_named_test, validate_reuse
+from acceptance_guards import (AcceptanceError, validate_acceptance, validate_named_test, validate_reuse,
+    validate_launch_prerequisites, SELECTED_ROOT, SELECTED_MACHINE, SELECTED_GUEST,
+    SELECTED_COMPANION, SELECTED_INPUT, SELECTED_PROVER)
 
 
 def h(n, size=32):
@@ -28,6 +30,12 @@ def evidence():
               "stakeSettlementPassed": True, "fullStrengthDecisionVerified": True,
               "allExecutionOnRunpod": True, "enginePolicyChanged": False,
               "publicDeployment": False, "honestLayerZeroRefunds": 1,
+              "claimPairContentVerified": True, "strictAuditPassedBeforeCleanup": True,
+              "strictAuditSHA256": "d" * 64,
+              "targetHonestAssertion": h(21), "targetFalseAssertion": h(22),
+              "targetParentAssertion": h(23), "expectedHonestHistory": h(24),
+              "expectedFalseHistory": h(25), "refundEdge": h(8),
+              "refundTransaction": h(33), "targetRefundAmount": "500000000000000000",
               "terminalComputeBlock": target["BlockHash"],
               "oneStepEdge": h(11), "oneStepTransaction": h(31)}
     pair = {"honest": h(21), "false": h(22), "parent": h(23),
@@ -38,12 +46,15 @@ def evidence():
              "terminalInputBytesVerified": True, "runID": run_id,
              "moduleRoot": module, "terminalInputSHA256": "b" * 64,
              "terminalTransitionBinding": {"verified": True, "terminalBlockNumber": 4921,
-                                           "startHeight": "4920", "endHeight": "4921"},
+                 "startHeight": "4920", "endHeight": "4921", "blockClaimEdge": h(10),
+                 "machineSubchallengeRoot": h(12), "oneStepEdge": h(11), "oneStepTransaction": h(31)},
              "terminal": target.copy(), "forgedTerminal": forged,
              "pair": pair, "targetRootEdges": {"honest": [h(8)], "false": [h(9)]},
              "boundOneStepEvents": [{"edge": h(11), "transaction": h(31),
                  "order": ["11", "0", "0"], "receiptStatus": "0x1",
-                 "path": [{"from": h(8), "to": h(11), "kind": "bisection-upper"}]}],
+                 "path": [{"from": h(8), "to": h(10), "kind": "bisection-upper"},
+                          {"from": h(10), "to": h(12), "kind": "subchallenge-claim"},
+                          {"from": h(12), "to": h(11), "kind": "bisection-upper"}]}],
              "boundConfirmations": [{"hash": h(21), "transaction": h(32), "order": ["12", "0", "0"]}],
              "assertionStates": {"honest": {"status": "2"}, "false": {"status": "1"}},
              "boundCollateralRefunds": [{"edge": h(8), "level": "0", "transaction": h(33),
@@ -51,10 +62,12 @@ def evidence():
                  "exactTransfer": True, "blockBalancesReconcile": True,
                  "order": ["13", "0", "0"], "path": []}],
              "completeAssertionBondSettlementAudited": False}
-    terminal = {"SHA256": "b" * 64, "bytes": 2574999906, "blockNumber": 4921,
+    terminal = {"runID": run_id, "SHA256": "b" * 64, "bytes": 2574999906, "blockNumber": 4921,
                 "moduleRoot": module, "expectedEndState": target.copy()}
     return dict(test_exit=0, test_log=GOOD_LOG, report=report, audit_exit=0, audit=audit,
-                terminal=terminal, run_id=run_id, module_root=module)
+                terminal=terminal, run_id=run_id, module_root=module,
+                completion={"completed": True, "runID": run_id, "moduleRoot": module,
+                            "auditExitCode": 0, "strictAuditSHA256": "d" * 64}, audit_sha256="d" * 64)
 
 
 class AcceptanceTests(unittest.TestCase):
@@ -86,6 +99,32 @@ def rejection_case(mutate):
 
 
 REJECTIONS = {
+    "missing_precleanup_completion": lambda e: e.update(completion=None),
+    "completion_not_completed": lambda e: e["completion"].update(completed=False),
+    "completion_truthy_completed": lambda e: e["completion"].update(completed="true"),
+    "completion_missing_exit": lambda e: e["completion"].pop("auditExitCode"),
+    "completion_boolean_exit": lambda e: e["completion"].update(auditExitCode=False),
+    "completion_nonzero_exit": lambda e: e["completion"].update(auditExitCode=1),
+    "completion_stale_nonce": lambda e: e["completion"].update(runID="f" * 32),
+    "completion_wrong_root": lambda e: e["completion"].update(moduleRoot=h(99)),
+    "completion_different_audit_bytes": lambda e: e["completion"].update(strictAuditSHA256="e" * 64),
+    "fixture_different_audit_bytes": lambda e: e["report"].update(strictAuditSHA256="e" * 64),
+    "audit_file_digest_missing": lambda e: e.update(audit_sha256=None),
+    "fixture_not_content_classified": lambda e: e["report"].update(claimPairContentVerified=False),
+    "fixture_cleanup_before_audit": lambda e: e["report"].update(strictAuditPassedBeforeCleanup=False),
+    "manifest_stale_nonce": lambda e: e["terminal"].update(runID="f" * 32),
+    "fixture_different_honest_claim": lambda e: e["report"].update(targetHonestAssertion=h(99)),
+    "fixture_different_false_claim": lambda e: e["report"].update(targetFalseAssertion=h(99)),
+    "fixture_different_parent_claim": lambda e: e["report"].update(targetParentAssertion=h(99)),
+    "fixture_different_honest_history": lambda e: e["report"].update(expectedHonestHistory=h(99)),
+    "fixture_different_false_history": lambda e: e["report"].update(expectedFalseHistory=h(99)),
+    "fixture_different_refund_transaction": lambda e: e["report"].update(refundTransaction=h(99)),
+    "fixture_different_refund_edge": lambda e: e["report"].update(refundEdge=h(99)),
+    "fixture_different_refund_amount": lambda e: e["report"].update(targetRefundAmount="3"),
+    "transition_different_block_claim": lambda e: e["audit"]["terminalTransitionBinding"].update(blockClaimEdge=h(99)),
+    "transition_different_machine_root": lambda e: e["audit"]["terminalTransitionBinding"].update(machineSubchallengeRoot=h(99)),
+    "transition_different_one_step": lambda e: e["audit"]["terminalTransitionBinding"].update(oneStepEdge=h(99)),
+    "transition_different_proof_transaction": lambda e: e["audit"]["terminalTransitionBinding"].update(oneStepTransaction=h(99)),
     "nonzero_test_exit": lambda e: e.update(test_exit=1),
     "boolean_test_exit": lambda e: e.update(test_exit=False),
     "missing_named_test": lambda e: e.update(test_log="testing: warning: no tests to run\nPASS\n"),
@@ -215,6 +254,104 @@ class BuildReuseTests(unittest.TestCase):
         with self.assertRaises(AcceptanceError):
             validate_reuse(self.manifest, {}, "e" * 64)
 
+
+def launch_evidence():
+    end = ["0x8d33a6345311761aef5c7ee9e5528350f17beda843d0563cfdd103aeec70d738",
+           "0x" + "00" * 32, "2470", "0"]
+    interpreter = {"passed": True, "exitCode": 0, "timedOut": False,
+        "machineFinished": True, "allFourGlobalStateFieldsMatch": True,
+        "actualEnd": end.copy(), "expectedEnd": end.copy(), "moduleRoot": SELECTED_ROOT,
+        "machineSHA256": SELECTED_MACHINE, "guestWasmSHA256": SELECTED_GUEST,
+        "companionSHA256": SELECTED_COMPANION, "inputSHA256": SELECTED_INPUT,
+        "proverSHA256": SELECTED_PROVER, "rawExactFinalSteps": 1000, "rawCounterPlusOne": 1001}
+    geometry = {"reviewed": True, "finishedAbsorbingTransitionReviewed": True,
+        "kickoffOffsetBindingReviewed": True, "sameSelectedBackendWitnessesReviewed": True,
+        "moduleRoot": SELECTED_ROOT, "machineSHA256": SELECTED_MACHINE,
+        "interpreterResultSHA256": "a" * 64, "blockHeight": 8192, "numBigStepLevels": 3,
+        "bigStepHeight": 1024, "smallStepHeight": 1024,
+        "levelHeights": [8192, 1024, 1024, 1024, 1024], "stepsPerBlockCapacity": 2**40,
+        "rawExactFinalSteps": 1000, "rawCounterPlusOne": 1001, "kickoffOffset": 1}
+    authorization = {"authorized": True, "scope": "PRIVATE_SELECTED_865_LIFECYCLE_ONLY",
+        "moduleRoot": SELECTED_ROOT, "interpreterResultSHA256": "a" * 64,
+        "geometryReviewSHA256": "b" * 64}
+    return dict(interpreter=interpreter, geometry=geometry, authorization=authorization,
+                interpreter_sha256="a" * 64, geometry_sha256="b" * 64)
+
+
+class LaunchPrerequisiteTests(unittest.TestCase):
+    def test_exact_reviewed_receipts_allow_only_a_future_private_launch(self):
+        result = validate_launch_prerequisites(**launch_evidence())
+        self.assertIs(result["passed"], True)
+        self.assertIn("not that lifecycle's acceptance", result["scope"])
+
+    def test_finished_boundary_plus_kickoff_at_exact_capacity_is_supported(self):
+        e = launch_evidence()
+        for k in ["interpreter", "geometry"]:
+            e[k].update(rawExactFinalSteps=2**40 - 1, rawCounterPlusOne=2**40)
+        self.assertTrue(validate_launch_prerequisites(**e)["passed"])
+
+
+LAUNCH_REJECTIONS = {
+    "interpreter_running": lambda e: e["interpreter"].update(passed=False),
+    "interpreter_no_actual_exit": lambda e: e["interpreter"].pop("exitCode"),
+    "interpreter_boolean_exit": lambda e: e["interpreter"].update(exitCode=False),
+    "interpreter_failed_exit": lambda e: e["interpreter"].update(exitCode=1),
+    "interpreter_timed_out": lambda e: e["interpreter"].update(timedOut=True),
+    "interpreter_not_finished": lambda e: e["interpreter"].update(machineFinished=False),
+    "interpreter_not_all_four": lambda e: e["interpreter"].update(allFourGlobalStateFieldsMatch=False),
+    "old_module_root": lambda e: e["interpreter"].update(moduleRoot=h(99)),
+    "changed_machine": lambda e: e["interpreter"].update(machineSHA256="c" * 64),
+    "changed_go_guest": lambda e: e["interpreter"].update(guestWasmSHA256="c" * 64),
+    "changed_companion": lambda e: e["interpreter"].update(companionSHA256="c" * 64),
+    "changed_input": lambda e: e["interpreter"].update(inputSHA256="c" * 64),
+    "diagnostic_tool_in_place_of_interpreter": lambda e: e["interpreter"].update(proverSHA256="c" * 64),
+    "different_global_field": lambda e: e["interpreter"]["actualEnd"].__setitem__(3, "1"),
+    "different_original_global": lambda e: (e["interpreter"].update(actualEnd=[h(2), h(0), "2470", "0"], expectedEnd=[h(2), h(0), "2470", "0"])),
+    "zero_counter": lambda e: e["interpreter"].update(rawExactFinalSteps=0),
+    "sampled_counter_string": lambda e: e["interpreter"].update(rawExactFinalSteps="1000"),
+    "wrong_plus_one": lambda e: e["interpreter"].update(rawCounterPlusOne=1002),
+    "plus_one_outside_uint64": lambda e: e["interpreter"].update(rawCounterPlusOne=2**64),
+    "unreviewed_geometry": lambda e: e["geometry"].update(reviewed=False),
+    "unreviewed_finished_self_transition": lambda e: e["geometry"].update(finishedAbsorbingTransitionReviewed=False),
+    "unreviewed_kickoff_offset": lambda e: e["geometry"].update(kickoffOffsetBindingReviewed=False),
+    "unreviewed_selected_witnesses": lambda e: e["geometry"].update(sameSelectedBackendWitnessesReviewed=False),
+    "stale_geometry_module": lambda e: e["geometry"].update(moduleRoot=h(99)),
+    "stale_geometry_machine": lambda e: e["geometry"].update(machineSHA256="c" * 64),
+    "different_interpreter_receipt": lambda e: e["geometry"].update(interpreterResultSHA256="c" * 64),
+    "different_block_height": lambda e: e["geometry"].update(blockHeight=4096),
+    "different_big_level_count": lambda e: e["geometry"].update(numBigStepLevels=2),
+    "different_big_height": lambda e: e["geometry"].update(bigStepHeight=512),
+    "different_small_height": lambda e: e["geometry"].update(smallStepHeight=512),
+    "missing_final_small_level": lambda e: e["geometry"].update(levelHeights=[8192, 1024, 1024, 1024]),
+    "drift_only_actual_final_small_level": lambda e: e["geometry"].update(levelHeights=[8192, 1024, 1024, 1024, 512]),
+    "floating_geometry": lambda e: e["geometry"].update(bigStepHeight=1024.0),
+    "floating_capacity": lambda e: e["geometry"].update(stepsPerBlockCapacity=float(2**40)),
+    "wrong_capacity": lambda e: e["geometry"].update(stepsPerBlockCapacity=2**50),
+    "geometry_wrong_counter": lambda e: e["geometry"].update(rawExactFinalSteps=1001),
+    "boolean_kickoff": lambda e: e["geometry"].update(kickoffOffset=True),
+    "zero_kickoff": lambda e: e["geometry"].update(kickoffOffset=0),
+    "missing_authorization": lambda e: e.update(authorization={}),
+    "different_authorization_scope": lambda e: e["authorization"].update(scope="MAINNET"),
+    "authorization_stale_root": lambda e: e["authorization"].update(moduleRoot=h(99)),
+    "authorization_stale_interpreter": lambda e: e["authorization"].update(interpreterResultSHA256="c" * 64),
+    "authorization_stale_geometry": lambda e: e["authorization"].update(geometryReviewSHA256="c" * 64),
+    "truthy_authorized": lambda e: e["authorization"].update(authorized="true"),
+}
+
+def launch_rejection_case(mutate):
+    def test(self):
+        e = launch_evidence(); mutate(e)
+        with self.assertRaises(AcceptanceError): validate_launch_prerequisites(**e)
+    return test
+
+for name, mutate in LAUNCH_REJECTIONS.items():
+    setattr(LaunchPrerequisiteTests, "test_reject_" + name, launch_rejection_case(mutate))
+
+# This is only a synthetic arithmetic boundary test, never a real step receipt.
+def _overflow(e):
+    for k in ["interpreter", "geometry"]:
+        e[k].update(rawExactFinalSteps=2**40, rawCounterPlusOne=2**40 + 1)
+setattr(LaunchPrerequisiteTests, "test_reject_capacity_overflow_after_kickoff", launch_rejection_case(_overflow))
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

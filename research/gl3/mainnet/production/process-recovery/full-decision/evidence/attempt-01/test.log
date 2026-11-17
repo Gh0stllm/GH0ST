@@ -1,0 +1,188 @@
+=== RUN   TestGL3TwoCrashFullDecisionRecovery
+INFO [11-17|01:58:44.857] New Key                                  name=Owner Address=0x26E554a8acF9003b83495c7f45F06edCB803d4e3
+INFO [11-17|01:58:44.857] New Key                                  name=Faucet Address=0xaF24Ca6c2831f4d4F629418b50C227DF0885613A
+INFO [11-17|01:58:48.133] New Key                                  name=Faucet Address=0xaF24Ca6c2831f4d4F629418b50C227DF0885613A
+INFO [11-17|01:58:48.133] New Key                                  name=RollupOwner Address=0x57Ff0F473737a1c161bfF9efDF016F7991585088
+INFO [11-17|01:58:48.133] New Key                                  name=Sequencer   Address=0xb386a74Dcab67b66F8AC07B4f08365d37495Dd23
+INFO [11-17|01:58:48.133] New Key                                  name=Validator   Address=0x83FFCFaCE2Fb0E1286686815503608A16EF41e47
+INFO [11-17|01:58:48.133] New Key                                  name=User        Address=0x7E23C8862920797d81916d62c274dd9217113e28
+    common_test.go:923: Using external L1 from /root/terminal-acceptance/bin/geth
+WARN [11-17|01:58:48.484] Getting file info                        dir=/root/gl3-process-recovery/full/machines error="stat /root/gl3-process-recovery/full/machines: no such file or directory"
+    common_test.go:943: BuildL1 deployConfig: DeployBold=false, DeployReferenceDAContracts=false
+    common_test.go:2157: goroutine 19 [running]:
+        runtime/debug.Stack()
+        	/root/bounded-restore/toolchain/go/src/runtime/debug/stack.go:26 +0x5e
+        github.com/offchainlabs/nitro/util/testhelpers.RequireImpl({0x499d4d0, 0xc00040c540}, {0x4951480, 0xc0005ee800}, {0x0, 0x0, 0x0})
+        	/root/gl3-process-recovery/full/native/util/testhelpers/testhelpers.go:31 +0x55
+        github.com/offchainlabs/nitro/system_tests.Require(0xc00040c540, {0x4951480, 0xc0005ee800}, {0x0, 0x0, 0x0})
+        	/root/gl3-process-recovery/full/native/system_tests/test_info.go:40 +0x5d
+        github.com/offchainlabs/nitro/system_tests.deployOnParentChain(0xc00040c540, {0x49748e8, 0xc0005eb9f0}, 0xc000212e60, 0xc008fb18e0, 0xc660fc0, 0xc0007d6b00, {0x0, 0x0, 0x0, ...}, ...)
+        	/root/gl3-process-recovery/full/native/system_tests/common_test.go:2157 +0x1805
+        github.com/offchainlabs/nitro/system_tests.(*NodeBuilder).BuildL1(0xc04533fb28, 0xc00040c540)
+        	/root/gl3-process-recovery/full/native/system_tests/common_test.go:944 +0x49b
+        github.com/offchainlabs/nitro/system_tests.TestGL3TwoCrashFullDecisionRecovery(0xc00040c540)
+        	/root/gl3-process-recovery/full/native/system_tests/gl3_full_process_recovery_test.go:385 +0xb52
+        testing.tRunner(0xc00040c540, 0x4531088)
+        	/root/bounded-restore/toolchain/go/src/testing/testing.go:1934 +0xea
+        created by testing.(*T).Run in goroutine 1
+        	/root/bounded-restore/toolchain/go/src/testing/testing.go:1997 +0x465
+        
+    common_test.go:2157: [31;1m [] no machine specified [0;0m
+    external_l1.go:429: External geth log tail:
+        1-17|01:58:48.232] Verified index file                      items=1 elapsed="2.01µs"
+        DEBUG[11-17|01:58:48.232] Chain freezer table opened               database=/tmp/TestGL3TwoCrashFullDecisionRecovery3385864121/003/geth/chaindata/ancient/chain table=bals items=0 size=0.00B
+        INFO [11-17|01:58:48.232] Opened ancient database                  database=/tmp/TestGL3TwoCrashFullDecisionRecovery3385864121/003/geth/chaindata/ancient/chain readonly=false
+        INFO [11-17|01:58:48.232] Opened Era store                         datadir=/tmp/TestGL3TwoCrashFullDecisionRecovery3385864121/003/geth/chaindata/ancient/chain/era
+        INFO [11-17|01:58:48.232] State scheme set to already existing     scheme=path
+        INFO [11-17|01:58:48.232] Initialising Ethereum protocol           network=1337 dbversion=<nil>
+        WARN [11-17|01:58:48.232] Sanitizing invalid node buffer size      provided=1.00GiB updated=256.00MiB
+        INFO [11-17|01:58:48.232] Load database journal from disk
+        INFO [11-17|01:58:48.232] Failed to load journal, discard it       err="journal not found"
+        DEBUG[11-17|01:58:48.240] Verified index file                      items=2 elapsed="2.44µs"
+        DEBUG[11-17|01:58:48.240] Chain freezer table opened               database=/tmp/TestGL3TwoCrashFullDecisionRecovery3385864121/003/geth/chaindata/ancient/state table=account.index items=1 size=269.00B
+        DEBUG[11-17|01:58:48.240] Verified index file                      items=2 elapsed="2.01µs"
+        DEBUG[11-17|01:58:48.240] Chain freezer table opened               database=/tmp/TestGL3TwoCrashFullDecisionRecovery3385864121/003/geth/chaindata/ancient/state table=storage.index items=1 size=1.00B
+        DEBUG[11-17|01:58:48.240] Verified index file                      items=2 elapsed="1.7µs"
+        DEBUG[11-17|01:58:48.240] Chain freezer table opened               database=/tmp/TestGL3TwoCrashFullDecisionRecovery3385864121/003/geth/chaindata/ancient/state table=account.data items=1 size=1.00B
+        DEBUG[11-17|01:58:48.240] Verified index file                      items=2 elapsed="1.51µs"
+        DEBUG[11-17|01:58:48.240] Chain freezer table opened               database=/tmp/TestGL3TwoCrashFullDecisionRecovery3385864121/003/geth/chaindata/ancient/state table=storage.data items=1 size=1.00B
+        DEBUG[11-17|01:58:48.240] Verified index file                      items=2 elapsed="2.44µs"
+        DEBUG[11-17|01:58:48.240] Chain freezer table opened               database=/tmp/TestGL3TwoCrashFullDecisionRecovery3385864121/003/geth/chaindata/ancient/state table=history.meta items=1 size=73.00B
+        INFO [11-17|01:58:48.240] Opened ancient database                  database=/tmp/TestGL3TwoCrashFullDecisionRecovery3385864121/003/geth/chaindata/ancient/state readonly=false
+        INFO [11-17|01:58:48.240] Initialized path database                triecache=614.00MiB statecache=409.00MiB buffer=256.00MiB state-history="last 90000 blocks" journal-dir=/tmp/TestGL3TwoCrashFullDecisionRecovery3385864121/003/geth/triedb
+        INFO [11-17|01:58:48.240] 
+        INFO [11-17|01:58:48.240] ---------------------------------------------------------------------------------------------------------------------------------------------------------
+        INFO [11-17|01:58:48.240] Chain ID:  1337 (unknown)
+        INFO [11-17|01:58:48.240] Consensus: unknown
+        INFO [11-17|01:58:48.240] 
+        INFO [11-17|01:58:48.240] Pre-Merge hard forks (block based):
+        INFO [11-17|01:58:48.240]  - Homestead:                   #0       
+        INFO [11-17|01:58:48.240]  - Tangerine Whistle (EIP 150): #0       
+        INFO [11-17|01:58:48.240]  - Spurious Dragon/1 (EIP 155): #0       
+        INFO [11-17|01:58:48.240]  - Spurious Dragon/2 (EIP 158): #0       
+        INFO [11-17|01:58:48.240]  - Byzantium:                   #0       
+        INFO [11-17|01:58:48.240]  - Constantinople:              #0       
+        INFO [11-17|01:58:48.240]  - Petersburg:                  #0       
+        INFO [11-17|01:58:48.240]  - Istanbul:                    #0       
+        INFO [11-17|01:58:48.240]  - Muir Glacier:                #0       
+        INFO [11-17|01:58:48.240]  - Berlin:                      #0       
+        INFO [11-17|01:58:48.240]  - London:                      #0       
+        INFO [11-17|01:58:48.240]  - Arrow Glacier:               #0       
+        INFO [11-17|01:58:48.240]  - Gray Glacier:                #0       
+        INFO [11-17|01:58:48.240] 
+        INFO [11-17|01:58:48.240] Merge configured:
+        INFO [11-17|01:58:48.240]  - Total terminal difficulty:  0
+        INFO [11-17|01:58:48.240] 
+        INFO [11-17|01:58:48.240] Post-Merge hard forks (timestamp based):
+        INFO [11-17|01:58:48.240]  - Shanghai:                    @0         
+        INFO [11-17|01:58:48.240]  - Cancun:                      @0          blob: (target: 3, max: 6, fraction: 3338477)
+        INFO [11-17|01:58:48.240]  - Prague:                      @0          blob: (target: 6, max: 9, fraction: 5007716)
+        INFO [11-17|01:58:48.240]  - Osaka:                       @0          blob: (target: 6, max: 9, fraction: 5007716)
+        INFO [11-17|01:58:48.240] 
+        INFO [11-17|01:58:48.240] All fork specifications can be found at https://ethereum.github.io/execution-specs/src/ethereum/forks/
+        INFO [11-17|01:58:48.240] 
+        INFO [11-17|01:58:48.240] ---------------------------------------------------------------------------------------------------------------------------------------------------------
+        INFO [11-17|01:58:48.240] 
+        INFO [11-17|01:58:48.241] Loaded most recent local block           number=0 hash=557be8..a1e425 age=57y8mo2w
+        INFO [11-17|01:58:48.241] Initialized transaction indexer          range="last 2350000 blocks"
+        DEBUG[11-17|01:58:48.232] Current full block not old enough to freeze err="freezing threshold is not available"
+        DEBUG[11-17|01:58:48.343] Blobpool tip threshold updated           tip=1
+        INFO [11-17|01:58:48.344] Enabled full-sync                        head=0 hash=557be8..a1e425
+        INFO [11-17|01:58:48.344] Gasprice oracle is ignoring threshold set threshold=2
+        INFO [11-17|01:58:48.344] Registered sync override service
+        INFO [11-17|01:58:48.344] Starting peer-to-peer node               instance=Geth/v1.17.4-stable/linux-amd64/go1.25.12
+        DEBUG[11-17|01:58:48.347] IPCs registered                          namespaces=admin,debug,web3,eth,txpool,miner,net,testing,engine
+        INFO [11-17|01:58:48.347] IPC endpoint opened                      url=/tmp/nitro-l1-2027622775.ipc
+        INFO [11-17|01:58:48.347] Generated JWT secret                     path=/tmp/TestGL3TwoCrashFullDecisionRecovery3385864121/003/geth/jwtsecret
+        DEBUG[11-17|01:58:48.348] Allowed origin(s) for WS RPC interface [localhost]
+        INFO [11-17|01:58:48.348] WebSocket enabled                        url=ws://127.0.0.1:38665
+        INFO [11-17|01:58:48.348] HTTP server started                      endpoint=127.0.0.1:38665 auth=true prefix= cors=localhost vhosts=localhost
+        DEBUG[11-17|01:58:48.348] TCP listener up                          addr=[::]:35379
+        INFO [11-17|01:58:48.348] New local node record                    seq=1,794,880,728,347 id=8518860eb1f863e1 ip=127.0.0.1 udp=0 tcp=35379
+        INFO [11-17|01:58:48.348] Started P2P networking                   self="enode://fc466a040587d1583768ba36461792f27b8f294a82daeb20e5a4557eaacbb520f59643b829240db73d5ffd64668229dd9107a20cc2979d4ff5aed823e3d3ce04@127.0.0.1:35379?discport=0"
+        INFO [11-17|01:58:48.348] Started log indexer
+        DEBUG[11-17|01:58:48.363] Served eth_chainId                       reqid=1 duration="28.06µs"
+        DEBUG[11-17|01:58:48.364] Served eth_getBlockByNumber              reqid=2 duration="67.06µs"
+        DEBUG[11-17|01:58:48.364] Served eth_getBlockByHash                reqid=3 duration="25.07µs"
+        DEBUG[11-17|01:58:48.364] Served eth_getBlockByNumber              reqid=4 duration="19.02µs"
+        DEBUG[11-17|01:58:48.364] Served engine_forkchoiceUpdatedV3        reqid=5 duration="64.84µs"
+        INFO [11-17|01:58:48.365] Submitted transaction                    hash=0x571bf0900a2f3b36de701f2d5ad5492532d4098ff6e5264f3b8ed393df638b2e from=0xaF24Ca6c2831f4d4F629418b50C227DF0885613A nonce=0 recipient=0x57Ff0F473737a1c161bfF9efDF016F7991585088 value=1,000,000,000,000,000,000,000,000,000,000,000,000
+        DEBUG[11-17|01:58:48.365] Served eth_sendRawTransaction            reqid=6 duration="282.422µs"
+        DEBUG[11-17|01:58:48.365] Served eth_getBlockByNumber              reqid=7 duration="25.3µs"
+        DEBUG[11-17|01:58:48.365] Committed block data                     size=920.00B elapsed="17.69µs"
+        DEBUG[11-17|01:58:48.365] Created new diff layer                   id=2                block=1 nodesize=1.54KiB statesize=908.00B
+        INFO [11-17|01:58:48.366] Imported new potential chain segment     number=1 hash=87fb18..97fda1 blocks=1 txs=1 mgas=0.021 elapsed="240.083µs" mgasps=87.470 triediffs=2.42KiB triedirty=0.00B
+        INFO [11-17|01:58:48.366] Chain head was updated                   number=1 hash=87fb18..97fda1 root=14dbda..eff09e elapsed="32.27µs"
+        DEBUG[11-17|01:58:48.366] Served testing_commitBlockV1             reqid=8 duration="753.485µs"
+        DEBUG[11-17|01:58:48.366] Reinjecting stale transactions           count=0
+        INFO [11-17|01:58:48.367] Indexed transactions                     blocks=2 txs=1 tail=0 elapsed="56.72µs"
+        WARN [11-17|01:58:48.367] Nil finalized block cannot evict old blobs
+        INFO [11-17|01:58:48.368] Submitted transaction                    hash=0xc40308cca1dcd6318ba2441c3500e08605a9b18b8afe889a9e395331bac05984 from=0xaF24Ca6c2831f4d4F629418b50C227DF0885613A nonce=1 recipient=0xb386a74Dcab67b66F8AC07B4f08365d37495Dd23 value=1,000,000,000,000,000,000,000,000,000,000,000,000
+        DEBUG[11-17|01:58:48.368] Served eth_sendRawTransaction            reqid=9 duration="127.441µs"
+        DEBUG[11-17|01:58:48.368] Served eth_getBlockByNumber              reqid=10 duration="34.54µs"
+        DEBUG[11-17|01:58:48.371] Committed block data                     size=920.00B elapsed="804.156µs"
+        DEBUG[11-17|01:58:48.371] Created new diff layer                   id=3                block=2 nodesize=2.01KiB statesize=986.00B
+        INFO [11-17|01:58:48.371] Imported new potential chain segment     number=2 hash=250351..f127f7 blocks=1 txs=1 mgas=0.021 elapsed=1.283ms     mgasps=16.363 triediffs=5.40KiB triedirty=0.00B
+        INFO [11-17|01:58:48.371] Chain head was updated                   number=2 hash=250351..f127f7 root=a7c889..ec7172 elapsed="26.7µs"
+        DEBUG[11-17|01:58:48.371] Served testing_commitBlockV1             reqid=11 duration=1.641201ms
+        DEBUG[11-17|01:58:48.372] Reinjecting stale transactions           count=0
+        WARN [11-17|01:58:48.372] Nil finalized block cannot evict old blobs
+        INFO [11-17|01:58:48.372] Submitted transaction                    hash=0x26a0bf9b185d0f74d3be5eb6585dfe0e46883a9507f6af267b0d83d8c470bfbe from=0xaF24Ca6c2831f4d4F629418b50C227DF0885613A nonce=2 recipient=0x83FFCFaCE2Fb0E1286686815503608A16EF41e47 value=1,000,000,000,000,000,000,000,000,000,000,000,000
+        DEBUG[11-17|01:58:48.372] Served eth_sendRawTransaction            reqid=12 duration="210.011µs"
+        DEBUG[11-17|01:58:48.373] Served eth_getBlockByNumber              reqid=13 duration="29.44µs"
+        DEBUG[11-17|01:58:48.385] Committed block data                     size=920.00B elapsed="26.391µs"
+        DEBUG[11-17|01:58:48.386] Created new diff layer                   id=4                block=3 nodesize=1.90KiB statesize=986.00B
+        INFO [11-17|01:58:48.386] Imported new potential chain segment     number=3 hash=dfa4ac..74140d blocks=1 txs=1 mgas=0.021 elapsed=2.366ms     mgasps=8.873  triediffs=8.26KiB triedirty=0.00B
+        INFO [11-17|01:58:48.388] Chain head was updated                   number=3 hash=dfa4ac..74140d root=960826..9547b6 elapsed=2.470488ms
+        DEBUG[11-17|01:58:48.388] Served testing_commitBlockV1             reqid=14 duration=10.391674ms
+        DEBUG[11-17|01:58:48.388] Reinjecting stale transactions           count=0
+        WARN [11-17|01:58:48.388] Nil finalized block cannot evict old blobs
+        INFO [11-17|01:58:48.389] Submitted transaction                    hash=0x424255a3ac89374316f236ff727bb2925052cf4ded98802434e6a8ae0b143ff7 from=0xaF24Ca6c2831f4d4F629418b50C227DF0885613A nonce=3 recipient=0x7E23C8862920797d81916d62c274dd9217113e28 value=1,000,000,000,000,000,000,000,000,000,000,000,000
+        DEBUG[11-17|01:58:48.389] Served eth_sendRawTransaction            reqid=15 duration="116.191µs"
+        DEBUG[11-17|01:58:48.389] Served eth_getBlockByNumber              reqid=16 duration="27.33µs"
+        DEBUG[11-17|01:58:48.396] Committed block data                     size=920.00B elapsed="11.8µs"
+        DEBUG[11-17|01:58:48.396] Created new diff layer                   id=5                block=4 nodesize=1.86KiB statesize=986.00B
+        INFO [11-17|01:58:48.396] Imported new potential chain segment     number=4 hash=3d6e74..94b7fb blocks=1 txs=1 mgas=0.021 elapsed="743.226µs" mgasps=28.255 triediffs=11.08KiB triedirty=0.00B
+        INFO [11-17|01:58:48.396] Chain head was updated                   number=4 hash=3d6e74..94b7fb root=a64d4f..d164c8 elapsed="39.74µs"
+        DEBUG[11-17|01:58:48.396] Served testing_commitBlockV1             reqid=17 duration=2.87559ms
+        DEBUG[11-17|01:58:48.397] Reinjecting stale transactions           count=0
+        DEBUG[11-17|01:58:48.397] Served eth_subscribe                     reqid=19 duration="23.03µs"
+        WARN [11-17|01:58:48.397] Nil finalized block cannot evict old blobs
+        DEBUG[11-17|01:58:48.397] Served eth_getTransactionReceipt         reqid=18 duration="74.84µs"
+        DEBUG[11-17|01:58:48.403] Executing EVM call finished              runtime="62.43µs"
+        DEBUG[11-17|01:58:48.403] Served eth_call                          reqid=20 duration="132.801µs"
+        DEBUG[11-17|01:58:48.415] Served eth_getCode                       reqid=21 duration="23.55µs"
+        DEBUG[11-17|01:58:48.415] Executing EVM call finished              runtime="151.371µs"
+        DEBUG[11-17|01:58:48.415] Served eth_call                          reqid=22 duration="169.731µs"
+        DEBUG[11-17|01:58:48.417] Served eth_unsubscribe                   reqid=24 duration="11.521µs"
+        DEBUG[11-17|01:58:48.417] Served eth_getBlockByNumber              reqid=23 duration="40.52µs"
+        DEBUG[11-17|01:58:48.423] Served eth_subscribe                     reqid=26 duration="22.4µs"
+        DEBUG[11-17|01:58:48.423] Served eth_getTransactionReceipt         reqid=25 duration="121.191µs"
+        DEBUG[11-17|01:58:48.428] Executing EVM call finished              runtime="92.481µs"
+        DEBUG[11-17|01:58:48.428] Served eth_call                          reqid=27 duration="143.211µs"
+        DEBUG[11-17|01:58:48.442] Served eth_getCode                       reqid=28 duration="21.51µs"
+        DEBUG[11-17|01:58:48.448] Executing EVM call finished              runtime="64.77µs"
+        DEBUG[11-17|01:58:48.448] Served eth_call                          reqid=29 duration="95.48µs"
+        DEBUG[11-17|01:58:48.460] Served eth_unsubscribe                   reqid=31 duration="14.94µs"
+        DEBUG[11-17|01:58:48.460] Served eth_getBlockByNumber              reqid=30 duration="42.15µs"
+        DEBUG[11-17|01:58:48.460] Served eth_subscribe                     reqid=33 duration="15.11µs"
+        DEBUG[11-17|01:58:48.460] Served eth_getTransactionReceipt         reqid=32 duration="106.12µs"
+        DEBUG[11-17|01:58:48.471] Executing EVM call finished              runtime="46.08µs"
+        DEBUG[11-17|01:58:48.471] Served eth_call                          reqid=34 duration="88.18µs"
+        DEBUG[11-17|01:58:48.471] Served eth_getCode                       reqid=35 duration="19.421µs"
+        DEBUG[11-17|01:58:48.482] Executing EVM call finished              runtime="74.14µs"
+        DEBUG[11-17|01:58:48.482] Served eth_call                          reqid=36 duration="102.25µs"
+        DEBUG[11-17|01:58:48.483] Served eth_unsubscribe                   reqid=38 duration="7.39µs"
+        DEBUG[11-17|01:58:48.483] Served eth_getBlockByNumber              reqid=37 duration="28.951µs"
+        DEBUG[11-17|01:58:48.483] Served eth_subscribe                     reqid=40 duration="11.99µs"
+        DEBUG[11-17|01:58:48.483] Served eth_getTransactionReceipt         reqid=39 duration="83.13µs"
+        DEBUG[11-17|01:58:48.483] Executing EVM call finished              runtime="24.72µs"
+        DEBUG[11-17|01:58:48.483] Served eth_call                          reqid=41 duration="39.61µs"
+        DEBUG[11-17|01:58:48.483] Served eth_getCode                       reqid=42 duration="10.46µs"
+        DEBUG[11-17|01:58:48.484] Executing EVM call finished              runtime="30.07µs"
+        DEBUG[11-17|01:58:48.484] Served eth_call                          reqid=43 duration="40.27µs"
+        DEBUG[11-17|01:58:48.484] Served eth_getBlockByNumber              reqid=44 duration="21.43µs"
+        DEBUG[11-17|01:58:48.484] Served eth_unsubscribe                   reqid=45 duration="5.86µs"
+        DEBUG[11-17|01:58:48.484] Served eth_getCode                       reqid=46 duration="15.17µs"
+--- FAIL: TestGL3TwoCrashFullDecisionRecovery (3.64s)
+FAIL

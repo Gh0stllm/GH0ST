@@ -30,17 +30,22 @@ import (
 	"github.com/offchainlabs/nitro/solgen/go/precompilesgen"
 	"github.com/offchainlabs/nitro/statetransfer"
 	"github.com/offchainlabs/nitro/util/headerreader"
+	"github.com/offchainlabs/nitro/validator"
 	"github.com/offchainlabs/nitro/validator/server_common"
- "github.com/offchainlabs/nitro/validator"
 	"github.com/offchainlabs/nitro/validator/valnode"
 )
 
 // This fixture is derived from the accepted full-strength native capture.
 // Only the test-chain deployment and subsequent challenge lifecycle differ.
 func TestGL3TerminalResultBoLDLifecycle(t *testing.T) {
- if os.Getenv("GL3_LIFECYCLE_RUN_ID") == "" { t.Fatal("explicit fresh lifecycle run ID required") }
- blockChallengeLeafHeight = 8192
- runGL3DisputeNodeFixture(t, false)
+	if os.Getenv("GL3_LIFECYCLE_RUN_ID") == "" {
+		t.Fatal("explicit fresh lifecycle run ID required")
+	}
+	gl3RequireLaunchReceipt(t)
+	blockChallengeLeafHeight = 8192
+	bigStepChallengeLeafHeight = 1024
+	smallStepChallengeLeafHeight = 1024
+	runGL3DisputeNodeFixture(t, false)
 }
 
 func runGL3DisputeNodeFixture(t *testing.T, restartDuringSearch bool) {
@@ -53,7 +58,7 @@ func runGL3DisputeNodeFixture(t *testing.T, restartDuringSearch bool) {
 	locator, e := server_common.NewMachineLocator(wasm)
 	Require(t, e)
 	moduleRoot := locator.LatestWasmModuleRoot()
-	if captureTerminal && moduleRoot != common.HexToHash("0xc03cf6f44fe1ca3c0826064ba7e5a3c134dc0013a9b994f3355f2ba185116c00") {
+	if captureTerminal && moduleRoot != gl3SelectedLifecycleRoot {
 		t.Fatal("terminal dispute capture requires the reviewed lazy proof machine", moduleRoot)
 	}
 	started := time.Now()
@@ -98,9 +103,9 @@ func runGL3DisputeNodeFixture(t *testing.T, restartDuringSearch bool) {
 		b.nodeConfig.BatchPoster.Enable = true
 		valConf := valnode.TestValidationConfig
 		valConf.UseJit = false
- valConf.Arbitrator.Workers = 1
- valConf.Arbitrator.Execution.CachedChallengeMachines = 2
- valConf.Arbitrator.ExecutionRunTimeout = 4*time.Hour
+		valConf.Arbitrator.Workers = 1
+		valConf.Arbitrator.Execution.CachedChallengeMachines = 2
+		valConf.Arbitrator.ExecutionRunTimeout = 4 * time.Hour
 		valConf.Wasm.RootPath = wasm
 		_, valStack := createTestValidationNode(t, ctx, &valConf)
 		configByValidationNode(b.nodeConfig, valStack)
@@ -115,7 +120,11 @@ func runGL3DisputeNodeFixture(t *testing.T, restartDuringSearch bool) {
 	}
 	cleanup := b.Build(t)
 	defer cleanup()
- go keepChainMoving(t, 500*time.Millisecond, ctx, b.L1Info, b.L1.Client)
+	if b.chainConfig.ArbitrumChainParams.GenesisBlockNum != 0 {
+		t.Fatal("strict fixture requires private genesis block zero")
+	}
+	gl3CheckOnchainGeometry(t, ctx, b, out)
+	go keepChainMoving(t, 500*time.Millisecond, ctx, b.L1Info, b.L1.Client)
 	auth := b.L2Info.GetDefaultTransactOpts("Owner", ctx)
 	auth.GasLimit = 2_000_000
 	owner, e := precompilesgen.NewArbOwner(common.HexToAddress("0x70"), b.L2.Client)
@@ -297,6 +306,9 @@ func runGL3DisputeNodeFixture(t *testing.T, restartDuringSearch bool) {
 		}
 		batchMeta, e := b.L2.ConsensusNode.InboxTracker.GetBatchMetadata(batch)
 		Require(t, e)
+		receiptJSON, e := json.MarshalIndent(lastReceipt, "", "  ")
+		Require(t, e)
+		Require(t, os.WriteFile(filepath.Join(out, "terminal-receipt.json"), append(receiptJSON, '\n'), 0600))
 		captureStarted := time.Now()
 		input, e := b.L2.ConsensusNode.StatelessBlockValidator.ValidationInputsAt(ctx, pos, rawdb.LocalTarget(), rawdb.TargetWasm)
 		Require(t, e)
@@ -307,7 +319,7 @@ func runGL3DisputeNodeFixture(t *testing.T, restartDuringSearch bool) {
 		Require(t, e)
 		sum := sha256.Sum256(encoded)
 		Require(t, os.WriteFile(filepath.Join(out, "terminal-input.json"), encoded, 0600))
-		terminalCapture = map[string]any{"requested": true, "completed": true, "file": "terminal-input.json", "bytes": len(encoded), "SHA256": hex.EncodeToString(sum[:]), "seconds": time.Since(captureStarted).Seconds(), "blockNumber": lastReceipt.BlockNumber, "blockHash": lastReceipt.BlockHash, "terminalComputeTx": lastReceipt.TxHash, "parentBatch": batch, "parentBatchMetadata": batchMeta, "startState": input.StartState, "expectedEndState": input.ExpectedEndState, "moduleRoot": moduleRoot}
+		terminalCapture = map[string]any{"requested": true, "completed": true, "file": "terminal-input.json", "bytes": len(encoded), "SHA256": hex.EncodeToString(sum[:]), "seconds": time.Since(captureStarted).Seconds(), "blockNumber": lastReceipt.BlockNumber, "blockHash": lastReceipt.BlockHash, "terminalComputeTx": lastReceipt.TxHash, "parentBatch": batch, "parentBatchMetadata": batchMeta, "startState": input.StartState, "expectedEndState": input.ExpectedEndState, "moduleRoot": moduleRoot, "runID": os.Getenv("GL3_LIFECYCLE_RUN_ID"), "genesisBlockNumber": uint64(0)}
 		manifest, e := json.MarshalIndent(terminalCapture, "", "  ")
 		Require(t, e)
 		Require(t, os.WriteFile(filepath.Join(out, "terminal-input-manifest.json"), append(manifest, '\n'), 0600))
@@ -321,7 +333,12 @@ func runGL3DisputeNodeFixture(t *testing.T, restartDuringSearch bool) {
 	Require(t, e)
 	Require(t, os.WriteFile(filepath.Join(out, "sequencer-lifecycle-recovery.json"), append(encoded, '\n'), 0600))
 	t.Log(string(encoded))
- if !captureTerminal { t.Fatal("full lifecycle requires captured terminal input") }
- final,ok := terminalCapture["expectedEndState"].(*validator.GoGlobalState); if !ok || final == nil { t.Fatal("missing terminal state") }
- gl3RunTerminalChallenge(t, ctx, b, lastReceipt, *final, out)
+	if !captureTerminal {
+		t.Fatal("full lifecycle requires captured terminal input")
+	}
+	final, ok := terminalCapture["expectedEndState"].(*validator.GoGlobalState)
+	if !ok || final == nil {
+		t.Fatal("missing terminal state")
+	}
+	gl3RunTerminalChallenge(t, ctx, b, lastReceipt, *final, out)
 }

@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/root/bounded-restore/build-selected-cli.py", line 33, in <module>
+    before = identities()
+             ^^^^^^^^^^^^
+  File "/root/bounded-restore/build-selected-cli.py", line 29, in identities
+    files[str(p)] = digest(p)
+                    ^^^^^^^^^
+  File "/root/bounded-restore/build-selected-cli.py", line 22, in digest
+    with path.open("rb") as stream:
+         ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1015, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/root/bounded-restore/fast-comparison/C-combined/native/target/bin/jit'

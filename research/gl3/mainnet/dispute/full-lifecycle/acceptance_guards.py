@@ -59,6 +59,74 @@ def validate_reuse(previous, compiled_inputs, binary_sha256):
             "Compiled binary changed; rebuild explicitly")
 
 
+SELECTED_ROOT = "0x865168ea04ee58578a710a5270c22495c90b1c0f2226d39fecbb9eac4ea3f086"
+SELECTED_MACHINE = "4bf7fe54c28ad0b6f2620df3ee6b4c6d87452f9ab76ec8be294eb7d4c934770e"
+SELECTED_GUEST = "8d18145460e5f4c649895728fa089a52a04ead2c3fa5e7d10789d72d7de42fbd"
+SELECTED_COMPANION = "b481f92a852a685411db42c8b51abd3a3f2c8cd8c5d0c1c8eed2962d986f5555"
+SELECTED_INPUT = "bd81988d132f689a5efd3e6aa08a542d7ddf630cc227f56a10b340ff8cc08e90"
+SELECTED_PROVER = "cc5c9de07b2a739978e383cd4ac4baee3a1d49761c5c75ad414e12056cd7ab27"
+
+
+def validate_launch_prerequisites(interpreter, geometry, authorization, *,
+                                  interpreter_sha256, geometry_sha256):
+    """Accepted original replay + explicit backend/geometry/root review, never JIT."""
+    for x, name in [(interpreter, "interpreter"), (geometry, "geometry"),
+                    (authorization, "root authorization")]:
+        _mapping(x, name)
+    _true(interpreter.get("passed"), "interpreter passed")
+    require(type(interpreter.get("exitCode")) is int and interpreter["exitCode"] == 0,
+            "Interpreter must have its actual successful exit")
+    require(interpreter.get("timedOut") is False, "Timed-out interpreter cannot launch lifecycle")
+    _true(interpreter.get("machineFinished"), "interpreter Finished")
+    _true(interpreter.get("allFourGlobalStateFieldsMatch"), "interpreter all-four match")
+    require(interpreter.get("actualEnd") == interpreter.get("expectedEnd") and
+            isinstance(interpreter.get("actualEnd"), list) and len(interpreter["actualEnd"]) == 4,
+            "Interpreter end-state identities differ or are incomplete")
+    require(interpreter["actualEnd"] == [
+        "0x8d33a6345311761aef5c7ee9e5528350f17beda843d0563cfdd103aeec70d738",
+        "0x" + "00" * 32, "2470", "0"], "Interpreter receipt is not the original selected terminal input")
+    identities = {"moduleRoot": SELECTED_ROOT, "machineSHA256": SELECTED_MACHINE,
+                  "guestWasmSHA256": SELECTED_GUEST, "companionSHA256": SELECTED_COMPANION,
+                  "inputSHA256": SELECTED_INPUT, "proverSHA256": SELECTED_PROVER}
+    for field, wanted in identities.items():
+        require(interpreter.get(field) == wanted, "Interpreter " + field + " changed")
+    raw = _positive(interpreter.get("rawExactFinalSteps"), "actual raw final steps")
+    require(_uint64(interpreter.get("rawCounterPlusOne"), "raw counter plus one") == raw + 1,
+            "Interpreter counter+1 is not exact")
+    for flag in ["reviewed", "finishedAbsorbingTransitionReviewed", "kickoffOffsetBindingReviewed",
+                 "sameSelectedBackendWitnessesReviewed"]:
+        _true(geometry.get(flag), "geometry " + flag)
+    require(geometry.get("moduleRoot") == SELECTED_ROOT and
+            geometry.get("machineSHA256") == SELECTED_MACHINE and
+            geometry.get("interpreterResultSHA256") == _hex(interpreter_sha256, 64, "interpreter receipt SHA", prefix=""),
+            "Geometry is not bound to this accepted selected replay")
+    require(all(type(geometry.get(k)) is int for k in
+                ["blockHeight", "numBigStepLevels", "bigStepHeight", "smallStepHeight"]) and
+            geometry.get("blockHeight") == 8192 and geometry.get("numBigStepLevels") == 3 and
+            geometry.get("bigStepHeight") == 1024 and geometry.get("smallStepHeight") == 1024 and
+            geometry.get("levelHeights") == [8192, 1024, 1024, 1024, 1024] and
+            all(type(h) is int for h in geometry.get("levelHeights", [])),
+            "Reviewed geometry does not match the compiled private fixture")
+    capacity = 1024**4
+    require(type(geometry.get("stepsPerBlockCapacity")) is int and
+            type(geometry.get("rawExactFinalSteps")) is int and
+            type(geometry.get("rawCounterPlusOne")) is int and
+            geometry.get("stepsPerBlockCapacity") == capacity and
+            geometry.get("rawExactFinalSteps") == raw and geometry.get("rawCounterPlusOne") == raw + 1 and
+            type(geometry.get("kickoffOffset")) is int and geometry.get("kickoffOffset") == 1 and raw + 1 <= capacity,
+            "Raw counter/kickoff offset does not fit the reviewed geometry")
+    _true(authorization.get("authorized"), "explicit root authorization")
+    require(authorization.get("scope") == "PRIVATE_SELECTED_865_LIFECYCLE_ONLY" and
+            authorization.get("moduleRoot") == SELECTED_ROOT and
+            authorization.get("interpreterResultSHA256") == interpreter_sha256 and
+            authorization.get("geometryReviewSHA256") == _hex(geometry_sha256, 64, "geometry receipt SHA", prefix=""),
+            "Root authorization does not bind these exact accepted receipts")
+    return {"passed": True, "moduleRoot": SELECTED_ROOT, "rawExactFinalSteps": raw,
+            "rawCounterPlusOne": raw + 1, "stepsPerBlockCapacity": capacity,
+            "levelHeights": [8192, 1024, 1024, 1024, 1024],
+            "scope": "Reviewed prerequisite for a future private lifecycle, not that lifecycle's acceptance"}
+
+
 def validate_named_test(exit_code, log, name="TestGL3TerminalResultBoLDLifecycle"):
     """Exit zero cannot replace a unique, completed, unskipped named Go test."""
     require(type(exit_code) is int and exit_code == 0, "Named test process did not exit zero")
@@ -106,7 +174,7 @@ def _bound_path(item, honest_root, name):
 
 
 def validate_acceptance(*, test_exit, test_log, report, audit_exit, audit,
-                        terminal, run_id, module_root):
+                        terminal, run_id, module_root, completion=None, audit_sha256=None):
     """Validate fresh fixture + independently audited exact target/refund bindings."""
     validate_named_test(test_exit, test_log)
     require(isinstance(run_id, str) and re.fullmatch(r"[0-9a-f]{32}", run_id),
@@ -120,15 +188,25 @@ def validate_acceptance(*, test_exit, test_log, report, audit_exit, audit,
         require(_hex(value.get("moduleRoot"), 64, name + " module root") == module,
                 name + " module root mismatch")
     for field in ["honestOneStepWinner", "assertionConfirmationPassed", "stakeSettlementPassed",
-                  "fullStrengthDecisionVerified", "allExecutionOnRunpod"]:
+                  "fullStrengthDecisionVerified", "allExecutionOnRunpod",
+                  "claimPairContentVerified", "strictAuditPassedBeforeCleanup"]:
         _true(report.get(field), "fixture " + field)
     require(report.get("enginePolicyChanged") is False and report.get("publicDeployment") is False,
             "Fixture scope/engine policy changed")
     _positive(report.get("honestLayerZeroRefunds"), "fixture honest-edge refund count")
     require(type(audit_exit) is int and audit_exit == 0, "Strict auditor did not exit zero")
+    _mapping(completion, "pre-cleanup audit completion")
+    _true(completion.get("completed"), "pre-cleanup audit completed")
+    require(completion.get("runID") == run_id and completion.get("moduleRoot") == module and
+            type(completion.get("auditExitCode")) is int and completion["auditExitCode"] == 0,
+            "Auditor completion was not successful before fixture cleanup")
+    digest = _hex(audit_sha256, 64, "strict audit file SHA", prefix="")
+    require(completion.get("strictAuditSHA256") == digest and report.get("strictAuditSHA256") == digest,
+            "Fixture and completion acknowledge different audit bytes")
     for field in ["targetBound", "refundExact", "terminalInputBytesVerified"]:
         _true(audit.get(field), "audit " + field)
     terminal_sha = _hex(terminal.get("SHA256"), 64, "terminal input SHA256", prefix="")
+    require(terminal.get("runID") == run_id, "Terminal input manifest belongs to another run")
     require(_hex(audit.get("terminalInputSHA256"), 64, "audited input SHA256", prefix="") == terminal_sha,
             "Strict audit input SHA mismatch")
     require(_hex(terminal.get("moduleRoot"), 64, "terminal module root") == module,
@@ -166,6 +244,11 @@ def validate_acceptance(*, test_exit, test_log, report, audit_exit, audit,
         _hex(pair.get(field), 64, "target pair " + field)
     require(pair["honest"].lower() != pair["false"].lower() and
             pair["honestHistory"].lower() != pair["falseHistory"].lower(), "Target rivals are not distinct")
+    for field, key in [("targetHonestAssertion", "honest"), ("targetFalseAssertion", "false"),
+                       ("targetParentAssertion", "parent"), ("expectedHonestHistory", "honestHistory"),
+                       ("expectedFalseHistory", "falseHistory")]:
+        require(_hex(report.get(field), 64, "fixture " + field) == pair[key].lower(),
+                "Fixture content classification differs from audited pair")
     for field in ["honestSender", "manager", "rollup"]:
         _hex(pair.get(field), 40, "target pair " + field)
     roots = _mapping(audit.get("targetRootEdges"), "target root edges")
@@ -184,6 +267,12 @@ def validate_acceptance(*, test_exit, test_log, report, audit_exit, audit,
         proof_orders.append(order)
         if (edge == str(report.get("oneStepEdge")).lower() and
                 proof["transaction"].lower() == str(report.get("oneStepTransaction")).lower()):
+            first = next((link for link in proof["path"] if link["kind"] == "subchallenge-claim"), None)
+            require(first is not None and first["from"].lower() == str(transition.get("blockClaimEdge")).lower() and
+                    first["to"].lower() == str(transition.get("machineSubchallengeRoot")).lower() and
+                    edge == str(transition.get("oneStepEdge")).lower() and
+                    proof["transaction"].lower() == str(transition.get("oneStepTransaction")).lower(),
+                    "Fixture proof is not the transition-bound machine descendant")
             fixture_proof_bound = True
     require(fixture_proof_bound, "Fixture one-step winner is not the audited target proof")
     states = _mapping(audit.get("assertionStates"), "assertion states")
@@ -217,6 +306,10 @@ def validate_acceptance(*, test_exit, test_log, report, audit_exit, audit,
         require(any(order > confirmation_order for confirmation_order in confirmation_orders),
                 "Refund predates exact assertion confirmation")
         if refund.get("level") == "0":
+            require(refund["edge"].lower() == str(report.get("refundEdge")).lower() == honest_root and
+                    refund["transaction"].lower() == str(report.get("refundTransaction")).lower() and
+                    refund["amount"] == report.get("targetRefundAmount"),
+                    "Fixture refund is not the exact audited target collateral receipt")
             layer_zero_refund = True
     require(layer_zero_refund, "Fixture layer-zero collateral refund is not audited")
     return {"passed": True, "runID": run_id, "terminalInputSHA256": terminal_sha,

@@ -6,7 +6,7 @@
   "hostingOrdered": true,
   "baseLocallyVerified": true,
   "localOnlyNativeToken": "GHMOCK",
-  "activeWorkload": "Selected combined C passed native and real-C WASM32 diagnostic; one4h bounded exact-counter terminal interpreter is RUNNING_NOT_ACCEPTED",
+  "activeWorkload": "Selected865 exact-counter interpreter RUNNING_NOT_ACCEPTED; full native two-process-crash decision and future dispute preflight passed; storage/cache/retention integration in progress",
   "strength": {
     "nodes": 24000000,
     "hashMiB": 128,
@@ -263,10 +263,10 @@
   "fullBoLDLifecycleCompiled": true,
   "fullBoLDLifecycleInitialSetupFailurePreserved": true,
   "futureControllerSyntaxPassed": true,
-  "futureControllerNormalGuardRegressionsPassed": 87,
-  "futureControllerOptimizedGuardRegressionsPassed": 87,
+  "futureControllerNormalGuardRegressionsPassed": 160,
+  "futureControllerOptimizedGuardRegressionsPassed": 160,
   "futureControllerGuardTestsActualExitCode": 0,
-  "futureControllerEvidence": "mainnet/dispute/full-lifecycle/controller-tests/README.md",
+  "futureControllerEvidence": "mainnet/dispute/full-lifecycle/preflight-selected865/README.md",
   "futureControllerGoNonceSourceCloudCompiled": true,
   "futureControllerGoIntegrationPassed": false,
   "activeFixtureUsesDifferentFrozenSource": true,
@@ -377,7 +377,7 @@
     "twentyGamesCapacityAccepted": false,
     "evidence": "mainnet/storage/checkpoint-study/README.md"
   },
-  "currentResearchMilestone": 34,
+  "currentResearchMilestone": 36,
   "activeBoundedInterpreter": {
     "status": "RUNNING_NOT_ACCEPTED",
     "passed": false,
@@ -437,5 +437,39 @@
   },
   "checkpointPrototypeHarnessTestsPassed": 53,
   "checkpointPrototypeProductionSTFAccepted": false,
-  "checkpointNativeIntegration": "ISOLATED_IMPLEMENTATION_NOT_ACCEPTED"
+  "checkpointNativeIntegration": "ISOLATED_IMPLEMENTATION_NOT_ACCEPTED",
+  "futureSelected865Preflight": {
+    "compiled": true,
+    "GoTopLevelTestsPassed": 5,
+    "GoNamedCasesPassed": 55,
+    "PythonNormalTestsPassed": 160,
+    "PythonOptimizedTestsPassed": 160,
+    "fullLifecycleLaunched": false,
+    "fullIntegrationAccepted": false,
+    "evidence": "mainnet/dispute/full-lifecycle/preflight-selected865/README.md"
+  },
+  "selectedNativeCLICandidate": {
+    "buildPassed": true,
+    "versionSmokePassed": true,
+    "sha256": "13ba3c913c260c453628f273cfd8dc86f742f291d87e9a9887531e039d351f38",
+    "bytes": 387757096,
+    "sourceIdentitiesUnchanged": 2792,
+    "versionDisplay": "local+unknown-unknown",
+    "optionalTargetBinJITPresent": false,
+    "pairedGenesisAccepted": false,
+    "evidence": "mainnet/production/selected-cli/README.md"
+  },
+  "nativeProcessCrashRecovery": {
+    "short64Passed": true,
+    "fullDecisionTwoCrashesPassed": true,
+    "cursors": [
+      64,
+      2048
+    ],
+    "fullDecisionActualTestExitCode": 0,
+    "fullDecisionSeconds": 427.75,
+    "canonicalMatched": true,
+    "scope": "Private system-test execution/consensus workers, synchronousPebble/archive/saveeveryblock; samehost OS/storagealive; not powerloss or productionCLI supervision",
+    "evidence": "mainnet/production/process-recovery/full-decision/README.md"
+  }
 }
