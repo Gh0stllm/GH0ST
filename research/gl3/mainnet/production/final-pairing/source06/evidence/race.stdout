@@ -1,0 +1,142 @@
+=== RUN   TestGL3UploadGateCancelAndExactlyOnceRelease
+--- PASS: TestGL3UploadGateCancelAndExactlyOnceRelease (0.00s)
+=== RUN   TestGL3UploadGateSharedBeforeConversionThroughResponse
+INFO [11-17|07:41:41.135] connected to validation server           name=upload-test maxWorkers=2
+INFO [11-17|07:41:41.138] connected to validation server           name=upload-test maxWorkers=2
+INFO [11-17|07:41:41.146] rpc response                             method=validation_closeExec logId=7 err="Post \"http://127.0.0.1:40379\": context canceled" result=null attempt=0 args=[7]
+WARN [11-17|07:41:41.146] closing execution client run got error   err="Post \"http://127.0.0.1:40379\": context canceled" client=upload-test id=7
+--- PASS: TestGL3UploadGateSharedBeforeConversionThroughResponse (0.02s)
+=== RUN   TestGL3UploadWaitingCancellationDoesNotReleaseOwner
+INFO [11-17|07:41:41.151] connected to validation server           name=upload-test maxWorkers=2
+--- PASS: TestGL3UploadWaitingCancellationDoesNotReleaseOwner (0.01s)
+=== RUN   TestGL3UploadRPCFailureReleasesLease
+INFO [11-17|07:41:41.157] connected to validation server           name=upload-test maxWorkers=2
+WARN [11-17|07:41:41.158] Served validation_createExecutionRun     conn=127.0.0.1:55870 reqid=5 duration="390.453µs" err="injected RPC failure"
+INFO [11-17|07:41:41.159] rpc response                             method=validation_createExecutionRun logId=5 err="injected RPC failure" result=0    attempt=0 args="[\"0x0900000000000000000000000000000000000000000000000000000000000000\", {\"Id\":0,\"HasDelayedMsg\":false,\"DelayedMsgNr\":0,\"PreimagesB64\":{},\"BatchInfo\":null,\"DelayedMsgB64\":\"\",\"StartState\":{\"BlockHash\":\"0x0000000000000000000000000000000000000000000000000000000000000000\",\"SendRoot\":\"0x0000000000000000000000000000000000000000000000000000000000000000\",\"Batch\":0,\"PosInBatch\":0},\"UserWasms\":{},\"DebugChain\":false}, true]" errorData=null
+--- PASS: TestGL3UploadRPCFailureReleasesLease (0.01s)
+=== RUN   TestGL3UploadDefaultOptOutAndColdLifecycle
+INFO [11-17|07:41:41.164] connected to validation server           name=upload-test maxWorkers=2
+--- PASS: TestGL3UploadDefaultOptOutAndColdLifecycle (0.00s)
+PASS
+ok  	github.com/offchainlabs/nitro/validator/client	1.071s
+=== RUN   TestGL3RequestLimitValidationAndFlags
+=== RUN   TestGL3RequestLimitValidationAndFlags/-1ns
+=== RUN   TestGL3RequestLimitValidationAndFlags/0s
+=== RUN   TestGL3RequestLimitValidationAndFlags/1ns
+=== RUN   TestGL3RequestLimitValidationAndFlags/4.096µs
+=== RUN   TestGL3RequestLimitValidationAndFlags/3.221225472s
+=== RUN   TestGL3RequestLimitValidationAndFlags/3.221225473s
+--- PASS: TestGL3RequestLimitValidationAndFlags (0.00s)
+    --- PASS: TestGL3RequestLimitValidationAndFlags/-1ns (0.00s)
+    --- PASS: TestGL3RequestLimitValidationAndFlags/0s (0.00s)
+    --- PASS: TestGL3RequestLimitValidationAndFlags/1ns (0.00s)
+    --- PASS: TestGL3RequestLimitValidationAndFlags/4.096µs (0.00s)
+    --- PASS: TestGL3RequestLimitValidationAndFlags/3.221225472s (0.00s)
+    --- PASS: TestGL3RequestLimitValidationAndFlags/3.221225473s (0.00s)
+=== RUN   TestGL3RequestLimitActualAuthenticatedHTTPAndFragmentedWS
+INFO [11-17|07:41:46.268] Starting peer-to-peer node               instance=gl3-cap-test/linux-amd64/go1.25.12
+WARN [11-17|07:41:46.268] P2P server will be useless, neither dialing nor listening
+INFO [11-17|07:41:46.275] Loaded JWT secret file                   path=/root/gl3-final-pairing/source06/tmp/TestGL3RequestLimitActualAuthenticatedHTTPAndFragmentedWS3265152384/001/jwt crc32=0xdbc958b1
+INFO [11-17|07:41:46.278] New local node record                    seq=1,794,901,306,275 id=fb65c2c4fb359a58 ip=127.0.0.1 udp=0 tcp=0
+INFO [11-17|07:41:46.278] Started P2P networking                   self=enode://2c6ee287153bc55ecfc8895c2a78bac9046444a339efbe06fba6ecd35d3df1d6ca50369dbb6f9198f7caf8b4298a6295e60deeb885738c9cb4fa5a836046b3a9@127.0.0.1:0
+INFO [11-17|07:41:46.279] WebSocket enabled                        url=ws://127.0.0.1:46405
+INFO [11-17|07:41:46.279] HTTP server started                      endpoint=127.0.0.1:46405 auth=true prefix= cors=localhost vhosts=localhost,127.0.0.1
+    rpc_request_limit_test.go:153: effective auth HTTP=1024/WS=1024; valid requests pass; HTTP413 and fragmented WS1009 observed
+INFO [11-17|07:41:46.290] HTTP server stopped                      endpoint=127.0.0.1:46405
+--- PASS: TestGL3RequestLimitActualAuthenticatedHTTPAndFragmentedWS (0.02s)
+PASS
+ok  	github.com/offchainlabs/nitro/validator/valnode	1.122s
+=== RUN   TestGL3OperatorConfigDefaultsAndFlags
+=== RUN   TestGL3OperatorConfigDefaultsAndFlags/off
+=== RUN   TestGL3OperatorConfigDefaultsAndFlags/reviewed
+=== RUN   TestGL3OperatorConfigDefaultsAndFlags/zero_entries
+=== RUN   TestGL3OperatorConfigDefaultsAndFlags/negative_entries
+=== RUN   TestGL3OperatorConfigDefaultsAndFlags/multiple_entries
+=== RUN   TestGL3OperatorConfigDefaultsAndFlags/zero_TTL
+=== RUN   TestGL3OperatorConfigDefaultsAndFlags/negative_TTL
+--- PASS: TestGL3OperatorConfigDefaultsAndFlags (0.00s)
+    --- PASS: TestGL3OperatorConfigDefaultsAndFlags/off (0.00s)
+    --- PASS: TestGL3OperatorConfigDefaultsAndFlags/reviewed (0.00s)
+    --- PASS: TestGL3OperatorConfigDefaultsAndFlags/zero_entries (0.00s)
+    --- PASS: TestGL3OperatorConfigDefaultsAndFlags/negative_entries (0.00s)
+    --- PASS: TestGL3OperatorConfigDefaultsAndFlags/multiple_entries (0.00s)
+    --- PASS: TestGL3OperatorConfigDefaultsAndFlags/zero_TTL (0.00s)
+    --- PASS: TestGL3OperatorConfigDefaultsAndFlags/negative_TTL (0.00s)
+=== RUN   TestGL3OperatorDisabledPreservesLegacyStart
+--- PASS: TestGL3OperatorDisabledPreservesLegacyStart (0.00s)
+=== RUN   TestGL3OperatorEnabledStartOrder
+--- PASS: TestGL3OperatorEnabledStartOrder (0.00s)
+=== RUN   TestGL3OperatorPreflightFailureStartsNothing
+=== RUN   TestGL3OperatorPreflightFailureStartsNothing/root_zero
+=== RUN   TestGL3OperatorPreflightFailureStartsNothing/max_entries
+=== RUN   TestGL3OperatorPreflightFailureStartsNothing/TTL
+=== RUN   TestGL3OperatorPreflightFailureStartsNothing/no_clients
+=== RUN   TestGL3OperatorPreflightFailureStartsNothing/mismatch
+=== RUN   TestGL3OperatorPreflightFailureStartsNothing/unsupported
+=== RUN   TestGL3OperatorPreflightFailureStartsNothing/typed_nil_bold
+=== RUN   TestGL3OperatorPreflightFailureStartsNothing/typed_nil_exec
+=== RUN   TestGL3OperatorPreflightFailureStartsNothing/Redis
+--- PASS: TestGL3OperatorPreflightFailureStartsNothing (0.00s)
+    --- PASS: TestGL3OperatorPreflightFailureStartsNothing/root_zero (0.00s)
+    --- PASS: TestGL3OperatorPreflightFailureStartsNothing/max_entries (0.00s)
+    --- PASS: TestGL3OperatorPreflightFailureStartsNothing/TTL (0.00s)
+    --- PASS: TestGL3OperatorPreflightFailureStartsNothing/no_clients (0.00s)
+    --- PASS: TestGL3OperatorPreflightFailureStartsNothing/mismatch (0.00s)
+    --- PASS: TestGL3OperatorPreflightFailureStartsNothing/unsupported (0.00s)
+    --- PASS: TestGL3OperatorPreflightFailureStartsNothing/typed_nil_bold (0.00s)
+    --- PASS: TestGL3OperatorPreflightFailureStartsNothing/typed_nil_exec (0.00s)
+    --- PASS: TestGL3OperatorPreflightFailureStartsNothing/Redis (0.00s)
+=== RUN   TestGL3OperatorStartupFailureRollback
+=== RUN   TestGL3OperatorStartupFailureRollback/exec0
+=== RUN   TestGL3OperatorStartupFailureRollback/exec1
+=== RUN   TestGL3OperatorStartupFailureRollback/bold0
+=== RUN   TestGL3OperatorStartupFailureRollback/bold1
+=== RUN   TestGL3OperatorStartupFailureRollback/enable0
+=== RUN   TestGL3OperatorStartupFailureRollback/enable1
+--- PASS: TestGL3OperatorStartupFailureRollback (0.00s)
+    --- PASS: TestGL3OperatorStartupFailureRollback/exec0 (0.00s)
+    --- PASS: TestGL3OperatorStartupFailureRollback/exec1 (0.00s)
+    --- PASS: TestGL3OperatorStartupFailureRollback/bold0 (0.00s)
+    --- PASS: TestGL3OperatorStartupFailureRollback/bold1 (0.00s)
+    --- PASS: TestGL3OperatorStartupFailureRollback/enable0 (0.00s)
+    --- PASS: TestGL3OperatorStartupFailureRollback/enable1 (0.00s)
+=== RUN   TestGL3OperatorCanceledStartup
+--- PASS: TestGL3OperatorCanceledStartup (0.00s)
+=== RUN   TestGL3OperatorRealBOLDClientIsEnabledAfterStart
+--- PASS: TestGL3OperatorRealBOLDClientIsEnabledAfterStart (0.00s)
+=== RUN   TestGL3OperatorActualRPCPartialStartIsStopped
+--- PASS: TestGL3OperatorActualRPCPartialStartIsStopped (0.01s)
+=== RUN   TestGL3OperatorSharedExecutionIsNotStopped
+=== RUN   TestGL3OperatorSharedExecutionIsNotStopped/started
+=== RUN   TestGL3OperatorSharedExecutionIsNotStopped/stopped
+--- PASS: TestGL3OperatorSharedExecutionIsNotStopped (0.00s)
+    --- PASS: TestGL3OperatorSharedExecutionIsNotStopped/started (0.00s)
+    --- PASS: TestGL3OperatorSharedExecutionIsNotStopped/stopped (0.00s)
+=== RUN   TestGL3OperatorConcurrentSecondStartDoesNotStopOwner
+--- PASS: TestGL3OperatorConcurrentSecondStartDoesNotStopOwner (0.00s)
+=== RUN   TestGL3OperatorExactModuleSupport
+=== RUN   TestGL3OperatorExactModuleSupport/empty
+=== RUN   TestGL3OperatorExactModuleSupport/missing
+=== RUN   TestGL3OperatorExactModuleSupport/error
+=== RUN   TestGL3OperatorExactModuleSupport/valid_non-latest
+--- PASS: TestGL3OperatorExactModuleSupport (0.00s)
+    --- PASS: TestGL3OperatorExactModuleSupport/empty (0.00s)
+    --- PASS: TestGL3OperatorExactModuleSupport/missing (0.00s)
+    --- PASS: TestGL3OperatorExactModuleSupport/error (0.00s)
+    --- PASS: TestGL3OperatorExactModuleSupport/valid_non-latest (0.00s)
+=== RUN   TestGL3OperatorExplicitRootRequired
+=== RUN   TestGL3OperatorExplicitRootRequired/latest
+=== RUN   TestGL3OperatorExplicitRootRequired/current
+=== RUN   TestGL3OperatorExplicitRootRequired/0x01
+=== RUN   TestGL3OperatorExplicitRootRequired/0x\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00
+=== RUN   TestGL3OperatorExplicitRootRequired/0x0000000000000000000000000000000000000000000000000000000000000000
+--- PASS: TestGL3OperatorExplicitRootRequired (0.00s)
+    --- PASS: TestGL3OperatorExplicitRootRequired/latest (0.00s)
+    --- PASS: TestGL3OperatorExplicitRootRequired/current (0.00s)
+    --- PASS: TestGL3OperatorExplicitRootRequired/0x01 (0.00s)
+    --- PASS: TestGL3OperatorExplicitRootRequired/0x\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00 (0.00s)
+    --- PASS: TestGL3OperatorExplicitRootRequired/0x0000000000000000000000000000000000000000000000000000000000000000 (0.00s)
+=== RUN   TestGL3OperatorColdOptionFailurePreservesOwner
+--- PASS: TestGL3OperatorColdOptionFailurePreservesOwner (0.00s)
+PASS
+ok  	github.com/offchainlabs/nitro/staker	1.139s

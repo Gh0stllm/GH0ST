@@ -1,0 +1,8 @@
+from pathlib import Path
+import ctypes,ctypes.util,hashlib,json
+p=Path('/root/gl3-base-launch');raw=(p/'canonical.wasm').read_bytes();expected='e15336947f6bc96a6e29c5eab5d0ad84ffb8d76422f03866115766d1173b5527';assert hashlib.sha256(raw).hexdigest()==expected
+enc=ctypes.CDLL(ctypes.util.find_library('brotlienc'));enc.BrotliEncoderCompress.argtypes=[ctypes.c_int,ctypes.c_int,ctypes.c_int,ctypes.c_size_t,ctypes.c_void_p,ctypes.POINTER(ctypes.c_size_t),ctypes.c_void_p];enc.BrotliEncoderCompress.restype=ctypes.c_int
+size=ctypes.c_size_t(len(raw)*2+1024);buf=ctypes.create_string_buffer(size.value);assert enc.BrotliEncoderCompress(11,22,0,len(raw),raw,ctypes.byref(size),buf)==1;compressed=buf.raw[:size.value]
+dec=ctypes.CDLL(ctypes.util.find_library('brotlidec'));dec.BrotliDecoderDecompress.argtypes=[ctypes.c_size_t,ctypes.c_void_p,ctypes.POINTER(ctypes.c_size_t),ctypes.c_void_p];n=ctypes.c_size_t(len(raw));back=ctypes.create_string_buffer(n.value);assert dec.BrotliDecoderDecompress(len(compressed),compressed,ctypes.byref(n),back)==1 and back.raw[:n.value]==raw
+runtime=bytes.fromhex('eff00000')+compressed;assert len(runtime)<65536;init=bytes.fromhex(f'61{len(runtime):04x}61000f60003961{len(runtime):04x}6000f3')
+(p/'stylus-program.json').write_text(json.dumps({'inputWasmBytes':len(raw),'inputWasmSHA256':expected,'BrotliQuality':11,'window':22,'dictionary':0,'decompressedBytesExactlyMatchInput':True,'prefix':'eff00000','initCode':'0x'+(init+runtime).hex(),'runtimeSHA256':hashlib.sha256(runtime).hexdigest(),'scope':'Standard23KBnumericStylusfixture, no model or chess engine; compression bytes need not equal prior host Brotli versions','allExecutionOnRunpod':True},indent=2)+'\n');print('STANDARD_STYLUS_ENCODED',len(raw),len(compressed))

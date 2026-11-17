@@ -1,0 +1,418 @@
+--- a/cmd/nitro-val/nitro_val.go
++++ b/cmd/nitro-val/nitro_val.go
+@@ -5,7 +5,6 @@
+ import (
+ 	"context"
+ 	"fmt"
+-	"math"
+ 	_ "net/http/pprof" // #nosec G108
+ 	"os"
+ 	"os/signal"
+@@ -48,8 +47,6 @@
+ 	}
+ 	stackConf := DefaultValidationNodeStackConfig
+ 	stackConf.DataDir = "" // ephemeral
+-	stackConf.HTTPBodyLimit = math.MaxInt
+-	stackConf.WSReadLimit = math.MaxInt64
+ 	nodeConfig.HTTP.Apply(&stackConf)
+ 	nodeConfig.WS.Apply(&stackConf)
+ 	nodeConfig.Auth.Apply(&stackConf)
+@@ -100,6 +97,10 @@
+ 
+ 	valnode.EnsureValidationExposedViaAuthRPC(&stackConf)
+ 
++	if err := nodeConfig.Validation.ApplyRPCRequestLimit(&stackConf); err != nil {
++		log.Error("invalid validation RPC request limit", "err", err)
++		return 1
++	}
+ 	stack, err := node.New(&stackConf)
+ 	if err != nil {
+ 		pflag.Usage()
+@@ -202,5 +203,8 @@
+ 	if err != nil {
+ 		return nil, err
+ 	}
++	if err := nodeConfig.Validation.ValidateRPCRequestLimit(); err != nil {
++		return nil, err
++	}
+ 	return &nodeConfig, nil
+ }
+--- a/cmd/nitro/nitro.go
++++ b/cmd/nitro/nitro.go
+@@ -58,6 +58,7 @@
+ 	"github.com/offchainlabs/nitro/solgen/go/bridgegen"
+ 	"github.com/offchainlabs/nitro/solgen/go/precompilesgen"
+ 	"github.com/offchainlabs/nitro/solgen/go/rollupgen"
++	"github.com/offchainlabs/nitro/staker"
+ 	legacystaker "github.com/offchainlabs/nitro/staker/legacy"
+ 	"github.com/offchainlabs/nitro/staker/validatorwallet"
+ 	nitroutil "github.com/offchainlabs/nitro/util"
+@@ -152,6 +153,19 @@
+ 	if err != nil {
+ 		confighelpers.PrintErrorAndExit(err, printSampleUsage)
+ 	}
++	cacheProfileEnabled := nodeConfig.Node.BlockValidator.ExperimentalBOLDExecutionCache.Enable
++	var requiredCacheRoot common.Hash
++	if cacheProfileEnabled {
++		if nodeConfig.Node.Dangerous.NoL1Listener || !nodeConfig.Validation.Wasm.EnableWasmrootsCheck {
++			log.Error("experimental cache profile requires parent and WASM compatibility checks")
++			return 1
++		}
++		requiredCacheRoot, err = staker.RequiredExperimentalCacheModuleRoot(&nodeConfig.Node.BlockValidator)
++		if err != nil {
++			log.Error("invalid experimental cache module root", "err", err)
++			return 1
++		}
++	}
+ 	stackConf := node.DefaultConfig
+ 	stackConf.DataDir = nodeConfig.Persistent.Chain
+ 	stackConf.DBEngine = nodeConfig.Persistent.DBEngine
+@@ -335,6 +349,12 @@
+ 		}
+ 	}
+ 
++	if cacheProfileEnabled {
++		if err := checkWasmModuleRootCompatibility(ctx, nodeConfig.Validation.Wasm, l1Client, rollupAddrs, requiredCacheRoot); err != nil {
++			log.Error("experimental cache parent module compatibility failed", "err", err)
++			return 1
++		}
++	}
+ 	if nodeConfig.Node.Staker.OnlyCreateWalletContract {
+ 		if !nodeConfig.Node.Staker.UseSmartContractWallet {
+ 			pflag.Usage()
+@@ -381,6 +401,12 @@
+ 		sameProcessValidationNodeEnabled = true
+ 		valnode.EnsureValidationExposedViaAuthRPC(&stackConf)
+ 	}
++	if sameProcessValidationNodeEnabled {
++		if err := nodeConfig.Validation.ApplyRPCRequestLimit(&stackConf); err != nil {
++			log.Error("invalid validation RPC request limit", "err", err)
++			return 1
++		}
++	}
+ 	stack, err := node.New(&stackConf)
+ 	if err != nil {
+ 		pflag.Usage()
+@@ -420,7 +446,7 @@
+ 	}()
+ 
+ 	// Check that node is compatible with on-chain WASM module root on startup and before any ArbOS upgrades take effect to prevent divergences
+-	if nodeConfig.Node.ParentChainReader.Enable && nodeConfig.Validation.Wasm.EnableWasmrootsCheck {
++	if !cacheProfileEnabled && nodeConfig.Node.ParentChainReader.Enable && nodeConfig.Validation.Wasm.EnableWasmrootsCheck {
+ 		err := checkWasmModuleRootCompatibility(ctx, nodeConfig.Validation.Wasm, l1Client, rollupAddrs)
+ 		if err != nil {
+ 			log.Error("failed to check if node is compatible with on-chain WASM module root", "err", err)
+@@ -768,7 +794,7 @@
+ 	return 0
+ }
+ 
+-func checkWasmModuleRootCompatibility(ctx context.Context, wasmConfig valnode.WasmConfig, l1Client *ethclient.Client, rollupAddrs chaininfo.RollupAddresses) error {
++func checkWasmModuleRootCompatibility(ctx context.Context, wasmConfig valnode.WasmConfig, l1Client *ethclient.Client, rollupAddrs chaininfo.RollupAddresses, expectedRoots ...common.Hash) error {
+ 	// Fetch current on-chain WASM module root
+ 	rollupUserLogic, err := rollupgen.NewRollupUserLogic(rollupAddrs.Rollup, l1Client)
+ 	if err != nil {
+@@ -780,6 +806,12 @@
+ 	}
+ 	if (moduleRoot == common.Hash{}) {
+ 		return errors.New("on-chain WASM module root is zero")
++	}
++	if len(expectedRoots) > 1 {
++		return errors.New("exactly one expected module root is supported")
++	}
++	if len(expectedRoots) == 1 && (expectedRoots[0] == (common.Hash{}) || moduleRoot != expectedRoots[0]) {
++		return fmt.Errorf("on-chain WASM module root %s differs from required cache root %s", moduleRoot, expectedRoots[0])
+ 	}
+ 	// Check if the on-chain WASM module root belongs to the set of allowed module roots
+ 	allowedWasmModuleRoots := wasmConfig.AllowedWasmModuleRoots
+--- a/staker/experimental_execution_cache.go
++++ b/staker/experimental_execution_cache.go
+@@ -4,8 +4,10 @@
+ // change a guest, machine root, engine policy or the normal disabled Start path.
+ import (
+ 	"context"
++	"encoding/hex"
+ 	"fmt"
+ 	"reflect"
++	"strings"
+ 	"time"
+ 
+ 	"github.com/ethereum/go-ethereum/common"
+@@ -55,6 +57,24 @@
+ 	EnableExperimentalRunCache(client.ExperimentalRunCacheConfig) error
+ }
+ 
++type experimentalValidationUploadEnabler interface{ EnableValidationUploadAdmission() error }
++
++// Enabled operator profiles require an explicit root, never the unrelated local latest alias.
++func RequiredExperimentalCacheModuleRoot(c *BlockValidatorConfig) (common.Hash, error) {
++	if c == nil {
++		return common.Hash{}, fmt.Errorf("block validator configuration missing")
++	}
++	raw, err := hex.DecodeString(strings.TrimPrefix(c.CurrentModuleRoot, "0x"))
++	if err != nil || len(raw) != common.HashLength {
++		return common.Hash{}, fmt.Errorf("experimental execution cache requires an explicit 32-byte hexadecimal current-module-root")
++	}
++	root := common.BytesToHash(raw)
++	if root == (common.Hash{}) {
++		return common.Hash{}, fmt.Errorf("experimental execution cache requires a nonzero current-module-root")
++	}
++	return root, nil
++}
++
+ func experimentalCacheNil(value any) bool {
+ 	if value == nil {
+ 		return true
+@@ -74,8 +94,8 @@
+ 	if err := v.config.ExperimentalBOLDExecutionCache.Validate(); err != nil {
+ 		return err
+ 	}
+-	if v.latestWasmModuleRoot == (common.Hash{}) {
+-		return fmt.Errorf("resolve a nonzero module root before enabling experimental execution cache")
++	if _, err := RequiredExperimentalCacheModuleRoot(v.config); err != nil {
++		return err
+ 	}
+ 	if v.redisValidator != nil || v.boldRedisValidator != nil {
+ 		return fmt.Errorf("experimental retained execution requires RPC clients; Redis is unsupported")
+@@ -92,6 +112,9 @@
+ 		}
+ 		if experimentalCacheNil(v.execSpawners[i]) {
+ 			return fmt.Errorf("execution client %d missing", i)
++		}
++		if _, ok := v.execSpawners[i].(experimentalValidationUploadEnabler); !ok {
++			return fmt.Errorf("execution client %d cannot enable validation upload admission", i)
+ 		}
+ 		lifecycle, ok := v.execSpawners[i].(experimentalExecutionClientLifecycle)
+ 		if !ok {
+@@ -140,10 +163,17 @@
+ 			startedExecutions[i].Stop()
+ 		}
+ 	}()
++	requiredRoot, err := RequiredExperimentalCacheModuleRoot(v.config)
++	if err != nil {
++		return err
++	}
+ 	targets := make(map[rawdb.WasmTarget]struct{})
+ 	for i, spawner := range v.execSpawners {
+ 		if err = ctx.Err(); err != nil {
+ 			return err
++		}
++		if err = spawner.(experimentalValidationUploadEnabler).EnableValidationUploadAdmission(); err != nil {
++			return fmt.Errorf("enabling upload admission client %d: %w", i, err)
+ 		}
+ 		if err = spawner.Start(ctx); err != nil {
+ 			// A real RPC Start may open transport before handshake failure.
+@@ -152,6 +182,20 @@
+ 			return fmt.Errorf("starting execution client %d: %w", i, err)
+ 		}
+ 		startedExecutions = append(startedExecutions, spawner)
++		roots, rootErr := spawner.WasmModuleRoots()
++		if rootErr != nil {
++			return fmt.Errorf("reading execution client %d module roots: %w", i, rootErr)
++		}
++		supported := false
++		for _, root := range roots {
++			if root == requiredRoot {
++				supported = true
++				break
++			}
++		}
++		if !supported {
++			return fmt.Errorf("execution client %d does not support required module root %s", i, requiredRoot)
++		}
+ 		for _, target := range spawner.StylusArchs() {
+ 			targets[target] = struct{}{}
+ 		}
+--- a/validator/client/validation_client.go
++++ b/validator/client/validation_client.go
+@@ -34,6 +34,7 @@
+ 	stylusArchs     []rawdb.WasmTarget
+ 	capacity        int
+ 	wasmModuleRoots []common.Hash
++	uploadAdmission validationUploadAdmissionPolicy
+ }
+ 
+ func NewValidationClient(config rpcclient.ClientConfigFetcher, stack *node.Node) *ValidationClient {
+@@ -45,7 +46,15 @@
+ }
+ 
+ func (c *ValidationClient) Launch(entry *validator.ValidationInput, moduleRoot common.Hash) validator.ValidationRun {
++	useUploadAdmission := c.uploadAdmission.enabled.Load()
+ 	promise := stopwaiter.LaunchPromiseThread[validator.GoGlobalState](c, func(ctx context.Context) (validator.GoGlobalState, error) {
++		if useUploadAdmission {
++			release, err := gl3AcquireValidationUpload(ctx)
++			if err != nil {
++				return validator.GoGlobalState{}, err
++			}
++			defer release()
++		}
+ 		input := server_api.ValidationInputToJson(entry)
+ 		var res validator.GoGlobalState
+ 		err := c.client.CallContext(ctx, &res, server_api.Namespace+"_validate", input, moduleRoot)
+@@ -151,7 +160,15 @@
+ 	input *validator.ValidationInput,
+ 	useBoldMachine bool,
+ ) containers.PromiseInterface[validator.ExecutionRun] {
++	useUploadAdmission := c.uploadAdmission.enabled.Load()
+ 	return stopwaiter.LaunchPromiseThread(c, func(ctx context.Context) (validator.ExecutionRun, error) {
++		if useUploadAdmission {
++			release, err := gl3AcquireValidationUpload(ctx)
++			if err != nil {
++				return nil, err
++			}
++			defer release()
++		}
+ 		var res uint64
+ 		err := c.client.CallContext(ctx, &res, server_api.Namespace+"_createExecutionRun", wasmModuleRoot, server_api.ValidationInputToJson(input), useBoldMachine)
+ 		if err != nil {
+--- a/validator/client/validation_upload_admission.go
++++ b/validator/client/validation_upload_admission.go
+@@ -0,0 +1,52 @@
++package client
++
++import (
++	"context"
++	"fmt"
++	"sync"
++	"sync/atomic"
++)
++
++// Same one-slot, context-aware gate as the accepted fixture. Only clients that
++// cold-opt-in participate. It bounds their conversion/upload callbacks, not
++// typed-key copies, other processes, backend VMs or arbitrary bypassing clients.
++var gl3ValidationUploads = make(chan struct{}, 1)
++var gl3ValidationUploadsActive atomic.Int64
++var gl3ValidationUploadsPeak atomic.Int64
++var gl3ValidationUploadsWaiting atomic.Int64
++
++type validationUploadAdmissionPolicy struct{ enabled atomic.Bool }
++
++// Enable before Start. The ordinary default is off; no hot-disable API exists.
++func (c *ValidationClient) EnableValidationUploadAdmission() error {
++	if c == nil || c.Started() || c.Stopped() {
++		return fmt.Errorf("enable upload admission only on a fresh validation client")
++	}
++	c.uploadAdmission.enabled.Store(true)
++	return nil
++}
++
++func gl3AcquireValidationUpload(ctx context.Context) (func(), error) {
++	gl3ValidationUploadsWaiting.Add(1)
++	defer gl3ValidationUploadsWaiting.Add(-1)
++	select {
++	case gl3ValidationUploads <- struct{}{}:
++	case <-ctx.Done():
++		return nil, ctx.Err()
++	}
++	if err := ctx.Err(); err != nil {
++		<-gl3ValidationUploads
++		return nil, err
++	}
++	n := gl3ValidationUploadsActive.Add(1)
++	for old := gl3ValidationUploadsPeak.Load(); n > old && !gl3ValidationUploadsPeak.CompareAndSwap(old, n); old = gl3ValidationUploadsPeak.Load() {
++	}
++	var once sync.Once
++	return func() { once.Do(func() { gl3ValidationUploadsActive.Add(-1); <-gl3ValidationUploads }) }, nil
++}
++
++func GL3ValidationUploadAdmissionStats() (active, peak int64) {
++	return gl3ValidationUploadsActive.Load(), gl3ValidationUploadsPeak.Load()
++}
++
++func ValidationUploadAdmissionWaiting() int64 { return gl3ValidationUploadsWaiting.Load() }
+--- a/validator/valnode/rpc_request_limit.go
++++ b/validator/valnode/rpc_request_limit.go
+@@ -0,0 +1,34 @@
++package valnode
++
++import (
++	"fmt"
++
++	"github.com/ethereum/go-ethereum/node"
++)
++
++const DefaultRPCRequestMaxBytes int64 = 3 * 1024 * 1024 * 1024
++
++func (c *Config) ValidateRPCRequestLimit() error {
++	if c == nil || c.RPCRequestMaxBytes <= 0 || c.RPCRequestMaxBytes > DefaultRPCRequestMaxBytes {
++		return fmt.Errorf("validation RPC request limit must be positive and at most %d bytes", DefaultRPCRequestMaxBytes)
++	}
++	if uint64(c.RPCRequestMaxBytes) > uint64(^uint(0)>>1) {
++		return fmt.Errorf("validation RPC request limit does not fit the host HTTP integer")
++	}
++	return nil
++}
++
++// Apply after generic HTTP/WS/auth settings and before node.New. Pinned Geth
++// propagates these shared stack limits to its authenticated HTTP and WS paths.
++// This function configures a value; it does not bind a listener or start a node.
++func (c *Config) ApplyRPCRequestLimit(stack *node.Config) error {
++	if stack == nil {
++		return fmt.Errorf("validation RPC stack configuration required")
++	}
++	if err := c.ValidateRPCRequestLimit(); err != nil {
++		return err
++	}
++	stack.HTTPBodyLimit = int(c.RPCRequestMaxBytes)
++	stack.WSReadLimit = c.RPCRequestMaxBytes
++	return nil
++}
+--- a/validator/valnode/valnode.go
++++ b/validator/valnode/valnode.go
+@@ -38,35 +38,39 @@
+ }
+ 
+ type Config struct {
+-	UseJit     bool                               `koanf:"use-jit"`
+-	ApiAuth    bool                               `koanf:"api-auth"`
+-	ApiPublic  bool                               `koanf:"api-public"`
+-	Arbitrator server_arb.ArbitratorSpawnerConfig `koanf:"arbitrator" reload:"hot"`
+-	Jit        server_jit.JitSpawnerConfig        `koanf:"jit" reload:"hot"`
+-	Wasm       WasmConfig                         `koanf:"wasm"`
++	RPCRequestMaxBytes int64                              `koanf:"rpc-request-max-bytes"`
++	UseJit             bool                               `koanf:"use-jit"`
++	ApiAuth            bool                               `koanf:"api-auth"`
++	ApiPublic          bool                               `koanf:"api-public"`
++	Arbitrator         server_arb.ArbitratorSpawnerConfig `koanf:"arbitrator" reload:"hot"`
++	Jit                server_jit.JitSpawnerConfig        `koanf:"jit" reload:"hot"`
++	Wasm               WasmConfig                         `koanf:"wasm"`
+ }
+ 
+ type ValidationConfigFetcher func() *Config
+ 
+ var DefaultValidationConfig = Config{
+-	UseJit:     true,
+-	Jit:        server_jit.DefaultJitSpawnerConfig,
+-	ApiAuth:    true,
+-	ApiPublic:  false,
+-	Arbitrator: server_arb.DefaultArbitratorSpawnerConfig,
+-	Wasm:       DefaultWasmConfig,
++	RPCRequestMaxBytes: DefaultRPCRequestMaxBytes,
++	UseJit:             true,
++	Jit:                server_jit.DefaultJitSpawnerConfig,
++	ApiAuth:            true,
++	ApiPublic:          false,
++	Arbitrator:         server_arb.DefaultArbitratorSpawnerConfig,
++	Wasm:               DefaultWasmConfig,
+ }
+ 
+ var TestValidationConfig = Config{
+-	UseJit:     true,
+-	Jit:        server_jit.DefaultJitSpawnerConfig,
+-	ApiAuth:    false,
+-	ApiPublic:  true,
+-	Arbitrator: server_arb.DefaultArbitratorSpawnerConfig,
+-	Wasm:       DefaultWasmConfig,
++	RPCRequestMaxBytes: DefaultRPCRequestMaxBytes,
++	UseJit:             true,
++	Jit:                server_jit.DefaultJitSpawnerConfig,
++	ApiAuth:            false,
++	ApiPublic:          true,
++	Arbitrator:         server_arb.DefaultArbitratorSpawnerConfig,
++	Wasm:               DefaultWasmConfig,
+ }
+ 
+ func ValidationConfigAddOptions(prefix string, f *pflag.FlagSet) {
++	f.Int64(prefix+".rpc-request-max-bytes", DefaultValidationConfig.RPCRequestMaxBytes, "maximum validation HTTP/WS request bytes, positive and at most 3 GiB")
+ 	f.Bool(prefix+".use-jit", DefaultValidationConfig.UseJit, "use jit for validation")
+ 	f.Bool(prefix+".api-auth", DefaultValidationConfig.ApiAuth, "validate is an authenticated API")
+ 	f.Bool(prefix+".api-public", DefaultValidationConfig.ApiPublic, "validate is a public API")

@@ -1,0 +1,71 @@
+{
+  "schema": "gh0st.gl3.base.dispute-readiness.v1",
+  "dateUTC": "2026-11-17",
+  "status": "FROZEN_STANDARD_FULL_LIFECYCLE_TEST_WAITING_SHARED_DISK_RELEASE",
+  "officialNitro": "v3.12.2",
+  "officialNodeSHA256": "d9e778d3c513e106dab9de8ef04be9500093b0638cfd463e4d4ec542c214c4ed",
+  "officialModuleRoot": "0xc10cd7ec6acaf1c441a3f6bd0900ad20f15855ba775a96f1939118cbc629dc97",
+  "baseOnly": true,
+  "customSTF": false,
+  "chess": false,
+  "nnue": false,
+  "existingEvidence": {
+    "standardInboxOSP": {
+      "path": "../../mainnet/evidence/bold-inbox-summary.json",
+      "passed": true,
+      "actualSeconds": 415.55,
+      "fullAssertionConfirmation": false,
+      "refund": false
+    },
+    "nativeGH0STBridge": {
+      "path": "../../mainnet/withdrawal/parent-parity/README.md",
+      "passed": true,
+      "privilegedFastConfirmer": true,
+      "permissionlessBOLD": false
+    }
+  },
+  "nextGate": [
+    "actual realOSP honest win",
+    "actual challenged level0 winner",
+    "actual exact honest assertion confirmed without fastConfirm",
+    "actual edge stake refund with exact ERC20 balance delta and replay rejection"
+  ],
+  "execution": {
+    "RunpodOnly": true,
+    "compileStarted": false,
+    "testStarted": false,
+    "publicWrites": false,
+    "realChainSpend": 0,
+    "licenseAccepted": false,
+    "rootCompileHoldActive": true
+  },
+  "sources": [
+    {
+      "url": "https://developer.arbitrum.io/launch-arbitrum-chain/deploy/canonical-factory-contracts",
+      "checkedUTCDate": "2026-11-17",
+      "finding": "Robinhood4663 absent from canonical table; noncanonical self-deployment documented but explicitly unsupported; L2 maxDataSize104857."
+    },
+    {
+      "url": "https://docs.robinhood.com/chain/connecting/",
+      "checkedUTCDate": "2026-11-17",
+      "finding": "Robinhood4663 ETH parent; public RPC rate limited/not recommended production."
+    },
+    {
+      "url": "https://docs.arbitrum.io/launch-arbitrum-chain/overview/license",
+      "checkedUTCDate": "2026-11-17",
+      "finding": "Zero-cost Additional Use Grant names One/Nova; other parent routes through AEP."
+    },
+    {
+      "url": "https://docs.arbitrum.foundation/aep/ArbitrumExpansionProgramTerms.pdf",
+      "checkedUTCDate": "2026-11-17",
+      "published": "2025-06-04",
+      "effective": "2025-06-06",
+      "finding": "10percent positive protocol net revenue after specified settlement/DA costs; hosting is not listed as deductible settlement cost; no terms accepted."
+    }
+  ],
+  "testSourceSHA256": "e410a7537605a03d4c113e3f86d7f7c289cf1e98edc1116e298d9b391516ca45",
+  "upstreamFunctionSourceSHA256": "e6dedf98d9d195faf2a776a1d981278488ef38f8b7f1d0db38b75e5a94b47bdb",
+  "controllerSHA256": "333d8e4ff30f47da7da9d093296090461dd88fc6cbc6ef53e38eebc31da95f19",
+  "fixture": "Private native Gethparent/standardETHchild,ArbOS61,debugOFF,chain-tip/hash,realBridgeandOSP,permissionlessvalidators;separatefromnativeGH0STbridgefixture",
+  "reviewCorrectionBeforeCompile": "Producer static review caught two missing upstream imports; corrected and re-frozen without compile attempt."
+}

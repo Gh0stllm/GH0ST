@@ -1,0 +1,88 @@
+{
+  "id": "9fu9ldfpioy14f",
+  "name": "gh0st-gl3-chain-mainnet",
+  "createdAt": "2026-11-17T09:22:09.473Z",
+  "cpu": {
+    "id": "cpu5c",
+    "memory": 64,
+    "vcpuCount": 32
+  },
+  "diskGB": 64,
+  "computeUSDPerHour": 1.12,
+  "volume": {
+    "id": "hb0wpuifqx",
+    "sizeGB": 1000,
+    "estimatedUSDPerMonth": 70,
+    "dataCenter": "EUR-IS-1"
+  },
+  "dataCenterId": "EUR-IS-1",
+  "image": "runpod/base:1.0.2-ubuntu2404",
+  "mounts": {
+    "network": [
+      {
+        "path": "/workspace",
+        "volumeId": "hb0wpuifqx"
+      }
+    ]
+  },
+  "actualProbe": {
+    "hostname": "cc91695a75f7",
+    "cgroup": {
+      "/sys/fs/cgroup/memory.max": "64000000000",
+      "/sys/fs/cgroup/cpu.max": "max 100000",
+      "/sys/fs/cgroup/cpuset.cpus.effective": "3,11,19,27,29-30,32,35,44,47-49,51,54,57,59,67,75,83,91,93-94,96,99,108,111-113,115,118,121,123"
+    },
+    "memTotal": [
+      "MemTotal:       527690100 kB"
+    ],
+    "affinity": [
+      3,
+      11,
+      19,
+      27,
+      29,
+      30,
+      32,
+      35,
+      44,
+      47,
+      48,
+      49,
+      51,
+      54,
+      57,
+      59,
+      67,
+      75,
+      83,
+      91,
+      93,
+      94,
+      96,
+      99,
+      108,
+      111,
+      112,
+      113,
+      115,
+      118,
+      121,
+      123
+    ],
+    "storage": {
+      "/root": {
+        "total": 68719476736,
+        "free": 68702982144
+      },
+      "/workspace": {
+        "total": 919934015766528,
+        "free": 467649532067840
+      }
+    },
+    "mounts": [
+      "mfs\\043eur-is-1-2.runpod.net:9421 /workspace fuse rw,nosuid,nodev,relatime,user_id=0,group_id=0,allow_other 0 0"
+    ],
+    "sshHostKey": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP7ob8RHmPI7fvk25czzaCxhVmSvriwM7n6HwbATqxWY root@cc91695a75f7"
+  },
+  "chainMainnetDeployed": false
+}

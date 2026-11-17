@@ -1,0 +1,76 @@
+Usage: prover-exact-final-steps [OPTIONS] <BINARY>
+
+Arguments:
+  <BINARY>  
+
+Options:
+  -l, --libraries <LIBRARIES>
+          
+  -o, --output <OUTPUT>
+          
+  -b, --proving-backoff
+          
+      --allow-hostapi
+          
+      --inbox-add-stub-headers
+          
+      --debug-funcs
+          
+      --print-modules
+          print modules to the console
+      --print-wasmmoduleroot
+          print wasm module root to the console
+  -p, --profile-run
+          profile output instead of generting proofs
+      --profile-sum-opcodes
+          simple summary of hot opcodes
+      --profile-sum-funcs
+          simple summary of hot functions
+      --profile-output <PROFILE_OUTPUT>
+          profile written in "folded" format (use as input for e.g. inferno-flamegraph)
+  -i, --proving-interval <PROVING_INTERVAL>
+          [default: 1]
+  -s, --proving-start <PROVING_START>
+          [default: 0]
+      --delayed-inbox-position <DELAYED_INBOX_POSITION>
+          [default: 0]
+      --inbox-position <INBOX_POSITION>
+          [default: 0]
+      --position-within-message <POSITION_WITHIN_MESSAGE>
+          [default: 0]
+      --last-block-hash <LAST_BLOCK_HASH>
+          
+      --last-send-root <LAST_SEND_ROOT>
+          
+      --mel-state-root <MEL_STATE_ROOT>
+          
+      --mel-msg-hash <MEL_MSG_HASH>
+          
+      --inbox <INBOX>
+          
+      --delayed-inbox <DELAYED_INBOX>
+          
+      --preimages <PREIMAGES>
+          
+      --stylus-modules <STYLUS_MODULES>
+          
+      --require-success
+          Require that the machine end in the Finished state
+      --generate-binaries <GENERATE_BINARIES>
+          Generate WAVM binary, until host io state, and module root and exit
+      --skip-until-host-io
+          
+      --max-steps <MAX_STEPS>
+          
+      --module-root-filename <MODULE_ROOT_FILENAME>
+          Options for WAVM binary generation [default: module-root.txt]
+      --brotli-wavm-machine-filename <BROTLI_WAVM_MACHINE_FILENAME>
+          [default: machine.v2.wavm.br]
+      --until-hostio-bin-filename <UNTIL_HOSTIO_BIN_FILENAME>
+          [default: until-host-io-state.bin]
+      --json-inputs <JSON_INPUTS>
+          
+      --count-steps
+          Count WAVM steps to completion and print the result, then exit. Much faster than proof generation or --profile-run
+  -h, --help
+          Print help

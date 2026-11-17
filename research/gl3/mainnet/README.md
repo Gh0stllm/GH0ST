@@ -1,5 +1,16 @@
 # GL3 · Linux acceptance notebook
 
+**R42 · GL3 first, without chess.** The clean official base passes its fresh private Solidity/Stylus test; native-GH0ST withdrawal/recovery and full dispute settlement are the next base gates. The new32 vCPU/64 GB/1TB host is provisioned; public mainnet is not deployed.
+
+[Open the active base-chain work](../base/README.md) · [Sequential history](../HISTORY.md)
+
+The prior2.59 TB projection belongs to deferred chess execution history. It is not a base-chain requirement.
+
+<details>
+<summary>Preserved R41 and earlier chess research snapshot</summary>
+
+# GL3 · Linux acceptance notebook
+
 **R41: ordinary source05 binaries and parser checks pass; the corrected candidate03 dispute and separate checkpoint progress replay are RUNNING_NOT_ACCEPTED. The 20-game storage and production gates remain open.**
 
 [Ordinary binaries](production/final-pairing/README.md) · [Checkpoint guest experiment](storage/full-checkpoint-guest/README.md) · [R41 history](../HISTORY.md#41--build-ordinary-operator-binaries-and-isolate-a-checkpoint-guest--17-november)
@@ -143,3 +154,6 @@ The separate [retention design](storage/retention-design/README.md) proposes a r
 The earlier withdrawal worker was removed after evidence collection. The native-parent fixture finished and stopped its owned chains. The 32 GB production worker was deleted after completed transfers and idle-process checks; its task-only transfer key was removed first and a fresh provider 404 confirmed deletion. Only the temporary 128 GB allocation remains at **USD 1.04/hour compute plus disk**. The old failed prover, stopped lifecycle/private parent, observer and five auditors remain stopped; the completed selected-C interpreter is preserved while host-cache enhancement/review proceeds. No production-proof-pair or full-lifecycle acceptance, production hosting order, mainnet deployment or movement of existing mainnet funds follows.
 
 **Current gate:** completed one-terminal-block reference replay and 8 / 56 sampled-witness checks pass. The old 2^40 geometry is rejected; reviewed 2^43 private source/configuration and candidate03 bounded checks pass. The first R40 lifecycle stopped without acceptance because the assertion ended after the captured engine target. The corrected no-engine seal passes and kit3 compiles; new composition/root review authorizes only the corrected private retry, now running without acceptance; no public launch occurred. [Reference replay](production/bounded-restore/scheduling/comparison/C-combined/interpreter/replay-result.json) · [transport review](dispute/full-lifecycle/logging-transport-review/README.md).
+
+
+</details>

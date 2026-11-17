@@ -2,6 +2,19 @@
 
 # GH0ST L3 · GL3 research notebook
 
+**R42 · GL3 first, without chess.** The clean official base passes its fresh private Solidity/Stylus test; native-GH0ST withdrawal/recovery and full dispute settlement are the next base gates. The new32 vCPU/64 GB/1TB host is provisioned; public mainnet is not deployed.
+
+[Open the active base-chain work](base/README.md) · [Sequential history](HISTORY.md)
+
+The prior2.59 TB projection belongs to deferred chess execution history. It is not a base-chain requirement.
+
+<details>
+<summary>Preserved R41 and earlier chess research snapshot</summary>
+
+![GH0ST GL3](assets/gl3-cover.png)
+
+# GH0ST L3 · GL3 research notebook
+
 [Open the full overview](../../README.md) · [History](HISTORY.md) · [Findings](FINDINGS.md) · [Roadmap](ROADMAP.md)
 
 **R41: ordinary source05 binaries and parser checks pass; the corrected candidate03 dispute and separate checkpoint progress replay are RUNNING_NOT_ACCEPTED. The 20-game storage and production gates remain open.**
@@ -53,3 +66,6 @@ The native A15 checkpoint and unchanged cold full 24m continuation remain native
 *Creative build-update artwork; not execution proof. [Prompt/provenance](assets/gl3-build-update-20261117.prompt.txt).*
 
 [Active full chess integration](chess/README.md) · [Hosting study](chess/HOSTING.md) · [Chess across fast blocks](chess/sliced/README.md)
+
+
+</details>

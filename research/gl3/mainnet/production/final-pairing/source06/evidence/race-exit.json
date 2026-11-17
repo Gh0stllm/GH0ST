@@ -1,0 +1,24 @@
+{
+  "mode": "race",
+  "actualExitCode": 0,
+  "seconds": 10.810929775238037,
+  "reason": null,
+  "diskFreeBytes": 8469565440,
+  "args": [
+    "/root/bounded-restore/toolchain/go/bin/go",
+    "test",
+    "-p",
+    "2",
+    "-mod=readonly",
+    "-overlay",
+    "/root/gl3-final-pairing/source06/test-overlay.json",
+    "-run",
+    "^TestGL3(Upload|RequestLimit|Operator)",
+    "-count=1",
+    "-v",
+    "-race",
+    "./validator/client",
+    "./validator/valnode",
+    "./staker"
+  ]
+}

@@ -1,6 +1,6 @@
 # GL3 · full checkpoint guest profile
 
-**A matching checkpoint machine has been generated, and a genuine private A15 Begin-block capture passes. The first bounded real-WAVM progress replay is RUNNING_NOT_ACCEPTED; no guest replay result is accepted yet.** The selected865 machine and candidate03 lifecycle remain untouched.
+**A matching checkpoint machine has been generated, and a genuine private A15 Begin-block capture passes. The first trial stopped at its disk safety floor without acceptance. The separate retry was canceled after the user changed scope to base GL3 without chess; no guest replay pass is claimed.** These historical chess artifacts are preserved and no longer running.
 
 This profile promotes the existing full-memory A15 checkpoint implementation into a separately compiled native/Go-Wasm pair. It retains the exact original C companion, full NNUE network, 24-million-node search policy, TT, history, globals and VM image. It adds one explicit admission change: after a completed decision, another search requires an exact finalized checkpoint of that generation. A new game may start from its authenticated initial seed.
 
@@ -17,7 +17,7 @@ This profile promotes the existing full-memory A15 checkpoint implementation int
 | Native test maximum RSS | 6,420,784 KiB; includes fixture historical-code reconstruction |
 | Owned allocated scratch | 384,970,752 bytes after tests; no copied raw VM/DB |
 | Matching machine | Generated root `0x2a423e3e…cb9e608`; no production pairing acceptance |
-| Real WAVM progress-block replay / OSP | First bounded interpreter trial running / no OSP acceptance |
+| Real WAVM progress-block replay / OSP | v1 disk-guard stopped; v2 user-scope canceled without acceptance / no OSP acceptance |
 
 Guest SHA256 is `fc5645ec7536ca7191c4eaa1db0fa381a67dafb46cdf844eb6403298516fed5d`;
 native test ELF is `dfb1a15d32acb34aae992d27a3d7e3fc86b6d5cca8729bc006ce80606508940f`.
@@ -61,20 +61,36 @@ with no live descriptors and no accepted Begin/input. The full corrected capture
 passed the resource guard. A separate narrow startup probe observes4KiB of open
 WAL allocation; it is not a full-load storage bound.
 
-## First bounded interpreter trial
+## Interpreter trials · stopped v1 and canceled v2
 
-The approved real WAVM trial starts at2026-11-17T07:16:11Z: prover198867,
-direct-child collector198865. It uses exactly the new machine/input above, no JIT,
-two CPUs with lower scheduling priority, a45-minute wall limit, sparse5-billion-step
-proof intervals and configured995-billion-step cap. The pinned CLI checks the cap
-between intervals; reserving one interval keeps the authorized upper envelope at
-one trillion steps. Own scratch stays below3GiB and disk free above6GB; RSS is
-sampled and actual exit is saved through `os.wait4` before optional processing.
+**v1 is DISK_GUARD_STOPPED_NOT_ACCEPTED.** Prover198867 exited−15 after
+1,808.697957663s when the shared old-worker filesystem crossed its6GB free floor.
+The last sparse sample is390billion steps; no Finished/end-state proof was
+accepted. Actual kernel maxRSS18,071,956KiB is preserved. The model, input and
+machine were unchanged; this resource interruption is not a guest/model failure.
+[Actual stopped exit](interpreter-progress-v1/exit.json) · [result](interpreter-progress-v1/replay-result.json) · [sealed32KB capsule](checkpoint-progress-v1-stopped-archive.json).
+
+**v2 is USER_SCOPE_CHANGE_CANCELLED_NOT_ACCEPTED.** At the user’s switch to base GL3 without chess, the controlled stop recorded actual exit−15 after1,513.495126594s, kernel maxRSS13,845,520KiB and last sparse sample340billion steps. Neither Finished nor all four end fields matched; prover1265 and collector1263 are gone. The disposable worker was subsequently deleted after its unique accepted capture ELF was archived, member-hash verified on Runpod and preserved off-pod. [Cancellation summary](interpreter-progress-v2/user-scope-cancelled-summary.json) · [actual exit](interpreter-progress-v2/exit.json) · [small evidence capsule](progress-v2-user-scope-cancelled-small-receipt.json).
+
+The frozen retry used the exact same
+machine/input/tool, root-approved controller SHA256
+`34d4e2635f1a0f159dcc43fbe91cd030f16e87fc4476114e79d372d3dc457278`.
+Actual start2026-11-17T08:20:29Z: prover1265 / collector1263. The explicit hard
+cgroup limit is64,000,000,000B. Its3-hour observed-completion bound and configured
+3.995-trillion-step cap reserve a5-billion-step interval below the4-trillion
+upper envelope; this remains below2^43. Two CPUs/nice10,32GiB ownRSS,
+56GB cgroup working-set reserve,24GiB owned scratch and6GB disk floor are guarded.
+The child inherits the exclusive heavy-work lease and a parent-death signal;
+required guard-read failures terminate the run. Actual exit is saved through
+`os.wait4` before optional processing. No concurrent native search is authorized.
+
+[Reviewed v2 controller](run-progress-interpreter-v2.py) · [independent review](independent-next-run-review/progress-controller-review.json) · [new-worker process](interpreter-progress-v2/process.json) · [root launch receipt](interpreter-progress-v2-root-authorization.json) · [observed snapshot](interpreter-progress-v2/live-snapshot.json).
 
 Acceptance requires actual exit0, Finished and all four native global-state fields
-exact. Even a pass would cover only this progress block: the engine decision is
-still pending, and no complete24m move, terminal replay, full dispute, universal
-within-search heap bound,20-game capacity or mainnet readiness follows.
+exact, within the reviewed wall/step/resource bounds. Even a pass would cover only
+this progress block: the engine decision is still pending, and no complete24m
+move, terminal replay, full dispute, universal within-search bound,20-game capacity
+or mainnet readiness follows.
 
 ## Source and matching artifacts
 

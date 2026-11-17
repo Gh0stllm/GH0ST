@@ -1,0 +1,155 @@
+{
+  "status": "ORDINARY_SOURCE06_NODE_AND_VALIDATOR_BUILDS_AND_SMOKES_PASSED_NO_ACTIVATION",
+  "UTC": "2026-11-17T08:07:23.095441+00:00",
+  "artifacts": {
+    "nitro": {
+      "path": "/root/gl3-final-pairing/ordinary06/bin/nitro",
+      "bytes": 387913224,
+      "SHA256": "f16101958714084068c7333e83a2e2d8b7c1f706a8011718391a1e7f715fd3cf",
+      "GNUStackLine": "GNU_STACK      0x000000 0x0000000000000000 0x0000000000000000 0x000000 0x000000 RW  0x10"
+    },
+    "nitro-val": {
+      "path": "/root/gl3-final-pairing/ordinary06/bin/nitro-val",
+      "bytes": 353101632,
+      "SHA256": "dcd26a0e1a751e586413fd9f797ab06a9546331459673e46c6a6f30ff0a27e65",
+      "GNUStackLine": "GNU_STACK      0x000000 0x0000000000000000 0x0000000000000000 0x000000 0x000000 RW  0x10"
+    }
+  },
+  "individualBuildLocks": {
+    "nitro": {
+      "lockPath": "/root/gl3-final-pairing/ordinary06/evidence/nitro-artifact-lock.json",
+      "lockSHA256": "42c596cdb8e4f96c2f3a483e49368032aff32ea252fe433e522bbfeb06ee61b3",
+      "build": {
+        "command": [
+          "/root/bounded-restore/toolchain/go/bin/go",
+          "build",
+          "-p",
+          "1",
+          "-mod=readonly",
+          "-overlay",
+          "/root/gl3-final-pairing/source06/verified-frozen-production-overlay.json",
+          "-ldflags=-extldflags=-Wl,-z,noexecstack",
+          "-o",
+          "/root/gl3-final-pairing/ordinary06/bin/nitro",
+          "./cmd/nitro"
+        ],
+        "actualExitCode": 0,
+        "seconds": 11.916516542434692,
+        "stoppedReason": null,
+        "CPUs": [
+          118,
+          126
+        ],
+        "minimumSampledDiskFreeBytes": 7567867904,
+        "peakSampledOwnedScratchBytes": 729030374,
+        "diskFreeAfterBytes": 7959928832
+      }
+    },
+    "nitro-val": {
+      "lockPath": "/root/gl3-final-pairing/ordinary06/evidence/nitro-val-artifact-lock.json",
+      "lockSHA256": "ca1246affad11d56c62c52548bede5dccb9e7a1f2375e3f746477eeb6c52fe6e",
+      "build": {
+        "command": [
+          "/root/bounded-restore/toolchain/go/bin/go",
+          "build",
+          "-p",
+          "1",
+          "-mod=readonly",
+          "-overlay",
+          "/root/gl3-final-pairing/source06/verified-frozen-production-overlay.json",
+          "-ldflags=-extldflags=-Wl,-z,noexecstack",
+          "-o",
+          "/root/gl3-final-pairing/ordinary06/bin/nitro-val",
+          "./cmd/nitro-val"
+        ],
+        "actualExitCode": 0,
+        "seconds": 9.267360210418701,
+        "stoppedReason": null,
+        "CPUs": [
+          118,
+          126
+        ],
+        "minimumSampledDiskFreeBytes": 7340400640,
+        "peakSampledOwnedScratchBytes": 1004420300,
+        "diskFreeAfterBytes": 7603798016
+      }
+    }
+  },
+  "source06ManifestSHA256": "37b2a3d541d53fbef32cfb101adc57277b5caf83ff2f9f80b4b9ce9ced36b196",
+  "ordinaryCompiledSourceRecords": 6204,
+  "ordinarySourceClosureSHA256": "462a221e4a915d6275545738d8aed51830ff7e40dfd6e8525c565d23b8e1962f",
+  "sourcePairingSHA256": "976af423cccfb44fa84a2db3712767105d26e55bb2af4f66f994b35a78ec5296",
+  "approvedSourceDeltaFrom05": "exactly7hostfiles;5changed+2new",
+  "moduleRoot": "0x865168ea04ee58578a710a5270c22495c90b1c0f2226d39fecbb9eac4ea3f086",
+  "modelAndMachineRehashedAfterBuild": {
+    "portableEngine": {
+      "path": "/root/bounded-restore/chess/sliced/runtime/.cache/sliced.wasm",
+      "bytes": 102408379,
+      "SHA256": "1d650410655d93624801a0fa45d64d72ec5d209115672b5848f010037da5e5bc"
+    },
+    "nativeEngineArchive": {
+      "path": "/root/bounded-restore/chess/engine/.cache/libgl3chess.a",
+      "bytes": 99899664,
+      "SHA256": "a8b46cbe96923ef6592ba4f356ba488f574dc074605c83f16a90a1bf2fbbeebd"
+    },
+    "guest": {
+      "path": "/root/bounded-restore/fast-comparison/C-combined/replay.wasm",
+      "bytes": 29460460,
+      "SHA256": "8d18145460e5f4c649895728fa089a52a04ead2c3fa5e7d10789d72d7de42fbd"
+    },
+    "companion": {
+      "path": "/root/bounded-restore/machine-inputs/gl3aot.wasm",
+      "bytes": 105285289,
+      "SHA256": "b481f92a852a685411db42c8b51abd3a3f2c8cd8c5d0c1c8eed2962d986f5555"
+    },
+    "machine": {
+      "path": "/root/bounded-restore/fast-comparison/C-combined/machine/machine.v2.wavm.br",
+      "bytes": 90305946,
+      "SHA256": "4bf7fe54c28ad0b6f2620df3ee6b4c6d87452f9ab76ec8be294eb7d4c934770e"
+    },
+    "untilHostIo": {
+      "path": "/root/bounded-restore/fast-comparison/C-combined/machine/until-host-io-state.bin",
+      "bytes": 164300352,
+      "SHA256": "65c55710d8e19f00c53a4f7c84a203c66aa6564745211a7ee55b2460dd165c8a"
+    },
+    "libstylus": {
+      "path": "/root/bounded-restore/nitro/target/lib/libstylus.a",
+      "bytes": 637520088,
+      "SHA256": "42cc75b003aaab6686620da6ec947bb475fe221b605bd0ac1bf417a171f4546c"
+    }
+  },
+  "nativeInputsSHA256": "ed8ca86a94638d80be640f520bcbc517db7bf69db666cdc3837af992069e6b96",
+  "testedFocus": {
+    "normal": {
+      "topLevelPasses": 23,
+      "subtestPasses": 50
+    },
+    "race": {
+      "topLevelPasses": 23,
+      "subtestPasses": 50
+    },
+    "initialCombinedMainRaceActualExit": -15,
+    "sequentialRaceRetryPassed": true
+  },
+  "ordinaryDefaultOffActualDumps": true,
+  "ordinaryDefaultRequestCapBytes": 3221225472,
+  "explicitRootWARNInterpreterProfileTypedDumpPassed": true,
+  "parserDumpIsNotValidationOrStartup": true,
+  "ordinaryVersionStampProductionAccepted": false,
+  "ordinaryFullSizeTransportOrPairedStartupAccepted": false,
+  "productionGenesisAccepted": false,
+  "operatorCustodyPricerStakeLicenseSelected": false,
+  "twentyGameStorageAccepted": false,
+  "enginePolicyChanged": false,
+  "engineOrProverOrChainStarted": false,
+  "financialOrWalletOrMainnetOperation": false,
+  "allExecutionOnRunpod": true,
+  "source05RawPhysicalRelocationReceiptSHA256": "2847dd932763564de124d2e6c1b97d975cc0ae548b1c019e52ca228994f72028",
+  "selectedImmutableMachineBackupAlreadyVerified": {
+    "archiveSHA256": "67916f26c6e9e0fb9bef689c750d1ca6d25d9c93a9c733e9cf3d6aebf0dc363c",
+    "bytes": 713234002,
+    "cloudAndOwnerOffPodCopyRetained": true
+  },
+  "source06ArtifactBackupState": "PROPOSED_NOT_YET_CREATED",
+  "diskFreeBytesAtLock": 7604314112
+}

@@ -1,0 +1,119 @@
+{
+  "status": "STATIC_REVIEW_READY_FOR_ROOT_LAUNCH_CONSIDERATION_NOT_EXECUTED",
+  "reviewedAtUTC": "2026-11-17T08:17:22.391415+00:00",
+  "reviewer": "gl3_hosting_capacity",
+  "independentFromProducer": true,
+  "controller": "run-progress-interpreter-v2.py",
+  "controllerSHA256": "34d4e2635f1a0f159dcc43fbe91cd030f16e87fc4476114e79d372d3dc457278",
+  "blockingStaticFindings": [],
+  "rootLaunchReceiptRequired": true,
+  "rootLaunchReceiptSelectedOrWrittenByReviewer": false,
+  "rootLaunchStillSeparateFromThisReview": true,
+  "podID": "i8xz2i7u3xtliw",
+  "updatedDesign": {
+    "deadlineSeconds": 10800,
+    "configuredMaxSteps": 3995000000000,
+    "provingInterval": 5000000000,
+    "authorizedStepUpperEnvelope": 4000000000000,
+    "reservedOneInterval": true,
+    "sparseProofSamplesUpperEstimate": 802,
+    "cpuAffinityMaximum": 2,
+    "niceAtLeast": 10,
+    "podCgroupHardLimitBytes": 64000000000,
+    "ownRSSGuardKiB": 33554432,
+    "podWorkingSetGuardBytes": 56000000000,
+    "ownedScratchLimitBytes": 25769803776,
+    "diskFreeFloorBytes": 6000000000,
+    "resourceSamplingSeconds": 2,
+    "sampledGuardsAreNotWorstCaseMemoryOrDiskBounds": true
+  },
+  "binding": {
+    "readyManifestSHA256": "c0810bfca324a89f6c1e5c2f57cb15ab7c70d119c9434ce6641a1cc61751585f",
+    "moduleRoot": "0x2a423e3e57903ae5bcb7385608d05387201b5cde24a7d4138d5b7ec09cb9e608",
+    "machineSHA256": "9f5ce0c06b01debaf3077c95559d38af11d2d7925f02721742acacfcfb944752",
+    "guestSHA256": "fc5645ec7536ca7191c4eaa1db0fa381a67dafb46cdf844eb6403298516fed5d",
+    "companionSHA256": "b481f92a852a685411db42c8b51abd3a3f2c8cd8c5d0c1c8eed2962d986f5555",
+    "proverSHA256": "cc5c9de07b2a739978e383cd4ac4baee3a1d49761c5c75ad414e12056cd7ab27",
+    "inputSHA256": "d346eb13ca7edec142088db8e51118f58240310d8d55147bffb1fb1bca56d940",
+    "inputBytes": 600010302,
+    "expectedFourGlobalStateFields": [
+      "0x3193c0de99e4fc258343976b0a85e939ea15b6073130f6619e6f54532c50c048",
+      "0x0000000000000000000000000000000000000000000000000000000000000000",
+      "6",
+      "0"
+    ],
+    "standardLibrarySHA256": {
+      "forward": "1c45bf8429ca216ea9fa8b6ef4251e859800f7091f3d5be57a9566ffeeca6c99",
+      "soft-float": "eed26863498c0b0a060da3bc42dc09dea84e8872cf763f91598e698fb54b604f",
+      "wasi_stub": "03a9679220dc6854bc86abbf9a4138bbd92371d1a77cf2155708d223fa26662c",
+      "host_io": "f524b7ca272ded1159c5c287c13c8754f8b10c98f0d31ee854d10096b3e0630f",
+      "user_host": "a7a523d2e71ce1a4c7ae7f984032331b0298ea939f1dc6ccdc80ff6135ba34ac",
+      "arbcompress": "31c244b2e373e2e6cc189853fb6824a0f1244061b61b9eb27b57df103cf96ada",
+      "arbcrypto": "3ca6af8045178453415ed53aaa5a58e789e9a22b97cce0f502cff775576ef094",
+      "program_exec": "dbadff49188bbc5a6477d6fef4dec17f210e4e08e9699aec986a050c029a3ecb"
+    }
+  },
+  "reviewedChecks": {
+    "contentBoundRootAuthorizationChecksControllerPodDeadlineAndEnvelope": true,
+    "hardCgroupLimitCheckedBeforeRunAndDuringMonitoring": true,
+    "noJITOrEnginePolicyChange": true,
+    "uniqueInodeAccountingIncludesImmutableExternalTransfersAndRetainedPartial": true,
+    "cooperatingHeavyWorkControllersShareExclusiveFlock": true,
+    "flockFDInheritedByProver": true,
+    "LinuxParentDeathSignalAndParentRaceCheck": true,
+    "collectorTERMINTRequestsStopAndDirectReap": true,
+    "unexpectedCollectorExceptionKillsAndReapsOwnedGroup": true,
+    "nice10Enforced": true,
+    "onlyProcReadExitRaceMayBeBenign": true,
+    "diskCgroupCSVGuardReadErrorsFailClosedEvenAtConcurrentExit": true,
+    "actualDirectChildExitPersistedBeforeOptionalPostprocessing": true,
+    "successfulAcceptanceRequiresActualCompletionWithinDeadline": true,
+    "exit0FinishedAllFourFieldsAndStepEnvelopeRequired": true,
+    "inputGuestMachineHashesCheckedAgainAfterRun": true
+  },
+  "resolvedDraftFindings": [
+    "Enforced lower priority instead of merely recording it.",
+    "Converted required guard-read failures from warnings to termination; confined benign exception handling to child /proc exit races.",
+    "Preserved heavy-work lease in child and added parent-death/exception cleanup ownership.",
+    "Included actual wait4 completion elapsed<=deadline in acceptance without polling grace."
+  ],
+  "preservedOldTrial": {
+    "status": "NOT_ACCEPTED",
+    "actualExit": {
+      "exitCode": -15,
+      "seconds": 1808.6979576628655,
+      "timedOut": false,
+      "terminationReason": "disk free floor",
+      "kernelMaxRSSKiB": 18071956,
+      "exitRetrieval": "os.wait4 direct child"
+    },
+    "lastLoggedSparseSteps": 390000000000,
+    "Finished": false,
+    "actualFinalCounter": null,
+    "allFourGlobalStateFieldsMatch": false,
+    "immutableInputGuestMachineUnchanged": true,
+    "archive": {
+      "file": "checkpoint-progress-v1-disk-guard-stopped.tar.gz",
+      "bytes": 31974,
+      "SHA256": "c7dd97e2e17683a36fe8e56d8ce5a99e06bb9b85cb214575885f1c5e95183dcb",
+      "inputRawNotIncluded": true
+    },
+    "archiveSHA256IndependentlyMatched": true,
+    "oldTrialWasNotRerunOrPromoted": true
+  },
+  "scopeLimits": [
+    "Static source/receipt review only; no controller execution, new test, engine or proof run by reviewer.",
+    "Root must supply a launch receipt matching this exact controller SHA and final limits.",
+    "Any future pass covers only the existing four-quanta progress block; engine decision remains pending.",
+    "No terminal24m proof, OSP/dispute, production/20-game capacity or universal within-search resource bound accepted.",
+    "Lease coordination covers cooperating reviewed controllers; arbitrary bypassing jobs are outside that mechanism.",
+    "Full native terminal-capture draft remains a separate pending review."
+  ],
+  "actions": {
+    "sourceEdits": 0,
+    "testsRun": 0,
+    "engineOrProofRuns": 0,
+    "activation": false,
+    "gitStageCommitPush": false
+  }
+}

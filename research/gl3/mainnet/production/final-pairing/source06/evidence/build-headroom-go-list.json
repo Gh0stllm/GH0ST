@@ -1,0 +1,18 @@
+{
+  "actualExitCode": 0,
+  "command": [
+    "/root/bounded-restore/toolchain/go/bin/go",
+    "list",
+    "-p",
+    "1",
+    "-mod=readonly",
+    "-overlay",
+    "/root/gl3-final-pairing/source06/verified-frozen-test-overlay.json",
+    "-json=ImportPath,Stale,StaleReason",
+    "./cmd/nitro",
+    "./cmd/nitro-val"
+  ],
+  "scope": "go list metadata only, no -export/-compiled or ordinary build",
+  "diskFreeBytes": 7624163328,
+  "stdout": "{\n\t\"ImportPath\": \"github.com/offchainlabs/nitro/cmd/nitro\",\n\t\"Stale\": true,\n\t\"StaleReason\": \"stale dependency: google.golang.org/protobuf/internal/editiondefaults\"\n}\n{\n\t\"ImportPath\": \"github.com/offchainlabs/nitro/cmd/nitro-val\",\n\t\"Stale\": true,\n\t\"StaleReason\": \"stale dependency: github.com/crate-crypto/go-eth-kzg\"\n}\n"
+}

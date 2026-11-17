@@ -1,0 +1,109 @@
+Usage of :
+      --auth.addr string                                                                                       AUTH-RPC server listening interface (default "127.0.0.1")
+      --auth.api strings                                                                                       APIs offered over the AUTH-RPC interface (default [validation])
+      --auth.jwtsecret string                                                                                  Path to file holding JWT secret (32B hex)
+      --auth.origins strings                                                                                   Origins from which to accept AUTH requests (default [localhost])
+      --auth.port int                                                                                          AUTH-RPC server listening port (default 8549)
+      --conf.dump                                                                                              print out currently active configuration file
+      --conf.env-prefix string                                                                                 environment variables with given prefix will be loaded as configuration values
+      --conf.file strings                                                                                      name of configuration file
+      --conf.max-version string                                                                                highest nitro version this configuration supports, as a semantic version (e.g. "v3.10.0"); a release build newer than this exits at startup (empty = no maximum)
+      --conf.min-version string                                                                                lowest nitro version this configuration supports, as a semantic version (e.g. "v3.9.0"); a release build older than this exits at startup (empty = no minimum)
+      --conf.reload-interval duration                                                                          how often to reload configuration (0=disable periodic reloading)
+      --conf.s3.access-key string                                                                              S3 access key for fetching the node configuration file from S3
+      --conf.s3.bucket string                                                                                  S3 bucket containing the node configuration file
+      --conf.s3.object-key string                                                                              S3 object key of the node configuration file (JSON format)
+      --conf.s3.region string                                                                                  S3 region of the bucket containing the node configuration file
+      --conf.s3.secret-key string                                                                              S3 secret key for fetching the node configuration file from S3 (triggers S3 config loading)
+      --conf.string string                                                                                     configuration as JSON string
+      --file-logging.buf-size int                                                                              size of intermediate log records buffer (default 512)
+      --file-logging.compress                                                                                  enable compression of old log files (default true)
+      --file-logging.enable                                                                                    enable logging to file (default true)
+      --file-logging.file string                                                                               path to log file (default "nitro.log")
+      --file-logging.local-time                                                                                if true: local time will be used in old log filename timestamps
+      --file-logging.max-age int                                                                               maximum number of days to retain old log files based on the timestamp encoded in their filename (0 = no limit)
+      --file-logging.max-backups int                                                                           maximum number of old log files to retain (0 = no limit) (default 40)
+      --file-logging.max-size int                                                                              log file size in Mb that will trigger log file rotation (0 = trigger disabled) (default 5)
+      --http.addr string                                                                                       HTTP-RPC server listening interface
+      --http.api strings                                                                                       APIs offered over the HTTP-RPC interface (default [net,web3,eth,arb])
+      --http.corsdomain strings                                                                                Comma separated list of domains from which to accept cross origin requests (browser enforced)
+      --http.port int                                                                                          HTTP-RPC server listening port (default 8547)
+      --http.rpcprefix string                                                                                  HTTP path path prefix on which JSON-RPC is served. Use '/' to serve on all paths
+      --http.server-timeouts.idle-timeout duration                                                             the maximum amount of time to wait for the next request when keep-alives are enabled (http.Server.IdleTimeout) (default 2m0s)
+      --http.server-timeouts.read-header-timeout duration                                                      the amount of time allowed to read the request headers (http.Server.ReadHeaderTimeout) (default 30s)
+      --http.server-timeouts.read-timeout duration                                                             the maximum duration for reading the entire request (http.Server.ReadTimeout) (default 30s)
+      --http.server-timeouts.write-timeout duration                                                            the maximum duration before timing out writes of the response (http.Server.WriteTimeout) (default 30s)
+      --http.vhosts strings                                                                                    Comma separated list of virtual hostnames from which to accept requests (server enforced). Accepts '*' wildcard (default [localhost])
+      --ipc.path string                                                                                        Requested location to place the IPC endpoint. An empty path disables IPC.
+      --log-level string                                                                                       log level, valid values are CRIT, ERROR, WARN, INFO, DEBUG, TRACE (default "INFO")
+      --log-type string                                                                                        log type (plaintext or json) (default "plaintext")
+      --metrics                                                                                                enable metrics
+      --metrics-server.addr string                                                                             metrics server address (default "127.0.0.1")
+      --metrics-server.port int                                                                                metrics server port (default 6070)
+      --metrics-server.update-interval duration                                                                metrics server update interval (default 3s)
+      --persistent.ancient string                                                                              directory of ancient where the chain freezer can be opened
+      --persistent.chain string                                                                                directory to store chain state
+      --persistent.db-engine string                                                                            backing database implementation to use. If set to empty string the database type will be autodetected and if no pre-existing database is found it will default to creating new pebble database ('leveldb', 'pebble' or '' = auto-detect)
+      --persistent.global-config string                                                                        directory to store global config (default ".arbitrum")
+      --persistent.handles int                                                                                 number of file descriptor handles to use for the database (default 512)
+      --persistent.log-dir string                                                                              directory to store log file
+      --persistent.pebble.experimental.block-size int                                                          target uncompressed size in bytes of each table block (default 4096)
+      --persistent.pebble.experimental.bytes-per-sync int                                                      number of bytes to write to a SSTable before calling Sync on it in the background (default 524288)
+      --persistent.pebble.experimental.compaction-debt-concurrency uint                                        controls the threshold of compaction debt at which additional compaction concurrency slots are added. For every multiple of this value in compaction debt bytes, an additional concurrent compaction is added. This works "on top" of l0-compaction-concurrency, so the higher of the count of compaction concurrency slots as determined by the two options is chosen. (default 268435456)
+      --persistent.pebble.experimental.disable-automatic-compactions                                           disables automatic compactions
+      --persistent.pebble.experimental.force-writer-parallelism                                                force parallelism in the sstable Writer for the metamorphic tests. Even with the MaxWriterConcurrency option set, pebble only enables parallelism in the sstable Writer if there is enough CPU available, and this option bypasses that.
+      --persistent.pebble.experimental.index-block-size int                                                    target uncompressed size in bytes of each index block. When the index block size is larger than this target, two-level indexes are automatically enabled. Setting this option to a large value (such as 2147483647) disables the automatic creation of two-level indexes. (default 4096)
+      --persistent.pebble.experimental.l-base-max-bytes int                                                    The maximum number of bytes for LBase. The base level is the level which L0 is compacted into. The base level is determined dynamically based on the existing data in the LSM. The maximum number of bytes for other levels is computed dynamically based on the base level's maximum size. When the maximum number of bytes for a level is exceeded, compaction is requested. (default 67108864)
+      --persistent.pebble.experimental.l0-compaction-concurrency int                                           threshold of L0 read-amplification at which compaction concurrency is enabled (if compaction-debt-concurrency was not already exceeded). Every multiple of this value enables another concurrent compaction up to max-concurrent-compactions. (default 1)
+      --persistent.pebble.experimental.l0-compaction-file-threshold int                                        count of L0 files necessary to trigger an L0 compaction (default 500)
+      --persistent.pebble.experimental.l0-compaction-threshold int                                             amount of L0 read-amplification necessary to trigger an L0 compaction (default 2)
+      --persistent.pebble.experimental.l0-stop-writes-threshold int                                            hard limit on L0 read-amplification, computed as the number of L0 sublevels. Writes are stopped when this threshold is reached (default 12)
+      --persistent.pebble.experimental.max-writer-concurrency int                                              maximum number of compression workers the compression queue is allowed to use. If max-writer-concurrency > 0, then the Writer will use parallelism, to compress and write blocks to disk. Otherwise, the writer will compress and write blocks to disk synchronously.
+      --persistent.pebble.experimental.mem-table-number int                                                    number used to calculate MemTable size, half of hard limit on the number of queued MemTables (default 4)
+      --persistent.pebble.experimental.read-compaction-rate AllowedSeeks                                       controls the frequency of read triggered compactions by adjusting AllowedSeeks in manifest.FileMetadata: AllowedSeeks = FileSize / ReadCompactionRate (default 16000)
+      --persistent.pebble.experimental.read-sampling-multiplier int                                            a multiplier for the readSamplingPeriod in iterator.maybeSampleRead() to control the frequency of read sampling to trigger a read triggered compaction. A value of -1 prevents sampling and disables read triggered compactions. Default is -1 for hash scheme, 1 for path scheme. (default -1)
+      --persistent.pebble.experimental.target-byte-deletion-rate int                                           rate (in bytes per second) at which sstable file deletions are limited to (under normal circumstances).
+      --persistent.pebble.experimental.target-file-size int                                                    target file size for the level 0 (default 2097152)
+      --persistent.pebble.experimental.target-file-size-equal-levels                                           if true same target-file-size will be uses for all levels, otherwise target size for layer n = 2 * target size for layer n - 1
+      --persistent.pebble.experimental.wal-bytes-per-sync int                                                  number of bytes to write to a write-ahead log (WAL) before calling Sync on it in the background (default 512000)
+      --persistent.pebble.experimental.wal-dir string                                                          absolute path of directory to store write-ahead logs (WALs) in. If empty, WALs will be stored in the same directory as sstables
+      --persistent.pebble.experimental.wal-min-sync-interval int                                               minimum duration in microseconds between syncs of the WAL. If WAL syncs are requested faster than this interval, they will be artificially delayed.
+      --persistent.pebble.max-concurrent-compactions int                                                       maximum number of concurrent compactions (default 2)
+      --persistent.pebble.sync-mode                                                                            if true sync mode is used (data needs to be written to WAL before the write is marked as completed)
+      --pprof                                                                                                  enable pprof
+      --pprof-cfg.addr string                                                                                  pprof server address (default "127.0.0.1")
+      --pprof-cfg.port int                                                                                     pprof server port (default 6071)
+      --validation.api-auth                                                                                    validate is an authenticated API (default true)
+      --validation.api-public                                                                                  validate is a public API
+      --validation.arbitrator.execution-run-timeout duration                                                   timeout before discarding execution run (default 15m0s)
+      --validation.arbitrator.execution.cached-challenge-machines uint                                         how many machines to store in cache while working on a challenge (should be even) (default 4)
+      --validation.arbitrator.execution.initial-steps uint                                                     initial steps between machines (default 100000)
+      --validation.arbitrator.output-path string                                                               path to write machines to (default "./target/output")
+      --validation.arbitrator.redis-validation-server-config.buffer-reads                                      buffer reads (read next while working) (default true)
+      --validation.arbitrator.redis-validation-server-config.consumer-config.idletime-to-autoclaim duration    After a message spends this amount of time in PEL (Pending Entries List i.e claimed by another consumer but not Acknowledged) it will be allowed to be autoclaimed by other consumers. This option should be set to the same value for all consumers and producers. (default 5m0s)
+      --validation.arbitrator.redis-validation-server-config.consumer-config.max-retry-count int               number of message retries after which this consumer will set an error response and Acknowledge the message (-1 = no limit) (default -1)
+      --validation.arbitrator.redis-validation-server-config.consumer-config.response-entry-timeout duration   timeout for response entry (default 1h0m0s)
+      --validation.arbitrator.redis-validation-server-config.consumer-config.retry                             enables autoclaim for this consumer, if set to false this consumer will not check messages from PEL (Pending Entries List) (default true)
+      --validation.arbitrator.redis-validation-server-config.module-roots strings                              Supported module root hashes
+      --validation.arbitrator.redis-validation-server-config.redis-url string                                  url of redis server
+      --validation.arbitrator.redis-validation-server-config.stream-prefix string                              prefix for stream name
+      --validation.arbitrator.redis-validation-server-config.stream-timeout duration                           Timeout on polling for existence of redis streams (default 10m0s)
+      --validation.arbitrator.redis-validation-server-config.workers int                                       number of validation threads (0 to use number of CPUs)
+      --validation.arbitrator.workers int                                                                      number of concurrent validation threads
+      --validation.jit.cranelift                                                                               use Cranelift instead of LLVM when validating blocks using the jit-accelerated block validator (default true)
+      --validation.jit.jit-path string                                                                         path to jit executable, if empty, attempts to find jit executable relative to nitro binary or in PATH
+      --validation.jit.max-execution-time duration                                                             if execution time used by a jit wasm exceeds this limit, a rpc error is returned (default 10m0s)
+      --validation.jit.wasm-memory-usage-limit int                                                             if memory used by a jit wasm exceeds this limit, a warning is logged (default 4294967296)
+      --validation.jit.workers int                                                                             number of concurrent validation threads
+      --validation.rpc-request-max-bytes int                                                                   maximum validation HTTP/WS request bytes, positive and at most 3 GiB (default 3221225472)
+      --validation.use-jit                                                                                     use jit for validation (default true)
+      --validation.wasm.allowed-wasm-module-roots strings                                                      list of WASM module roots or machine base paths to match against on-chain WasmModuleRoot
+      --validation.wasm.enable-wasmroots-check                                                                 enable check for compatibility of on-chain WASM module root with node (default true)
+      --validation.wasm.root-path string                                                                       path to machine folders, each containing wasm files (machine.v2.wavm.br, replay.wasm)
+      --workdir string                                                                                         path used for purpose of resolving relative paths (ia. jwt secret file, log files), if empty then current working directory will be used.
+      --ws.addr string                                                                                         WS-RPC server listening interface
+      --ws.api strings                                                                                         APIs offered over the WS-RPC interface (default [net,web3,eth,arb])
+      --ws.expose-all                                                                                          expose private api via websocket
+      --ws.origins strings                                                                                     Origins from which to accept websockets requests
+      --ws.port int                                                                                            WS-RPC server listening port (default 8548)
+      --ws.rpcprefix string                                                                                    WS path path prefix on which JSON-RPC is served. Use '/' to serve on all paths
