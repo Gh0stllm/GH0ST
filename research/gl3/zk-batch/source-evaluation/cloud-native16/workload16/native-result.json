@@ -1,0 +1,64 @@
+{
+  "stage": "native16 ERC20 generation and EVM execution; no ZK proof",
+  "actualProofStarted": false,
+  "argv": [
+    "/root/gl3-sp1-build/target/release/ethrex-replay",
+    "custom",
+    "block",
+    "--tx",
+    "erc20-transfer",
+    "--n-txs",
+    "16",
+    "--seed",
+    "0",
+    "--n-senders",
+    "1",
+    "--no-zkvm",
+    "--cache-dir",
+    "/workspace/gl3/zk-tests/evm-proof/workload16/cache",
+    "--save-program-input",
+    "/workspace/gl3/zk-tests/evm-proof/workload16/program-input.json"
+  ],
+  "binarySHA256": "2c202e213a0f5304cf0004dd387e83b93f7b139aaa53eb033e5009bd2b1bd654",
+  "binaryBytes": 137127936,
+  "sourceGuestProfile": {
+    "profile": "official ethrex v15 released guest with separately pinned current890 host",
+    "guestSourceRevision": "f902422ada4b4004c4e5e0630987d116661a5dd0",
+    "guestRelease": "v15.0.0/ethrex-riscv32im-sp1-elf-v15.0.0-rc.1",
+    "guestELFSHA256": "25270f23a49d998e37769c775047a6c9c080cd5d02b9b036ac18facb60c59bbb",
+    "guestELFBytes": 4864368,
+    "guestELFIncludePath": "/workspace/gl3/zk-tests/evm-proof/toolchains/cargo/git/checkouts/ethrex-b17359103979e28f/890efb6/crates/guest-program/bin/sp1/out/riscv32im-succinct-zkvm-elf",
+    "hostLockedEVMRevision": "890efb6bf5dcc09b650cf105b8444d3793dffdf0",
+    "sameHostGuestCommit": false,
+    "SP1_SKIP_PROGRAM_BUILD": "true",
+    "SP1_PROVER": "cpu",
+    "programMathModified": false,
+    "requiredBeforeAcceptance": [
+      "actual16txguestexecution",
+      "expectednativepoststate/publicvaluesagreement",
+      "realGroth16nativeverification",
+      "matchingSolidityacceptance"
+    ]
+  },
+  "peakOwnedRSS": 29814784,
+  "actualExitCode": 0,
+  "files": {
+    "folded-genesis.json": {
+      "bytes": 58729,
+      "SHA256": "34ad33d2b13a33b7c3c2addac6b19f958ecc71c0d1d67c533251cf5b99bddfd2"
+    },
+    "workload.json": {
+      "bytes": 20654,
+      "SHA256": "e468b022a4138c7a88f296b808f4d7429a029667c0114242d499529f122725f0"
+    },
+    "program-input.json": {
+      "bytes": 23247,
+      "SHA256": "019ceb5f733ac4de61f5bc58330c1fc1663f1a240a85111c5dca4740198e5b79"
+    }
+  },
+  "passed": true,
+  "transactions": 16,
+  "chainId": 9,
+  "blocks": 1,
+  "outerSecondsIncludingGenerationWitnessAndNativeReplay": 0.23949551582336426
+}

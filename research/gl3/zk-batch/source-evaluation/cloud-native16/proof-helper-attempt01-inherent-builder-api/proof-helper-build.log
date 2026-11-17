@@ -1,0 +1,33 @@
+   Compiling ethrex-replay v7.0.0 (/workspace/gl3/zk-tests/evm-proof/source/replay-sp1-native)
+error[E0599]: no method named `expect` found for struct `CpuExecuteBuilder` in the current scope
+  --> examples/gl3-proof16.rs:18:89
+   |
+18 | ...ient.execute(ZKVM_SP1_PROGRAM_ELF,&stdin).expect("real full EVM guest execution");let guest_seconds=exec.elapsed().as_secs_f64();
+   |                                              ^^^^^^ method not found in `CpuExecuteBuilder<'_>`
+
+error[E0061]: this method takes 2 arguments but 3 arguments were supplied
+  --> examples/gl3-proof16.rs:23:50
+   |
+23 |  let proof_start=Instant::now();let proof=client.prove(&pk,&stdin,SP1ProofMode::Groth16).expect("real full Groth16 proof including recurs...
+   |                                                  ^^^^^            --------------------- unexpected argument #3 of type `SP1ProofMode`
+   |
+note: method defined here
+  --> /workspace/gl3/zk-tests/evm-proof/toolchains/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sp1-sdk-5.0.8/src/cpu/mod.rs:86:12
+   |
+86 |     pub fn prove<'a>(&'a self, pk: &'a SP1ProvingKey, stdin: &SP1Stdin) -> CpuProveBuilder<'a> {
+   |            ^^^^^
+help: remove the extra argument
+   |
+23 -  let proof_start=Instant::now();let proof=client.prove(&pk,&stdin,SP1ProofMode::Groth16).expect("real full Groth16 proof including recursion and EVM wrapping");let proof_seconds=proof_start.elapsed().as_secs_f64();
+23 +  let proof_start=Instant::now();let proof=client.prove(&pk,&stdin).expect("real full Groth16 proof including recursion and EVM wrapping");let proof_seconds=proof_start.elapsed().as_secs_f64();
+   |
+
+error[E0599]: no method named `expect` found for struct `CpuProveBuilder` in the current scope
+  --> examples/gl3-proof16.rs:23:90
+   |
+23 | ...nt.prove(&pk,&stdin,SP1ProofMode::Groth16).expect("real full Groth16 proof including recursion and EVM wrapping");let proof_seconds=pr...
+   |                                               ^^^^^^ method not found in `CpuProveBuilder<'_>`
+
+Some errors have detailed explanations: E0061, E0599.
+For more information about an error, try `rustc --explain E0061`.
+error: could not compile `ethrex-replay` (example "gl3-proof16") due to 3 previous errors

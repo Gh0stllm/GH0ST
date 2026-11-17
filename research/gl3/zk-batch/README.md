@@ -1,6 +1,6 @@
 # GL3 · full ZK-batch comparison
 
-**The real Solidity verifier compiled on Runpod; the full EVM proof build is progressing. No new ZK proof or verified gas result is claimed yet.** All builds, execution, proofs and private-chain verification run on Runpod. The tested Nitro build and its frozen deployment profile remain unchanged.
+**The sixteen-transfer native EVM and guest execution passed; a real full Groth16 proof is running on Runpod. The Solidity verifier compiled, but no complete proof or verified gas result is accepted yet.** All builds, execution, proofs and private-chain verification run on Runpod. The tested Nitro build and its frozen deployment profile remain unchanged.
 
 The target is one genuine EVM batch of **16 ERC20 transfers**, with deployment/mint setup outside the measured transaction window. It must reach a final EVM-compatible proof and an actual Solidity verifier receipt. A native replay, mock proof, precomputed third-party proof or standalone arithmetic example cannot satisfy this experiment.
 
@@ -27,3 +27,11 @@ The unchanged MIT-licensed SP1 v5.0.0 Solidity verifier compiles successfully: a
 The CPU proof build uses a pinned ethrex EVM guest/host and SP1/native-gnark pipeline. Broad optional dependency fetching was stopped; only the selected build continues. Network-mounted Cargo metadata caused idle waits, so this test's cached build and registry were moved to fast local storage without changing proof math or the EVM workload. The selected production Nitro profile is untouched. Those setup delays will stay separate from the eventual proving measurement.
 
 The matched Nitro baseline and real-verifier test drivers are being prepared in parallel. Full ZK rollup readiness is outside this single-batch experiment: even a valid proof would not establish a completed bridge, withdrawals or production state coordinator.
+
+## R48 · exact EVM batch passes; real proof starts
+
+The actual sixteen-transfer generator/witness/native-replay job passed with exit0 in0.2395 seconds. The measured block uses833,848 EVM gas. A separate pinned SDK runner independently executes the exported witness natively and in the official released EVM guest: **all160 public bytes match**, including initial/final state roots, last block hash, chain9 and transaction count16. Cold CPU-client initialization is1.558 seconds, program-key setup1.144 seconds and guest execution0.770 seconds.
+
+One real CPU Groth16 proof started at **13:07:30 UTC**, with28 CPU cores allowed, a48GiB owned-RSS guard and56GB shared working-set guard. The saved13:08:32 snapshot is a running observation, not a finished-proof latency or final peak-RAM result. The guest and native EVM have different explicitly pinned source revisions; actual input/output compatibility was tested, rather than assuming identical source. [Frozen source, fixture, failures and measurements](source-evaluation/README.md) · [Actual160-byte binding](source-evaluation/run16/preproof-execution.json) · [Running snapshot](source-evaluation/run16/running-snapshot.json).
+
+The Runpod API still quotes **$1.12/hour compute** for the existing32-vCPU/64GB worker. Storage, chain fees and cold setup are separate; parallel lanes share one rental interval. [Dated compute quote and calculation rule](costs/compute-quote.json). Nitro's matching signed calls are running in a separate private fixture; no completed baseline is claimed in this snapshot.

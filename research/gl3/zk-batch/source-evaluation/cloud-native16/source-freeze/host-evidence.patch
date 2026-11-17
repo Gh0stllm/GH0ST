@@ -1,0 +1,98 @@
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -14,6 +14,7 @@
+ debug = 2
+ 
+ [dependencies]
++sp1-sdk = { version = "=5.0.8", optional = true, features = ["native-gnark"] }
+ ethrex-config = { git = "https://github.com/lambdaclass/ethrex", package = "ethrex-config", branch = "main" }
+ ethrex-storage = { git = "https://github.com/lambdaclass/ethrex", package = "ethrex-storage", branch = "main" }
+ ethrex-common = { git = "https://github.com/lambdaclass/ethrex", package = "ethrex-common", branch = "main" }
+@@ -61,7 +62,7 @@
+ 
+ [features]
+ risc0 = ["ethrex-guest-program/risc0-build-elf", "ethrex-prover/risc0"]
+-sp1 = ["ethrex-guest-program/sp1-build-elf", "ethrex-prover/sp1"]
++sp1 = ["dep:sp1-sdk", "ethrex-guest-program/sp1-build-elf", "ethrex-guest-program/sp1-build-elf", "ethrex-prover/sp1"]
+ openvm = ["ethrex-guest-program/openvm-build-elf", "ethrex-prover/openvm"]
+ zisk = ["ethrex-guest-program/zisk-build-elf", "ethrex-prover/zisk"]
+ gpu = ["ethrex-prover/gpu"]
+--- a/Cargo.lock
++++ b/Cargo.lock
+@@ -4004,6 +4004,7 @@
+  "tokio",
+  "tracing",
+  "tracing-subscriber 0.3.22",
++ "sp1-sdk",
+ ]
+ 
+ [[package]]
+--- a/src/run.rs
++++ b/src/run.rs
+@@ -82,7 +82,32 @@
+         #[cfg(feature = "sp1")]
+         BackendType::SP1 => Sp1Backend::new()
+             .prove_timed(input, proof_type.into())
+-            .map(|(_, duration)| duration),
++            .map(|(output, duration)| {
++                if let Ok(directory) = std::env::var("GL3_PROOF_EXPORT_DIR") {
++                    use sp1_sdk::HashableKey;
++                    let folder = std::path::PathBuf::from(directory);
++                    std::fs::create_dir_all(&folder).expect("create proof evidence directory");
++                    assert!(matches!(&output.proof.proof, sp1_sdk::SP1Proof::Groth16(_)), "GL3 evidence requires a real Groth16 proof");
++                    let verify_start = std::time::Instant::now();
++                    Sp1Backend::new().verify(&output).expect("native verification of full Groth16 proof");
++                    let verify_seconds = verify_start.elapsed().as_secs_f64();
++                    output.proof.save(folder.join("proof-with-public-values.bin")).expect("save native proof");
++                    let public_values = output.proof.public_values.to_vec();
++                    let seal = output.proof.bytes();
++                    std::fs::write(folder.join("proof.bin"), &seal).expect("save EVM proof bytes");
++                    std::fs::write(folder.join("public-values.bin"), &public_values).expect("save public values");
++                    let record = serde_json::json!({
++                        "proofKind":"Groth16", "programVKey":output.vk.bytes32(),
++                        "publicValues":format!("0x{}", hex::encode(public_values)),
++                        "proof":format!("0x{}", hex::encode(seal)),
++                        "fullProvingSecondsIncludingEVMWrapping":duration.as_secs_f64(),
++                        "nativeVerificationSeconds":verify_seconds, "nativeVerified":true,
++                        "mockProof":false, "networkProver":false, "guestChanged":false
++                    });
++                    std::fs::write(folder.join("evm-proof.json"), serde_json::to_vec_pretty(&record).expect("encode proof evidence")).expect("write proof evidence");
++                }
++                duration
++            }),
+         #[cfg(feature = "risc0")]
+         BackendType::RISC0 => Risc0Backend::new()
+             .prove_timed(input, proof_type.into())
+--- a/src/cli.rs
++++ b/src/cli.rs
+@@ -1630,6 +1630,12 @@
+         }
+     }
+ 
++    if let Ok(directory) = std::env::var("GL3_WORKLOAD_EXPORT_DIR") {
++        let folder = std::path::PathBuf::from(directory);
++        std::fs::create_dir_all(&folder)?;
++        std::fs::write(folder.join("folded-genesis.json"), serde_json::to_vec_pretty(&genesis)?)?;
++    }
++
+     let mut store = {
+         let mut store_inner = Store::new("./", EngineType::InMemory)?;
+         store_inner.add_initial_state(genesis.clone()).await?;
+@@ -1657,6 +1663,17 @@
+         n_blocks,
+     )
+     .await?;
++
++    if let Ok(directory) = std::env::var("GL3_WORKLOAD_EXPORT_DIR") {
++        let folder = std::path::PathBuf::from(directory);
++        let raw: Vec<String> = blocks.iter().flat_map(|block| block.body.transactions.iter())
++            .map(|tx| format!("0x{}", hex::encode(tx.encode_canonical_to_vec()))).collect();
++        let record = serde_json::json!({"chainId":genesis.config.chain_id,
++            "blocks":blocks, "rawSignedTransactions":raw, "seed":block_opts.seed,
++            "senders":block_opts.n_senders, "setupExcludedFromMeasuredBlocks":true,
++            "fullEVM":true, "realPublicTransactions":0});
++        std::fs::write(folder.join("workload.json"), serde_json::to_vec_pretty(&record)?)?;
++    }
+ 
+     let execution_witness = blockchain.generate_witness_for_blocks(&blocks).await?;
+     let chain_config = execution_witness.chain_config;

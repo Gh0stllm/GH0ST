@@ -1,0 +1,113 @@
+{
+  "schema": "gh0st.gl3.full-evm-zk-batch.intent.v1",
+  "status": "ONE_REAL16_GROTH16_PROOF_RUNNING_NOT_ACCEPTED",
+  "scope": "Research benchmark, not a production chain replacement",
+  "workload": {
+    "kind": "full-EVM-ERC20-transfer-block",
+    "screens": {
+      "nativeExecutionCompleted": 16,
+      "fullGroth16Proof": 16,
+      "fourTransactionProofPlanned": false
+    },
+    "blocksPerBatch": 1,
+    "seed": 0,
+    "senders": 1,
+    "chainId": 9,
+    "exactFixtureMustMatchNitro": true,
+    "setupOutsideMeasuredBlock": true,
+    "nativeOnlyTransferSubstituteAllowed": false
+  },
+  "source": {
+    "replayRepository": "https://github.com/lambdaclass/ethrex-replay",
+    "replayCommit": "d6687b13f06f39510cf71abafe0e6a5fe2ab3c80",
+    "replayCargoLockSHA256": "e07392bad8998b246bb36c418d80656a0531e804d76f25c6bb7f3c36b8f032db",
+    "ethrexCommit": "890efb6bf5dcc09b650cf105b8444d3793dffdf0",
+    "ethrexPackageVersion": "15.0.0",
+    "SP1SDK": "5.0.8",
+    "SP1Prover": "5.0.8",
+    "gnarkFFI": "5.2.4",
+    "wrapperCircuit": "v5.0.0",
+    "SolidityVerifierFamily": "v5.0.0",
+    "hostRust": "1.90.0",
+    "overlayCargoLockSHA256": "d4a0d9257e73b0689c0338f91ca1e1943ada9c16ca6b5e6b96b2e87c30c52ca8",
+    "releasedGuest": {
+      "sourceRevision": "f902422ada4b4004c4e5e0630987d116661a5dd0",
+      "ELFSHA256": "25270f23a49d998e37769c775047a6c9c080cd5d02b9b036ac18facb60c59bbb",
+      "release": "v15.0.0/ethrex-riscv32im-sp1-elf-v15.0.0-rc.1",
+      "sameHostGuestCommit": false,
+      "acceptanceRequiresActualGuestNativePublicValuesMatch": true
+    }
+  },
+  "proof": {
+    "kind": "Groth16",
+    "fullEVMGuest": true,
+    "nativeGnarkFeatureRequired": true,
+    "dockerInDockerAllowed": false,
+    "mockOrDevModeAllowed": false,
+    "networkProverAllowed": false,
+    "publicValuesAndProgramVKeyMustBeExported": true,
+    "realProofStarted": true,
+    "accepted": false,
+    "runtimeIntent": "run16/intent.json",
+    "processSnapshot": "run16/running-snapshot.json",
+    "nativeGuestAll160BytesMatch": true,
+    "oneClientKeyReused": true
+  },
+  "build": {
+    "RunpodOnly": true,
+    "remoteRoot": "/workspace/gl3/zk-tests/evm-proof",
+    "CPUCap": 16,
+    "ownedRSSGuardBytes": 42949672960,
+    "sharedWorkingSetGuardBytes": 56000000000,
+    "rootDiskFloorBytes": 6000000000,
+    "noPublicWrites": true,
+    "noWalletKeys": true,
+    "targetDirectory": "/root/gl3-sp1-build/target",
+    "controllerPID": 52867,
+    "cargoChildPID": 52868,
+    "actualExitCode": 0,
+    "seconds": 87.12868785858154,
+    "peakOwnedRSSBytes": 3115245568,
+    "binarySHA256": "2c202e213a0f5304cf0004dd387e83b93f7b139aaa53eb033e5009bd2b1bd654"
+  },
+  "measure": [
+    "setup/download/build separately",
+    "witness generation",
+    "native full EVM execution",
+    "cold key setup",
+    "full proof including compression and Groth16 wrapping",
+    "owned process-tree peak RAM",
+    "actual Solidity verification gas and negative proof/public-value/key checks"
+  ],
+  "rejectedOrUnaccepted": {
+    "releasedReplayV7ERC20": "Advertised but unimplemented source branch; not executed as an accepted ERC20 test",
+    "ethrexV31SP1V69": "Does not match selected v5 Cargo.lock",
+    "ethrexV15ReleaseGuest": "Selected as separately versioned official guest; acceptance waits actual full16 guest/native public-value agreement and genuine verification",
+    "Airbender": "Prior inspected pipeline incomplete/wrapper high-memory; no blind build",
+    "MoongateGPU": "BSL non-production research alternative only; CPU primary selected"
+  },
+  "productionChanges": false,
+  "realTransactionsSubmitted": 0,
+  "licenseOrFinancialAction": false,
+  "native16": {
+    "actualExitCode": 0,
+    "transactions": 16,
+    "gas": 833848,
+    "outerSecondsIncludingGenerationWitnessAndNativeReplay": 0.23949551582336426,
+    "artifactReceipts": "cloud-native16/workload16/native-result.json",
+    "rkyvInputFile": "cloud-native16/workload16/program-input.json",
+    "rkyvInputFilenameWarning": "Binary rkyv bytes despite upstream .json suffix"
+  },
+  "plannedProofRuntime": {
+    "CPUCap": 28,
+    "ownedRSSGuardBytes": 51539607552,
+    "sharedWorkingSetGuardBytes": 56000000000,
+    "rootDiskFloorBytes": 6000000000,
+    "wallSeconds": 7200,
+    "sameCPUClientAndKeysForGuestAndProof": true,
+    "requiresNativeGuestAndProofPublicValuesExactlyMatch": true,
+    "controllerPID": 54657,
+    "childPID": 54658,
+    "startedUTC": "2026-11-17T13:07:30Z"
+  }
+}

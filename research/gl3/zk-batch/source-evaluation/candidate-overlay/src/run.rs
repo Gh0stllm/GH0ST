@@ -1,0 +1,277 @@
+use crate::{cache::Cache, cli::ProofType};
+#[cfg(feature = "l2")]
+use ethrex_common::types::{ELASTICITY_MULTIPLIER, fee_config::FeeConfig};
+use ethrex_common::{
+    H256, NativeCrypto,
+    types::{
+        AccountUpdate, Receipt,
+        block_execution_witness::{GuestProgramState, decode_witness_headers},
+    },
+};
+use ethrex_guest_program::input::ProgramInput;
+use ethrex_levm::{db::gen_db::GeneralizedDatabase, vm::VMType};
+#[cfg(feature = "openvm")]
+use ethrex_prover::OpenVmBackend;
+#[cfg(feature = "risc0")]
+use ethrex_prover::Risc0Backend;
+#[cfg(feature = "sp1")]
+use ethrex_prover::Sp1Backend;
+#[cfg(feature = "zisk")]
+use ethrex_prover::ZiskBackend;
+use ethrex_prover::{BackendType, ExecBackend, ProverBackend};
+use ethrex_vm::{DynVmDatabase, Evm, GuestProgramStateWrapper, backends::levm::LEVM};
+use eyre::Context;
+use std::{
+    panic::{AssertUnwindSafe, catch_unwind},
+    sync::Arc,
+    time::Duration,
+};
+
+pub async fn exec(backend: BackendType, cache: Cache) -> eyre::Result<Duration> {
+    #[cfg(feature = "l2")]
+    let input = get_l2_input(cache)?;
+    #[cfg(not(feature = "l2"))]
+    let input = get_l1_input(cache)?;
+
+    // Use catch_unwind to capture panics
+    let result = catch_unwind(AssertUnwindSafe(|| match backend {
+        BackendType::Exec => ExecBackend::new().execute_timed(input),
+        #[cfg(feature = "sp1")]
+        BackendType::SP1 => Sp1Backend::new().execute_timed(input),
+        #[cfg(feature = "risc0")]
+        BackendType::RISC0 => Risc0Backend::new().execute_timed(input),
+        #[cfg(feature = "zisk")]
+        BackendType::ZisK => ZiskBackend::new().execute_timed(input),
+        #[cfg(feature = "openvm")]
+        BackendType::OpenVM => OpenVmBackend::new().execute_timed(input),
+    }));
+
+    match result {
+        Ok(exec_result) => {
+            let elapsed =
+                exec_result.map_err(|e| eyre::Error::msg(format!("Execution failed: {}", e)))?;
+            Ok(elapsed)
+        }
+        Err(panic_info) => {
+            // Try to extract meaningful error message from panic info
+            let panic_msg = extract_panic_message(&panic_info);
+
+            Err(eyre::Error::msg(format!(
+                "Execution panicked: {}",
+                panic_msg
+            )))
+        }
+    }
+}
+
+pub async fn prove(
+    backend: BackendType,
+    proof_type: ProofType,
+    cache: Cache,
+) -> eyre::Result<Duration> {
+    #[cfg(feature = "l2")]
+    let input = get_l2_input(cache)?;
+    #[cfg(not(feature = "l2"))]
+    let input = get_l1_input(cache)?;
+
+    // Use catch_unwind to capture panics
+    let result = catch_unwind(AssertUnwindSafe(|| match backend {
+        BackendType::Exec => ExecBackend::new()
+            .prove_timed(input, proof_type.into())
+            .map(|(_, duration)| duration),
+        #[cfg(feature = "sp1")]
+        BackendType::SP1 => Sp1Backend::new()
+            .prove_timed(input, proof_type.into())
+            .map(|(output, duration)| {
+                if let Ok(directory) = std::env::var("GL3_PROOF_EXPORT_DIR") {
+                    use sp1_sdk::HashableKey;
+                    let folder = std::path::PathBuf::from(directory);
+                    std::fs::create_dir_all(&folder).expect("create proof evidence directory");
+                    assert!(matches!(&output.proof.proof, sp1_sdk::SP1Proof::Groth16(_)), "GL3 evidence requires a real Groth16 proof");
+                    let verify_start = std::time::Instant::now();
+                    Sp1Backend::new().verify(&output).expect("native verification of full Groth16 proof");
+                    let verify_seconds = verify_start.elapsed().as_secs_f64();
+                    output.proof.save(folder.join("proof-with-public-values.bin")).expect("save native proof");
+                    let public_values = output.proof.public_values.to_vec();
+                    let seal = output.proof.bytes();
+                    std::fs::write(folder.join("proof.bin"), &seal).expect("save EVM proof bytes");
+                    std::fs::write(folder.join("public-values.bin"), &public_values).expect("save public values");
+                    let record = serde_json::json!({
+                        "proofKind":"Groth16", "programVKey":output.vk.bytes32(),
+                        "publicValues":format!("0x{}", hex::encode(public_values)),
+                        "proof":format!("0x{}", hex::encode(seal)),
+                        "fullProvingSecondsIncludingEVMWrapping":duration.as_secs_f64(),
+                        "nativeVerificationSeconds":verify_seconds, "nativeVerified":true,
+                        "mockProof":false, "networkProver":false, "guestChanged":false
+                    });
+                    std::fs::write(folder.join("evm-proof.json"), serde_json::to_vec_pretty(&record).expect("encode proof evidence")).expect("write proof evidence");
+                }
+                duration
+            }),
+        #[cfg(feature = "risc0")]
+        BackendType::RISC0 => Risc0Backend::new()
+            .prove_timed(input, proof_type.into())
+            .map(|(_, duration)| duration),
+        #[cfg(feature = "zisk")]
+        BackendType::ZisK => ZiskBackend::new()
+            .prove_timed(input, proof_type.into())
+            .map(|(_, duration)| duration),
+        #[cfg(feature = "openvm")]
+        BackendType::OpenVM => OpenVmBackend::new()
+            .prove_timed(input, proof_type.into())
+            .map(|(_, duration)| duration),
+    }));
+
+    match result {
+        Ok(prove_result) => {
+            let elapsed =
+                prove_result.map_err(|e| eyre::Error::msg(format!("Proving failed: {}", e)))?;
+            Ok(elapsed)
+        }
+        Err(panic_info) => {
+            // Try to extract meaningful error message from panic info
+            let panic_msg = extract_panic_message(&panic_info);
+
+            Err(eyre::Error::msg(format!("Proving panicked: {}", panic_msg)))
+        }
+    }
+}
+
+pub async fn run_tx(cache: Cache, tx_hash: H256) -> eyre::Result<(Receipt, Vec<AccountUpdate>)> {
+    let block = cache
+        .blocks
+        .first()
+        .ok_or(eyre::Error::msg("missing block data"))?;
+
+    let execution_witness = cache.witness;
+    let network = cache.network;
+    let chain_config = network
+        .get_genesis()
+        .map_err(|_| eyre::Error::msg("Failed to get genesis block"))?
+        .config;
+
+    let decoded_headers = decode_witness_headers(&execution_witness.headers)
+        .wrap_err("Failed to decode witness headers")?;
+    let execution_witness = execution_witness
+        .into_execution_witness(chain_config, block.header.number, &decoded_headers)
+        .wrap_err("Failed to convert execution witness")?;
+
+    let guest_program_state = GuestProgramState::from_witness(execution_witness, &NativeCrypto)
+        .map_err(eyre::Error::msg)?;
+
+    let mut wrapped_db = GuestProgramStateWrapper::new(guest_program_state, Arc::new(NativeCrypto));
+
+    #[cfg(feature = "l2")]
+    let fee_config = FeeConfig::default();
+
+    #[cfg(feature = "l2")]
+    let vm_type = VMType::L2(fee_config);
+    #[cfg(not(feature = "l2"))]
+    let vm_type = VMType::L1;
+
+    let changes = {
+        let store: Arc<DynVmDatabase> = Arc::new(Box::new(wrapped_db.clone()));
+        let mut db = GeneralizedDatabase::new(store.clone());
+        LEVM::prepare_block(block, &mut db, vm_type, &NativeCrypto)?;
+        LEVM::get_state_transitions(&mut db)?
+    };
+    wrapped_db.apply_account_updates(&changes)?;
+
+    for (tx, tx_sender) in block.body.get_transactions_with_sender(&NativeCrypto)? {
+        #[cfg(feature = "l2")]
+        let mut vm = Evm::new_for_l2(wrapped_db.clone(), fee_config, Arc::new(NativeCrypto))?;
+        #[cfg(not(feature = "l2"))]
+        let mut vm = Evm::new_for_l1(wrapped_db.clone(), Arc::new(NativeCrypto));
+        let mut cumulative_gas_spent = 0;
+        let (receipt, _) =
+            vm.execute_tx(tx, &block.header, &mut cumulative_gas_spent, tx_sender)?;
+        let account_updates = vm.get_state_transitions()?;
+        wrapped_db.apply_account_updates(&account_updates)?;
+        if tx.hash() == tx_hash {
+            return Ok((receipt, account_updates));
+        }
+    }
+
+    Err(eyre::Error::msg("transaction not found inside block"))
+}
+
+#[cfg(not(feature = "l2"))]
+pub fn get_l1_input(cache: Cache) -> eyre::Result<ProgramInput> {
+    let first_block_number = cache.get_first_block_number()?;
+
+    let Cache {
+        blocks,
+        witness: db,
+        network,
+        chain_config,
+        l2_fields,
+        ..
+    } = cache;
+
+    if l2_fields.is_some() {
+        return Err(eyre::eyre!("Unexpected L2 fields in cache"));
+    }
+    if chain_config.is_some() {
+        return Err(eyre::eyre!("Unexpected chain config in cache"));
+    }
+    let chain_config = network
+        .get_genesis()
+        .map_err(|_| eyre::Error::msg("Failed to get genesis block"))?
+        .config;
+
+    let decoded_headers =
+        decode_witness_headers(&db.headers).wrap_err("Failed to decode witness headers")?;
+    let execution_witness = db
+        .into_execution_witness(chain_config, first_block_number, &decoded_headers)
+        .wrap_err("Failed to convert execution witness")?;
+
+    Ok(ProgramInput {
+        blocks,
+        execution_witness,
+    })
+}
+
+/// Extract a meaningful error message from panic information.
+fn extract_panic_message(panic_info: &Box<dyn std::any::Any + Send>) -> String {
+    if let Some(s) = panic_info.downcast_ref::<String>() {
+        s.clone()
+    } else if let Some(s) = panic_info.downcast_ref::<&str>() {
+        s.to_string()
+    } else {
+        "Unknown panic occurred".to_string()
+    }
+}
+
+#[cfg(feature = "l2")]
+pub fn get_l2_input(cache: Cache) -> eyre::Result<ProgramInput> {
+    use ethrex_common::types::fee_config::FeeConfig;
+
+    let first_block_number = cache.get_first_block_number()?;
+
+    let Cache {
+        blocks,
+        witness: db,
+        chain_config,
+        l2_fields,
+        ..
+    } = cache;
+
+    let l2_fields = l2_fields.ok_or_else(|| eyre::eyre!("Missing L2 fields in cache"))?;
+    let chain_config = chain_config.ok_or_else(|| eyre::eyre!("Missing chain config in cache"))?;
+
+    let decoded_headers =
+        decode_witness_headers(&db.headers).wrap_err("Failed to decode witness headers")?;
+    let execution_witness = db
+        .into_execution_witness(chain_config, first_block_number, &decoded_headers)
+        .wrap_err("Failed to convert execution witness")?;
+
+    let block_len = blocks.len();
+    Ok(ProgramInput {
+        blocks,
+        execution_witness,
+        elasticity_multiplier: ELASTICITY_MULTIPLIER,
+        blob_commitment: l2_fields.blob_commitment,
+        blob_proof: l2_fields.blob_proof,
+        fee_configs: vec![FeeConfig::default(); block_len],
+    })
+}

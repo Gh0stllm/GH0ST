@@ -1,0 +1,14 @@
+[2m2026-11-17T13:01:10.137705Z[0m [33m WARN[0m [2methrex_storage::layering[0m[2m:[0m tried to insert a state_root that's already inserted
+[2m2026-11-17T13:01:10.151000Z[0m [32m INFO[0m [2methrex_replay::cli[0m[2m:[0m Saved program input to /workspace/gl3/zk-tests/evm-proof/workload16/program-input.json
+[2m2026-11-17T13:01:10.151083Z[0m [32m INFO[0m [2methrex_replay::cli[0m[2m:[0m Preparing Storage for execution without zkVM
+[2m2026-11-17T13:01:10.152064Z[0m [32m INFO[0m [2methrex_replay::cli[0m[2m:[0m Storage preparation finished in 981.21µs
+[2m2026-11-17T13:01:10.152121Z[0m [32m INFO[0m [2methrex_replay::cli[0m[2m:[0m Executing block 1 on local-devnet
+[2m2026-11-17T13:01:10.153170Z[0m [32m INFO[0m [2methrex_blockchain[0m[2m:[0m [METRIC] BLOCK 1 | 0.845 Ggas/s | 0.99 ms | 16 txs | 1 Mgas (1%)
+[2m2026-11-17T13:01:10.153270Z[0m [32m INFO[0m [2methrex_blockchain[0m[2m:[0m   |- validate:    0.02 ms  ( 2%)
+[2m2026-11-17T13:01:10.153324Z[0m [32m INFO[0m [2methrex_blockchain[0m[2m:[0m   |- exec:        0.42 ms  (43%) << BOTTLENECK
+[2m2026-11-17T13:01:10.153353Z[0m [32m INFO[0m [2methrex_blockchain[0m[2m:[0m   |- merkle:      0.28 ms  (28%)  [concurrent: 0.42 ms, drain: 0.28 ms, overlap: 60%, queue: 1, start_delay: 0.07 ms]
+[2m2026-11-17T13:01:10.153420Z[0m [32m INFO[0m [2methrex_blockchain[0m[2m:[0m   |- store:       0.27 ms  (27%)
+[2m2026-11-17T13:01:10.153497Z[0m [32m INFO[0m [2methrex_blockchain[0m[2m:[0m   `- warmer:      0.27 ms         [finished: 0.15 ms before exec]
+[2m2026-11-17T13:01:10.153582Z[0m [32m INFO[0m [2methrex_replay::cli[0m[2m:[0m add_block_pipeline execution time: 1.41ms
+[2m2026-11-17T13:01:10.153840Z[0m [32m INFO[0m [2methrex_replay::report[0m[2m:[0m [local-devnet] Block: 1, Gas: 833848, #Txs: 16, Execution Time: 00s 001ms
+[2m2026-11-17T13:01:10.153888Z[0m [32m INFO[0m [2methrex_replay::cli[0m[2m:[0m Custom workload 'erc20-transfer' (seed 0): 1 block(s), 16 transaction(s), 833848 total gas

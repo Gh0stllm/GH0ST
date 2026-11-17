@@ -1,0 +1,30 @@
+use std::{path::PathBuf,sync::Arc,time::Instant};
+use ethrex_guest_program::{input::ProgramInput,ZKVM_SP1_PROGRAM_ELF};
+use sp1_sdk::{CpuProver,Prover,HashableKey,SP1ProofMode,SP1Proof,SP1Stdin};
+fn main() {
+ let args:Vec<String>=std::env::args().collect();assert_eq!(args.len(),3,"input file and output directory required");
+ let input_path=PathBuf::from(&args[1]);let out=PathBuf::from(&args[2]);std::fs::create_dir_all(&out).unwrap();
+ let whole=Instant::now();let input_bytes=std::fs::read(&input_path).unwrap();
+ let input=rkyv::from_bytes::<ProgramInput,rkyv::rancor::Error>(&input_bytes).expect("actual archived EVM input");
+ assert_eq!(input.blocks.len(),1);assert_eq!(input.blocks[0].body.transactions.len(),16);
+ let native_start=Instant::now();
+ let expected=ethrex_guest_program::l1::execution_program(input,Arc::new(ethrex_common::NativeCrypto)).expect("independent native full EVM execution");
+ let native_seconds=native_start.elapsed().as_secs_f64();let expected_bytes=expected.encode();assert_eq!(expected_bytes.len(),160);
+ assert_eq!(expected.chain_id,ethrex_common::U256::from(9));assert_eq!(expected.transaction_count,ethrex_common::U256::from(16));
+ let mut stdin=SP1Stdin::new();stdin.write_slice(&input_bytes);
+ let init=Instant::now();let client=CpuProver::new();let client_init_seconds=init.elapsed().as_secs_f64();
+ let key_start=Instant::now();let(pk,vk)=client.setup(ZKVM_SP1_PROGRAM_ELF);let key_setup_seconds=key_start.elapsed().as_secs_f64();
+ println!("GL3_PHASE guest_execution nativeSeconds={native_seconds} clientInitSeconds={client_init_seconds} keySetupSeconds={key_setup_seconds}");
+ let exec=Instant::now();let(actual,report)=client.execute(ZKVM_SP1_PROGRAM_ELF,&stdin).expect("real full EVM guest execution");let guest_seconds=exec.elapsed().as_secs_f64();
+ assert_eq!(actual.to_vec(),expected_bytes,"all five 32-byte native/guest public fields must match before proving");
+ let pre=serde_json::json!({"nativeExpected":&expected,"nativeExpectedPublicValues":format!("0x{}",hex::encode(&expected_bytes)),"actualExecutionPublicValues":format!("0x{}",hex::encode(actual.to_vec())),"allFiveFieldsMatch":true,"nativeFullEVMSeconds":native_seconds,"coldCpuClientInitializationSeconds":client_init_seconds,"coldKeySetupSeconds":key_setup_seconds,"guestExecutionSeconds":guest_seconds,"executionReport":format!("{report:?}"),"backend":"CpuProver","networkProver":false,"transactions":16,"chainId":9});
+ std::fs::write(out.join("preproof-execution.json"),serde_json::to_vec_pretty(&pre).unwrap()).unwrap();
+ println!("GL3_PHASE full_groth16_start");
+ let proof_start=Instant::now();let proof=client.prove(&pk,&stdin,SP1ProofMode::Groth16).expect("real full Groth16 proof including recursion and EVM wrapping");let proof_seconds=proof_start.elapsed().as_secs_f64();
+ assert!(matches!(&proof.proof,SP1Proof::Groth16(_)),"real Groth16 variant required");assert_eq!(proof.public_values.to_vec(),expected_bytes,"proof public bytes must match native EVM and guest execution");
+ let verify_start=Instant::now();client.verify(&proof,&vk).expect("native verification of real Groth16 proof");let verify_seconds=verify_start.elapsed().as_secs_f64();
+ proof.save(out.join("proof-with-public-values.bin")).unwrap();let evm=proof.bytes();assert!(!evm.is_empty());
+ std::fs::write(out.join("proof.bin"),&evm).unwrap();std::fs::write(out.join("public-values.bin"),&expected_bytes).unwrap();
+ let bundle=serde_json::json!({"programVKey":vk.bytes32(),"publicValues":format!("0x{}",hex::encode(&expected_bytes)),"proofBytes":format!("0x{}",hex::encode(&evm)),"proofKind":"Groth16","nativeVerified":true,"nativeExpected":&expected,"nativeExpectedPublicValues":format!("0x{}",hex::encode(&expected_bytes)),"allFiveFieldsMatch":true,"backend":"CpuProver","mockProof":false,"networkProver":false,"transactions":16,"chainId":9,"fullProvingSecondsIncludingEVMWrapping":proof_seconds,"nativeVerificationSeconds":verify_seconds,"coldCpuClientInitializationSeconds":client_init_seconds,"coldKeySetupSeconds":key_setup_seconds,"guestExecutionSeconds":guest_seconds,"nativeFullEVMSeconds":native_seconds,"wholeSecondsBeforeFinalExport":whole.elapsed().as_secs_f64()});
+ std::fs::write(out.join("evm-proof.json"),serde_json::to_vec_pretty(&bundle).unwrap()).unwrap();println!("GL3_COMPLETE {}",serde_json::to_string(&bundle).unwrap());
+}
