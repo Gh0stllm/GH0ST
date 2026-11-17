@@ -20,7 +20,7 @@ await test('bridge disabled configuration and missing final setup reject', () =>
 await test('new genesis chain token role and private-query RPC binding are required', () => {
   for (const delta of [{ childGenesisHash: '0x' + '00'.repeat(32) }, { childChainId: 4663 }, { parentBackingToken: addr }, { expectedAnyTrustFastConfirmer: ZERO }, { parentRpcUrl: 'https://fixture.invalid/?private=key' }]) assert.throws(() => validatePublicConfig({ ...valid, ...delta }));
 });
-const readback = { owners: [ZERO], minters: [], minimumGasPrice: 10000000000000n, baseFee: 10000000000000n, networkFeeAccount: addr, infraFeeAccount: addr, l1RewardRecipient: addr };
+const readback = { owners: [ZERO], minters: [], nativeTokenManagementFrom:0n, scheduledUpgrade:[0n,0n], minimumGasPrice: 10000000000000n, baseFee: 10000000000000n, networkFeeAccount: addr, infraFeeAccount: addr, l1RewardRecipient: addr };
 await test('final zero owner no minters and exact minimum/treasury policy pass', () => assert.equal(validateFinalSetupReadback(valid, readback), true));
 await test('remaining owner minter lower fees or changed recipient disable activation', () => {
   for (const delta of [{ owners: [addr] }, { minters: [addr] }, { minimumGasPrice: 1n }, { baseFee: 1n }, { infraFeeAccount: ZERO }]) assert.throws(() => validateFinalSetupReadback(valid, { ...readback, ...delta }));
@@ -54,7 +54,7 @@ await test('explorer balances and pagination preserve exact values including gen
   assert.deepEqual(blockPage(2n, null), ['0x2', '0x1', '0x0']); assert.equal(blockPage(50n, 30n).at(-1), '0xb');
 });
 await test('explorer refuses disabled wrong-chain or missing-genesis profiles', () => {
-  const s = { enabled: true, chainId: 4663001, nativeSymbol: 'GH0ST', confirmationMode: 'project-run-fast-confirmation', zkAtLaunch: false, genesisHash: hash, rpcUrl: 'https://fixture.invalid' };
+  const s = { enabled: true, readOnly:false, chainId: 4663001, nativeSymbol: 'GH0ST', confirmationMode: 'project-run-fast-confirmation', zkAtLaunch: false, genesisHash: hash, rpcUrl: 'https://fixture.invalid' };
   assert.equal(verifiedConfig(s), s); for (const delta of [{ enabled: false }, { chainId: 1 }, { genesisHash: null }, { zkAtLaunch: true }]) assert.throws(() => verifiedConfig({ ...s, ...delta }));
 });
 

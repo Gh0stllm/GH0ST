@@ -1,0 +1,13 @@
+{
+  "schema": "gh0st.gl3.guarded-rpc-source-freeze.v2",
+  "scope": "Receipt-bound read-only bootstrap source. Drafts intentionally disabled/unapproved; root must review actual activation and update matching receipt hash. No listener started by this lane.",
+  "readOnly": true,
+  "guardedRPCSHA256": "3cce804184b48f52bad8b3e518fcb77e104116ccab21d0156966e3b50f3bc1bd",
+  "testSHA256": "a11858016fae8e2e853f65006f8b459d28e32d51fc80c63350a9c89c3d846072",
+  "networkPolicySHA256": "8c6ce538e3fee37fb3303cba0712286a56e3fd554538e3014e0d88c66c8d7710",
+  "existingBaseline": "pre-readonly-baseline/manifest.json",
+  "draftActivationSHA256": "83a2d2b52c3ced9463c8001b6e64b60e54e6d842f9ee2919e664f7747184a2f6",
+  "draftBindingSHA256": "053e608ab7ec525a52d5df79581a249726351140c0a13a93c2ae3833647af7ea",
+  "requiredMode": "config.readOnly and receipt.readOnly must both be boolean and equal. Missing/string/mismatched values refuse activation. Mode false requires separately reviewed activation, not automatic upgrade.",
+  "writeRejection": "eth_sendRawTransaction single/mixed batch is rejected before ANY upstream request in readOnly:true mode. All existing request, method, origin, host, rate, size, concurrency, chain and genesis guards remain."
+}

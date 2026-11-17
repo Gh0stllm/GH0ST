@@ -1,36 +1,57 @@
-# GL3 base-chain launch candidate
+# GL3 · GH0ST on Robinhood
 
-**R59: all 27 Robinhood deployment transactions confirmed; corrected independent audit passed. Public chain services are not live.** GL3 uses official Nitro, native GH0ST gas, a native-token bridge and project-operated fast confirmation. This is an operator-trusted launch. It is not a ZK rollup at launch; the prior ZK, Stylus and full-model proof research remains preserved under `../zk-rollup/`.
+**R60: the base chain, public transaction RPC and explorer are live. Exactly 1,000,000 GH0ST has been bridged and all nine setup transactions are confirmed.** GL3 uses official Nitro with native GH0ST gas and project-operated fast confirmation. ZK verification and full-model proofs remain separate research, not launch features.
 
-## Withdrawals
+[Live explorer](https://scan.gh0st.fyi/) · [Public RPC](https://rpc.gh0st.fyi/) · [Receipt evidence](network/evidence/live-mainnet-20261118/) · [Research history](../HISTORY.md)
 
-There is no configured minimum assertion period in the selected candidate. The project validator derives and checks actual child execution, posts an ordinary assertion with its genuine history commitment, then uses its designated fast-confirm authority. A user can claim the resulting withdrawal on Robinhood after that root is confirmed. No fixed seven-day countdown applies to this normal operator-confirmed route. This does not guarantee instantaneous or operator-independent exits: processing, parent-chain fees, availability and the operator's powerful confirmation authority remain material.
+## Network
 
-The UI must show **Project-run fast confirmation** and **GH0ST-operated key confirms withdrawal roots. ZK verification not live.** An unexpected or zero confirmer disables bridging. The underlying standard optimistic fallback parameters remain recorded; they must not be confused with the normal fast route or claimed as ZK protection.
-
-## Prepared pieces and remaining gates
-
-| Piece | Evidence and current boundary |
+| Setting | Verified value |
 | --- | --- |
-| Official execution and validator components | Pinned official Nitro and matching validator/JIT/prover; authenticated loopback backend smoke passes |
-| Genesis and native backing policy | Zero-allocation ArbOS61 cold setup-owner genesis reproduced; seven actual private setup calls finish with owners[zero]/no minters and calibrated1e13 fee |
-| Deployment | All 27 exact transactions succeeded; actual gas cost 0.001627693426576 ETH. An independent audit binds canonical receipts, runtimes, proxy links, authorities and nonempty genesis. The original final-check failure remains preserved |
-| Bridge | Prior private round trips and standard disputes are preserved; genuine SDK confirmation plus a hash-verified persisted-state restart now completes exact payout and replay/unauthorized rejection; failures remain preserved |
-| RPC and interface | Both public hostnames have verified HTTPS and honest disabled responses. The main-site draft preserves all 652 existing files and two functions; main production remains unchanged |
-| Custody | Separate poster and validator roles generated; encrypted recovery copied off the worker and verified; cold funding key stays off the server |
-| License | User explicitly accepted the reviewed AEP terms on the local signing page. The 10% positive net-revenue obligation remains; the native-GH0ST payment target is not yet confirmed |
+| Chain | GL3, chain ID **4663001** (`0x4726d9`) |
+| Parent | Robinhood, chain ID **4663** |
+| Native currency | **GH0ST**, 18 decimals |
+| RPC | `https://rpc.gh0st.fyi/`, public signed-transaction submission enabled |
+| Explorer | `https://scan.gh0st.fyi/`, actual RPC blocks and transactions |
+| Bridge destination | `https://bridge.gh0st.fyi/` — requested dedicated domain; dedicated publication and DNS checks in progress at R60; the working bridge is already published at [gh0st.fyi/gl3/bridge/](https://gh0st.fyi/gl3/bridge/) |
+| Chain introduction | `https://l3.gh0st.fyi/` — new animated introduction and FAQ in progress at R60 |
+| Parent backing token | `0x2eb2849cDE7957b86d0dFD4B59e450a9F9D15559` |
+| Canonical genesis | `0x17b5e6ba05003525c4f3c766d6b3120d88ee87dc7eeba84932027f8917da3483` |
 
-[Node and validator](node/) · [Actual receipt packet](deployment-packet/receipt-derived/packet.json) · [Bridge rehearsal](bridge-rehearsal/README.md) · [RPC and bridge interface](network/README.md) · [Pod failure and recovery](RECOVERY.md) · [License and payment draft](network/aep-accounting-plan.md).
+Native GH0ST is created through backed bridge deposits; the child genesis allocates zero tokens. The launch deposit is exactly **1,000,000 GH0ST**, replacing the earlier 100-token proposal. Native wallet balances subsequently change with transaction fees and treasury receipts. The separate 100,000-GH0ST validator stake is on Robinhood and is not child circulating supply.
 
-## Network proposal
+## Confirmed launch checks
 
-- Parent: Robinhood, chain ID 4663.
-- Child: GL3, configured chain ID 4663001; public execution services remain inactive at this checkpoint.
-- Native backing token on Robinhood: `0x2eb2849cDE7957b86d0dFD4B59e450a9F9D15559`.
-- Intended RPC: `https://rpc.gh0st.fyi`.
-- Confirmed explorer hostname: `https://scan.gh0st.fyi`.
-- Intended bridge: `https://gh0st.fyi/gl3/bridge/`.
+All 27 exact deployment transactions succeeded, with actual combined fees of **0.001627693426576 ETH**. The independent receipt-derived audit binds runtime code, proxy links, authorities and the actual nonempty genesis. The original failed empty-genesis comparison remains preserved; no deployment transaction was resent.
 
-All builds and CPU tests run on the existing Runpod worker. No GPU is required for this base launch. No automatic top-ups are configured. Final review must bind exact transactions, spending, custody, terms and receipt-derived addresses before public activation.
+The user completed the subsequent nine-action local signing flow: exact parent allowance and deposit, followed by seven child fee, treasury and renunciation calls. Canonical receipts and final readbacks confirm the sole child owner is the zero address, no native minters, no scheduled native management or ArbOS upgrade, minimum fee of `10000000000000` base units, and all three fee recipients set to the reviewed cold treasury. The cold key stays off the server.
 
-The actual rollup is `0xeE811A8ee20C03E684ECB5BFd6f7721f85451b01`, created by transaction `0xadf4ffccdc68d51fa9c5c6e2480ca14cf9072dbae21e7e9127a70ee8b7d0abcb`. The user's 1,000,000 GH0ST bridge instruction replaces the former 100-token setup plan; those tokens have not moved at this checkpoint. Bounded validator allowance, private node startup, the backed deposit, seven child setup calls and final public activation remain pending. The user explicitly retained Robinhood safe/finalized checks. This is a single operator pod with manual recovery, not automatic failover.
+The public RPC independently returns the exact chain ID and genesis and forwards signed transactions through guarded methods. The explorer displays real blocks. It is a lightweight RPC explorer; indexed address history and source verification are not represented as implemented. Public routes do not expose admin/debug methods or unlocked wallets.
+
+## Blocks and activity
+
+The configured block-speed target is **100 ms**, approximately ten blocks per second when transaction demand permits. Nitro produces blocks for actual messages/transactions; an idle chain does not continuously create empty blocks. This is a target, not a measured throughput guarantee.
+
+A separate, clearly labelled demo activity worker is being prepared on the existing pod, with counter, NFT and test-token examples. It will use a dedicated finite wallet, persisted transaction intents and balance/pending-queue guards. At R60 no demo wallet is funded and no demo transaction is claimed. The running chain is not stopped or reconfigured for this work.
+
+## Withdrawals and trust
+
+The project validator derives and checks child execution and posts an ordinary assertion with genuine history before using its designated fast-confirm authority. The normal route has no configured minimum assertion waiting period. A claim still needs a confirmed withdrawal root, parent processing and transaction fees. The user explicitly retained Robinhood safe/finalized checks; these can add substantial latency.
+
+**Project-run fast confirmation. GH0ST-operated keys confirm withdrawal roots. ZK verification is not live.** Parent upgrade authority remains with the reviewed cold account. This is an operator-trusted launch, not an operator-independent exit guarantee.
+
+The exact-profile private rehearsal completed a nonzero payout across a verified persisted-state restart, including actual unauthorized, altered-amount and replay reverts. The live validator has posted a genuine SDK assertion and `fastConfirmAssertion` transaction. That observed assertion retains the genesis child header and empty send root; it does not establish confirmation of all subsequent setup blocks or a live nonzero mainnet withdrawal payout.
+
+## Operations and evidence
+
+- [Actual deployment packet](deployment-packet/receipt-derived/packet.json)
+- [Nine setup receipts and live public readback](network/evidence/live-mainnet-20261118/)
+- [Live poster and genuine fast-confirmation evidence](node/live-readonly/run-02/)
+- [Private bridge lifecycle](bridge-rehearsal/README.md)
+- [Node and validator](node/)
+- [Pod failure and recovery](RECOVERY.md)
+- [AEP accounting plan](network/aep-accounting-plan.md)
+
+The user accepted the reviewed AEP terms: 10% of positive protocol net revenue; the native-GH0ST remittance destination remains unconfirmed and no payment is claimed. A single pod and persistent volume are running; encrypted operator recovery is verified off-pod. Automatic failover and a replacement-pod recovery rehearsal of the populated chain are not claimed. No automatic top-ups are configured.
+
+All CPU builds/tests run on Runpod. Public-site work and demo preparation must leave the live chain running. Historic fee-capped proposals and earlier failed experiments remain dated evidence; the user subsequently authorized fresh market gas without an aggregate fee ceiling.

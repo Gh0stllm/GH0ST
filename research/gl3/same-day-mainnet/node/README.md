@@ -51,3 +51,11 @@ The container reset changed the host to `42456c02ced1`. Only the supervisor's ho
 The old Debian Node bundle could print its version but failed JavaScript initialization after reset. Root replaced it with the official standalone Node `v24.22.3`, SHA256 `a7ec1b37e6ff9d187e4198c5b6df9a4eb1c74dd31804fb3bac55cc4ceca1ac01`, and separately verified JavaScript/crypto/ethers execution. Use the reviewed `runtime-exec.sh` environment for the supervisor so its backend probe inherits that runtime. The Python tests do not themselves prove Node availability.
 
 [private-start-draft/](private-start-draft/) contains exact public hashes from the actual renderer receipt and a deliberately unapproved service bundle. `assemble-service-draft.py` reads no effective configuration or secret bytes. The draft binds the standalone Node and wrapper hashes; private startup remains false until root verifies bounded allowance, runtime and explicit approvals.
+
+## Private startup diagnostics
+
+Root's first actual private pair matched chain ID and block-zero hash, but the node then exited 1 and exhausted four bounded attempts. The previous supervisor discarded output, so that run has no captured fatal reason. No cause is inferred from the health transition alone.
+
+The separately staged [startup logging candidate](startup-log-01/operator_pair.py), SHA256 `cd03d8caae9ffa6783a17e531e26b7e5656b17ec17bb1029f8413f9291cf178c`, adds unique per-run/attempt/role stdout and stderr files beneath the private state directory. It uses exclusive no-follow creation, regular single-link owner-only `0600` files and a private `0700` directory. The lifecycle journal records paths, never log content. Actual production logs remain private and are excluded from publication.
+
+All ten generated-peer/TEST-bundle cases passed on Runpod, including separate stream capture, file permissions and fatal-peer cleanup without stopping an unrelated dummy. [The source comparison](startup-log-01/freeze.json) confirms commands, health, hashes, validation, cleanup and restart bounds are unchanged. The prior source/receipt and patch are preserved; root must update its approval binding when promoting the new source. No actual private log/configuration/key contents were inspected by this lane, and no service was started by its tests.

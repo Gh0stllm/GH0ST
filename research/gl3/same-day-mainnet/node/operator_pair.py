@@ -54,11 +54,24 @@ def validate(bundle_path):
 class PairSupervisor:
  """Two owned service groups, bounded pair restarts and exact child wait results."""
  def __init__(self,commands,state_dir,check,ready,*,max_restarts=3,backoff=2,grace=20,poll=.2,start_timeout=60):
-  self.commands=commands;self.state=pathlib.Path(state_dir);self.check=check;self.ready=ready;self.max_restarts=max_restarts;self.backoff=backoff;self.grace=grace;self.poll=poll;self.start_timeout=start_timeout;self.stop_signal=None;self.children=[];self.events=[]
+  self.commands=commands;self.state=pathlib.Path(state_dir);self.check=check;self.ready=ready;self.max_restarts=max_restarts;self.backoff=backoff;self.grace=grace;self.poll=poll;self.start_timeout=start_timeout;self.stop_signal=None;self.children=[];self.events=[];self.log_prefix=str(time.time_ns())+'-'+str(os.getpid())
  def request_stop(self,s,*_):self.stop_signal=s
  def event(self,kind,**fields):
   d={'event':kind,'UTC':time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime()),**fields};self.events.append(d)
   with (self.state/'lifecycle.jsonl').open('a') as f:os.chmod(f.name,0o600);f.write(json.dumps(d)+'\n')
+ def private_output(self,attempt,role):
+  need(role in ['backend','node'],'private_log_role_refused')
+  s=self.state.lstat();need(stat.S_ISDIR(s.st_mode) and not self.state.is_symlink() and s.st_uid==os.getuid() and s.st_mode&0o077==0,'private_log_directory_refused')
+  files=[];paths={}
+  try:
+   for stream in ['stdout','stderr']:
+    p=self.state/(self.log_prefix+'-attempt-'+str(attempt).zfill(2)+'-'+role+'.'+stream+'.log')
+    fd=os.open(p,os.O_WRONLY|os.O_CREAT|os.O_EXCL|os.O_NOFOLLOW,0o600);f=os.fdopen(fd,'wb',buffering=0);files.append(f)
+    s=os.fstat(f.fileno());need(stat.S_ISREG(s.st_mode) and s.st_uid==os.getuid() and s.st_mode&0o077==0 and s.st_nlink==1,'private_log_file_refused');paths[stream]=str(p)
+   return files,paths
+  except Exception:
+   for f in files:f.close()
+   raise
  @staticmethod
  def child_init(parent):
   libc=ctypes.CDLL(None,use_errno=True)
@@ -93,7 +106,11 @@ class PairSupervisor:
      self.check();self.event('attempt_checked',attempt=attempt)
      for label,argv in self.commands:
       if self.stop_signal:break
-      self.check();parent=os.getpid();p=subprocess.Popen(argv,stdin=subprocess.DEVNULL,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,start_new_session=True,preexec_fn=lambda:self.child_init(parent),cwd='/workspace/gl3',pass_fds=(fd,));self.children.append((label,p));self.event('service_started',role=label,pid=p.pid,attempt=attempt)
+      self.check();parent=os.getpid();outputs,output_paths=self.private_output(attempt,label)
+      try:p=subprocess.Popen(argv,stdin=subprocess.DEVNULL,stdout=outputs[0],stderr=outputs[1],start_new_session=True,preexec_fn=lambda:self.child_init(parent),cwd='/workspace/gl3',pass_fds=(fd,))
+      finally:
+       for f in outputs:f.close()
+      self.children.append((label,p));self.event('service_started',role=label,pid=p.pid,attempt=attempt,outputLogs=output_paths)
       started=time.monotonic()
       while not self.stop_signal:
        if any(q.poll() is not None for _,q in self.children):raise GateError('peer_exited_during_start')

@@ -4,7 +4,7 @@ import { binding, validRequest, proxy } from './rpc/netlify/functions/rpc.mjs';
 import { deriveBridgeState, FAST_CONFIRMER, SECURITY_BADGE, SECURITY_NOTE } from './bridge-state.mjs';
 
 const genesis = '0x' + 'ab'.repeat(32);
-const env = { GL3_RPC_ENABLED: 'true', GL3_CHAIN_ID: '4663001', GL3_GENESIS_HASH: genesis,
+const env = { GL3_RPC_ENABLED: 'true', GL3_RPC_READ_ONLY: 'false', GL3_CHAIN_ID: '4663001', GL3_GENESIS_HASH: genesis,
   GL3_RPC_UPSTREAM_HTTPS_URL: 'https://fixture.invalid/' };
 const rpc = (method, params = []) => ({ jsonrpc: '2.0', id: 1, method, params });
 const event = (body, method = 'POST') => ({ httpMethod: method, body: JSON.stringify(body) });

@@ -1,0 +1,21 @@
+
+
+#
+# Fatal process out of memory: Failed to reserve virtual memory for CodeRange
+#
+----- Native stack trace -----
+
+ 1: 0x9f17a1  [/workspace/gl3/durable/node-standalone/node-v24.22.3/node]
+ 2: 0x27e8885 v8::base::FatalOOM(v8::base::OOMType, char const*) [/workspace/gl3/durable/node-standalone/node-v24.22.3/node]
+ 3: 0xc9ba5f  [/workspace/gl3/durable/node-standalone/node-v24.22.3/node]
+ 4: 0xc9baff  [/workspace/gl3/durable/node-standalone/node-v24.22.3/node]
+ 5: 0xf4d48e  [/workspace/gl3/durable/node-standalone/node-v24.22.3/node]
+ 6: 0xe7ccbe  [/workspace/gl3/durable/node-standalone/node-v24.22.3/node]
+ 7: 0x1459943  [/workspace/gl3/durable/node-standalone/node-v24.22.3/node]
+ 8: 0xcc57b6 v8::Isolate::Initialize(v8::Isolate*, v8::Isolate::CreateParams const&) [/workspace/gl3/durable/node-standalone/node-v24.22.3/node]
+ 9: 0x811adb node::NewIsolate(v8::Isolate::CreateParams*, uv_loop_s*, node::MultiIsolatePlatform*, node::SnapshotData const*, node::IsolateSettings const&) [/workspace/gl3/durable/node-standalone/node-v24.22.3/node]
+10: 0x9a6d59 node::NodeMainInstance::NodeMainInstance(node::SnapshotData const*, uv_loop_s*, node::MultiIsolatePlatform*, std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > const&, std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > const&) [/workspace/gl3/durable/node-standalone/node-v24.22.3/node]
+11: 0x8e2dc9 node::Start(int, char**) [/workspace/gl3/durable/node-standalone/node-v24.22.3/node]
+12: 0x7d202822a1ca  [/workspace/gl3/durable/reset-runtime-v1/lib/libc.so.6]
+13: 0x7d202822a28b __libc_start_main [/workspace/gl3/durable/reset-runtime-v1/lib/libc.so.6]
+14: 0x7f6cee _start [/workspace/gl3/durable/node-standalone/node-v24.22.3/node]

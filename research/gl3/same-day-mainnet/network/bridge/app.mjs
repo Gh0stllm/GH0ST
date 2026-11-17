@@ -1,6 +1,6 @@
 import { BrowserProvider, JsonRpcProvider, Contract, Interface, parseUnits, formatUnits } from '/mint/vendor/ethers.js';
 import { deriveBridgeState } from './bridge-state.mjs';
-import { validatePublicConfig, validateFinalSetupReadback, requireAmount, withdrawalBudget, confirmedMaxQuote, withdrawalArgs, ZERO_HASH, lower } from './core.mjs';
+import { validatePublicConfig, validateFinalSetupReadback, deriveSetupPhase, requireAmount, withdrawalBudget, confirmedMaxQuote, withdrawalArgs, ZERO_HASH, lower } from './core.mjs';
 const $ = id => document.getElementById(id);
 const TOKEN_ABI = ['function balanceOf(address) view returns(uint256)', 'function decimals() view returns(uint8)', 'function allowance(address,address) view returns(uint256)', 'function approve(address,uint256) returns(bool)'];
 const ROLLUP_ABI = ['function anyTrustFastConfirmer() view returns(address)', 'function bridge() view returns(address)', 'function inbox() view returns(address)', 'function outbox() view returns(address)'];
@@ -8,7 +8,7 @@ const BRIDGE_ABI = ['function nativeToken() view returns(address)', 'function na
 const ARBSYS_ABI = ['function withdrawEth(address) payable returns(uint256)', 'function sendMerkleTreeState() view returns(uint256 size,bytes32 root,bytes32[] partials)', 'event L2ToL1Tx(address caller,address indexed destination,uint256 indexed hash,uint256 indexed position,uint256 arbBlockNum,uint256 ethBlockNum,uint256 timestamp,uint256 callvalue,bytes data)'];
 const NODE_ABI = ['function constructOutboxProof(uint64 size,uint64 leaf) view returns(bytes32 send,bytes32 root,bytes32[] proof)'];
 const OUTBOX_ABI = ['function roots(bytes32) view returns(bytes32)', 'function isSpent(uint256) view returns(bool)', 'function executeTransaction(bytes32[],uint256,address,address,uint256,uint256,uint256,uint256,bytes)', 'event SendRootUpdated(bytes32 indexed outputRoot,bytes32 indexed l2BlockHash)'];
-const OWNER_PUBLIC_ABI = ['function getAllChainOwners() view returns(address[])', 'function getAllNativeTokenOwners() view returns(address[])', 'function getNetworkFeeAccount() view returns(address)', 'function getInfraFeeAccount() view returns(address)'];
+const OWNER_PUBLIC_ABI = ['function getAllChainOwners() view returns(address[])', 'function getAllNativeTokenOwners() view returns(address[])', 'function getNetworkFeeAccount() view returns(address)', 'function getInfraFeeAccount() view returns(address)', 'function getNativeTokenManagementFrom() view returns(uint64)', 'function getScheduledUpgrade() view returns(uint64,uint64)'];
 const GAS_INFO_ABI = ['function getMinimumGasPrice() view returns(uint256)', 'function getL1RewardRecipient() view returns(address)'];
 let config, parent, child, account, injected, direction = 'deposit', busy = false, observation, claimArgs;
 const arbAddress = '0x0000000000000000000000000000000000000064';
@@ -21,7 +21,7 @@ function receipt(label, tx, childChain) {
   a.target = '_blank'; a.rel = 'noopener'; li.append(a); $('receipts').prepend(li);
 }
 function controls() {
-  const ready = config?.enabled && observation && account && !busy;
+  const ready = config?.enabled && !config?.readOnly && observation && account && !busy;
   $('action').disabled = !ready; $('check-withdrawal').disabled = !observation || busy;
   $('max').disabled = !ready;
   $('claim').disabled = !(ready && claimArgs);
@@ -38,12 +38,14 @@ async function guard() {
   if (BigInt(pId) !== 4663n || BigInt(cId) !== 4663001n || lower(bridgeAddr) !== lower(config.nativeBackingBridge) || lower(inboxAddr) !== lower(config.inboxAddress) || lower(outboxAddr) !== lower(config.outboxAddress) || lower(token) !== lower(config.parentBackingToken) || Number(decimals) !== 18) throw Error('Live network or native backing binding changed');
   const owner = new Contract('0x000000000000000000000000000000000000006b', OWNER_PUBLIC_ABI, child);
   const gas = new Contract('0x000000000000000000000000000000000000006c', GAS_INFO_ABI, child);
-  const [owners, minters, networkFeeAccount, infraFeeAccount, minimumGasPrice, l1RewardRecipient, latest] = await Promise.all([
-    owner.getAllChainOwners(), owner.getAllNativeTokenOwners(), owner.getNetworkFeeAccount(), owner.getInfraFeeAccount(), gas.getMinimumGasPrice(), gas.getL1RewardRecipient(), child.send('eth_getBlockByNumber', ['latest', false])
+  const [owners, minters, networkFeeAccount, infraFeeAccount, minimumGasPrice, l1RewardRecipient, latest, nativeTokenManagementFrom, scheduledUpgrade] = await Promise.all([
+    owner.getAllChainOwners(), owner.getAllNativeTokenOwners(), owner.getNetworkFeeAccount(), owner.getInfraFeeAccount(), gas.getMinimumGasPrice(), gas.getL1RewardRecipient(), child.send('eth_getBlockByNumber', ['latest', false]), owner.getNativeTokenManagementFrom(), owner.getScheduledUpgrade()
   ]);
-  validateFinalSetupReadback(config, { owners: Array.from(owners), minters: Array.from(minters), networkFeeAccount, infraFeeAccount, minimumGasPrice, l1RewardRecipient, baseFee: latest.baseFeePerGas });
+  const readback = { owners: Array.from(owners), minters: Array.from(minters), networkFeeAccount, infraFeeAccount, minimumGasPrice, l1RewardRecipient, baseFee: latest.baseFeePerGas, nativeTokenManagementFrom, scheduledUpgrade: Array.from(scheduledUpgrade) };
+  validateFinalSetupReadback(config, readback); const setup = deriveSetupPhase(config, readback);
+  $('setup-note').textContent = setup.phase === 'trusted-bootstrap' ? `Live · initial setup. Temporary chain authority remains with ${setup.trustedTemporaryOwner}. Fee calibration and owner removal are not yet complete. Deposits and withdrawals use GH0ST-operated confirmation.` : 'Observed final setup verified: temporary chain owner removed, no native minters, and target fee configuration active.';
   const observed = { parentChainId: Number(BigInt(pId)), childChainId: Number(BigInt(cId)), childGenesisHash: genesis?.hash, rollupAddress: config.rollupAddress,
-    anyTrustFastConfirmer: role, nativeBackingVerified: true, nodeHealthy: head >= 0, batchPosterHealthy: Boolean(config.evidence.batchPosterHealth) };
+    anyTrustFastConfirmer: role, nativeBackingVerified: true, nodeHealthy: head >= 0, batchPosterHealthy: Boolean(config.evidence.batchPosterHealth), setupPhase: setup.phase };
   // Batch-poster liveness is supplied as launch evidence; this RPC check is not a continuous monitor.
   const state = deriveBridgeState(config, observed);
   if (state.status === 'unavailable') throw Error(state.reason);

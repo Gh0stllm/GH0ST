@@ -8,7 +8,7 @@ const check=(v,m)=>{if(!v)throw Error(m);},sha=(b,a)=>createHash(a).update(b).di
 export function requestSpec(i){
  check([MAIN,RPC,SCAN].includes(i.siteId),'Unreviewed site');let method,path,body,type='application/json';
  if(i.operation==='createSiteDeploy'){
-  check(i.body?.draft===true&&i.title?.startsWith('GH0ST GL3 disabled '),'Only disabled draft creation is allowed');
+  const disabled=i.title?.startsWith('GH0ST GL3 disabled '),live=i.title?.startsWith('GH0ST GL3 live initial setup ')||i.title?.startsWith('GH0ST GL3 live finalized ');check(i.body?.draft===true&&(disabled||live),'Only reviewed draft creation is allowed');
   check(!i.body.environment&&!i.body.edge_functions&&!i.body.server,'Unexpected runtime mutation');
   check(Object.values(i.body.files||{}).every(x=>/^[a-f0-9]{40}$/.test(x)),'Invalid file manifest');
   check(Object.keys(i.body.functions||{}).every(n=>['live-stats','watcher-scans','gl3-rpc'].includes(n)),'Unknown function');
@@ -19,7 +19,11 @@ export function requestSpec(i){
   check([RPC,SCAN].includes(i.siteId)&&i.body===undefined,'Only platform certificates for two new sites allowed');method='POST';path='/sites/'+i.siteId+'/ssl';
  }else{
   check(/^[a-f0-9]{24}$/.test(i.deployId||''),'Invalid deploy');
-  if(i.operation==='restoreSiteDeploy'){check(i.siteId!==MAIN,'Publishing the main site is forbidden');method='POST';path='/sites/'+i.siteId+'/deploys/'+i.deployId+'/restore';}
+  if(i.operation==='publishReviewedFinalMainDeploy'){
+   check(i.siteId===MAIN&&i.reviewFile,'Exact reviewed final publication required');const bytes=readFileSync(i.reviewFile),r=JSON.parse(bytes);check(sha(bytes,'sha256')===i.reviewSHA256&&r.schema==='gh0st.gl3.final-main-publication-review.v1'&&r.publicationApproved===true&&r.siteId===MAIN&&r.draftDeployId===i.deployId&&r.readOnly===false&&r.bootstrapSetup===false&&r.originalFileHashesPreserved===true&&r.originalFunctionMetadataPreserved===true&&r.coreBootstrapTestsPassed===true&&r.actualHttpsUpstreamVerified===true&&r.actualDraftHttpProbesPassed===true&&/^[a-f0-9]{64}$/.test(r.actualDraftHttpEvidenceSHA256||'')&&r.setupCompleteVerified===true&&r.setupReceiptCount===7&&/^[a-f0-9]{64}$/.test(r.finalSetupEvidenceSHA256||''),'Final main publication review differs');method='POST';path='/sites/'+i.siteId+'/deploys/'+i.deployId+'/restore';
+  }else if(i.operation==='publishReviewedInitialMainDeploy'){
+   check(i.siteId===MAIN&&i.reviewFile,'Exact reviewed main initial-setup publication required');const bytes=readFileSync(i.reviewFile),r=JSON.parse(bytes);check(sha(bytes,'sha256')===i.reviewSHA256&&r.schema==='gh0st.gl3.initial-main-publication-review.v1'&&r.publicationApproved===true&&r.siteId===MAIN&&r.draftDeployId===i.deployId&&r.readOnly===false&&r.bootstrapSetup===true&&r.originalFileHashesPreserved===true&&r.originalFunctionMetadataPreserved===true&&r.coreBootstrapTestsPassed===true&&r.actualHttpsUpstreamVerified===true&&r.actualDraftHttpProbesPassed===true&&/^[a-f0-9]{64}$/.test(r.actualDraftHttpEvidenceSHA256||'')&&r.setupCompleteClaimed===false,'Main publication review differs');method='POST';path='/sites/'+i.siteId+'/deploys/'+i.deployId+'/restore';
+  }else if(i.operation==='restoreSiteDeploy'){check(i.siteId!==MAIN,'Publishing the main site requires its exact reviewed operation');method='POST';path='/sites/'+i.siteId+'/deploys/'+i.deployId+'/restore';}
   else if(i.operation==='uploadDeployFunction'){
    check(i.name==='gl3-rpc'&&resolve(i.file).endsWith('/gl3-rpc.zip'),'Unknown function bundle');body=readFileSync(i.file);check(sha(body,'sha256')===i.expectedSHA256,'Function ZIP changed');method='PUT';type='application/octet-stream';path='/deploys/'+i.deployId+'/functions/gl3-rpc?runtime=js';
   }else if(i.operation==='uploadDeployFile'){

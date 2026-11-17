@@ -1,0 +1,166 @@
+{
+  "test": {
+    "schema": "gh0st.gl3.child-setup.validation.v1",
+    "passed": 18,
+    "results": [
+      {
+        "name": "exact2parent+7child templates,1,000,000-token approval/deposit and ordered nonce0..6",
+        "passed": true
+      },
+      {
+        "name": "reject missingbindings,old100or1m+100deposit,increasedfeecaps,wronggenesis/order/hiddenmint/nonce",
+        "passed": true
+      },
+      {
+        "name": "source-backed full L1 floor retains45.813B component despite ordinary500795 estimate",
+        "passed": true
+      },
+      {
+        "name": "authority guards reject minters,upgrade,wrongowner/treasury; exact final[0]",
+        "passed": true
+      },
+      {
+        "name": "genuine settle requires laterblock,matching header+directquote+minimum;bothsetterbarriers",
+        "passed": true
+      },
+      {
+        "name": "unsignedJIT type2quote bindsplan/chain/to/calldata/nonce/fullfloor/freshcap;nostalequote",
+        "passed": true
+      },
+      {
+        "name": "durable0700/0600 journal,exclusive lock,no overwrite of existingplan and intent-before-network",
+        "passed": true
+      },
+      {
+        "name": "ambiguousintent blocks nextquote and never auto retries",
+        "passed": true
+      },
+      {
+        "name": "journal rejects symlink parent and permissive directory",
+        "passed": true
+      },
+      {
+        "name": "unsignedpayload cannot reach RPCsend and privatejournal stores no key/password",
+        "passed": true
+      },
+      {
+        "name": "real quote construction uses full estimate plus isolated compute and direct L1component/freshprice",
+        "passed": true
+      },
+      {
+        "name": "chain/genesis guards fail before creation receipt or send",
+        "passed": true
+      },
+      {
+        "name": "canonical history rejects reorged/failed/unconfirmed receipts without resend",
+        "passed": true
+      },
+      {
+        "name": "freshnonce guard rejects pending or advanced nonce",
+        "passed": true
+      },
+      {
+        "name": "both genuine settle barriers block nextsignature before observedmatchinglaterheader",
+        "passed": true
+      },
+      {
+        "name": "actualNitroreceipt must exposeL1component and boundednonnegativecompute beforeconfirmation",
+        "passed": true
+      },
+      {
+        "name": "actualpassed27receiptpacket bindsreview;failedfinalaudit orwrongevent/genesis cannotstart",
+        "passed": true
+      },
+      {
+        "name": "EIP1559livefee drift fits signedheadroom;overcap/overgas/zero/expiredquotes stayblocked",
+        "passed": true
+      }
+    ],
+    "scope": "Runpod CPU-only mocked RPC/unsigned policy/filesystem tests; no signature or actual chain execution",
+    "keysRead": false,
+    "transactionsSigned": 0,
+    "transactionsBroadcast": 0,
+    "actualRPCRequests": 0
+  },
+  "syntax": [
+    "verify-actual-plan.mjs",
+    "policy.mjs",
+    "read-parent-nonce.mjs",
+    "review-server.mjs",
+    "engine.mjs",
+    "make-plan.mjs",
+    "review-app.mjs",
+    "journal.mjs",
+    "test.mjs"
+  ],
+  "actualNonce": {
+    "owner": "0x8D6B11CFdF079e27C17e05Cb7Ea81235887691c6",
+    "parentChainId": 4663,
+    "latest": 6478,
+    "pending": 6478,
+    "equal": true,
+    "parentBlockNumber": "0x6f61f5c",
+    "parentBlockHash": "0x98c56ad125effc88a34413d2d901cd7ed3c6ce44c6b160fab1bc491778b3a3f7",
+    "UTC": "2026-11-17T18:36:01.293Z",
+    "source": "Node ethers JsonRpcProvider to public RH RPC, static4663/cacheTimeout:-1/batchMaxCount1; chain verified first",
+    "nonceInferred": false,
+    "signatures": 0,
+    "broadcasts": 0,
+    "mustRecheckBeforeActualPlanAndEverySignature": true
+  },
+  "actualPlan": {
+    "passed": true,
+    "planSHA256": "085feb08f001559a6aae14366b9bd011d96463ccd4752d833419359c92d46bf4",
+    "actions": 9,
+    "parentNonces": [
+      6478,
+      6479
+    ],
+    "childNonces": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "depositUnits": "1000000000000000000000000",
+    "maxChildFeeUnits": "100000000000000000000",
+    "maxParentFeeWei": "100000000000000",
+    "parentConfirmationBlocks": 12,
+    "actualReceiptPacket": "959914132458be96045f357b9a3d9dc6f6a7941cc7edc2c345536ba6cb0782ca",
+    "signatures": 0,
+    "broadcasts": 0
+  },
+  "build": {
+    "exitCode": 0,
+    "seconds": 0.2947791279293597,
+    "stderr": "\n  ready-packet/app.bundle.js  374.9kb\n\n\u26a1 Done in 285ms\n",
+    "planSHA256": "085feb08f001559a6aae14366b9bd011d96463ccd4752d833419359c92d46bf4",
+    "sourceSHA256": {
+      "review-server.mjs": "e0d3b6473ef860c18e11ab408d14485655738571f80b85fdefc92b5777d570aa",
+      "policy.mjs": "4dda57cef8a0a437d8689897e61af66e2174bf63b24a42648007987b549d1449",
+      "engine.mjs": "b694e32e9ce24fbc11cff62cde21c2b1da32e123c8810709525f0ceaabed673b",
+      "journal.mjs": "9b63c5c47e40eb738f7aabb97bbc5ba6ed72c05ee6db1e853db096cb1d4df38b"
+    },
+    "maxChildRSSKiB": 40960,
+    "keysRead": false,
+    "transactionsSigned": 0,
+    "transactionsBroadcast": 0,
+    "serverStarted": false,
+    "bundleSHA256": "c66505ce7ca1a8fd8ff2870a7a1a3d7d7d7c21956fc34fce0ffff646e5a4b088",
+    "indexSHA256": "a56b2465b34bea720dbd566b35d62ccab27175dc42bad8a3c2b69ee1f8190510",
+    "bundleBytes": 383881
+  },
+  "affinity": [
+    121,
+    123
+  ],
+  "monitoredPeakOwnedRSSKiB": 88480,
+  "maxChildRSSKiB": 140324,
+  "scope": "Actualunsigned1mreview with livepriceheadroom within unchanged signedlimits; no key/signature/server/send",
+  "RLIMIT_CORE": 0,
+  "nodeVersion": "24.22.3",
+  "ownedProcessesRemaining": []
+}

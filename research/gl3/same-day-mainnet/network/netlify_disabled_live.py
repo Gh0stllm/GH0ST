@@ -37,7 +37,7 @@ class SafeApi(m.Cli):
         if request['operation']=='createSiteDeploy':
             ds=super().call('listSiteDeploys',{'site_id':request['siteId'],'page':1,'per_page':25});matches=[d for d in ds if d.get('title')==request['title']]
             if len(matches)==1:event.update(state='reconciled',response=deployment_view(matches[0]));save(record,event);return matches[0]
-        elif request['operation']=='restoreSiteDeploy':
+        elif request['operation'] in ['restoreSiteDeploy','publishReviewedInitialMainDeploy','publishReviewedFinalMainDeploy']:
             s=super().call('getSite',{'site_id':request['siteId']})
             if (s.get('published_deploy')or{}).get('id')==request['deployId']:event['state']='reconciled';save(record,event);return s['published_deploy']
         elif request['operation'] in ['uploadDeployFile','uploadDeployFunction']:

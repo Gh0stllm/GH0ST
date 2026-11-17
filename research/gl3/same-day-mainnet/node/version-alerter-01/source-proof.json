@@ -1,0 +1,84 @@
+{
+  "schema": "gh0st.gl3.version-alert-source-proof.v1",
+  "officialSourceCommit": "5f02f3f03076343061f167e81b8e82ec5518064b",
+  "officialModuleRoot": "0xc10cd7ec6acaf1c441a3f6bd0900ad20f15855ba775a96f1939118cbc629dc97",
+  "minimalConfigChange": {
+    "version-alerter.enable": false
+  },
+  "explanation": "Optional notification client passes nilautoStack while inheriting self-auth connection default. self/self-auth cannot be repaired by enabling an authlistener alone. Official client default is disabled; client only queries a configured version feed and logs upgrade notifications. No validator/finality change.",
+  "actualPrivateConfigRead": false,
+  "actualPrivateLogRead": false,
+  "actualServicesStarted": 0,
+  "sources": {
+    "arbnode/nitro-version-alerter/client.go": {
+      "SHA256": "054e3191f71a81769af6c565c99affdd8b7138c6ee6a729dcae09d731ce0e0eb",
+      "excerpts": [
+        {
+          "firstLine": 18,
+          "lastLine": 43,
+          "text": "type ClientConfig struct {\n\tEnable             bool                   `koanf:\"enable\"`\n\tConnection         rpcclient.ClientConfig `koanf:\"connection\" reload:\"hot\"`\n\tUpgradeGracePeriod time.Duration          `koanf:\"upgrade-grace-period\"`\n\tPingInterval       time.Duration          `koanf:\"ping-interval\"`\n}\n\nfunc (c *ClientConfig) Validate() error {\n\tif !c.Enable {\n\t\treturn nil\n\t}\n\treturn c.Connection.Validate()\n}\n\nvar DefaultClientConfig = ClientConfig{\n\tEnable:             false,\n\tConnection:         rpcclient.DefaultClientConfig,\n\tUpgradeGracePeriod: 0,\n\tPingInterval:       5 * time.Minute,\n}\n\nfunc ClientConfigAddOptions(prefix string, f *pflag.FlagSet) {\n\tf.Bool(prefix+\".enable\", DefaultClientConfig.Enable, \"enable querying arb_getMinRequiredNitroVersion endpoint in regular intervals and firing alerts if the node software is below the required version\")\n\trpcclient.RPCClientAddOptions(prefix+\".connection\", f, &DefaultClientConfig.Connection)\n\tf.Duration(prefix+\".upgrade-grace-period\", DefaultClientConfig.UpgradeGracePeriod, \"represents grace period up until the upgrade deadline received from arb_getMinRequiredNitroVersion, determines escalation of messages regarding node software upgrade\")\n\tf.Duration(prefix+\".ping-interval\", DefaultClientConfig.PingInterval, \"how often the nitro version alerter should ping arb_getMinRequiredNitroVersion for data\")"
+        },
+        {
+          "firstLine": 53,
+          "lastLine": 63,
+          "text": "func NewClient(ctx context.Context, cfg *ClientConfig) (*Client, error) {\n\tnodeVersion := nitroversion.Current()\n\tif !nodeVersion.IsSemverTagged() {\n\t\tlog.Warn(\"node version is not a semantic-version-tagged release, skipping version alerter\", \"version\", nodeVersion)\n\t\treturn nil, nil\n\t}\n\tconnectionConfigFetcher := func() *rpcclient.ClientConfig { return &cfg.Connection }\n\tconnection := rpcclient.NewRpcClient(connectionConfigFetcher, nil)\n\tif err := connection.Start(ctx); err != nil {\n\t\treturn nil, err\n\t}"
+        },
+        {
+          "firstLine": 75,
+          "lastLine": 84,
+          "text": "func (c *Client) LogUpgradeMsgIfNecessary(ctx context.Context) time.Duration {\n\tvar res MinRequiredNitroVersionResult\n\terr := c.Connection.CallContext(ctx, &res, \"arb_getMinRequiredNitroVersion\")\n\tif err != nil {\n\t\tlog.Error(\"Fetching upgrade info from arb_getMinRequiredNitroVersion endpoint failed\", \"err\", err)\n\t\treturn c.Cfg.PingInterval\n\t}\n\tif res.UpgradeDeadline == \"\" || (res.NodeVersion == \"\" && res.NodeVersionDate == \"\") {\n\t\treturn c.Cfg.PingInterval\n\t}"
+        },
+        {
+          "firstLine": 121,
+          "lastLine": 132,
+          "text": "\t} else if now.UnixNano()+c.Cfg.UpgradeGracePeriod.Nanoseconds() <= upgradeDeadline.UnixNano() {\n\t\tlogLevel = log.Info\n\t} else {\n\t\tlog.Error(\"Could not compare current time and UpgradeGracePeriod with upgradeDeadline\", \"now\", now, \"upgradeGracePeriod\", c.Cfg.UpgradeGracePeriod, \"upgradeDeadline\", upgradeDeadline)\n\t\treturn c.Cfg.PingInterval\n\t}\n\tlogLevel(\"Node version or date is below the minimum requirement, please upgrade\",\n\t\t\"requiredVersion\", res.NodeVersion, \"requiredNodeVersionDate\", res.NodeVersionDate, \"upgradeDeadline\", res.UpgradeDeadline,\n\t\t\"currentNodeVersion\", c.NodeVersion,\n\t)\n\treturn c.Cfg.PingInterval\n}"
+        }
+      ]
+    },
+    "util/rpcclient/rpcclient.go": {
+      "SHA256": "0cb202d0e5790d24dc4ccd7a90e5545082ba1ab56bfbb9a51b790c5aa3f6a53a",
+      "excerpts": [
+        {
+          "firstLine": 65,
+          "lastLine": 81,
+          "text": "var DefaultClientConfig = ClientConfig{\n\tURL:                       \"self-auth\",\n\tJWTSecret:                 \"\",\n\tTimeout:                   10 * time.Second,\n\tRetries:                   3,\n\tRetryErrors:               \"websocket: close.*|dial tcp .*|.*i/o timeout|.*connection reset by peer|.*connection refused\",\n\tArgLogLimit:               2048,\n\tWebsocketMessageSizeLimit: 256 * 1024 * 1024,\n}\n\nfunc RPCClientAddOptions(prefix string, f *pflag.FlagSet, defaultConfig *ClientConfig) {\n\tf.String(prefix+\".url\", defaultConfig.URL, \"url of server, use self for loopback websocket, self-auth for loopback with authentication\")\n\tf.String(prefix+\".jwtsecret\", defaultConfig.JWTSecret, \"path to file with jwtsecret for validation - ignored if url is self or self-auth\")\n\tf.Duration(prefix+\".connection-wait\", defaultConfig.ConnectionWait, \"how long to wait for initial connection\")\n\tf.Duration(prefix+\".timeout\", defaultConfig.Timeout, \"per-response timeout (0-disabled)\")\n\tf.Uint(prefix+\".arg-log-limit\", defaultConfig.ArgLogLimit, \"limit size of arguments in log entries\")\n\tf.Uint(prefix+\".retries\", defaultConfig.Retries, \"number of retries in case of failure(0 mean one attempt)\")"
+        },
+        {
+          "firstLine": 232,
+          "lastLine": 250,
+          "text": "func (c *RpcClient) Start(ctx_in context.Context) error {\n\turl := c.config().URL\n\tjwtPath := c.config().JWTSecret\n\tif url == \"self\" {\n\t\tif c.autoStack == nil {\n\t\t\treturn errors.New(\"self not supported for this connection\")\n\t\t}\n\t\turl = c.autoStack.WSEndpoint()\n\t\tjwtPath = \"\"\n\t} else if url == \"self-auth\" {\n\t\tif c.autoStack == nil {\n\t\t\treturn errors.New(\"self-auth not supported for this connection\")\n\t\t}\n\t\turl = c.autoStack.WSAuthEndpoint()\n\t\tjwtPath = c.autoStack.JWTPath()\n\t} else if url == \"\" {\n\t\treturn errors.New(\"no url provided for this connection\")\n\t}\n\tvar jwt *common.Hash"
+        }
+      ]
+    },
+    "cmd/nitro/nitro.go": {
+      "SHA256": "a86ea4ebbd9580a37ae1235d3d5de1bd162deba8416ddeb9282b3fe6fb23c1f7",
+      "excerpts": [
+        {
+          "firstLine": 697,
+          "lastLine": 733,
+          "text": "\t\t\tlog.Error(\"failed to register the GraphQL service\", \"err\", err)\n\t\t\treturn 1\n\t\t}\n\t}\n\n\tif valNode != nil {\n\t\terr = valNode.Start(ctx)\n\t\tif err != nil {\n\t\t\tfatalErrChan <- fmt.Errorf(\"error starting validator node: %w\", err)\n\t\t} else {\n\t\t\tlog.Info(\"validation node started\")\n\t\t\tdefer valNode.Stop()\n\t\t}\n\t}\n\tif err == nil {\n\t\tcleanup, err := execution_consensus.InitAndStartExecutionAndConsensusNodes(ctx, stack, execNode, consensusNode)\n\t\tif err != nil {\n\t\t\tlog.Error(\"Error initializing and starting execution and consensus\", \"err\", err)\n\t\t\treturn 1\n\t\t}\n\t\t// remove previous deferFuncs, StopAndWait closes database and blockchain.\n\t\tdeferFuncs = []func(){cleanup}\n\t}\n\n\tif nodeConfig.VersionAlerter.Enable {\n\t\talerter, err := nitroversionalerter.NewClient(ctx, &nodeConfig.VersionAlerter)\n\t\tif err != nil {\n\t\t\tfatalErrChan <- fmt.Errorf(\"error initializing nitro node version alerter: %w\", err)\n\t\t} else if alerter != nil {\n\t\t\talerter.Start(ctx)\n\t\t\tdefer alerter.StopAndWait()\n\t\t}\n\t}\n\n\tsigint := make(chan os.Signal, 1)\n\tsignal.Notify(sigint, os.Interrupt, syscall.SIGTERM)\n"
+        }
+      ]
+    },
+    "arbnode/nitro-version-alerter/server.go": {
+      "SHA256": "52d8bc330c44bccdf1df76b068ed63714e44ce6688660cca3026064779af35bf",
+      "excerpts": [
+        {
+          "firstLine": 22,
+          "lastLine": 38,
+          "text": "\tMinRequiredNitroByVersion: \"\",\n\tMinRequiredNitroByDate:    \"\",\n\tUpgradeDeadline:           \"\",\n}\n\nfunc ServerConfigAddOptions(prefix string, f *pflag.FlagSet) {\n\tf.Bool(prefix+\".enable\", DefaultServerConfig.Enable, \"enable arb_getMinRequiredNitroVersion endpoint that returns minimum required version of the nitro node software\")\n\tf.String(prefix+\".min-required-nitro-by-version\", DefaultServerConfig.MinRequiredNitroByVersion, \"minimum required version of the nitro node software. First string in the result of querying arb_getMinRequiredNitroVersion endpoint\")\n\tf.String(prefix+\".min-required-nitro-by-date\", DefaultServerConfig.MinRequiredNitroByDate, \"minimum required version of the nitro node software by date. Second string in the result of querying arb_getMinRequiredNitroVersion endpoint\")\n\tf.String(prefix+\".upgrade-deadline\", DefaultServerConfig.UpgradeDeadline, \"deadline to upgrade the nitro node software. Third string in the result of querying arb_getMinRequiredNitroVersion endpoint\")\n}\n\ntype Server struct {\n\tconfig ServerConfigFetcher\n}\n\nfunc NewServer(cfg ServerConfigFetcher) *Server {"
+        }
+      ]
+    },
+    "cmd/util/confighelpers/configuration.go": {
+      "SHA256": "fb8d0c7631602ca8a169e73fc4b986b5c6259f64a1af412df821c3fc538d6f9a",
+      "excerpts": [
+        {
+          "firstLine": 320,
+          "lastLine": 341,
+          "text": "func DumpConfig(k *koanf.Koanf, extraOverrideFields map[string]interface{}) error {\n\toverrideFields := map[string]interface{}{\"conf.dump\": false}\n\n\t// Don't keep printing configuration file\n\tfor k, v := range extraOverrideFields {\n\t\toverrideFields[k] = v\n\t}\n\n\terr := k.Load(confmap.Provider(overrideFields, \".\"), nil)\n\tif err != nil {\n\t\treturn fmt.Errorf(\"error removing extra parameters before dump: %w\", err)\n\t}\n\n\tc, err := k.Marshal(json.Parser())\n\tif err != nil {\n\t\treturn fmt.Errorf(\"unable to marshal config file to JSON: %w\", err)\n\t}\n\n\tfmt.Println(string(c))\n\tos.Exit(0)\n\treturn fmt.Errorf(\"Unreachable\")\n}"
+        }
+      ]
+    }
+  }
+}

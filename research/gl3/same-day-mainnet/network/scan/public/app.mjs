@@ -1,4 +1,4 @@
-import { parseSearch, quantity, native, verifiedConfig, blockPage } from './core.mjs';
+import { parseSearch, quantity, native, verifiedConfig, blockPage, presentation } from './core.mjs';
 const $ = id => document.getElementById(id); let config, head = 0n, cursor = null, requestId = 0, loading = false;
 function say(text) { $('status').textContent = text; }
 const el = (tag, text) => { const x = document.createElement(tag); if (text !== undefined) x.textContent = text; return x; };
@@ -24,7 +24,7 @@ async function listBlocks() {
   const body = $('block-rows'); body.replaceChildren();
   for (const b of blocks) { if (!b) continue; const height = quantity(b.number); body.append(row([link(String(height), String(height)), new Date(Number(quantity(b.timestamp)) * 1000).toISOString(), String(b.transactions.length), String(quantity(b.gasUsed))])); }
   $('height').textContent = 'Block ' + String(head); $('newer').disabled = cursor === null || cursor >= head; $('older').disabled = heights.at(-1) === '0x0';
-  say('GL3 chain and genesis verified. Showing actual RPC block data.');
+  say(presentation(config, head).status);
 }
 async function showBlock(b) {
   if (!b) throw Error('Block not found.');
@@ -58,6 +58,9 @@ $('older').onclick = () => run(async () => { const top = cursor ?? head; cursor 
 $('newer').onclick = () => run(async () => { if (cursor === null || cursor + 20n >= head) cursor = null; else cursor += 20n; await listBlocks(); });
 await run(async () => {
   const r = await fetch('./public-config.json', { cache: 'no-store' }); config = verifiedConfig(await r.json());
-  for (const [k, v] of [['Chain ID', '4663001'], ['Genesis', config.genesisHash], ['RPC', config.rpcUrl], ['Native gas', 'GH0ST'], ['Confirmation', 'Project-run fast confirmation; not ZK']]) { $('binding').append(el('dt', k), el('dd', v)); }
+  const labels = presentation(config, 0n); $('phase-badge').textContent = labels.badge; $('trust-note').textContent = labels.notice;
+  $('bridge-status').textContent = config.readOnly ? 'Bridge setup pending' : 'Bridge ↗';
+  if (config.readOnly) $('bridge-status').removeAttribute('href');
+  for (const [k, v] of [['Chain ID', '4663001'], ['Genesis', config.genesisHash], ['RPC', config.rpcUrl], ['Rollup on Robinhood', config.rollupAddress || 'Not supplied'], ['Native gas', 'GH0ST'], ['Mode', labels.badge], ['Confirmation', 'Project-run fast confirmation; not ZK']]) { $('binding').append(el('dt', k), el('dd', v)); }
   await listBlocks(); if (location.hash.startsWith('#q=')) await search(decodeURIComponent(location.hash.slice(3)));
 });

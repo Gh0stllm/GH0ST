@@ -23,10 +23,11 @@ const error = (code, message, id = null) => ({ jsonrpc: '2.0', id, error: { code
 export function binding(env) {
   if (env.GL3_RPC_ENABLED !== 'true') throw Error('disabled');
   if (env.GL3_CHAIN_ID !== '4663001') throw Error('chain binding');
+  if (!['true', 'false'].includes(env.GL3_RPC_READ_ONLY)) throw Error('read-only binding');
   if (!/^0x[0-9a-fA-F]{64}$/.test(env.GL3_GENESIS_HASH || '')) throw Error('genesis binding');
   const upstream = new URL(env.GL3_RPC_UPSTREAM_HTTPS_URL || '');
   if (upstream.protocol !== 'https:' || upstream.username || upstream.password || upstream.search || upstream.hash) throw Error('upstream binding');
-  return { upstream: upstream.toString(), genesis: env.GL3_GENESIS_HASH.toLowerCase() };
+  return { upstream: upstream.toString(), genesis: env.GL3_GENESIS_HASH.toLowerCase(), readOnly: env.GL3_RPC_READ_ONLY === 'true' };
 }
 
 export function validRequest(item) {
@@ -47,12 +48,14 @@ export async function proxy(event, env = process.env, fetcher = fetch) {
   try { body = JSON.parse(event.body || ''); } catch { return response(400, error(-32700, 'Invalid JSON')); }
   const list = Array.isArray(body) ? body : [body];
   if (!list.length || list.length > MAX_BATCH || !list.every(validRequest)) return response(400, error(-32600, 'Unsupported or invalid RPC request'));
+  // Reject the entire batch before any identity check or user-request forwarding.
+  if (config.readOnly && list.some(item => item.method === 'eth_sendRawTransaction')) return response(403, error(-32601, 'GH0ST RPC bootstrap is read-only; transaction submission is disabled'));
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 10000);
   try {
     const send = async (payload) => {
       const r = await fetcher(config.upstream, {
-        method: 'POST', headers: { 'content-type': 'application/json', 'cache-control': 'no-store' },
+        method: 'POST', headers: { 'content-type': 'application/json', 'cache-control': 'no-store', 'user-agent': 'GH0ST-GL3/1.0' },
         body: JSON.stringify(payload), signal: controller.signal, redirect: 'error'
       });
       if (!r.ok) throw Error('upstream unavailable');

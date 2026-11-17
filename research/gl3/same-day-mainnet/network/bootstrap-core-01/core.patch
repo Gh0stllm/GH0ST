@@ -1,0 +1,64 @@
+--- core.before.mjs
++++ bridge/core.mjs
+@@ -1,6 +1,16 @@
+ export const ZERO = '0x' + '00'.repeat(20);
+ export const ZERO_HASH = '0x' + '00'.repeat(32);
++export const TRUSTED_TEMPORARY_OWNER = '0x8d6b11cfdf079e27c17e05cb7ea81235887691c6';
+ export const lower = x => String(x).toLowerCase();
++function bootstrapMode(c) {
++  if (c.bootstrapSetup != null && typeof c.bootstrapSetup !== 'boolean') throw Error('Invalid bootstrap setup mode');
++  if (c.bootstrapSetup === true && lower(c.trustedTemporaryOwner) !== TRUSTED_TEMPORARY_OWNER) throw Error('Unreviewed temporary owner');
++  return c.bootstrapSetup === true;
++}
++function uint(value, label) {
++  if (typeof value === 'boolean' || value == null || value === '' || (typeof value === 'string' && !/^(0x[0-9a-f]+|[0-9]+)$/i.test(value))) throw Error(`Missing or invalid ${label}`);
++  const n = BigInt(value); if (n < 0n) throw Error(`Invalid ${label}`); return n;
++}
+ export function validatePublicConfig(c) {
+   if (!c || c.enabled !== true) throw Error('The bridge is being prepared. Transfers are not enabled.');
+   if (c.parentChainId !== 4663 || c.childChainId !== 4663001 || c.profile !== 'nitro-project-run-fast-confirmation' || c.zkAtLaunch !== false || c.fastConfirmerEnabled !== true) throw Error('Unsupported network profile');
+@@ -12,19 +22,39 @@
+     const u = new URL(c[k]); if (u.protocol !== 'https:' || u.username || u.password || u.search || u.hash) throw Error(`Invalid ${k}`);
+   }
+   if (!c.evidence?.deploymentReceipts || !c.evidence?.nativeBridgeRehearsal || !c.evidence?.batchPosterHealth || !c.evidence?.licensingReview) throw Error('Deployment and review evidence is required');
+-  const f = c.finalSetup;
+-  if (!f || !Array.isArray(f.setupReceiptTxHashes) || !f.setupReceiptTxHashes.length || !f.setupReceiptTxHashes.every(x => /^0x[0-9a-f]{64}$/i.test(x))) throw Error('Receipt-bound final owner and fee setup is required');
++  const boot = bootstrapMode(c), f = c.finalSetup;
++  if (!f || !Array.isArray(f.setupReceiptTxHashes) || (!boot && !f.setupReceiptTxHashes.length) || !f.setupReceiptTxHashes.every(x => /^0x[0-9a-f]{64}$/i.test(x))) throw Error('Receipt-bound final owner and fee setup is required');
+   if (f.minimumL2BaseFeeWei !== '10000000000000' || f.activationL2BaseFeeWei !== '10000000000000') throw Error('Unreviewed GL3 fee policy');
+   for (const k of ['treasury', 'networkFeeAccount', 'infraFeeAccount', 'l1RewardRecipient']) if (!/^0x[0-9a-f]{40}$/i.test(f[k] || '') || lower(f[k]) === ZERO) throw Error('Explicit nonzero treasury fee recipients are required');
+   if (['networkFeeAccount', 'infraFeeAccount', 'l1RewardRecipient'].some(k => lower(f[k]) !== lower(f.treasury))) throw Error('Fee recipient policy differs from the reviewed treasury configuration');
++  if (boot && lower(f.treasury) !== TRUSTED_TEMPORARY_OWNER) throw Error('Bootstrap treasury differs from the reviewed cold owner');
+   return c;
+ }
+ export function validateFinalSetupReadback(c, observed) {
+-  if (!Array.isArray(observed.owners) || observed.owners.length !== 1 || lower(observed.owners[0]) !== ZERO) throw Error('Final child owner policy is not [zero]');
++  const boot = bootstrapMode(c);
++  if (!Array.isArray(observed.owners) || observed.owners.length !== 1) throw Error('Child owner set is not an exact reviewed singleton');
++  const owner = lower(observed.owners[0]);
++  if (owner !== ZERO && !(boot && owner === TRUSTED_TEMPORARY_OWNER)) throw Error('Unexpected child owner');
+   if (!Array.isArray(observed.minters) || observed.minters.length !== 0) throw Error('Child native minter authority remains');
+-  if (BigInt(observed.minimumGasPrice) !== BigInt(c.finalSetup.minimumL2BaseFeeWei) || BigInt(observed.baseFee) < BigInt(c.finalSetup.minimumL2BaseFeeWei)) throw Error('Live child fee policy differs from the reviewed setup');
+-  for (const k of ['networkFeeAccount', 'infraFeeAccount', 'l1RewardRecipient']) if (lower(observed[k]) !== lower(c.finalSetup[k])) throw Error('Live fee recipient changed');
++  if (uint(observed.nativeTokenManagementFrom, 'native management start') !== 0n) throw Error('Child native management is scheduled');
++  if (!Array.isArray(observed.scheduledUpgrade) || observed.scheduledUpgrade.length !== 2 || observed.scheduledUpgrade.some(x => uint(x, 'scheduled upgrade') !== 0n)) throw Error('Child upgrade is scheduled or unknown');
++  const minimum = uint(observed.minimumGasPrice, 'minimum gas price'), base = uint(observed.baseFee, 'current base fee'), target = BigInt(c.finalSetup.minimumL2BaseFeeWei);
++  if (owner === ZERO) {
++    if (minimum !== target || base < target) throw Error('Live child fee policy differs from the reviewed setup');
++    for (const k of ['networkFeeAccount', 'infraFeeAccount', 'l1RewardRecipient']) if (lower(observed[k]) !== lower(c.finalSetup[k])) throw Error('Live fee recipient changed');
++  } else {
++    if (lower(c.finalSetup.treasury) !== TRUSTED_TEMPORARY_OWNER) throw Error('Unreviewed bootstrap treasury');
++    if (![100000000n, target].includes(minimum) || base < 100000000n) throw Error('Unreviewed bootstrap fee state');
++    for (const k of ['networkFeeAccount', 'l1RewardRecipient']) if (lower(observed[k]) !== TRUSTED_TEMPORARY_OWNER) throw Error('Unreviewed bootstrap fee recipient');
++    if (![ZERO, TRUSTED_TEMPORARY_OWNER].includes(lower(observed.infraFeeAccount))) throw Error('Unreviewed bootstrap infrastructure recipient');
++  }
+   return true;
++}
++export function deriveSetupPhase(c, observed) {
++  validateFinalSetupReadback(c, observed);
++  const finalSetupComplete = lower(observed.owners[0]) === ZERO;
++  const feesAtTarget = uint(observed.minimumGasPrice, 'minimum gas price') === BigInt(c.finalSetup.minimumL2BaseFeeWei) && uint(observed.baseFee, 'current base fee') >= BigInt(c.finalSetup.minimumL2BaseFeeWei) && ['networkFeeAccount', 'infraFeeAccount', 'l1RewardRecipient'].every(k => lower(observed[k]) === lower(c.finalSetup[k]));
++  return { phase: finalSetupComplete ? 'finalized' : 'trusted-bootstrap', finalSetupComplete, trustedTemporaryOwner: finalSetupComplete ? null : TRUSTED_TEMPORARY_OWNER, feesAtTarget };
+ }
+ export function requireAmount(text) {
+   const s = String(text).trim();

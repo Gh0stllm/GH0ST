@@ -43,6 +43,23 @@ class PairTests(unittest.TestCase):
   with self.assertRaisesRegex(GateError,'private_start_not_approved'):validate(b)
 
 
+ def test_private_output_modes_and_fatal_peer_owned_cleanup(self):
+  import os,stat,subprocess
+  script=self.p/'chatty.py';script.write_text("import pathlib,sys,time\npathlib.Path(sys.argv[1]).write_text('started')\nprint('TEST_STDOUT_'+sys.argv[2],flush=True)\nprint('TEST_STDERR_'+sys.argv[2],file=sys.stderr,flush=True)\ntime.sleep(float(sys.argv[3]))\nsys.exit(7)\n")
+  unrelated=subprocess.Popen([sys.executable,'-c','import time;time.sleep(15)'],stdin=subprocess.DEVNULL,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,start_new_session=True)
+  try:
+   commands=[(role,[sys.executable,str(script),str(self.p/(role+'.started')),role,str(seconds)])for role,seconds in [('backend',10),('node',.2)]]
+   pair=PairSupervisor(commands,self.p/'state',lambda:None,lambda role:(self.p/(role+'.started')).exists(),max_restarts=0,grace=.5,poll=.02,start_timeout=2);result=pair.run()
+   self.assertFalse(result['passed']);self.assertEqual(result['ownedTopLevelRemaining'],0);self.assertIsNone(unrelated.poll());self.assertEqual(stat.S_IMODE(pair.state.stat().st_mode),0o700)
+   starts=[e for e in pair.events if e['event']=='service_started'];self.assertEqual([e['role']for e in starts],['backend','node'])
+   for event in starts:
+    for stream,log in event['outputLogs'].items():
+     p=pathlib.Path(log);s=p.lstat();self.assertEqual(p.parent,pair.state);self.assertTrue(stat.S_ISREG(s.st_mode));self.assertFalse(p.is_symlink());self.assertEqual(stat.S_IMODE(s.st_mode),0o600);self.assertEqual(s.st_uid,os.getuid());self.assertEqual(s.st_nlink,1);self.assertIn('TEST_'+stream.upper()+'_'+event['role'],p.read_text())
+   exits={e['role']:e['actualExitCode']for e in pair.events if e['event']=='service_exit'};self.assertEqual(exits['node'],7);self.assertEqual(len(exits),2)
+  finally:
+   if unrelated.poll()is None:unrelated.terminate()
+   unrelated.wait(timeout=3)
+
  def adapter_bundle(self):
   import hashlib,operator_pair
   root=pathlib.Path('/workspace/gl3/mainnet');root.mkdir(exist_ok=True)

@@ -92,6 +92,7 @@ def prepare(snap, config_path, output):
         from urllib.parse import urlsplit
         u = urlsplit(upstream or '')
         require(u.scheme == 'https' and u.hostname and not u.username and not u.password and not u.query and not u.fragment, 'Actual credential-free HTTPS upstream binding is required')
+        require(isinstance(c.get('readOnly'), bool), 'Explicit readOnly binding is required')
     (page / 'public-config.json').write_text(json.dumps(c, indent=2) + '\n')
     files = dict(snap['files'])
     additions = {}
@@ -111,7 +112,10 @@ def prepare(snap, config_path, output):
         shutil.copyfile(HERE / 'scan/public' / name, scan / name)
     scan_config = {'enabled': c['enabled'], 'chainId': 4663001, 'rpcUrl': c['childRpcUrl'],
                    'genesisHash': c['childGenesisHash'], 'nativeSymbol': 'GH0ST',
-                   'confirmationMode': 'project-run-fast-confirmation', 'zkAtLaunch': False}
+                   'confirmationMode': 'project-run-fast-confirmation', 'zkAtLaunch': False,
+                   'readOnly': c.get('readOnly', True), 'networkPhase': c.get('networkPhase', 'bootstrap-read-only'),
+                   'bridgeEnabled': bool(c['enabled'] and not c.get('readOnly', True)), 'rollupAddress': c.get('rollupAddress'),
+                   'setupIncomplete': c.get('setupIncomplete', True), 'setupReceiptTxHashes': c.get('finalSetup', {}).get('setupReceiptTxHashes', [])}
     (scan / 'public-config.json').write_text(json.dumps(scan_config, indent=2) + '\n')
     for p in sorted(scan.iterdir()):
         key = '/gl3/scan/' + p.name
@@ -120,7 +124,8 @@ def prepare(snap, config_path, output):
         additions[key] = {'sha1': digest, 'file': str(p.relative_to(output))}
     require('gl3-rpc' not in fn, 'Existing gl3-rpc function needs a reviewed update plan')
     bound = {'GL3_RPC_ENABLED': 'true' if c['enabled'] else 'false', 'GL3_CHAIN_ID': '4663001',
-             'GL3_GENESIS_HASH': c['childGenesisHash'], 'GL3_RPC_UPSTREAM_HTTPS_URL': upstream}
+             'GL3_GENESIS_HASH': c['childGenesisHash'], 'GL3_RPC_UPSTREAM_HTTPS_URL': upstream,
+             'GL3_RPC_READ_ONLY': 'true' if c.get('readOnly', True) else 'false'}
     source = (HERE / 'rpc/netlify/functions/rpc.mjs').read_text()
     source = source.replace('export async function ', 'async function ').replace('export function ', 'function ')
     source = source.replace('export const handler = (event) => proxy(event);',

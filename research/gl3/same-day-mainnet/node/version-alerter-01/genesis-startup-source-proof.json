@@ -1,0 +1,94 @@
+{
+  "schema": "gh0st.gl3.staker-genesis-startup-source.v1",
+  "scope": "Source-backed possible startup initialization window; not an observation of actual private manager state or a completed mainnet assertion.",
+  "sources": {
+    "staker/bold/bold_staker.go": {
+      "SHA256": "500fb95c92416d40d9fb8bf87d0937b8c4d1693c90baeff5d6bd51ecbb3c9fe1",
+      "excerpts": [
+        {
+          "firstLine": 379,
+          "lastLine": 409,
+          "text": "func (b *BOLDStaker) Start(ctxIn context.Context) {\n\tb.StopWaiter.Start(ctxIn, b)\n\tb.StartAndTrackChild(b.chalManager)\n\tb.CallIteratively(func(ctx context.Context) time.Duration {\n\t\terr := b.updateBlockValidatorModuleRoot(ctx)\n\t\tif err != nil {\n\t\t\tb.updateModuleRootErrHandler.LogLevel(err, log.Error)(\"error updating latest wasm module root\", \"err\", err)\n\t\t} else {\n\t\t\tb.updateModuleRootErrHandler.Reset()\n\t\t}\n\t\tconfirmedMsgCount, confirmedGlobalState, err := b.getLatestState(ctx, true)\n\t\tif err != nil {\n\t\t\tlog.Error(\"staker: error checking latest confirmed\", \"err\", err)\n\t\t\tif errors.Is(err, staker.ErrGlobalStateNotInChain) {\n\t\t\t\tb.fatalErr <- err\n\t\t\t}\n\t\t\treturn b.config.AssertionPostingInterval\n\t\t}\n\n\t\tagreedMsgCount, agreedGlobalState, err := b.getLatestState(ctx, false)\n\t\tif err != nil {\n\t\t\tlog.Error(\"staker: error checking latest agreed\", \"err\", err)\n\t\t}\n\n\t\tif agreedGlobalState == nil {\n\t\t\t// If we don't have a latest agreed global state, we should fall back to\n\t\t\t// using the latest confirmed global state.\n\t\t\tagreedGlobalState = confirmedGlobalState\n\t\t\tagreedMsgCount = confirmedMsgCount\n\t\t}\n\t\tif agreedGlobalState != nil {"
+        },
+        {
+          "firstLine": 457,
+          "lastLine": 474,
+          "text": "func (b *BOLDStaker) getLatestState(ctx context.Context, confirmed bool) (arbutil.MessageIndex, *validator.GoGlobalState, error) {\n\tvar globalState protocol.GoGlobalState\n\tvar err error\n\tif confirmed {\n\t\tglobalState, err = b.chalManager.LatestConfirmedState(ctx)\n\t} else {\n\t\tglobalState, err = b.chalManager.LatestAgreedState(ctx)\n\t}\n\tvar assertionType string\n\tif confirmed {\n\t\tassertionType = \"confirmed\"\n\t} else {\n\t\tassertionType = \"agreed\"\n\t}\n\tif err != nil {\n\t\treturn 0, nil, fmt.Errorf(\"error getting latest %s: %w\", assertionType, err)\n\t}\n\tcaughtUp, count, err := staker.GlobalStateToMsgCount(ctx, b.inboxTracker, b.inboxStreamer, validator.GoGlobalState(globalState))"
+        }
+      ]
+    },
+    "bold/assertions/manager.go": {
+      "SHA256": "08b0f1c79be97f5e989f2ae4291e05c745c9e74b2170179b0827c8e6e92ce9ac",
+      "excerpts": [
+        {
+          "firstLine": 248,
+          "lastLine": 258,
+          "text": "\t\trollupAddr:               chain.RollupAddress(),\n\t\tvalidatorName:            validatorName,\n\t\ttimes:                    defaultTimings,\n\t\tforksDetectedCount:       0,\n\t\tassertionsProcessedCount: 0,\n\t\tsubmittedAssertions:      threadsafe.NewLruSet(maxAssertions, threadsafe.LruSetWithMetric[protocol.AssertionHash](\"submittedAssertions\")),\n\t\tassertionChainData: &assertionChainData{\n\t\t\tlatestAgreedAssertion: protocol.AssertionHash{},\n\t\t\tcanonicalAssertions:   make(map[protocol.AssertionHash]*protocol.AssertionCreatedInfo),\n\t\t},\n\t\tobservedCanonicalAssertions: make(chan protocol.AssertionHash, maxAssertions),"
+        },
+        {
+          "firstLine": 286,
+          "lastLine": 296,
+          "text": "func (m *Manager) Start(ctx context.Context) {\n\tm.StopWaiter.Start(ctx, m)\n\tm.LaunchThread(m.initialize)\n}\n\nfunc (m *Manager) initialize(ctx context.Context) {\n\tif m.mode != types.WatchTowerMode {\n\t\tif m.delegatedStaking {\n\t\t\t// Attempt to become a new staker onchain until successful.\n\t\t\t// This is only relevant for delegated stakers that will be funded\n\t\t\t// by another party."
+        },
+        {
+          "firstLine": 344,
+          "lastLine": 354,
+          "text": "\t}\n\tif !m.disablePosting {\n\t\tm.LaunchThread(m.postAssertionRoutine)\n\t}\n\tm.LaunchThread(m.updateLatestConfirmedMetrics)\n\tm.LaunchThread(m.syncAssertions)\n\tm.LaunchThread(m.queueCanonicalAssertionsForConfirmation)\n\tm.LaunchThread(m.checkLatestDesiredBlock)\n}\n\nfunc (m *Manager) checkLatestDesiredBlock(ctx context.Context) {"
+        }
+      ]
+    },
+    "bold/assertions/sync.go": {
+      "SHA256": "46adebaa6a0253222822aac9e39c00b590b131c4b140bac08a2d3e68bf86d51c",
+      "excerpts": [
+        {
+          "firstLine": 27,
+          "lastLine": 48,
+          "text": "\tlatestConfirmed, err := retry.UntilSucceeds(ctx, func() (protocol.Assertion, error) {\n\t\treturn m.chain.LatestConfirmed(ctx, m.chain.GetCallOptsWithDesiredRpcHeadBlockNumber(&bind.CallOpts{Context: ctx}))\n\t})\n\tif err != nil {\n\t\tlog.Error(\"Could not get latest confirmed assertion\", \"err\", err)\n\t\treturn\n\t}\n\tlatestConfirmedInfo, err := retry.UntilSucceeds(ctx, func() (*protocol.AssertionCreatedInfo, error) {\n\t\treturn m.chain.ReadAssertionCreationInfo(ctx, latestConfirmed.Id())\n\t})\n\tif err != nil {\n\t\tlog.Error(\"Could not get latest confirmed assertion\", \"err\", err)\n\t\treturn\n\t}\n\n\tm.assertionChainData.Lock()\n\tm.assertionChainData.latestAgreedAssertion = latestConfirmed.Id()\n\tm.assertionChainData.canonicalAssertions[latestConfirmed.Id()] = latestConfirmedInfo\n\tif !m.disablePosting {\n\t\tclose(m.startPostingSignal)\n\t}\n\tm.assertionChainData.Unlock()"
+        }
+      ]
+    },
+    "bold/challenge/manager.go": {
+      "SHA256": "2d5a52f228732a8e34bf4e1b5192b44a602195e7f28a3ee4e1e40eb38218b158",
+      "excerpts": [
+        {
+          "firstLine": 379,
+          "lastLine": 387,
+          "text": "func (m *Manager) LatestAgreedState(ctx context.Context) (protocol.GoGlobalState, error) {\n\tlatestAgreedAssertion := m.assertionManager.LatestAgreedAssertion()\n\tinfo, err := m.chain.ReadAssertionCreationInfo(ctx, latestAgreedAssertion)\n\tif err != nil {\n\t\treturn protocol.GoGlobalState{}, err\n\t}\n\treturn protocol.GoExecutionStateFromSolidity(info.AfterState).GlobalState, nil\n}\n"
+        }
+      ]
+    },
+    "bold/protocol/sol/assertion_chain.go": {
+      "SHA256": "0623413835d2831f01df45b623af71d39dc5e960c6bc4c3e8b0483b8a1d8e362",
+      "excerpts": [
+        {
+          "firstLine": 722,
+          "lastLine": 725,
+          "text": "func (a *AssertionChain) GenesisAssertionHash(ctx context.Context) (common.Hash, error) {\n\treturn a.userLogic.GenesisAssertionHash(a.GetCallOptsWithDesiredRpcHeadBlockNumber(&bind.CallOpts{Context: ctx}))\n}\n"
+        },
+        {
+          "firstLine": 1046,
+          "lastLine": 1095,
+          "text": "\nfunc (a *AssertionChain) ReadAssertionCreationInfoAtLatest(\n\tctx context.Context, id protocol.AssertionHash,\n) (*protocol.AssertionCreatedInfo, error) {\n\treturn a.readAssertionCreationInfo(ctx, id, &bind.CallOpts{Context: ctx})\n}\n\nfunc (a *AssertionChain) readAssertionCreationInfo(\n\tctx context.Context, id protocol.AssertionHash, callOpts *bind.CallOpts,\n) (*protocol.AssertionCreatedInfo, error) {\n\tvar assertionCreationBlock uint64\n\tvar topics [][]common.Hash\n\tif id == (protocol.AssertionHash{}) {\n\t\trollupDeploymentBlock, err := a.rollup.RollupDeploymentBlock(callOpts)\n\t\tif err != nil {\n\t\t\treturn nil, err\n\t\t}\n\t\tif !rollupDeploymentBlock.IsUint64() {\n\t\t\treturn nil, errors.New(\"rollup deployment block was not a uint64\")\n\t\t}\n\t\tassertionCreationBlock = rollupDeploymentBlock.Uint64()\n\t\ttopics = [][]common.Hash{{assertionCreatedId}}\n\t} else {\n\t\tvar b [32]byte\n\t\tcopy(b[:], id.Bytes())\n\t\tcreatedAtBlock, err := a.userLogic.GetAssertionCreationBlockForLogLookup(callOpts, b)\n\t\tif err != nil {\n\t\t\treturn nil, errors.Wrapf(err, \"could not get assertion creation block for assertion hash %#x\", b)\n\t\t}\n\t\tif !createdAtBlock.IsUint64() {\n\t\t\treturn nil, fmt.Errorf(\"for assertion hash %#x, createdAtBlock was not a uint64\", b)\n\t\t}\n\t\tassertionCreationBlock = createdAtBlock.Uint64()\n\t\ttopics = [][]common.Hash{{assertionCreatedId}, {id.Hash}}\n\t}\n\tvar query = ethereum.FilterQuery{\n\t\tFromBlock: new(big.Int).SetUint64(assertionCreationBlock),\n\t\tToBlock:   new(big.Int).SetUint64(assertionCreationBlock),\n\t\tAddresses: []common.Address{a.rollupAddr},\n\t\tTopics:    topics,\n\t}\n\tlogs, err := a.backend.FilterLogs(ctx, query)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\tif len(logs) == 0 {\n\t\treturn nil, errors.New(\"no assertion creation logs found\")\n\t}\n\tif len(logs) > 1 {\n\t\treturn nil, errors.New(\"found multiple instances of requested node\")"
+        }
+      ]
+    }
+  },
+  "publicChainInfoSHA256": "924dd83a932ea16d1fdf84b318be9af65e1f046c4ce35732849844d650bca2b9",
+  "parentChainIsArbitrum": true,
+  "actualGenesisFromAcceptedAudit": "0x26d1dc5585f03d3f1436999ab4af3cbd40819b16bb843ec3aeb41b11da7147c3",
+  "emptyConvenienceFromAcceptedAudit": "0x75c2df1d9a6f98d1de62c8fc955f91b87f16fefa2fafe4d6b52118fc30e1c278",
+  "actualRPCEventLookupBlock": "116780593",
+  "EVMCreatedAtBlock": "26436489",
+  "reasoning": [
+    "LatestAgreedAssertion initiallyzero until asyncsync seeds it from actualLatestConfirmed",
+    "Initial zero-id ReadAssertionCreationInfo falls back to rollupDeploymentBlock(EVM coordinate) for logquery, which differs from ArbitrumRPC block coordinate",
+    "Nonzero actualhash path uses GetAssertionCreationBlockForLogLookup correctly",
+    "BOLDStaker explicitlyfallsback to actualLatestConfirmed when latest-agreed lookup hasnotfinished",
+    "Production sync path doesnotuse empty convenience genesis helper; no genesis override/bypass recommended"
+  ],
+  "remainingAcceptance": "Root must observe actualsync and genuine nextbatch SDK assertion/fastconfirmation; repeated errors need provider/filter diagnostics, not a validation bypass.",
+  "privateConfigurationsRead": false,
+  "privateLogsRead": false,
+  "servicesStarted": 0,
+  "transactionsSubmitted": 0
+}
