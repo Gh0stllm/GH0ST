@@ -1,0 +1,25 @@
+{
+  "schema": "gh0st.gl3.warm-proof-optimization.v1",
+  "status": "ISOLATED_WARM_BASELINE_RUNNING_NATIVE_CPU_BUILD_QUEUED",
+  "userRequest": "Measure warm ZK batch and optimize proof time/cost; keep on-chain verification; all tests on Runpod and update GitHub",
+  "fixedWorkload": "R50 exact sixteen signed ERC20 transfers, one Ethereum EVM block, chain9",
+  "sameGuestSHA256": "25270f23a49d998e37769c775047a6c9c080cd5d02b9b036ac18facb60c59bbb",
+  "sameProgramVKey": "0x005cc930fd52fd7e71ca44913ae824ce5578ff90d2005a0d4840b1eb76e9211a",
+  "sameGroth16VerifierHash": "0xa4594c59bbc142f3b81c3ecb7f50a7c34bc9af7c4c444b5d48b795427e285913",
+  "proofSecuritySettingsChanged": false,
+  "simulationOrCachedProofAllowed": false,
+  "newRealFullProofRequiredEachRun": true,
+  "onChainSolidityVerificationRequired": true,
+  "proverLocation": "Existing Runpod CPU worker",
+  "allTestsAndBuildsOnRunpod": true,
+  "localHeavyWorkAllowed": false,
+  "additionalPodCreated": false,
+  "runs": [
+    {"id": "baseline28", "binary": "original R50", "threads": 28},
+    {"id": "native28", "binary": "same source with target-cpu=native", "threads": 28},
+    {"id": "native16", "status": "optional measured follow-up after native28", "threads": 16}
+  ],
+  "productionRollupDelivered": false,
+  "publicTransactionsAllowed": false,
+  "realWalletUseAllowed": false
+}

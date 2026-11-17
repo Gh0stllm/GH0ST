@@ -1,0 +1,607 @@
+{
+  "createdUTC": "2026-11-17T13:57:45.634852+00:00",
+  "status": "CPU_BUILD_OPTIMIZATION_CANDIDATE_NOT_BENCHMARKED",
+  "baseline28Running": true,
+  "heavyTestsOnRunpodOnly": true,
+  "sourceChangePlanned": false,
+  "guestChangePlanned": false,
+  "proofSecurityChangePlanned": false,
+  "candidateRustflags": "-C target-cpu=native",
+  "baselineFingerprints": [
+    {
+      "path": "/root/gl3-sp1-build/target/release/.fingerprint/p3-baby-bear-9f2a8bf994093d26/lib-p3_baby_bear.json",
+      "features": "[]",
+      "rustflags": [],
+      "SHA256": "ebdcbb011ea64fce628baf04d107509597bfb584ea2d4eb4c422243ef9096aae"
+    },
+    {
+      "path": "/root/gl3-sp1-build/target/release/.fingerprint/p3-baby-bear-97eaf4a9409ffa28/lib-p3_baby_bear.json",
+      "features": "[]",
+      "rustflags": [],
+      "SHA256": "366d189452885eb93bd8bb166865f1ac9d2610dd6415f43bde6293e0f767b7ad"
+    }
+  ],
+  "dependencySource": [
+    {
+      "path": "/workspace/gl3/zk-tests/evm-proof/toolchains/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/p3-baby-bear-0.2.3-succinct/src/lib.rs",
+      "SHA256": "692249a83c0c4871aecd9a6b262b10429b09ea2c10d94a56318421c3fd5319e8",
+      "relevantLines": [
+        {
+          "line": 1,
+          "text": "#![no_std]"
+        },
+        {
+          "line": 2,
+          "text": "#![cfg_attr("
+        },
+        {
+          "line": 3,
+          "text": "    all("
+        },
+        {
+          "line": 4,
+          "text": "        feature = \"nightly-features\","
+        },
+        {
+          "line": 5,
+          "text": "        target_arch = \"x86_64\","
+        },
+        {
+          "line": 6,
+          "text": "        target_feature = \"avx512f\""
+        },
+        {
+          "line": 7,
+          "text": "    ),"
+        },
+        {
+          "line": 8,
+          "text": "    feature(stdarch_x86_avx512)"
+        },
+        {
+          "line": 9,
+          "text": ")]"
+        },
+        {
+          "line": 10,
+          "text": ""
+        },
+        {
+          "line": 11,
+          "text": "extern crate alloc;"
+        },
+        {
+          "line": 12,
+          "text": ""
+        },
+        {
+          "line": 13,
+          "text": "mod baby_bear;"
+        },
+        {
+          "line": 14,
+          "text": "mod extension;"
+        },
+        {
+          "line": 15,
+          "text": "mod mds;"
+        },
+        {
+          "line": 16,
+          "text": "mod poseidon2;"
+        },
+        {
+          "line": 17,
+          "text": ""
+        },
+        {
+          "line": 18,
+          "text": "pub use baby_bear::*;"
+        },
+        {
+          "line": 19,
+          "text": "pub use mds::*;"
+        },
+        {
+          "line": 20,
+          "text": "pub use poseidon2::*;"
+        },
+        {
+          "line": 21,
+          "text": ""
+        },
+        {
+          "line": 22,
+          "text": "#[cfg(all(target_arch = \"aarch64\", target_feature = \"neon\"))]"
+        },
+        {
+          "line": 23,
+          "text": "mod aarch64_neon;"
+        },
+        {
+          "line": 24,
+          "text": "#[cfg(all(target_arch = \"aarch64\", target_feature = \"neon\"))]"
+        },
+        {
+          "line": 25,
+          "text": "pub use aarch64_neon::*;"
+        },
+        {
+          "line": 26,
+          "text": ""
+        },
+        {
+          "line": 27,
+          "text": "#[cfg(all(target_arch = \"x86_64\", target_feature = \"avx2\"))]"
+        },
+        {
+          "line": 28,
+          "text": "mod x86_64_avx2;"
+        },
+        {
+          "line": 29,
+          "text": "#[cfg(all(target_arch = \"x86_64\", target_feature = \"avx2\"))]"
+        },
+        {
+          "line": 30,
+          "text": "pub use x86_64_avx2::*;"
+        },
+        {
+          "line": 31,
+          "text": ""
+        },
+        {
+          "line": 32,
+          "text": "#[cfg(all("
+        },
+        {
+          "line": 33,
+          "text": "    feature = \"nightly-features\","
+        },
+        {
+          "line": 34,
+          "text": "    target_arch = \"x86_64\","
+        },
+        {
+          "line": 35,
+          "text": "    target_feature = \"avx512f\""
+        },
+        {
+          "line": 36,
+          "text": "))]"
+        },
+        {
+          "line": 37,
+          "text": "mod x86_64_avx512;"
+        },
+        {
+          "line": 38,
+          "text": "#[cfg(all("
+        },
+        {
+          "line": 39,
+          "text": "    feature = \"nightly-features\","
+        },
+        {
+          "line": 40,
+          "text": "    target_arch = \"x86_64\","
+        },
+        {
+          "line": 41,
+          "text": "    target_feature = \"avx512f\""
+        },
+        {
+          "line": 42,
+          "text": "))]"
+        },
+        {
+          "line": 43,
+          "text": "pub use x86_64_avx512::*;"
+        }
+      ]
+    },
+    {
+      "path": "/workspace/gl3/zk-tests/evm-proof/toolchains/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/p3-baby-bear-0.2.3-succinct/src/baby_bear.rs",
+      "SHA256": "9c62a9cda46cc133e28a0c8da503bbddb63d385b47b56d2476e43dbb1b74bb10",
+      "relevantLines": [
+        {
+          "line": 165,
+          "text": "            value: to_monty_64(n),"
+        },
+        {
+          "line": 166,
+          "text": "        }"
+        },
+        {
+          "line": 167,
+          "text": "    }"
+        },
+        {
+          "line": 168,
+          "text": ""
+        },
+        {
+          "line": 169,
+          "text": "    #[inline]"
+        },
+        {
+          "line": 170,
+          "text": "    fn generator() -> Self {"
+        },
+        {
+          "line": 171,
+          "text": "        Self::from_canonical_u32(0x1f)"
+        },
+        {
+          "line": 172,
+          "text": "    }"
+        },
+        {
+          "line": 173,
+          "text": "}"
+        },
+        {
+          "line": 174,
+          "text": ""
+        },
+        {
+          "line": 175,
+          "text": "impl Field for BabyBear {"
+        },
+        {
+          "line": 176,
+          "text": "    #[cfg(all(target_arch = \"aarch64\", target_feature = \"neon\"))]"
+        },
+        {
+          "line": 177,
+          "text": "    type Packing = crate::PackedBabyBearNeon;"
+        },
+        {
+          "line": 178,
+          "text": "    #[cfg(all("
+        },
+        {
+          "line": 179,
+          "text": "        target_arch = \"x86_64\","
+        },
+        {
+          "line": 180,
+          "text": "        target_feature = \"avx2\","
+        },
+        {
+          "line": 181,
+          "text": "        not(all(feature = \"nightly-features\", target_feature = \"avx512f\"))"
+        },
+        {
+          "line": 182,
+          "text": "    ))]"
+        },
+        {
+          "line": 183,
+          "text": "    type Packing = crate::PackedBabyBearAVX2;"
+        },
+        {
+          "line": 184,
+          "text": "    #[cfg(all("
+        },
+        {
+          "line": 185,
+          "text": "        feature = \"nightly-features\","
+        },
+        {
+          "line": 186,
+          "text": "        target_arch = \"x86_64\","
+        },
+        {
+          "line": 187,
+          "text": "        target_feature = \"avx512f\""
+        },
+        {
+          "line": 188,
+          "text": "    ))]"
+        },
+        {
+          "line": 189,
+          "text": "    type Packing = crate::PackedBabyBearAVX512;"
+        },
+        {
+          "line": 190,
+          "text": "    #[cfg(not(any("
+        },
+        {
+          "line": 191,
+          "text": "        all(target_arch = \"aarch64\", target_feature = \"neon\"),"
+        },
+        {
+          "line": 192,
+          "text": "        all("
+        },
+        {
+          "line": 193,
+          "text": "            target_arch = \"x86_64\","
+        },
+        {
+          "line": 194,
+          "text": "            target_feature = \"avx2\","
+        },
+        {
+          "line": 195,
+          "text": "            not(all(feature = \"nightly-features\", target_feature = \"avx512f\"))"
+        },
+        {
+          "line": 196,
+          "text": "        ),"
+        },
+        {
+          "line": 197,
+          "text": "        all("
+        },
+        {
+          "line": 198,
+          "text": "            feature = \"nightly-features\","
+        },
+        {
+          "line": 199,
+          "text": "            target_arch = \"x86_64\","
+        },
+        {
+          "line": 200,
+          "text": "            target_feature = \"avx512f\""
+        },
+        {
+          "line": 201,
+          "text": "        ),"
+        },
+        {
+          "line": 202,
+          "text": "    )))]"
+        },
+        {
+          "line": 203,
+          "text": "    type Packing = Self;"
+        },
+        {
+          "line": 204,
+          "text": ""
+        },
+        {
+          "line": 205,
+          "text": "    #[inline]"
+        },
+        {
+          "line": 206,
+          "text": "    fn mul_2exp_u64(&self, exp: u64) -> Self {"
+        },
+        {
+          "line": 207,
+          "text": "        let product = (self.value as u64) << exp;"
+        },
+        {
+          "line": 208,
+          "text": "        let value = (product % (P as u64)) as u32;"
+        },
+        {
+          "line": 209,
+          "text": "        Self { value }"
+        },
+        {
+          "line": 210,
+          "text": "    }"
+        }
+      ]
+    }
+  ],
+  "defaultTargetCfg": [
+    "debug_assertions",
+    "panic=\"unwind\"",
+    "target_abi=\"\"",
+    "target_arch=\"x86_64\"",
+    "target_endian=\"little\"",
+    "target_env=\"gnu\"",
+    "target_family=\"unix\"",
+    "target_feature=\"fxsr\"",
+    "target_feature=\"sse\"",
+    "target_feature=\"sse2\"",
+    "target_has_atomic=\"16\"",
+    "target_has_atomic=\"32\"",
+    "target_has_atomic=\"64\"",
+    "target_has_atomic=\"8\"",
+    "target_has_atomic=\"ptr\"",
+    "target_os=\"linux\"",
+    "target_pointer_width=\"64\"",
+    "target_vendor=\"unknown\"",
+    "unix"
+  ],
+  "nativeTargetCfg": [
+    "debug_assertions",
+    "panic=\"unwind\"",
+    "target_abi=\"\"",
+    "target_arch=\"x86_64\"",
+    "target_endian=\"little\"",
+    "target_env=\"gnu\"",
+    "target_family=\"unix\"",
+    "target_feature=\"adx\"",
+    "target_feature=\"aes\"",
+    "target_feature=\"avx\"",
+    "target_feature=\"avx2\"",
+    "target_feature=\"avx512bf16\"",
+    "target_feature=\"avx512bitalg\"",
+    "target_feature=\"avx512bw\"",
+    "target_feature=\"avx512cd\"",
+    "target_feature=\"avx512dq\"",
+    "target_feature=\"avx512f\"",
+    "target_feature=\"avx512ifma\"",
+    "target_feature=\"avx512vbmi\"",
+    "target_feature=\"avx512vbmi2\"",
+    "target_feature=\"avx512vl\"",
+    "target_feature=\"avx512vnni\"",
+    "target_feature=\"avx512vp2intersect\"",
+    "target_feature=\"avx512vpopcntdq\"",
+    "target_feature=\"avxvnni\"",
+    "target_feature=\"bmi1\"",
+    "target_feature=\"bmi2\"",
+    "target_feature=\"cmpxchg16b\"",
+    "target_feature=\"f16c\"",
+    "target_feature=\"fma\"",
+    "target_feature=\"fxsr\"",
+    "target_feature=\"gfni\"",
+    "target_feature=\"lzcnt\"",
+    "target_feature=\"movbe\"",
+    "target_feature=\"pclmulqdq\"",
+    "target_feature=\"popcnt\"",
+    "target_feature=\"rdrand\"",
+    "target_feature=\"rdseed\"",
+    "target_feature=\"sha\"",
+    "target_feature=\"sse\"",
+    "target_feature=\"sse2\"",
+    "target_feature=\"sse3\"",
+    "target_feature=\"sse4.1\"",
+    "target_feature=\"sse4.2\"",
+    "target_feature=\"ssse3\"",
+    "target_feature=\"vaes\"",
+    "target_feature=\"vpclmulqdq\"",
+    "target_feature=\"xsave\"",
+    "target_feature=\"xsavec\"",
+    "target_feature=\"xsaveopt\"",
+    "target_feature=\"xsaves\"",
+    "target_has_atomic=\"16\"",
+    "target_has_atomic=\"32\"",
+    "target_has_atomic=\"64\"",
+    "target_has_atomic=\"8\"",
+    "target_has_atomic=\"ptr\"",
+    "target_os=\"linux\"",
+    "target_pointer_width=\"64\"",
+    "target_vendor=\"unknown\"",
+    "unix"
+  ],
+  "CPUaffinities": [
+    {
+      "cpu": 3,
+      "siblings": "3,67"
+    },
+    {
+      "cpu": 11,
+      "siblings": "11,75"
+    },
+    {
+      "cpu": 19,
+      "siblings": "19,83"
+    },
+    {
+      "cpu": 27,
+      "siblings": "27,91"
+    },
+    {
+      "cpu": 29,
+      "siblings": "29,93"
+    },
+    {
+      "cpu": 30,
+      "siblings": "30,94"
+    },
+    {
+      "cpu": 32,
+      "siblings": "32,96"
+    },
+    {
+      "cpu": 35,
+      "siblings": "35,99"
+    },
+    {
+      "cpu": 44,
+      "siblings": "44,108"
+    },
+    {
+      "cpu": 47,
+      "siblings": "47,111"
+    },
+    {
+      "cpu": 48,
+      "siblings": "48,112"
+    },
+    {
+      "cpu": 49,
+      "siblings": "49,113"
+    },
+    {
+      "cpu": 51,
+      "siblings": "51,115"
+    },
+    {
+      "cpu": 54,
+      "siblings": "54,118"
+    },
+    {
+      "cpu": 57,
+      "siblings": "57,121"
+    },
+    {
+      "cpu": 59,
+      "siblings": "59,123"
+    },
+    {
+      "cpu": 67,
+      "siblings": "3,67"
+    },
+    {
+      "cpu": 75,
+      "siblings": "11,75"
+    },
+    {
+      "cpu": 83,
+      "siblings": "19,83"
+    },
+    {
+      "cpu": 91,
+      "siblings": "27,91"
+    },
+    {
+      "cpu": 93,
+      "siblings": "29,93"
+    },
+    {
+      "cpu": 94,
+      "siblings": "30,94"
+    },
+    {
+      "cpu": 96,
+      "siblings": "32,96"
+    },
+    {
+      "cpu": 99,
+      "siblings": "35,99"
+    },
+    {
+      "cpu": 108,
+      "siblings": "44,108"
+    },
+    {
+      "cpu": 111,
+      "siblings": "47,111"
+    },
+    {
+      "cpu": 112,
+      "siblings": "48,112"
+    },
+    {
+      "cpu": 113,
+      "siblings": "49,113"
+    },
+    {
+      "cpu": 115,
+      "siblings": "51,115"
+    },
+    {
+      "cpu": 118,
+      "siblings": "54,118"
+    },
+    {
+      "cpu": 121,
+      "siblings": "57,121"
+    },
+    {
+      "cpu": 123,
+      "siblings": "59,123"
+    }
+  ]
+}

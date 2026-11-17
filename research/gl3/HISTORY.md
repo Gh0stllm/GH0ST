@@ -521,3 +521,9 @@ The matched Nitro batch previously uses175,613 compute +3,628 posting =179,241 p
 This proves a real EVM batch and tests verifier/data components. A production ZK GL3 path still needs state/data coordination, bridge/withdrawals, operations and security review; Stylus/WASM and LLM inference are outside the proved guest. Preserved Nitro/chess builds are unchanged. No public deployment, license acceptance or real fund movement occurs.
 
 [Complete proof](zk-batch/source-evaluation/complete16/README.md) · [Actual verifier and receipts](zk-batch/nitro-baseline/verifier/README.md) · [Reproducible cost comparison](zk-batch/costs/README.md).
+
+## 51 · Start the isolated warm proof and queue CPU optimization — 17 November
+
+The user requests a warm ZK batch and lower proving time/cost, preserving on-chain verification and running every build/test on Runpod. The original binary starts a fresh real sixteen-transfer Groth16 run with28 allowed threads and all installed circuit files pinned. Compilation is queued behind its successful cleanup to keep the timing isolated. Source/build inspection finds the original BabyBear dependency built without CPU vector flags; a same-source native-CPU build will test the existing vector arithmetic without changing guest, circuit, proof security or public outputs. No optimized result is accepted at this milestone.
+
+[Warm experiment and acceptance plan](zk-batch/warm-optimization/README.md).
