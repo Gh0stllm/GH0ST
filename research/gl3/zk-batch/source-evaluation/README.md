@@ -1,6 +1,6 @@
 # Complete EVM proof selection
 
-**The exact sixteen-transaction native batch passed, and one real full Groth16 proof is running on Runpod. No complete proof or Solidity verification is accepted yet.** Selected path: ethrex full EVM batch → SP1 → native Groth16 → Solidity verification.
+**The exact sixteen-transaction batch passed a complete real CPU Groth16 proof, SDK verification and actual Solidity acceptance on Runpod.** Selected path: ethrex full EVM batch → SP1 → native Groth16 → Solidity verification. [Final proof and memory evidence](complete16/README.md) · [Solidity acceptance and rejection receipts](../nitro-baseline/verifier/README.md) · [Measured cost comparison](../costs/README.md).
 
 | Component | Exact pin / boundary |
 |---|---|

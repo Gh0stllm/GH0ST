@@ -1,6 +1,18 @@
 # GL3 · full ZK-batch comparison
 
-**The sixteen-transfer native EVM and guest execution passed; a real full Groth16 proof is running on Runpod. The Solidity verifier compiled, but no complete proof or verified gas result is accepted yet.** All builds, execution, proofs and private-chain verification run on Runpod. The tested Nitro build and its frozen deployment profile remain unchanged.
+**Complete private benchmark passed: sixteen ERC20 transfers → real Groth16 proof → actual Solidity verification and three mined rejection tests.** All builds, execution, proofs and private-chain verification ran on Runpod. The tested Nitro build and its frozen deployment profile remain unchanged.
+
+| Final measured result | Value |
+| :--- | ---: |
+| Cold full proof, including official circuit fetch and final wrapping | **591.23 seconds** |
+| Sampled owned proof RAM peak | **41.34GB** |
+| Full-pod compute allocation for that cold call | **$0.184**, excluding prior setup/storage |
+| Proof / public values | **260 / 160 bytes** |
+| Actual private Solidity verification | **227,263 gas** |
+| Verification + separate uncompressed data publication | **286,415 gas**, two transactions |
+| Matched Nitro parent posting | **179,241 gas** |
+
+Warm proving time is unmeasured. Private parent posting-price initialization and compression differ; these are measured components rather than all-in mainnet fees. **[Full cost comparison and boundaries](costs/README.md)** · [Proof and memory evidence](source-evaluation/complete16/README.md) · [Solidity receipts and negatives](nitro-baseline/verifier/README.md).
 
 The target is one genuine EVM batch of **16 ERC20 transfers**, with deployment/mint setup outside the measured transaction window. It must reach a final EVM-compatible proof and an actual Solidity verifier receipt. A native replay, mock proof, precomputed third-party proof or standalone arithmetic example cannot satisfy this experiment.
 
@@ -53,3 +65,13 @@ The private official Nitro run passes with direct wait4 exit0 in52.233 seconds i
 Posting observations include a controlled restart to release a deliberately withheld batch. The native token is a synthetic neutral test asset; complete ArbOS/Ethereum state roots and fees differ, while signed calls, token prestate/outcomes and execution gas match. The follower matches Nitro's own header, state and all16 receipts exactly. These are one-run measurements, not throughput or production guarantees. [Full result, actual receipts, preserved setup failures and audit](nitro-baseline/README.md).
 
 The ZK proof remains active. Its final wrapper needs a cold download of the official3,025,985,400-byte circuit archive; download/install time will be identified in the complete pipeline result. No completed proof or ZK verification-gas result is claimed at this milestone.
+
+## R50 · complete the real proof, Solidity checks and cost comparison
+
+The one actual CPU Groth16 proof completes with exit0, matching all160 native/guest/proof public bytes. The final260-byte proof verifies in the SDK and in the unchanged pinned Solidity verifier on a private official Nitro parent. Actual mined mutations of the proof body, public values and program key each revert with `ProofInvalid`, using about227k compute gas under an8m limit. Native BN254 curve validity is preserved in the proof-body mutation; gas exhaustion is excluded.
+
+The actual verifier job passes with wait4 exit0 in41.608 seconds. Audits independently inspect calldata, deployment/verification/reverted receipts, exact published raw transactions, source hashes and cleanup. The earlier receipt-indexing and invalid-curve negative-test failures remain preserved; no second expensive EVM proof was needed.
+
+The591.230-second cold proof call includes the official3.026GB parameter download/install. Its archive hash and installed verification-key hash are recorded, with the latter matching the Solidity circuit selector. All sampled kernel OOM counters remain zero and all owned test processes are gone. [Complete proof](source-evaluation/complete16/README.md) · [Solidity acceptance](nitro-baseline/verifier/README.md) · [Measured costs](costs/README.md).
+
+This establishes a full EVM batch proof and verifier/data components. It does not deliver a production rollup coordinator, proof-bound data/state acceptance, ZK withdrawals or Stylus/LLM execution proofs. The Nitro launch path remains separate; no public deployment or real funds are used.

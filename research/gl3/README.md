@@ -2,9 +2,11 @@
 
 # GH0ST L3 · GL3 research notebook
 
-**R44 · Full private dispute and operational regressions pass.** The honest result is confirmed, nonzero stake is refunded and its replay reverts: actual exit 0 / 235.945 s. Native-GH0ST recovery/withdrawal remains a separate passed fixture. The unsigned Robinhood deployment package and 11-case supervisor regression are ready. Final custody, validator/collateral, pricing and license inputs remain unresolved; public GL3 is not deployed.
+**R50 · Complete EVM ZK-batch benchmark passes.** Sixteen ERC20 transfers reach a real260-byte Groth16 proof and actual Solidity verification, including three meaningful mined rejection tests. The cold proof takes591.23 seconds with41.34GB sampled peak RAM and about$0.184 compute; verification uses227,263 gas. Matched Nitro batching/replay also passes. [Measured comparison and exact boundaries](zk-batch/costs/README.md) · [Proof and receipts](zk-batch/README.md).
 
-[Open the active base-chain work](base/README.md) · [Sequential history](HISTORY.md)
+**The Nitro base launch remains at its separately tested R44 profile.** Its full private dispute, nonzero stake refund/replay rejection and11-case supervisor regression pass. Native-GH0ST recovery/withdrawal is a separate passed fixture. The user selected project-operated validators; exact custody/collateral, pricing and applicable license inputs remain unresolved. Public GL3 is not deployed, and the ZK benchmark does not yet cover production state/data coordination, withdrawals or Stylus/LLM proofs.
+
+[Base-chain work](base/README.md) · [ZK cost experiment](zk-batch/README.md) · [Sequential history](HISTORY.md)
 
 The prior2.59 TB projection belongs to deferred chess execution history. It is not a base-chain requirement.
 

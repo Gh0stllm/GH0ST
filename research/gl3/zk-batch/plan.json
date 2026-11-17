@@ -1,7 +1,7 @@
 {
   "schema": "gh0st.gl3.zk-batch-plan.v1",
   "createdUTC": "2026-11-17T12:29:16.985522+00:00",
-  "status": "MATCHED_NITRO_BASELINE_PASSED_REAL_GROTH16_ACTIVE_NOT_ACCEPTED",
+  "status": "PRIVATE_FULL_EVM_PROOF_SOLIDITY_AND_NITRO_COMPARISON_PASSED",
   "userRequest": "Test a full ZK batch on Runpod; measure RAM, proof time and gas; compare Nitro and update GitHub quickly",
   "scope": "Complete genuine EVM batch execution proof, final EVM-compatible proof and Solidity verification; no mainnet deployment",
   "workload": {
@@ -68,10 +68,15 @@
   "proofRun": {
     "startedUTC": "2026-11-17T13:07:30Z",
     "CPUCap": 28,
-    "accepted": false,
-    "finalPeakMeasured": false,
-    "completed": false,
-    "snapshot": "source-evaluation/run16/running-snapshot.json"
+    "accepted": true,
+    "finalPeakMeasured": true,
+    "completed": true,
+    "snapshot": "source-evaluation/run16/running-snapshot.json",
+    "peakMeasurementScope": "0.5-second sampled owned-process RSS, not exact kernel highwater",
+    "peakSampledOwnedRSSBytes": 41341263872,
+    "coldFullProofSeconds": 591.229675349,
+    "warmProofMeasured": false,
+    "coldOfficialCircuitDownloadIncluded": true
   },
   "nitroBaseline": {
     "passed": true,
@@ -85,5 +90,19 @@
     "postTriggerToFollowerMilliseconds": 2322.69,
     "ZKOrFraudProof": false,
     "productionAccepted": false
-  }
+  },
+  "solidityVerification": {
+    "passed": true,
+    "actualExit": 0,
+    "wholeJobSeconds": 41.60816693096422,
+    "validProofGas": 227263,
+    "separateRaw16DataGas": 59152,
+    "sumTwoTransactionsGas": 286415,
+    "oneOffVerifierDeploymentGas": 1404856,
+    "minedMeaningfulNegatives": 3,
+    "privateParentPosterGas": 0,
+    "completeRollupCoordinator": false
+  },
+  "costs": "costs/comparison.json",
+  "productionRollupAccepted": false
 }

@@ -1,0 +1,76 @@
+{
+  "schema": "gh0st.gl3.zk-nitro-measured-comparison.v1",
+  "workload": "16 identical signed ERC20 calls, matching prestate/outcomes/gas",
+  "quote": {
+    "schema": "gh0st.gl3.zk-batch.compute-quote.v1",
+    "observedUTCStart": "2026-11-17 13:08:53 UTC",
+    "observedUTCEnd": "2026-11-17 13:08:54 UTC",
+    "source": "Runpod connected get_pod read",
+    "podID": "9fu9ldfpioy14f",
+    "status": "RUNNING",
+    "cpu": {
+      "id": "cpu5c",
+      "memory": 64,
+      "vcpuCount": 32
+    },
+    "dataCenterId": "EUR-IS-1",
+    "image": "runpod/base:1.0.2-ubuntu2404",
+    "computeUSDPerHour": 1.12,
+    "rootDiskGB": 64,
+    "persistentVolumeGB": 1000,
+    "priceScope": "Compute only. Root and persistent storage, tax, parent-chain fees, RPC and backup are separate.",
+    "method": "For each measured elapsed interval: computeUSD = wallSeconds / 3600 * computeUSDPerHour. Concurrent lane costs overlap and must not be summed as exclusive pod rental.",
+    "additionalPodCreated": false,
+    "proofAccepted": false
+  },
+  "proof": {
+    "coldFullGroth16Seconds": 591.229675349,
+    "wholeRunnerSeconds": 596.3835277557373,
+    "coldCallFullPodComputeUSD": "0.1839381212196888888888888889",
+    "wholeRunnerFullPodComputeUSD": "0.1855415419684516044444444444",
+    "peakSampledOwnedRSSBytes": 41341263872,
+    "warmProofMeasured": false,
+    "coldOfficialCircuitFetchIncluded": true,
+    "verifierGas": 227263,
+    "separateUncompressedDAReceiptGas": 59152,
+    "sumTwoParentTransactionsGas": 286415,
+    "sumTwoParentTransactionsComputeGas": 286415,
+    "sumTwoParentTransactionsPosterGas": 0,
+    "oneOffVerifierDeploymentGas": 1404856,
+    "twoTransactionParentGasRatioToNitroPosting": "1.597932392700330839484269782"
+  },
+  "nitro": {
+    "sequencingMilliseconds": 266.5178179740906,
+    "sequencingWindowFullPodComputeUSD": "0.00008291665448082818666666666667",
+    "postTriggerToFollowerMilliseconds": 2322.6906020641327,
+    "postingReplayWindowFullPodComputeUSD": "0.0007226148539755079511111111111",
+    "wholeJobIncludingSetupSeconds": 52.23345607705414,
+    "wholeJobFullPodComputeUSD": "0.01625040855730573244444444444",
+    "parentPostingGas": 179241,
+    "parentComputeGas": 175613,
+    "parentPosterGas": 3628,
+    "compressedBatchBytes": 1542
+  },
+  "illustrativeParentGasScenario": {
+    "weiPerGas": 20000000,
+    "scope": "Historical same-day R44 observation, not a fresh/all-in Robinhood quote",
+    "nitroPostingETH": "0.00000358482",
+    "proofVerificationETH": "0.00000454526",
+    "separateUncompressedDAETH": "0.00000118304",
+    "twoTransactionProofPlusDAETH": "0.0000057283"
+  },
+  "boundaries": [
+    "Compute values allocate the entire existing pod to each named elapsed window; not actual separately billed jobs.",
+    "Parallel windows overlap and must not be added as independent rentals.",
+    "Nitro sequencing/posting are separate observation windows, not a single measured combined latency.",
+    "Cold ZK call includes official parameter fetch; warm proof latency/cost was not measured.",
+    "Nitro data is compressed; the ZK data-only transaction publishes uncompressed raw calls. This is not an optimized equal-compression DA comparison.",
+    "Verification plus separate DA is a sum of two actual transactions, not gas for a completed rollup coordinator.",
+    "Private parent posting-price initialization differs: ZK receipts have zero poster gas, while the Nitro receipt has a nonzero poster component. Actual compute/poster components are reported separately.",
+    "Setup/build/storage/tax/RPC/backup, production state acceptance, bridge and withdrawals are outside these components.",
+    "The proved guest executes Ethereum EVM calls; Stylus/WASM and LLM inference are not proved by this benchmark."
+  ],
+  "allExecutionOnRunpod": true,
+  "productionRollupAccepted": false,
+  "publicTransactionsSubmitted": 0
+}

@@ -1,6 +1,6 @@
 {
   "schema": "gh0st.gl3.full-evm-zk-batch.intent.v1",
-  "status": "ONE_REAL16_GROTH16_PROOF_RUNNING_NOT_ACCEPTED",
+  "status": "REAL16_FULL_GROTH16_AND_PRIVATE_SOLIDITY_PASSED",
   "scope": "Research benchmark, not a production chain replacement",
   "workload": {
     "kind": "full-EVM-ERC20-transfer-block",
@@ -47,11 +47,14 @@
     "networkProverAllowed": false,
     "publicValuesAndProgramVKeyMustBeExported": true,
     "realProofStarted": true,
-    "accepted": false,
+    "accepted": true,
     "runtimeIntent": "run16/intent.json",
     "processSnapshot": "run16/running-snapshot.json",
     "nativeGuestAll160BytesMatch": true,
-    "oneClientKeyReused": true
+    "oneClientKeyReused": true,
+    "SDKVerified": true,
+    "privateSolidityVerified": true,
+    "completeEvidence": "complete16/README.md"
   },
   "build": {
     "RunpodOnly": true,
@@ -109,5 +112,14 @@
     "controllerPID": 54657,
     "childPID": 54658,
     "startedUTC": "2026-11-17T13:07:30Z"
+  },
+  "actualProofResult": {
+    "actualExitCode": 0,
+    "coldFullProofSeconds": 591.229675349,
+    "peakSampledOwnedRSSBytes": 41341263872,
+    "proofBytes": 260,
+    "publicValuesBytes": 160,
+    "warmProofMeasured": false,
+    "productionChainAccepted": false
   }
 }
