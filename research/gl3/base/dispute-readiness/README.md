@@ -1,19 +1,45 @@
-# Base GL3 dispute readiness
+# GL3 · full private dispute passed
 
-This lane uses standard Nitro 3.12.2 and its official `c10cd7ec…9dc97` machine, with no chess or NNUE. No public chain, paid server, license acceptance or real-chain transaction is authorized by these test artifacts.
+**The standard private BoLD lifecycle passes with actual exit 0 in 235.945 seconds.** The honest validator wins a genuine one-step proof, its exact assertion is confirmed, its nonzero ERC20 edge stake is refunded, and a second refund attempt is mined and reverted without changing the token balance. This runs on Runpod with official Nitro 3.12.2 and the standard `c10` machine, without chess or model execution.
 
-The existing [standard inbox dispute](../../mainnet/evidence/bold-inbox-summary.json) passed both recorder variants and an actual honest one-step proof. It returns immediately after that proof; it does not establish assertion confirmation or stake refund. The [native GH0ST bridge fixture](../../mainnet/withdrawal/parent-parity/README.md) separately passed deposit/spend/withdrawal on official Nitro parent4663 and child4663007, using a privileged fast confirmer. The next test therefore extends the standard private challenge to its honest level-zero edge, exact assertion confirmation, refund and refund replay rejection. No chess proof is required.
+[Full result](evidence/r44/full-lifecycle-report.json) · [actual process exit](evidence/r44/test-result.json) · [independent post-run audit](evidence/r44/post-run-audit.json) · [second result review](evidence/r44/base-dispute-final-result-review.json) · [complete evidence capsule](evidence/r44/base-full-dispute-evidence.tar.gz)
 
-[Machine-readable readiness](readiness.json) records the scope and live documentation review. New compilation is held while the root agent checks existing Runpod disk headroom.
+| Acceptance check | Actual result |
+| :--- | :--- |
+| Bridge and proof implementation | Real bridge and real one-step prover |
+| Validator access | Whitelist disabled; fast confirmer is zero |
+| Official transition | ArbOS 61, debug disabled, official `c10` module root |
+| Exact proof ancestry | Actual OSP leaf → onchain child DAG → unique honest layer-zero roots → exact parent ClaimIds |
+| Contested result | Honest assertion confirmed; its rival remains unconfirmed |
+| Refund | Raw private ERC20 balance **1,984 → 1,989**, exactly **5 raw units** |
+| Refund replay | Mined status **0**; token balance unchanged |
+| Run / cleanup | **0 / 235.945 s**; no guard failure and zero active owned processes |
 
-Robinhood is absent from the [official canonical factory table](https://developer.arbitrum.io/launch-arbitrum-chain/deploy/canonical-factory-contracts). The documented self-deployment path is explicitly unsupported; for an L2 parent the documented maximum data size is104857. Existing synthetic factory and native bridge rehearsals support feasibility, but do not convert it into an upstream-maintained deployment. A pinned full factory→genesis→sequencer→posting→validation rehearsal is the remaining technical gate.
+The stake amount is in raw units of the private fixture ERC20. It is not a public GH0ST payout, five ETH or five whole GH0ST tokens. The final report records the exact private OSP, assertion, edge, refund and replay transaction identities.
 
-The current [license overview](https://docs.arbitrum.io/launch-arbitrum-chain/overview/license) gives the zero-cost Additional Use Grant for settlement to One or Nova. Robinhood requires the applicable AEP route. The [published terms](https://docs.arbitrum.foundation/aep/ArbitrumExpansionProgramTerms.pdf) define a10% positive protocol-net-revenue contribution after specified settlement/data-availability costs. Server rental is not one of those defined deductions. Reviewing these sources does not accept them.
+## What this accepts
 
-The production budget remains separate from parent posting ETH, validator stake and the gas-token pricer. Robinhood’s [public RPC is rate limited and not recommended for production](https://docs.robinhood.com/chain/connecting/). The final profile must price a suitable parent endpoint or record an existing covered allowance. Hosting research cannot establish node throughput, storage growth or recovery time.
+The selected test uses a private upstream Geth parent and standard ETH child. Parent mining is 300 ms and test confirmation polling is one second. The source retains the real challenge managers and contract proof path through confirmation/refund, with no fast-confirm shortcut. These private timing settings are not proposed public finality periods.
 
-The new [frozen test source](gl3_base_bold_full_test.go) derives one test function from pristine upstream source SHA`e6dedf98d9d195faf2a776a1d981278488ef38f8b7f1d0db38b75e5a94b47bdb`. It chooses chain-tip/hash, ArbOS61 and debug precompiles off, asserts the exact official module root, checks validator whitelisting is disabled and the fast-confirmer address is zero, then keeps the authentic challenge managers running. Its ancestry check binds the OSP leaf through actual onchain origin mutual IDs to the same level-zero contested block edge and exact honest assertion. Refund acceptance requires the real nonzero ERC20 stake amount, exact recipient balance difference, matching EdgeRefunded event and a mined reverted replay with unchanged token balance.
+The final ancestry check follows actual `LowerChildId` / `UpperChildId` links within each level, then the layer-zero root's exact `ClaimId` to its parent edge. It checks level, origin and recomputed mutual IDs, rejecting missing, ambiguous or cyclic ancestry. Intermediate length-one rivals may legitimately remain pending; the actual contested root and exact honest assertion must be confirmed. The refund requires an exact balance difference, matching `EdgeRefunded` event and a reverted replay receipt.
 
-This is a private upstream Geth-parent/standard-ETH-child challenge fixture. Mining300ms and confirmation polling1s shorten fixture waiting; they do not select production timers. The separate native GH0ST/Robinhood-shaped bridge fixture and production gas-token economics remain separate evidence. No race claim applies: the upstream real challenge suite is explicitly built with`challengetest && !race`.
+The [frozen source](gl3_base_bold_full_test.go) has SHA256 `4dfbfaa0f89240445db1f2d29087edd981d7f1d29777ed6e27f975d0c00b2a4d`. The actual test ELF is `66972a0b7151bbed7e7bcb6dd51960c018f51283cfbf01d6e9998fce6a01da63`, **194,033,832 bytes**, compiled with exit 0 in **20.05 seconds**. The [bounded controller](run-base-bold.py), official machine, native library, source inputs and binary received independent hash review before the run. Go race execution is not claimed: upstream selects this real challenge suite with `challengetest && !race`.
 
-[Source manifest](test-source-manifest.json) and [bounded Runpod controller](run-base-bold.py) make the pending work reviewable. No new test result is claimed until actual compile/test receipts are attached. The old failed chess receipts are preserved outside this base lane.
+## Preserved setup and harness failures
+
+| Attempt | Recorded outcome |
+| :--- | :--- |
+| Missing external Geth path | Exit 1 in 1.025 s, before private chain startup |
+| Available Geth 1.17.4 CLI mismatch | Exit 1 in 1.019 s; required upstream flag unsupported |
+| First exact-parent full run | Actual OSP and honest assertion confirmation; incorrect intermediate-edge test condition waits before refund; controlled stop, exit −9 / 519.164 s; **not a full pass** |
+| Corrected ancestry run | Actual exit 0 / 235.945 s; confirmation, refund and replay checks all pass |
+
+The exact Makefile-required private Geth dependency is built from `glamsterdam-devnet-8` commit `aa1f2fcf512988eb8890d9352e601b898d6fdb2c`, with source/module hashes, actual version and required-flag checks in [its provenance](evidence/r44/parent-geth/accepted-parent.json). Build exit is 0 / 100.175 s. This is a private test dependency; operating the real L3 does not require running this private Ethereum parent.
+
+The capsule preserves the closed logs, source revisions, compile/test exits, partial checkpoint and reviews for all attempts. It excludes executables, private-chain databases and generated fixture keys. The early `precompile-pins.json` inside the capsule is historical inventory; the final acceptance uses [compiled pins](evidence/r44/compiled-pins.json), [the final review](evidence/r44/base-dispute-final-ancestry-review.json) and [source manifest](test-source-manifest.json). The 369,136-byte capsule has SHA256 `4398071d0e0b977f34bc449217f87a1e38813da45f2e4072998619e5f5333a0e`; sealing happened on Runpod, and the compressed bytes were independently checked after transfer.
+
+## Production boundary
+
+The separate [native GH0ST flow](../withdrawal-recovery/) passes deposit, spend, recovery and outbox payout on a genuine private Nitro parent. Its sparse balance-owner remap and privileged confirmation limits remain. This standard-ETH dispute result does not combine those fixtures into a final production-native-token validation pass.
+
+Final custody, validators/collateral, gas pricing, canonical production configuration, operational activation and the applicable licensing arrangement remain in the [unsigned deployment packet](../launch/DEPLOYMENT-PACKET.md). Robinhood has no factory in the reviewed [canonical factory table](https://docs.arbitrum.io/launch-arbitrum-chain/deploy/canonical-factory-contracts); the self-deployment route is documented but unsupported upstream. [Licensing](https://docs.arbitrum.io/launch-arbitrum-chain/overview/license) is a separate decision. No public chain, real funds or accepted terms result from these private tests.

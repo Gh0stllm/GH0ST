@@ -1,0 +1,80 @@
+{
+  "scope": "PRIVATE_FEE_PRICER_AUTHORITY_AND_NONZERO_RATE_REGRESSION",
+  "publicWrites": false,
+  "realChainSpend": 0,
+  "sourceSHA256": "e5b3735441135a3f6a66a164ef221e58534835b06a0a6156b8775232931edf9f",
+  "compiler": "0.8.30+commit.73712a01.Emscripten.clang",
+  "artifactSHA256": "db68d1d8878b79d322049b0b2f0926cd84baa06e8719f8c0c45af36095746b62",
+  "runtimeKeccak256": "0x9b33e85d8164da0a65419d0d23fc2a39d6aa091b2b1914d2c5c53d09b77e82f3",
+  "tests": [
+    {
+      "name": "explicit_owner_is_not_deployer",
+      "passed": true
+    },
+    {
+      "name": "interface_returns_initial_rate",
+      "passed": true
+    },
+    {
+      "name": "nitro_rate_units_2m_tokens_per_eth",
+      "passed": true
+    },
+    {
+      "name": "deployer_cannot_change_rate",
+      "passed": true,
+      "actualRevertedReceipt": true,
+      "transactionHash": "0x946d6fec0976ee0e98efbf15bce2fe756dcdd1d953563b080eb07ccb428a9b87"
+    },
+    {
+      "name": "owner_zero_rate_reverts",
+      "passed": true,
+      "actualRevertedReceipt": true,
+      "transactionHash": "0xa7bbe03a675df44e4648e20d40f9171bad646169809cc5d9429c137ffb636e55"
+    },
+    {
+      "name": "owner_update_visible",
+      "passed": true
+    },
+    {
+      "name": "unproposed_owner_cannot_accept",
+      "passed": true,
+      "actualRevertedReceipt": true,
+      "transactionHash": "0x06f78c22ebde7c2e1d8ebeb7ae0c1b1a7f545f9b954c4c3de1b3378b153977d9"
+    },
+    {
+      "name": "proposed_owner_not_active",
+      "passed": true,
+      "actualRevertedReceipt": true,
+      "transactionHash": "0xefa863d31cec9e4a1b0d5839e55eac2f15f4eee150e00f4a1a9a65bd9e44ca14"
+    },
+    {
+      "name": "two_step_ownership_accepted",
+      "passed": true
+    },
+    {
+      "name": "previous_owner_loses_authority",
+      "passed": true,
+      "actualRevertedReceipt": true,
+      "transactionHash": "0xc641860820050f24d3143f695be5c9ccfc57c5417f75bf6cd453e838a524407f"
+    },
+    {
+      "name": "new_owner_update_visible",
+      "passed": true
+    },
+    {
+      "name": "zero_owner_constructor_reverts",
+      "passed": true,
+      "actualRevertedReceipt": true,
+      "transactionHash": "0xdbee28956dd96b0ec31bf41b7cf6dfc110cbdc9f7b786e8c6dcd277bdf74829e"
+    },
+    {
+      "name": "zero_rate_constructor_reverts",
+      "passed": true,
+      "actualRevertedReceipt": true,
+      "transactionHash": "0xb5e4d81cb041b893c5a25c5284f473db6aced890efe5903ada1c76d0faa4b7f6"
+    }
+  ],
+  "passed": true,
+  "testCount": 13,
+  "gasDeployment": "298093"
+}

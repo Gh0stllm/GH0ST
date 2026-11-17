@@ -1,3 +1,26 @@
+# GL3 · current findings
+
+**17 November 2026 · Base-chain build, without chess.**
+
+[Active work](base/README.md) · [History](HISTORY.md) · [Roadmap](ROADMAP.md)
+
+| Question | Verified observation | Boundary |
+| :--- | :--- | :--- |
+| Does the clean base execute Solidity and Stylus? | Official Nitro returns EVM 42 and activated Stylus signed-dot −31; 16/16 measured transactions pass | Private fixture; no deployed public GL3 |
+| Can GH0ST serve as the native gas token? | Private native parent/child deposit 4, spend 1, burn/release 0.5 with exact token accounting | Frozen real runtime, explicit sparse balance-owner remap, unit-rate fixture pricer and privileged confirmation |
+| Can the ordinary process recover abruptly? | Actual SIGKILL, identical binary/config and three persistent DBs; exact head/state recovery in 743 ms | Same-host acknowledged-state process crash; not arbitrary power loss or host replacement |
+| How responsive is the base? | 100 fresh-account transfers: 101 ms median, 109 ms p95, 123 ms maximum | Local estimate/sign/send/receipt sample; not sustained throughput or an SLA |
+| How much storage did that sample add? | 1,013,760 allocated bytes and 782,711 logical bytes | 100 light transactions only; no long-run extrapolation or pruning acceptance |
+| What is running now? | One 32-vCPU / 64-GB worker with 1,000-GB persistent volume; temporary workers deleted | Infrastructure only; mainnet not deployed |
+| Does the full private permissionless dispute settle? | Yes: honest assertion confirmed, stake refunded and replay rejected; actual 0 / 235.945 s | Private Geth / standard-ETH child fixture; public mainnet and final production-native-token configuration remain unaccepted |
+
+[Private flow result](base/withdrawal-recovery/evidence/result.json) · [Independent audit](base/withdrawal-recovery/evidence/post-run-audit.json) · [Infrastructure cleanup](base/infrastructure/cleanup-only-big.json)
+
+The base uses standard ArbOS 61 and the official `c10` machine. No custom model or chess state transition is enabled. The 2.59-TB estimate belongs to the deferred chess experiment, which remains preserved below.
+
+<details>
+<summary>Preserved earlier local and chess findings</summary>
+
 # Current findings
 
 [Overview](../../README.md) · [History](HISTORY.md) · [Roadmap](ROADMAP.md)
@@ -56,3 +79,5 @@ The custom ArbOS extension executed a full move in an actual local Nitro block a
 The full prover's partial late-start samples already exceed14 GiB RSS; the earlier2.463 GiB native capacity screen does not cover that proof workload. The current24 GB/USD 100 direction supersedes the cheapest shared-CPU recommendation above. No host has been rented. Linux SSE4.1 is a prepared candidate, not a tested deployment. AVX2's accumulator-lane layout requires a separately verified canonical-state adapter before promotion.
 
 [Engine/replay evidence](chess/README.md) · [Current host candidates](chess/HOSTING.md)
+
+</details>

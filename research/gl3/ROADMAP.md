@@ -1,3 +1,35 @@
+# GL3 · chain-first roadmap
+
+**17 November 2026 · Standard Nitro, Solidity and Stylus first. Chess and custom model execution are deferred.**
+
+[Active base build](base/README.md) · [Sequential history](HISTORY.md) · [Verified status](status.json)
+
+## Completed on Runpod
+
+- [x] Pin official Nitro 3.12.2, ArbOS 61 and the standard `c10` machine; debug precompiles disabled.
+- [x] Execute ordinary Solidity and activate a standard Stylus program; 16/16 measured transactions pass.
+- [x] Rehearse native GH0ST deposit, transfer and outbox withdrawal on a genuine private three-layer stack.
+- [x] Reject four invalid withdrawal cases and verify exact parent token deltas.
+- [x] Kill the ordinary child process and recover the exact acknowledged state from the same persistent databases.
+- [x] Measure 100 fresh-account transfers and their bounded database growth.
+- [x] Consolidate required artifacts and preserved research on one 32-vCPU / 64-GB host with a 1,000-GB persistent volume; delete old workers.
+- [x] Publish the compact results, full evidence capsule and independent audit.
+
+## Current launch gates
+
+- [x] Complete the standard private dispute through one-step proof, honest assertion confirmation, actual stake refund and reverted refund replay.
+- [x] Implement startup gates and supervision; 11 bounded dummy-process checks pass on Runpod.
+- [ ] Freeze the final factory, pricer, chain genesis, operator and validator configuration for Robinhood.
+- [ ] Review the exact gas-token exchange-rate policy, parent ETH costs, bonds and applicable license arrangement.
+- [ ] Finish the durable bootstrap, process supervision, backups and service exposure plan.
+- [ ] Review the complete unsigned deployment package and funding before public transactions.
+- [ ] Deploy and independently verify public addresses, bytecode, genesis and posting/validation behavior.
+
+The current GH0ST bridge fixture uses a sparse balance-owner remap and privileged confirmation. Those limits remain visible even when the separate permissionless dispute test passes. The measured 100-ms profile describes private receipts, not public finality or maximum throughput. The earlier 2.59-TB chess-history projection is outside this base launch.
+
+<details>
+<summary>Preserved earlier chess roadmap</summary>
+
 # GL3 roadmap
 
 **R40: candidate03 and corrected no-engine batch sealing pass their scoped checks. The corrected private lifecycle is now RUNNING_NOT_ACCEPTED after new source/geometry review and authorization. The first stopped trial and its failure remain preserved; 20-game storage and production deployment are unaccepted.**
@@ -110,3 +142,5 @@ The new graceful restart and repeated native withdrawal results close bounded ac
 ## R38 evidence
 
 [Completed terminal reference](mainnet/production/bounded-restore/scheduling/comparison/C-combined/interpreter/replay-result.json) · [eight authentic witnesses](mainnet/dispute/selected865-steps/README.md) · [ordinary CLI64 crash profile](mainnet/production/cli-recovery/README.md) · [geometry43 compile/config preflight](mainnet/dispute/full-lifecycle/geometry-2pow43/README.md) · [transport v3 initialization only](mainnet/dispute/full-lifecycle/large-input-preflight/README.md). Native A15 and retention boundaries remain unchanged.
+
+</details>

@@ -1,0 +1,29 @@
+// Cloud-only private EVM regression; no public provider or real key is used.
+const fs=require('node:fs'),crypto=require('node:crypto'),assert=require('node:assert/strict');
+const E=require('/root/dispute/node_modules/ethers');const solc=require('/root/dispute/node_modules/solc');const ganache=require('/root/dispute/node_modules/ganache');
+(async()=>{
+ const root=__dirname,source=fs.readFileSync(root+'/GH0STManualFeeTokenPricer.sol','utf8'),sha=x=>crypto.createHash('sha256').update(x).digest('hex');
+ const input={language:'Solidity',sources:{'GH0STManualFeeTokenPricer.sol':{content:source}},settings:{optimizer:{enabled:true,runs:2000},evmVersion:'london',metadata:{bytecodeHash:'none'},outputSelection:{'*':{'*':['abi','evm.bytecode.object','evm.deployedBytecode.object']}}}};
+ const output=JSON.parse(solc.compile(JSON.stringify(input)));assert.deepEqual((output.errors||[]).filter(x=>x.severity==='error'),[]);
+ const a=output.contracts['GH0STManualFeeTokenPricer.sol'].GH0STManualFeeTokenPricer,artifact={contractName:'GH0STManualFeeTokenPricer',sourceSHA256:sha(source),compiler:solc.version(),settings:input.settings,abi:a.abi,bytecode:'0x'+a.evm.bytecode.object,deployedBytecode:'0x'+a.evm.deployedBytecode.object};
+ artifact.runtimeKeccak256=E.keccak256(artifact.deployedBytecode);fs.writeFileSync(root+'/artifact.json',JSON.stringify(artifact,null,2)+'\n');
+ const backend=ganache.provider({logging:{quiet:true},chain:{chainId:31337,hardfork:'london'},wallet:{totalAccounts:4,defaultBalance:1000}}),p=new E.BrowserProvider(backend);p.pollingInterval=20;
+ const [creator,owner,next,stranger]=await Promise.all([0,1,2,3].map(i=>p.getSigner(i))),ownerAddress=await owner.getAddress(),nextAddress=await next.getAddress();
+ const report={scope:'PRIVATE_FEE_PRICER_AUTHORITY_AND_NONZERO_RATE_REGRESSION',publicWrites:false,realChainSpend:0,sourceSHA256:artifact.sourceSHA256,compiler:artifact.compiler,artifactSHA256:sha(fs.readFileSync(root+'/artifact.json')),runtimeKeccak256:artifact.runtimeKeccak256,tests:[]};
+ const factory=new E.ContractFactory(artifact.abi,artifact.bytecode,creator),c=await factory.deploy(ownerAddress,2n*10n**18n);await c.waitForDeployment();
+ const check=(name,fn)=>Promise.resolve(fn()).then(()=>report.tests.push({name,passed:true}));
+ const reject=async(name,tx)=>{let rc;try{rc=await(await tx()).wait();}catch(e){rc=e.receipt;}assert.equal(rc?.status,0,name);report.tests.push({name,passed:true,actualRevertedReceipt:true,transactionHash:rc.hash});};
+ await check('explicit_owner_is_not_deployer',async()=>assert.equal(await c.owner(),ownerAddress));
+ await check('interface_returns_initial_rate',async()=>assert.equal(await c.getExchangeRate(),2n*10n**18n));
+ await reject('deployer_cannot_change_rate',()=>c.setExchangeRate(1,{gasLimit:100000}));
+ await reject('owner_zero_rate_reverts',()=>c.connect(owner).setExchangeRate(0,{gasLimit:100000}));
+ await(await c.connect(owner).setExchangeRate(3n*10n**18n)).wait();await check('owner_update_visible',async()=>assert.equal(await c.getExchangeRate(),3n*10n**18n));
+ await reject('unproposed_owner_cannot_accept',()=>c.connect(stranger).acceptOwnership({gasLimit:100000}));
+ await(await c.connect(owner).proposeOwner(nextAddress)).wait();await reject('proposed_owner_not_active',()=>c.connect(next).setExchangeRate(4,{gasLimit:100000}));
+ await(await c.connect(next).acceptOwnership()).wait();await check('two_step_ownership_accepted',async()=>{assert.equal(await c.owner(),nextAddress);assert.equal(await c.pendingOwner(),E.ZeroAddress);});
+ await reject('previous_owner_loses_authority',()=>c.connect(owner).setExchangeRate(4,{gasLimit:100000}));
+ await(await c.connect(next).setExchangeRate(4n*10n**18n)).wait();await check('new_owner_update_visible',async()=>assert.equal(await c.getExchangeRate(),4n*10n**18n));
+ await reject('zero_owner_constructor_reverts',()=>factory.deploy(E.ZeroAddress,1,{gasLimit:1000000}));
+ await reject('zero_rate_constructor_reverts',()=>factory.deploy(ownerAddress,0,{gasLimit:1000000}));
+ report.passed=true;report.testCount=report.tests.length;report.gasDeployment=(await p.getTransactionReceipt(c.deploymentTransaction().hash)).gasUsed.toString();fs.writeFileSync(root+'/test-report.json',JSON.stringify(report,null,2)+'\n');await backend.disconnect();console.log(JSON.stringify({passed:true,testCount:report.testCount,compiler:artifact.compiler,gasDeployment:report.gasDeployment}));
+})().catch(e=>{console.error(e);process.exitCode=1;});

@@ -1,6 +1,6 @@
 # GL3 · Linux acceptance notebook
 
-**R43 · Private native-GH0ST flow and abrupt recovery pass.** Deposit, transfer, withdrawal and four rejected withdrawal cases pass on the sole retained Runpod host. Exact same-database recovery takes 743 ms; 100 basic transfers measure 101 ms median / 109 ms p95. Full permissionless dispute settlement and production deployment remain pending. Chess is deferred.
+**R44 · Full private dispute and operational regressions pass.** The honest result is confirmed, nonzero stake is refunded and its replay reverts: actual exit 0 / 235.945 s. Native-GH0ST recovery/withdrawal remains a separate passed fixture. The unsigned Robinhood deployment package and 11-case supervisor regression are ready. Final custody, validator/collateral, pricing and license inputs remain unresolved; public GL3 is not deployed.
 
 [Open the active base-chain work](../base/README.md) · [Sequential history](../HISTORY.md)
 

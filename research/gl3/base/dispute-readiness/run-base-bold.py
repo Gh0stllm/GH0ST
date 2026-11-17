@@ -15,7 +15,9 @@ import time
 BASE = Path('/workspace/gl3/durable/base-dispute')
 SOURCE = Path('/root/gl3-base-launch/nitro-clean')
 GO = '/root/bounded-restore/toolchain/go/bin/go'
-EXPECTED = 'e410a7537605a03d4c113e3f86d7f7c289cf1e98edc1116e298d9b391516ca45'
+GETH = BASE / 'parent-geth/bin/geth'
+GETH_SHA256 = 'ea7c86a51c9fef2f278d29b967113015bc317482dd32e2ed82201728279bf88f'
+EXPECTED = '4dfbfaa0f89240445db1f2d29087edd981d7f1d29777ed6e27f975d0c00b2a4d'
 ROOT = '0xc10cd7ec6acaf1c441a3f6bd0900ad20f15855ba775a96f1939118cbc629dc97'
 MACHINES = {
     'module-root.txt': '31ea9746e168fe49059a1bf7a49509a2827d48a07444cc97618d1b0c01351306',
@@ -64,6 +66,22 @@ def main():
             raise SystemExit('official machine file changed: ' + name)
     if sha(SOURCE / 'target/lib/libstylus.a') != '42cc75b003aaab6686620da6ec947bb475fe221b605bd0ac1bf417a171f4546c':
         raise SystemExit('accepted native static library changed')
+    parent_geth = None
+    if phase == 'test':
+        if sha(GETH) != GETH_SHA256:
+            raise SystemExit('accepted private parent Geth changed')
+        version = subprocess.run([str(GETH), 'version'], capture_output=True, text=True, timeout=20)
+        if version.returncode != 0 or 'Version: 1.17.6-unstable' not in version.stdout or 'Go Version: go1.25.12' not in version.stdout:
+            raise SystemExit('accepted private parent Geth version changed')
+        accepted = json.loads((BASE / 'parent-geth/accepted-parent.json').read_text())
+        if accepted['commit'] != 'aa1f2fcf512988eb8890d9352e601b898d6fdb2c' or accepted['binarySHA256'] != GETH_SHA256 or any(c['exitCode'] != 0 for c in accepted['checks'].values()):
+            raise SystemExit('required upstream parent provenance or CLI smoke changed')
+        parent_geth = {'path': str(GETH), 'SHA256': GETH_SHA256,
+                       'versionText': version.stdout, 'VCSStamp': None,
+                       'upstreamMakefileDefault': 'glamsterdam-devnet-8',
+                       'resolvedMakefileBranchCommit': accepted['commit'],
+                       'moduleVersion': accepted['moduleVersion'], 'moduleSum': accepted['moduleSum'],
+                       'sourceZipSHA256': accepted['sourceZipSHA256'], 'scope': 'exact upstream private parent fixture dependency'}
     os.sched_setaffinity(0, sorted(os.sched_getaffinity(0))[:8])
     os.nice(10)
     lease = (BASE / 'exclusive.lock').open('a')
@@ -72,9 +90,16 @@ def main():
     temporary = Path('/root/gl3-base-dispute-compile/tmp') if phase == 'compile' else BASE / 'tmp'
     temporary.mkdir(parents=True, exist_ok=True)
     env.update(GOMAXPROCS='8', GOTOOLCHAIN='local', CGO_ENABLED='1',
+               PWD=str(SOURCE),
                LD_LIBRARY_PATH=str(SOURCE / 'target/lib'),
+               NITRO_TEST_L1_GETH=str(GETH),
                TMPDIR=str(temporary),
                GL3_BASE_BOLD_REPORT=str(BASE / 'full-lifecycle-report.json'))
+    # Build against an isolated fast cache; optional old warm-cache transfer
+    # must never expose partial records to this compiler.
+    cache = Path('/root/gl3-base-dispute-compile/go-cache')
+    cache.mkdir(parents=True, exist_ok=True)
+    env['GOCACHE'] = str(cache)
     overlay = {'Replace': {str(SOURCE / 'system_tests/gl3_base_bold_full_test.go'):
                            str(BASE / 'gl3_base_bold_full_test.go')}}
     (BASE / 'overlay.json').write_text(json.dumps(overlay, indent=2) + '\n')
@@ -100,6 +125,8 @@ def main():
               'processGroupRSSGuardBytes': 24 * 1024**3, 'peakProcessGroupRSSBytes': 0,
               'cgroupWorkingSetGuardBytes': 56_000_000_000, 'peakCgroupWorkingSetBytes': 0,
               'guardFailure': None, 'publicWrites': False, 'realChainSpend': 0}
+    if parent_geth is not None:
+        result['parentGeth'] = parent_geth
     start = time.monotonic()
     try:
         if os.statvfs(temporary).f_bavail * os.statvfs(temporary).f_frsize < 6_500_000_000:
@@ -119,7 +146,7 @@ def main():
                 for path in Path('/proc').glob('[0-9]*'):
                     try:
                         fields = (path / 'stat').read_text().rsplit(')', 1)[1].split()
-                        if int(fields[2]) != process.pid:
+                        if int(fields[2]) != process.pid and int(path.name) != os.getpid():
                             continue
                         for entry in (path / 'status').read_text().splitlines():
                             if entry.startswith('VmRSS:'):

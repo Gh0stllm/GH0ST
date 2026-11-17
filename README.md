@@ -14,11 +14,13 @@ The active build uses official Nitro 3.12.2, ArbOS 61, Solidity and standard Sty
 | Native $GH0ST private flow | Deposit, native transfer, withdrawal and four rejected withdrawal cases passed |
 | Abrupt process recovery | Same persistent databases recovered the exact acknowledged head and state in **743 ms** |
 | Basic transfer sample | **100 transactions**, median **101 ms**, p95 **109 ms** |
+| Full private dispute | Actual proof win, exact assertion confirmation, nonzero ERC20 stake refund and reverted replay; **0 / 235.945 s** |
+| Startup supervisor | **11 dummy checks** pass; restart/termination and incomplete-config gates; actual mainnet activation remains pending |
 | Infrastructure | One retained **32-vCPU / 64-GB** worker and **1,000-GB** persistent volume; old workers deleted |
 
-These are bounded private-chain observations. The GH0ST fixture includes an explicit balance-owner remap and privileged assertion confirmation. Permissionless dispute settlement, final production configuration and public Robinhood deployment remain separate gates. The 100-ms minimum block spacing is a configuration target, not public finality or maximum throughput.
+These are bounded private-chain observations. The GH0ST fixture includes an explicit balance-owner remap and privileged assertion confirmation. The standard private permissionless dispute passes as a separate standard-ETH fixture. Final production-native-token validation, configuration and public Robinhood deployment remain separate gates. The 100-ms minimum block spacing is a configuration target, not public finality or maximum throughput.
 
-[Withdrawal and recovery evidence](research/gl3/base/withdrawal-recovery/) · [Dispute work](research/gl3/base/dispute-readiness/) · [Infrastructure cleanup](research/gl3/base/infrastructure/cleanup-only-big.json)
+[Unsigned deployment packet](research/gl3/base/launch/DEPLOYMENT-PACKET.md) · [Withdrawal and recovery evidence](research/gl3/base/withdrawal-recovery/) · [Dispute work](research/gl3/base/dispute-readiness/) · [Infrastructure cleanup](research/gl3/base/infrastructure/cleanup-only-big.json)
 
 <details>
 <summary>Earlier research and chess experiments</summary>

@@ -1,0 +1,10 @@
+file:///workspace/gl3/durable/base-launch/read-evm-timing.mjs:4
+let n=0;const read=async(method,params=[])=>{if(!['eth_chainId','eth_blockNumber','eth_getBlockByNumber','eth_getCode','eth_call'].includes(method))throw Error('forbidden');const r=await fetch('https://rpc.mainnet.chain.robinhood.com',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({jsonrpc:'2.0',id:++n,method,params}),signal:AbortSignal.timeout(20000)});if(!r.ok)throw Error('HTTP read failure');const j=await r.json();if(j.error)throw Error(JSON.stringify(j.error));return j.result;};
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ^
+
+Error: {"code":-32000,"message":"historical state 749dd8772ff0592507cee000371e77838b58e28362297cb40d8c2711f9f8d6f3 is not available"}
+    at read (file:///workspace/gl3/durable/base-launch/read-evm-timing.mjs:4:471)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async file:///workspace/gl3/durable/base-launch/read-evm-timing.mjs:12:25
+
+Node.js v18.19.1

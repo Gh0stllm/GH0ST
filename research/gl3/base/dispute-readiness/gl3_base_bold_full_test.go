@@ -1,4 +1,6 @@
-// Copyright 2026 GH0ST contributors. Derived from pinned Nitro v3.12.2 upstream challenge fixture.
+// Copyright 2023-2026, Offchain Labs, Inc.
+// For license information, see https://github.com/OffchainLabs/nitro/blob/v3.12.2/LICENSE.md
+// GH0ST test-only extension of the pinned Nitro v3.12.2 upstream challenge fixture.
 //go:build challengetest && !race
 
 package arbtest
@@ -6,12 +8,14 @@ package arbtest
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	ethereum "github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/rawdb"
 	"github.com/ethereum/go-ethereum/core/types"
+	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/ethereum/go-ethereum/params"
 	"github.com/ethereum/go-ethereum/rpc"
@@ -551,45 +555,31 @@ func gl3BaseFinishLifecycle(t *gotesting.T, ctx context.Context, client *ethclie
 		case <-ctx.Done():
 			t.Fatal("assertion confirmation deadline", ctx.Err())
 		case <-deadline.C:
-			events, err := edgeBinding.FilterEdgeAdded(&bind.FilterOpts{Start: 0, Context: ctx}, nil, nil, nil)
+			header, err := client.HeaderByNumber(ctx, nil)
 			Require(t, err)
-			type candidate struct {
-				id, mutual [32]byte
-				edge       challengeV2gen.ChallengeEdge
-				layerZero  bool
-			}
-			var candidates []candidate
+			endBlock := header.Number.Uint64()
+			snapshotCalls := *calls
+			snapshotCalls.BlockNumber = header.Number
+			events, err := edgeBinding.FilterEdgeAdded(&bind.FilterOpts{Start: 0, End: &endBlock, Context: ctx}, nil, nil, nil)
+			Require(t, err)
+			var candidates []gl3BaseEdgeCandidate
+			byID := make(map[[32]byte]gl3BaseEdgeCandidate)
 			for events.Next() {
 				e := events.Event
-				edge, err := edgeBinding.GetEdge(calls, e.EdgeId)
+				edge, err := edgeBinding.GetEdge(&snapshotCalls, e.EdgeId)
 				Require(t, err)
-				candidates = append(candidates, candidate{e.EdgeId, e.MutualId, edge, e.IsLayerZero})
+				c := gl3BaseEdgeCandidate{e.EdgeId, e.MutualId, edge, e.IsLayerZero}
+				candidates = append(candidates, c)
+				byID[e.EdgeId] = c
 			}
 			Require(t, events.Error())
 			Require(t, events.Close())
-			// Bind the leaf OSP to the same block challenge by walking each
-			// onchain origin mutual-id through confirmed parent-level edges.
-			ancestor, err := edgeBinding.GetEdge(calls, ospEdgeID)
+			// Intermediate length-one edges may legitimately remain Pending.
+			// Follow the actual child DAG and each layer-zero ClaimId instead.
+			ancestorRoot, err := gl3BaseTraceOSPAncestry(ospEdgeID, honest.From, byID)
 			Require(t, err)
-			bound := true
-			for ancestor.Level > 0 {
-				found := false
-				for _, p := range candidates {
-					if p.mutual == ancestor.OriginId && p.edge.Level+1 == ancestor.Level && p.edge.Status == 1 {
-						ancestor, found = p.edge, true
-						break
-					}
-				}
-				if !found {
-					bound = false
-					break
-				}
-			}
-			if !bound {
-				continue
-			}
 			for _, a := range candidates {
-				if a.edge.Level != 0 || !a.layerZero || a.edge.OriginId != ancestor.OriginId || a.edge.Staker != honest.From || a.edge.Status != 1 || a.edge.ClaimId == ([32]byte{}) {
+				if a.id != ancestorRoot || a.edge.Level != 0 || !a.layerZero || a.edge.Staker != honest.From || a.edge.Status != 1 || a.edge.ClaimId == ([32]byte{}) {
 					continue
 				}
 				for _, b := range candidates {
@@ -707,4 +697,99 @@ func gl3BaseFinishLifecycle(t *gotesting.T, ctx context.Context, client *ethclie
 		Require(t, os.WriteFile(dest, append(encoded, '\n'), 0600))
 	}
 	t.Logf("GL3_BASE_FULL_LIFECYCLE %s", encoded)
+}
+
+// These field encodings mirror ChallengeEdgeLib.mutualIdComponent and
+// EdgeChallengeManagerLib.checkClaimIdLink in pinned nitro-contracts4341b132.
+type gl3BaseEdgeCandidate struct {
+	id, mutual [32]byte
+	edge       challengeV2gen.ChallengeEdge
+	layerZero  bool
+}
+
+func gl3BaseEdgeMutual(e challengeV2gen.ChallengeEdge) [32]byte {
+	return crypto.Keccak256Hash([]byte{e.Level}, e.OriginId[:], common.LeftPadBytes(e.StartHeight.Bytes(), 32), e.StartHistoryRoot[:], common.LeftPadBytes(e.EndHeight.Bytes(), 32))
+}
+
+func gl3BaseTraceOSPAncestry(leaf [32]byte, honest common.Address, edges map[[32]byte]gl3BaseEdgeCandidate) ([32]byte, error) {
+	var zero [32]byte
+	target := leaf
+	transitions := make(map[[32]byte]bool)
+	for {
+		if transitions[target] {
+			return zero, fmt.Errorf("cycle in claim ancestry at %x", target)
+		}
+		transitions[target] = true
+		t, ok := edges[target]
+		if !ok {
+			return zero, fmt.Errorf("missing exact target edge %x", target)
+		}
+		var matches []gl3BaseEdgeCandidate
+		for _, root := range edges {
+			if !root.layerZero || root.edge.Staker != honest || root.edge.Level != t.edge.Level || root.edge.OriginId != t.edge.OriginId {
+				continue
+			}
+			if root.edge.ClaimId == zero {
+				return zero, fmt.Errorf("layer-zero root has empty claim %x", root.id)
+			}
+			color := make(map[[32]byte]uint8)
+			contains := make(map[[32]byte]bool)
+			var walk func([32]byte) (bool, error)
+			walk = func(id [32]byte) (bool, error) {
+				if color[id] == 1 {
+					return false, fmt.Errorf("cycle in child DAG at %x", id)
+				}
+				if color[id] == 2 {
+					return contains[id], nil
+				}
+				e, ok := edges[id]
+				if !ok {
+					return false, fmt.Errorf("missing child edge %x", id)
+				}
+				if e.edge.Level != root.edge.Level || e.edge.OriginId != root.edge.OriginId {
+					return false, fmt.Errorf("child DAG level/origin mismatch %x", id)
+				}
+				if gl3BaseEdgeMutual(e.edge) != e.mutual {
+					return false, fmt.Errorf("computed/event mutual-id mismatch %x", id)
+				}
+				color[id] = 1
+				found := id == target
+				for _, child := range [][32]byte{e.edge.LowerChildId, e.edge.UpperChildId} {
+					if child == zero {
+						continue
+					}
+					hit, err := walk(child)
+					if err != nil {
+						return false, err
+					}
+					found = found || hit
+				}
+				color[id] = 2
+				contains[id] = found
+				return found, nil
+			}
+			found, err := walk(root.id)
+			if err != nil {
+				return zero, err
+			}
+			if found {
+				matches = append(matches, root)
+			}
+		}
+		if len(matches) != 1 {
+			return zero, fmt.Errorf("expected unique honest layer-zero ancestor of %x, got %d", target, len(matches))
+		}
+		root := matches[0]
+		if root.edge.Level == 0 {
+			return root.id, nil
+		}
+		parent, ok := edges[root.edge.ClaimId]
+		if !ok {
+			return zero, fmt.Errorf("missing exact ClaimId parent %x", root.edge.ClaimId)
+		}
+		if int(parent.edge.Level)+1 != int(root.edge.Level) || gl3BaseEdgeMutual(parent.edge) != root.edge.OriginId || parent.mutual != root.edge.OriginId {
+			return zero, fmt.Errorf("ClaimId/level/mutual-origin mismatch at %x", root.id)
+		}
+		target = root.edge.ClaimId
+	}
 }
