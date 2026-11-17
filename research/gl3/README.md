@@ -2,9 +2,9 @@
 
 # GH0ST L3 · GL3 research notebook
 
-**R56 · Base GL3 mainnet first; LLM proofs follow later.** The target is a native-GH0ST L3 on Robinhood with public RPC, proposed chain ID 4,663,001, and the confirmed explorer hostname `scan.gh0st.fyi`. These services are not live yet. A real private base EVM transfer and authenticated input capture pass; the complete canonical STF proof and proof-backed withdrawal remain the critical path. [Launch scope](zk-rollup/launch/README.md) · [Current ZK integration](zk-rollup/README.md).
+**R57 · Base GL3 first with project-run fast confirmation.** To prioritize the user's same-day launch request, the current candidate uses official Nitro with native GH0ST gas and a Robinhood bridge. Withdrawals have no configured minimum assertion period: after an actual SDK assertion is produced and GH0ST confirms its root, a user can claim on Robinhood. Network processing, fees and operator availability still apply. **This launch profile trusts GH0ST's confirmer; ZK verification is not live.** The ZK and full-model work is preserved for a later reviewed upgrade, not presented as launch security.
 
-**Public GL3 is not deployed.** The earlier Nitro launch and chess work remain preserved research. The selected new guest must prove actual Nitro/ArbOS execution rather than substitute the previous EVM-only guest. Applicable Nitro licensing and final operational/security acceptance remain launch requirements.
+**Public GL3 is not deployed.** Proposed chain ID **4,663,001**, RPC `rpc.gh0st.fyi`, explorer `scan.gh0st.fyi` and bridge `gh0st.fyi/gl3/bridge/` remain planned endpoints. The exact zero-allocation genesis and disabled native-mint policy pass private state inspection. The combined final-profile bridge rehearsal is still pending; no mainnet funds, signatures, license acceptance or public service activation have occurred. [Current launch packet](same-day-mainnet/README.md) · [Sequential history](HISTORY.md).
 
 **Completed performance reference:** the fixed sixteen-transfer EVM batch proves in215.09 seconds using the selected native-CPU build,40.41% below the warm generic reference. All three fresh reference proofs pass SDK and actual Solidity verification. This timing does not estimate full Stylus/STF proving. [Warm results and receipts](zk-batch/warm-optimization/README.md).
 

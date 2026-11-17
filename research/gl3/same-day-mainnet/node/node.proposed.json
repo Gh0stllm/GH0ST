@@ -1,0 +1,162 @@
+{
+  "log-level": "WARN",
+  "chain": {
+    "id": 4663001,
+    "name": "GL3",
+    "info-files": [
+      "/workspace/gl3/mainnet/config/chain-info.json"
+    ]
+  },
+  "parent-chain": {
+    "id": 4663,
+    "connection": {
+      "url": "$GL3_PARENT_RPC",
+      "retries": 0
+    }
+  },
+  "init": {
+    "genesis-json-file": "/workspace/gl3/mainnet/config/genesis.json",
+    "validate-genesis-assertion": true
+  },
+  "ensure-rollup-deployment": true,
+  "persistent": {
+    "chain": "/workspace/gl3/mainnet/data/chain",
+    "global-config": "/workspace/gl3/mainnet/data/config",
+    "db-engine": "pebble",
+    "pebble": {
+      "sync-mode": true
+    }
+  },
+  "http": {
+    "addr": "127.0.0.1",
+    "port": 8547,
+    "api": [
+      "eth",
+      "net",
+      "web3",
+      "arb"
+    ],
+    "vhosts": [
+      "localhost",
+      "127.0.0.1"
+    ]
+  },
+  "ws": {
+    "addr": ""
+  },
+  "auth": {
+    "addr": ""
+  },
+  "ipc": {
+    "path": "/workspace/gl3/mainnet/run/node.ipc"
+  },
+  "file-logging": {
+    "enable": false
+  },
+  "version-alerter": {
+    "enable": true
+  },
+  "execution": {
+    "sequencer": {
+      "enable": true,
+      "max-block-speed": "100ms",
+      "poll-interval": "5ms"
+    },
+    "rpc": {
+      "tx-fee-cap": 1
+    },
+    "caching": {
+      "archive": true,
+      "state-scheme": "hash",
+      "max-number-of-blocks-to-skip-state-saving": 0,
+      "max-amount-of-gas-to-skip-state-saving": 0
+    },
+    "stylus-target": {
+      "allow-offchain-activation": false
+    }
+  },
+  "node": {
+    "sequencer": true,
+    "dangerous": {
+      "no-sequencer-coordinator": true,
+      "disable-blob-reader": true
+    },
+    "batch-poster": {
+      "enable": true,
+      "max-delay": "10s",
+      "post-4844-blobs": false,
+      "parent-chain-wallet": {
+        "pathname": "/workspace/gl3/mainnet/secrets/batch-poster-keystore",
+        "password": "$GL3_BATCH_POSTER_PASSWORD",
+        "only-create-key": false,
+        "account": "0x52cc715ef517CE1933142d2168B43F8fdc54b7c5"
+      }
+    },
+    "delayed-sequencer": {
+      "enable": true
+    },
+    "block-validator": {
+      "enable": true,
+      "current-module-root": "0xc10cd7ec6acaf1c441a3f6bd0900ad20f15855ba775a96f1939118cbc629dc97",
+      "pending-upgrade-module-root": "0xc10cd7ec6acaf1c441a3f6bd0900ad20f15855ba775a96f1939118cbc629dc97",
+      "failure-is-fatal": true,
+      "validation-sent-limit": 4,
+      "prerecorded-blocks": 4,
+      "validation-server": {
+        "url": "ws://127.0.0.1:8549",
+        "jwtsecret": "/workspace/gl3/mainnet/secrets/validator.jwt",
+        "timeout": "10m",
+        "retries": 0,
+        "arg-log-limit": 0
+      }
+    },
+    "staker": {
+      "enable": true,
+      "strategy": "MakeNodes",
+      "disable-challenge": false,
+      "use-smart-contract-wallet": false,
+      "enable-fast-confirmation": true,
+      "start-validation-from-staked": false,
+      "parent-chain-wallet": {
+        "pathname": "/workspace/gl3/mainnet/secrets/validator-keystore",
+        "password": "$GL3_VALIDATOR_PASSWORD",
+        "only-create-key": false,
+        "account": "0x0F2a3E06D0B6379a68DFe4a6E636C8e9EDdEf5ad"
+      }
+    },
+    "bold": {
+      "rpc-block-number": "finalized",
+      "parent-chain-block-time": "12s",
+      "enable-fast-confirmation": true,
+      "auto-increase-allowance": false,
+      "auto-deposit": true,
+      "start-validation-from-staked": false,
+      "state-provider-config": {
+        "validator-name": "GL3-project-validator",
+        "check-batch-finality": true,
+        "machine-leaves-cache-path": "/workspace/gl3/mainnet/data/machine-hashes"
+      },
+      "assertion-posting-interval": "5s",
+      "assertion-scanning-interval": "1s",
+      "assertion-confirming-interval": "1s",
+      "minimum-gap-to-parent-assertion": "0s"
+    },
+    "feed": {
+      "input": {
+        "url": []
+      },
+      "output": {
+        "enable": false
+      }
+    }
+  },
+  "validation": {
+    "wasm": {
+      "root-path": "/workspace/gl3/durable/machines",
+      "allowed-wasm-module-roots": [
+        "0xc10cd7ec6acaf1c441a3f6bd0900ad20f15855ba775a96f1939118cbc629dc97"
+      ],
+      "enable-wasmroots-check": true
+    }
+  }
+}
