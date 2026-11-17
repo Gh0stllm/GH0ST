@@ -1,0 +1,11 @@
+# Netlify disabled rollout complete
+
+RPC site `cda71aa3-eb0f-40be-ac67-d24c7545a703`, deploy `6afc9758f395c194c3a69b50`: https://rpc.gh0st.fyi/ serves the actual disabled RPC function at root POST (HTTP503, expected JSON, CORS, no-store); OPTIONS returns204. No upstream is configured.
+
+Scan site `60e107a7-2bda-498a-8790-b757a2321a5e`, deploy `6afc976a208838580cb23fa7`: https://scan.gh0st.fyi/ serves the explorer with `enabled:false`; no chain data or live status is fabricated.
+
+Both new sites initially inherited sign-in protection and had incomplete custom TLS. Authorized site-only `sso_login:false` updates were applied; no account-wide or main-site protection request was made. Platform certificates are now issued and actual hostname-verified HTTPS probes pass. Explicit certificate POST attempts did not return successful acknowledgements; issued-certificate timestamps predate those attempts; no provisioning request was retried and no key/certificate was supplied. The issued-state readback and actual TLS are the final evidence. Original failures remain saved.
+
+Main site `1460fb0c-b81d-4624-aac5-b78658310ce0` has DRAFT ONLY `6afc977b0d82d26d2afd7aad`: https://6afc977b0d82d26d2afd7aad--gh0st-observatory.netlify.app/gl3/bridge/ . Public production remains `6af9cd5a5be613fc1cfd99e5`. All652 original file-manifest hashes and both original function digests/runtime/routes/memory/region/invocation mode are preserved. Draft663 files add the disabled bridge/scan and RPC fallback. Actual draft RPC customroute `/gl3/rpc` returns503. Four sampled old files match original manifest hashes; processed root index matches current production served bytes exactly (bothSHA1 `31122bdf7a01d22662904154d45b43dad64e4ade`).
+
+The optional legacy `/.netlify/functions/gl3-rpc` URL returns404 on the separate site; actual supported rootPOST works. This was recorded rather than relabelled as a passing legacy-prefix test. Main publication and actual chain/upstream activation remain receipt-gated root tasks. No funds, wallet keys, signatures, DNS changes or infrastructure changes occurred in this rollout. All preparation/compression/tests ran on Runpod; authenticated deployment requests ran on Mac. No owned background processes remain.

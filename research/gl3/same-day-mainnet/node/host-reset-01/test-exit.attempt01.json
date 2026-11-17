@@ -1,0 +1,17 @@
+{
+  "schema": "gh0st.gl3.post-reset-supervisor-tests.v1",
+  "actualExitCode": 1,
+  "seconds": 5.492785982089117,
+  "hostname": "42456c02ced1",
+  "sourceSHA256": {
+    "operator_pair.py": "87c3c6aee1360268e728758107e264afc28f5d3597c6650aa9f8c9876e8d2c03",
+    "test_operator_pair.py": "4162bc953625a25e5f426f0f9be672dad5f85f94523e3230423a7535d912a0ba",
+    "backend-auth-probe.cjs": "bd041c60444be07d3608306c27a2975ee0b94414969701bbad8ce3afe03da560"
+  },
+  "runtimeWrapperSHA256": "211d6a8c5bfac60ddb61e62961f9e3e332ecbcce5c5968889908cacb54ce4815",
+  "change": "Only current supervisor+test entry host guards changed cc91695a75f7 ->42456c02ced1. Earlier source/receipts remain preserved.",
+  "scope": "Seven dummy-process lifecycle and two generated TEST bundle schema tests; no real key/config reads, services, network or transactions.",
+  "stdout": "",
+  "stderr": "test_generated_bundle_accepts_actual_renderer_schema_without_service_start (__main__.PairTests.test_generated_bundle_accepts_actual_renderer_schema_without_service_start) ... ok\ntest_hash_drift_blocks_restart (__main__.PairTests.test_hash_drift_blocks_restart) ... ok\ntest_hash_gate_failure_prevents_any_child (__main__.PairTests.test_hash_gate_failure_prevents_any_child) ... ok\ntest_hash_valid_but_unpaired_backend_is_rejected (__main__.PairTests.test_hash_valid_but_unpaired_backend_is_rejected) ... ok\ntest_operator_stop_closes_both_owned_services (__main__.PairTests.test_operator_stop_closes_both_owned_services) ... FAIL\ntest_peer_exit_stops_other_service (__main__.PairTests.test_peer_exit_stops_other_service) ... ok\ntest_restart_is_bounded_and_rechecked (__main__.PairTests.test_restart_is_bounded_and_rechecked) ... ok\ntest_stop_during_backend_readiness_never_starts_node (__main__.PairTests.test_stop_during_backend_readiness_never_starts_node) ... ok\ntest_unapproved_bundle_refuses_before_effective_config_reads (__main__.PairTests.test_unapproved_bundle_refuses_before_effective_config_reads) ... ok\n\n======================================================================\nFAIL: test_operator_stop_closes_both_owned_services (__main__.PairTests.test_operator_stop_closes_both_owned_services)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/gl3/same-day-mainnet/node/test_operator_pair.py\", line 15, in test_operator_stop_closes_both_owned_services\n    p=self.pair();t=threading.Timer(.5,lambda:p.request_stop(signal.SIGTERM));t.start();r=p.run();t.join();self.assertTrue(r['passed']);self.assertEqual(r['ownedTopLevelRemaining'],0);self.assertEqual(len([x for x in p.events if x['event']=='service_exit']),2);self.assertTrue(any(x['event']=='pair_healthy' for x in p.events))\n                                                                                                                                                                                                                                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: False is not true\n\n----------------------------------------------------------------------\nRan 9 tests in 4.646s\n\nFAILED (failures=1)\n",
+  "remainingTESTDirectories": []
+}

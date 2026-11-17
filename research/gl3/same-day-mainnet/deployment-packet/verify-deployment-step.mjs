@@ -34,11 +34,7 @@ export async function verifyStep(input,read){
  const draftBytes=fs.readFileSync(D+'/isolated-deployer/unsigned-deployment-plan.json');need(sha(draftBytes)===plan.bindings.draftSHA256,'draft_hash_mismatch');const draft=JSON.parse(draftBytes);
  const profileBytes=fs.readFileSync(D+'/isolated-deployer/production-profile.json');need(sha(profileBytes)===plan.bindings.profileSHA256,'profile_hash_mismatch');const profile=JSON.parse(profileBytes);
  need(Number.isInteger(input.actionIndex)&&input.actionIndex>=0&&input.actionIndex<=plan.actions.length,'action_index');need(Array.isArray(input.receiptHashes)&&input.receiptHashes.length===input.actionIndex&&new Set(input.receiptHashes).size===input.receiptHashes.length,'receipt_sequence_length_or_duplicate');
- need(BigInt(await read('eth_chainId',[]))===4663n,'parent_chain_mismatch');const head=await read('eth_getBlockByNumber',['latest',false]),tag=head.number;const receipts=[];
- need(keccak256(await read('eth_getCode',['0x4e59b44847b379578588920cA78FbF26c0B4956C',tag]))==='0x2fa86add0aed31f33a762c9d88e807c475bd51d0f52bd0955754b2608f7e4989','create2_proxy_mismatch');
- need(keccak256(await read('eth_getCode',[profile.chain.nativeToken,tag]))==='0x7c38fa1b069b5e677034bab6219dd2f519f219f7637910131d9a0f58a05ae164','native_token_runtime_mismatch');
- const arbSys=new Interface(['function arbChainID() view returns(uint256)','function arbOSVersion() view returns(uint256)']);
- for(const method of ['arbChainID','arbOSVersion']){const raw=await read('eth_call',[{to:'0x0000000000000000000000000000000000000064',data:arbSys.encodeFunctionData(method,[])},tag]);need(raw.length===66,'arbitrum_parent_context_mismatch');if(method==='arbChainID')need(arbSys.decodeFunctionResult(method,raw)[0]===4663n,'arbitrum_parent_chain_id_mismatch');}
+ need(BigInt(await read('eth_chainId',[]))===4663n,'parent_chain_mismatch');const receipts=[];
  for(let i=0;i<input.actionIndex;i++){
   const hash=input.receiptHashes[i];need(/^0x[0-9a-f]{64}$/i.test(hash),'receipt_hash_format');const [r,t]=await Promise.all([read('eth_getTransactionReceipt',[hash]),read('eth_getTransactionByHash',[hash])]);need(r&&t&&BigInt(r.status)===1n,'prior_receipt_missing_or_failed');const a=plan.actions[i].transaction;
   need(eq(t.from,plan.actions[i].from)&&eq(t.to,a.to)&&eq(t.input,a.data)&&BigInt(t.value)===BigInt(a.value)&&BigInt(t.nonce)===BigInt(a.nonce)&&BigInt(t.gas)===BigInt(a.gasLimit)&&BigInt(t.chainId)===4663n&&BigInt(t.type)===2n&&BigInt(t.maxFeePerGas)===BigInt(a.maxFeePerGas)&&BigInt(t.maxPriorityFeePerGas)===BigInt(a.maxPriorityFeePerGas),'prior_transaction_fields_mismatch:'+i);
@@ -46,6 +42,13 @@ export async function verifyStep(input,read){
  }
  const artifactRoot='/root/dispute/repo/research/chess/l3/nitro/.cache/contracts-provenance/compiled-main/build/contracts',compPath='/root/dispute/repo/research/chess/l3/nitro/evidence/contract-source-compilation.json';need(sha(fs.readFileSync(compPath))===meta.compilationRecordSHA256,'compilation_record_mismatch');const comp=JSON.parse(fs.readFileSync(compPath)),artifacts={};
  function walk(d){for(const e of fs.readdirSync(d,{withFileTypes:true})){const p=path.join(d,e.name);if(e.isDirectory())walk(p);else if(e.name.endsWith('.json')){const b=fs.readFileSync(p),a=JSON.parse(b),rec=comp.main.artifacts.find(x=>x.path===path.relative(artifactRoot,p));need(rec&&sha(b)===rec.sha256,'artifact_tree_mismatch');need(!artifacts[a.contractName],'ambiguous_artifact');artifacts[a.contractName]=a;}}}walk(artifactRoot);
+ const head=await read('eth_getBlockByNumber',['latest',false]),tag=head.number;
+ need(keccak256(await read('eth_getCode',['0x4e59b44847b379578588920cA78FbF26c0B4956C',tag]))==='0x2fa86add0aed31f33a762c9d88e807c475bd51d0f52bd0955754b2608f7e4989','create2_proxy_mismatch');
+ need(keccak256(await read('eth_getCode',[profile.chain.nativeToken,tag]))==='0x7c38fa1b069b5e677034bab6219dd2f519f219f7637910131d9a0f58a05ae164','native_token_runtime_mismatch');
+ const arbSys=new Interface(['function arbChainID() view returns(uint256)','function arbOSVersion() view returns(uint256)']);
+ for(const method of ['arbChainID','arbOSVersion']){const raw=await read('eth_call',[{to:'0x0000000000000000000000000000000000000064',data:arbSys.encodeFunctionData(method,[])},tag]);need(raw.length===66,'arbitrum_parent_context_mismatch');if(method==='arbChainID')need(arbSys.decodeFunctionResult(method,raw)[0]===4663n,'arbitrum_parent_chain_id_mismatch');}
+ if(receipts.length){const last=receipts.at(-1),b=await read('eth_getBlockByNumber',[last.blockNumber,false]);need(b.hash===last.blockHash,'receipt_chain_reorged_before_state_checks');}
+
  const predictedRollup=getCreate2Address(draft.createRollup.to,keccak256('0x'+draft.createRollup.calldata.slice(10)),keccak256(artifacts.RollupProxy.bytecode));
  const abi=name=>new Interface(artifacts[name].abi),seen=[],addrs=Object.fromEntries(draft.actions.map(a=>[a.label,a.predictedAddress]));
  async function call(address,name,args=[],iface){const f=iface||abi(name.split('.')[0]),method=name.includes('.')?name.split('.')[1]:name;const result=await read('eth_call',[{to:address,data:f.encodeFunctionData(method,args)},tag]);return f.decodeFunctionResult(method,result);}

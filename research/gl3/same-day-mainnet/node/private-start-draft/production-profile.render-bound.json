@@ -1,0 +1,328 @@
+{
+  "schema": "gh0st.gl3.same-day.operator-profile.v1",
+  "status": "RENDER_BOUND_PRIVATE_START_REVIEW_PENDING",
+  "scope": "Standard Nitro operator-trusted fast-confirmed GL3; no fixed withdrawal waiting period on normal operator path; ZK not live at launch",
+  "chain": {
+    "name": "GL3",
+    "parentChainId": 4663,
+    "parentChainIsArbitrum": true,
+    "childChainIdProposal": 4663001,
+    "childChainIdSelected": true,
+    "chainIdReserved": false,
+    "initialArbOSVersion": 61,
+    "allowDebugPrecompiles": false,
+    "dataAvailabilityCommittee": false,
+    "nativeToken": "0x2eb2849cDE7957b86d0dFD4B59e450a9F9D15559",
+    "nativeTokenDecimals": 18,
+    "nativeTokenSupplyManagementEnabled": false,
+    "unbackedNativePremineAllowed": false,
+    "nativeMintOwner": "0x0000000000000000000000000000000000000000"
+  },
+  "runtime": {
+    "version": "v3.12.2+5f02f3f-20261014T220458Z",
+    "binaryPath": "/workspace/gl3/durable/bin/nitro",
+    "binarySHA256": "d9e778d3c513e106dab9de8ef04be9500093b0638cfd463e4d4ec542c214c4ed",
+    "machinesPath": "/workspace/gl3/durable/machines",
+    "moduleRoot": "0xc10cd7ec6acaf1c441a3f6bd0900ad20f15855ba775a96f1939118cbc629dc97",
+    "customSTF": false,
+    "modelRequired": false,
+    "machineManifest": "../node/official-validator/result.json",
+    "validatorBinaryPath": "/workspace/gl3/same-day-mainnet/node/bin/nitro-val",
+    "validatorBinarySHA256": "3e95c6e37739b01162a01f1ff82c2646916eecf9ec7286deae9a9fdb67fe150f",
+    "jitPath": "/workspace/gl3/same-day-mainnet/node/bin/jit",
+    "jitSHA256": "ae83e777fc05aad03f6ab929da74444b22839e4000759c30bf82774123967703",
+    "zkVerificationAtLaunch": false
+  },
+  "storage": {
+    "root": "/workspace/gl3/mainnet/data",
+    "chainPath": "/workspace/gl3/mainnet/data/chain",
+    "globalConfigPath": "/workspace/gl3/mainnet/data/config",
+    "dbEngine": "pebble",
+    "syncMode": true,
+    "ephemeralRootAliasesRequired": false
+  },
+  "nodeConfig": {
+    "path": "/workspace/gl3/mainnet/config/node.effective.json",
+    "SHA256": "17278179c1908c84fe7bd8715d7b441cee8a5ac836189248f7daf10b729cb272",
+    "chainInfoPath": "/workspace/gl3/mainnet/config/chain-info.json",
+    "chainInfoSHA256": "924dd83a932ea16d1fdf84b318be9af65e1f046c4ce35732849844d650bca2b9",
+    "genesisPath": "/workspace/gl3/mainnet/config/genesis.json",
+    "genesisSHA256": "2b199bb88d307aac0f25bffb26154ec1a02b43541f7f0d1bf551b9980983c8dc",
+    "mainnetBootCommand": [
+      "/workspace/gl3/durable/bin/nitro",
+      "--conf.file",
+      "/workspace/gl3/mainnet/config/node.private.json"
+    ],
+    "minimumBlockSpacing": "100ms",
+    "sequencerPollInterval": "5ms",
+    "offchainStylusActivation": false,
+    "RPCBind": "127.0.0.1",
+    "publicRPCEnabled": false,
+    "privilegedPublicRPCAllowed": false,
+    "genesisAssertionValidationRequired": true,
+    "ensureRollupDeploymentRequired": true,
+    "genesisArtifactSource": "candidate-configured-owner/genesis.proposed.json",
+    "genesisCandidateOnly": false
+  },
+  "roles": {
+    "mode": "operator",
+    "allowedModes": [
+      "observer",
+      "operator"
+    ],
+    "selected": true,
+    "secretReferences": [],
+    "secretReferenceSchema": {
+      "role": "batch-poster|validator",
+      "path": "/workspace/gl3/mainnet/secrets/operator-owned-file",
+      "format": "keystore|config-secret-reference"
+    },
+    "privateValuesStoredHere": false
+  },
+  "authority": {
+    "existingProjectOwnerProposal": "0x8D6B11CFdF079e27C17e05Cb7Ea81235887691c6",
+    "proposalProvenance": "Existing unsigned core/deployment/intent.json; no new administrator or custody choice made",
+    "selected": false,
+    "rollupOwnerExecutor": "0xA632B4c45726C779086F60d8b09BEE7b09bA2541",
+    "rollupUpgradeExecutorAdmin": "0xA632B4c45726C779086F60d8b09BEE7b09bA2541",
+    "factoryOwner": "0x8D6B11CFdF079e27C17e05Cb7Ea81235887691c6",
+    "batchPosterManager": "0x8D6B11CFdF079e27C17e05Cb7Ea81235887691c6",
+    "batchPosters": [
+      "0x52cc715ef517CE1933142d2168B43F8fdc54b7c5"
+    ],
+    "validators": [
+      "0x0F2a3E06D0B6379a68DFe4a6E636C8e9EDdEf5ad"
+    ],
+    "feePricerOwner": "0x8D6B11CFdF079e27C17e05Cb7Ea81235887691c6",
+    "loserStakeEscrow": "0x8D6B11CFdF079e27C17e05Cb7Ea81235887691c6",
+    "custodyMechanism": "Cold owner signs parent deployments and upgrades locally; separate limited hot operator wallets on server",
+    "factoryOwnerProposal": "0x8D6B11CFdF079e27C17e05Cb7Ea81235887691c6",
+    "childInitialChainOwner": "0x8D6B11CFdF079e27C17e05Cb7Ea81235887691c6",
+    "childOwnerPolicy": "Temporary cold owner configures native-denominated fees/treasury, then adds zero owner and removes itself; final literal[0], no minters throughout",
+    "fastConfirmer": "0x0F2a3E06D0B6379a68DFe4a6E636C8e9EDdEf5ad",
+    "rollupUpgradeExecutorAdminPolicy": "Actual ADMIN_ROLE is the deployed UpgradeExecutor itself; cold treasury holds EXECUTOR_ROLE",
+    "rollupUpgradeExecutorExecutor": "0x8D6B11CFdF079e27C17e05Cb7Ea81235887691c6",
+    "observedExecutor": "0x8D6B11CFdF079e27C17e05Cb7Ea81235887691c6"
+  },
+  "security": {
+    "selected": false,
+    "modeProposal": "Project-run permissioned validators plus operator-trusted fast confirmation",
+    "proposalAccepted": false,
+    "anyTrustFastConfirmerProposal": "0x0F2a3E06D0B6379a68DFe4a6E636C8e9EDdEf5ad",
+    "stakeToken": "0x2eb2849cDE7957b86d0dFD4B59e450a9F9D15559",
+    "baseStakeUnits": "100000000000000000000000",
+    "miniStakeValues": [
+      "50000000000000000000000",
+      "25000000000000000000000",
+      "12500000000000000000000"
+    ],
+    "confirmPeriodBlocks": 50400,
+    "challengeGracePeriodBlocks": 14400,
+    "minimumAssertionPeriod": 0,
+    "validatorAfkBlocks": 201600,
+    "blockChallengeHeight": "67108864",
+    "bigStepChallengeHeight": "524288",
+    "smallStepChallengeHeight": "8388608",
+    "numBigStepLevels": 1,
+    "SDKDefaultReferenceOnly": {
+      "stakeToken": "parent WETH",
+      "baseStakeUnits": "1000000000000000000",
+      "universalMinimumOrFee": false
+    },
+    "validatorWhitelistDisabledProposal": false,
+    "permissionlessComparison": {
+      "selected": false,
+      "validatorWhitelistDisabled": true,
+      "requires": "Independent validator availability, economically reviewed collateral/challenge bonds, full standard dispute acceptance and operational monitoring",
+      "sameOfficialModuleRoot": true
+    },
+    "pilotComparison": {
+      "selected": false,
+      "validatorWhitelistDisabled": false,
+      "validatorAllowlist": [],
+      "baseStakeUnits": "100000000000000000000000",
+      "miniStakeValues": [
+        "50000000000000000000000",
+        "25000000000000000000000",
+        "12500000000000000000000"
+      ],
+      "securityMeaning": "Public withdrawals depend on the allowed project validators plus the configured protocol; small collateral is not equivalent to permissionless default security",
+      "publicRPCPolicyDoesNotGateCanonicalInbox": true
+    },
+    "modeProposalSource": "Parent instruction: user preference for cheap unofficial/internal-inference GL3; no amount or validator identity selected",
+    "candidateTimersSource": "Pinned SDK9a34cbb6 mainnet duration formulas +12s inherited-Ethereum-block semantics; custom4663 helpers deliberately require explicit values",
+    "candidateTimersApproved": false,
+    "validatorAfkConsequence": "After configured inactivity the validator allowlist can be disabled permissionlessly; not permanent permissioning",
+    "sequencerInboxMaxTimeVariation": {
+      "delayBlocks": 28800,
+      "futureBlocks": 300,
+      "delaySeconds": 345600,
+      "futureSeconds": 3600
+    },
+    "bufferConfig": {
+      "threshold": "4294967296",
+      "max": "4294967296",
+      "replenishRateInBasis": "500"
+    },
+    "oneFullChallengePathCollateralUnits": "187500000000000000000000",
+    "collateralIsGlobalMaximum": false,
+    "collateralMeaning": "One base stake plus one mini-stake at each configured layer; additional assertions/rivals can require more. Small GH0ST collateral is not TVL insurance.",
+    "normalWithdrawalFixedDelaySeconds": 0,
+    "normalExitDependency": "Operator creates and fast-confirms an assertion matching actual canonical node state; processing and RH fees remain. Availability is required.",
+    "fastConfirmationSecurity": "Fast-confirmer key can bypass deadline, previous-assertion and challenge checks; it can authorize a false withdrawal root. Not validity/ZK-secured or permissionless optimistic security.",
+    "standardTimelockFallback": {
+      "confirmPeriodBlocks": 50400,
+      "gracePeriodBlocks": 14400,
+      "appliesOnlyWithoutFastConfirmation": true
+    },
+    "fastProcessingProposal": {
+      "assertionPostingInterval": "5s",
+      "assertionScanningInterval": "1s",
+      "assertionConfirmingInterval": "1s",
+      "minimumGapToParentAssertion": "0s",
+      "activityDrivenGasCost": true
+    }
+  },
+  "pricing": {
+    "implementation": "pricer/GH0STManualFeeTokenPricer.sol",
+    "mode": "Owner-updated manual type-1 pricer; 60m GH0ST/ETH proposal, no oracle or guaranteed margin",
+    "rateUnits": "GH0ST tokens per one parent ETH, scaled by 1e18",
+    "initialRateSelected": false,
+    "initialRate": "60000000000000000000000000",
+    "feePricerAddress": null,
+    "maxRateAgePolicySeconds": 86400,
+    "ETHOperatingReserveWei": "15000000000000000",
+    "automaticTopups": false,
+    "freshNonselectedReference": "parent-observation.json",
+    "rateUpdatePolicy": "Operator alerts on stale24h rate or >10% spot drift; cold owner manually approves update. Alerts do not modify price.",
+    "batchPosterReserveWei": "10000000000000000",
+    "validatorReserveWei": "5000000000000000",
+    "minimumNativeBaseFeeUnits": "10000000000000",
+    "initialConfiguredNativeBaseFeeUnits": "10000000000000",
+    "RPCTxFeeCapNativeTokens": 1000,
+    "networkFeeRecipient": "0x8D6B11CFdF079e27C17e05Cb7Ea81235887691c6",
+    "infraFeeRecipient": "0x8D6B11CFdF079e27C17e05Cb7Ea81235887691c6",
+    "L1RewardRecipient": "0x8D6B11CFdF079e27C17e05Cb7Ea81235887691c6",
+    "L1RewardRecipientIsPosterCostRefund": false,
+    "posterRefundPolicy": "Actual reported poster defaults PayTo=self, subject to accrued fees/actual native accounting; not assumed ETH replenishment or AEP compliance"
+  },
+  "deployment": {
+    "unsignedPlan": "unsigned-deployment-plan.json",
+    "routeProposal": "Pinned Nitro self-deployed factory/templates via exact genuine CREATE2 proxy; fresh project namespace",
+    "canonicalRobinhoodFactoryListed": false,
+    "upstreamNoncanonicalPathSupported": false,
+    "createRollupCalldataReady": false,
+    "genesisCanonicalHashSelected": false,
+    "dataCostEstimate": "1448348398190243",
+    "addresses": null,
+    "realTransactionsSubmitted": 0,
+    "candidateGenesisReceipt": "evidence/candidate-genesis-receipt.json",
+    "dataCostEstimateAccepted": false,
+    "canonicalGenesisBlockHashProposal": "0x17b5e6ba05003525c4f3c766d6b3120d88ee87dc7eeba84932027f8917da3483",
+    "canonicalGenesisStateRootProposal": "0x89c6557ad0c228cefb1769cf4107e7f0e39991620c995d0fe101238b0a71b842",
+    "maxDataSize": 104857,
+    "deployFactoriesToL2": false,
+    "customOsp": "0x0000000000000000000000000000000000000000",
+    "genesisInboxCount": "0",
+    "delegatedDeployer": "0x1E0a95665dc872899eb89018455ef44B27108FCd",
+    "deployerOwnsProjectContracts": false,
+    "rollup": "0xeE811A8ee20C03E684ECB5BFd6f7721f85451b01",
+    "bridge": "0x0639727cfb8EF45DCcabc2462fFC02010C71836A",
+    "inbox": "0xE4ce38967ED19B0177Ea52f2aA38cF817C1E2f89",
+    "outbox": "0xcfe660edf227C60cBC24361791ccc339E27092aE",
+    "sequencerInbox": "0xBaaF819a28CceC669168344632Aa4660427aB2fA",
+    "rollupEventInbox": "0x1BcBcf2a6a3325D61c34eae0274eF3928C05A7FC",
+    "challengeManager": "0xcbD5573c920dc697a3D9a5A095B3D9fd3b53f561",
+    "proxyAdmin": "0x5d8fb224E7c693E43ff4983b43192b08bCa44Fd7",
+    "upgradeExecutor": "0xA632B4c45726C779086F60d8b09BEE7b09bA2541",
+    "creationBlock": "0x6f5ee31",
+    "creationTransaction": "0xadf4ffccdc68d51fa9c5c6e2480ca14cf9072dbae21e7e9127a70ee8b7d0abcb",
+    "genesisAssertionHash": "0x26d1dc5585f03d3f1436999ab4af3cbd40819b16bb843ec3aeb41b11da7147c3",
+    "genesisAudit": {
+      "expectedState": {
+        "globalState": {
+          "bytes32Vals": [
+            "0x17b5e6ba05003525c4f3c766d6b3120d88ee87dc7eeba84932027f8917da3483",
+            "0x0000000000000000000000000000000000000000000000000000000000000000"
+          ],
+          "u64Vals": [
+            1,
+            0
+          ]
+        },
+        "machineStatus": 1,
+        "endHistoryRoot": "0x0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "event": {
+        "parentAssertionHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+        "afterInboxBatchAcc": "0x0000000000000000000000000000000000000000000000000000000000000000",
+        "assertionHash": "0x26d1dc5585f03d3f1436999ab4af3cbd40819b16bb843ec3aeb41b11da7147c3",
+        "afterState": {
+          "globalState": {
+            "bytes32Vals": [
+              "0x17b5e6ba05003525c4f3c766d6b3120d88ee87dc7eeba84932027f8917da3483",
+              "0x0000000000000000000000000000000000000000000000000000000000000000"
+            ],
+            "u64Vals": [
+              "1",
+              "0"
+            ]
+          },
+          "machineStatus": "1",
+          "endHistoryRoot": "0x0000000000000000000000000000000000000000000000000000000000000000"
+        },
+        "wasmModuleRoot": "0xc10cd7ec6acaf1c441a3f6bd0900ad20f15855ba775a96f1939118cbc629dc97",
+        "requiredStake": "100000000000000000000000",
+        "confirmPeriodBlocks": "50400",
+        "inboxMaxCount": "1",
+        "challengeManager": "0xcbD5573c920dc697a3D9a5A095B3D9fd3b53f561"
+      },
+      "computedAssertionHash": "0x26d1dc5585f03d3f1436999ab4af3cbd40819b16bb843ec3aeb41b11da7147c3",
+      "latestConfirmed": "0x26d1dc5585f03d3f1436999ab4af3cbd40819b16bb843ec3aeb41b11da7147c3",
+      "storedAssertion": {
+        "firstChildBlock": "0",
+        "secondChildBlock": "0",
+        "createdAtBlock": "26436489",
+        "isFirstChild": true,
+        "status": "2",
+        "configHash": "0x2dadf96400322812f2e72563aee201630d2c96764cbd128fce2c15090cd1b17b"
+      },
+      "expectedConfigHash": "0x2dadf96400322812f2e72563aee201630d2c96764cbd128fce2c15090cd1b17b",
+      "eventLookupBlock": "116780593",
+      "receiptBlock": "116780593",
+      "emptyGenesisConvenienceHash": "0x75c2df1d9a6f98d1de62c8fc955f91b87f16fefa2fafe4d6b52118fc30e1c278"
+    },
+    "creationTransactionHash": "0xadf4ffccdc68d51fa9c5c6e2480ca14cf9072dbae21e7e9127a70ee8b7d0abcb",
+    "creationBlockHash": "0xeeb217cc0643eee6530af76437c6a9b2772f034f13461fded430408522f47597",
+    "publicActivationApproved": false
+  },
+  "license": {
+    "accepted": false,
+    "arrangementSelected": false,
+    "reviewSource": "https://docs.arbitrum.io/launch-arbitrum-chain/overview/license",
+    "requires": "AEP/other applicable license confirmation for RH parent; no agent acceptance"
+  },
+  "review": {
+    "complete": false,
+    "activationApproved": false,
+    "productionConfigSHA256": null,
+    "remainingDecisions": [
+      "Approval of proposed GH0ST stakes/manual rate/ETH reserves and operator fast-authority risk",
+      "Applicable license arrangement",
+      "Final unsigned transaction review and cold-wallet signatures",
+      "Reviewed private hot-role key references from root identities manifest",
+      "Receipt-backed fee configuration, wallet usability and final child owner[0] before public activation"
+    ],
+    "publicWrites": 0,
+    "mainnetParentDeploymentObserved": true,
+    "privateBootstrapStartApproved": false,
+    "publicActivationApproved": false
+  },
+  "parentRPC": {
+    "selected": false,
+    "source": "env",
+    "name": "GL3_PARENT_RPC_URL",
+    "templatePlaceholder": "$GL3_PARENT_RPC",
+    "credentialsStoredHere": false
+  }
+}

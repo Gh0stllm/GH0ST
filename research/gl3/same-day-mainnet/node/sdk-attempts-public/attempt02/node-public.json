@@ -1,0 +1,174 @@
+{
+  "chain": {
+    "id": 4663001,
+    "name": "GH0ST local native Nitro child rehearsal",
+    "info-json": "[{\"chain-name\":\"GH0ST local native Nitro child rehearsal\",\"chain-id\":4663001,\"parent-chain-id\":4663,\"parent-chain-is-arbitrum\":true,\"chain-config\":{\"chainId\":4663001,\"homesteadBlock\":0,\"daoForkBlock\":null,\"daoForkSupport\":true,\"eip150Block\":0,\"eip150Hash\":\"0x0000000000000000000000000000000000000000000000000000000000000000\",\"eip155Block\":0,\"eip158Block\":0,\"byzantiumBlock\":0,\"constantinopleBlock\":0,\"petersburgBlock\":0,\"istanbulBlock\":0,\"muirGlacierBlock\":0,\"berlinBlock\":0,\"londonBlock\":0,\"clique\":{\"period\":0,\"epoch\":0},\"arbitrum\":{\"EnableArbOS\":true,\"AllowDebugPrecompiles\":false,\"DataAvailabilityCommittee\":false,\"InitialArbOSVersion\":61,\"InitialChainOwner\":\"0x0c23A94667c667201e0F139E8CE786ff9D7Bf134\",\"GenesisBlockNum\":0,\"MaxCodeSize\":24576,\"MaxInitCodeSize\":49152}},\"rollup\":{\"bridge\":\"0x007c370226fDCad290dD4D22CC13E7Ad782f27AF\",\"inbox\":\"0xe3B14afFbfecAA2aF008fB2e48764EC692e0564c\",\"sequencer-inbox\":\"0x782F2818b31974e3e028eBEBe3bf5E3419add5Bb\",\"rollup\":\"0x08aE3584058f55E0ADfECb48F1D69700456e4d0d\",\"native-token\":\"0x2eb2849cDE7957b86d0dFD4B59e450a9F9D15559\",\"upgrade-executor\":\"0x3135F91aDdAAe1eC006E8ecBd083997C82eEaA1D\",\"validator-utils\":\"0x0000000000000000000000000000000000000000\",\"validator-wallet-creator\":\"0xB7FE37712e46F28C8f22Ec4bAA33A09fb8B52BD0\",\"stake-token\":\"0x2eb2849cDE7957b86d0dFD4B59e450a9F9D15559\",\"deployed-at\":32},\"has-genesis-state\":true,\"sequencer-url\":\"\",\"feed-url\":\"\"}]"
+  },
+  "parent-chain": {
+    "id": 4663,
+    "connection": {
+      "url": "http://127.0.0.1:37873"
+    }
+  },
+  "init": {
+    "genesis-json-file": "/workspace/gl3/same-day-mainnet/bridge-rehearsal/final-fee-profile-v4/evidence/child-genesis.json",
+    "validate-genesis-assertion": true
+  },
+  "persistent": {
+    "chain": "/workspace/gl3/same-day-mainnet/node/private-final-fee-profile-v4-evidence-attempt2/chain",
+    "global-config": "/workspace/gl3/same-day-mainnet/node/private-final-fee-profile-v4-evidence-attempt2/config",
+    "db-engine": "pebble",
+    "pebble": {
+      "sync-mode": true,
+      "max-concurrent-compactions": 2
+    }
+  },
+  "http": {
+    "addr": "127.0.0.1",
+    "port": 58327,
+    "api": [
+      "eth",
+      "net",
+      "web3",
+      "arb"
+    ]
+  },
+  "auth": {
+    "addr": ""
+  },
+  "ipc": {
+    "path": "/workspace/gl3/same-day-mainnet/node/private-final-fee-profile-v4-evidence-attempt2/node.ipc"
+  },
+  "ws": {
+    "addr": ""
+  },
+  "file-logging": {
+    "enable": false
+  },
+  "version-alerter": {
+    "enable": false
+  },
+  "ensure-rollup-deployment": false,
+  "execution": {
+    "rpc": {
+      "tx-fee-cap": 1000
+    },
+    "rpc-server": {
+      "enable": true,
+      "authenticated": false,
+      "public": false
+    },
+    "caching": {
+      "archive": true,
+      "state-scheme": "hash",
+      "database-cache": 16,
+      "trie-clean-cache": 16,
+      "trie-dirty-cache": 16,
+      "snapshot-cache": 16,
+      "max-number-of-blocks-to-skip-state-saving": 0,
+      "max-amount-of-gas-to-skip-state-saving": 0
+    },
+    "sequencer": {
+      "enable": false,
+      "max-block-speed": "100ms",
+      "poll-interval": "5ms"
+    },
+    "parent-chain-reader": {
+      "enable": true,
+      "poll-interval": "100ms",
+      "use-finality-data": false
+    },
+    "stylus-target": {
+      "allow-offchain-activation": false
+    },
+    "forwarding-target": "null"
+  },
+  "node": {
+    "sequencer": false,
+    "dangerous": {
+      "no-sequencer-coordinator": true,
+      "disable-blob-reader": true
+    },
+    "parent-chain-reader": {
+      "enable": true,
+      "poll-interval": "100ms",
+      "poll-only": true,
+      "use-finality-data": false
+    },
+    "inbox-reader": {
+      "check-delay": "100ms",
+      "delay-blocks": 0,
+      "read-mode": "latest"
+    },
+    "delayed-sequencer": {
+      "enable": false,
+      "finalize-distance": 0,
+      "require-full-finality": false,
+      "use-merge-finality": false,
+      "rescan-interval": "100ms"
+    },
+    "batch-poster": {
+      "enable": false
+    },
+    "staker": {
+      "enable": true,
+      "strategy": "MakeNodes",
+      "use-smart-contract-wallet": false,
+      "disable-challenge": false,
+      "enable-fast-confirmation": true,
+      "start-validation-from-staked": false,
+      "staker-interval": "200ms",
+      "make-assertion-interval": "1s",
+      "parent-chain-wallet": {
+        "private-key": "REDACTED_TEST_VALUE"
+      }
+    },
+    "block-validator": {
+      "enable": true,
+      "current-module-root": "0xc10cd7ec6acaf1c441a3f6bd0900ad20f15855ba775a96f1939118cbc629dc97",
+      "pending-upgrade-module-root": "0xc10cd7ec6acaf1c441a3f6bd0900ad20f15855ba775a96f1939118cbc629dc97",
+      "failure-is-fatal": true,
+      "validation-poll": "100ms",
+      "validation-sent-limit": 4,
+      "prerecorded-blocks": 4,
+      "validation-server": {
+        "url": "ws://127.0.0.1:48721",
+        "jwtsecret": "/workspace/gl3/same-day-mainnet/node/private-final-fee-profile-v4-evidence-attempt2/jwt.private",
+        "timeout": "10m",
+        "retries": 0,
+        "arg-log-limit": 0
+      }
+    },
+    "feed": {
+      "input": {
+        "url": []
+      },
+      "output": {
+        "enable": false
+      }
+    },
+    "bold": {
+      "assertion-posting-interval": "1s",
+      "assertion-scanning-interval": "200ms",
+      "assertion-confirming-interval": "200ms",
+      "minimum-gap-to-parent-assertion": "0s",
+      "check-staker-switch-interval": "200ms",
+      "rpc-block-number": "latest",
+      "enable-fast-confirmation": true,
+      "start-validation-from-staked": false,
+      "parent-chain-block-time": "100ms",
+      "state-provider-config": {
+        "validator-name": "GL3-private-standard",
+        "check-batch-finality": false,
+        "machine-leaves-cache-path": "/workspace/gl3/same-day-mainnet/node/private-final-fee-profile-v4-evidence-attempt2/machine-hashes"
+      }
+    }
+  },
+  "validation": {
+    "wasm": {
+      "root-path": "/root/gl3-base-launch/machines",
+      "enable-wasmroots-check": true
+    }
+  },
+  "log-level": "INFO"
+}

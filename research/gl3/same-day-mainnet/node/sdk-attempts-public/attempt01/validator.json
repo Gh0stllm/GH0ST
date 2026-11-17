@@ -1,0 +1,43 @@
+{
+  "log-level": "WARN",
+  "validation": {
+    "use-jit": true,
+    "api-auth": true,
+    "api-public": false,
+    "wasm": {
+      "root-path": "/workspace/gl3/durable/machines",
+      "enable-wasmroots-check": true,
+      "allowed-wasm-module-roots": [
+        "0xc10cd7ec6acaf1c441a3f6bd0900ad20f15855ba775a96f1939118cbc629dc97"
+      ]
+    },
+    "jit": {
+      "workers": 2,
+      "jit-path": "/workspace/gl3/same-day-mainnet/node/bin/jit",
+      "max-execution-time": "10m"
+    },
+    "arbitrator": {
+      "workers": 2
+    }
+  },
+  "auth": {
+    "addr": "127.0.0.1",
+    "port": 45671,
+    "jwtsecret": "/workspace/gl3/same-day-mainnet/node/private-final-fee-profile-v4-evidence/jwt.private"
+  },
+  "persistent": {
+    "global-config": "/workspace/gl3/same-day-mainnet/node/private-final-fee-profile-v4-evidence/validator-config"
+  },
+  "http": {
+    "addr": ""
+  },
+  "ws": {
+    "addr": ""
+  },
+  "ipc": {
+    "path": ""
+  },
+  "file-logging": {
+    "enable": false
+  }
+}
