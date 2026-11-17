@@ -1,0 +1,116 @@
+{
+  "state": "NATIVE_CHECKPOINT_AND_FULL_STRENGTH_CONTINUATION_PASSED_NOT_PRODUCTION",
+  "allExecutionOnRunpod": true,
+  "localTestsOrBuildsRun": false,
+  "optInAddress": "0x0000000000000000000000000000000000000a15",
+  "buildTag": "gl3_checkpoint_integration",
+  "defaultProfileAbsencePassed": true,
+  "legacyA14AndEngineSourcesUnchanged": true,
+  "nativeRegression": {
+    "exitCode": 0,
+    "seconds": 31.878150364849716,
+    "allExecutionOnRunpod": true,
+    "pattern": "^TestGL3Checkpoint(ProfileABIAndDomain|AcceleratorIdentity|RPCAdmissionLease|RealEVMGuardPreflight|CompletedNativeStateDB)$",
+    "sampledPeakRSSKiB": 6421964,
+    "namedTopLevelTests": 5,
+    "passEvents": 28,
+    "checkpointPieces": 64,
+    "checkpointBodyBytes": 162059912,
+    "memoryBytes": 466157568,
+    "oldDeltaCount": 2464,
+    "allPortableMemoryGlobalsTTHistoryCanonicalUnchanged": true,
+    "finalizeCodeReads": 0,
+    "finalizeCalls": [
+      {
+        "gasUsed": 7352018,
+        "legacy": false,
+        "method": "checkpointFinalize",
+        "reverted": false,
+        "seconds": 0.001031877
+      },
+      {
+        "gasUsed": 7352018,
+        "legacy": false,
+        "method": "checkpointFinalize",
+        "reverted": false,
+        "seconds": 0.001048957
+      }
+    ]
+  },
+  "continuation": {
+    "actualNodes": 24000311,
+    "allExecutionOnRunpod": true,
+    "allPortableMemoryGlobalsTTHistoryRetained": true,
+    "allVMSearchCachesDestroyedBeforeBegin": true,
+    "canonicalBytes": 163085439,
+    "canonicalMatchesFrozenUncheckpointedGolden": true,
+    "canonicalSHA256": "b06a3f26b0b276c0109fb1888fa32727714ada8abb00cbec8f857bec8308068b",
+    "depth": 39,
+    "finalHistory": "e2e4 e7e5 g1f3 b8c6",
+    "finalImageRoot": "472dfc4e1923dcb78bf63c66bf53e08f03d5a50b39fdbf3fe0dc92b1933ad037",
+    "firstCheckpointImageRoot": "c7831793f32eb194d7cd96411c8588cd9907d1e7d6875b48e9996c4623e948d3",
+    "guestProofAccepted": false,
+    "inputHistory": "e2e4 e7e5 g1f3",
+    "move": "b8c6",
+    "operations": 2489,
+    "passed": true,
+    "portableModuleSHA256": "1d650410655d93624801a0fa45d64d72ec5d209115672b5848f010037da5e5bc",
+    "productionAccepted": false,
+    "progressStep": 9955,
+    "qualityOrSearchPolicyChanged": false,
+    "scope": "actual native A15 checkpoint to authenticated cold restore to unchanged full24m second decision; no guest proof or deployment",
+    "seconds": 197.707067267,
+    "processExit": {
+      "exitCode": 0,
+      "seconds": 229.1033082557842,
+      "allExecutionOnRunpod": true,
+      "pattern": "^TestGL3CheckpointCompletedNativeStateDB$",
+      "sampledPeakRSSKiB": 6673752
+    }
+  },
+  "frozenInputs": {
+    "preimagesFileBytes": 1914805529,
+    "preimagesFileSHA256": "8852477df16204a51a337c1f91023fc46fc052304315b96e91e3f1c4a1369157",
+    "completedMemoryBytes": 466157568,
+    "completedMemorySHA256": "26ade604551c291ab4d6e2194dbf45a4cfb8f895d914443d3740ac55422a92f7",
+    "completedMetadataSHA256": "f563275e0ac46dbf5688e34ef59d3796a473ffbfe18461bf605e7844dcf46d88",
+    "firstCanonicalBytes": 163085439,
+    "firstCanonicalSHA256": "5f9762c73c1309824a365e47f936d27975c6233770672803bcc6ffbba30f28c6"
+  },
+  "artifacts": {
+    "A15SourceSHA256": "0645d3ce0785585115af05a68ab448233addaad5d8aa35620229e05a453d97b9",
+    "regressionBinary": {
+      "SHA256": "7b0c96f7ff471dcd0a0fd8bab33cdd41a8c44fede6ca92f4ee3e68c1d35f9d75"
+    },
+    "continuationBinary": {
+      "SHA256": "24ad15af1a3db0b36f664535cf47d61c14afa2890af901f4953a89fccb50ee4a"
+    },
+    "collectedArchive": {
+      "archiveSHA256": "6cc7daea4c660db6411e8fa4f0bbc869cdcdd1cb384d41d5122c258d9dca6bd6",
+      "archiveBytes": 98809,
+      "allTestsExecutedOnRunpod": true,
+      "transferIsReadOnly": true,
+      "groups": [
+        "preflight-v3",
+        "native-v4",
+        "native-v5",
+        "native-v6",
+        "native-v7",
+        "native-v8",
+        "disabled-v8",
+        "native-v10",
+        "continuation-v9"
+      ]
+    }
+  },
+  "remainingGates": {
+    "coldRestoreBoundedByPiece": false,
+    "productionGasTariffAccepted": false,
+    "recordedGuestCheckpointProofAccepted": false,
+    "privilegedMutableWriterInvariantProductionApproved": false,
+    "oldCodeDeletedOrPruned": false,
+    "challengeSafeRetentionAccepted": false,
+    "twentyGameCapacityAccepted": false,
+    "mainnetReady": false
+  }
+}

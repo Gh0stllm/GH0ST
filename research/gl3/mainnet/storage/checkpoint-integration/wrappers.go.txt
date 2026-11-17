@@ -1,0 +1,135 @@
+func (p ArbGhostChessCheckpoint) NewGame(c ctx, evm mech, job bytes32) (bytes32, error) {
+ if evm.ChainConfig().ArbitrumChainParams.AllowDebugPrecompiles{return bytes32{},errGhostChess}
+
+	allowed, e := c.State.ChainOwners().IsMember(c.caller)
+	if e != nil || !allowed {
+		return bytes32{}, errGhostChess
+	}
+	reservation := sliceStore(evm.StateDB, c, sliceReservation)
+	active, e := reservation.GetBytes()
+	if e != nil || len(active) != 0 {
+		return bytes32{}, errGhostChess
+	}
+	ns := cpNamespace(c.caller, job)
+	store := sliceStore(evm.StateDB, c, ns)
+	n, e := store.GetBytesSize()
+	if e != nil || n != 0 {
+		return bytes32{}, errGhostChess
+	}
+	seed, e := sliceMetaRead(sliceStore(evm.StateDB, c, sliceSeedNamespace))
+	if e != nil {
+		return bytes32{}, e
+	}
+	if e = sliceMetaWrite(store, seed); e != nil {
+		return bytes32{}, e
+	}
+	if e = reservation.SetBytes(ns); e != nil {
+		return bytes32{}, e
+	}
+	return seed.Root, nil
+}
+
+func (p ArbGhostChessCheckpoint) ReleaseGame(c ctx, evm mech, job bytes32) (bool, error) {
+ if e:=cpGameUnlocked(c,evm,job);e!=nil{return false, e}
+
+	ns := cpNamespace(c.caller, job)
+	store := sliceStore(evm.StateDB, c, ns)
+	m, e := sliceMetaRead(store)
+	if e != nil {
+		return false, e
+	}
+	if m.Released {
+		return true, nil
+	}
+	reservation := sliceStore(evm.StateDB, c, sliceReservation)
+	active, e := reservation.GetBytes()
+	if e != nil || !bytes.Equal(active, ns) {
+		return false, errGhostChess
+	}
+	m.Released = true
+	if m.Progress.Pending {
+		m.Progress = sliced.Progress{}
+	}
+	if e = sliceMetaWrite(store, m); e != nil {
+		return false, e
+	}
+	if e = reservation.SetBytes(nil); e != nil {
+		return false, e
+	}
+	if !c.txProcessor.MsgIsNonMutating() && !c.txProcessor.GhostChessIsObserver() {
+		sliceCaches.Lock()
+		if cached := sliceCaches.Items[string(ns)]; cached != nil {
+			cached.VM.Close()
+			delete(sliceCaches.Items, string(ns))
+		}
+		sliceCaches.Unlock()
+	}
+	return true, nil
+}
+
+func (p ArbGhostChessCheckpoint) Begin(c ctx, evm mech, job bytes32, generation uint64, history string) (uint32, bool, bytes32, error) {
+ if e:=cpGameUnlocked(c,evm,job);e!=nil{return 0, false, bytes32{}, e}
+
+	ns := cpNamespace(c.caller, job)
+	store := sliceStore(evm.StateDB, c, ns)
+	m, e := sliceMetaRead(store)
+	if e != nil {
+		return 0, false, bytes32{}, e
+	}
+	if m.Released || m.Progress.Pending || generation != m.Generation || generation == ^uint64(0) || history == "" || len(history) > 8192 {
+		return 0, false, bytes32{}, errGhostChess
+	}
+	if !validSliceHistory(m.History, history) {
+		return 0, false, bytes32{}, errGhostChess
+	}
+	return cpSliceRun(c, evm, ns, m, true, history)
+}
+
+func (p ArbGhostChessCheckpoint) Advance(c ctx, evm mech, job bytes32, generation uint64, expectedStep uint32) (uint32, bool, bytes32, error) {
+ if e:=cpGameUnlocked(c,evm,job);e!=nil{return 0, false, bytes32{}, e}
+
+	ns := cpNamespace(c.caller, job)
+	m, e := sliceMetaRead(sliceStore(evm.StateDB, c, ns))
+	if e != nil {
+		return 0, false, bytes32{}, e
+	}
+	if m.Released || generation != m.SearchGeneration {
+		return 0, false, bytes32{}, errGhostChess
+	}
+	if expectedStep > 0 && expectedStep+1 == m.Operation {
+		if evm.ChainConfig().ArbitrumChainParams.AllowDebugPrecompiles {
+			if c.txProcessor.MsgIsNonMutating() || c.txProcessor.GhostChessIsObserver() {
+				if !sliceTakeIsolated(c.txProcessor.MsgIsNonMutating()) {
+					return 0, false, bytes32{}, errGhostChess
+				}
+				defer func() { <-sliceSimulationTokens }()
+				cache, e := sliceRestore(c, evm, m)
+				if e != nil {
+					return 0, false, bytes32{}, e
+				}
+				cache.VM.Close()
+			} else {
+				sliceCaches.Lock()
+				defer sliceCaches.Unlock()
+				if _, e = sliceLoad(c, evm, ns, m); e != nil {
+					return 0, false, bytes32{}, e
+				}
+			}
+		}
+		return m.Operation, m.Progress.Pending, m.Root, nil
+	}
+	if !m.Progress.Pending || expectedStep != m.Operation || expectedStep == 0 || expectedStep == ^uint32(0) {
+		return 0, false, bytes32{}, errGhostChess
+	}
+	return cpSliceRun(c, evm, ns, m, false, "")
+}
+
+func (p ArbGhostChessCheckpoint) Inspect(c ctx, evm mech, job bytes32) (uint64, uint32, bool, uint64, string, uint64, uint32, bytes32, error) {
+	m, e := sliceMetaRead(sliceStore(evm.StateDB, c, cpNamespace(c.caller, job)))
+	if e != nil {
+		return 0, 0, false, 0, "", 0, 0, bytes32{}, e
+	}
+	r := m.Progress
+	return m.Generation, m.Operation, r.Pending, r.Observed, r.Move, r.Nodes, r.Depth, m.Root, nil
+}
+

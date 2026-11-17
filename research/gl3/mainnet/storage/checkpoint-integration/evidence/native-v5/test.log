@@ -1,0 +1,45 @@
+=== RUN   TestGL3CheckpointCompletedNativeStateDB
+=== RUN   TestGL3CheckpointCompletedNativeStateDB/metadata-only-begin
+=== RUN   TestGL3CheckpointCompletedNativeStateDB/owner-generation-root-lock
+=== RUN   TestGL3CheckpointCompletedNativeStateDB/legacy-domain-and-shared-admission
+=== RUN   TestGL3CheckpointCompletedNativeStateDB/actual-handler-isolated-admission-error-and-cancel
+=== RUN   TestGL3CheckpointCompletedNativeStateDB/oog-and-outer-rollback
+--- FAIL: TestGL3CheckpointCompletedNativeStateDB (10.22s)
+    --- PASS: TestGL3CheckpointCompletedNativeStateDB/metadata-only-begin (0.00s)
+    --- PASS: TestGL3CheckpointCompletedNativeStateDB/owner-generation-root-lock (0.00s)
+    --- PASS: TestGL3CheckpointCompletedNativeStateDB/legacy-domain-and-shared-admission (0.00s)
+    --- PASS: TestGL3CheckpointCompletedNativeStateDB/actual-handler-isolated-admission-error-and-cancel (0.00s)
+    --- PASS: TestGL3CheckpointCompletedNativeStateDB/oog-and-outer-rollback (4.44s)
+panic: assignment to entry in nil map [recovered, repanicked]
+
+goroutine 34 [running]:
+testing.tRunner.func1.2({0x221c420, 0x94b0f00})
+	/root/bounded-restore/toolchain/go/src/testing/testing.go:1872 +0x237
+testing.tRunner.func1()
+	/root/bounded-restore/toolchain/go/src/testing/testing.go:1875 +0x35b
+panic({0x221c420?, 0x94b0f00?})
+	/root/bounded-restore/toolchain/go/src/runtime/panic.go:783 +0x132
+github.com/offchainlabs/nitro/precompiles.ArbGhostChessCheckpoint.CheckpointWork({{0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, ...}}, ...)
+	/root/gl3-checkpoint-integration/546810a186d247fe8d7bbf170d401ea3/nitro/precompiles/ArbGhostChessCheckpoint.go:386 +0x172f
+reflect.Value.call({0xc0004835f0?, 0xc0002ac0d0?, 0x26d7998?}, {0x23d0da7, 0x4}, {0xc038f940c0, 0x7, 0x8?})
+	/root/bounded-restore/toolchain/go/src/reflect/value.go:581 +0xcca
+reflect.Value.Call({0xc0004835f0?, 0xc0002ac0d0?, 0x7cfce3d403b8?}, {0xc038f940c0?, 0x219f740?, 0x5f5e100?})
+	/root/bounded-restore/toolchain/go/src/reflect/value.go:365 +0xb9
+github.com/offchainlabs/nitro/precompiles.(*Precompile).Call(0xc00033a150, {0xc038f90000, 0x84, 0x90}, {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, ...}, ...)
+	/root/gl3-checkpoint-integration/546810a186d247fe8d7bbf170d401ea3/nitro/precompiles/precompile.go:812 +0xe7e
+github.com/offchainlabs/nitro/precompiles.ghostChessEVMBridge.RunAdvanced({{0x26bef30?, 0xc00033a150?}}, {0xc038f90000?, 0x4f851a?, 0xc038f60c30?}, 0x219f740?, 0x0?)
+	/root/gl3-checkpoint-integration/546810a186d247fe8d7bbf170d401ea3/nitro/precompiles/ArbGhostChess_test.go:28 +0x168
+github.com/ethereum/go-ethereum/core/vm.RunPrecompiledContract({0x26db630, 0xc000282a80}, {0x26bac10, 0xc000473890}, {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, ...}, ...)
+	/root/gl3-checkpoint-integration/546810a186d247fe8d7bbf170d401ea3/nitro/go-ethereum/core/vm/contracts.go:309 +0x10e
+github.com/ethereum/go-ethereum/core/vm.(*EVM).Call(0xc00048f880, {0x26, 0xe5, 0x54, 0xa8, 0xac, 0xf9, 0x0, 0x3b, 0x83, ...}, ...)
+	/root/gl3-checkpoint-integration/546810a186d247fe8d7bbf170d401ea3/nitro/go-ethereum/core/vm/evm.go:339 +0xd05
+github.com/offchainlabs/nitro/precompiles.(*cpFixture).call(0xc0000ff908, 0xc00048e1c0, 0x0, 0x5f5e100, {0x23e0d99, 0xe}, {0xc038135d40, 0x4, 0x4})
+	/root/gl3-checkpoint-integration/546810a186d247fe8d7bbf170d401ea3/nitro/precompiles/ArbGhostChessCheckpoint_native_test.go:114 +0x35a
+github.com/offchainlabs/nitro/precompiles.(*cpFixture).must(0xc0000ff908, 0xc00048e1c0, {0x23e0d99, 0xe}, {0xc038135d40, 0x4, 0x4})
+	/root/gl3-checkpoint-integration/546810a186d247fe8d7bbf170d401ea3/nitro/precompiles/ArbGhostChessCheckpoint_native_test.go:125 +0xa5
+github.com/offchainlabs/nitro/precompiles.TestGL3CheckpointCompletedNativeStateDB(0xc00048e1c0)
+	/root/gl3-checkpoint-integration/546810a186d247fe8d7bbf170d401ea3/nitro/precompiles/ArbGhostChessCheckpoint_native_test.go:407 +0x73f
+testing.tRunner(0xc00048e1c0, 0x2527238)
+	/root/bounded-restore/toolchain/go/src/testing/testing.go:1934 +0xea
+created by testing.(*T).Run in goroutine 1
+	/root/bounded-restore/toolchain/go/src/testing/testing.go:1997 +0x465

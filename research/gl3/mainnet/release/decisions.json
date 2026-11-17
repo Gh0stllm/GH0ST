@@ -105,7 +105,10 @@
     "selectedMachineSHA256": "4bf7fe54c28ad0b6f2620df3ee6b4c6d87452f9ab76ec8be294eb7d4c934770e",
     "selectedGuestWasmSHA256": "8d18145460e5f4c649895728fa089a52a04ead2c3fa5e7d10789d72d7de42fbd",
     "guardedMachineRootScope": "Historical failed c03c, retained in guardedReplayFailureEvidence",
-    "terminalGuestReplayEvidenceScope": "Launch-only; actual result pending"
+    "terminalGuestReplayEvidenceScope": "Launch and sampled overflow only; actual final result pending",
+    "selectedNativeCheckpointContinuationPassed": true,
+    "selectedBoundaryPassedInitializationOnly": true,
+    "prior2pow40GeometryRejected": true
   },
   "futureControllerAcceptanceGuards": {
     "syntaxPassed": true,
@@ -118,7 +121,8 @@
     "testedGuardsSHA256": "246f832e8c4fbe7943ed53a519ea1c40f4e4172c134e56e974da64421470425e",
     "futureGoNonceSourceCloudCompiled": true,
     "futureGoIntegrationPassed": false,
-    "activeFixtureUsesDifferentFrozenSource": true
+    "activeFixtureUsesDifferentFrozenSource": true,
+    "scope": "Historical87-case guard packet; latest selected865 preflight is recorded separately"
   },
   "strictLifecycleAcceptance": {
     "status": "STOPPED_NOT_ACCEPTED",
@@ -214,11 +218,15 @@
     "machineFinished": null,
     "allFourGlobalStateFieldsMatch": null,
     "timedOut": null,
-    "rawCounterPlusOneFitsPrivateGeometry": null,
+    "rawCounterPlusOneFitsPrivateGeometry": false,
     "fullBoLDDisputeExecuted": false,
     "launchEvidence": "../production/bounded-restore/scheduling/comparison/C-combined/interpreter/process.json",
     "liveSnapshot": "../production/bounded-restore/scheduling/comparison/C-combined/interpreter/live-snapshot.json",
-    "machineManifest": "../production/bounded-restore/scheduling/comparison/C-combined/machine-manifest.json"
+    "machineManifest": "../production/bounded-restore/scheduling/comparison/C-combined/machine-manifest.json",
+    "privateGeometryFitScope": "Prior 1024^4 = 2^40 geometry only; separate 2^43 variant remains unaccepted",
+    "sampledRawStepLowerBound": 1146200000000,
+    "overflowObservedAtUTC": "2026-11-17T02:35:38Z",
+    "overflowEvidence": "../production/bounded-restore/scheduling/comparison/C-combined/interpreter/overflow-observation.json"
   },
   "checkpointPrototype": {
     "status": "SOURCE_AND_EMULATOR_LANE_NOT_PRODUCTION",
@@ -234,5 +242,86 @@
     "canonicalSHA256": "5f9762c73c1309824a365e47f936d27975c6233770672803bcc6ffbba30f28c6",
     "evidence": "../production/bounded-restore/scheduling/comparison/C-combined/native-comparison.json",
     "scope": "Native terminal comparison, not interpreter acceptance"
+  },
+  "checkpointNativeIntegration": {
+    "status": "NATIVE_CHECKPOINT_AND_FULL_STRENGTH_CONTINUATION_PASSED_NOT_PRODUCTION",
+    "evidence": "../storage/checkpoint-integration/acceptance.json",
+    "optInProfile": "0xa15",
+    "defaultBuildA15Absent": true,
+    "A14AndEngineUnchanged": true,
+    "topLevelTestsPassed": 5,
+    "passEvents": 28,
+    "actualRegressionExitCode": 0,
+    "regressionSeconds": 31.878150364849716,
+    "oldDeltaCount": 2464,
+    "checkpointPieces": 64,
+    "checkpointBodyBytes": 162059912,
+    "memoryBytes": 466157568,
+    "completeMemoryGlobalsTTHistoryPreserved": true,
+    "continuationActualExitCode": 0,
+    "continuationTotalSeconds": 229.1033082557842,
+    "continuationMove": "b8c6",
+    "continuationNodes": 24000311,
+    "continuationDepth": 39,
+    "continuationCanonicalBytes": 163085439,
+    "continuationCanonicalSHA256": "b06a3f26b0b276c0109fb1888fa32727714ada8abb00cbec8f857bec8308068b",
+    "nativeSourceSHA256": "0645d3ce0785585115af05a68ab448233addaad5d8aa35620229e05a453d97b9",
+    "finalizeCodeReads": 0,
+    "coldRestoreBoundedByPiece": false,
+    "oldAccountsDeleted": false,
+    "guestProofAccepted": false,
+    "productionAccepted": false,
+    "twentyGamesCapacityAccepted": false,
+    "continuationTimingScope": "Direct native precompile/handler benchmark, not mined-block or public move latency"
+  },
+  "selected865Boundary": {
+    "status": "PASSED_SELECTED_INITIALIZATION_BOUNDARY_ONLY",
+    "evidence": "../production/selected865-boundary/evidence/offset-cap-boundary-receipt.json",
+    "backendActualExitCode": 0,
+    "backendSeconds": 6.62372518889606,
+    "solidityActualExitCode": 0,
+    "soliditySeconds": 33.97446090215817,
+    "authenticInitializationTransitions": 2,
+    "strictNegativeContractChecks": 14,
+    "kickoffOffset": 1,
+    "wrappedFinishedIndex": "rawExactFinalSteps + 1",
+    "rawMachineLimit": 8796093022208,
+    "lastSlotForcedErrorIndex": 8796093022207,
+    "syntheticNearCapIndicesAreFullTrace": false,
+    "rootAuthorizationGranted": false,
+    "fullTerminalReplayAccepted": false,
+    "fullLifecycleAccepted": false
+  },
+  "selectedGeometryReview": {
+    "status": "PRIOR_2POW40_GEOMETRY_DEFINITELY_INSUFFICIENT",
+    "observedAtUTC": "2026-11-17T02:35:38Z",
+    "sampledRawStepLowerBound": 1146200000000,
+    "priorGeometryCapacity": 1099511627776,
+    "priorGeometryFits": false,
+    "rawExactFinalSteps": null,
+    "rawCounterPlusOne": null,
+    "replacement2pow43VariantAccepted": false,
+    "replacementLifecycleLaunched": false,
+    "geometryAccepted": false,
+    "evidence": "../production/bounded-restore/scheduling/comparison/C-combined/interpreter/overflow-observation.json"
+  },
+  "retentionDesign": {
+    "status": "DESIGN_ONLY",
+    "evidence": "../storage/retention-design/README.md",
+    "proposedRoute": "separately versioned fixed reusable page bank plus challenge-safe historical availability",
+    "implementationAccepted": false,
+    "prunerExecuted": false,
+    "twentyGamesCapacityAccepted": false
+  },
+  "currentResearchMilestone": 37,
+  "futureSelected865Preflight": {
+    "compiled": true,
+    "PythonNormalTestsPassed": 160,
+    "PythonOptimizedTestsPassed": 160,
+    "GoTopLevelTestsPassed": 5,
+    "GoNamedCasesPassed": 55,
+    "fullLifecycleLaunched": false,
+    "fullIntegrationAccepted": false,
+    "evidence": "../dispute/full-lifecycle/preflight-selected865/README.md"
   }
 }

@@ -7,7 +7,7 @@
 - [x] Define Robinhood-parent / GH0ST-gas direction and preserve fixed chess strength policy.
 - [x] Pin standard Nitro, SDK, source, official machine root and reproducible build artifacts.
 - [x] Verify ordinary Solidity/Stylus execution on the clean base.
-- [x] Measure100 ms-profile lightweight receipt latency.
+- [x] Measure 100 ms-profile lightweight receipt latency.
 - [x] Validate both actual local Nitro genesis assertions.
 - [x] Verify native mock-token deposit, child spending and exact parent-batch inclusion.
 - [x] Separate the deployable child footprint from test-only Ethereum/RH-like parents.
@@ -18,7 +18,7 @@
 - [x] Complete unchanged 24m-node Black inference across two whole published game histories.
 - [x] Measure peak process memory, simultaneous searches and exact-state recovery.
 - [x] Compare current low-cost hosting quotes with their real terms.
-- [x] Record whether16 GB is supported by measured engine demand and which end-to-end workloads remain untested.
+- [x] Record whether 16 GB is supported by measured engine demand and which end-to-end workloads remain untested.
 
 ## Before public base deployment
 
@@ -54,17 +54,22 @@
 - [x] Pass real unchanged-C WASM32 diagnostics and select combined C: exact four fields, Go 2,000.5 MiB / C 711,655,424 bytes; native header/gas/canonical equivalence and seed-negative/witness checks pass.
 - [x] Build a separate exact-final-step host CLI and verify its 7-step tiny-WASM counter smoke; no chess step count follows from that smoke.
 - [ ] Complete the one four-hour-bounded combined-C interpreter replay, currently **RUNNING_NOT_ACCEPTED** under root `0x865168ea04ee58578a710a5270c22495c90b1c0f2226d39fecbb9eac4ea3f086`; require actual exit, finished state, all four fields and raw exact counter.
-- [ ] Review raw-counter-plus-one and the real BoLD kickoff/start offset against challenge geometry before restarting the exact-target lifecycle.
+- [x] Verify selected 865 kickoff offset 1 and two authentic initialization transitions through the pinned backend/inherited OSP, with 14 strict negative checks; synthetic cap units remain separate.
+- [x] Reject the prior 1024^4 =2^40 private geometry: the sampled running raw count already exceeds it.
+- [ ] Complete the selected interpreter and review final H/H+1 against a separately reviewed geometry; the new 2^43 variant is unaccepted and unlaunched.
 - [x] Verify five authentic witnesses through the inherited terminal challenge manager and reject 35 negative contract cases (fixture ancestors/history/config).
 - [x] Verify the real BoLD finished-to-running start boundary at step 0 / offset 1, then its separate Solidity case and seven strict negative checks (fixture context only).
-- [ ] Complete the original monolithic24m-move WAVM reference; the incomplete local run was stopped when the user moved all tests to Runpod.
-- [x] Pass future-controller syntax and 87 false-pass guard regressions, repeated under Python `-O`, on Runpod without changing the active fixture.
+- [ ] Complete the original monolithic 24m-move WAVM reference; the incomplete local run was stopped when the user moved all tests to Runpod.
+- [x] Pass latest selected 865 preflight:160 normal / 160 optimized Python guards and 55 Go named cases; earlier 87 / 72-test records remain preserved.
 - [x] Cloud-compile the future nonce-bearing Go candidate and reject missing-ID/no-matching-test entry points before any engine work.
 - [ ] Complete a fresh UUID-bearing controller/auditor/Go lifecycle integration; pure guards and refusal checks do not establish this full integration.
 - [ ] Complete the exact-target incorrect-result dispute: bound honest/false claims and 13 real block-bisection levels reach 4920→4921; the dependent fixture is STOPPED_NOT_ACCEPTED with zero accepted one-step/confirmation/refund results. A new exact-target run is required after guest repair.
 - [x] Complete the separate offline preterminal checkpoint study: exact all-byte round-trip at about 146 MB versus 1.619 GB of delta code.
-- [ ] Implement and accept bounded checkpoints/retirement with challenge-safe historical retention; offline savings establish no production or 20-game capacity.
-- [ ] Promote any separate checkpoint codec/emulator/harness prototype only after real STF, authentication, rollback, retention and capacity acceptance; source work alone is not production integration.
+- [x] Pass isolated A15 native checkpoint: 64 pieces / 162,059,912 body bytes, exact completed image, actual handler/revert/cache/namespace tests, and unchanged full 24m cold continuation.
+- [ ] Accept a matching checkpoint guest/profile, inherited cold-work and gas bounds; native pass is not production acceptance.
+- [x] Prepare the source-backed reusable-page-bank/current-state and historical-retention design; design only, no cleanup/pruning.
+- [ ] Implement and accept retirement or fixed-bank migration with challenge-safe historical availability and measured disk bounds; no 20-game capacity follows from active-head compaction.
+- [x] Preserve the earlier 53-test checkpoint codec/emulator prototype separately from the real A15 native integration; neither is a production storage pass.
 - [ ] Measure actual end-to-end memory, disk growth, move latency and parent posting costs.
 - [ ] Wire the reviewed game/reward path and prove complete legal play and payouts.
 
@@ -72,6 +77,10 @@ Checks represent achieved local/private-cloud evidence or explicit remaining wor
 
 ## Mainnet direction
 
-The user requested Robinhood mainnet deployment after testing. No launch date is certified by these results. Historical d453/c03c failures and the stopped 48-edge trial remain preserved; its prover, fixture/private parent, observer and five auditors are stopped. Combined C now passes native equivalence and a full real-C **terminal-block diagnostic**, while one new four-hour-bounded exact-counter interpreter is **RUNNING_NOT_ACCEPTED**. No lifecycle has restarted and no raw step/BoLD geometry is accepted. The completed withdrawal and 32 GB production workers were removed after evidence preservation; only the temporary 128 GB allocation remains at USD 1.04/hour compute plus disk. Future-controller guard/refusal checks retain their narrow scope. Every build, engine test, replay, proof and deployment rehearsal runs on Runpod; local work remains editing, transfers, research and publication. [Selected machine and launch](mainnet/production/bounded-restore/scheduling/comparison/C-combined/machine-manifest.json) · [Diagnostic comparison](mainnet/diagnostics/aot-jit/evidence/combined-final/summary.json).
+The user requested Robinhood mainnet deployment after testing. No launch date is certified by these results. Historical d453/c03c failures and the stopped 48-edge trial remain preserved; its prover, fixture/private parent, observer and five auditors are stopped. Combined C now passes native equivalence and a full real-C **terminal-block diagnostic**, while one new four-hour-bounded exact-counter interpreter is **RUNNING_NOT_ACCEPTED**. No lifecycle has restarted. The sampled raw count exceeds the old 2^40 geometry, which is rejected; final H and any replacement geometry remain unaccepted. The completed withdrawal and 32 GB production workers were removed after evidence preservation; only the temporary 128 GB allocation remains at USD 1.04/hour compute plus disk. Future-controller guard/refusal checks retain their narrow scope. Every build, engine test, replay, proof and deployment rehearsal runs on Runpod; local work remains editing, transfers, research and publication. [Selected machine and launch](mainnet/production/bounded-restore/scheduling/comparison/C-combined/machine-manifest.json) · [Diagnostic comparison](mainnet/diagnostics/aot-jit/evidence/combined-final/summary.json).
 
-The new graceful restart and repeated native withdrawal results close bounded acceptance tasks. A pilot still needs matching production client/machine/genesis, full wrong-engine-result dispute, repaired late-state guest replay, production token/parent configuration, process-level recovery and long-history storage/resource bounds, reviewed fee/ETH reserve and validator/upgrade controls, and the applicable license path. The current proof path has not met the preferred 24 GB server target, and no complete all-in USD 100/month production configuration or 20-game capacity is accepted. Public receipts and working endpoints will establish a launch when it occurs.
+The new graceful restart and repeated native withdrawal results close bounded acceptance tasks. A pilot still needs matching production client/machine/genesis, full wrong-engine-result dispute, repaired late-state guest replay, production token/parent configuration, production CLI recovery and long-history storage/resource bounds, reviewed fee/ETH reserve and validator/upgrade controls, and the applicable license path. The current proof path has not met the preferred 24 GB server target, and no complete all-in USD 100/month production configuration or 20-game capacity is accepted. Public receipts and working endpoints will establish a launch when it occurs.
+
+## R37 evidence
+
+[Native A15 checkpoint/continuation](mainnet/storage/checkpoint-integration/README.md) · [Selected865 initialization boundary](mainnet/production/selected865-boundary/README.md) · [Old geometry overflow](mainnet/production/bounded-restore/scheduling/comparison/C-combined/interpreter/overflow-observation.json) · [Retention design only](mainnet/storage/retention-design/README.md). The still-running terminal interpreter is not a whole 24m-move replay. The separate 2^43 geometry preparation and ongoing CLI recovery source are not accepted by this milestone.

@@ -1,0 +1,337 @@
+[
+  {
+    "name": "newGame",
+    "type": "function",
+    "stateMutability": "nonpayable",
+    "inputs": [
+      {
+        "name": "job",
+        "type": "bytes32"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "root",
+        "type": "bytes32"
+      }
+    ]
+  },
+  {
+    "name": "releaseGame",
+    "type": "function",
+    "stateMutability": "nonpayable",
+    "inputs": [
+      {
+        "name": "job",
+        "type": "bytes32"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "released",
+        "type": "bool"
+      }
+    ]
+  },
+  {
+    "name": "begin",
+    "type": "function",
+    "stateMutability": "nonpayable",
+    "inputs": [
+      {
+        "name": "job",
+        "type": "bytes32"
+      },
+      {
+        "name": "generation",
+        "type": "uint64"
+      },
+      {
+        "name": "history",
+        "type": "string"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "step",
+        "type": "uint32"
+      },
+      {
+        "name": "pending",
+        "type": "bool"
+      },
+      {
+        "name": "root",
+        "type": "bytes32"
+      }
+    ]
+  },
+  {
+    "name": "advance",
+    "type": "function",
+    "stateMutability": "nonpayable",
+    "inputs": [
+      {
+        "name": "job",
+        "type": "bytes32"
+      },
+      {
+        "name": "generation",
+        "type": "uint64"
+      },
+      {
+        "name": "expectedStep",
+        "type": "uint32"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "step",
+        "type": "uint32"
+      },
+      {
+        "name": "pending",
+        "type": "bool"
+      },
+      {
+        "name": "root",
+        "type": "bytes32"
+      }
+    ]
+  },
+  {
+    "name": "inspect",
+    "type": "function",
+    "stateMutability": "view",
+    "inputs": [
+      {
+        "name": "job",
+        "type": "bytes32"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "generation",
+        "type": "uint64"
+      },
+      {
+        "name": "step",
+        "type": "uint32"
+      },
+      {
+        "name": "pending",
+        "type": "bool"
+      },
+      {
+        "name": "observedNodes",
+        "type": "uint64"
+      },
+      {
+        "name": "move",
+        "type": "string"
+      },
+      {
+        "name": "actualNodes",
+        "type": "uint64"
+      },
+      {
+        "name": "depth",
+        "type": "uint32"
+      },
+      {
+        "name": "root",
+        "type": "bytes32"
+      }
+    ]
+  },
+  {
+    "name": "checkpointBegin",
+    "type": "function",
+    "stateMutability": "nonpayable",
+    "inputs": [
+      {
+        "name": "job",
+        "type": "bytes32"
+      },
+      {
+        "name": "generation",
+        "type": "uint64"
+      },
+      {
+        "name": "expectedRoot",
+        "type": "bytes32"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "nonce",
+        "type": "uint64"
+      }
+    ]
+  },
+  {
+    "name": "checkpointWork",
+    "type": "function",
+    "stateMutability": "nonpayable",
+    "inputs": [
+      {
+        "name": "job",
+        "type": "bytes32"
+      },
+      {
+        "name": "generation",
+        "type": "uint64"
+      },
+      {
+        "name": "nonce",
+        "type": "uint64"
+      },
+      {
+        "name": "expectedCursor",
+        "type": "uint32"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "cursor",
+        "type": "uint32"
+      },
+      {
+        "name": "piece",
+        "type": "bytes32"
+      },
+      {
+        "name": "complete",
+        "type": "bool"
+      }
+    ]
+  },
+  {
+    "name": "checkpointVerify",
+    "type": "function",
+    "stateMutability": "nonpayable",
+    "inputs": [
+      {
+        "name": "job",
+        "type": "bytes32"
+      },
+      {
+        "name": "generation",
+        "type": "uint64"
+      },
+      {
+        "name": "nonce",
+        "type": "uint64"
+      },
+      {
+        "name": "expectedPiece",
+        "type": "uint32"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "verified",
+        "type": "uint32"
+      },
+      {
+        "name": "pieces",
+        "type": "uint32"
+      },
+      {
+        "name": "complete",
+        "type": "bool"
+      }
+    ]
+  },
+  {
+    "name": "checkpointFinalize",
+    "type": "function",
+    "stateMutability": "nonpayable",
+    "inputs": [
+      {
+        "name": "job",
+        "type": "bytes32"
+      },
+      {
+        "name": "generation",
+        "type": "uint64"
+      },
+      {
+        "name": "nonce",
+        "type": "uint64"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "root",
+        "type": "bytes32"
+      },
+      {
+        "name": "head",
+        "type": "bytes32"
+      },
+      {
+        "name": "deltas",
+        "type": "uint32"
+      }
+    ]
+  },
+  {
+    "name": "checkpointCancel",
+    "type": "function",
+    "stateMutability": "nonpayable",
+    "inputs": [
+      {
+        "name": "job",
+        "type": "bytes32"
+      },
+      {
+        "name": "generation",
+        "type": "uint64"
+      },
+      {
+        "name": "nonce",
+        "type": "uint64"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "cancelled",
+        "type": "bool"
+      }
+    ]
+  },
+  {
+    "name": "checkpointStatus",
+    "type": "function",
+    "stateMutability": "view",
+    "inputs": [
+      {
+        "name": "job",
+        "type": "bytes32"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "nonce",
+        "type": "uint64"
+      },
+      {
+        "name": "active",
+        "type": "bool"
+      },
+      {
+        "name": "cursor",
+        "type": "uint32"
+      },
+      {
+        "name": "verified",
+        "type": "uint32"
+      },
+      {
+        "name": "pieces",
+        "type": "uint32"
+      }
+    ]
+  }
+]
