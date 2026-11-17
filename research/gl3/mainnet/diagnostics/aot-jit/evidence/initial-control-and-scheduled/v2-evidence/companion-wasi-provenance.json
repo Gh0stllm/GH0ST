@@ -1,0 +1,15 @@
+{
+  "sourcePath": "crates/caller-env/src/wasip1_stub.rs",
+  "sourceSHA256": "4d117534c40ca4afa7f066c01be6cef80c9a85565270093e59d7fb17f11bd098",
+  "referencedPinnedWASIStubWasm": "/root/bounded-restore/machine-inputs/wasi_stub.wasm",
+  "wasiStubSHA256": "03a9679220dc6854bc86abbf9a4138bbd92371d1a77cf2155708d223fa26662c",
+  "operatingSystemWASILinked": false,
+  "memoryContext": "Separate companion environment; C iovecs/nwritten never access Go memory",
+  "consumedImports": {
+    "fd_close": "Pinned implementation: always ERRNO_BADF8, no memory access",
+    "fd_seek": "Pinned implementation: always ERRNO_BADF8, no memory access",
+    "fd_write": "Pinned implementation: only stdout1/stderr2; other fd BADF8; C-memory iovec decoding and nwritten; exact pinned print_string behavior"
+  },
+  "clockRandomArgsImportedByCompanion": false,
+  "allGuestAndCompanionBytesUnchanged": true
+}

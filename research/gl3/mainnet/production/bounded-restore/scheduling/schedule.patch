@@ -1,0 +1,40 @@
+--- a/precompiles/ArbGhostChessSliceDelta.go
++++ b/precompiles/ArbGhostChessSliceDelta.go
+@@ -99,6 +99,7 @@
+ 	}
+ 	seen := make([]byte, (len(memory)/sliceWord+7)/8)
+ 	head := m.Head
++	var restoreBytes uint64
+ 	// Walk newest first, applying only the latest value of each word. Memory use
+ 	// stays bounded even when an old job's complete history must be reconstructed.
+ 	for left := m.Deltas; left > 0; left-- {
+@@ -137,6 +138,7 @@
+ 				seen[word/8] |= mask
+ 			}
+ 		}
++		sliceRestoreSchedule(&restoreBytes, len(body))
+ 		head = prior
+ 	}
+ 	if head != ([32]byte{}) {
+--- a/precompiles/ArbGhostChessSlices.go
++++ b/precompiles/ArbGhostChessSlices.go
+@@ -197,9 +197,11 @@
+ 	}
+ 	im := sliced.Image{Memory: make([]byte, m.MemoryBytes), Globals: m.Globals}
+ 	codes := map[addr]common.Hash{}
++	var restoreBytes uint64
+ 	for i := 0; i < int(seed.MemoryBytes)/sliced.PageSize; i++ {
+ 		address := slicePageAddress(sliceSeedNamespace, i)
+ 		code := evm.StateDB.GetCode(address)
++		sliceRestoreSchedule(&restoreBytes, len(code))
+ 		codes[address] = evm.StateDB.GetCodeHash(address)
+ 		if len(code) > 0 {
+ 			b, e := sliceDecode(code)
+@@ -216,6 +218,7 @@
+ 	if tree.Root(len(im.Memory), im.Globals) != m.Root {
+ 		return nil, errGhostChess
+ 	}
++	sliceRestoreBeforeCompanion()
+ 	r, e := sliced.Shared()
+ 	if e != nil {
+ 		return nil, e

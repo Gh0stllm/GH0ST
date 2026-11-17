@@ -1,0 +1,70 @@
+{
+  "status": "SELECTED_DIAGNOSTIC_PASS_INTERPRETER_RUNNING_NOT_ACCEPTED",
+  "base": "Frozen c03c guard source plus selected-C-vs-c03c.patch; common StateDB cache patch remains unchanged",
+  "baseSourceArchive": {
+    "file": "native-go.tar",
+    "bytes": 159764480,
+    "SHA256": "abc39d2d7d9d1b2beb4ec706acd53b0c5f404759d2c94ab80154603e92a568ba"
+  },
+  "GoVersion": "go version go1.25.12 linux/amd64",
+  "GOOS": "wasip1",
+  "GOARCH": "wasm",
+  "CGO_ENABLED": "0",
+  "tags": [
+    "gl3aotproof"
+  ],
+  "commonCachePatchSHA256": "8535dc2c28f408f84cc06bb93bbe792f8204c8847177c0d031afcb4bcdb057b3",
+  "guestMemoryGuardPatchSHA256": "4f9ca1de61e8fec5535e258fb762bba233cb0405af454e418a34c55d263f9879",
+  "selectedPatchSHA256": "025794c124a48e2a29a50c6c1fcc95d39c40d0969a4dc59a7ff902321f002613",
+  "immutableReaderDefinitionAndCallers": [
+    {
+      "path": "precompiles/ArbGhostChessSliceDelta.go",
+      "line": 60,
+      "source": "func sliceReadImmutableChessCode(db vm.StateDB, address common.Address) []byte {",
+      "definition": true
+    },
+    {
+      "path": "precompiles/ArbGhostChessSliceDelta.go",
+      "line": 67,
+      "source": "first := sliceReadImmutableChessCode(db, sliceDeltaAddress(hash, 0))",
+      "definition": false
+    },
+    {
+      "path": "precompiles/ArbGhostChessSliceDelta.go",
+      "line": 84,
+      "source": "code = sliceReadImmutableChessCode(db, sliceDeltaAddress(hash, at/sliceBlobPage))",
+      "definition": false
+    },
+    {
+      "path": "precompiles/ArbGhostChessSlices.go",
+      "line": 203,
+      "source": "code := sliceReadImmutableChessCode(evm.StateDB, address)",
+      "definition": false
+    }
+  ],
+  "allowedReadScope": [
+    "sealed historical delta chunks",
+    "immutable genesis seed namespace pages during restore"
+  ],
+  "mutableDeltaWriterStillUsesOrdinaryGetCode": true,
+  "vmStateDBInterfaceChanged": false,
+  "sourceSHA256": {
+    "precompiles/ArbGhostChessSliceDelta.go": "28a89f7c07ec0eac86a07184d323ee555a442520f1f08aabaa49c986552c43ab",
+    "precompiles/ArbGhostChessSlices.go": "a733a9ac54ac154120fc795e024775c7e41f4cd95b44c98e06bfc2d3e42f8455",
+    "precompiles/gl3_restore_schedule_native.go": "c5d35daf660f715955e0361aa37cf016bcc25065049a5e426340f2a1505cc613",
+    "precompiles/gl3_restore_schedule_wasm.go": "a639731f14e499940c744789d5c1f29b2e1b4849e1fd31f42115c0784c16698e",
+    "cmd/replay/wasm.go": "f184787ce74d7a419fbc26adade8718fe08da7c0688e12367357bc92084ec2d7",
+    "go-ethereum/core/state/state_object.go": "8a18066084ea9fe8bd4c3ab631b5d84e564ff52b6cff27bf186ee1c70c4c8c70",
+    "go-ethereum/core/state/statedb.go": "9118c9f6cc919b7d69f9e4cbeee23bb9e63944629cfda09bd8aac263ef78c47c",
+    "go-ethereum/core/state/statedb_hooked.go": "05bc8845b65df9a4a656438b52bcd17ff1c95e3524d2f06cb860dc22d6bd9c09"
+  },
+  "aotRuntimeSHA256": {
+    "runtime.go": "80ab7e83cc2544f1734d087e8de61cb2ba0c4c01c3308a17346167cba131c688",
+    "identity.go": "2fb452d2b14cee3b3002ddcaefb5162ccc4f0148922ded73a48a5546aaa0984c",
+    "proof_runtime.go": "932206b90eb2c6c03240138dc302588047a6a40056f9639f8ccaf61673695dce",
+    "go.mod": "93c9f4f1621c480ddcfad3c567046352824a00de375dce5d08b4b7a84ddc56b0"
+  },
+  "seedRegressionFixtureSHA256": "e0a0d52787d9368554aaf415d42a5cc69e4f38e3bd2c062cb3275940cfd0db61",
+  "enginePolicyChanged": false,
+  "fullInterpreterAccepted": false
+}

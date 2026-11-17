@@ -1,0 +1,100 @@
+--- a/precompiles/ArbGhostChessSliceDelta.go
++++ b/precompiles/ArbGhostChessSliceDelta.go
+@@ -55,16 +55,16 @@
+ 	return hash, nil
+ }
+ 
+-// Only immutable delta restoration opts in. Writers and general EVM code reads
++// Only sealed delta and immutable genesis-seed restoration opts in. Writers and general EVM code reads
+ // retain their normal cache/journal behavior; wrappers without the extension fall back.
+-func sliceReadSealedDeltaCode(db vm.StateDB, address common.Address) []byte {
++func sliceReadImmutableChessCode(db vm.StateDB, address common.Address) []byte {
+ 	if reader, ok := db.(interface{ GetCodeUncached(common.Address) []byte }); ok {
+ 		return reader.GetCodeUncached(address)
+ 	}
+ 	return db.GetCode(address)
+ }
+ func sliceReadDelta(db vm.StateDB, hash [32]byte) ([]byte, error) {
+-	first := sliceReadSealedDeltaCode(db, sliceDeltaAddress(hash, 0))
++	first := sliceReadImmutableChessCode(db, sliceDeltaAddress(hash, 0))
+ 	header := len(sliceDeltaPrefix) + 4
+ 	if len(first) < header || !bytes.Equal(first[:len(sliceDeltaPrefix)], sliceDeltaPrefix) {
+ 		return nil, errGhostChess
+@@ -81,7 +81,7 @@
+ 		}
+ 		code := first
+ 		if at > 0 {
+-			code = sliceReadSealedDeltaCode(db, sliceDeltaAddress(hash, at/sliceBlobPage))
++			code = sliceReadImmutableChessCode(db, sliceDeltaAddress(hash, at/sliceBlobPage))
+ 		}
+ 		if len(code) != header+end-at || !bytes.Equal(code[:len(sliceDeltaPrefix)], sliceDeltaPrefix) || int(binary.LittleEndian.Uint32(code[len(sliceDeltaPrefix):])) != n {
+ 			return nil, errGhostChess
+@@ -99,6 +99,7 @@
+ 	}
+ 	seen := make([]byte, (len(memory)/sliceWord+7)/8)
+ 	head := m.Head
++	var restoreBytes uint64
+ 	// Walk newest first, applying only the latest value of each word. Memory use
+ 	// stays bounded even when an old job's complete history must be reconstructed.
+ 	for left := m.Deltas; left > 0; left-- {
+@@ -137,6 +138,7 @@
+ 				seen[word/8] |= mask
+ 			}
+ 		}
++		sliceRestoreSchedule(&restoreBytes, len(body))
+ 		head = prior
+ 	}
+ 	if head != ([32]byte{}) {
+--- a/precompiles/ArbGhostChessSlices.go
++++ b/precompiles/ArbGhostChessSlices.go
+@@ -197,9 +197,11 @@
+ 	}
+ 	im := sliced.Image{Memory: make([]byte, m.MemoryBytes), Globals: m.Globals}
+ 	codes := map[addr]common.Hash{}
++	var restoreBytes uint64
+ 	for i := 0; i < int(seed.MemoryBytes)/sliced.PageSize; i++ {
+ 		address := slicePageAddress(sliceSeedNamespace, i)
+-		code := evm.StateDB.GetCode(address)
++		code := sliceReadImmutableChessCode(evm.StateDB, address)
++		sliceRestoreSchedule(&restoreBytes, len(code))
+ 		codes[address] = evm.StateDB.GetCodeHash(address)
+ 		if len(code) > 0 {
+ 			b, e := sliceDecode(code)
+@@ -216,6 +218,7 @@
+ 	if tree.Root(len(im.Memory), im.Globals) != m.Root {
+ 		return nil, errGhostChess
+ 	}
++	sliceRestoreBeforeCompanion()
+ 	r, e := sliced.Shared()
+ 	if e != nil {
+ 		return nil, e
+--- /dev/null
++++ b/precompiles/gl3_restore_schedule_native.go
+@@ -0,0 +1,6 @@
++//go:build !wasm
++
++package precompiles
++
++func sliceRestoreSchedule(_ *uint64, _ int) {}
++func sliceRestoreBeforeCompanion()          {}
+--- /dev/null
++++ b/precompiles/gl3_restore_schedule_wasm.go
+@@ -0,0 +1,18 @@
++//go:build wasm
++
++package precompiles
++
++import "runtime"
++
++// A byte budget also bounds scheduling gaps when a sealed delta is large.
++// These are runtime safe points only; no engine policy, state or gas changes.
++func sliceRestoreSchedule(total *uint64, n int) {
++	*total += uint64(n)
++	if *total >= 64*1024*1024 {
++		*total = 0
++		runtime.GC()
++	}
++}
++
++// A cold authenticated image needs headroom for the next Go/C image copies.
++func sliceRestoreBeforeCompanion() { runtime.GC() }

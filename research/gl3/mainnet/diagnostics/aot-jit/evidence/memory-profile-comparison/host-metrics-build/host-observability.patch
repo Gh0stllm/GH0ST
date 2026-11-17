@@ -1,0 +1,37 @@
+--- a/crates/jit/src/lib.rs
++++ b/crates/jit/src/lib.rs
+@@ -113,6 +113,7 @@
+ pub struct RunResult {
+     /// Amount of memory used by the Wasm instance.
+     pub memory_used: Pages,
++    pub companion_memory_used: Option<Pages>,
+     /// Total runtime of the Wasm instance (measured from the first wavmio instruction to finish).
+     pub runtime: Duration,
+ 
+@@ -155,10 +156,14 @@
+     let outcome = instance.exports.get_function("_start")?.call(store, &[]);
+ 
+     let memory_used = instance.exports.get_memory("memory")?.view(store).size();
++    let companion_memory = env.as_ref(&*store).aot_instance.as_ref()
++        .and_then(|x|x.exports.get_memory("memory").ok()).cloned();
++    let companion_memory_used = companion_memory.as_ref().map(|x|x.view(&*store).size());
+     let env = env.as_mut(store);
+ 
+     let mut result = RunResult {
+         memory_used,
++        companion_memory_used,
+         runtime: env.process.timestamp.elapsed(),
+         new_state: GlobalState {
+             last_block_hash: Bytes32(env.input.large_globals[0]),
+--- a/crates/jit/src/main.rs
++++ b/crates/jit/src/main.rs
+@@ -35,6 +35,9 @@
+             "interpreterOrOSPAcceptance":false,"engineOrGuestBytesModified":false,
+             "actual":actual,"expected":expected,"runtimeSeconds":result.runtime.as_secs_f64(),
+             "guestMemoryBytes":result.memory_used.bytes().0,
++            "goLinearMemoryPeakBytes":result.memory_used.bytes().0,
++            "companionLinearMemoryPeakBytes":result.companion_memory_used.map(|x|x.bytes().0),
++            "linearMemoryPeakMethod":"Final size of non-shrinking WASM linear memory; excludes host RSS",
+             "guestError":result.error.as_ref().map(|x|x.to_string())});
+         std::fs::write(path, serde_json::to_vec_pretty(&value)?)?;
+     }

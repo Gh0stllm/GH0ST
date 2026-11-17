@@ -1,0 +1,10 @@
+--- a/crates/prover/src/main.rs
++++ b/crates/prover/src/main.rs
+@@ -389,6 +389,7 @@
+         mach.get_global_state().u64_vals[1]
+     );
+     println!("End machine status: {:?}", mach.get_status());
++    println!("GL3_EXACT_FINAL_STEPS {}", mach.get_steps());
+     println!("End machine hash: {}", mach.hash());
+     println!("End machine stack: {:?}", mach.get_data_stack());
+     println!("End machine backtrace:");

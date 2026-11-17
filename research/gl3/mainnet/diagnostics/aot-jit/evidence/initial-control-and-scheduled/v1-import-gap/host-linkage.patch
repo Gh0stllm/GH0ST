@@ -1,0 +1,89 @@
+--- a/crates/jit/src/machine.rs
++++ b/crates/jit/src/machine.rs
+@@ -41,6 +41,7 @@
+ pub struct CompiledModule {
+     module: Module,
+     engine: Engine,
++    aot_module: Option<Module>,
+ }
+ 
+ /// Compiles a WASM binary into a reusable [`CompiledModule`].
+@@ -52,7 +53,11 @@
+     let engine = make_engine(validator.cranelift);
+     let wasm = std::fs::read(&validator.binary)?;
+     let module = Module::new(&engine, wasm)?;
+-    Ok(CompiledModule { module, engine })
++    let aot_module = match std::env::var_os("GL3_AOT_COMPANION") {
++        Some(path) => Some(Module::new(&engine, std::fs::read(path)?)?),
++        None => None,
++    };
++    Ok(CompiledModule { module, engine, aot_module })
+ }
+ 
+ /// Creates a new WASM instance from a pre-compiled module and per-request options.
+@@ -68,11 +73,16 @@
+     let env = WasmEnv::try_from(opts)?;
+     let func_env = FunctionEnv::new(&mut store, env);
+ 
+-    let imports = imports(&mut store, &func_env);
++    let mut imports = imports(&mut store, &func_env);
++    let aot_instance = match &compiled.aot_module {
++        Some(module) => Some(crate::aot_bridge::link(&mut store, &func_env, module, &mut imports)?),
++        None => None,
++    };
+     let instance = Instance::new(&mut store, &compiled.module, &imports)?;
+ 
+     let memory = instance.exports.get_memory("memory")?.clone();
+     func_env.as_mut(&mut store).memory = Some(memory);
++    func_env.as_mut(&mut store).aot_instance = aot_instance;
+ 
+     Ok((instance, func_env, store))
+ }
+@@ -220,6 +230,8 @@
+ pub struct WasmEnv {
+     /// Mechanism for reading and writing the module's memory
+     pub memory: Option<Memory>,
++    // Retain the exact companion instance for every imported cross-module call.
++    pub aot_instance: Option<Instance>,
+     /// Go's general runtime state
+     pub go_state: GoRuntimeState,
+     /// Validation input (globals, inbox, preimages). Note: module_asms is drained
+--- a/crates/jit/src/lib.rs
++++ b/crates/jit/src/lib.rs
+@@ -10,6 +10,7 @@
+ use crate::machine::Escape;
+ 
+ mod caller_env;
++mod aot_bridge;
+ pub mod machine;
+ pub mod program;
+ pub mod stylus_backend;
+--- a/crates/jit/src/main.rs
++++ b/crates/jit/src/main.rs
+@@ -18,6 +18,26 @@
+     let opts = Opts::parse();
+     let expected_state = get_expected_state(&opts)?;
+     let result = run(&opts)?;
++
++    if let Some(path) = std::env::var_os("GL3_AOT_JIT_REPORT") {
++        let actual = serde_json::json!({
++            "BlockHash": format!("0x{}",hex::encode(result.new_state.last_block_hash.0)),
++            "SendRoot": format!("0x{}",hex::encode(result.new_state.last_send_root.0)),
++            "Batch": result.new_state.inbox_position,
++            "PosInBatch": result.new_state.position_within_message,
++        });
++        let expected = expected_state.as_ref().map(|x| serde_json::json!({
++            "BlockHash": format!("0x{}",hex::encode(x.block_hash.0)),
++            "SendRoot": format!("0x{}",hex::encode(x.send_root.0)),
++            "Batch": x.batch, "PosInBatch": x.pos_in_batch,
++        }));
++        let value = serde_json::json!({"diagnosticOnly":true,
++            "interpreterOrOSPAcceptance":false,"engineOrGuestBytesModified":false,
++            "actual":actual,"expected":expected,"runtimeSeconds":result.runtime.as_secs_f64(),
++            "guestMemoryBytes":result.memory_used.bytes().0,
++            "guestError":result.error.as_ref().map(|x|x.to_string())});
++        std::fs::write(path, serde_json::to_vec_pretty(&value)?)?;
++    }
+ 
+     let runtime = format!("{}ms", result.runtime.as_millis());
+ 
