@@ -1,0 +1,75 @@
+{
+  "complete": true,
+  "results": [
+    {
+      "phase": "compile",
+      "package": "server_arb",
+      "exitCode": 0,
+      "seconds": 20.28560841595754,
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-c",
+        "-p",
+        "2",
+        "-mod=readonly",
+        "-buildvcs=false",
+        "-ldflags=-extldflags=-Wl,-z,noexecstack",
+        "-o",
+        "/root/gl3-host-cache-integration/race-01/server_arb.test",
+        "./validator/server_arb"
+      ],
+      "binarySHA256": "c57d7fd1e476da3c00ddd38601fb1260fc0ad1665becee6fb7f73d44fa6e807f"
+    },
+    {
+      "phase": "tests",
+      "package": "server_arb",
+      "exitCode": 0,
+      "seconds": 1.0712767792865634,
+      "command": [
+        "/root/gl3-host-cache-integration/race-01/server_arb.test",
+        "-test.v",
+        "-test.timeout=90s",
+        "-test.run=^TestGL3Integration"
+      ],
+      "binarySHA256": "c57d7fd1e476da3c00ddd38601fb1260fc0ad1665becee6fb7f73d44fa6e807f"
+    },
+    {
+      "phase": "compile",
+      "package": "client",
+      "exitCode": 0,
+      "seconds": 4.02145285718143,
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-c",
+        "-p",
+        "2",
+        "-mod=readonly",
+        "-buildvcs=false",
+        "-ldflags=-extldflags=-Wl,-z,noexecstack",
+        "-o",
+        "/root/gl3-host-cache-integration/race-01/client.test",
+        "./validator/client"
+      ],
+      "binarySHA256": "1addd15aa8e629389dc4a417b3c6ccc84c743b914be60623b3706cb08e3a4b6e"
+    },
+    {
+      "phase": "tests",
+      "package": "client",
+      "exitCode": 0,
+      "seconds": 1.0642975065857172,
+      "command": [
+        "/root/gl3-host-cache-integration/race-01/client.test",
+        "-test.v",
+        "-test.timeout=90s",
+        "-test.run=^TestGL3Integration"
+      ],
+      "binarySHA256": "1addd15aa8e629389dc4a417b3c6ccc84c743b914be60623b3706cb08e3a4b6e"
+    }
+  ],
+  "passed": true,
+  "nativeRustCDataRacesCovered": false
+}

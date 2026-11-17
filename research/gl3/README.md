@@ -4,6 +4,10 @@
 
 [Open the full overview](../../README.md) · [History](HISTORY.md) · [Findings](FINDINGS.md) · [Roadmap](ROADMAP.md)
 
+**R39: candidate01 host-cache integration passes normal and race tests, with authentic selected-input checkpoints through 200 million raw steps. Final request-liveness/server-cleanup changes and the complete dispute remain pending; the 20-game storage check runs separately. No mainnet launch.**
+
+[Cache integration evidence](mainnet/dispute/host-cache-integration/README.md) · [Canonical input identity](mainnet/dispute/host-cache-identity/README.md).
+
 **R38: the selected 865 reference replay of one recorded terminal block is Finished with all four fields exact. Eight authentic witnesses pass the inherited contract path. The next gate is host-cache reuse and final source review; no fresh lifecycle or mainnet launch has started.**
 
 The actual replay exits **0 / 9,011.040 seconds**, with raw **H = 1,444,459,006,817** and wrapped **F = H + 1 = 1,444,459,006,818 < 2^43**. Exact kernel maximum RSS is **25,492,628 KiB**. This uses the **original d453 capture context with candidate 865**, not every block of a complete 24m-node search or an accepted deployed-parent/production pairing. The complete 107,573,150-byte proof has a recorded SHA-256; the original run is unchanged. [Completed reference](mainnet/production/bounded-restore/scheduling/comparison/C-combined/interpreter/replay-result.json) · [actual exit](mainnet/production/bounded-restore/scheduling/comparison/C-combined/interpreter/exit.json).

@@ -1,0 +1,351 @@
+--- a/validator/server_arb/machine_cache.go
++++ b/validator/server_arb/machine_cache.go
+@@ -8,6 +8,7 @@
+ 	"errors"
+ 	"fmt"
+ 	"sync"
++	"sync/atomic"
+ 
+ 	"github.com/spf13/pflag"
+ )
+@@ -26,18 +27,26 @@
+ 	machineStepInterval uint64
+ 	config              *MachineCacheConfig
+ 
+-	lastMachine     MachineInterface
+-	lastMachineLock sync.Mutex
++	lastMachine             MachineInterface
++	lastMachineLock         sync.Mutex
++	recording               *recordedStepAccumulator
++	alignedListHits         atomic.Uint64
++	experimentalRefinements atomic.Uint64
+ }
+ 
+ type MachineCacheConfig struct {
+-	CachedChallengeMachines uint64 `koanf:"cached-challenge-machines"`
+-	InitialSteps            uint64 `koanf:"initial-steps"`
++	CachedChallengeMachines        uint64 `koanf:"cached-challenge-machines"`
++	InitialSteps                   uint64 `koanf:"initial-steps"`
++	ExperimentalRecordedHashStride uint64 `koanf:"experimental-recorded-hash-stride"`
++	ExperimentalMaxRecordedHashes  uint64 `koanf:"experimental-max-recorded-hashes"`
++	ExperimentalSerializeQueries   bool   `koanf:"experimental-serialize-queries"`
++	ExperimentalRefineRanges       bool   `koanf:"experimental-refine-ranges"`
+ }
+ 
+ var DefaultMachineCacheConfig = MachineCacheConfig{
+-	CachedChallengeMachines: 4,
+-	InitialSteps:            100000,
++	CachedChallengeMachines:       4,
++	InitialSteps:                  100000,
++	ExperimentalMaxRecordedHashes: 4096,
+ }
+ 
+ func MachineCacheConfigConfigAddOptions(prefix string, f *pflag.FlagSet) {
+@@ -51,7 +60,14 @@
+ 		buildingLock: make(chan struct{}, 1), // locked on init
+ 		config:       config,
+ 	}
++	if experimentalMachineCacheEnabled(config) {
++		cache.recording = newRecordedStepAccumulator(config.ExperimentalRecordedHashStride, config.ExperimentalMaxRecordedHashes)
++	}
+ 	go func() {
++		if err := validateExperimentalMachineCacheConfig(config); err != nil {
++			cache.unlockBuild(err)
++			return
++		}
+ 		zeroStepMachine, err := initialMachineGetter(ctx)
+ 		if err == nil && zeroStepMachine.GetStepCount() != 0 {
+ 			zeroStepMachine.Destroy()
+@@ -63,6 +79,12 @@
+ 		}
+ 		zeroStepMachine.Freeze()
+ 		cache.zeroStepMachine = zeroStepMachine
++		if cache.recording != nil {
++			if err := cache.recording.ObserveInitial(zeroStepMachine); err != nil {
++				cache.unlockBuild(err)
++				return
++			}
++		}
+ 		cache.machines = []MachineInterface{}
+ 		cache.machineStepInterval = config.InitialSteps
+ 		cache.finalMachineStep = ^uint64(0)
+@@ -91,6 +113,12 @@
+ 		cache.machines = cache.machines[:len(cache.machines)-1]
+ 		cache.finalMachine = lastMachine
+ 		cache.finalMachineStep = lastMachine.GetStepCount()
++		if cache.recording != nil {
++			if err := cache.recording.CommitFinal(lastMachine); err != nil {
++				cache.unlockBuild(err)
++				return
++			}
++		}
+ 		cache.unlockBuild(nil)
+ 	}()
+ 	return cache
+@@ -115,6 +143,12 @@
+ 	}
+ 	for _, mach := range c.machines {
+ 		mach.Destroy()
++	}
++	if c.recording != nil {
++		if last := c.getLastMachine(); last != nil {
++			last.Destroy()
++		}
++		c.recording.invalidate()
+ 	}
+ }
+ 
+@@ -162,16 +196,27 @@
+ 	if closestStep > start {
+ 		return fmt.Errorf("initial machine step too large %d > %d", closestStep, start)
+ 	}
++	var retained []MachineInterface
+ 	for i, mach := range c.machines {
+ 		if i != closestIndex {
+ 			mach.Destroy()
+-		}
++		} else if c.recording != nil {
++			retained = append(retained, mach)
++		}
++	}
++	// Experimental ownership follows only still-live snapshots, so a later
++	// stepping error cannot destroy already-released machines a second time.
++	if c.recording != nil {
++		c.machines = retained
+ 	}
+ 	var initial MachineInterface
+ 	if closestStep < start {
+ 		initial = closest.CloneMachineInterface()
+-		err := initial.Step(ctx, start-closestStep)
++		err := c.experimentalStep(ctx, initial, start-closestStep)
+ 		if err != nil {
++			if c.recording != nil {
++				initial.Destroy()
++			}
+ 			return err
+ 		}
+ 		if closest != c.zeroStepMachine && closest != c.finalMachine {
+@@ -216,8 +261,11 @@
+ 			break
+ 		}
+ 		nextMachine = nextMachine.CloneMachineInterface()
+-		err := nextMachine.Step(ctx, c.machineStepInterval)
++		err := c.experimentalStep(ctx, nextMachine, c.machineStepInterval)
+ 		if err != nil {
++			if c.recording != nil {
++				nextMachine.Destroy()
++			}
+ 			return err
+ 		}
+ 		nextMachine.Freeze()
+@@ -275,16 +323,26 @@
+ 	if lastMachine != nil && lastMachine.GetStepCount() >= closestMachine.GetStepCount() && lastMachine.GetStepCount() <= stepCount {
+ 		closestMachine = lastMachine
+ 	} else {
++		if c.recording != nil && lastMachine != nil {
++			lastMachine.Destroy()
++		}
+ 		closestMachine = closestMachine.CloneMachineInterface()
+ 	}
+ 	c.unlockBuild(nil)
+ 
+-	err = closestMachine.Step(ctx, stepCount-closestMachine.GetStepCount())
+-	if err != nil {
++	err = c.experimentalStep(ctx, closestMachine, stepCount-closestMachine.GetStepCount())
++	if err != nil {
++		if c.recording != nil {
++			closestMachine.Destroy()
++		}
+ 		return nil, err
+ 	}
+ 	if !closestMachine.ValidForStep(stepCount) {
+-		return nil, fmt.Errorf("internal error: got machine with wrong step count %v looking for step count %v", closestMachine.GetStepCount(), stepCount)
++		actualStep := closestMachine.GetStepCount()
++		if c.recording != nil {
++			closestMachine.Destroy()
++		}
++		return nil, fmt.Errorf("internal error: got machine with wrong step count %v looking for step count %v", actualStep, stepCount)
+ 	}
+ 	c.setLastMachine(closestMachine)
+ 	return closestMachine, nil
+--- a/validator/server_arb/execution_run.go
++++ b/validator/server_arb/execution_run.go
+@@ -19,8 +19,9 @@
+ 
+ type executionRun struct {
+ 	stopwaiter.StopWaiter
+-	cache *MachineCache
+-	close sync.Once
++	cache                     *MachineCache
++	close                     sync.Once
++	experimentalOperationLock chan struct{}
+ }
+ 
+ // NewExecutionRun creates a backend with the given arguments.
+@@ -31,7 +32,13 @@
+ 	initialMachineGetter func(context.Context) (MachineInterface, error),
+ 	config *MachineCacheConfig,
+ ) (*executionRun, error) {
++	if err := validateExperimentalMachineCacheConfig(config); err != nil {
++		return nil, err
++	}
+ 	exec := &executionRun{}
++	if config.ExperimentalSerializeQueries {
++		exec.experimentalOperationLock = make(chan struct{}, 1)
++	}
+ 	exec.Start(ctxIn, exec)
+ 	exec.cache = NewMachineCache(exec.GetContext(), initialMachineGetter, config)
+ 	return exec, nil
+@@ -41,25 +48,39 @@
+ 	go e.close.Do(func() {
+ 		e.StopAndWait()
+ 		if e.cache != nil {
+-			e.cache.Destroy(e.GetParentContext())
++			cleanupContext := e.GetParentContext()
++			if e.cache.recording != nil {
++				cleanupContext = context.WithoutCancel(cleanupContext)
++			}
++			e.cache.Destroy(cleanupContext)
+ 		}
+ 	})
+ }
+ 
+ func (e *executionRun) PrepareRange(start uint64, end uint64) containers.PromiseInterface[struct{}] {
+-	return stopwaiter.LaunchPromiseThread[struct{}](e, func(ctx context.Context) (struct{}, error) {
+-		err := e.cache.SetRange(ctx, start, end)
++	return launchExecutionOperation[struct{}](e, func(ctx context.Context) (struct{}, error) {
++		var err error
++		if experimentalMachineCacheEnabled(e.cache.config) {
++			err = e.refineExperimentalRange(ctx, start, end)
++		} else {
++			err = e.cache.SetRange(ctx, start, end)
++		}
+ 		return struct{}{}, err
+ 	})
+ }
+ 
+ func (e *executionRun) GetStepAt(position uint64) containers.PromiseInterface[*validator.MachineStepResult] {
+-	return stopwaiter.LaunchPromiseThread[*validator.MachineStepResult](e, func(ctx context.Context) (*validator.MachineStepResult, error) {
++	return launchExecutionOperation[*validator.MachineStepResult](e, func(ctx context.Context) (*validator.MachineStepResult, error) {
+ 		var machine MachineInterface
+ 		var err error
+ 		if position == ^uint64(0) {
+ 			machine, err = e.cache.GetFinalMachine(ctx)
+ 		} else {
++			if e.cache.config.ExperimentalRefineRanges {
++				if err = e.refineExperimentalRange(ctx, position, position); err != nil {
++					return nil, err
++				}
++			}
+ 			machine, err = e.cache.GetMachineAt(ctx, position)
+ 		}
+ 		if err != nil {
+@@ -84,7 +105,7 @@
+ }
+ 
+ func (e *executionRun) GetMachineHashesWithStepSize(machineStartIndex, stepSize, maxIterations uint64) containers.PromiseInterface[[]common.Hash] {
+-	return stopwaiter.LaunchPromiseThread(e, func(ctx context.Context) ([]common.Hash, error) {
++	return launchExecutionOperation(e, func(ctx context.Context) ([]common.Hash, error) {
+ 		return e.machineHashesWithStepSize(ctx, machineStartIndex, stepSize, maxIterations)
+ 	})
+ }
+@@ -101,6 +122,22 @@
+ 	if maxIterations == 0 {
+ 		return nil, fmt.Errorf("max number of iterations cannot be 0")
+ 	}
++	if experimentalMachineCacheEnabled(e.cache.config) {
++		end, err := checkedExperimentalEnd(machineStartIndex, stepSize, maxIterations)
++		if err != nil {
++			return nil, err
++		}
++		if hashes, ok, err := e.cache.tryRecordedHashes(ctx, machineStartIndex, stepSize, maxIterations); err != nil {
++			return nil, err
++		} else if ok {
++			return hashes, nil
++		}
++		if e.cache.config.ExperimentalRefineRanges {
++			if err := e.refineExperimentalRange(ctx, machineStartIndex, end); err != nil {
++				return nil, err
++			}
++		}
++	}
+ 	machine, err := e.cache.GetMachineAt(ctx, machineStartIndex)
+ 	if err != nil {
+ 		return nil, err
+@@ -126,7 +163,7 @@
+ 		absoluteMachineIndex := machineStartIndex + stepSize*(i+1)
+ 
+ 		// Advance the machine in step size increments.
+-		if err := machine.Step(ctx, stepSize); err != nil {
++		if err := e.cache.experimentalStep(ctx, machine, stepSize); err != nil {
+ 			return nil, fmt.Errorf("failed to step machine to position %d: %w", absoluteMachineIndex, err)
+ 		}
+ 		if i%logInterval == 0 || i == maxIterations-1 {
+@@ -170,7 +207,12 @@
+ }
+ 
+ func (e *executionRun) GetProofAt(position uint64) containers.PromiseInterface[[]byte] {
+-	return stopwaiter.LaunchPromiseThread[[]byte](e, func(ctx context.Context) ([]byte, error) {
++	return launchExecutionOperation[[]byte](e, func(ctx context.Context) ([]byte, error) {
++		if e.cache.config.ExperimentalRefineRanges {
++			if err := e.refineExperimentalRange(ctx, position, position); err != nil {
++				return nil, err
++			}
++		}
+ 		machine, err := e.cache.GetMachineAt(ctx, position)
+ 		if err != nil {
+ 			return nil, err
+--- a/validator/client/validation_client.go
++++ b/validator/client/validation_client.go
+@@ -8,6 +8,7 @@
+ 	"encoding/base64"
+ 	"errors"
+ 	"fmt"
++	"sync"
+ 	"time"
+ 
+ 	"github.com/ethereum/go-ethereum/common"
+@@ -168,14 +169,18 @@
+ var _ validator.BOLDExecutionSpawner = (*BOLDExecutionClient)(nil)
+ 
+ type BOLDExecutionClient struct {
+-	executionSpawner validator.ExecutionSpawner
++	executionSpawner         validator.ExecutionSpawner
++	experimentalMu           sync.Mutex
++	experimentalOwnerContext context.Context
++	experimentalPool         *experimentalRunCache
++	experimentalStopped      bool
+ }
+ 
+ func (b *BOLDExecutionClient) Start(ctx context.Context) error {
+-	return nil
+-}
+-
+-func (b *BOLDExecutionClient) Stop() {}
++	return b.experimentalStart(ctx)
++}
++
++func (b *BOLDExecutionClient) Stop() { b.experimentalStop() }
+ 
+ func NewBOLDExecutionClient(executionSpawner validator.ExecutionSpawner) *BOLDExecutionClient {
+ 	return &BOLDExecutionClient{
+@@ -188,6 +193,9 @@
+ }
+ 
+ func (b *BOLDExecutionClient) GetMachineHashesWithStepSize(ctx context.Context, wasmModuleRoot common.Hash, input *validator.ValidationInput, machineStartIndex, stepSize, maxIterations uint64) ([]common.Hash, error) {
++	if pool := b.getExperimentalRunCache(); pool != nil {
++		return pool.getMachineHashes(ctx, wasmModuleRoot, input, machineStartIndex, stepSize, maxIterations)
++	}
+ 	execRun, err := b.executionSpawner.CreateExecutionRun(wasmModuleRoot, input, true).Await(ctx)
+ 	if err != nil {
+ 		return nil, err
+@@ -200,6 +208,9 @@
+ }
+ 
+ func (b *BOLDExecutionClient) GetProofAt(ctx context.Context, wasmModuleRoot common.Hash, input *validator.ValidationInput, position uint64) ([]byte, error) {
++	if pool := b.getExperimentalRunCache(); pool != nil {
++		return pool.getProof(ctx, wasmModuleRoot, input, position)
++	}
+ 	execRun, err := b.executionSpawner.CreateExecutionRun(wasmModuleRoot, input, true).Await(ctx)
+ 	if err != nil {
+ 		return nil, err

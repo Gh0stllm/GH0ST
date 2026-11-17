@@ -1,5 +1,10 @@
 # GL3 · launch packet
 
+**R39: candidate01 host-cache integration passes normal and race tests, with authentic selected-input checkpoints through 200 million raw steps. Final request-liveness/server-cleanup changes and the complete dispute remain pending; the 20-game storage check runs separately. No mainnet launch.**
+
+[Cache integration evidence](../dispute/host-cache-integration/README.md) · [Canonical input identity](../dispute/host-cache-identity/README.md).
+
+
 [Acceptance notebook](../README.md) · [Production candidate](../production/README.md) · [Locked candidate](artifact-lock.json) · [Operator decisions](decisions.json)
 
 **Prepared for review, not approved for deployment.** This packet separates the recorded build from the operator choices and acceptance results still needed for a funded Robinhood launch. No contract, hosting account, license agreement or financial action is created by these files. Official sources were checked **17 November 2026 IST**.

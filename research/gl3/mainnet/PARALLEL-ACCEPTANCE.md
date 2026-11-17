@@ -2,6 +2,10 @@
 
 [Acceptance notebook](README.md) · [Sequential history](../HISTORY.md) · [Roadmap](../ROADMAP.md) · [Release packet](release/README.md)
 
+**R39: candidate01 host-cache integration passes normal and race tests, with authentic selected-input checkpoints through 200 million raw steps. Final request-liveness/server-cleanup changes and the complete dispute remain pending; the 20-game storage check runs separately. No mainnet launch.**
+
+[Cache integration evidence](dispute/host-cache-integration/README.md) · [Canonical input identity](dispute/host-cache-identity/README.md).
+
 **R38: one-terminal-block selected 865 reference replay and 8 / 56 authentic witness checks pass. Ordinary CLI 64 recovery and geometry 43 preflight pass. Guarded full-size initialization passes; host-cache integration/final source review is pending; no fresh lifecycle or mainnet launch.** Historical d453/c03c failures and stopped-trial snapshots remain preserved. All execution runs on Runpod.
 
 | Lane | Verified result | Boundary |

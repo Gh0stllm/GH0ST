@@ -1,0 +1,44 @@
+{
+  "results": [
+    {
+      "phase": "compile",
+      "package": "server_arb",
+      "exitCode": 1,
+      "seconds": 10.422219684813172,
+      "command": [
+        "go",
+        "test",
+        "-c",
+        "-p",
+        "2",
+        "-mod=readonly",
+        "-buildvcs=false",
+        "-ldflags=-extldflags=-Wl,-z,noexecstack",
+        "-o",
+        "/root/gl3-host-cache-integration/attempt-01/server_arb.test",
+        "./validator/server_arb"
+      ]
+    },
+    {
+      "phase": "compile",
+      "package": "client",
+      "exitCode": 1,
+      "seconds": 1.5360260531306267,
+      "command": [
+        "go",
+        "test",
+        "-c",
+        "-p",
+        "2",
+        "-mod=readonly",
+        "-buildvcs=false",
+        "-ldflags=-extldflags=-Wl,-z,noexecstack",
+        "-o",
+        "/root/gl3-host-cache-integration/attempt-01/client.test",
+        "./validator/client"
+      ]
+    }
+  ],
+  "complete": true,
+  "passed": false
+}
