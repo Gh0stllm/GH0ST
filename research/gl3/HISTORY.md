@@ -527,3 +527,11 @@ This proves a real EVM batch and tests verifier/data components. A production ZK
 The user requests a warm ZK batch and lower proving time/cost, preserving on-chain verification and running every build/test on Runpod. The original binary starts a fresh real sixteen-transfer Groth16 run with28 allowed threads and all installed circuit files pinned. Compilation is queued behind its successful cleanup to keep the timing isolated. Source/build inspection finds the original BabyBear dependency built without CPU vector flags; a same-source native-CPU build will test the existing vector arithmetic without changing guest, circuit, proof security or public outputs. No optimized result is accepted at this milestone.
 
 [Warm experiment and acceptance plan](zk-batch/warm-optimization/README.md).
+
+## 52 · Measure the warm baseline and compile CPU vector arithmetic — 17 November
+
+The isolated same-binary warm run passes actual SDK verification with exit0 and no remaining owned process. The full Groth16 call takes360.960028 seconds, versus the prior591.229675-second cold call; initial client/key/guest work remains separately measured. Sampled owned RSS peaks at38,335,074,304 bytes. At the current$1.12/hour worker rate, the measured full call allocates$0.112299 compute, excluding setup/storage. This is circuit-assets-warm execution, not a persistent warmed client or a separately measured pure download saving. Exact public outputs/program key match the cold batch; fresh Solidity verification is pending.
+
+The same-source native-CPU build passes with exit0 in141.174 seconds, matching the complete original guest and showing the CPU flags in actual dependency fingerprints. Its first launch stops before proving on a runner-affinity assertion; the failed preflight is preserved and a scoped corrected controller starts a fresh native28 run. A one-thread-per-physical-core comparison is queued next. No optimized timing is accepted at this milestone, and proof security/circuit/guest remain unchanged.
+
+[Warm measurements and raw results](zk-batch/warm-optimization/README.md).

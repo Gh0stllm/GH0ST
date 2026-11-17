@@ -1,6 +1,6 @@
 {
   "schema": "gh0st.gl3.warm-proof-optimization.v1",
-  "status": "ISOLATED_WARM_BASELINE_RUNNING_NATIVE_CPU_BUILD_QUEUED",
+  "status": "WARM_BASELINE_SDK_PASSED_NATIVE_BUILD_PASSED_OPTIMIZED_PROOF_RUNNING",
   "userRequest": "Measure warm ZK batch and optimize proof time/cost; keep on-chain verification; all tests on Runpod and update GitHub",
   "fixedWorkload": "R50 exact sixteen signed ERC20 transfers, one Ethereum EVM block, chain9",
   "sameGuestSHA256": "25270f23a49d998e37769c775047a6c9c080cd5d02b9b036ac18facb60c59bbb",
@@ -15,11 +15,36 @@
   "localHeavyWorkAllowed": false,
   "additionalPodCreated": false,
   "runs": [
-    {"id": "baseline28", "binary": "original R50", "threads": 28},
-    {"id": "native28", "binary": "same source with target-cpu=native", "threads": 28},
-    {"id": "native16", "status": "optional measured follow-up after native28", "threads": 16}
+    {
+      "id": "baseline28",
+      "binary": "original R50",
+      "threads": 28
+    },
+    {
+      "id": "native28",
+      "binary": "same source with target-cpu=native",
+      "threads": 28
+    },
+    {
+      "id": "native16",
+      "status": "optional measured follow-up after native28",
+      "threads": 16
+    }
   ],
   "productionRollupDelivered": false,
   "publicTransactionsAllowed": false,
-  "realWalletUseAllowed": false
+  "realWalletUseAllowed": false,
+  "warmBaseline": {
+    "actualExit": 0,
+    "fullProofSeconds": 360.960028009,
+    "peakSampledOwnedRSSBytes": 38335074304,
+    "fullCallComputeUSD": "0.1122986753805777777777777778",
+    "SolidityVerified": false
+  },
+  "nativeBuild": {
+    "actualExit": 0,
+    "seconds": 141.17416174313985,
+    "binarySHA256": "aba2a1e604627a76dc75c49f8e960f2b71c9333b7511226577dfa13bf64195a1",
+    "sameGuestBytes": true
+  }
 }
