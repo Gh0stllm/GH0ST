@@ -98,8 +98,12 @@ directory. It preserves the original 98,648,903-byte encoded data section
 in an additional 4,015 cells. [The bounded reader](src/rom.rs) checks each
 cell's code hash against the engine manifest and reads functions across
 cell boundaries. The interpreter uses those cells, 24,778 indexed
-control links and a 1,764-byte runtime directory. A linked, activated
-Stockfish contract still needs a private Nitro rehearsal.
+control links and a 1,764-byte runtime directory. The [linked interpreter
+probe](probe/interpreter.rs) builds to 29,014 bytes of Wasm and 10,106 bytes
+of prefixed Stylus runtime after Brotli compression, within the ordinary
+single-contract size envelope. Its ABI only exposes the stack pointer
+and Asyncify state getters. The full search contract's linked size and
+activation still need a private Nitro rehearsal.
 
 The [custom research runtime's full decision](../sliced/evidence/cachefix-full24m.json)
 persisted a median 655,352-byte word-delta per four-quantum slice. Depositing
