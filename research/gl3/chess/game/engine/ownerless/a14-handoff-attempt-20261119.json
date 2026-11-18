@@ -1,0 +1,52 @@
+{
+  "scope": "Receipt-backed GL3 writer handoff attempt and stock recovery",
+  "chainId": 4663001,
+  "completedA14Handoff": false,
+  "productionActivatedA14": false,
+  "restoredArbOS": 61,
+  "safeReadHead": 20630,
+  "preservedWriterHead": {
+    "number": 20631,
+    "hash": "0xe3f53b3e2ab4e6eaeeaad0ab9c3e5c0eddffecb5fedc55c57f16df2c6b36ba1f",
+    "stateRoot": "0x2d0d28772b5906da86bf0212ea5f7ae50a6b0797c861dcfaf64e7913ebba1b29",
+    "sendRoot": "0x0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "temporaryPublicReadRouting": {
+    "verified": true,
+    "samplesAcrossPause": 31,
+    "samplesDuringWriterSwap": 8,
+    "successfulSamplesDuringWriterSwap": {
+      "dedicated": 8,
+      "main": 8
+    },
+    "failedSamplesAcrossPause": [
+      {
+        "at": "2026-11-18T19:34:28.801Z",
+        "names": [
+          "main"
+        ]
+      }
+    ]
+  },
+  "timelineUTC": {
+    "routeChangeRequested": "2026-11-18T19:34:26.242Z",
+    "stockStopped": "2026-11-18T19:37:24Z",
+    "candidateStarted": "2026-11-18T19:37:29Z",
+    "candidateReadinessDeadlineReached": "2026-11-18T19:38:29Z",
+    "restoredStockHealthy": "2026-11-18T19:39:00Z",
+    "bothPublicWriteRoutesVerified": "2026-11-18T19:39:45.203Z"
+  },
+  "preflightRetry": "The public Robinhood endpoint denied the pod request. The same pause proceeded using GL3's configured provider.",
+  "failure": {
+    "cause": "Default Geth instance directory follows the executable basename.",
+    "originalInstance": "nitro",
+    "failedCandidateInstance": "nitro-a14-parent",
+    "originalStoresRestored": [
+      "l2chaindata",
+      "arbitrumdata",
+      "wasm"
+    ],
+    "candidateCreatedSeparateStores": true
+  },
+  "intendedCorrection": "Stage the same candidate bytes as nitro and verify its open file paths and exact durable head."
+}
