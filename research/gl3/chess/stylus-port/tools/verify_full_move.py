@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Check the first full pinned engine move in a private stock-Stylus rehearsal.
 
-The evidence uses raw JSON-RPC receipts. Progress and terminal events emitted by
+The evidence uses raw JSON-RPC receipts and signed transaction sizes. Progress and terminal events emitted by
 the reviewed Stylus contract bind the saved trace to the job, quantum range and
 canonical checkpoint. The on-node check also requires separately supplied
 runtime code identity and the actual checkpoint file. Offline mode checks
@@ -18,7 +18,7 @@ from urllib.parse import urlsplit
 from urllib.request import HTTPRedirectHandler, ProxyHandler, Request, build_opener
 
 
-SCHEMA = "gh0st.gl3.stylus.full-move.v1"
+SCHEMA = "gh0st.gl3.stylus.full-move.v2"
 GUEST_SHA = "1d650410655d93624801a0fa45d64d72ec5d209115672b5848f010037da5e5bc"
 MODEL_SHA = "1a298aa575a085434d29027978dc36867fe9c5bcea9376654b7a8eba1e52dfc2"
 CHECKPOINT_SHA = "5f9762c73c1309824a365e47f936d27975c6233770672803bcc6ffbba30f28c6"
@@ -31,6 +31,7 @@ ARB_WASM = "0x0000000000000000000000000000000000000071"
 QUANTA = 9_853
 GROUP = 40
 MAX_GAS = 32_000_000
+TRANSACTION_BYTES = 95_000
 MAX_PAGES = 128
 RPC_CHUNK_SIZE = 32
 
@@ -64,6 +65,12 @@ def integer(value, label):
 def duration(value, label):
     require(type(value) in (int, float) and math.isfinite(value) and value > 0, f"Invalid {label}")
     return value
+
+
+def signed_size(value):
+    size = integer(value, "signed transaction bytes")
+    require(0 < size < TRANSACTION_BYTES, f"Signed transaction must fit below {TRANSACTION_BYTES} bytes")
+    return size
 
 
 def receipt_fields(receipt):
@@ -153,7 +160,7 @@ def validate(evidence, max_operation_ms, max_transfer_p95_ms):
         require(duration(operation.get("wallMs"), "operation wall time") <= max_operation_ms,
                 f"Operation {index} exceeded the declared wall-time limit")
         all_receipts[r["hash"]] = operation["receipt"]
-        operations_fields.append(r)
+        operations_fields.append({**r, "signedTransactionBytes": signed_size(operation.get("signedTransactionBytes"))})
         last_end, last_state, last_location = end, after, location
 
     require(last_end == QUANTA and last_state == fixed_hex(result.get("finalStateSHA256"), 32, "final state", prefixed=False),
@@ -182,6 +189,7 @@ def validate(evidence, max_operation_ms, max_transfer_p95_ms):
         "transferP95Ms": p95,
         "maxOperationWallMs": max(row["wallMs"] for row in operations),
         "maxOperationComputeGas": max(row["computeGas"] for row in operations),
+        "maxSignedTransactionBytes": max(row["signedTransactionBytes"] for row in operations),
         "maxPhysicalPagesReported": max(row["physicalPages"] for row in operations),
         "checkpointSHA256": CHECKPOINT_SHA,
     }, all_receipts, operations_fields, transfer_fields
@@ -246,7 +254,9 @@ def rpc_verify(url, expected_code_sha, summary, evidence_receipts, operations, t
     ])))
     transaction_checks = [("eth_getTransactionReceipt", [r["hash"]]) for r in receipts]
     for expected, actual in zip(receipts, rpc_call_batches(url, transaction_checks)):
-        require(receipt_fields(actual) == expected, f"Private RPC receipt mismatch for {expected['hash']}")
+        measured = receipt_fields(actual)
+        require(all(expected[key] == value for key, value in measured.items()),
+                f"Private RPC receipt mismatch for {expected['hash']}")
         b = blocks[expected["block"]]
         index = expected["position"]
         require(isinstance(b, dict) and b.get("hash", "").lower() == expected["blockHash"]
@@ -257,6 +267,12 @@ def rpc_verify(url, expected_code_sha, summary, evidence_receipts, operations, t
             for topic in (PROGRESS_TOPIC, DECISION_TOPIC):
                 require(emitted(actual, contract, topic, job) == emitted(saved, contract, topic, job),
                         f"Private RPC chess event mismatch for {expected['hash']}")
+
+    signed_checks = [("eth_getRawTransactionByHash", [r["hash"]]) for r in operations]
+    for operation, raw in zip(operations, rpc_call_batches(url, signed_checks)):
+        signed = data_bytes(raw, "mined raw transaction")
+        require(signed_size(len(signed)) == operation["signedTransactionBytes"],
+                f"Private RPC signed transaction length differs for {operation['hash']}")
 
     # Verify that the timed load sent simple, plain-data transactions to addresses
     # without code at each receipt's block. Their timing is still instrumentation.

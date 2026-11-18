@@ -8,6 +8,7 @@ use crate::checkpoint_tree::{
     self, CheckpointError, Digest, Keccak, SiblingProof, DEPTH, MAX_PAGES,
 };
 use crate::memory::{Page, PAGE_SIZE};
+use crate::rom::{BytecodeRom, CodeHost};
 
 pub const TRANSACTION_BYTES: usize = 95_000;
 const MAGIC: &[u8; 4] = b"GW01";
@@ -21,6 +22,7 @@ pub enum Mode {
     Zero = 0,
     Runs = 1,
     Raw = 2,
+    Archive = 3,
 }
 
 impl Mode {
@@ -29,6 +31,7 @@ impl Mode {
             0 => Ok(Self::Zero),
             1 => Ok(Self::Runs),
             2 => Ok(Self::Raw),
+            3 => Ok(Self::Archive),
             _ => Err(WireError::BadPage),
         }
     }
@@ -42,6 +45,43 @@ pub enum WireError {
     PageOrder,
     Truncated,
     Allocation,
+    ArchiveUnavailable,
+}
+
+/// Bytes must remain immutable for one complete group. The GL3 adapter uses
+/// STOP-prefixed, code-hash-pinned contracts as the archive. The root proof
+/// still authenticates each requested byte range against the game's state.
+pub trait Archive {
+    fn read(&mut self, offset: u32, output: &mut [u8]) -> Result<(), WireError>;
+}
+
+pub struct InlineArchive;
+
+impl Archive for InlineArchive {
+    fn read(&mut self, _: u32, _: &mut [u8]) -> Result<(), WireError> {
+        Err(WireError::ArchiveUnavailable)
+    }
+}
+
+impl<H: CodeHost, const RESIDENT: usize> Archive for BytecodeRom<'_, H, RESIDENT> {
+    fn read(&mut self, offset: u32, output: &mut [u8]) -> Result<(), WireError> {
+        self.read(offset, output)
+            .map_err(|_| WireError::ArchiveUnavailable)
+    }
+}
+
+pub(crate) fn decode_with_archive(
+    mode: Mode,
+    data: &[u8],
+    out: &mut Page,
+    archive: &mut impl Archive,
+) -> Result<(), WireError> {
+    if mode == Mode::Archive {
+        let loc = u32::from_be_bytes(data.try_into().map_err(|_| WireError::BadPage)?);
+        archive.read(loc, out)
+    } else {
+        decode_page(mode, data, out)
+    }
 }
 
 /// Runs use one command byte. High bit means zero fill, and low seven bits
@@ -173,12 +213,13 @@ pub fn zero_subtrees(hash: &mut impl Keccak) -> [Digest; DEPTH as usize + 1] {
     zeros
 }
 
-pub(crate) struct CompactProof<'a> {
+pub(crate) struct CompactProof<'a, A> {
     pub(crate) remaining: &'a [u8],
     pub(crate) zero: &'a [Digest; DEPTH as usize + 1],
+    pub(crate) archive: &'a mut A,
 }
 
-impl SiblingProof for CompactProof<'_> {
+impl<A: Archive> SiblingProof for CompactProof<'_, A> {
     fn node(&mut self, level: u32) -> Result<Digest, CheckpointError> {
         let (tag, rest) = self
             .remaining
@@ -195,6 +236,18 @@ impl SiblingProof for CompactProof<'_> {
                 self.remaining = rest;
                 Ok(digest.try_into().unwrap())
             }
+            2 => {
+                let (offset, rest) = self
+                    .remaining
+                    .split_at_checked(4)
+                    .ok_or(CheckpointError::MissingSibling)?;
+                self.remaining = rest;
+                let mut value = [0; 32];
+                self.archive
+                    .read(u32::from_be_bytes(offset.try_into().unwrap()), &mut value)
+                    .map_err(|_| CheckpointError::InvalidSibling)?;
+                Ok(value)
+            }
             _ => Err(CheckpointError::InvalidSibling),
         }
     }
@@ -210,6 +263,18 @@ pub struct InputPage<'a> {
     pub page: &'a Page,
 }
 
+#[derive(Clone, Copy)]
+pub enum PageInput<'a> {
+    Inline(&'a Page),
+    Archive(u32),
+}
+
+#[derive(Clone, Copy)]
+pub enum NodeInput {
+    Digest(u32, Digest),
+    Archive(u32),
+}
+
 /// Serialize a sorted page set and the existing traversal-ordered multiproof.
 /// `siblings` contains each sibling digest and its level (zero is a leaf).
 pub fn encode(
@@ -218,8 +283,44 @@ pub fn encode(
     siblings: &[(u32, Digest)],
     allowance: usize,
 ) -> Result<Vec<u8>, WireError> {
+    encode_packet(
+        hash,
+        pages.len(),
+        pages
+            .iter()
+            .map(|p| (p.index, p.writable, PageInput::Inline(p.page))),
+        siblings
+            .iter()
+            .map(|(level, value)| NodeInput::Digest(*level, *value)),
+        allowance,
+    )
+}
+
+/// Offsets address the contract's selected immutable checkpoint archive.
+pub fn encode_archived<'a>(
+    hash: &mut impl Keccak,
+    pages: &[(u32, bool, PageInput<'a>)],
+    siblings: &[NodeInput],
+    allowance: usize,
+) -> Result<Vec<u8>, WireError> {
+    encode_packet(
+        hash,
+        pages.len(),
+        pages.iter().copied(),
+        siblings.iter().copied(),
+        allowance,
+    )
+}
+
+fn encode_packet<'a>(
+    hash: &mut impl Keccak,
+    count: usize,
+    pages: impl Iterator<Item = (u32, bool, PageInput<'a>)>,
+    siblings: impl Iterator<Item = NodeInput>,
+    allowance: usize,
+) -> Result<Vec<u8>, WireError> {
     let max = allowance.min(TRANSACTION_BYTES - 1);
-    if max < HEADER_BYTES || pages.len() > (max - HEADER_BYTES) / PAGE_HEADER_BYTES {
+    if max < HEADER_BYTES || count > (max - HEADER_BYTES) / PAGE_HEADER_BYTES {
         return Err(WireError::OverBudget);
     }
     let mut output = Vec::new();
@@ -227,35 +328,54 @@ pub fn encode(
         .try_reserve_exact(max)
         .map_err(|_| WireError::Allocation)?;
     output.extend_from_slice(MAGIC);
-    output.extend_from_slice(&(pages.len() as u16).to_be_bytes());
+    output.extend_from_slice(&(count as u16).to_be_bytes());
     let mut scratch = [0; PAGE_SIZE];
     let mut previous = None;
-    for page in pages {
-        if page.index as usize >= MAX_PAGES || previous.is_some_and(|index| page.index <= index) {
+    for (index, writable, source) in pages {
+        if index as usize >= MAX_PAGES || previous.is_some_and(|prior| index <= prior) {
             return Err(WireError::PageOrder);
         }
-        previous = Some(page.index);
-        let (mode, len) = encode_page(page.page, &mut scratch);
+        previous = Some(index);
+        let (mode, len) = match source {
+            PageInput::Inline(page) => encode_page(page, &mut scratch),
+            PageInput::Archive(offset) => {
+                scratch[..4].copy_from_slice(&offset.to_be_bytes());
+                (Mode::Archive, 4)
+            }
+        };
         if output.len() + PAGE_HEADER_BYTES + len > max {
             return Err(WireError::OverBudget);
         }
-        output.extend_from_slice(&page.index.to_be_bytes()[1..]);
-        output.push(mode as u8 | if page.writable { WRITABLE } else { 0 });
+        output.extend_from_slice(&index.to_be_bytes()[1..]);
+        output.push(mode as u8 | if writable { WRITABLE } else { 0 });
         output.extend_from_slice(&(len as u16).to_be_bytes());
         output.extend_from_slice(&scratch[..len]);
     }
     let zeros = zero_subtrees(hash);
-    for (level, sibling) in siblings {
-        let zero = zeros.get(*level as usize).ok_or(WireError::BadHeader)?;
-        let omit = sibling == zero;
-        let bytes = if omit { 1 } else { 33 };
-        if output.len() + bytes > max {
+    let mut encoded = [0; 33];
+    for node in siblings {
+        let len = match node {
+            NodeInput::Digest(level, sibling) => {
+                let zero = zeros.get(level as usize).ok_or(WireError::BadHeader)?;
+                if &sibling == zero {
+                    encoded[0] = 0;
+                    1
+                } else {
+                    encoded[0] = 1;
+                    encoded[1..].copy_from_slice(&sibling);
+                    33
+                }
+            }
+            NodeInput::Archive(offset) => {
+                encoded[0] = 2;
+                encoded[1..5].copy_from_slice(&offset.to_be_bytes());
+                5
+            }
+        };
+        if output.len() + len > max {
             return Err(WireError::OverBudget);
         }
-        output.push(u8::from(!omit));
-        if !omit {
-            output.extend_from_slice(sibling);
-        }
+        output.extend_from_slice(&encoded[..len]);
     }
     Ok(output)
 }

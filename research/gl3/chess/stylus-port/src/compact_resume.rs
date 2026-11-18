@@ -7,7 +7,7 @@ use crate::checkpoint_tree::{self, Digest, Keccak, LeafChange, DEPTH};
 use crate::memory::{Page, PageBackend, PAGE_SIZE};
 use crate::resume::{Checkpoint, Globals, ResumeError};
 use crate::search::Cursor;
-use crate::witness_wire::{self, CompactProof, Mode, WireError, WirePage};
+use crate::witness_wire::{self, Archive, CompactProof, InlineArchive, Mode, WireError, WirePage};
 
 #[derive(Debug, Eq, PartialEq)]
 pub enum CompactError {
@@ -51,7 +51,7 @@ impl LeafChange for Encoded<'_> {
     }
 }
 
-pub struct CompactResume<'a> {
+pub struct CompactResume<'a, A = InlineArchive> {
     prior: Checkpoint,
     pages: Vec<Encoded<'a>>,
     proof: &'a [u8],
@@ -59,6 +59,7 @@ pub struct CompactResume<'a> {
     overlay_limit: usize,
     overlay_capacity: usize,
     fault: bool,
+    archive: A,
 }
 
 #[derive(Debug)]
@@ -67,7 +68,7 @@ pub struct CommittedPages {
     pub replacements: Vec<Replacement>,
 }
 
-impl<'a> CompactResume<'a> {
+impl<'a> CompactResume<'a, InlineArchive> {
     pub fn open(
         hash: &mut impl Keccak,
         trusted: Digest,
@@ -76,6 +77,30 @@ impl<'a> CompactResume<'a> {
         witness_allowance: usize,
         page_limit: usize,
         overlay_limit: usize,
+    ) -> Result<Self, CompactError> {
+        Self::open_archived(
+            hash,
+            trusted,
+            prior,
+            packet,
+            witness_allowance,
+            page_limit,
+            overlay_limit,
+            InlineArchive,
+        )
+    }
+}
+
+impl<'a, A: Archive> CompactResume<'a, A> {
+    pub fn open_archived(
+        hash: &mut impl Keccak,
+        trusted: Digest,
+        prior: Checkpoint,
+        packet: &'a [u8],
+        witness_allowance: usize,
+        page_limit: usize,
+        overlay_limit: usize,
+        mut archive: A,
     ) -> Result<Self, CompactError> {
         if !prior.valid() || prior.complete {
             return Err(ResumeError::InvalidCheckpoint.into());
@@ -97,7 +122,12 @@ impl<'a> CompactResume<'a> {
             let old = if entry.mode == Mode::Zero && entry.bytes.is_empty() {
                 zeros[0]
             } else {
-                witness_wire::decode_page(entry.mode, entry.bytes, &mut scratch)?;
+                witness_wire::decode_with_archive(
+                    entry.mode,
+                    entry.bytes,
+                    &mut scratch,
+                    &mut archive,
+                )?;
                 let past_length = entry.index as usize >= prior.memory_bytes as usize / PAGE_SIZE;
                 if past_length && scratch.iter().any(|&byte| byte != 0) {
                     return Err(ResumeError::NonzeroUninitializedPage(entry.index).into());
@@ -111,7 +141,7 @@ impl<'a> CompactResume<'a> {
                 overlay: None,
             });
         }
-        let backend = Self {
+        let mut backend = Self {
             prior,
             pages,
             proof,
@@ -119,12 +149,13 @@ impl<'a> CompactResume<'a> {
             overlay_limit,
             overlay_capacity: 0,
             fault: false,
+            archive,
         };
         backend.root(hash)?;
         Ok(backend)
     }
 
-    fn root(&self, hash: &mut impl Keccak) -> Result<Digest, CompactError> {
+    fn root(&mut self, hash: &mut impl Keccak) -> Result<Digest, CompactError> {
         checkpoint_tree::replace_with(
             hash,
             self.prior.memory_root,
@@ -132,6 +163,7 @@ impl<'a> CompactResume<'a> {
             &mut CompactProof {
                 remaining: self.proof,
                 zero: &self.zeros,
+                archive: &mut self.archive,
             },
         )
         .map_err(|error| ResumeError::Proof(error).into())
@@ -203,7 +235,7 @@ impl<'a> CompactResume<'a> {
     }
 }
 
-impl PageBackend for CompactResume<'_> {
+impl<A: Archive> PageBackend for CompactResume<'_, A> {
     type Error = CompactError;
 
     fn read_page(&mut self, index: u32, out: &mut Page) -> Result<bool, CompactError> {
@@ -215,7 +247,7 @@ impl PageBackend for CompactResume<'_> {
             .map_or((record.wire.mode, record.wire.bytes), |page| {
                 (page.mode, page.bytes.as_slice())
             });
-        if let Err(error) = witness_wire::decode_page(mode, bytes, out) {
+        if let Err(error) = witness_wire::decode_with_archive(mode, bytes, out, &mut self.archive) {
             self.fault = true;
             return Err(error.into());
         }
@@ -270,17 +302,18 @@ impl PageBackend for CompactResume<'_> {
 mod tests {
     use super::*;
     use crate::memory::PagedMemory;
-    use crate::witness_wire::{InputPage, TRANSACTION_BYTES};
+    use crate::witness_wire::{InputPage, NodeInput, PageInput, TRANSACTION_BYTES};
 
     struct FixtureHash;
 
     impl Keccak for FixtureHash {
         fn digest(&mut self, bytes: &[u8]) -> Digest {
-            let mut value = [0u8; 32];
-            for (i, byte) in bytes.iter().enumerate() {
-                value[i % 32] = value[i % 32].wrapping_mul(7).wrapping_add(*byte);
-            }
-            value
+            use tiny_keccak::{Hasher, Keccak};
+            let mut output = [0; 32];
+            let mut hash = Keccak::v256();
+            hash.update(bytes);
+            hash.finalize(&mut output);
+            output
         }
     }
 
@@ -428,6 +461,91 @@ mod tests {
         assert_eq!(
             witness_wire::encode(&mut hash, &pages, &[], 95_000),
             Err(WireError::OverBudget)
+        );
+    }
+
+    #[test]
+    fn archives_fit_dense_pages_and_wrong_bytes_fail_the_checkpoint_proof() {
+        struct StoredPage(Page);
+        impl Archive for StoredPage {
+            fn read(&mut self, offset: u32, output: &mut [u8]) -> Result<(), WireError> {
+                let offset = offset as usize;
+                output.copy_from_slice(
+                    self.0
+                        .get(offset..offset + output.len())
+                        .ok_or(WireError::ArchiveUnavailable)?,
+                );
+                Ok(())
+            }
+        }
+        let mut hash = FixtureHash;
+        let zeros = witness_wire::zero_subtrees(&mut hash);
+        let zero_page = [0; PAGE_SIZE];
+        let dense_page = [0x79; PAGE_SIZE];
+        let indices: Vec<u32> = (0..24).collect();
+        let mut proof = Vec::new();
+        siblings(&indices, DEPTH, &zeros, &mut proof);
+        let proof_digests: Vec<_> = proof.iter().map(|(_, digest)| *digest).collect();
+        let changes: Vec<_> = indices
+            .iter()
+            .map(|&index| checkpoint_tree::PageChange {
+                index,
+                before: &zero_page,
+                after: &dense_page,
+            })
+            .collect();
+        let root = checkpoint_tree::replace_pages(
+            &mut hash,
+            zeros[DEPTH as usize],
+            &changes,
+            &proof_digests,
+        )
+        .unwrap();
+        let checkpoint = prior(root);
+        let key = checkpoint.commitment(&mut hash);
+        let inputs: Vec<_> = indices
+            .iter()
+            .map(|&index| (index, false, PageInput::Archive(0)))
+            .collect();
+        let nodes: Vec<_> = proof
+            .into_iter()
+            .map(|(level, digest)| NodeInput::Digest(level, digest))
+            .collect();
+        let packet = witness_wire::encode_archived(&mut hash, &inputs, &nodes, 95_000).unwrap();
+        assert!(packet.len() < 300);
+
+        let mut backend = CompactResume::open_archived(
+            &mut hash,
+            key,
+            checkpoint,
+            &packet,
+            300,
+            24,
+            0,
+            StoredPage(dense_page),
+        )
+        .unwrap();
+        let mut page = [0; PAGE_SIZE];
+        assert_eq!(backend.read_page(23, &mut page), Ok(true));
+        assert_eq!(page, dense_page);
+        assert!(matches!(
+            CompactResume::open_archived(
+                &mut hash,
+                key,
+                checkpoint,
+                &packet,
+                300,
+                24,
+                0,
+                StoredPage([0x78; PAGE_SIZE])
+            ),
+            Err(CompactError::Resume(ResumeError::Proof(
+                checkpoint_tree::CheckpointError::WrongPriorRoot
+            )))
+        ));
+        std::println!(
+            "24 synthetic dense archived pages: {} packet bytes",
+            packet.len()
         );
     }
 

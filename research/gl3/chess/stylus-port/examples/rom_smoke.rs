@@ -8,11 +8,13 @@ use std::{env, fs, path::Path, rc::Rc};
 
 use gl3_stockfish_stylus::{
     checkpoint_tree::{Digest, Keccak, MAX_PAGES},
+    compact_resume::CompactResume,
     interpreter::{rom_code::RomCode, Limits, Machine},
     memory::{PagedMemory, PAGE_SIZE},
-    resume::{Checkpoint, ResumeBackend, WitnessPage},
+    resume::Checkpoint,
     rom::{Address, BytecodeRom, CodeHash, CodeHost, Shard, PAYLOAD_BYTES},
     search::Cursor,
+    witness_wire::{self, Archive, NodeInput, PageInput, WireError},
 };
 
 const CODE: &str = "0f1dc6066d456a17b90b7879558902957e049ff4dc6d39b6de4c90b0fa6ad052";
@@ -34,86 +36,28 @@ const INITIAL_STACK: u64 = 120_685_200;
 // wrapper would use the host Keccak call instead.
 struct NativeKeccak;
 
-impl NativeKeccak {
-    fn permute(a: &mut [u64; 25]) {
-        const RHO: [u32; 25] = [
-            0, 1, 62, 28, 27, 36, 44, 6, 55, 20, 3, 10, 43, 25, 39, 41, 45, 15, 21, 8, 18, 2, 61,
-            56, 14,
-        ];
-        const ROUNDS: [u64; 24] = [
-            0x0000_0000_0000_0001,
-            0x0000_0000_0000_8082,
-            0x8000_0000_0000_808a,
-            0x8000_0000_8000_8000,
-            0x0000_0000_0000_808b,
-            0x0000_0000_8000_0001,
-            0x8000_0000_8000_8081,
-            0x8000_0000_0000_8009,
-            0x0000_0000_0000_008a,
-            0x0000_0000_0000_0088,
-            0x0000_0000_8000_8009,
-            0x0000_0000_8000_000a,
-            0x0000_0000_8000_808b,
-            0x8000_0000_0000_008b,
-            0x8000_0000_0000_8089,
-            0x8000_0000_0000_8003,
-            0x8000_0000_0000_8002,
-            0x8000_0000_0000_0080,
-            0x0000_0000_0000_800a,
-            0x8000_0000_8000_000a,
-            0x8000_0000_8000_8081,
-            0x8000_0000_0000_8080,
-            0x0000_0000_8000_0001,
-            0x8000_0000_8000_8008,
-        ];
-        for round in ROUNDS {
-            let column: [u64; 5] =
-                std::array::from_fn(|x| a[x] ^ a[x + 5] ^ a[x + 10] ^ a[x + 15] ^ a[x + 20]);
-            let mut b = [0; 25];
-            for y in 0..5 {
-                for x in 0..5 {
-                    let index = x + 5 * y;
-                    let theta = column[(x + 4) % 5] ^ column[(x + 1) % 5].rotate_left(1);
-                    b[y + 5 * ((2 * x + 3 * y) % 5)] = (a[index] ^ theta).rotate_left(RHO[index]);
-                }
-            }
-            for y in 0..5 {
-                for x in 0..5 {
-                    a[x + 5 * y] =
-                        b[x + 5 * y] ^ ((!b[(x + 1) % 5 + 5 * y]) & b[(x + 2) % 5 + 5 * y]);
-                }
-            }
-            a[0] ^= round;
-        }
-    }
+struct SmokeArchive<'a>(&'a [u8]);
 
-    fn absorb(state: &mut [u64; 25], block: &[u8]) {
-        for (lane, bytes) in state.iter_mut().zip(block.chunks_exact(8)) {
-            *lane ^= u64::from_le_bytes(bytes.try_into().unwrap());
-        }
-        Self::permute(state);
+impl Archive for SmokeArchive<'_> {
+    fn read(&mut self, offset: u32, output: &mut [u8]) -> Result<(), WireError> {
+        let start = offset as usize;
+        output.copy_from_slice(
+            self.0
+                .get(start..start + output.len())
+                .ok_or(WireError::ArchiveUnavailable)?,
+        );
+        Ok(())
     }
 }
 
 impl Keccak for NativeKeccak {
     fn digest(&mut self, bytes: &[u8]) -> Digest {
-        const RATE: usize = 136;
-        let mut state = [0; 25];
-        let mut blocks = bytes.chunks_exact(RATE);
-        for block in &mut blocks {
-            Self::absorb(&mut state, block);
-        }
-        let tail = blocks.remainder();
-        let mut last = [0; RATE];
-        last[..tail.len()].copy_from_slice(tail);
-        last[tail.len()] = 1;
-        last[RATE - 1] |= 0x80;
-        Self::absorb(&mut state, &last);
-        let mut digest = [0; 32];
-        for (dst, value) in digest.chunks_exact_mut(8).zip(state) {
-            dst.copy_from_slice(&value.to_le_bytes());
-        }
-        digest
+        use tiny_keccak::{Hasher, Keccak};
+        let mut output = [0; 32];
+        let mut hash = Keccak::v256();
+        hash.update(bytes);
+        hash.finalize(&mut output);
+        output
     }
 }
 
@@ -277,10 +221,32 @@ fn main() {
         complete: false,
         memory_bytes: LOGICAL_BYTES,
     };
-    let mut pages = [WitnessPage::read_only(0, &page)];
     let mut hash = NativeKeccak;
     let trusted = prior.commitment(&mut hash);
-    let backend = ResumeBackend::new(&mut hash, trusted, prior, &mut pages, &siblings, 1).unwrap();
+    let mut archive = page.to_vec();
+    archive.extend_from_slice(&siblings[0]);
+    let mut proof = Vec::from([NodeInput::Archive(PAGE_SIZE as u32)]);
+    proof.extend(
+        siblings
+            .iter()
+            .enumerate()
+            .skip(1)
+            .map(|(level, value)| NodeInput::Digest(level as u32, *value)),
+    );
+    let packet =
+        witness_wire::encode_archived(&mut hash, &[(0, false, PageInput::Archive(0))], &proof, 100)
+            .unwrap();
+    let backend = CompactResume::open_archived(
+        &mut hash,
+        trusted,
+        prior,
+        &packet,
+        100,
+        1,
+        0,
+        SmokeArchive(&archive),
+    )
+    .unwrap();
     let memory = PagedMemory::<_, 1>::new(backend, u64::from(LOGICAL_BYTES)).unwrap();
 
     let limits = Limits {
@@ -322,5 +288,5 @@ fn main() {
         RomCode::<FixtureHost, 1, 8>::retained_globals(&globals).unwrap(),
         [INITIAL_STACK, 0, u64::from(pointer)]
     );
-    println!("Pinned Stockfish ROM passed: stack={INITIAL_STACK}, Asyncify states=0,1,0,2,0, authenticated pages=1, guest instructions={}", 1024 - fuel);
+    println!("Pinned Stockfish ROM passed: stack={INITIAL_STACK}, Asyncify states=0,1,0,2,0, authenticated pages=1, packet bytes={}, guest instructions={}", packet.len(), 1024 - fuel);
 }

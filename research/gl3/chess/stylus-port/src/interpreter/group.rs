@@ -10,6 +10,7 @@ use crate::memory::{MemoryError, PageBackend, PagedMemory};
 use crate::resume::{Checkpoint, Globals, ResumeBackend, ResumeError, WitnessPage};
 use crate::rom::CodeHost;
 use crate::search::{self, GroupError, Step};
+use crate::witness_wire::{Archive, InlineArchive};
 
 use super::guest::{GuestError, Stockfish};
 use super::rom_code::{ProgramError, RomCode};
@@ -101,7 +102,33 @@ pub fn run_compact_group<
     witness_allowance: usize,
     overlay_limit: usize,
 ) -> Result<(GroupOutcome, Vec<Replacement>), ReplayError<H::Error, CompactError>> {
-    let mut backend = CompactResume::open(
+    run_archived_group::<_, _, ROM_RESIDENT, LINK_CACHE, RAM_RESIDENT>(
+        code,
+        hash,
+        request,
+        packet,
+        witness_allowance,
+        overlay_limit,
+        InlineArchive,
+    )
+}
+
+pub fn run_archived_group<
+    H: CodeHost,
+    A: Archive,
+    const ROM_RESIDENT: usize,
+    const LINK_CACHE: usize,
+    const RAM_RESIDENT: usize,
+>(
+    code: RomCode<'_, H, ROM_RESIDENT, LINK_CACHE>,
+    hash: &mut impl Keccak,
+    request: GroupRequest<'_>,
+    packet: &[u8],
+    witness_allowance: usize,
+    overlay_limit: usize,
+    archive: A,
+) -> Result<(GroupOutcome, Vec<Replacement>), ReplayError<H::Error, CompactError>> {
+    let mut backend = CompactResume::open_archived(
         hash,
         request.trusted_checkpoint,
         request.prior,
@@ -109,6 +136,7 @@ pub fn run_compact_group<
         witness_allowance,
         request.max_witness_pages,
         overlay_limit,
+        archive,
     )
     .map_err(ReplayError::Checkpoint)?;
     let result =

@@ -143,13 +143,31 @@ before execution and decompresses pages on demand. Evicted writes remain
 compressed in a bounded overlay and only changed pages leave a successful
 [40-quantum execution](src/interpreter/group.rs).
 
+Dense old pages and nonzero proof nodes also support four-byte references
+into an immutable archive. The GL3 adapter can read this archive from
+code-hash-pinned contracts. The same page root still authenticates the
+referenced bytes. A packet carries offsets only when the referenced archive
+is already available to the contract.
+
 An offline fixture opened 1,919 synthetic zero pages spread across the
 logical address space. Its packet was **24,027 bytes**, including 12,507
 proof nodes. It cold-read and changed two pages, forced eviction, and
 verified finalization. A batch of 24 dense inline pages exceeded the cap
-and was rejected. These cases measure the wire format and page handling.
-The exact Stockfish read set, signed transaction sizes, gas and block
-latency still require the full private Nitro fixture.
+and was rejected. Those synthetic dense pages fit a **260-byte** packet
+using archive references. The exact Stockfish Asyncify smoke test also
+ran through an authenticated archive with a **38-byte** packet.
+
+The archived [four-quantum private replay](../sliced/evidence/cachefix-next-native-replay.json)
+contains 1,533,104 bytes of retained word deltas. Compressing each of its
+94 captured fragments independently with zlib produced 283,693 bytes
+before framing. This measures an older format's persistence cost. The
+compact witness test sizes measure bytes supplied to the engine.
+
+The full move requires an initialized archive and a way to make changed
+pages available across groups within the gas budget. The [receipt checker](tools/verify_full_move.py)
+now requires all 247 signed transactions to be under 95,000 bytes and
+cross-checks their sizes from private RPC. Stockfish parity, gas and
+block latency still require the full private Nitro run.
 
 ## Checkpoint gas probe
 
