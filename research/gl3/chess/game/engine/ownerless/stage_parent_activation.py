@@ -23,13 +23,35 @@ EDITS = {
             ("\taddressChecker state.AddressChecker,\n) (*types.Block,",
              "\taddressChecker state.AddressChecker,\n\tl2Message []byte,\n) (*types.Block,"),
             (
-                "\t// Prepend a tx before all others to touch up the state",
-                """	if err := scheduleGL3A14FromInbox(arbState, chainConfig, l1Header, l2Message,
-		lastBlockHeader.Nonce.Uint64(), delayedMessagesRead, header.Time); err != nil {
-		return nil, nil, nil, err
-	}
+                "\tstartTx := InternalTxStartBlock(chainConfig.ChainID, l1Header.L1BaseFee, l1BlockNum, header, lastBlockHeader)",
+                """	startTx := InternalTxStartBlock(chainConfig.ChainID, l1Header.L1BaseFee, l1BlockNum, header, lastBlockHeader)
+	if shouldActivateGL3A14FromInbox(arbState.ArbOSVersion(), chainConfig, l1Header, l2Message,
+		lastBlockHeader.Nonce.Uint64(), delayedMessagesRead) {
+		copy(startTx.Data[:4], gl3A14StartBlockMethodID[:])
+	}""",
+            ),
+        ),
+    ),
+    "arbos/internal_tx.go": (
+        "c48800495c1d4fa564c10948ea753b66be9ef47baf2c592064eb2ae01b96110a",
+        (
+            (
+                "\tcase InternalTxStartBlockMethodID:",
+                """	case InternalTxStartBlockMethodID, gl3A14StartBlockMethodID:
+		a14Activation := selector == gl3A14StartBlockMethodID
+		if a14Activation && (len(tx.Data) != 4+32*4 || evm.Context.Coinbase != params.GL3A14AuthorityAlias()) {
+			return fmt.Errorf("invalid GL3 A14 internal start-block transaction")
+		}""",
+            ),
+            (
+                "\t\treturn state.UpgradeArbosVersionIfNecessary(currentTime, evm.StateDB, evm.ChainConfig())",
+                """		if a14Activation {
+			if err := state.ScheduleGL3A14FromParent(evm.ChainConfig(), currentTime); err != nil {
+				return err
+			}
+		}
 
-	// Prepend a tx before all others to touch up the state""",
+		return state.UpgradeArbosVersionIfNecessary(currentTime, evm.StateDB, evm.ChainConfig())""",
             ),
         ),
     ),

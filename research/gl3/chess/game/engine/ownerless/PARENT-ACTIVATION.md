@@ -61,7 +61,12 @@ and no delayed request ID. Websocket feed, archived feed backfill and
 Redis catch-up reject messages carrying the reserved authority alias.
 The canonical inbox supplies those messages to the prover and to nodes
 reading Robinhood. The ArbOS 62 branch requires the internal approval
-marker before installing A14.
+marker before installing A14. The producer represents the approval in
+one distinct synthetic internal start-block transaction. The node's
+stored-transaction state recovery and full inbox replay both apply
+the marker and schedule through that transaction. Ordinary start-block
+transactions retain their existing bytes. The inbound transaction
+parser rejects user-supplied internal transaction types.
 
 ## Exact parent call
 
@@ -78,8 +83,9 @@ This is a valid batch of seven empty nested batches. The stock
 transaction parser produces zero user transactions. The ERC20Inbox
 applies the standard L1 alias to the executor, producing delayed
 sender `0xb743b4c45726c779086f60d8b09bee7b09ba3652`. Only the new
-block processor recognizes that exact message and schedules the built-in
-start-block upgrade. After version 62, the token is again an empty batch.
+block processor recognizes that exact message and emits the marked
+start-block transaction. Its internal handler schedules the built-in
+upgrade. After version 62, the token is again an empty batch.
 
 The parent governance transaction is separate from the local build.
 Review the candidate proof root and demonstrate a coordinated handoff
