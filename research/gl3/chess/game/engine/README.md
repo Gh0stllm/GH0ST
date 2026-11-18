@@ -33,8 +33,15 @@ python3 research/gl3/chess/build_replay.py --sliced --game-coordinator --candida
 ```
 
 The native candidate has compiled and [replayed to the live safe head](FOLLOWER.md).
-The matching proof build, replay over the upgrade boundary, and coordinated
-activation remain open. See the [mainnet observation and handoff constraints](MAINNET.md).
+The corresponding [proof machine](proof-machine-evidence-20261118.json)
+was assembled from that same source and pinned Stockfish image on the
+same pod. The candidate module root is
+`0x3fa7c973679f26bb83505afe1ee0b7509c354e9b3ddc3ef95ac43584683787a7`.
+The native binary, replay and machine assets were saved in a separate
+persistent directory and checked against their SHA-256 digests.
+
+Replay across the activation boundary and coordinated activation remain
+open. See the [live handoff and production proof limits](MAINNET.md).
 
 The [read-only follower](FOLLOWER.md) replays existing GL3 batches while the
 production sequencer continues to serve the chain.

@@ -49,8 +49,10 @@ separate deterministic migration delivered with the runtime upgrade. The
 [engine overlay](engine/README.md) includes candidate source for the
 [scheduled activation](engine/ACTIVATION.md) and the
 [pinned seed migration](engine/SEED-MIGRATION.md). The native candidate
-[caught up to the safe GL3 head](engine/FOLLOWER.md). The paired proof
-build and coordinated activation remain open. [Mainnet status](engine/MAINNET.md)
+[caught up to the safe GL3 head](engine/FOLLOWER.md), and the
+[matching proof machine was assembled](engine/proof-machine-evidence-20261118.json).
+Upgrade-boundary replay and coordinated activation remain open.
+[Mainnet status](engine/MAINNET.md)
 
 The research build tooling can prepare native execution and its matched
 replay machine from the same coordinator source. The profile writes its
