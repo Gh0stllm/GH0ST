@@ -24,6 +24,9 @@ no implementation for the user module's `F64PromoteF32` instruction.
 This is a stock Stylus compatibility failure that occurred before any
 search transaction ran. The deployment size does not establish the size
 of a 40-quantum search transaction or the block cadence under search load.
+The bounded native traces produced no first-group witness. Eight ordinary
+private transfers completed with a 611 ms p95 submission-to-receipt time
+as a control without an on-chain search running.
 
 The port needs integer-backed IEEE 754 operations that preserve the
 guest's exact behavior, followed by a fresh activation, complete-move
