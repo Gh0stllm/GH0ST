@@ -19,13 +19,23 @@
     "preActivationArbOS": 61
   },
   "proofRootTransaction": {
-    "status": "wallet-review-ready",
+    "status": "canonical-receipt-verified",
     "target": "0xA632B4c45726C779086F60d8b09BEE7b09bA2541",
     "ethValue": "0",
     "calldataKeccak256": "0x6fc5d00bd41722582eeefe8a72e2f78b6a2930bef7cdc04f5617376823bc6fb9",
     "oldRoot": "0xc10cd7ec6acaf1c441a3f6bd0900ad20f15855ba775a96f1939118cbc629dc97",
     "candidateRoot": "0xa6d61281b9933ed55535fc12b6e62f77430b81f2d9d2b10b414ae972d5a5030d",
-    "simulatedAtRobinhoodBlock": 117676601
+    "simulatedAtRobinhoodBlock": 117676601,
+    "transactionHash": "0x22de1d660decd088ac9be2c04d323af379a37dbeaeb4297749d1284283187915",
+    "receiptBlock": 117690778,
+    "receiptBlockHash": "0x7969b44f66b7a2c653164b978f88e825aa973fe0fd4894150c2e533d3e3553e2",
+    "verifiedAtUTC": "2026-11-18T20:52:30.599Z",
+    "candidateRootReadBackAtReceipt": true,
+    "receiptSafeAtObservation": false,
+    "parentSafeBlockAtObservation": 117687128,
+    "actualGasUsed": 74988,
+    "actualFeeEth": "0.000001506808872000",
+    "walletSignedMaximumFeeEth": "0.000005254942020000"
   },
   "delayedActivation": {
     "status": "waiting-for-safe-root-and-validator-promotion",
@@ -103,5 +113,34 @@
     "localRegressionChecksPassed": true,
     "reviewedSimulationBlock": 117689430,
     "reusedExistingReviewUrl": true
-  }
+  },
+  "promotionBatchOne": {
+    "status": "wallet-review-ready",
+    "target": "0xE4ce38967ED19B0177Ea52f2aA38cF817C1E2f89",
+    "valueEth": "0",
+    "payload": "0x03",
+    "proofRootReceipt": "0x22de1d660decd088ac9be2c04d323af379a37dbeaeb4297749d1284283187915",
+    "simulatedAtRobinhoodBlock": 117692667,
+    "feeEnvelopeRetainedUnderDrift": true
+  },
+  "publicRpcAfterRootInstall": [
+    {
+      "url": "https://rpc.gh0st.fyi/",
+      "chainId": 4663001,
+      "head": 20631,
+      "headHash": "0xe3f53b3e2ab4e6eaeeaad0ab9c3e5c0eddffecb5fedc55c57f16df2c6b36ba1f",
+      "safe": 20630,
+      "safeHash": "0xdd12d840583b8081ff3cc1d0a25b2b281181fe6993a22d863a81fecef4e4c596",
+      "arbOS": 61
+    },
+    {
+      "url": "https://gh0st.fyi/gl3/rpc",
+      "chainId": 4663001,
+      "head": 20631,
+      "headHash": "0xe3f53b3e2ab4e6eaeeaad0ab9c3e5c0eddffecb5fedc55c57f16df2c6b36ba1f",
+      "safe": 20630,
+      "safeHash": "0xdd12d840583b8081ff3cc1d0a25b2b281181fe6993a22d863a81fecef4e4c596",
+      "arbOS": 61
+    }
+  ]
 }
