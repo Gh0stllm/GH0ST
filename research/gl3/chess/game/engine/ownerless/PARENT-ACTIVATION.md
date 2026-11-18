@@ -6,6 +6,19 @@ activation message only on sealed GL3, chain ID 4663001. The authorized
 sender is the existing receipt-bound Robinhood UpgradeExecutor
 `0xA632B4c45726C779086F60d8b09BEE7b09bA2541`.
 
+## Verified candidate
+
+The corrected candidate's proof machine root is
+`0xa6d61281b9933ed55535fc12b6e62f77430b81f2d9d2b10b414ae972d5a5030d`.
+The installed private fixture passed activation, bootstrap delegation,
+duplicate rejection and cold state reconstruction with the child owner
+still zero. The proof machine reproduced the before, after and bootstrap
+blocks. The binaries were checksum-verified after copying to persistent
+storage. The corrected read-only follower resumed at GL3 safe block
+**20,628** while production served **20,629**. No production write pause
+or handoff has been applied.
+[Verified candidate evidence](verified-parent-candidate-20261118.json)
+
 ## Build integration
 
 Use the pinned, isolated Nitro source tree after staging the ordinary A14
