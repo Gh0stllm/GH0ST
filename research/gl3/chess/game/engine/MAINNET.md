@@ -45,3 +45,20 @@ The game contract and player are source artifacts. The exact 24M-node
 Stockfish policy and retained model are the release target. There is no
 mainnet activation receipt, deployed game or funded prize associated with
 this update.
+
+## 2026-11-18 live handoff check
+
+The running GL3 sequencer's startup profile confirmed standalone sequencing,
+batch posting and delayed sequencing in one process. Its sequencer
+coordinator and feed output are disabled. The A14 follower held safe
+block **20,628** while production served block **20,629**. Promoting it from
+that frontier can replace a block that the live node already served.
+Changing the verifier root cannot make the standalone sequencer share a
+leader lease with the follower. [Live observations](handoff-evidence-20261118.json)
+
+The current Robinhood rollup still has the stock ArbOS 61 proof root.
+The deployed challenge manager reports one big-step level, big-step
+height `524288` and small-step height `8388608`. This gives
+`4398046511104` machine steps per disputed block. The A14 candidate's
+activation and search transitions need their own evidence against those
+deployed parameters before selection of the new root.
