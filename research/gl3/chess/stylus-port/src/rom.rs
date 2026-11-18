@@ -63,6 +63,14 @@ pub struct BytecodeRom<'a, H: CodeHost, const RESIDENT: usize> {
 }
 
 impl<'a, H: CodeHost, const RESIDENT: usize> BytecodeRom<'a, H, RESIDENT> {
+    pub fn len(&self) -> u32 {
+        self.len
+    }
+
+    pub fn is_empty(&self) -> bool {
+        self.len == 0
+    }
+
     pub fn new(host: H, shards: &'a [Shard], len: u32) -> Result<Self, RomError<H::Error>> {
         if RESIDENT == 0 || len == 0 || shards.len() != (len as usize).div_ceil(PAYLOAD_BYTES) {
             return Err(RomError::InvalidManifest);

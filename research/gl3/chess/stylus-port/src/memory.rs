@@ -84,6 +84,14 @@ impl<B: PageBackend, const RESIDENT: usize> PagedMemory<B, RESIDENT> {
         })
     }
 
+    pub fn len(&self) -> u64 {
+        self.byte_len
+    }
+
+    pub fn is_empty(&self) -> bool {
+        self.byte_len == 0
+    }
+
     fn check_span(&self, address: u64, len: usize) -> Result<(), MemoryError<B::Error>> {
         let len = u64::try_from(len).map_err(|_| MemoryError::OutOfBounds)?;
         let end = address.checked_add(len).ok_or(MemoryError::OutOfBounds)?;

@@ -34,11 +34,25 @@ contract. The prepared model, engine and continuation must reproduce the
 - [Receipt verification](tools/verify_full_move.py) checks a captured move
   for the exact reference result, checkpoint, group continuity, activated
   private contract identity, canonical receipts and measured limits.
+- [The bounded interpreter](src/interpreter/mod.rs) runs the pinned guest's
+  control flow, calls, scalar arithmetic and SIMD semantics over paged
+  memory. [The inspector](tools/inspect_instructions/README.md) validates
+  the guest and emits control links, signatures, globals and table entries.
+  The [Stockfish adapter](src/interpreter/guest.rs) calls the exact guest
+  exports for the existing 40-quantum driver.
+- [Cold resume](src/resume.rs) authenticates the checkpoint header and
+  supplied old pages before execution. It isolates page writes until the
+  new root is sealed, and a missing witness prevents a commit.
 
 ## Validation
 
-The Rust library passed 19 tests for paging, cursors, immutable code reads,
-checkpoint records and joint Merkle proofs, plus a Wasm target type check.
+The Rust library passed 27 component tests, including interpreter control
+flow, memory, indirect calls and authenticated cold-resume behavior.
+The 42 scalar implementations of the pinned SIMD compute instructions
+matched native WebAssembly across 2,688 differential test vectors.
+The inspector found 197 opcode kinds in the pinned guest, including 52
+SIMD instructions. The remaining 10 SIMD opcodes are memory operations
+and constants handled by the interpreter.
 A small fixture against the pinned generated C header passed
 memory access, overlapping copy, growth and trap checks. The Go reference
 command compiled with the pinned guest embedded. The full Stylus engine
@@ -76,8 +90,9 @@ ordinary immutable bytecode cells and adds a separate 7,494-byte function
 directory. It preserves the original 98,648,903-byte encoded data section
 in an additional 4,015 cells. [The bounded reader](src/rom.rs) checks each
 cell's code hash against the engine manifest and reads functions across
-cell boundaries. The cells are inputs for a compact interpreter that
-still needs to execute the full guest instruction set.
+cell boundaries. The interpreter uses those cells, 24,778 indexed
+control links and a 1,764-byte runtime directory. A linked, activated
+Stockfish contract still needs a private Nitro rehearsal.
 
 The [custom research runtime's full decision](../sliced/evidence/cachefix-full24m.json)
 persisted a median 655,352-byte word-delta per four-quantum slice. Depositing
