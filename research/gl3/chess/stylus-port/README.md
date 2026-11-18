@@ -14,6 +14,21 @@ contract. The prepared model, engine and continuation must reproduce the
 | Canonical retained state | 163,085,439 bytes, SHA-256 `5f9762c73c1309824a365e47f936d27975c6233770672803bcc6ffbba30f28c6` |
 | Work grouping | 9,853 engine quanta, 246 groups of 40 and one final group of 13 |
 
+## Private Runpod rehearsal
+
+[The stock Nitro rehearsal](evidence/private-activation-20261118.json) loaded
+the exact checkpoint archive and mined the canonical search contract in a
+**23,864-byte signed deployment transaction**, using **5,208,580 L2 compute
+gas**. Activation reverted. Nitro's replay compiler reported that it has
+no implementation for the user module's `F64PromoteF32` instruction.
+This is a stock Stylus compatibility failure that occurred before any
+search transaction ran. The deployment size does not establish the size
+of a 40-quantum search transaction or the block cadence under search load.
+
+The port needs integer-backed IEEE 754 operations that preserve the
+guest's exact behavior, followed by a fresh activation, complete-move
+parity and mixed-traffic rehearsal. Production was untouched.
+
 ## Implemented
 
 - [Guest preparation](tools/prepare_guest.py) identifies the exact program,
@@ -194,7 +209,8 @@ opened the exact engine ROM for a validly framed call, rejected an omitted
 page witness without logging or updating the head, and rejected a stale
 checkpoint and a nonzero value transfer. These checks cover the entry
 point and failure handling. Activation, a successful search group, and
-the real cost of publishing its changed pages remain unverified.
+the real cost of publishing its changed pages require stock Nitro. The
+Runpod activation result above is the first on-chain result for this build.
 
 ### Exact initialized snapshot for the rehearsal
 
@@ -229,8 +245,8 @@ ephemeral signer on an isolated ArbOS 61 loopback RPC, deploys and
 activates the search program, and verifies its signed transaction length,
 gas receipt and committed 40-quantum head. It also reconstructs the head
 commitment and compares the complete ordered page journal with the trace
-byte for byte using its digest. The trace and the private
-transaction are still pending. End-to-end testing also needs to show that
+byte for byte using its digest. The runner verifies the compute gas cap
+separately from the simulated posting cost. End-to-end testing needs to show that
 the receipt bytes can supply subsequent groups and reproduce the complete
 24-million-node checkpoint while ordinary transfers keep their cadence.
 

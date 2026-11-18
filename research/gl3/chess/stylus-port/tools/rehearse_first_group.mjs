@@ -10,6 +10,8 @@ import { setTimeout as sleep } from 'node:timers/promises';
 const CHAIN = 412346n;
 const MAX_SIGNED = 95_000;
 const MAX_GAS = 32_000_000n;
+const NODE_INTERFACE = '0x00000000000000000000000000000000000000c8';
+const CONTRACT_CREATION = '0x0000000000000000000000000000000000000000';
 const ARB_SYS = '0x0000000000000000000000000000000000000064';
 const ARB_WASM = '0x0000000000000000000000000000000000000071';
 const HEAD_SLOT = '0x' + '6d'.repeat(32);
@@ -67,6 +69,7 @@ async function rpc(method, params = []) {
 const arbSys = new Interface(['function arbOSVersion() view returns (uint256)']);
 const arbWasm = new Interface(['function activateProgram(address) payable returns (uint16,uint256)',
   'function programVersion(address) view returns (uint16)']);
+const nodeInterface = new Interface(['function gasEstimateL1Component(address,bool,bytes) returns (uint64,uint256,uint256)']);
 const genesis = await rpc('eth_getBlockByNumber', ['0x0', false]);
 if (BigInt(await rpc('eth_chainId')) !== CHAIN || !/^0x[0-9a-f]{64}$/i.test(genesis?.hash || '')
     || genesis.hash.toLowerCase() === PUBLIC_GENESIS
@@ -80,21 +83,31 @@ let nonce = Number(BigInt(await rpc('eth_getTransactionCount', [signer.address, 
 
 async function send(label, inputs) {
   const gasPrice = BigInt(await rpc('eth_gasPrice'));
-  const raw = await signer.signTransaction({ chainId: CHAIN, type: 0, gasLimit: MAX_GAS,
+  const posterCall = nodeInterface.encodeFunctionData('gasEstimateL1Component',
+    [inputs.to ?? CONTRACT_CREATION, !inputs.to, inputs.data ?? '0x']);
+  const estimate = await rpc('eth_call', [{ from: signer.address, to: NODE_INTERFACE, data: posterCall }, 'latest']);
+  const [posterGasEstimate] = nodeInterface.decodeFunctionResult('gasEstimateL1Component', estimate);
+  const gasLimit = MAX_GAS + posterGasEstimate * 102n / 100n + 10_000n;
+  const raw = await signer.signTransaction({ chainId: CHAIN, type: 0, gasLimit,
     nonce, gasPrice, ...inputs });
   const signedTransactionBytes = getBytes(raw).length;
   if (signedTransactionBytes >= MAX_SIGNED) throw new Error(`${label} signed size ${signedTransactionBytes} exceeds admission`);
   const at = performance.now();
   const hash = await rpc('eth_sendRawTransaction', [raw]);
   nonce += 1;
-  const row = { hash, signedTransactionBytes };
+  const row = { hash, signedTransactionBytes, posterGasEstimate: posterGasEstimate.toString(), gasLimit: gasLimit.toString() };
   report.transactions[label] = row;
   for (let attempt = 0; attempt < 600; attempt++) {
     const receipt = await rpc('eth_getTransactionReceipt', [hash]);
     if (receipt) {
       row.wallMs = performance.now() - at;
       row.receipt = receipt;
-      if (receipt.status !== '0x1') throw new Error(`${label} reverted, gasUsed=${receipt.gasUsed}`);
+      const gasUsed = BigInt(receipt.gasUsed);
+      const posterGas = BigInt(receipt.gasUsedForL1 ?? '0x0');
+      if (posterGas < 0n || posterGas >= gasUsed) throw new Error(`${label} returned invalid gas components`);
+      row.computeGas = Number(gasUsed - posterGas);
+      if (receipt.status !== '0x1') throw new Error(`${label} reverted, compute gas used=${row.computeGas}`);
+      if (label === 'first40' && gasUsed - posterGas > MAX_GAS) throw new Error('First group exceeded the L2 compute gas cap');
       return receipt;
     }
     await sleep(100);
