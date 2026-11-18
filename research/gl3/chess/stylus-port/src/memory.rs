@@ -84,11 +84,9 @@ impl<B: PageBackend, const RESIDENT: usize> PagedMemory<B, RESIDENT> {
         })
     }
 
-    fn check_span(&self, address: u32, len: usize) -> Result<(), MemoryError<B::Error>> {
+    fn check_span(&self, address: u64, len: usize) -> Result<(), MemoryError<B::Error>> {
         let len = u64::try_from(len).map_err(|_| MemoryError::OutOfBounds)?;
-        let end = u64::from(address)
-            .checked_add(len)
-            .ok_or(MemoryError::OutOfBounds)?;
+        let end = address.checked_add(len).ok_or(MemoryError::OutOfBounds)?;
         if end > self.byte_len {
             return Err(MemoryError::OutOfBounds);
         }
@@ -118,7 +116,7 @@ impl<B: PageBackend, const RESIDENT: usize> PagedMemory<B, RESIDENT> {
 
     /// Read a checked byte range, including unaligned and cross-page reads.
     pub fn read(&mut self, address: u32, mut out: &mut [u8]) -> Result<(), MemoryError<B::Error>> {
-        self.check_span(address, out.len())?;
+        self.check_span(u64::from(address), out.len())?;
         let mut cursor = u64::from(address);
         while !out.is_empty() {
             let page = (cursor / PAGE_SIZE as u64) as u32;
@@ -134,7 +132,7 @@ impl<B: PageBackend, const RESIDENT: usize> PagedMemory<B, RESIDENT> {
 
     /// Store a checked byte range. A bounds failure does not change any pages.
     pub fn write(&mut self, address: u32, mut bytes: &[u8]) -> Result<(), MemoryError<B::Error>> {
-        self.check_span(address, bytes.len())?;
+        self.check_span(u64::from(address), bytes.len())?;
         let mut cursor = u64::from(address);
         while !bytes.is_empty() {
             let page = (cursor / PAGE_SIZE as u64) as u32;
@@ -146,6 +144,66 @@ impl<B: PageBackend, const RESIDENT: usize> PagedMemory<B, RESIDENT> {
             frame.dirty = true;
             bytes = rest;
             cursor += count as u64;
+        }
+        Ok(())
+    }
+
+    /// Grow within the guest limit. Pages beyond the old length must have no
+    /// saved writes in the backend. A dropped transaction restores both this
+    /// length and the backend's writes to the previous checkpoint.
+    pub fn grow(&mut self, additional_bytes: u64) -> Result<(), MemoryError<B::Error>> {
+        self.byte_len = self
+            .byte_len
+            .checked_add(additional_bytes)
+            .filter(|length| *length <= MAX_GUEST_BYTES)
+            .ok_or(MemoryError::OutOfBounds)?;
+        Ok(())
+    }
+
+    pub fn fill(
+        &mut self,
+        address: u64,
+        value: u8,
+        len: usize,
+    ) -> Result<(), MemoryError<B::Error>> {
+        self.check_span(address, len)?;
+        let mut cursor = address;
+        let mut remaining = len;
+        while remaining != 0 {
+            let page = (cursor / PAGE_SIZE as u64) as u32;
+            let offset = (cursor % PAGE_SIZE as u64) as usize;
+            let count = min(remaining, PAGE_SIZE - offset);
+            let frame = self.frame(page)?;
+            frame.bytes[offset..offset + count].fill(value);
+            frame.dirty = true;
+            remaining -= count;
+            cursor += count as u64;
+        }
+        Ok(())
+    }
+
+    /// Wasm memory.copy within one image. Bounds are checked before any write,
+    /// and the direction preserves reads from an overlapping source span.
+    pub fn copy(&mut self, dst: u64, src: u64, len: usize) -> Result<(), MemoryError<B::Error>> {
+        self.check_span(dst, len)?;
+        self.check_span(src, len)?;
+        if dst == src {
+            return Ok(());
+        }
+        let backward = dst > src && dst - src < len as u64;
+        let mut scratch = [0; PAGE_SIZE];
+        let mut copied = 0;
+        while copied < len {
+            let count = min(len - copied, PAGE_SIZE);
+            let offset = if backward {
+                len - copied - count
+            } else {
+                copied
+            } as u64;
+            // Each nonempty span starts below 2^32 after the checks above.
+            self.read((src + offset) as u32, &mut scratch[..count])?;
+            self.write((dst + offset) as u32, &scratch[..count])?;
+            copied += count;
         }
         Ok(())
     }
@@ -320,5 +378,46 @@ mod tests {
         assert_eq!(memory.load_u8(PAGE_SIZE as u32), Ok(0));
         assert_eq!(memory.backend.pages.get(&0).unwrap()[0], 77);
         assert_eq!(memory.backend.writes, 1);
+    }
+
+    #[test]
+    fn bulk_copy_preserves_overlaps_with_eviction() {
+        const SIZE: usize = 3 * PAGE_SIZE;
+        let mut reference = [0u8; SIZE];
+        for (address, byte) in reference.iter_mut().enumerate() {
+            *byte = (address % 251) as u8;
+        }
+        let mut memory = PagedMemory::<_, 1>::new(TestBackend::default(), SIZE as u64).unwrap();
+        memory.write(0, &reference).unwrap();
+        reference.copy_within(0..2 * PAGE_SIZE + 1, 137);
+        memory.copy(137, 0, 2 * PAGE_SIZE + 1).unwrap();
+        reference.copy_within(29..2 * PAGE_SIZE + 29, 0);
+        memory.copy(0, 29, 2 * PAGE_SIZE).unwrap();
+        reference[PAGE_SIZE - 6..PAGE_SIZE + 5].fill(199);
+        memory.fill(PAGE_SIZE as u64 - 6, 199, 11).unwrap();
+        let mut result = [0; SIZE];
+        memory.read(0, &mut result).unwrap();
+        assert_eq!(result, reference);
+    }
+
+    #[test]
+    fn bulk_bounds_include_zero_length_at_the_end_of_wasm32() {
+        let mut memory =
+            PagedMemory::<_, 1>::new(TestBackend::default(), MAX_GUEST_BYTES - 2).unwrap();
+        assert_eq!(memory.grow(3), Err(MemoryError::OutOfBounds));
+        assert_eq!(memory.load_u8(u32::MAX - 1), Err(MemoryError::OutOfBounds));
+        memory.grow(2).unwrap();
+        assert_eq!(memory.load_u8(u32::MAX), Ok(0));
+        assert_eq!(memory.fill(MAX_GUEST_BYTES, 9, 0), Ok(()));
+        assert_eq!(memory.copy(MAX_GUEST_BYTES, MAX_GUEST_BYTES, 0), Ok(()));
+        assert_eq!(
+            memory.fill(MAX_GUEST_BYTES, 9, 1),
+            Err(MemoryError::OutOfBounds)
+        );
+        assert_eq!(
+            memory.copy(0, MAX_GUEST_BYTES, 1),
+            Err(MemoryError::OutOfBounds)
+        );
+        assert_eq!(memory.load_u8(0), Ok(0));
     }
 }
