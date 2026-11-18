@@ -87,6 +87,8 @@ def main():
     parser.add_argument("wasi_clang", type=Path)
     parser.add_argument("output", type=Path)
     parser.add_argument("--jobs", type=int, choices=range(1, 5), default=4)
+    parser.add_argument("--native-lto", action="store_true",
+                        help="Use GCC link-time optimization for the native parity host")
     args = parser.parse_args()
     if args.output.exists():
         parser.error("Choose a new output directory")
@@ -117,7 +119,12 @@ def main():
         "-I" + str(args.wabt_source / "third_party/simde"),
         "-I" + str(ROOT / "tools"),
     ]
-    native = build_objects("cc", [*common, "-O2", "-fPIC", "-fno-tree-vectorize"],
+    native_compile = ["-O2", "-fPIC", "-fno-tree-vectorize"]
+    native_link = ["-shared"]
+    if args.native_lto:
+        native_compile.extend(["-flto", "-fno-semantic-interposition"])
+        native_link.extend(["-O2", "-fno-semantic-interposition", f"-flto={args.jobs}"])
+    native = build_objects("cc", [*common, *native_compile],
                            inputs + [ROOT / "probe/aot_flat_memory.c"],
                            args.output / "native-objects", args.jobs)
     seed_source = args.output / "native-segments.S"
@@ -128,7 +135,7 @@ def main():
     seed_obj = args.output / "native-segments.o"
     run(["cc", "-c", seed_source, "-o", seed_obj])
     library = args.output / "libgl3aot.so"
-    run(["cc", "-shared", *native, seed_obj, "-lm", "-o", library])
+    run(["cc", *native_link, *native, seed_obj, "-lm", "-o", library])
 
     wasi_runtime = args.output / "wasi-runtime"
     prepare_wasi_runtime(runtime, wasi_runtime)
@@ -158,6 +165,7 @@ def main():
         "scope": "AOT code sizing with external guest-memory bindings. Native parity uses the exact seed in a local host.",
         "guestSHA256": manifest["artifactSha256"], "modelSHA256": manifest["nnue"]["sha256"],
         "nativeLibrarySHA256": sha(library.read_bytes()),
+        "nativeLTO": args.native_lto,
         "wasiCompiler": subprocess.check_output([str(args.wasi_clang), "--version"], text=True).splitlines()[0],
         "maxStockWasmBytes": STYLUS_WASM_BYTES, "maxStockBrotliPayloadBytes": STYLUS_COMPRESSED_BYTES,
         "variants": variants, "elapsedSeconds": time.monotonic() - began,

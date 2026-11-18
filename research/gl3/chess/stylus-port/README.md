@@ -23,7 +23,7 @@ Its Wasm size report excludes the two immutable model and initialization
 segments, which the builder exports separately. The Wasm variants leave
 paging to the host and measure executable size before activation work.
 
-All three [isolated Runpod builds](evidence/aot-compiled-20261118.json)
+The [isolated Runpod builds](evidence/aot-compiled-20261118.json)
 exceeded the stock package limits with both initialization segments
 already removed from the executable.
 
@@ -32,30 +32,45 @@ already removed from the executable.
 | `-O2` | 4,989,302 B | 582,077 B |
 | `-Oz` | 1,796,532 B | 341,839 B |
 | `-Oz -flto` | 1,756,616 B | 343,090 B |
+| `-Oz` after Binaryen `-Oz` | 1,419,750 B | 347,865 B |
+| `-Oz -flto` after Binaryen `-Oz` | 1,347,104 B | 332,042 B |
 | Stock limit | 262,144 B | 98,292 B |
 
-The size-optimized builds cut raw size by up to 65%. The stock packer
-rejected all three before activation at the decompressed size check,
-including with four-fragment support enabled. The compressed payloads
-also exceed the four-fragment capacity. The AOT build has no on-chain
-gas, signed transaction size or block-cadence result.
+The smallest output is 73% smaller than `-O2`, and still 5.1 times the
+raw limit and 3.4 times the compressed limit. The stock packer rejected
+every build at its decompressed size check with four-fragment support
+enabled. Disassembly of the smallest artifact also shows `f64.div`, which
+requires software lowering under the [pinned Stylus instruction pricing
+rules](https://github.com/OffchainLabs/nitro/blob/5f02f3f03076343061f167e81b8e82ec5518064b/crates/prover/src/programs/meter.rs#L416-L428).
+
+An instrumented native replay counted 574,763,875 separate read, write,
+fill or move callbacks in the first 40 quanta. Preserving one metered
+Wasm `call` per callback would require about 218.4 million gas for those
+calls alone at 3,800 ink per call and 10,000 ink per gas. That estimate
+excludes the function bodies and checkpoint work and could change with
+inlined or batched memory access. The AOT build has no on-chain gas,
+signed transaction size or block-cadence result.
 
 On an isolated Linux worker with WABT 1.0.42 source, the pinned `wasm2c`
-output, WASI SDK 25, a C compiler and Python `brotli` installed, run from
+output, WASI SDK 25, GCC, Binaryen 123 and Python `brotli` installed, run from
 `stylus-port` with the source paths and a fresh output directory.
 
 ```sh
 python3 tools/build_aot_candidate.py "$guest" "$generated" "$wabt_source" \
-  "$wasi_sdk/bin/clang" compiled
+  "$wasi_sdk/bin/clang" compiled --native-lto --jobs 3
 python3 tools/run_aot_reference.py compiled/libgl3aot.so compiled/reference.json
+wasm-opt compiled/compiled-Oz-lto.wasm -Oz --all-features --strip-debug \
+  -o compiled/post-link-Oz-lto.wasm
 ```
 
 The [native parity host](probe/aot_flat_memory.c) loads the same seed into
-flat memory and runs the same lowered C. The reference runner executes
-all 247 groups and reconstructs the native engine from its memory and
-continuation globals at three boundaries. Its scope is engine parity in
-the fixture. Stock Stylus execution must separately pass activation,
-checkpoint, signed transaction size, gas and mixed-traffic tests.
+flat memory and runs the same lowered C. On Runpod it processed 24,000,033
+nodes in 665.4 seconds, matched all 247 reference group boundaries and
+returned `e7e5` at depth 38 with the identical canonical checkpoint hash.
+It rebuilt the native engine from memory and continuation globals at
+quanta 40, 4,000 and 9,840. Stock Stylus execution must separately pass
+activation, checkpoint, signed transaction size, gas and mixed-traffic
+tests.
 
 ## Private Runpod rehearsal
 

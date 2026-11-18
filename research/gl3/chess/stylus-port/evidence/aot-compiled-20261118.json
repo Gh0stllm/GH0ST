@@ -7,7 +7,14 @@
     "vCPUs": 4,
     "memoryGiB": 16,
     "computeUSDPerHour": 0.184,
-    "authorisedBudgetUSD": 1
+    "authorisedBudgetUSD": 1,
+    "elapsedSecondsApprox": 1673,
+    "computeCostUSDEstimated": 0.085528,
+    "currentBillingRecords": 0,
+    "estimatedExcludesTemporaryDisk": true,
+    "terminated": true,
+    "terminationStatus": 204,
+    "readBackStatus": 404
   },
   "build": {
     "scope": "AOT code sizing with external guest-memory bindings. Native parity uses the exact seed in a local host.",
@@ -45,7 +52,9 @@
     },
     "elapsedSeconds": 107.90356439724565,
     "stylusActivated": false,
-    "publicDeployment": false
+    "publicDeployment": false,
+    "wabtSourceArchiveSHA256": "a76cda3c174a43097863a07fc0b0c202f770f53e21806ea2636f167d1ffb1e30",
+    "wasiSDK25ArchiveSHA256": "52640dde13599bf127a95499e61d6d640256119456d1af8897ab6725bcf3d89c"
   },
   "packageChecks": {
     "O2": {
@@ -74,5 +83,106 @@
     "productionPodAccessed": false,
     "chainHalted": false,
     "publicTransactions": 0
+  },
+  "postLinkOptimization": {
+    "wasmOpt": "wasm-opt version 123 (version_123)",
+    "archiveSHA256": "e959f2170af4c20c552e9de3a0253704d6a9d2766e8fdb88e4d6ac4bae9388fe",
+    "variants": {
+      "Oz": {
+        "wasmBytes": 1419750,
+        "brotliBytes": 347865,
+        "wasmSHA256": "fcdeadb9a7e786002766881f19023e7012e513034941f29e03d340d9521d412c",
+        "packagingExitCode": 1,
+        "packagingOutput": "Probe packaging stopped: Wasm must fit the 262144-byte precompression limit"
+      },
+      "Oz-lto": {
+        "wasmBytes": 1347104,
+        "brotliBytes": 332042,
+        "wasmSHA256": "061f47ffd0a0cf0a16d5cecf236fc51cf166246a5883a8c93b3ea8af2a28c211",
+        "packagingExitCode": 1,
+        "packagingOutput": "Probe packaging stopped: Wasm must fit the 262144-byte precompression limit"
+      }
+    },
+    "wallSeconds": 13.960890723858029,
+    "scope": "Post-link size screening on disposable Runpod, before host integration",
+    "disassemblyWitness": {
+      "variant": "Oz-lto",
+      "instruction": "f64.div",
+      "offsetHex": "f173"
+    }
+  },
+  "firstGroupNativePaging": {
+    "scope": "Native externally linked paging callbacks, exact e2e4 opening group; counts are not Stylus gas or distinct bytes",
+    "groupSize": 40,
+    "observedNodes": 98566,
+    "operations": {
+      "read": {
+        "calls": 521427409,
+        "logicalBytes": 4684953593
+      },
+      "write": {
+        "calls": 53335399,
+        "logicalBytes": 480750970
+      },
+      "fill": {
+        "calls": 16,
+        "logicalBytes": 15087
+      },
+      "move": {
+        "calls": 1051,
+        "logicalBytes": 102240
+      }
+    },
+    "totalCalls": 574763875,
+    "nativeWallSeconds": 4.460819794330746,
+    "instrumentedLibrarySHA256": "eed0123244edf0307145d6bf32abd9dcca738e057c783f764947d5354c7b33dc",
+    "unchangedCallShapeEstimate": {
+      "conditionalOnOneMeteredWasmCallPerCallback": true,
+      "inkPerCall": 3800,
+      "inkPerGas": 10000,
+      "callsOnlyGasRoundedUp": 218410273,
+      "meterSource": "https://github.com/OffchainLabs/nitro/blob/5f02f3f03076343061f167e81b8e82ec5518064b/crates/prover/src/programs/meter.rs#L350-L362"
+    }
+  },
+  "nativeParity": {
+    "scope": "Native compiled parity fixture on Runpod",
+    "opening": "e2e4",
+    "groupSize": 40,
+    "totalGroups": 247,
+    "totalQuanta": 9853,
+    "actualNodes": 24000033,
+    "depth": 38,
+    "move": "e7e5",
+    "firstGroupNodes": 98566,
+    "firstGroupWallMs": 2464.85548466444,
+    "wallSeconds": 665.4322122018784,
+    "canonicalCheckpointBytes": 163085439,
+    "canonicalCheckpointSHA256": "5f9762c73c1309824a365e47f936d27975c6233770672803bcc6ffbba30f28c6",
+    "coldRestarts": [
+      {
+        "quantum": 40,
+        "memoryBytes": 466157568,
+        "wallMs": 221.3924559764564
+      },
+      {
+        "quantum": 4000,
+        "memoryBytes": 466157568,
+        "wallMs": 227.2127098403871
+      },
+      {
+        "quantum": 9840,
+        "memoryBytes": 466157568,
+        "wallMs": 229.4862186536193
+      }
+    ],
+    "onChain": false,
+    "publicDeployment": false,
+    "passed": true,
+    "all247BoundariesMatchPortableGoWasmReference": true,
+    "orderedGroupBoundariesSHA256": "36d1b32710a3ce53d4e47cebb520ec1531d3e1d0d8315fa70bd3d8b265395135",
+    "rawRunReportSHA256": "aef6b3f4e4ae4b5755bc1e01cc0a158656a53f2df9a830b80d84503ab7c15117",
+    "nativeLibrarySHA256": "ab9ff12f2551546fa3ecf295bc79b0fe6e4b6d51fca387a5c70f539590f93ca2",
+    "nativeCompiler": "GCC 13.3.0 with -O2 -flto -fno-semantic-interposition",
+    "nativeCompilerOptionsRechecked": true
   }
 }
