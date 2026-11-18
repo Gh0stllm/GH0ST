@@ -14,6 +14,32 @@ contract. The prepared model, engine and continuation must reproduce the
 | Canonical retained state | 163,085,439 bytes, SHA-256 `5f9762c73c1309824a365e47f936d27975c6233770672803bcc6ffbba30f28c6` |
 | Work grouping | 9,853 engine quanta, 246 groups of 40 and one final group of 13 |
 
+## Compiled Stockfish candidate
+
+The [candidate builder](tools/build_aot_candidate.py) checks the portable
+guest, model and WABT 1.0.42 translation before building the engine with
+WASI SDK 25. The compiled code calls the checked guest-memory interface.
+Its Wasm size report excludes the two immutable model and initialization
+segments, which the builder exports separately. The Wasm variants leave
+paging to the host and measure executable size before activation work.
+
+On an isolated Linux worker with WABT 1.0.42 source, the pinned `wasm2c`
+output, WASI SDK 25, a C compiler and Python `brotli` installed, run from
+`stylus-port` with the source paths and a fresh output directory.
+
+```sh
+python3 tools/build_aot_candidate.py "$guest" "$generated" "$wabt_source" \
+  "$wasi_sdk/bin/clang" compiled
+python3 tools/run_aot_reference.py compiled/libgl3aot.so compiled/reference.json
+```
+
+The [native parity host](probe/aot_flat_memory.c) loads the same seed into
+flat memory and runs the same lowered C. The reference runner executes
+all 247 groups and reconstructs the native engine from its memory and
+continuation globals at three boundaries. Its scope is engine parity in
+the fixture. Stock Stylus execution must separately pass activation,
+checkpoint, signed transaction size, gas and mixed-traffic tests.
+
 ## Private Runpod rehearsal
 
 The [code-backed checkpoint rehearsal](evidence/code-backed-first-group-20261118.json)
