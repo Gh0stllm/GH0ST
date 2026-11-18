@@ -21,6 +21,12 @@ together. Each build uses a fresh variant directory.
 python3 research/gl3/chess/build_replay.py --sliced --game-coordinator --candidate-arbos-version 62 --parent-authorized-a14
 ```
 
+The revised native binary and matching proof machine were assembled
+on the existing GL3 pod. Their checksums matched after copying to
+persistent storage. The candidate module root is
+`0xa3ae4f567770561a740f7658044d3cee6cf778726b18f49132d9a1264fa4174e`.
+[Build and initial history comparison](parent-authorized-build-20261118.json)
+
 Both block production and replay require delayed request ID and the
 prior and next header nonce to identify one newly consumed delayed
 message. Regular sequencer messages have a fixed batch-poster sender

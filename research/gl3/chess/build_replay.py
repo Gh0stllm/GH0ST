@@ -57,13 +57,14 @@ if __name__=='__main__':
   prepare.append('--parent-authorized-a14')
  run(prepare)
  BIN.mkdir(exist_ok=True);MACHINE.mkdir(exist_ok=True)
- run([GO,'build','-mod=mod','-o',BIN/'nitro','./cmd/nitro'],cwd=SOURCE,env=env)
- run([GO,'build','-mod=mod','-o',BIN/'replay-native','./cmd/replay'],cwd=SOURCE,env=env)
+ build_flags=['-mod=readonly','-trimpath'] if options.parent_authorized_a14 else ['-mod=mod']
+ run([GO,'build',*build_flags,'-o',BIN/'nitro','./cmd/nitro'],cwd=SOURCE,env=env)
+ run([GO,'build',*build_flags,'-o',BIN/'replay-native','./cmd/replay'],cwd=SOURCE,env=env)
  if options.aot_proof:
   aot_runtime=CACHE/('aot-runtime-game'+suffix if options.game_coordinator else 'aot-runtime'+suffix)
   run(['python3',HERE/'sliced/aot/make_runtime.py',aot_runtime])
   run([GO,'mod','edit','-replace=github.com/Gh0stllm/GH0ST/gl3/slicedchess='+str(aot_runtime)],cwd=SOURCE,env=env)
- run([GO,'build','-mod=mod',*(['-tags=gl3aotproof'] if options.aot_proof else []),'-o',BIN/'replay.raw.wasm','./cmd/replay'],cwd=SOURCE,env={**env,'GOOS':'wasip1','GOARCH':'wasm','CGO_ENABLED':'0'})
+ run([GO,'build',*build_flags,*(['-tags=gl3aotproof'] if options.aot_proof else []),'-o',BIN/'replay.raw.wasm','./cmd/replay'],cwd=SOURCE,env={**env,'GOOS':'wasip1','GOARCH':'wasm','CGO_ENABLED':'0'})
  canon=OLD/'stylus-native/.cache/target/release/gh0st-wasm-canonicalizer'
  run([canon,BIN/'replay.raw.wasm',BIN/'replay.wasm'])
  if not options.sliced:run([canon,HERE/'engine/.cache/gl3chess.wasm',BIN/'gl3chess.wasm'])
