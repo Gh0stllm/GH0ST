@@ -1,14 +1,23 @@
 """Prepare only the isolated custom chess source; never modifies the clean core."""
 from pathlib import Path
-import argparse,json,os,shutil,subprocess,hashlib,platform,re
-parser=argparse.ArgumentParser();parser.add_argument('--sliced',action='store_true');parser.add_argument('--variant',default='');options=parser.parse_args()
+import argparse,json,os,shutil,subprocess,hashlib,platform,re,sys,tempfile
+parser=argparse.ArgumentParser();parser.add_argument('--sliced',action='store_true');parser.add_argument('--variant',default='');parser.add_argument('--game-coordinator',action='store_true');options=parser.parse_args()
 assert not options.variant or (options.sliced and re.fullmatch('[a-z0-9-]+',options.variant))
+if options.game_coordinator and not options.sliced:
+ parser.error('--game-coordinator requires the A14 sliced engine')
 suffix='-'+options.variant if options.variant else ''
-HERE=Path(__file__).resolve().parent;REPO=HERE.parents[2];source=HERE/(('.cache/nitro-sliced'+suffix) if options.sliced else '.cache/nitro-chess');core=REPO/'research/chess/l3/core/node';go=core/'.cache/go-1.25.12/go/bin/go'
+HERE=Path(__file__).resolve().parent;REPO=HERE.parents[2]
+profile='nitro-game-a14'+suffix if options.game_coordinator else 'nitro-sliced'+suffix if options.sliced else 'nitro-chess'
+source=HERE/'.cache'/profile;core=REPO/'research/chess/l3/core/node';go=core/'.cache/go-1.25.12/go/bin/go'
 if not source.exists():
  if platform.system()=='Darwin':subprocess.run(['cp','-cR',str(core/'.cache/nitro-core'),str(source)],check=True)
  else:shutil.copytree(core/'.cache/nitro-core',source,symlinks=True)
 for p in (HERE/'overlay').glob('*.go'):shutil.copy2(p,source/'precompiles'/p.name)
+if options.game_coordinator:
+ with tempfile.TemporaryDirectory() as temporary:
+  staged=Path(temporary)/'overlay'
+  subprocess.run([sys.executable,str(HERE/'game/engine/stage_overlay.py'),str(HERE/'overlay/ArbGhostChessSlices.go'),str(staged)],check=True)
+  for p in staged.glob('*.go'):shutil.copy2(p,source/'precompiles'/p.name)
 for p in (HERE/'arbos_overlay').glob('*.go'):shutil.copy2(p,source/'arbos'/p.name)
 for p in (HERE/'system_overlay').glob('*.go'):shutil.copy2(p,source/'system_tests'/p.name)
 # The pinned local Geth predates an optional deep-reorg test flag. No reorg is used here.
@@ -22,7 +31,7 @@ p.write_text(s)
 subprocess.run([str(go),'mod','edit','-require=github.com/Gh0stllm/GH0ST/gl3/chessruntime@v0.0.0','-replace=github.com/Gh0stllm/GH0ST/gl3/chessruntime='+str(HERE/'runtime')],cwd=source,env={**os.environ,'GOTOOLCHAIN':'local'},check=True)
 subprocess.run([str(go),'mod','edit','-require=github.com/Gh0stllm/GH0ST/gl3/slicedchess@v0.0.0','-replace=github.com/Gh0stllm/GH0ST/gl3/slicedchess='+str(HERE/'sliced/runtime')],cwd=source,env={**os.environ,'GOTOOLCHAIN':'local'},check=True)
 subprocess.run([str(go.parent/'gofmt'),'-w',*[str(p) for p in (source/'precompiles').glob('ArbGhostChess*.go')]],check=True)
-print('Custom A13 overlay prepared; only experimental debug-chain profile enables it')
+print(f'Prepared isolated Nitro source: {profile}')
 
 # Native-only reporting exposes the replay's real computed global state.
 # It is not compiled into the Wasm STF and cannot supply or alter any result.

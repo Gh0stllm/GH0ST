@@ -22,22 +22,25 @@ def run(args,**kw):return subprocess.run([str(x) for x in args],check=True,**kw)
 def record(p):return {'bytes':p.stat().st_size,'SHA256':hashlib.sha256(p.read_bytes()).hexdigest()}
 
 if __name__=='__main__':
- parser=argparse.ArgumentParser();parser.add_argument('--sliced',action='store_true');parser.add_argument('--variant',default='');parser.add_argument('--aot-proof',action='store_true');options=parser.parse_args()
+ parser=argparse.ArgumentParser();parser.add_argument('--sliced',action='store_true');parser.add_argument('--variant',default='');parser.add_argument('--aot-proof',action='store_true');parser.add_argument('--game-coordinator',action='store_true');options=parser.parse_args()
  assert not options.variant or (options.sliced and re.fullmatch('[a-z0-9-]+',options.variant))
  assert not options.aot_proof or (options.sliced and re.fullmatch(r'aot(?:-[a-z0-9-]+)?',options.variant)), 'AOT proof experiment requires a reserved aot variant'
+ if options.game_coordinator and not options.sliced:
+  parser.error('--game-coordinator requires the A14 sliced engine')
  suffix='-'+options.variant if options.variant else ''
+ profile='game-a14' if options.game_coordinator else 'sliced'
  if options.sliced:
-  SOURCE=CACHE/('nitro-sliced'+suffix);BIN=CACHE/('bin-sliced'+suffix);MACHINE=CACHE/('machine-sliced'+suffix)
+  SOURCE=CACHE/('nitro-'+profile+suffix);BIN=CACHE/('bin-'+profile+suffix);MACHINE=CACHE/('machine-'+profile+suffix)
  if options.aot_proof:
   proof_report=json.loads((HERE/'sliced/aot/.cache/proof-parity.json').read_text())
   assert proof_report['passed'] and proof_report['artifactSHA256']==hashlib.sha256((HERE/'sliced/aot/.cache/companion.wasm').read_bytes()).hexdigest(), 'Proof companion has no matching parity/error result'
  started=time.monotonic()
- run(['python3',HERE/'prepare_nitro.py',*(['--sliced'] if options.sliced else []),*(['--variant',options.variant] if options.variant else [])])
+ run(['python3',HERE/'prepare_nitro.py',*(['--sliced'] if options.sliced else []),*(['--variant',options.variant] if options.variant else []),*(['--game-coordinator'] if options.game_coordinator else [])])
  BIN.mkdir(exist_ok=True);MACHINE.mkdir(exist_ok=True)
  run([GO,'build','-mod=mod','-o',BIN/'nitro','./cmd/nitro'],cwd=SOURCE,env=env)
  run([GO,'build','-mod=mod','-o',BIN/'replay-native','./cmd/replay'],cwd=SOURCE,env=env)
  if options.aot_proof:
-  aot_runtime=CACHE/('aot-runtime'+suffix)
+  aot_runtime=CACHE/('aot-runtime-game'+suffix if options.game_coordinator else 'aot-runtime'+suffix)
   run(['python3',HERE/'sliced/aot/make_runtime.py',aot_runtime])
   run([GO,'mod','edit','-replace=github.com/Gh0stllm/GH0ST/gl3/slicedchess='+str(aot_runtime)],cwd=SOURCE,env=env)
  run([GO,'build','-mod=mod',*(['-tags=gl3aotproof'] if options.aot_proof else []),'-o',BIN/'replay.raw.wasm','./cmd/replay'],cwd=SOURCE,env={**env,'GOOS':'wasip1','GOARCH':'wasm','CGO_ENABLED':'0'})
@@ -52,7 +55,7 @@ if __name__=='__main__':
  if options.aot_proof:args+=['-l',BIN/'gl3aot.wasm']
  run(args)
  if options.sliced:
-  layout=CACHE/('machines-sliced'+suffix);layout.mkdir(exist_ok=True)
+  layout=CACHE/('machines-'+profile+suffix);layout.mkdir(exist_ok=True)
   for name in ['latest',(MACHINE/'module-root.txt').read_text().strip()]:
    link=layout/name
    if link.is_symlink():link.unlink()
@@ -62,5 +65,7 @@ if __name__=='__main__':
  if not options.sliced:artifacts.append(BIN/'gl3chess.wasm')
  if options.aot_proof:artifacts.append(BIN/'gl3aot.wasm')
  report={'scope':'Complete custom machine generated; full engine-bearing replay/proof not implied','sliced':options.sliced,'experimentalAOTProof':options.aot_proof,'machineGenerated':True,'moduleRoot':(MACHINE/'module-root.txt').read_text().strip(),'artifacts':{p.name:record(p) for p in artifacts},'standardLibraries':{name:record(standard/(name+'.wasm')) for name in LIBS},'seconds':time.monotonic()-started,'publicDeployment':False,'realSpend':0}
- (CACHE/('sliced-replay-build'+suffix+'.json' if options.sliced else 'replay-build.json')).write_text(json.dumps(report,indent=2)+'\n')
+ if options.game_coordinator:
+  report['gameCoordinatorOverlay']={name:record(SOURCE/'precompiles'/name) for name in ['ArbGhostChessSlices.go','ArbGhostChessSlicesGame.go']}
+ (CACHE/(profile+'-replay-build'+suffix+'.json' if options.sliced else 'replay-build.json')).write_text(json.dumps(report,indent=2)+'\n')
  print(json.dumps(report,indent=2))
