@@ -35,7 +35,24 @@ passed on Runpod, including scalar edge cases and SIMD lane parity. The
 108,138-byte Wasm fit across two stock Stylus fragments and **activated on
 private ArbOS 61**. The root activation consumed 6,174,424 L2 compute gas.
 This activation check used a small genesis and pinned commitments. The
-seeded first group, full move and mixed-traffic checks follow separately.
+exact seeded archive then loaded on a separate private Nitro database.
+
+The [first 40-quantum trace](evidence/softfloat-first-group-20261118.json)
+reached **98,566 search nodes** using the pinned guest. Its compact
+witness needed **294,385 bytes**, for **298,406 bytes of calldata**
+including configuration and checkpoint header. The witness builder
+rejected the packet before signing. The changed-page logs would have
+carried **11,607,598 bytes** and used **92,860,784 gas for data alone**,
+above the 32-million L2 compute budget before the search or proof checks.
+The activation succeeded, and the first search transaction failed
+preflight. The complete on-chain move and block cadence during search
+remain unverified. The rehearsal sent no mainnet transactions.
+
+The [portable reference on the same worker](evidence/softfloat-portable-reference-20261118.json)
+completed **247 groups** and reproduced `e7e5` at depth 38, **24,000,033
+nodes**, and the pinned final checkpoint. The reference and integer-port
+trace agreed on the first group's 98,566 nodes. The reference ran
+off-chain and does not establish the Stylus port's terminal parity.
 
 ## Implemented
 
