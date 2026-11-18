@@ -221,6 +221,9 @@ deposit alone, before contracts, calldata, activation or execution.
 
 [First-group tracing](examples/trace_first_group.rs) captures the pinned
 engine's real read set and produces the exact compact witness if it fits.
+[The private node launcher](tools/start_rehearsal_node.mjs) imports the
+archive into a new database and starts stock Nitro on loopback on the
+disposable worker at the 100 ms sequencing interval.
 [The first-group runner](tools/rehearse_first_group.mjs) uses the funded
 ephemeral signer on an isolated ArbOS 61 loopback RPC, deploys and
 activates the search program, and verifies its signed transaction length,
