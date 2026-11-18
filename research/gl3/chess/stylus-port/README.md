@@ -46,6 +46,11 @@ With the pinned guest at `sliced/runtime/.cache/sliced.wasm`, run
 `go run ./cmd/group40` from `sliced/runtime` to produce the grouped portable
 reference. Run the complete engine on a dedicated test worker. This command
 compares engine output and produces no Stylus receipts.
+Pass `-checkpoint-traffic` to measure changed 4 KiB pages and 32-byte words
+between the actual 40-quantum boundaries. This profiles the portable VM's
+logical memory after initialization, before the diagnostic canonical export.
+The counts exclude changed globals and storage framing, and they cannot
+measure transient page traffic or contract gas.
 
 ## Activation and persistence
 

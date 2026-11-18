@@ -3,9 +3,11 @@
 package main
 
 import (
+	"bytes"
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
+	"flag"
 	"fmt"
 	"os"
 
@@ -27,11 +29,43 @@ const (
 )
 
 type group struct {
-	StartCursor   uint32 `json:"startCursor"`
-	EndCursor     uint32 `json:"endCursor"`
-	Quanta        uint32 `json:"quanta"`
-	ObservedNodes uint64 `json:"observedNodes"`
-	Pending       bool   `json:"pending"`
+	StartCursor   uint32          `json:"startCursor"`
+	EndCursor     uint32          `json:"endCursor"`
+	Quanta        uint32          `json:"quanta"`
+	ObservedNodes uint64          `json:"observedNodes"`
+	Pending       bool            `json:"pending"`
+	Checkpoint    *checkpointDiff `json:"checkpointDiff,omitempty"`
+}
+
+type checkpointDiff struct {
+	MemoryBytes  int `json:"memoryBytes"`
+	ChangedPages int `json:"changed4KiBPages"`
+	ChangedWords int `json:"changed32ByteWords"`
+}
+
+func measureCheckpoint(before, after []byte) (checkpointDiff, error) {
+	const wordBytes = 32
+	stats := checkpointDiff{MemoryBytes: len(after)}
+	var zeroPage [slicedchess.PageSize]byte
+	// Count only bytes that differ at a transaction boundary. New virtual
+	// pages start at zero and do not need to be persisted if they stay zero.
+	err := slicedchess.Diff(before, after, func(index int, page []byte) error {
+		prior := zeroPage[:]
+		if start := index * slicedchess.PageSize; start < len(before) {
+			prior = before[start : start+slicedchess.PageSize]
+		}
+		if bytes.Equal(prior, page) {
+			return nil
+		}
+		stats.ChangedPages++
+		for i := 0; i < len(page); i += wordBytes {
+			if !bytes.Equal(prior[i:i+wordBytes], page[i:i+wordBytes]) {
+				stats.ChangedWords++
+			}
+		}
+		return nil
+	})
+	return stats, err
 }
 
 type report struct {
@@ -53,7 +87,7 @@ type report struct {
 	Groups                  []group `json:"groups"`
 }
 
-func run() (report, error) {
+func run(profileCheckpoints bool) (report, error) {
 	moduleHash := hex.EncodeToString(slicedchess.ModuleSHA[:])
 	if moduleHash != moduleSHA256 || slicedchess.TargetNodes != targetNodes || slicedchess.Quantum != quantumNodes {
 		return report{}, fmt.Errorf("reference runtime identity or search policy differs from the pinned fixture")
@@ -73,6 +107,10 @@ func run() (report, error) {
 	}
 
 	groups := make([]group, 0, (terminalQuanta+groupSize-1)/groupSize)
+	var previousMemory []byte
+	if profileCheckpoints {
+		previousMemory = bytes.Clone(vm.Memory())
+	}
 	var progress slicedchess.Progress
 	for start := uint32(0); start < terminalQuanta; start += groupSize {
 		end := min(start+groupSize, terminalQuanta)
@@ -90,7 +128,18 @@ func run() (report, error) {
 				return report{}, fmt.Errorf("quantum %d: unexpected reference progress %+v", cursor+1, progress)
 			}
 		}
-		groups = append(groups, group{start, end, end - start, progress.Observed, progress.Pending})
+		row := group{StartCursor: start, EndCursor: end, Quanta: end - start,
+			ObservedNodes: progress.Observed, Pending: progress.Pending}
+		if profileCheckpoints {
+			memory := vm.Memory()
+			stats, err := measureCheckpoint(previousMemory, memory)
+			if err != nil {
+				return report{}, fmt.Errorf("diff checkpoint at quantum %d: %w", end, err)
+			}
+			row.Checkpoint = &stats
+			previousMemory = append(previousMemory[:0], memory...)
+		}
+		groups = append(groups, row)
 	}
 	if progress.Move != terminalMove || progress.Nodes != terminalNodes || progress.Depth != terminalDepth {
 		return report{}, fmt.Errorf("terminal reference result differs from the pinned fixture: %+v", progress)
@@ -115,7 +164,9 @@ func run() (report, error) {
 }
 
 func main() {
-	result, err := run()
+	profile := flag.Bool("checkpoint-traffic", false, "count changed pages and 32-byte words between groups")
+	flag.Parse()
+	result, err := run(*profile)
 	if err == nil {
 		out := json.NewEncoder(os.Stdout)
 		out.SetIndent("", "  ")
