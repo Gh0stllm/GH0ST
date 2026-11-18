@@ -18,10 +18,13 @@ const HEAD_SLOT = '0x' + '6d'.repeat(32);
 const PUBLIC_GENESIS = '0x17b5e6ba05003525c4f3c766d6b3120d88ee87dc7eeba84932027f8917da3483';
 
 const args = process.argv.slice(2);
-if (args.length !== 7) {
-  throw new Error('Pass ETHERS_PACKAGE_JSON PRIVATE_RPC IMPORT_DIR SEARCH_PACKAGE WITNESS_BIN TRACE_REPORT NEW_RESULT');
+const activationOnly = args[0] === '--activation-only';
+if (activationOnly) args.shift();
+if (args.length !== (activationOnly ? 5 : 7)) {
+  throw new Error('Pass [--activation-only] ETHERS_PACKAGE_JSON PRIVATE_RPC IMPORT_DIR SEARCH_PACKAGE [WITNESS_BIN TRACE_REPORT] NEW_RESULT');
 }
-const [ethersPackage, url, importDir, wasmPath, witnessPath, tracePath, output] = args;
+const [ethersPackage, url, importDir, wasmPath, witnessPath, tracePath] = args;
+const output = args.at(-1);
 const endpoint = new URL(url);
 if (endpoint.protocol !== 'http:' || endpoint.hostname !== '127.0.0.1' || !endpoint.port
     || endpoint.pathname !== '/' || endpoint.search || endpoint.username || endpoint.password || endpoint.hash) {
@@ -34,21 +37,22 @@ const setup = readJson(path.join(importDir, 'rehearsal.json'));
 const program = readJson(wasmPath);
 const config = fs.readFileSync(path.join(importDir, 'config.bin'));
 const head = fs.readFileSync(path.join(importDir, 'checkpoint.bin'));
-const witness = fs.readFileSync(witnessPath);
-const trace = readJson(tracePath);
+const witness = activationOnly ? null : fs.readFileSync(witnessPath);
+const trace = activationOnly ? null : readJson(tracePath);
 if (head.length !== 72 || !program.initializedSearch || program.configCommitment !== setup.configCommitment
-    || program.initialCheckpoint !== setup.initialCheckpoint || witness.subarray(0, 4).toString() !== 'GW01') {
+    || program.initialCheckpoint !== setup.initialCheckpoint
+    || (witness && witness.subarray(0, 4).toString() !== 'GW01')) {
   throw new Error('Wrong rehearsal inputs or initialized package');
 }
-if (trace.quanta !== 40 || !trace.packetWritten || trace.archivedWitnessBytes !== witness.length
-    || !/^[a-f0-9]{64}$/.test(trace.journalSHA256)) {
+if (trace && (trace.quanta !== 40 || !trace.packetWritten || trace.archivedWitnessBytes !== witness.length
+    || !/^[a-f0-9]{64}$/.test(trace.journalSHA256))) {
   throw new Error('Trace differs from the first-group witness');
 }
 const prefix = Buffer.alloc(3);
 prefix[0] = 1;
 prefix.writeUInt16BE(config.length, 1);
-const calldata = Buffer.concat([prefix, config, head, witness]);
-if (calldata.length >= MAX_SIGNED) throw new Error('The first group calldata alone exceeds admission');
+const calldata = witness ? Buffer.concat([prefix, config, head, witness]) : null;
+if (calldata && calldata.length >= MAX_SIGNED) throw new Error('The first group calldata alone exceeds admission');
 const signer = new Wallet(process.env.GH0ST_PRIVATE_REHEARSAL_SIGNER || '');
 if (signer.address.toLowerCase() !== setup.signerAddress) throw new Error('Signer differs from the ephemeral funded address');
 if (fs.existsSync(output)) throw new Error('New result path required');
@@ -77,8 +81,9 @@ if (BigInt(await rpc('eth_chainId')) !== CHAIN || !/^0x[0-9a-f]{64}$/i.test(gene
   throw new Error('RPC did not confirm the isolated ArbOS 61 chain');
 }
 
-const report = { scope: 'private stock Nitro first Stockfish group', genesis: genesis.hash, chainId: Number(CHAIN),
-  witnessBytes: witness.length, transactions: {}, fullMove: false, publicDeployment: false, passed: false };
+const report = { scope: activationOnly ? 'private stock Nitro activation only' : 'private stock Nitro first Stockfish group',
+  genesis: genesis.hash, chainId: Number(CHAIN), witnessBytes: witness?.length ?? null, transactions: {},
+  activationPassed: false, fullMove: false, publicDeployment: false, passed: false };
 let nonce = Number(BigInt(await rpc('eth_getTransactionCount', [signer.address, 'pending'])));
 
 async function send(label, inputs) {
@@ -145,8 +150,29 @@ function verifyJournal(logs, committedHead, expectedCount) {
   return { changedPages: count, bytes: length, sha256: digest };
 }
 
+async function deploymentData() {
+  if (program.schema !== 'gh0st.stylus-fragment-package.v1') return program.initCode;
+  const parts = program.fragments;
+  const root = program.rootInitCodeTemplate;
+  if (parts.length < 2 || parts.length > 4 || !root.endsWith('00'.repeat(20 * parts.length))
+      || program.rootRuntimeBytes !== 8 + 20 * parts.length) throw new Error('Invalid root or fragment manifest');
+  const addresses = [];
+  for (const [index, part] of parts.entries()) {
+    const receipt = await send('fragment' + index, { data: part.initCode });
+    const address = receipt.contractAddress;
+    const data = Buffer.from(getBytes(await rpc('eth_getCode', [address, 'latest'])));
+    if (!address || data.length !== part.runtimeBytes
+        || createHash('sha256').update(data).digest('hex') !== part.runtimeSHA256) {
+      throw new Error('Deployed fragment differs from its manifest');
+    }
+    addresses.push(address.slice(2));
+  }
+  const linkOffset = root.length - 40 * addresses.length;
+  return root.slice(0, linkOffset) + addresses.join('');
+}
+
 try {
-  const deployed = await send('deploy', { data: program.initCode });
+  const deployed = await send('deploy', { data: await deploymentData() });
   const address = deployed.contractAddress;
   report.address = address;
   await send('activate', { to: ARB_WASM, data: arbWasm.encodeFunctionData('activateProgram', [address]),
@@ -156,39 +182,43 @@ try {
   if (BigInt(active) !== 3n || oldHead.toLowerCase() !== `0x${setup.initialCheckpoint}`) {
     throw new Error('Activation or constructor checkpoint mismatch');
   }
-  const receipt = await send('first40', { to: address, data: hexlify(calldata) });
-  const ownLogs = receipt.logs.filter(log => log.address.toLowerCase() === address.toLowerCase());
-  const events = ownLogs.filter(log => log.topics[0] === id('GL3StockfishCheckpointHeadV1')
-    && log.topics[1] === `0x${setup.job}`);
-  if (events.length !== 1) throw new Error('Expected exactly one authenticated head event');
-  const event = Buffer.from(getBytes(events[0].data));
-  const newHead = await rpc('eth_getStorageAt', [address, HEAD_SLOT, receipt.blockNumber]);
-  if (event.length !== 166 || `0x${event.subarray(0, 32).toString('hex')}` !== oldHead || newHead === oldHead
-      || `0x${event.subarray(32, 64).toString('hex')}` !== newHead || event.readUInt32BE(96) !== 40 || event[136] !== 0) {
-    throw new Error('Committed head differs from the exact 40-quantum boundary');
+  report.activationPassed = true;
+  if (!activationOnly) {
+    const receipt = await send('first40', { to: address, data: hexlify(calldata) });
+    const ownLogs = receipt.logs.filter(log => log.address.toLowerCase() === address.toLowerCase());
+    const events = ownLogs.filter(log => log.topics[0] === id('GL3StockfishCheckpointHeadV1')
+      && log.topics[1] === `0x${setup.job}`);
+    if (events.length !== 1) throw new Error('Expected exactly one authenticated head event');
+    const event = Buffer.from(getBytes(events[0].data));
+    const newHead = await rpc('eth_getStorageAt', [address, HEAD_SLOT, receipt.blockNumber]);
+    if (event.length !== 166 || `0x${event.subarray(0, 32).toString('hex')}` !== oldHead || newHead === oldHead
+        || `0x${event.subarray(32, 64).toString('hex')}` !== newHead || event.readUInt32BE(96) !== 40 || event[136] !== 0) {
+      throw new Error('Committed head differs from the exact 40-quantum boundary');
+    }
+    const checkpoint = event.subarray(64, 136);
+    const fields = Buffer.alloc(41);
+    fields.writeUInt32LE(checkpoint.readUInt32BE(32), 0);
+    for (const offset of [4, 12, 20, 28]) fields.writeBigUInt64LE(checkpoint.readBigUInt64BE(32 + offset), offset);
+    fields.writeUInt32LE(checkpoint.readUInt32BE(68), 36);
+    const commitment = keccak256(Buffer.concat([Buffer.from('GL3_STYLUS_CHECKPOINT_V1'),
+      Buffer.from(setup.configCommitment + setup.job, 'hex'), checkpoint.subarray(0, 32), fields]));
+    report.observedNodes = Number(checkpoint.readBigUInt64BE(36));
+    report.guestInstructions = event.readBigUInt64BE(158).toString();
+    if (commitment !== newHead || checkpoint.readUInt32BE(68) !== trace.logicalMemoryBytes
+        || report.observedNodes !== trace.observedNodes
+        || report.guestInstructions !== String(trace.guestInstructions)) {
+      throw new Error('Header commitment or exact trace counters differ');
+    }
+    const pagesTopic = id('GL3StockfishCheckpointPagesV1');
+    report.journal = verifyJournal(ownLogs.filter(log => log.topics[0] === pagesTopic), newHead, event.readUInt32BE(154));
+    report.nextCheckpoint = hexlify(checkpoint);
+    report.passed = true;
   }
-  const checkpoint = event.subarray(64, 136);
-  const fields = Buffer.alloc(41);
-  fields.writeUInt32LE(checkpoint.readUInt32BE(32), 0);
-  for (const offset of [4, 12, 20, 28]) fields.writeBigUInt64LE(checkpoint.readBigUInt64BE(32 + offset), offset);
-  fields.writeUInt32LE(checkpoint.readUInt32BE(68), 36);
-  const commitment = keccak256(Buffer.concat([Buffer.from('GL3_STYLUS_CHECKPOINT_V1'),
-    Buffer.from(setup.configCommitment + setup.job, 'hex'), checkpoint.subarray(0, 32), fields]));
-  report.observedNodes = Number(checkpoint.readBigUInt64BE(36));
-  report.guestInstructions = event.readBigUInt64BE(158).toString();
-  if (commitment !== newHead || checkpoint.readUInt32BE(68) !== trace.logicalMemoryBytes
-      || report.observedNodes !== trace.observedNodes
-      || report.guestInstructions !== String(trace.guestInstructions)) {
-    throw new Error('Header commitment or exact trace counters differ');
-  }
-  const pagesTopic = id('GL3StockfishCheckpointPagesV1');
-  report.journal = verifyJournal(ownLogs.filter(log => log.topics[0] === pagesTopic), newHead, event.readUInt32BE(154));
-  report.nextCheckpoint = hexlify(checkpoint);
-  report.passed = true;
 } catch (error) {
   report.error = String(error.message).slice(0, 240);
   process.exitCode = 1;
 } finally {
   fs.writeFileSync(output, JSON.stringify(report, null, 2) + '\n', { flag: 'wx' });
-  console.log(JSON.stringify({ passed: report.passed, error: report.error, fullMove: false }));
+  console.log(JSON.stringify({ activationPassed: report.activationPassed, passed: report.passed,
+    error: report.error, fullMove: false }));
 }

@@ -3,6 +3,10 @@
 //! The opcode is the unsigned LEB after 0xfd. A vector's low eight bits
 //! are byte zero. Only the outer interpreter reads guest memory.
 
+use rustc_apfloat::{ieee::Double, Float};
+
+use super::numeric::f64_bits;
+
 fn mask(width: usize) -> u128 {
     (1u128 << width) - 1
 }
@@ -62,19 +66,11 @@ fn signed_product16(a: u128, b: u128, index: usize) -> i32 {
     i32::from(lane(a, index, 16) as i16) * i32::from(lane(b, index, 16) as i16)
 }
 
-fn f64_bits(value: f64) -> u64 {
-    if value.is_nan() {
-        0x7ff8_0000_0000_0000
-    } else {
-        value.to_bits()
-    }
-}
-
-fn binary64f(a: u128, b: u128, mut operation: impl FnMut(f64, f64) -> u64) -> u128 {
+fn binary64f(a: u128, b: u128, mut operation: impl FnMut(Double, Double) -> u64) -> u128 {
     lanes(64, |index| {
         operation(
-            f64::from_bits(lane(a, index, 64)),
-            f64::from_bits(lane(b, index, 64)),
+            Double::from_bits(u128::from(lane(a, index, 64))),
+            Double::from_bits(u128::from(lane(b, index, 64))),
         )
     })
 }
@@ -147,8 +143,8 @@ pub fn binary(op: u32, a: u128, b: u128) -> Option<u128> {
         }),
         0xbc => lanes(32, |index| signed_product16(a, b, index) as u32 as u64),
         0xbd => lanes(32, |index| signed_product16(a, b, index + 4) as u32 as u64),
-        0xf2 => binary64f(a, b, |x, y| f64_bits(x * y)),
-        0xf3 => binary64f(a, b, |x, y| f64_bits(x / y)),
+        0xf2 => binary64f(a, b, |x, y| f64_bits((x * y).value)),
+        0xf3 => binary64f(a, b, |x, y| f64_bits((x / y).value)),
         _ => return None,
     };
     Some(result)

@@ -131,7 +131,9 @@ fn run(args: &[std::ffi::OsString]) -> Result<()> {
         read: BTreeMap::new(),
         writes: BTreeMap::new(),
     };
-    let mut program = bundle.program::<256>();
+    // The native trace can keep the immutable tables resident. The contract
+    // still uses its original bounded Wasm cache and meters its own execution.
+    let mut program = bundle.program::<64, 16_384>();
     let mut globals = program
         .globals(Some([120_685_200, 0, 0]))
         .map_err(|_| "Invalid pinned globals")?;
@@ -268,5 +270,9 @@ fn main() -> Result<()> {
     if args.len() != 7 {
         return Err("Pass CORE_CELLS CONTROL_INDEX RUNTIME_INDEX RAW_SEED ARCHIVE_DIR NEW_OUTPUT_DIR INSTRUCTION_CEILING".into());
     }
-    run(&args)
+    let trace = std::thread::Builder::new()
+        .stack_size(64 * 1024 * 1024)
+        .spawn(move || run(&args).map_err(|error| error.to_string()))?;
+    trace.join().map_err(|_| "Native witness trace panicked")??;
+    Ok(())
 }

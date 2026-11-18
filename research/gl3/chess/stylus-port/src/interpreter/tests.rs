@@ -106,6 +106,144 @@ fn vm<'a>(code: Code<'a>, globals: &'a mut [Value]) -> Machine<'a, Code<'a>, Mem
     )
 }
 
+fn numeric_result(opcode: &[u8], operands: &[Value]) -> Result<Value, Trap<(), ()>> {
+    let mut bytes = alloc::vec::Vec::new();
+    for index in 0..operands.len() {
+        bytes.extend([0x20, index as u8]);
+    }
+    bytes.extend_from_slice(opcode);
+    bytes.push(0x0b);
+    let code = Code {
+        bytes: &bytes,
+        start: func(0, bytes.len() as u32 - 1, operands.len() as u16),
+        call: None,
+        link: None,
+    };
+    vm(code, &mut [])
+        .invoke(0, operands, &mut 30)
+        .map(|out| out[0])
+}
+
+#[test]
+fn software_float_matches_wasm_numeric_results() {
+    fn canonical(value: f64) -> Value {
+        if value.is_nan() {
+            0x7ff8_0000_0000_0000
+        } else {
+            Value::from(value.to_bits())
+        }
+    }
+
+    let cases = [
+        f64::NEG_INFINITY,
+        -3.75,
+        -0.5,
+        -0.0,
+        0.0,
+        f64::from_bits(1),
+        f64::MIN_POSITIVE,
+        2.0,
+        3.5,
+        f64::MAX,
+        f64::INFINITY,
+        f64::from_bits(0xfff0_0000_0000_0001),
+    ];
+    for &left in &cases {
+        let input = [Value::from(left.to_bits())];
+        for (op, expected) in [
+            (0x9b, left.ceil()),
+            (0x9c, left.floor()),
+            (0x9d, left.trunc()),
+            (0x9f, left.sqrt()),
+        ] {
+            assert_eq!(
+                numeric_result(&[op], &input),
+                Ok(canonical(expected)),
+                "op {op:x}, {input:x?}"
+            );
+        }
+        for &right in &cases {
+            let inputs = [input[0], Value::from(right.to_bits())];
+            for (op, expected) in [
+                (0xa0, canonical(left + right)),
+                (0xa1, canonical(left - right)),
+                (0xa2, canonical(left * right)),
+                (0xa3, canonical(left / right)),
+                (0x61, Value::from(left == right)),
+                (0x62, Value::from(left != right)),
+                (0x65, Value::from(left <= right)),
+            ] {
+                assert_eq!(
+                    numeric_result(&[op], &inputs),
+                    Ok(expected),
+                    "op {op:x}, {inputs:x?}"
+                );
+            }
+        }
+    }
+    assert_eq!(numeric_result(&[0xa4], &[0, 1 << 63]), Ok(1 << 63));
+    assert_eq!(numeric_result(&[0xa5], &[0, 1 << 63]), Ok(0));
+    assert_eq!(numeric_result(&[0x97], &[0, 1 << 31]), Ok(0));
+    assert_eq!(
+        numeric_result(&[0xbb], &[1]),
+        Ok(canonical(f64::from(f32::from_bits(1))))
+    );
+    assert_eq!(
+        numeric_result(&[0xbb], &[0x7f80_0001]),
+        Ok(0x7ff8_0000_0000_0000)
+    );
+    assert_eq!(
+        numeric_result(&[0xba], &[u64::MAX.into()]),
+        Ok(canonical(u64::MAX as f64))
+    );
+    assert_eq!(
+        numeric_result(&[0xb6], &[canonical(1.0 + 2f64.powi(-24))]),
+        Ok(0x3f80_0000)
+    );
+    assert_eq!(numeric_result(&[0xab], &[canonical(-0.5)]), Ok(0));
+    assert_eq!(
+        numeric_result(&[0xab], &[canonical(-1.0)]),
+        Err(Trap::FloatConversion)
+    );
+    assert_eq!(
+        numeric_result(&[0xaa], &[canonical(-2_147_483_648.0)]),
+        Ok(0x8000_0000)
+    );
+    assert_eq!(
+        numeric_result(&[0xaa], &[canonical(2_147_483_648.0)]),
+        Err(Trap::FloatConversion)
+    );
+    assert_eq!(
+        numeric_result(&[0xfc, 2], &[canonical(f64::NEG_INFINITY)]),
+        Ok(0x8000_0000)
+    );
+    assert_eq!(
+        numeric_result(&[0xfc, 7], &[canonical(f64::INFINITY)]),
+        Ok(u64::MAX.into())
+    );
+    assert_eq!(numeric_result(&[0xfc, 6], &[canonical(f64::NAN)]), Ok(0));
+}
+
+#[test]
+fn software_float_simd_lanes_preserve_rounding_and_nan_comparisons() {
+    let vector = |lo: u64, hi: u64| Value::from(lo) | (Value::from(hi) << 64);
+    let left = vector(3.0f64.to_bits(), 0.0f64.to_bits());
+    let right = vector(2.0f64.to_bits(), (-0.0f64).to_bits());
+    assert_eq!(
+        simd::binary(0xf2, left, right),
+        Some(vector(6.0f64.to_bits(), (-0.0f64).to_bits()))
+    );
+    assert_eq!(
+        simd::binary(0xf3, left, right),
+        Some(vector(1.5f64.to_bits(), 0x7ff8_0000_0000_0000))
+    );
+    assert_eq!(simd::binary(0x4b, left, right), Some(vector(0, u64::MAX)));
+    assert_eq!(
+        simd::binary(0x4b, vector(0x7ff0_0000_0000_0001, 0), right),
+        Some(vector(0, u64::MAX))
+    );
+}
+
 #[test]
 fn conditional_returns_the_correct_arm_on_repeat_invocations() {
     let code = Code {

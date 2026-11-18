@@ -28,9 +28,14 @@ The bounded native traces produced no first-group witness. Eight ordinary
 private transfers completed with a 611 ms p95 submission-to-receipt time
 as a control without an on-chain search running.
 
-The port needs integer-backed IEEE 754 operations that preserve the
-guest's exact behavior, followed by a fresh activation, complete-move
-parity and mixed-traffic rehearsal. Production was untouched.
+The [integer-backed IEEE 754 build](evidence/softfloat-activation-20261118.json)
+replaced those outer Wasm instructions with APFloat arithmetic while leaving
+the guest executable, NNUE and search policy pinned. All **33 library tests**
+passed on Runpod, including scalar edge cases and SIMD lane parity. The
+108,138-byte Wasm fit across two stock Stylus fragments and **activated on
+private ArbOS 61**. The root activation consumed 6,174,424 L2 compute gas.
+This activation check used a small genesis and pinned commitments. The
+seeded first group, full move and mixed-traffic checks follow separately.
 
 ## Implemented
 

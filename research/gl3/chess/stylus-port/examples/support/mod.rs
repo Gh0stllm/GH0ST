@@ -140,11 +140,16 @@ impl PinnedRom {
         }
     }
 
-    fn rom<'a>(&self, group: &'a (Vec<Shard>, u32)) -> BytecodeRom<'a, FixtureHost, 1> {
-        BytecodeRom::<_, 1>::new(self.host.clone(), &group.0, group.1).unwrap()
+    fn rom<'a, const RESIDENT: usize>(
+        &self,
+        group: &'a (Vec<Shard>, u32),
+    ) -> BytecodeRom<'a, FixtureHost, RESIDENT> {
+        BytecodeRom::new(self.host.clone(), &group.0, group.1).unwrap()
     }
 
-    pub fn program<const CACHE: usize>(&self) -> RomCode<'_, FixtureHost, 1, CACHE> {
+    pub fn program<const RESIDENT: usize, const CACHE: usize>(
+        &self,
+    ) -> RomCode<'_, FixtureHost, RESIDENT, CACHE> {
         RomCode::new(
             self.rom(&self.code),
             self.rom(&self.functions),

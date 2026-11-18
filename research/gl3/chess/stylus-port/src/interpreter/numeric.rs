@@ -1,72 +1,88 @@
+use core::cmp::Ordering;
+use ieee_apsqrt::sqrt_accurate;
+use rustc_apfloat::{
+    ieee::{Double, Single},
+    Float, FloatConvert, Round, Status,
+};
+
 use super::{Executable, GuestMemory, Machine, Trap, Value, VmResult};
 
-fn f32_bits(value: f32) -> Value {
+fn f32_bits(value: Single) -> Value {
     if value.is_nan() {
         0x7fc0_0000
     } else {
-        value.to_bits().into()
+        value.to_bits()
     }
 }
 
-fn f64_bits(value: f64) -> Value {
+pub(super) fn f64_bits(value: Double) -> u64 {
     if value.is_nan() {
         0x7ff8_0000_0000_0000
     } else {
-        value.to_bits().into()
+        value.to_bits() as u64
     }
 }
 
-fn compare(op: u8, eq: bool, lt: bool, gt: bool, le: bool, ge: bool) -> Value {
+fn compare(op: u8, order: Option<Ordering>) -> Value {
     Value::from(match op {
-        0 => eq,
-        1 => !eq,
-        2 => lt,
-        3 => gt,
-        4 => le,
-        _ => ge,
+        0 => order == Some(Ordering::Equal),
+        1 => order != Some(Ordering::Equal),
+        2 => order == Some(Ordering::Less),
+        3 => order == Some(Ordering::Greater),
+        4 => matches!(order, Some(Ordering::Less | Ordering::Equal)),
+        _ => matches!(order, Some(Ordering::Greater | Ordering::Equal)),
     })
 }
 
-fn float_integer(value: f64, wide: bool, signed: bool, saturate: bool) -> Option<Value> {
-    if value.is_nan() {
-        return saturate.then_some(0);
-    }
-    let truncated = libm::trunc(value);
-    let (low, high) = match (wide, signed) {
-        (false, false) => (0.0, 4_294_967_296.0),
-        (false, true) => (-2_147_483_648.0, 2_147_483_648.0),
-        (true, false) => (0.0, 18_446_744_073_709_551_616.0),
-        (true, true) => (-9_223_372_036_854_775_808.0, 9_223_372_036_854_775_808.0),
+fn float_integer<F: Float>(value: F, wide: bool, signed: bool, saturate: bool) -> Option<Value> {
+    let width = if wide { 64 } else { 32 };
+    // APFloat supplies the saturated endpoint on INVALID_OP, including zero for NaN.
+    let converted = if signed {
+        value.to_i128(width).map(|number| number as u64)
+    } else {
+        value.to_u128(width).map(|number| number as u64)
     };
-    if !saturate && (truncated < low || truncated >= high) {
+    if !saturate && converted.status.contains(Status::INVALID_OP) {
         return None;
     }
-    Some(match (wide, signed) {
-        (false, false) => Value::from(truncated as u32),
-        (false, true) => Value::from(truncated as i32 as u32),
-        (true, false) => Value::from(truncated as u64),
-        (true, true) => Value::from(truncated as i64 as u64),
-    })
+    let bits = if wide {
+        converted.value
+    } else {
+        u64::from(converted.value as u32)
+    };
+    Some(Value::from(bits))
 }
 
 impl<C: Executable, M: GuestMemory> Machine<'_, C, M> {
     pub(super) fn saturating_conversion(&self, opcode: u32, value: Value) -> Value {
         let wide = opcode >= 4;
         let signed = opcode & 1 == 0;
-        let input = if opcode & 2 == 0 {
-            f64::from(f32::from_bits(value as u32))
+        let converted = if opcode & 2 == 0 {
+            float_integer(
+                Single::from_bits(Value::from(value as u32)),
+                wide,
+                signed,
+                true,
+            )
         } else {
-            f64::from_bits(value as u64)
+            float_integer(
+                Double::from_bits(Value::from(value as u64)),
+                wide,
+                signed,
+                true,
+            )
         };
-        float_integer(input, wide, signed, true).unwrap_or(0)
+        converted.unwrap_or(0)
     }
 
     pub(super) fn numeric(&mut self, op: u8) -> VmResult<(), C, M> {
         let right = self.take()?;
         let r32 = right as u32;
         let r64 = right as u64;
-        let f32r = f32::from_bits(r32);
-        let f64r = f64::from_bits(r64);
+        // Decode the software values in the individual floating-point arms.
+        // Ordinary integer instructions never pay for APFloat classification.
+        let f32r = || Single::from_bits(Value::from(r32));
+        let f64r = || Double::from_bits(Value::from(r64));
         let result = match op {
             0x45 => Value::from(r32 == 0),
             0x50 => Value::from(r64 == 0),
@@ -78,36 +94,49 @@ impl<C: Executable, M: GuestMemory> Machine<'_, C, M> {
             0x7b => Value::from(r64.count_ones()),
             0x8b => Value::from(r32 & 0x7fff_ffff),
             0x8c => Value::from(r32 ^ 0x8000_0000),
-            0x8d => f32_bits(libm::ceilf(f32r)),
-            0x8e => f32_bits(libm::floorf(f32r)),
-            0x8f => f32_bits(libm::truncf(f32r)),
-            0x91 => f32_bits(libm::sqrtf(f32r)),
+            0x8d => f32_bits(f32r().round_to_integral(Round::TowardPositive).value),
+            0x8e => f32_bits(f32r().round_to_integral(Round::TowardNegative).value),
+            0x8f => f32_bits(f32r().round_to_integral(Round::TowardZero).value),
+            0x91 => f32_bits(Single::from_bits(Value::from(
+                sqrt_accurate(r32, Round::NearestTiesToEven).0.value,
+            ))),
             0x99 => Value::from(r64 & 0x7fff_ffff_ffff_ffff),
             0x9a => Value::from(r64 ^ 0x8000_0000_0000_0000),
-            0x9b => f64_bits(libm::ceil(f64r)),
-            0x9c => f64_bits(libm::floor(f64r)),
-            0x9d => f64_bits(libm::trunc(f64r)),
-            0x9f => f64_bits(libm::sqrt(f64r)),
+            0x9b => Value::from(f64_bits(
+                f64r().round_to_integral(Round::TowardPositive).value,
+            )),
+            0x9c => Value::from(f64_bits(
+                f64r().round_to_integral(Round::TowardNegative).value,
+            )),
+            0x9d => Value::from(f64_bits(f64r().round_to_integral(Round::TowardZero).value)),
+            0x9f => Value::from(f64_bits(Double::from_bits(Value::from(
+                sqrt_accurate(r64, Round::NearestTiesToEven).0.value,
+            )))),
             0xa7 | 0xbc | 0xbe => Value::from(r32),
             0xa8..=0xab | 0xae..=0xb1 => {
                 let wide = op >= 0xae;
                 let base = if wide { 0xae } else { 0xa8 };
                 let kind = op - base;
-                let value = if kind & 2 == 0 { f64::from(f32r) } else { f64r };
-                float_integer(value, wide, kind & 1 == 0, false).ok_or(Trap::FloatConversion)?
+                let signed = kind & 1 == 0;
+                let converted = if kind & 2 == 0 {
+                    float_integer(f32r(), wide, signed, false)
+                } else {
+                    float_integer(f64r(), wide, signed, false)
+                };
+                converted.ok_or(Trap::FloatConversion)?
             }
             0xac => Value::from(r32 as i32 as i64 as u64),
             0xad => Value::from(r32),
-            0xb2 => f32_bits(r32 as i32 as f32),
-            0xb3 => f32_bits(r32 as f32),
-            0xb4 => f32_bits(r64 as i64 as f32),
-            0xb5 => f32_bits(r64 as f32),
-            0xb6 => f32_bits(f64r as f32),
-            0xb7 => f64_bits(r32 as i32 as f64),
-            0xb8 => f64_bits(r32 as f64),
-            0xb9 => f64_bits(r64 as i64 as f64),
-            0xba => f64_bits(r64 as f64),
-            0xbb => f64_bits(f64::from(f32r)),
+            0xb2 => f32_bits(Single::from_i128(i128::from(r32 as i32)).value),
+            0xb3 => f32_bits(Single::from_u128(Value::from(r32)).value),
+            0xb4 => f32_bits(Single::from_i128(i128::from(r64 as i64)).value),
+            0xb5 => f32_bits(Single::from_u128(Value::from(r64)).value),
+            0xb6 => f32_bits(f64r().convert(&mut false).value),
+            0xb7 => Value::from(f64_bits(Double::from_i128(i128::from(r32 as i32)).value)),
+            0xb8 => Value::from(f64_bits(Double::from_u128(Value::from(r32)).value)),
+            0xb9 => Value::from(f64_bits(Double::from_i128(i128::from(r64 as i64)).value)),
+            0xba => Value::from(f64_bits(Double::from_u128(Value::from(r64)).value)),
+            0xbb => Value::from(f64_bits(f32r().convert(&mut false).value)),
             0xbd | 0xbf => Value::from(r64),
             0xc0 => Value::from(r32 as i8 as i32 as u32),
             0xc1 => Value::from(r32 as i16 as i32 as u32),
@@ -124,67 +153,43 @@ impl<C: Executable, M: GuestMemory> Machine<'_, C, M> {
             }
             0x5b..=0x60 | 0x92..=0x98 => {
                 let bits = self.take()? as u32;
-                let left = f32::from_bits(bits);
+                let left = Single::from_bits(Value::from(bits));
+                let right = f32r();
                 match op {
-                    0x5b..=0x60 => compare(
-                        op - 0x5b,
-                        left == f32r,
-                        left < f32r,
-                        left > f32r,
-                        left <= f32r,
-                        left >= f32r,
-                    ),
-                    0x92 => f32_bits(left + f32r),
-                    0x93 => f32_bits(left - f32r),
-                    0x94 => f32_bits(left * f32r),
-                    0x95 => f32_bits(left / f32r),
-                    0x96 => f32_bits(if left.is_nan() || f32r.is_nan() {
-                        f32::NAN
-                    } else if left == f32r {
-                        f32::from_bits(bits | r32)
-                    } else {
-                        left.min(f32r)
-                    }),
-                    0x97 => f32_bits(if left.is_nan() || f32r.is_nan() {
-                        f32::NAN
-                    } else if left == f32r {
-                        f32::from_bits(bits & r32)
-                    } else {
-                        left.max(f32r)
-                    }),
+                    0x5b..=0x60 => compare(op - 0x5b, left.partial_cmp(&right)),
+                    0x92 => f32_bits((left + right).value),
+                    0x93 => f32_bits((left - right).value),
+                    0x94 => f32_bits((left * right).value),
+                    0x95 => f32_bits((left / right).value),
+                    0x96 | 0x97 => match left.partial_cmp(&right) {
+                        None => 0x7fc0_0000,
+                        Some(Ordering::Equal) if op == 0x96 => Value::from(bits | r32),
+                        Some(Ordering::Equal) => Value::from(bits & r32),
+                        Some(Ordering::Less) if op == 0x96 => Value::from(bits),
+                        Some(Ordering::Greater) if op == 0x97 => Value::from(bits),
+                        _ => Value::from(r32),
+                    },
                     _ => Value::from((bits & 0x7fff_ffff) | (r32 & 0x8000_0000)),
                 }
             }
             0x61..=0x66 | 0xa0..=0xa6 => {
                 let bits = self.take()? as u64;
-                let left = f64::from_bits(bits);
+                let left = Double::from_bits(Value::from(bits));
+                let right = f64r();
                 match op {
-                    0x61..=0x66 => compare(
-                        op - 0x61,
-                        left == f64r,
-                        left < f64r,
-                        left > f64r,
-                        left <= f64r,
-                        left >= f64r,
-                    ),
-                    0xa0 => f64_bits(left + f64r),
-                    0xa1 => f64_bits(left - f64r),
-                    0xa2 => f64_bits(left * f64r),
-                    0xa3 => f64_bits(left / f64r),
-                    0xa4 => f64_bits(if left.is_nan() || f64r.is_nan() {
-                        f64::NAN
-                    } else if left == f64r {
-                        f64::from_bits(bits | r64)
-                    } else {
-                        left.min(f64r)
-                    }),
-                    0xa5 => f64_bits(if left.is_nan() || f64r.is_nan() {
-                        f64::NAN
-                    } else if left == f64r {
-                        f64::from_bits(bits & r64)
-                    } else {
-                        left.max(f64r)
-                    }),
+                    0x61..=0x66 => compare(op - 0x61, left.partial_cmp(&right)),
+                    0xa0 => Value::from(f64_bits((left + right).value)),
+                    0xa1 => Value::from(f64_bits((left - right).value)),
+                    0xa2 => Value::from(f64_bits((left * right).value)),
+                    0xa3 => Value::from(f64_bits((left / right).value)),
+                    0xa4 | 0xa5 => match left.partial_cmp(&right) {
+                        None => 0x7ff8_0000_0000_0000,
+                        Some(Ordering::Equal) if op == 0xa4 => Value::from(bits | r64),
+                        Some(Ordering::Equal) => Value::from(bits & r64),
+                        Some(Ordering::Less) if op == 0xa4 => Value::from(bits),
+                        Some(Ordering::Greater) if op == 0xa5 => Value::from(bits),
+                        _ => Value::from(r64),
+                    },
                     _ => {
                         Value::from((bits & 0x7fff_ffff_ffff_ffff) | (r64 & 0x8000_0000_0000_0000))
                     }

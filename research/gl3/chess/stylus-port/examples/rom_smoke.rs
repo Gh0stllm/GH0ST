@@ -79,7 +79,7 @@ fn main() {
         Path::new(&parameters[1]),
         Path::new(&parameters[2]),
     );
-    let mut program = rom.program::<8>();
+    let mut program = rom.program::<1, 8>();
     let mut globals = program.globals(None).unwrap();
 
     // Only one synthetic Asyncify header page is opened against this logical
