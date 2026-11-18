@@ -39,7 +39,8 @@ contract. The prepared model, engine and continuation must reproduce the
 
 The Rust library passed its eight paging and cursor tests and a Wasm target
 type check. A small fixture against the pinned generated C header passed
-memory access, overlapping copy, growth and trap checks. The full engine
+memory access, overlapping copy, growth and trap checks. The Go reference
+command compiled with the pinned guest embedded. The full Stylus engine
 requires its linked backend and checkpoint adapter.
 
 With the pinned guest at `sliced/runtime/.cache/sliced.wasm`, run
@@ -56,8 +57,11 @@ measure transient page traffic or contract gas.
 
 GL3's Stylus memory ceiling is 128 pages of 64 KiB. The guest's initial
 logical address space is 128 MiB. Keep logical pages behind the callback
-interface and measure real physical pages after linking. The stock runtime
-also limits the decompressed Stylus program to 256 KiB. The older scalar
+interface and measure real physical pages after linking. The [stock Nitro
+activation rules](https://github.com/OffchainLabs/nitro/blob/v3.12.2/arbos/programs/programs.go#L417-L425)
+also limit each decompressed Stylus program to 256 KiB under the [pinned
+ArbOS parameters](https://github.com/OffchainLabs/nitro/blob/v3.12.2/arbos/programs/params.go#L19-L41).
+The older scalar
 replay companion has over 3 MiB of executable code before its model data,
 so moving seed bytes alone leaves code size as a separate gate. The old
 companion's size is a measurement of that artifact. Measure the new build
@@ -66,8 +70,9 @@ after lowering.
 The [custom research runtime's full decision](../sliced/evidence/cachefix-full24m.json)
 persisted a median 655,352-byte word-delta per four-quantum slice. Depositing
 that many bytes as fresh contract code would cost about 131 million gas at
-200 gas per byte before compute or transaction overhead. GL3's current
-compute gas ceiling is 32 million. This calculation screens out copying
+[200 gas per byte](https://eips.ethereum.org/EIPS/eip-3860) before search or
+transaction overhead. The rehearsal budgets 32 million L2 gas per search
+transaction. This calculation screens out copying
 those same recorded payloads into stock Stylus bytecode. Measure exact
 40-quantum read and write traces before choosing a different persistence
 representation.

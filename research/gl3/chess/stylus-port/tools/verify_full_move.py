@@ -111,7 +111,7 @@ def validate(evidence, max_operation_ms, max_transfer_p95_ms):
     require(chain_id > 0 and genesis not in (PUBLIC_GL3_GENESIS, "0x" + "00" * 32), "Refusing public GL3 or missing private genesis")
     engine = evidence["engine"]
     require(engine.get("guestSHA256") == GUEST_SHA and engine.get("modelSHA256") == MODEL_SHA,
-            "Scalar guest or full NNUE identity differs from the reference")
+            "Portable SIMD guest or full NNUE identity differs from the reference")
     contract = fixed_hex(engine.get("contract"), 20, "Stylus contract address")
     job = fixed_hex(evidence.get("jobId"), 32, "chess job ID")
     require(int(contract, 16) > 0xFFFF and int(job, 16) != 0, "Reserved contract address or empty job ID")
