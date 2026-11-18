@@ -84,7 +84,11 @@ before they can become activatable Stylus contracts.
 The [native shard trial](tools/run_shard_trial.py) links the same twelve
 units as separate ELF libraries with the exact guest memory and runtime.
 It traces native calls in the first 40 quanta independently of the full
-move parity check. The graph represents this concrete source layout.
+move parity check. In the separate native SIMD replay, twelve libraries
+shared flat memory and matched all 247 reference groups, all 24,000,033
+nodes, the depth-38 `e7e5` move and the canonical checkpoint hash. It took
+128.4 seconds with cold restores at quanta 40, 4,000 and 9,840. The call
+graph represents this concrete source layout.
 One transaction must preserve pointers, globals, the indirect function
 table and the continuation across any proposed contract boundary.
 
