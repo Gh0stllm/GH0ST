@@ -2,6 +2,7 @@
 // node. Only the isolated chain and ephemeral genesis signer are accepted.
 import fs from 'node:fs';
 import path from 'node:path';
+import { createHash } from 'node:crypto';
 import { createRequire } from 'node:module';
 import { performance } from 'node:perf_hooks';
 import { setTimeout as sleep } from 'node:timers/promises';
@@ -15,26 +16,31 @@ const HEAD_SLOT = '0x' + '6d'.repeat(32);
 const PUBLIC_GENESIS = '0x17b5e6ba05003525c4f3c766d6b3120d88ee87dc7eeba84932027f8917da3483';
 
 const args = process.argv.slice(2);
-if (args.length !== 6) {
-  throw new Error('Pass ETHERS_PACKAGE_JSON PRIVATE_RPC IMPORT_DIR SEARCH_PACKAGE WITNESS_BIN NEW_RESULT');
+if (args.length !== 7) {
+  throw new Error('Pass ETHERS_PACKAGE_JSON PRIVATE_RPC IMPORT_DIR SEARCH_PACKAGE WITNESS_BIN TRACE_REPORT NEW_RESULT');
 }
-const [ethersPackage, url, importDir, wasmPath, witnessPath, output] = args;
+const [ethersPackage, url, importDir, wasmPath, witnessPath, tracePath, output] = args;
 const endpoint = new URL(url);
 if (endpoint.protocol !== 'http:' || endpoint.hostname !== '127.0.0.1' || !endpoint.port
     || endpoint.pathname !== '/' || endpoint.search || endpoint.username || endpoint.password || endpoint.hash) {
   throw new Error('Private rehearsal requires a plain IPv4 loopback address and port');
 }
 
-const { Wallet, Interface, id, getBytes, hexlify } = createRequire(path.resolve(ethersPackage))('ethers');
+const { Wallet, Interface, id, getBytes, hexlify, keccak256 } = createRequire(path.resolve(ethersPackage))('ethers');
 const readJson = filename => JSON.parse(fs.readFileSync(filename, 'utf8'));
 const setup = readJson(path.join(importDir, 'rehearsal.json'));
 const program = readJson(wasmPath);
 const config = fs.readFileSync(path.join(importDir, 'config.bin'));
 const head = fs.readFileSync(path.join(importDir, 'checkpoint.bin'));
 const witness = fs.readFileSync(witnessPath);
+const trace = readJson(tracePath);
 if (head.length !== 72 || !program.initializedSearch || program.configCommitment !== setup.configCommitment
     || program.initialCheckpoint !== setup.initialCheckpoint || witness.subarray(0, 4).toString() !== 'GW01') {
   throw new Error('Wrong rehearsal inputs or initialized package');
+}
+if (trace.quanta !== 40 || !trace.packetWritten || trace.archivedWitnessBytes !== witness.length
+    || !/^[a-f0-9]{64}$/.test(trace.journalSHA256)) {
+  throw new Error('Trace differs from the first-group witness');
 }
 const prefix = Buffer.alloc(3);
 prefix[0] = 1;
@@ -96,6 +102,36 @@ async function send(label, inputs) {
   throw new Error(`${label} receipt deadline`);
 }
 
+function verifyJournal(logs, committedHead, expectedCount) {
+  const hash = createHash('sha256');
+  let previousIndex = -1;
+  let count = 0;
+  let length = 0;
+  for (const log of logs) {
+    const chunk = Buffer.from(getBytes(log.data));
+    if (log.topics.length !== 2 || log.topics[1] !== committedHead || chunk.length === 0
+        || chunk.length > 12_288 - 64) throw new Error('Wrong checkpoint page log');
+    for (let offset = 0; offset < chunk.length;) {
+      if (chunk.length - offset < 7) throw new Error('Incomplete checkpoint page header');
+      const index = chunk.readUInt32BE(offset);
+      const size = chunk.readUInt16BE(offset + 5);
+      const end = offset + 7 + size;
+      if (index <= previousIndex || index >= 196_608 || end > chunk.length) {
+        throw new Error('Out-of-order or incomplete checkpoint page');
+      }
+      previousIndex = index;
+      count++;
+      offset = end;
+    }
+    length += chunk.length;
+    hash.update(chunk);
+  }
+  const digest = hash.digest('hex');
+  if (count !== expectedCount || count !== trace.changedPages || length !== trace.journalDataBytes
+      || digest !== trace.journalSHA256) throw new Error('Published journal differs from the exact interpreter trace');
+  return { changedPages: count, bytes: length, sha256: digest };
+}
+
 try {
   const deployed = await send('deploy', { data: program.initCode });
   const address = deployed.contractAddress;
@@ -108,9 +144,9 @@ try {
     throw new Error('Activation or constructor checkpoint mismatch');
   }
   const receipt = await send('first40', { to: address, data: hexlify(calldata) });
-  const headTopic = id('GL3StockfishCheckpointHeadV1');
-  const events = receipt.logs.filter(log => log.address.toLowerCase() === address.toLowerCase()
-    && log.topics[0] === headTopic && log.topics[1] === `0x${setup.job}`);
+  const ownLogs = receipt.logs.filter(log => log.address.toLowerCase() === address.toLowerCase());
+  const events = ownLogs.filter(log => log.topics[0] === id('GL3StockfishCheckpointHeadV1')
+    && log.topics[1] === `0x${setup.job}`);
   if (events.length !== 1) throw new Error('Expected exactly one authenticated head event');
   const event = Buffer.from(getBytes(events[0].data));
   const newHead = await rpc('eth_getStorageAt', [address, HEAD_SLOT, receipt.blockNumber]);
@@ -118,8 +154,23 @@ try {
       || `0x${event.subarray(32, 64).toString('hex')}` !== newHead || event.readUInt32BE(96) !== 40 || event[136] !== 0) {
     throw new Error('Committed head differs from the exact 40-quantum boundary');
   }
-  report.observedNodes = Number(event.readBigUInt64BE(100));
+  const checkpoint = event.subarray(64, 136);
+  const fields = Buffer.alloc(41);
+  fields.writeUInt32LE(checkpoint.readUInt32BE(32), 0);
+  for (const offset of [4, 12, 20, 28]) fields.writeBigUInt64LE(checkpoint.readBigUInt64BE(32 + offset), offset);
+  fields.writeUInt32LE(checkpoint.readUInt32BE(68), 36);
+  const commitment = keccak256(Buffer.concat([Buffer.from('GL3_STYLUS_CHECKPOINT_V1'),
+    Buffer.from(setup.configCommitment + setup.job, 'hex'), checkpoint.subarray(0, 32), fields]));
+  report.observedNodes = Number(checkpoint.readBigUInt64BE(36));
   report.guestInstructions = event.readBigUInt64BE(158).toString();
+  if (commitment !== newHead || checkpoint.readUInt32BE(68) !== trace.logicalMemoryBytes
+      || report.observedNodes !== trace.observedNodes
+      || report.guestInstructions !== String(trace.guestInstructions)) {
+    throw new Error('Header commitment or exact trace counters differ');
+  }
+  const pagesTopic = id('GL3StockfishCheckpointPagesV1');
+  report.journal = verifyJournal(ownLogs.filter(log => log.topics[0] === pagesTopic), newHead, event.readUInt32BE(154));
+  report.nextCheckpoint = hexlify(checkpoint);
   report.passed = true;
 } catch (error) {
   report.error = String(error.message).slice(0, 240);

@@ -224,7 +224,9 @@ engine's real read set and produces the exact compact witness if it fits.
 [The first-group runner](tools/rehearse_first_group.mjs) uses the funded
 ephemeral signer on an isolated ArbOS 61 loopback RPC, deploys and
 activates the search program, and verifies its signed transaction length,
-gas receipt and committed 40-quantum head. The trace and the private
+gas receipt and committed 40-quantum head. It also reconstructs the head
+commitment and compares the complete ordered page journal with the trace
+byte for byte using its digest. The trace and the private
 transaction are still pending. End-to-end testing also needs to show that
 the receipt bytes can supply subsequent groups and reproduce the complete
 24-million-node checkpoint while ordinary transfers keep their cadence.

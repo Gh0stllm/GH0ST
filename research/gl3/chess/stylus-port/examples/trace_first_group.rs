@@ -215,11 +215,17 @@ fn run(args: &[std::ffi::OsString]) -> Result<()> {
             .sum::<usize>();
 
     let mut scratch = [0; PAGE_SIZE];
+    let mut journal = Sha256::new();
     let mut journal_bytes = 0;
     let mut changed_pages = 0;
     for (&index, page) in &backend.writes {
         if backend.seed(index) != page {
-            journal_bytes += 7 + witness_wire::encode_page(page, &mut scratch).1;
+            let (mode, encoded) = witness_wire::encode_page(page, &mut scratch);
+            journal.update(index.to_be_bytes());
+            journal.update([mode as u8]);
+            journal.update((encoded as u16).to_be_bytes());
+            journal.update(&scratch[..encoded]);
+            journal_bytes += 7 + encoded;
             changed_pages += 1;
         }
     }
@@ -245,6 +251,7 @@ fn run(args: &[std::ffi::OsString]) -> Result<()> {
         "archivedWitnessBytes": required,
         "packetWritten": packet.is_ok(),
         "journalDataBytes": journal_bytes,
+        "journalSHA256": format!("{:x}", journal.finalize()),
         "logDataGasFloor": journal_bytes * 8,
     });
     fs::write(output.join("read-set.json"), serde_json::to_vec(&read_set)?)?;
