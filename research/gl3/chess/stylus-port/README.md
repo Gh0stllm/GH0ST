@@ -72,6 +72,33 @@ quanta 40, 4,000 and 9,840. Stock Stylus execution must separately pass
 activation, checkpoint, signed transaction size, gas and mixed-traffic
 tests.
 
+## Separately compiled engine units
+
+The [shard builder](tools/build_shard_trial.py) retains the pinned WABT
+translation and exported NNUE seed. It divides four oversize generated units
+at existing function definitions. All twelve independently compiled Wasm
+units cleared the raw and compressed size checks before contract linkage.
+The largest is 252,306 raw bytes. The units still need a state and call ABI
+before they can become activatable Stylus contracts.
+
+The [native shard trial](tools/run_shard_trial.py) links the same twelve
+units as separate ELF libraries with the exact guest memory and runtime.
+It traces native calls in the first 40 quanta independently of the full
+move parity check. The graph represents this concrete source layout.
+One transaction must preserve pointers, globals, the indirect function
+table and the continuation across any proposed contract boundary.
+
+```sh
+python3 tools/build_shard_trial.py "$guest" "$generated" "$wabt_source" \
+  "$wasi_sdk/bin/clang" shards --jobs 3
+python3 tools/run_shard_trial.py shards/libgl3shards.so
+```
+
+The [boundary canaries](probe/split_call.c) use a separate coordinator and
+worker on private Nitro. The [rehearsal](tools/rehearse_split_call.mjs)
+checks a storage sentinel and Wasm memory marker and samples the metered
+cost of repeated calls with a one-byte argument and one-byte return value.
+
 ## Private Runpod rehearsal
 
 The [code-backed checkpoint rehearsal](evidence/code-backed-first-group-20261118.json)

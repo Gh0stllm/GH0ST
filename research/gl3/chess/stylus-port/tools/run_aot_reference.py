@@ -23,7 +23,7 @@ def bind(library, name, params, returns):
     return method
 
 
-def rehearse(library):
+def rehearse(library, first_group_trace=None):
     v, u = c.c_void_p, c.c_uint32
     create = bind(library, "create", [], v)
     destroy = bind(library, "destroy", [v], None)
@@ -63,6 +63,8 @@ def rehearse(library):
         pointer = invoke(engine, 2, len(history), 0)
         c.memmove(memory(engine) + pointer, history, len(history))
         began = monotonic()
+        if first_group_trace is not None:
+            first_group_trace.start()
         more = invoke(engine, 4, pointer, len(history))
         invoke(engine, 3, pointer, 0)
         last_nodes = 0
@@ -80,6 +82,8 @@ def rehearse(library):
             if cursor != end or bool(more) != (end < EXPECTED_QUANTA) or nodes < last_nodes:
                 raise ValueError(f"Unexpected compiled checkpoint at quantum {end}")
             groups.append({"start": start, "end": end, "nodes": nodes, "wallMs": (monotonic() - group_at) * 1000})
+            if start == 0 and first_group_trace is not None:
+                first_group_trace.finish(groups[-1])
             last_nodes = nodes
             if end in (40, 4_000, 9_840):
                 before = monotonic()
