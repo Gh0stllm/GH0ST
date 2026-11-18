@@ -46,15 +46,18 @@ engine image installed in the live chain's state, and A14 configured to
 admit this coordinator. The private runtime loads its engine image at
 genesis. Applying that initial state to an existing rollup requires a
 separate deterministic migration delivered with the runtime upgrade. The
-[engine overlay](engine/README.md) gives the designated coordinator permission
-to reserve chess jobs and exposes the engine identity and seed status.
+[engine overlay](engine/README.md) includes candidate source for the
+[scheduled activation](engine/ACTIVATION.md) and the
+[pinned seed migration](engine/SEED-MIGRATION.md). The candidate is separate
+from the private startup profile and awaits a matching native and proof
+build. [Mainnet status](engine/MAINNET.md)
 
 The research build tooling can prepare native execution and its matched
 replay machine from the same coordinator source. The profile writes its
 artifacts in separate `game-a14` cache directories.
 
 ```sh
-python3 research/gl3/chess/build_replay.py --sliced --game-coordinator
+python3 research/gl3/chess/build_replay.py --sliced --game-coordinator --candidate-arbos-version 62
 ```
 
 The game source and toolchain can be prepared before the chain upgrade.

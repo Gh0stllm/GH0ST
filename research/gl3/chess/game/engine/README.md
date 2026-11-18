@@ -23,8 +23,15 @@ that caller and the job ID. `newGame` requires the registered coordinator,
 a sealed profile, and valid initial seed metadata. The other search methods
 keep their existing ABI and execution behavior.
 
-The pinned seed is currently installed by the A14 genesis importer. A live
-GL3 upgrade needs a deterministic way to install that same seed while
-preserving the chain's existing state. This overlay has no seed installer,
-activation height, or proof-machine update. Generating these sources does
-not change the live chain.
+The [activation candidate](ACTIVATION.md) stages a separate Nitro and Geth
+profile which keeps A14 out of historical blocks. The [seed migration](SEED-MIGRATION.md)
+installs the exact initialized engine after activation. The same unchanged
+Stockfish module is used for native execution and proving.
+
+```sh
+python3 research/gl3/chess/build_replay.py --sliced --game-coordinator --candidate-arbos-version 62
+```
+
+The candidate source has no scheduled activation. Compilation, replay over
+the upgrade boundary and approval of a matching production proof root remain
+open. See the [mainnet observation and handoff constraints](MAINNET.md).

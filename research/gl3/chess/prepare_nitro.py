@@ -1,13 +1,20 @@
 """Prepare only the isolated custom chess source; never modifies the clean core."""
 from pathlib import Path
 import argparse,json,os,shutil,subprocess,hashlib,platform,re,sys,tempfile
-parser=argparse.ArgumentParser();parser.add_argument('--sliced',action='store_true');parser.add_argument('--variant',default='');parser.add_argument('--game-coordinator',action='store_true');options=parser.parse_args()
+parser=argparse.ArgumentParser();parser.add_argument('--sliced',action='store_true');parser.add_argument('--variant',default='');parser.add_argument('--game-coordinator',action='store_true')
+parser.add_argument('--candidate-arbos-version', type=int, choices=[62],
+                    help='Stage the GL3-only upgrade candidate against the pinned ArbOS 61 baseline')
+options=parser.parse_args()
 assert not options.variant or (options.sliced and re.fullmatch('[a-z0-9-]+',options.variant))
 if options.game_coordinator and not options.sliced:
  parser.error('--game-coordinator requires the A14 sliced engine')
+if options.candidate_arbos_version and not options.game_coordinator:
+ parser.error('--candidate-arbos-version requires --game-coordinator')
 suffix='-'+options.variant if options.variant else ''
 HERE=Path(__file__).resolve().parent;REPO=HERE.parents[2]
 profile='nitro-game-a14'+suffix if options.game_coordinator else 'nitro-sliced'+suffix if options.sliced else 'nitro-chess'
+if options.candidate_arbos_version:
+ profile=f'nitro-game-a14-upgrade-{options.candidate_arbos_version}'+suffix
 source=HERE/'.cache'/profile;core=REPO/'research/chess/l3/core/node';go=core/'.cache/go-1.25.12/go/bin/go'
 if not source.exists():
  if platform.system()=='Darwin':subprocess.run(['cp','-cR',str(core/'.cache/nitro-core'),str(source)],check=True)
@@ -16,7 +23,8 @@ for p in (HERE/'overlay').glob('*.go'):shutil.copy2(p,source/'precompiles'/p.nam
 if options.game_coordinator:
  with tempfile.TemporaryDirectory() as temporary:
   staged=Path(temporary)/'overlay'
-  subprocess.run([sys.executable,str(HERE/'game/engine/stage_overlay.py'),str(HERE/'overlay/ArbGhostChessSlices.go'),str(staged)],check=True)
+  subprocess.run([sys.executable,str(HERE/'game/engine/stage_overlay.py'),str(HERE/'overlay/ArbGhostChessSlices.go'),str(staged),
+                  *(['--seed-migration'] if options.candidate_arbos_version else [])],check=True)
   for p in staged.glob('*.go'):shutil.copy2(p,source/'precompiles'/p.name)
 for p in (HERE/'arbos_overlay').glob('*.go'):shutil.copy2(p,source/'arbos'/p.name)
 for p in (HERE/'system_overlay').glob('*.go'):shutil.copy2(p,source/'system_tests'/p.name)
@@ -28,6 +36,9 @@ if 'makeGhostChessPrecompile' not in s and 'makeGhostChessSlicesPrecompile' not 
 if options.sliced:
  s=s.replace('insert(debugOnly(makeGhostChessPrecompile()))',registration).replace('insert(debugOnly(makeGhostChessSlicesPrecompile()))',registration)
 p.write_text(s)
+if options.candidate_arbos_version:
+ subprocess.run([sys.executable, str(HERE/'game/engine/stage_activation.py'), str(source),
+                 '--candidate-arbos-version', str(options.candidate_arbos_version)], check=True)
 subprocess.run([str(go),'mod','edit','-require=github.com/Gh0stllm/GH0ST/gl3/chessruntime@v0.0.0','-replace=github.com/Gh0stllm/GH0ST/gl3/chessruntime='+str(HERE/'runtime')],cwd=source,env={**os.environ,'GOTOOLCHAIN':'local'},check=True)
 subprocess.run([str(go),'mod','edit','-require=github.com/Gh0stllm/GH0ST/gl3/slicedchess@v0.0.0','-replace=github.com/Gh0stllm/GH0ST/gl3/slicedchess='+str(HERE/'sliced/runtime')],cwd=source,env={**os.environ,'GOTOOLCHAIN':'local'},check=True)
 subprocess.run([str(go.parent/'gofmt'),'-w',*[str(p) for p in (source/'precompiles').glob('ArbGhostChess*.go')]],check=True)

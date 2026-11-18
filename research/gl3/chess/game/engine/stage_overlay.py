@@ -9,6 +9,7 @@ from pathlib import Path
 BASE_NAME = "ArbGhostChessSlices.go"
 BASE_SHA256 = "43196fa745e0a7cbb03cc02c8a88a7747c654be156ac4345073e8030d9d99cd2"
 ADDITION_NAME = "ArbGhostChessSlicesGame.go"
+SEED_ADDITION_NAME = "ArbGhostChessSlicesSeed.go"
 
 
 def replace_once(text, original, updated):
@@ -30,18 +31,28 @@ def abi_entry(name, mutability, inputs, outputs):
     }, separators=(",", ":"))
 
 
-def apply_overlay(raw):
+def apply_overlay(raw, include_seed_migration=False):
     if hashlib.sha256(raw).hexdigest() != BASE_SHA256:
         raise ValueError("A14 base source differs from the pinned integration base")
     base = raw.decode("utf-8")
     end_abi = "\n]`\n\ntype ArbGhostChessSlices struct"
-    methods = (
+    methods = [
         abi_entry("gameCoordinator", "view", (), (("coordinator", "address"),)),
         abi_entry("engineStatus", "view", (), (
             ("moduleSha256", "bytes32"), ("seedRoot", "bytes32"), ("seedAvailable", "bool"),
         )),
         abi_entry("setGameCoordinator", "nonpayable", (("coordinator", "address"),), ()),
-    )
+    ]
+    if include_seed_migration:
+        methods.extend((
+            abi_entry("seedMigrationProgress", "view", (), (
+                ("nextChunk", "uint32"), ("totalChunks", "uint32"),
+            )),
+            abi_entry("installSeedChunk", "nonpayable", (
+                ("chunk", "uint32"), ("nonZeroPages", "uint16"),
+                ("pages", "bytes"), ("siblings", "bytes32[14]"),
+            ), (("complete", "bool"),)),
+        ))
     base = replace_once(base, end_abi, ",\n " + ",\n ".join(methods) + end_abi)
     header = "func (p ArbGhostChessSlices) NewGame(c ctx, evm mech, job bytes32) (bytes32, error) {\n"
     old_auth = (
@@ -73,13 +84,19 @@ def apply_overlay(raw):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("base_file", type=Path, help="Pinned ArbGhostChessSlices.go source")
-    parser.add_argument("output", type=Path, help="New directory for the two staged Go files")
+    parser.add_argument("output", type=Path, help="New directory for the staged Go files")
+    parser.add_argument("--seed-migration", action="store_true",
+                        help="Include the exact seed installer in the separate upgrade candidate")
     args = parser.parse_args()
-    overlay = apply_overlay(args.base_file.read_bytes())
-    addition = Path(__file__).with_name(ADDITION_NAME).read_bytes()
+    overlay = apply_overlay(args.base_file.read_bytes(), args.seed_migration)
+    additions = [ADDITION_NAME]
+    if args.seed_migration:
+        additions.append(SEED_ADDITION_NAME)
+    sources = {name: Path(__file__).with_name(name).read_bytes() for name in additions}
     args.output.mkdir()
     (args.output / BASE_NAME).write_text(overlay, encoding="utf-8")
-    (args.output / ADDITION_NAME).write_bytes(addition)
+    for name, source in sources.items():
+        (args.output / name).write_bytes(source)
 
 
 if __name__ == "__main__":
