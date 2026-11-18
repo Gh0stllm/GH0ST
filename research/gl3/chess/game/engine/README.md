@@ -35,3 +35,6 @@ python3 research/gl3/chess/build_replay.py --sliced --game-coordinator --candida
 The candidate source has no scheduled activation. Compilation, replay over
 the upgrade boundary and approval of a matching production proof root remain
 open. See the [mainnet observation and handoff constraints](MAINNET.md).
+
+The [read-only follower](FOLLOWER.md) replays existing GL3 batches while the
+production sequencer continues to serve the chain.
