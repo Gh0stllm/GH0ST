@@ -6,5 +6,7 @@ extern crate alloc;
 #[cfg(test)]
 extern crate std;
 
+pub mod checkpoint_codec;
 pub mod memory;
+pub mod rom;
 pub mod search;

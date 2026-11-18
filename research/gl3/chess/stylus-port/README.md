@@ -67,6 +67,17 @@ so moving seed bytes alone leaves code size as a separate gate. The old
 companion's size is a measurement of that artifact. Measure the new build
 after lowering.
 
+[Packing the exact guest](tools/partition_guest.py) measured 870,051 bytes
+of code and control sections after separating the model and debug data.
+Brotli quality 11 compressed those bytes to 180,008 bytes, above the
+96 KiB four-fragment ceiling. The packer splits that stream across 36
+ordinary immutable bytecode cells and adds a separate 7,494-byte function
+directory. It preserves the original 98,648,903-byte encoded data section
+in an additional 4,015 cells. [The bounded reader](src/rom.rs) checks each
+cell's code hash against the engine manifest and reads functions across
+cell boundaries. The cells are inputs for a compact interpreter that
+still needs to execute the full guest instruction set.
+
 The [custom research runtime's full decision](../sliced/evidence/cachefix-full24m.json)
 persisted a median 655,352-byte word-delta per four-quantum slice. Depositing
 that many bytes as fresh contract code would cost about 131 million gas at
@@ -75,7 +86,13 @@ transaction overhead. The rehearsal budgets 32 million L2 gas per search
 transaction. This calculation screens out copying
 those same recorded payloads into stock Stylus bytecode. Measure exact
 40-quantum read and write traces before choosing a different persistence
-representation.
+representation. The [checkpoint codec](src/checkpoint_codec.rs) exactly
+replaces changed 32-byte words using a 16-byte bitmap per sparse 4 KiB
+page. [The budget tool](tools/checkpoint_budget.py) compares lossless
+representations from memory captures at actual group boundaries. A codec
+alone does not authenticate pages or make prior receipt logs readable by
+the contract. Receipt-backed checkpoints would need a committed page root
+and verified witnesses for cold reads, within the sequencer's input limit.
 
 Bind the seed, mutable pages and continuation to the contract's own state.
 Then activate the program and run the exact opening on an isolated stock
