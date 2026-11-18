@@ -7,6 +7,7 @@ extern crate alloc;
 extern crate std;
 
 pub mod checkpoint_codec;
+pub mod checkpoint_tree;
 pub mod memory;
 pub mod rom;
 pub mod search;

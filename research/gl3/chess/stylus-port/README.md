@@ -37,8 +37,9 @@ contract. The prepared model, engine and continuation must reproduce the
 
 ## Validation
 
-The Rust library passed its eight paging and cursor tests and a Wasm target
-type check. A small fixture against the pinned generated C header passed
+The Rust library passed 19 tests for paging, cursors, immutable code reads,
+checkpoint records and joint Merkle proofs, plus a Wasm target type check.
+A small fixture against the pinned generated C header passed
 memory access, overlapping copy, growth and trap checks. The Go reference
 command compiled with the pinned guest embedded. The full Stylus engine
 requires its linked backend and checkpoint adapter.
@@ -89,10 +90,41 @@ those same recorded payloads into stock Stylus bytecode. Measure exact
 representation. The [checkpoint codec](src/checkpoint_codec.rs) exactly
 replaces changed 32-byte words using a 16-byte bitmap per sparse 4 KiB
 page. [The budget tool](tools/checkpoint_budget.py) compares lossless
-representations from memory captures at actual group boundaries. A codec
-alone does not authenticate pages or make prior receipt logs readable by
-the contract. Receipt-backed checkpoints would need a committed page root
-and verified witnesses for cold reads, within the sequencer's input limit.
+representations from memory captures at actual group boundaries. The
+[checkpoint tree](src/checkpoint_tree.rs) authenticates a batch of pages
+and updates the root with the same proof. Cold resume still depends on
+getting the pages to the contract. Nitro's [default sequencer limit](https://github.com/OffchainLabs/nitro/blob/v3.12.2/execution/gethexec/sequencer.go#L218-L226)
+is 95,000 raw transaction bytes, which holds at most 23 raw 4 KiB pages
+before signature, proof, or request framing. A receipt archive or replay
+can recover past logs for witnesses. Exact 40-quantum input sizes need a
+real engine read trace.
+
+## Checkpoint gas probe
+
+The [probe](probe/checkpoint.rs) emits a configurable number of synthetic
+checkpoint bytes in 4 KiB log chunks and persists a 32-byte commitment.
+The compact build is 4,826 bytes of Wasm and 2,190 bytes of prefixed Brotli
+runtime. An offline host fixture verified log bytes, Keccak commitments,
+stale-root rejection, and the one-page memory cap. Private Nitro activation
+and real gas measurements remain pending.
+
+Build the probe from `stylus-port` and package it for isolated rehearsal.
+
+```sh
+rustc --edition 2021 --target wasm32-unknown-unknown --crate-type cdylib -C opt-level=z \
+  -C panic=abort -C strip=symbols \
+  -C target-feature=-simd128,-relaxed-simd,-bulk-memory,-reference-types,-multivalue \
+  -C link-arg=-z -C link-arg=stack-size=32768 -C link-arg=--initial-memory=65536 \
+  -C link-arg=--max-memory=65536 -o checkpoint-probe.wasm probe/checkpoint.rs
+python3 tools/package_probe.py checkpoint-probe.wasm checkpoint-probe-package.json \
+  --expected-sha256 "$(shasum -a 256 checkpoint-probe.wasm | cut -d ' ' -f 1)"
+```
+
+A private caller can send 68 bytes of raw calldata with a big-endian
+four-byte payload length, the previous 32-byte commitment, and a 32-byte
+seed. A new instance starts at commitment zero. Measure the transaction
+receipt for full gas, including storage. The 44-byte return value reports
+the next commitment, gas spent in the log loop, and the chunk count.
 
 Bind the seed, mutable pages and continuation to the contract's own state.
 Then activate the program and run the exact opening on an isolated stock
