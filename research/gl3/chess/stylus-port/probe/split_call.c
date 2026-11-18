@@ -11,6 +11,7 @@ HOST(delegate_call_contract) uint32_t delegate_call_contract(const uint8_t *addr
     const uint8_t *calldata, uint32_t bytes, uint64_t gas, uint32_t *return_bytes);
 HOST(read_return_data) uint32_t read_return_data(uint8_t *dest, uint32_t offset, uint32_t bytes);
 HOST(evm_gas_left) uint64_t evm_gas_left(void);
+HOST(pay_for_memory_grow) void pay_for_memory_grow(uint32_t pages);
 
 static const uint8_t SLOT[32] = {0x71};
 static volatile uint8_t *const PROBE_MEMORY = (volatile uint8_t *)0x8000;
@@ -25,6 +26,7 @@ static int delegate(const uint8_t *address, uint8_t mode, uint8_t *result, uint3
 }
 
 uint32_t user_entrypoint(uint32_t bytes) {
+    pay_for_memory_grow(0);
     if (bytes != 22) return 1;
     uint8_t request[22];
     read_args(request);
@@ -51,6 +53,7 @@ uint32_t user_entrypoint(uint32_t bytes) {
 }
 #else
 uint32_t user_entrypoint(uint32_t bytes) {
+    pay_for_memory_grow(0);
     if (bytes != 1) return 1;
     uint8_t mode;
     read_args(&mode);

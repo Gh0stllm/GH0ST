@@ -75,12 +75,21 @@ async function send(label, data, to, value = 0n) {
       const gas = BigInt(receipt.gasUsed) - BigInt(receipt.gasUsedForL1);
       report.transactions[label] = { hash, signedBytes, computeGas: Number(gas),
         elapsedMs: performance.now() - began, block: receipt.blockNumber, status: receipt.status };
-      if (receipt.status !== '0x1' || gas <= 0n || gas > GAS_CAP) throw new Error(`${label} failed`);
+      if (receipt.status !== '0x1') {
+        const call = { from: signer.address, to, data, value: '0x' + value.toString(16), gas: '0x' + gasLimit.toString(16) };
+        try {
+          await rpc('eth_call', [call, 'latest']);
+        } catch (error) {
+          report.transactions[label].replayError = String(error.message || error);
+        }
+        throw new Error(`${label} failed`);
+      }
+      if (gas <= 0n || gas > GAS_CAP) throw new Error(`${label} exceeded the compute budget`);
       return receipt;
     }
     await sleep(50);
   }
-  throw new Error(`${label} receipt semaphore expired`);
+  throw new Error(`${label} receipt deadline exceeded`);
 }
 
 try {

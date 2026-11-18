@@ -98,6 +98,24 @@ The [boundary canaries](probe/split_call.c) use a separate coordinator and
 worker on private Nitro. The [rehearsal](tools/rehearse_split_call.mjs)
 checks a storage sentinel and Wasm memory marker and samples the metered
 cost of repeated calls with a one-byte argument and one-byte return value.
+Both programs activated. The worker read the coordinator's storage sentinel
+while reading zero at the address of the coordinator's live Wasm memory
+marker. The coordinator's marker survived the worker's write to that same
+address in its own memory. The private test measured **529.13 gas** per
+additional tiny warm handoff between the 256-call and 512-call samples.
+
+The first 40 quanta matched the reference's 98,566 nodes and crossed unit
+boundaries **52,586,351 times**. The [pair relinker](tools/group_shard_trial.py)
+compiled and optimized 18 frequently interacting pairs. The best disjoint
+merges among the pairs within the size envelope were `(0, 9)` and `(1, 8)`.
+They remove 30,558,573 projected crossings and leave **22,027,778** in that
+first group. At 100 gas for each warm target under [EIP-2929](https://eips.ethereum.org/EIPS/eip-2929#storage-read-changes),
+one `DELEGATECALL` per remaining crossing would spend **2,202,777,800 gas**
+on account access alone. The 32 million compute-gas cap rules out this
+function-by-function contract ABI even if all targets are warm. A coarser
+state-transfer design would need its own measurements. The [evidence](evidence/shard-trial-20261118.json)
+records native counts and private receipts. The engine's on-chain 40-step
+transaction sizes and mixed-traffic speed remain unmeasured.
 
 ## Private Runpod rehearsal
 
