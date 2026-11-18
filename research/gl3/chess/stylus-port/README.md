@@ -169,6 +169,30 @@ now requires all 247 signed transactions to be under 95,000 bytes and
 cross-checks their sizes from private RPC. Stockfish parity, gas and
 block latency still require the full private Nitro run.
 
+## Single-move transaction contract
+
+The [search entry point](contract/search.rs) links the full interpreter and
+compact resume path. Its constructor pins the exact ROM configuration and
+initial checkpoint with two storage words. Each call authenticates the
+supplied checkpoint before opening the witness, runs the grouped search,
+and writes one new head. Receipt logs contain the encoded changed pages
+and the new head. An archive reader can recover those bytes from receipts
+without computing a chess move. Contract execution authenticates them
+through the committed memory root at the next call.
+
+The immutable archive's code hashes are stored in a code-resident
+directory. A call supplies only the fixed-size engine manifest and the
+directory's outer manifest. This avoids repeating a whole-archive list of
+addresses in each transaction.
+
+The linked build is **71,823 bytes of Wasm** and **24,121 bytes** with
+the Stylus prefix and Brotli compression. In an offline host fixture it
+opened the exact engine ROM for a validly framed call, rejected an omitted
+page witness without logging or updating the head, and rejected a stale
+checkpoint and a nonzero value transfer. These checks cover the entry
+point and failure handling. Activation, a successful search group, and
+the real cost of publishing its changed pages remain unverified.
+
 ## Checkpoint gas probe
 
 The [probe](probe/checkpoint.rs) emits a configurable number of synthetic

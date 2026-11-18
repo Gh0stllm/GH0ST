@@ -16,6 +16,8 @@ STYLUS_PREFIX = bytes.fromhex("eff00000")
 MAX_WASM_BYTES = 256 * 1024
 MAX_RUNTIME_BYTES = 24_576
 INIT_HEADER_BYTES = 15
+CONFIG_SLOT = bytes([0x6C]) * 32
+CHECKPOINT_SLOT = bytes([0x6D]) * 32
 BROTLI = """
 const { brotliCompressSync, brotliDecompressSync, constants } = require('node:zlib');
 const fs = require('node:fs');
@@ -35,7 +37,7 @@ def sha256(data):
     return hashlib.sha256(data).hexdigest()
 
 
-def package(wasm, expected_sha256):
+def package(wasm, expected_sha256, config=None, checkpoint=None):
     if not 8 < len(wasm) <= MAX_WASM_BYTES:
         raise ValueError(f"Wasm must fit the {MAX_WASM_BYTES}-byte precompression limit")
     if wasm[:len(WASM_HEADER)] != WASM_HEADER:
@@ -48,13 +50,21 @@ def package(wasm, expected_sha256):
     if len(runtime) > MAX_RUNTIME_BYTES:
         raise ValueError(f"Prefixed runtime is {len(runtime)} bytes and a single contract allows {MAX_RUNTIME_BYTES}")
 
+    if (config is None) != (checkpoint is None):
+        raise ValueError("An initialized search package needs both commitments")
+    storage = b""
+    if config is not None:
+        if any(len(word) != 32 or not any(word) for word in (config, checkpoint)):
+            raise ValueError("Initial commitments must be nonzero 32-byte values")
+        storage = b"".join(b"\x7f" + value + b"\x7f" + slot + b"\x55"
+                           for slot, value in ((CONFIG_SLOT, config), (CHECKPOINT_SLOT, checkpoint)))
     size = len(runtime).to_bytes(2, "big")
-    offset = INIT_HEADER_BYTES.to_bytes(2, "big")
+    offset = (INIT_HEADER_BYTES + len(storage)).to_bytes(2, "big")
     # PUSH2 size; PUSH2 offset; PUSH1 0; CODECOPY; PUSH2 size; PUSH1 0; RETURN.
     constructor = b"\x61" + size + b"\x61" + offset + b"\x60\x00\x39\x61" + size + b"\x60\x00\xf3"
     if len(constructor) != INIT_HEADER_BYTES:
         raise ValueError("Constructor offset is inconsistent")
-    initcode = constructor + runtime
+    initcode = storage + constructor + runtime
 
     return {
         "schema": "gh0st.stylus-probe-package.v1",
@@ -71,6 +81,9 @@ def package(wasm, expected_sha256):
         "initCodeBytes": len(initcode),
         "initCodeSHA256": sha256(initcode),
         "initCode": "0x" + initcode.hex(),
+        "initializedSearch": config is not None,
+        "configCommitment": config.hex() if config is not None else None,
+        "initialCheckpoint": checkpoint.hex() if checkpoint is not None else None,
         "activationVerified": False,
         "executionVerified": False,
         "transactionsSubmitted": 0,
@@ -91,13 +104,19 @@ def main():
     parser.add_argument("wasm", type=Path)
     parser.add_argument("output", type=Path, help="New JSON package file")
     parser.add_argument("--expected-sha256", type=str.lower, required=True)
+    parser.add_argument("--config-commitment", help="32-byte Keccak of the reviewed search configuration")
+    parser.add_argument("--initial-checkpoint", help="32-byte committed head of the reviewed initialized guest")
     args = parser.parse_args()
     if not re.fullmatch(r"[0-9a-f]{64}", args.expected_sha256):
         parser.error("--expected-sha256 must be a 64-character hex digest")
     try:
         with args.wasm.open("rb") as artifact:
             wasm = artifact.read(MAX_WASM_BYTES + 1)
-        metadata = package(wasm, args.expected_sha256)
+        arguments = [args.config_commitment, args.initial_checkpoint]
+        if any(value is not None and not re.fullmatch(r"[0-9a-fA-F]{64}", value) for value in arguments):
+            raise ValueError("Commitments must each be exactly 64 hex characters")
+        config, checkpoint = (None if value is None else bytes.fromhex(value) for value in arguments)
+        metadata = package(wasm, args.expected_sha256, config, checkpoint)
         write_manifest(args.output, metadata)
         print(f"Packaged {metadata['inputWasmBytes']} Wasm bytes into {metadata['runtimeBytes']} prefixed runtime bytes")
     except (OSError, ValueError, subprocess.SubprocessError) as error:

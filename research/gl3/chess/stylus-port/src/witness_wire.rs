@@ -8,7 +8,7 @@ use crate::checkpoint_tree::{
     self, CheckpointError, Digest, Keccak, SiblingProof, DEPTH, MAX_PAGES,
 };
 use crate::memory::{Page, PAGE_SIZE};
-use crate::rom::{BytecodeRom, CodeHost};
+use crate::rom::{BytecodeRom, CodeHost, IndexedArchive};
 
 pub const TRANSACTION_BYTES: usize = 95_000;
 const MAGIC: &[u8; 4] = b"GW01";
@@ -64,6 +64,13 @@ impl Archive for InlineArchive {
 }
 
 impl<H: CodeHost, const RESIDENT: usize> Archive for BytecodeRom<'_, H, RESIDENT> {
+    fn read(&mut self, offset: u32, output: &mut [u8]) -> Result<(), WireError> {
+        self.read(offset, output)
+            .map_err(|_| WireError::ArchiveUnavailable)
+    }
+}
+
+impl<H: CodeHost, const RESIDENT: usize> Archive for IndexedArchive<'_, H, RESIDENT> {
     fn read(&mut self, offset: u32, output: &mut [u8]) -> Result<(), WireError> {
         self.read(offset, output)
             .map_err(|_| WireError::ArchiveUnavailable)

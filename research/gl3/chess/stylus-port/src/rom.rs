@@ -52,6 +52,34 @@ impl ResidentShard {
     };
 }
 
+pub const SHARD_RECORD_BYTES: usize = 52;
+
+impl Shard {
+    pub fn parse(record: &[u8; SHARD_RECORD_BYTES]) -> Self {
+        Self {
+            address: record[..20].try_into().unwrap(),
+            code_hash: record[20..].try_into().unwrap(),
+        }
+    }
+}
+
+fn load_shard<H: CodeHost>(
+    host: &mut H,
+    shard: &Shard,
+    code: &mut [u8],
+) -> Result<(), RomError<H::Error>> {
+    if host.code_hash(&shard.address).map_err(RomError::Host)? != shard.code_hash
+        || host
+            .copy_code(&shard.address, code)
+            .map_err(RomError::Host)?
+            != code.len()
+        || code[0] != 0
+    {
+        return Err(RomError::InvalidShard);
+    }
+    Ok(())
+}
+
 /// Reads a byte stream held in `STOP || payload` code shards.
 /// The caller binds the ordered manifest and length to the engine revision
 /// in its own state. The transaction sender must not choose this manifest.
@@ -90,24 +118,7 @@ impl<'a, H: CodeHost, const RESIDENT: usize> BytecodeRom<'a, H, RESIDENT> {
         if resident.index != Some(index) {
             // A failed copy may already have overwritten the old buffer.
             resident.index = None;
-            let shard = &self.shards[index];
-            if self
-                .host
-                .code_hash(&shard.address)
-                .map_err(RomError::Host)?
-                != shard.code_hash
-            {
-                return Err(RomError::InvalidShard);
-            }
-            if self
-                .host
-                .copy_code(&shard.address, code)
-                .map_err(RomError::Host)?
-                != code.len()
-                || code[0] != 0
-            {
-                return Err(RomError::InvalidShard);
-            }
+            load_shard(&mut self.host, &self.shards[index], code)?;
             resident.index = Some(index);
         }
         Ok(&code[1..])
@@ -156,6 +167,66 @@ impl<'a, H: CodeHost, const RESIDENT: usize> BytecodeRom<'a, H, RESIDENT> {
             len,
             type_index: record[5],
         })
+    }
+}
+
+/// The short contract manifest pins a code-resident directory, which in
+/// turn pins every archive cell. Only the directory's outer manifest must
+/// travel with a call, even for hundreds of megabytes of archive data.
+pub struct IndexedArchive<'a, H: CodeHost, const RESIDENT: usize> {
+    host: H,
+    directory: BytecodeRom<'a, H, 1>,
+    len: u32,
+    cache: [ResidentShard; RESIDENT],
+}
+
+impl<'a, H: CodeHost, const RESIDENT: usize> IndexedArchive<'a, H, RESIDENT> {
+    pub fn new(
+        host: H,
+        directory: BytecodeRom<'a, H, 1>,
+        len: u32,
+    ) -> Result<Self, RomError<H::Error>> {
+        let cells = (len as usize).div_ceil(PAYLOAD_BYTES);
+        if RESIDENT == 0 || len == 0 || directory.len() as usize != cells * SHARD_RECORD_BYTES {
+            return Err(RomError::InvalidManifest);
+        }
+        Ok(Self {
+            host,
+            directory,
+            len,
+            cache: [ResidentShard::EMPTY; RESIDENT],
+        })
+    }
+
+    pub fn read(&mut self, start: u32, mut output: &mut [u8]) -> Result<(), RomError<H::Error>> {
+        let mut cursor = start as usize;
+        if cursor > self.len as usize || output.len() > self.len as usize - cursor {
+            return Err(RomError::OutOfBounds);
+        }
+        while !output.is_empty() {
+            let index = cursor / PAYLOAD_BYTES;
+            let resident = &mut self.cache[index % RESIDENT];
+            let bytes = min(PAYLOAD_BYTES, self.len as usize - index * PAYLOAD_BYTES);
+            if resident.index != Some(index) {
+                resident.index = None;
+                let mut record = [0; SHARD_RECORD_BYTES];
+                self.directory
+                    .read((index * SHARD_RECORD_BYTES) as u32, &mut record)?;
+                load_shard(
+                    &mut self.host,
+                    &Shard::parse(&record),
+                    &mut resident.bytes[..bytes + 1],
+                )?;
+                resident.index = Some(index);
+            }
+            let origin = cursor % PAYLOAD_BYTES;
+            let count = min(output.len(), bytes - origin);
+            let (head, remaining) = output.split_at_mut(count);
+            head.copy_from_slice(&resident.bytes[1 + origin..1 + origin + count]);
+            cursor += count;
+            output = remaining;
+        }
+        Ok(())
     }
 }
 
