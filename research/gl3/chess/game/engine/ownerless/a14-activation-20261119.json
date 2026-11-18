@@ -29,6 +29,47 @@
   },
   "delayedActivation": {
     "status": "waiting-for-safe-root-and-validator-promotion",
-    "governanceMarkerSubmitted": false
+    "governanceMarkerSubmitted": false,
+    "preActivationValidationCheckpoint": {
+      "GlobalState": {
+        "BlockHash": "0xdd12d840583b8081ff3cc1d0a25b2b281181fe6993a22d863a81fecef4e4c596",
+        "SendRoot": "0x0000000000000000000000000000000000000000000000000000000000000000",
+        "Batch": 1583,
+        "PosInBatch": 0
+      },
+      "WasmRoots": [
+        "0xc10cd7ec6acaf1c441a3f6bd0900ad20f15855ba775a96f1939118cbc629dc97"
+      ]
+    },
+    "promotionRequiresNewCanonicalBatches": true,
+    "minimumNewBatchesFromObservedAssertion": 2,
+    "activationReviewRequiresVerifiedCandidateOnlyRoot": true,
+    "sameParentNetworkPromotionInputs": {
+      "scope": "Read-only simulations for ordinary empty Inbox messages. Neither payload is the A14 activation marker.",
+      "unsubmitted": true,
+      "transactions": [
+        {
+          "payload": "0x03",
+          "calldataKeccak256": "0xf8b07b7898ff2e26b1a5680a40991478c4a88321f639bf3bdb950a9b4c6da19d",
+          "ethValue": "0",
+          "estimatedGas": 96014
+        },
+        {
+          "payload": "0x03000000000000000103",
+          "calldataKeccak256": "0x67f97fd537eb0085d6ef5e2bd275e219aff4f1eff281ae16b7a96053c8e99fa3",
+          "ethValue": "0",
+          "estimatedGas": 96038
+        }
+      ],
+      "secondInputRequiresCandidateRootAssertionAfterFirst": true
+    }
+  },
+  "publicRpcReadChecksWhileAwaitingWallet": {
+    "samples": 12,
+    "successesByRoute": [
+      12,
+      12
+    ],
+    "observedThroughUTC": "2026-11-18T20:32:11.549Z"
   }
 }
