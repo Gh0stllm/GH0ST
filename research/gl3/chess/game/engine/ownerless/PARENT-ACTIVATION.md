@@ -41,6 +41,19 @@ check now counts that frame and preserves the exact transaction, origin,
 caller and poster checks. This correction requires a new native binary
 and machine root.
 
+The corrected direct call and duplicate rejection passed in native
+execution. Cold reconstruction of its parent block through Nitro's
+legacy recorder then disagreed on the state root. The failed rehearsal
+used candidate root
+`0xd68f5637aa8e72f0ae9afec87b0ccd262698f3d5b95f74741d649a8bb58b350c`.
+The expected block 3 root was
+`0x425d9d4582156d5066119594c51b8031cbf6a0e9cebcfaa3fc0d1a4c458bf24d`.
+The cold recorder produced
+`0xff700d3336a8ecd4813f48aeb2431649d307ecb7a484f02646c56a22a0e15e0d`.
+The replay check exposed activation state writes that ran outside the
+stored internal start-block transaction. That build remains a private
+candidate.
+
 Both block production and replay require delayed request ID and the
 prior and next header nonce to identify one newly consumed delayed
 message. Regular sequencer messages have a fixed batch-poster sender
