@@ -185,13 +185,49 @@ directory. A call supplies only the fixed-size engine manifest and the
 directory's outer manifest. This avoids repeating a whole-archive list of
 addresses in each transaction.
 
-The linked build is **71,823 bytes of Wasm** and **24,121 bytes** with
-the Stylus prefix and Brotli compression. In an offline host fixture it
+After [canonical re-encoding](../../../chess/l3/stylus/normalize/src/main.rs),
+the linked build is **67,940 bytes of Wasm** and **23,626 bytes** with
+the Stylus prefix and Brotli compression. It passed validation using
+Nitro's WebAssembly feature flags. Its outer memory starts at 25 pages
+and is capped at 128. In an offline host fixture the entry point
 opened the exact engine ROM for a validly framed call, rejected an omitted
 page witness without logging or updating the head, and rejected a stale
 checkpoint and a nonzero value transfer. These checks cover the entry
 point and failure handling. Activation, a successful search group, and
 the real cost of publishing its changed pages remain unverified.
+
+### Exact initialized snapshot for the rehearsal
+
+[The recovery tool](examples/extract_seed.rs) recovered **466,157,568 bytes**
+from the archived [private block replay](../sliced/evidence/cachefix-first-native-replay.json).
+It read the source program identity and initial globals from ArbOS storage
+in the pinned block's trie and reproduced the historical image commitment
+`5d89d556e3c7cede4a0e4c80928f84ffa02274053cf0cfa82413dc82c6a2c407`.
+The recovered raw image SHA-256 is
+`2d7637246b973a1cfebfc7d1ad11d762797110d199b431b52272c6f0e3e0c1ef`.
+
+[Archive packing](examples/pack_snapshot.rs) omitted zero pages and
+deduplicated identical data. The verified snapshot needs **269,552,992
+archive bytes** across **10,969 code cells** in the current layout. The
+resulting checkpoint tree root is
+`c325afeb4963e77707a5d02e7baa261fc8e358c7483b8c92a6285513b2bc9f75`.
+The [private genesis packer](tools/rehearsal_genesis.mjs) emitted 11,044 code
+accounts including the engine and directory. Its advance header and
+directory manifest use **4,021 bytes** before the witness or signature.
+Genesis allocation provides the checked bytes for private measurement.
+On an existing chain, publishing this exact uncompressed archive as new
+contract code would require about **53.9 billion gas** for archive code
+deposit alone, before contracts, calldata, activation or execution.
+
+[First-group tracing](examples/trace_first_group.rs) captures the pinned
+engine's real read set and produces the exact compact witness if it fits.
+[The first-group runner](tools/rehearse_first_group.mjs) uses the funded
+ephemeral signer on an isolated ArbOS 61 loopback RPC, deploys and
+activates the search program, and verifies its signed transaction length,
+gas receipt and committed 40-quantum head. The trace and the private
+transaction are still pending. End-to-end testing also needs to show that
+the receipt bytes can supply subsequent groups and reproduce the complete
+24-million-node checkpoint while ordinary transfers keep their cadence.
 
 ## Checkpoint gas probe
 
