@@ -6,9 +6,10 @@
 live GL3 at block **20,629**. The launch procedure deliberately removed
 the child chain owner. The ordinary owner-scheduled activation path in
 this candidate therefore applies to a private rehearsal. Live activation
-requires a separate candidate that binds only the A14 upgrade and
-bootstrap to the existing parent authority while preserving GL3's
-renunciation. [Live owner read](activation/live-owner-20261118.json)
+requires the separate [parent-authorized candidate](ownerless/PARENT-ACTIVATION.md).
+It binds only A14 activation and bootstrap to the existing parent authority
+while preserving GL3's renunciation.
+[Live owner read](activation/live-owner-20261118.json)
 
 ## Isolated activation
 

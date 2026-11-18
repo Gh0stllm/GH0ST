@@ -4,18 +4,26 @@ import argparse,json,os,shutil,subprocess,hashlib,platform,re,sys,tempfile
 parser=argparse.ArgumentParser();parser.add_argument('--sliced',action='store_true');parser.add_argument('--variant',default='');parser.add_argument('--game-coordinator',action='store_true')
 parser.add_argument('--candidate-arbos-version', type=int, choices=[62],
                     help='Stage the GL3-only upgrade candidate against the pinned ArbOS 61 baseline')
+parser.add_argument('--parent-authorized-a14', action='store_true',
+                    help='Use the separate parent-authorized A14 profile for renounced GL3')
 options=parser.parse_args()
 assert not options.variant or (options.sliced and re.fullmatch('[a-z0-9-]+',options.variant))
 if options.game_coordinator and not options.sliced:
  parser.error('--game-coordinator requires the A14 sliced engine')
 if options.candidate_arbos_version and not options.game_coordinator:
  parser.error('--candidate-arbos-version requires --game-coordinator')
+if options.parent_authorized_a14 and not options.candidate_arbos_version:
+ parser.error('--parent-authorized-a14 requires --candidate-arbos-version')
 suffix='-'+options.variant if options.variant else ''
 HERE=Path(__file__).resolve().parent;REPO=HERE.parents[2]
 profile='nitro-game-a14'+suffix if options.game_coordinator else 'nitro-sliced'+suffix if options.sliced else 'nitro-chess'
 if options.candidate_arbos_version:
  profile=f'nitro-game-a14-upgrade-{options.candidate_arbos_version}'+suffix
+if options.parent_authorized_a14:
+ profile=f'nitro-game-a14-parent-{options.candidate_arbos_version}'+suffix
 source=HERE/'.cache'/profile;core=REPO/'research/chess/l3/core/node';go=core/'.cache/go-1.25.12/go/bin/go'
+if options.parent_authorized_a14 and source.exists():
+ raise RuntimeError('Use a fresh --variant name for a new parent-authorized build')
 if not source.exists():
  if platform.system()=='Darwin':subprocess.run(['cp','-cR',str(core/'.cache/nitro-core'),str(source)],check=True)
  else:shutil.copytree(core/'.cache/nitro-core',source,symlinks=True)
@@ -44,6 +52,9 @@ p.write_text(s)
 if options.candidate_arbos_version:
  subprocess.run([sys.executable, str(HERE/'game/engine/stage_activation.py'), str(source),
                  '--candidate-arbos-version', str(options.candidate_arbos_version)], check=True)
+ if options.parent_authorized_a14:
+  for overlay in ['stage_parent_activation.py', 'stage_parent_bootstrap.py']:
+   subprocess.run([sys.executable, str(HERE/'game/engine/ownerless'/overlay), str(source)], check=True)
 else:
  subprocess.run([str(go),'mod','edit','-require=github.com/Gh0stllm/GH0ST/gl3/chessruntime@v0.0.0','-replace=github.com/Gh0stllm/GH0ST/gl3/chessruntime='+str(HERE/'runtime')],cwd=source,env={**os.environ,'GOTOOLCHAIN':'local'},check=True)
 subprocess.run([str(go),'mod','edit','-require=github.com/Gh0stllm/GH0ST/gl3/slicedchess@v0.0.0','-replace=github.com/Gh0stllm/GH0ST/gl3/slicedchess='+str(HERE/'sliced/runtime')],cwd=source,env={**os.environ,'GOTOOLCHAIN':'local'},check=True)

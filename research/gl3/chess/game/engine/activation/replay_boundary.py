@@ -22,14 +22,14 @@ def sha256(path):
         return hashlib.file_digest(stream, "sha256").hexdigest()
 
 
-def replay(prover, machine, source, destination, label):
+def replay(prover, machine, source, destination, label, max_steps):
     data = json.loads(source.read_text())
     expected = data["ExpectedEndState"]
     proof = destination / f"proof-{label}.json"
     logfile = destination / f"proof-{label}.log"
     command = [
         prover, machine, "--json-inputs", source, "--require-success",
-        "--max-steps", "1000000000", "--proving-interval", "10000000", "-o", proof,
+        "--max-steps", str(max_steps), "--proving-interval", "100000000", "-o", proof,
     ]
     with logfile.open("x") as log:
         subprocess.run(command, stdout=log, stderr=subprocess.STDOUT, check=True, timeout=900)
@@ -48,7 +48,10 @@ def main():
     parser.add_argument("machine_directory", type=Path)
     parser.add_argument("recording_directory", type=Path)
     parser.add_argument("new_output_directory", type=Path)
+    parser.add_argument("--max-steps", type=int, default=8_000_000_000)
     args = parser.parse_args()
+    if args.max_steps <= 0:
+        parser.error("--max-steps must be positive")
 
     boundary = json.loads((args.recording_directory / "boundary.json").read_text())
     assembly = json.loads((args.machine_directory / "assembly.json").read_text())
@@ -71,13 +74,14 @@ def main():
     args.new_output_directory.mkdir(mode=0o700)
     cases = {
         label: replay(args.prover, machine, args.recording_directory / f"input-{label}.json",
-                      args.new_output_directory, label)
+                      args.new_output_directory, label, args.max_steps)
         for label in ("before", "after")
     }
     report = {
         "scope": "Private native and proof replay across the A14 activation boundary",
         "moduleRoot": root,
         "checks": cases,
+        "proofStepLimit": args.max_steps,
         "activationBoundaryReplayVerified": True,
         "mainnetActivationVerified": False,
     }
