@@ -23,7 +23,7 @@ globals and cannot pass the seed commitment.
 
 ## Bounded import
 
-An ArbOS chain owner submits 7,113 sequential chunks of 16 pages each.
+The seed installer submits 7,113 sequential chunks of 16 pages each.
 A chunk contains a bitmap, only its nonzero pages, and 14 sibling hashes proving
 its location in the existing image tree. A14 authenticates all sixteen pages,
 the engine and initial globals before writing. The cursor updates with the
@@ -40,7 +40,9 @@ The maximum page payload is 65,536 bytes per call before ABI and proof overhead.
 At 200 gas per retained code byte, writing all 71,823 originally nonzero pages
 has a source-derived code-write charge of 58,923,589,200 gas. That excludes
 calldata, reads, proof computation, storage metadata and parent-chain fees.
-The complete transaction gas and elapsed time remain unmeasured.
+At 0.00001 GH0ST per gas, that write component alone costs 589,235.892
+GH0ST. Measure execution and calldata gas after activation before allocating
+the migration budget. This figure excludes the game prize and deployment fee.
 
 ## Generate transaction arguments
 
@@ -52,11 +54,18 @@ uses local file input and prints unsigned arguments.
 python3 seed_chunks.py /path/to/initialized-stockfish.raw --start 0 --count 1
 ```
 
-The signer must match the current ArbOS chain owner. After each transaction,
-read the canonical receipt and `seedMigrationProgress()` before signing the
-next chunk. When resuming, use the cursor reported by the chain. The release
-must confirm that the paired runtimes preserve historical roots and that a
-finalized import returns the exact module and seed through `engineStatus()`.
+On ownerless GL3, the Robinhood UpgradeExecutor nominates a dedicated seed
+installer through the [restricted parent bootstrap](ownerless/PARENT-ACTIVATION.md#restricted-bootstrap).
+The address must be controlled by the project and able to pay GL3 gas. Wait
+for verified A14 activation before submitting the nomination. Verify the
+installed address and read `seedMigrationProgress()` before sending a
+chunk. Advance from the canonical cursor after each successful receipt.
 
-This is source preparation. The import implementation and its production
-activation have not been compiled or executed here.
+A14 reports the exact module and seed commitment through `engineStatus()`
+when the import completes. The parent executor can then register the
+deployed chess coordinator. Paid play requires that registration and a
+separately funded prize pool.
+
+This document describes the import and its verification steps. Neither a
+deployment of the coordinator nor a verified A14 activation proves that
+seed chunks have been installed.
