@@ -130,9 +130,26 @@ already recorded 1,919 changed pages in the first quantum of the same
 `e2e4` opening. This raw-witness adapter requires the old 4 KiB input for
 each page it writes. That is at least **7,860,224 bytes** for the first
 quantum, before read-only pages and proofs, over 82 times the 95,000-byte
-envelope. The calculation rules out the current raw input format for the
-first 40-quantum transaction. It measures neither compressed witnesses nor
-contract execution gas.
+envelope. The calculation rules out the raw input format for the first
+40-quantum transaction.
+
+## Compact cold-resume input
+
+The [witness format](src/witness_wire.rs) encodes zero pages without a body,
+uses lossless zero-run encoding for sparse pages and preserves dense pages
+verbatim. It replaces known zero Merkle subtrees with a one-byte tag. The
+[compact backend](src/compact_resume.rs) reconstructs the committed root
+before execution and decompresses pages on demand. Evicted writes remain
+compressed in a bounded overlay and only changed pages leave a successful
+[40-quantum execution](src/interpreter/group.rs).
+
+An offline fixture opened 1,919 synthetic zero pages spread across the
+logical address space. Its packet was **24,027 bytes**, including 12,507
+proof nodes. It cold-read and changed two pages, forced eviction, and
+verified finalization. A batch of 24 dense inline pages exceeded the cap
+and was rejected. These cases measure the wire format and page handling.
+The exact Stockfish read set, signed transaction sizes, gas and block
+latency still require the full private Nitro fixture.
 
 ## Checkpoint gas probe
 

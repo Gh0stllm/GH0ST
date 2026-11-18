@@ -6,7 +6,7 @@ use crate::memory::{Page, PAGE_SIZE};
 
 pub const MAX_MEMORY: usize = 768 * 1024 * 1024;
 pub const MAX_PAGES: usize = MAX_MEMORY / PAGE_SIZE;
-const DEPTH: u32 = (MAX_PAGES - 1).ilog2() + 1;
+pub(crate) const DEPTH: u32 = (MAX_PAGES - 1).ilog2() + 1;
 pub type Digest = [u8; 32];
 
 pub trait Keccak {
@@ -25,44 +25,74 @@ pub enum CheckpointError {
     InvalidPageOrder,
     MissingSibling,
     UnusedSibling,
+    InvalidSibling,
     WrongPriorRoot,
 }
 
-fn leaf(hash: &mut impl Keccak, page: &Page) -> Digest {
+pub(crate) fn leaf(hash: &mut impl Keccak, page: &Page) -> Digest {
     let mut message = [0; PAGE_SIZE + 1];
     message[1..].copy_from_slice(page);
     hash.digest(&message)
 }
 
-fn parent(hash: &mut impl Keccak, left: Digest, right: Digest) -> Digest {
+pub(crate) fn parent(hash: &mut impl Keccak, left: Digest, right: Digest) -> Digest {
     let mut message = [1; 65];
     message[1..33].copy_from_slice(&left);
     message[33..].copy_from_slice(&right);
     hash.digest(&message)
 }
 
+pub(crate) trait LeafChange {
+    fn index(&self) -> u32;
+    fn digests(&self, hash: &mut impl Keccak) -> (Digest, Digest);
+}
+
+impl LeafChange for PageChange<'_> {
+    fn index(&self) -> u32 {
+        self.index
+    }
+
+    fn digests(&self, hash: &mut impl Keccak) -> (Digest, Digest) {
+        let before = leaf(hash, self.before);
+        let after = if self.before == self.after {
+            before
+        } else {
+            leaf(hash, self.after)
+        };
+        (before, after)
+    }
+}
+
+pub(crate) trait SiblingProof {
+    fn node(&mut self, level: u32) -> Result<Digest, CheckpointError>;
+    fn is_empty(&self) -> bool;
+}
+
+impl SiblingProof for core::slice::Iter<'_, Digest> {
+    fn node(&mut self, _: u32) -> Result<Digest, CheckpointError> {
+        self.next().copied().ok_or(CheckpointError::MissingSibling)
+    }
+
+    fn is_empty(&self) -> bool {
+        self.as_slice().is_empty()
+    }
+}
+
 fn branch(
     hash: &mut impl Keccak,
-    changes: &[PageChange<'_>],
-    siblings: &mut core::slice::Iter<'_, Digest>,
+    changes: &[impl LeafChange],
+    siblings: &mut impl SiblingProof,
     levels: u32,
 ) -> Result<(Digest, Digest), CheckpointError> {
     if changes.is_empty() {
-        let sibling = *siblings.next().ok_or(CheckpointError::MissingSibling)?;
+        let sibling = siblings.node(levels)?;
         return Ok((sibling, sibling));
     }
     if levels == 0 {
-        let change = &changes[0];
-        let before = leaf(hash, change.before);
-        let after = if change.before == change.after {
-            before
-        } else {
-            leaf(hash, change.after)
-        };
-        return Ok((before, after));
+        return Ok(changes[0].digests(hash));
     }
     let bit = 1 << (levels - 1);
-    let split = changes.partition_point(|page| page.index & bit == 0);
+    let split = changes.partition_point(|page| page.index() & bit == 0);
     let (left_before, left_after) = branch(hash, &changes[..split], siblings, levels - 1)?;
     let (right_before, right_after) = branch(hash, &changes[split..], siblings, levels - 1)?;
     let before = parent(hash, left_before, right_before);
@@ -85,22 +115,30 @@ pub fn replace_pages(
     changes: &[PageChange<'_>],
     siblings: &[Digest],
 ) -> Result<Digest, CheckpointError> {
+    replace_with(hash, prior_root, changes, &mut siblings.iter())
+}
+
+pub(crate) fn replace_with(
+    hash: &mut impl Keccak,
+    prior_root: Digest,
+    changes: &[impl LeafChange],
+    siblings: &mut impl SiblingProof,
+) -> Result<Digest, CheckpointError> {
     if changes.is_empty() {
         if siblings.is_empty() {
             return Ok(prior_root);
         }
         return Err(CheckpointError::UnusedSibling);
     }
-    if changes[changes.len() - 1].index as usize >= MAX_PAGES
+    if changes[changes.len() - 1].index() as usize >= MAX_PAGES
         || changes
             .windows(2)
-            .any(|pair| pair[0].index >= pair[1].index)
+            .any(|pair| pair[0].index() >= pair[1].index())
     {
         return Err(CheckpointError::InvalidPageOrder);
     }
-    let mut proof = siblings.iter();
-    let (before, after) = branch(hash, changes, &mut proof, DEPTH)?;
-    if proof.next().is_some() {
+    let (before, after) = branch(hash, changes, siblings, DEPTH)?;
+    if !siblings.is_empty() {
         return Err(CheckpointError::UnusedSibling);
     }
     if before != prior_root {

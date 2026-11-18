@@ -8,8 +8,10 @@ extern crate std;
 
 pub mod checkpoint_codec;
 pub mod checkpoint_tree;
+pub mod compact_resume;
 pub mod interpreter;
 pub mod memory;
 pub mod resume;
 pub mod rom;
 pub mod search;
+pub mod witness_wire;

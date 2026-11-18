@@ -58,11 +58,31 @@ impl Checkpoint {
         hash.digest(&input)
     }
 
-    fn valid(&self) -> bool {
+    pub(crate) fn valid(&self) -> bool {
         self.engine_identity != [0; 32]
             && self.job_identity != [0; 32]
             && valid_memory_length(self.memory_bytes)
             && (self.cursor.quanta != 0 || (self.cursor.observed_nodes == 0 && !self.complete))
+    }
+
+    pub(crate) fn check_transition(
+        &self,
+        cursor: Cursor,
+        memory_bytes: u32,
+        complete: bool,
+    ) -> Result<usize, ResumeError> {
+        let steps = cursor.quanta.saturating_sub(self.cursor.quanta);
+        if steps == 0
+            || steps > QUANTA_PER_TRANSACTION
+            || (!complete && steps != QUANTA_PER_TRANSACTION)
+            || cursor.observed_nodes < self.cursor.observed_nodes
+        {
+            return Err(ResumeError::InvalidProgress);
+        }
+        if !valid_memory_length(memory_bytes) || memory_bytes < self.memory_bytes {
+            return Err(ResumeError::InvalidMemoryLength);
+        }
+        Ok(memory_bytes as usize / PAGE_SIZE)
     }
 }
 
@@ -224,18 +244,9 @@ impl<'a, 'page> ResumeBackend<'a, 'page> {
         if self.faulted {
             return Err(ResumeError::Faulted);
         }
-        let steps = cursor.quanta.saturating_sub(self.prior.cursor.quanta);
-        if steps == 0
-            || steps > QUANTA_PER_TRANSACTION
-            || (!complete && steps != QUANTA_PER_TRANSACTION)
-            || cursor.observed_nodes < self.prior.cursor.observed_nodes
-        {
-            return Err(ResumeError::InvalidProgress);
-        }
-        if !valid_memory_length(memory_bytes) || memory_bytes < self.prior.memory_bytes {
-            return Err(ResumeError::InvalidMemoryLength);
-        }
-        let pages = memory_bytes as usize / PAGE_SIZE;
+        let pages = self
+            .prior
+            .check_transition(cursor, memory_bytes, complete)?;
         if self
             .pages
             .iter()
