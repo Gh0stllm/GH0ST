@@ -10,8 +10,9 @@ import (
 var a14SeedInstallerSlot = []byte("GL3_CHESS_SEED_INSTALLER_V1")
 
 func a14DirectTransaction(c ctx, evm mech) bool {
+	// Nitro's advanced-precompile wrapper adds one frame around the handler.
 	return evm.ChainConfig().IsGL3A14(c.State.ArbOSVersion()) &&
-		!c.ReadOnly() && evm.Depth() == 0 && evm.Origin == c.caller &&
+		!c.ReadOnly() && evm.Depth() == 1 && evm.Origin == c.caller &&
 		c.txProcessor != nil && c.txProcessor.TopTxType != nil
 }
 

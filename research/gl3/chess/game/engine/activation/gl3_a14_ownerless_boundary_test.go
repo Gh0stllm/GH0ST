@@ -27,6 +27,7 @@ import (
 	"github.com/offchainlabs/nitro/precompiles"
 	"github.com/offchainlabs/nitro/solgen/go/bridgegen"
 	"github.com/offchainlabs/nitro/solgen/go/precompilesgen"
+	"github.com/offchainlabs/nitro/statetransfer"
 	"github.com/offchainlabs/nitro/validator/server_api"
 	"github.com/offchainlabs/nitro/validator/valnode"
 )
@@ -72,6 +73,8 @@ func TestGL3A14OwnerlessBoundary(t *testing.T) {
 	Require(t, err)
 
 	executor := common.HexToAddress("0xA632B4c45726C779086F60d8b09BEE7b09bA2541")
+	expectedAlias := arbosutil.RemapL1Address(executor)
+	aliasBalance := new(big.Int).Exp(big.NewInt(10), big.NewInt(20), nil)
 	installPrivateA14Executor(t, executor)
 	ctx, cancel := context.WithTimeout(context.Background(), 4*time.Minute)
 	defer cancel()
@@ -85,6 +88,8 @@ func TestGL3A14OwnerlessBoundary(t *testing.T) {
 	for i := range builder.L2Info.ArbInitData.Accounts {
 		builder.L2Info.ArbInitData.Accounts[i].EthBalance = new(big.Int).Exp(big.NewInt(10), big.NewInt(21), nil)
 	}
+	builder.L2Info.ArbInitData.Accounts = append(builder.L2Info.ArbInitData.Accounts,
+		statetransfer.AccountInitializationInfo{Addr: expectedAlias, EthBalance: aliasBalance})
 	builder.takeOwnership = false
 	builder.chainConfig.ArbitrumChainParams.AllowDebugPrecompiles = false
 	builder.chainConfig.ArbitrumChainParams.InitialChainOwner = common.Address{}
@@ -110,6 +115,11 @@ func TestGL3A14OwnerlessBoundary(t *testing.T) {
 	Require(t, err)
 	if !l1.IsInt64() || l1.Int64() != 1337 || !l2.IsInt64() || l2.Int64() != chainID {
 		t.Fatalf("unexpected private chain IDs: parent=%s child=%s", l1, l2)
+	}
+	genesisBalance, err := client.BalanceAt(ctx, expectedAlias, big.NewInt(0))
+	Require(t, err)
+	if genesisBalance.Cmp(aliasBalance) != 0 {
+		t.Fatalf("parent alias genesis balance is %s, want %s", genesisBalance, aliasBalance)
 	}
 
 	ownerPublic, err := precompilesgen.NewArbOwnerPublic(types.ArbOwnerPublicAddress, client)
@@ -162,7 +172,7 @@ func TestGL3A14OwnerlessBoundary(t *testing.T) {
 	bridgeABI, err := bridgegen.BridgeMetaData.GetAbi()
 	Require(t, err)
 	activation := append([]byte{3}, bytes.Repeat([]byte{0, 0, 0, 0, 0, 0, 0, 1, 3}, 7)...)
-	readMessage := func(receipt *types.Receipt) *bridgegen.BridgeMessageDelivered {
+	readMessage := func(receipt *types.Receipt, expectedMessage []byte) *bridgegen.BridgeMessageDelivered {
 		t.Helper()
 		for _, log := range receipt.Logs {
 			if log.Address != builder.addresses.Bridge || len(log.Topics) == 0 ||
@@ -171,7 +181,8 @@ func TestGL3A14OwnerlessBoundary(t *testing.T) {
 			}
 			delivered, err := bridge.ParseMessageDelivered(*log)
 			Require(t, err)
-			if delivered.Kind != 3 || delivered.MessageDataHash != crypto.Keccak256Hash(activation) {
+			if delivered.Inbox != inboxAddress || delivered.Kind != 3 ||
+				delivered.MessageDataHash != crypto.Keccak256Hash(expectedMessage) {
 				t.Fatalf("unexpected delivered message: kind=%d hash=%x", delivered.Kind, delivered.MessageDataHash)
 			}
 			return delivered
@@ -211,8 +222,7 @@ func TestGL3A14OwnerlessBoundary(t *testing.T) {
 	Require(t, err)
 	foreignReceipt, err := EnsureTxSucceeded(ctx, builder.L1.Client, foreignTx)
 	Require(t, err)
-	foreign := readMessage(foreignReceipt)
-	expectedAlias := arbosutil.RemapL1Address(executor)
+	foreign := readMessage(foreignReceipt, activation)
 	if expectedAlias != common.HexToAddress("0xb743b4c45726c779086f60d8b09bee7b09ba3652") || foreign.Sender == expectedAlias {
 		t.Fatal("invalid foreign/authorized alias setup")
 	}
@@ -230,7 +240,7 @@ func TestGL3A14OwnerlessBoundary(t *testing.T) {
 	Require(t, builder.L1.Client.SendTransaction(ctx, parentTx))
 	parentReceipt, err := EnsureTxSucceeded(ctx, builder.L1.Client, parentTx)
 	Require(t, err)
-	delivered := readMessage(parentReceipt)
+	delivered := readMessage(parentReceipt, activation)
 	if delivered.Sender != expectedAlias {
 		t.Fatalf("inbox did not emit the expected contract alias: %s", delivered.Sender)
 	}
@@ -255,7 +265,7 @@ func TestGL3A14OwnerlessBoundary(t *testing.T) {
 		t.Fatalf("unexpected status of the newly activated, unseeded engine: %v", status)
 	}
 
-	record := func(label string, height *big.Int) map[string]any {
+	record := func(label string, height, delayedIndex *big.Int) map[string]any {
 		t.Helper()
 		header, err := client.HeaderByNumber(ctx, height)
 		Require(t, err)
@@ -271,8 +281,8 @@ func TestGL3A14OwnerlessBoundary(t *testing.T) {
 		if input.ExpectedEndState == nil || input.ExpectedEndState.BlockHash != header.Hash() {
 			t.Fatal("recorder expected block does not match the private chain")
 		}
-		if label == "after" && (!input.HasDelayedMsg || input.DelayedMsgNr != delivered.MessageIndex.Uint64() || input.DelayedMsgB64 == "") {
-			t.Fatal("activation input does not bind the canonical delayed message")
+		if delayedIndex != nil && (!input.HasDelayedMsg || input.DelayedMsgNr != delayedIndex.Uint64() || input.DelayedMsgB64 == "") {
+			t.Fatal("proof input does not bind the expected canonical delayed message")
 		}
 		encoded, err := input.Marshal()
 		Require(t, err)
@@ -284,11 +294,81 @@ func TestGL3A14OwnerlessBoundary(t *testing.T) {
 			"expectedEndState": input.ExpectedEndState,
 		}
 	}
-	preActivation := record("before", before)
-	postActivation := record("after", after)
+	preActivation := record("before", before, nil)
+	postActivation := record("after", after, delivered.MessageIndex)
 	if preActivation["blockHash"] != postActivation["parentHash"] {
 		t.Fatal("recorded boundary blocks are not consecutive")
 	}
+
+	readInstaller := func(height *big.Int) common.Address {
+		t.Helper()
+		data, err := contract.Pack("seedInstaller")
+		Require(t, err)
+		out, err := client.CallContract(ctx, ethereum.CallMsg{To: &address, Data: data, Gas: 1_000_000}, height)
+		Require(t, err)
+		fields, err := contract.Unpack("seedInstaller", out)
+		Require(t, err)
+		return fields[0].(common.Address)
+	}
+	if readInstaller(after) != (common.Address{}) {
+		t.Fatal("seed installer was set during activation")
+	}
+	setInstaller := func(installer common.Address, wantStatus uint64) (*types.Receipt, *types.Receipt, *big.Int) {
+		t.Helper()
+		tip, err := client.BlockNumber(ctx)
+		Require(t, err)
+		childData, err := contract.Pack("setSeedInstaller", installer)
+		Require(t, err)
+		gasLimit := big.NewInt(1_000_000)
+		feeCap := new(big.Int).Mul(builder.L2Info.GasPrice, big.NewInt(2))
+		value := new(big.Int)
+		parentData, err := inboxABI.Pack("sendContractTransaction", gasLimit, feeCap, address, value, childData)
+		Require(t, err)
+		forward := append(common.LeftPadBytes(inboxAddress.Bytes(), 32), parentData...)
+		tx := builder.L1Info.PrepareTxTo("User", &executor, 1_000_000, value, forward)
+		Require(t, builder.L1.Client.SendTransaction(ctx, tx))
+		parent, err := EnsureTxSucceeded(ctx, builder.L1.Client, tx)
+		Require(t, err)
+		message := []byte{1} // Arbitrum L2 ContractTx
+		for _, word := range [][]byte{gasLimit.Bytes(), feeCap.Bytes(), address.Bytes(), value.Bytes()} {
+			message = append(message, common.LeftPadBytes(word, 32)...)
+		}
+		msg := readMessage(parent, append(message, childData...))
+		if msg.Sender != expectedAlias {
+			t.Fatal("bootstrap message did not come from the pinned parent executor alias")
+		}
+		height := waitChild(tip, msg.MessageIndex.Uint64())
+		block, err := client.BlockByNumber(ctx, height)
+		Require(t, err)
+		for _, childTx := range block.Transactions() {
+			if childTx.Type() != types.ArbitrumContractTxType || childTx.To() == nil ||
+				*childTx.To() != address || !bytes.Equal(childTx.Data(), childData) {
+				continue
+			}
+			sender, err := types.Sender(builder.L2Info.Signer, childTx)
+			Require(t, err)
+			child, err := client.TransactionReceipt(ctx, childTx.Hash())
+			Require(t, err)
+			if sender != expectedAlias || child.Status != wantStatus {
+				t.Fatalf("unexpected bootstrap sender or receipt status: %s %d", sender, child.Status)
+			}
+			return parent, child, msg.MessageIndex
+		}
+		t.Fatal("canonical delayed bootstrap transaction is missing from the child block")
+		return nil, nil, nil
+	}
+	installer := builder.L2Info.GetAddress("Owner")
+	bootstrapParent, bootstrapChild, bootstrapIndex := setInstaller(installer, types.ReceiptStatusSuccessful)
+	if readInstaller(bootstrapChild.BlockNumber) != installer {
+		t.Fatal("parent-authorized installer delegation did not persist")
+	}
+	duplicateParent, duplicateChild, _ := setInstaller(builder.L2Info.GetAddress("Faucet"), types.ReceiptStatusFailed)
+	if readInstaller(duplicateChild.BlockNumber) != installer {
+		t.Fatal("duplicate delegation changed the installer")
+	}
+	assertOwners(duplicateChild.BlockNumber)
+	bootstrap := record("bootstrap", bootstrapChild.BlockNumber, bootstrapIndex)
+
 	report := map[string]any{
 		"scope":      "isolated parent-authorized A14 activation with a zero child owner",
 		"moduleRoot": strings.TrimSpace(string(moduleRoot)), "nativeCapturePassed": true,
@@ -300,6 +380,10 @@ func TestGL3A14OwnerlessBoundary(t *testing.T) {
 		"preActivation": preActivation, "postActivation": postActivation,
 		"preActivationA14Code": hexutil.Encode(beforeCode), "preActivationA14Status": hexutil.Encode(beforeStatus),
 		"postActivationA14Code": hexutil.Encode(afterCode), "postActivationA14Status": hexutil.Encode(afterStatus),
+		"seedInstaller": installer, "seedInstallerAliasGenesisBalance": genesisBalance,
+		"bootstrap": bootstrap, "bootstrapL1Transaction": bootstrapParent.TxHash,
+		"bootstrapL2Transaction": bootstrapChild.TxHash, "duplicateBootstrapRejected": true,
+		"duplicateL1Transaction": duplicateParent.TxHash, "duplicateL2Transaction": duplicateChild.TxHash,
 		"seedMigrationExecuted": false, "proofReplayVerified": false, "productionActivation": false,
 	}
 	encoded, err := json.MarshalIndent(report, "", "  ")

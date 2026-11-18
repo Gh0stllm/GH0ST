@@ -21,9 +21,9 @@ together. Each build uses a fresh variant directory.
 python3 research/gl3/chess/build_replay.py --sliced --game-coordinator --candidate-arbos-version 62 --parent-authorized-a14
 ```
 
-The revised native binary and matching proof machine were assembled
-on the existing GL3 pod. Their checksums matched after copying to
-persistent storage. The candidate module root is
+The first parent-authorized binary and matching proof machine were
+assembled on the existing GL3 pod and checksum-verified in persistent
+storage. Its candidate module root was
 `0xa3ae4f567770561a740f7658044d3cee6cf778726b18f49132d9a1264fa4174e`.
 [Build and initial history comparison](parent-authorized-build-20261118.json)
 
@@ -33,6 +33,13 @@ A14 and an unrelated parent sender's copy of the payload did not.
 The child owner remained zero. The revised machine reproduced the block
 hash, send root and inbox position on both sides of the upgrade.
 [Activation and replay evidence](parent-activation-evidence-20261118.json)
+
+The subsequent private bootstrap fixture reached A14 with the correct
+parent executor alias, but the call reverted. Nitro's precompile
+wrapper adds one frame before handing off to A14. The direct-call
+check now counts that frame and preserves the exact transaction, origin,
+caller and poster checks. This correction requires a new native binary
+and machine root.
 
 Both block production and replay require delayed request ID and the
 prior and next header nonce to identify one newly consumed delayed
