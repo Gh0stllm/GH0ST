@@ -12,7 +12,7 @@ import socket
 import subprocess
 import time
 
-from follower_config import follower_config
+from follower_config import follower_config, verified_parent_rpc
 
 
 DISK_FLOOR = 16_000_000_000
@@ -31,12 +31,12 @@ def resource_limit(root, log):
     return None
 
 
-def run(root, port):
+def run(root, port, parent_rpc):
     profile = root / "data/profile"
     config = profile / "follower.json"
     binary = root / "bin/nitro-a14"
     logfile = root / "logs/follower.log"
-    if json.loads(config.read_text()) != follower_config(profile, port):
+    if json.loads(config.read_text()) != follower_config(profile, port, parent_rpc):
         raise ValueError("The follower configuration differs from its read-only profile")
     with (root / "follower.lock").open("a") as lock:
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
@@ -72,9 +72,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("stage", type=Path)
     parser.add_argument("--port", type=int, required=True)
+    parser.add_argument("--parent-rpc-file", type=Path)
     args = parser.parse_args()
     try:
-        return run(args.stage.resolve(strict=True), args.port)
+        return run(args.stage.resolve(strict=True), args.port, verified_parent_rpc(args.parent_rpc_file))
     except (OSError, RuntimeError, ValueError) as error:
         parser.exit(1, f"{error}\n")
 
