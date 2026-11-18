@@ -30,18 +30,22 @@ pub fn require_digest(bytes: &[u8], expected: &str) {
     assert_eq!(actual, expected, "Pinned ROM bytes changed");
 }
 
+struct FixtureCell {
+    bytes: Vec<u8>,
+    hash: CodeHash,
+}
+
 #[derive(Clone)]
-pub struct FixtureHost(Rc<Vec<Vec<u8>>>);
+pub struct FixtureHost(Rc<Vec<FixtureCell>>);
 
 impl FixtureHost {
-    fn cell(&self, address: &Address) -> Result<&[u8], &'static str> {
+    fn cell(&self, address: &Address) -> Result<&FixtureCell, &'static str> {
         if address[..16] != [0; 16] {
             return Err("Unknown fixture address");
         }
         let index = u32::from_be_bytes(address[16..].try_into().unwrap());
         self.0
             .get(index as usize)
-            .map(Vec::as_slice)
             .ok_or("Missing fixture address")
     }
 }
@@ -50,11 +54,11 @@ impl CodeHost for FixtureHost {
     type Error = &'static str;
 
     fn code_hash(&mut self, address: &Address) -> Result<CodeHash, Self::Error> {
-        Ok(NativeKeccak.digest(self.cell(address)?))
+        Ok(self.cell(address)?.hash)
     }
 
     fn copy_code(&mut self, address: &Address, out: &mut [u8]) -> Result<usize, Self::Error> {
-        let cell = self.cell(address)?;
+        let cell = &self.cell(address)?.bytes;
         let count = out.len().min(cell.len());
         out[..count].copy_from_slice(&cell[..count]);
         Ok(cell.len())
@@ -79,7 +83,11 @@ fn raw_to_cells(bytes: &[u8]) -> Vec<Vec<u8>> {
         .collect()
 }
 
-fn commit_group(host: &mut Vec<Vec<u8>>, cells: Vec<Vec<u8>>, expected: &str) -> (Vec<Shard>, u32) {
+fn commit_group(
+    host: &mut Vec<FixtureCell>,
+    cells: Vec<Vec<u8>>,
+    expected: &str,
+) -> (Vec<Shard>, u32) {
     let mut payload = Vec::new();
     let mut shards = Vec::new();
     let count = cells.len();
@@ -90,11 +98,9 @@ fn commit_group(host: &mut Vec<Vec<u8>>, cells: Vec<Vec<u8>>, expected: &str) ->
         payload.extend_from_slice(&cell[1..]);
         let mut address = [0; 20];
         address[16..].copy_from_slice(&(host.len() as u32).to_be_bytes());
-        shards.push(Shard {
-            address,
-            code_hash: NativeKeccak.digest(&cell),
-        });
-        host.push(cell);
+        let code_hash = NativeKeccak.digest(&cell);
+        shards.push(Shard { address, code_hash });
+        host.push(FixtureCell { bytes: cell, hash: code_hash });
     }
     require_digest(&payload, expected);
     (shards, payload.len() as u32)

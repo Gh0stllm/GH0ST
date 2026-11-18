@@ -52,13 +52,14 @@ const accounts = fs.openSync(path.join(output, 'accounts.json'), 'wx');
 const archive = fs.openSync(archivePath, 'r');
 let cells = 0;
 try {
-  fs.writeSync(accounts, `[${JSON.stringify({ Addr: signerAddress, Balance: '1000000000000000000000', Nonce: 0 })}`);
+  // Nitro's streaming decoder reads individual account objects.
+  fs.writeSync(accounts, JSON.stringify({ Addr: signerAddress, Balance: '1000000000000000000000', Nonce: 0 }) + '\n');
   function appendCell(code) {
     const address = `0xf3${'00'.repeat(15)}${(++cells).toString(16).padStart(8, '0')}`;
     if (address === signerAddress) throw new Error('Test signer collides with a code cell');
     const account = { Addr: address, Balance: '0', Nonce: 1,
       ContractInfo: { Code: code.toString('base64'), ContractStorage: {} } };
-    fs.writeSync(accounts, `,\n${JSON.stringify(account)}`);
+    fs.writeSync(accounts, JSON.stringify(account) + '\n');
     return Buffer.concat([Buffer.from(address.slice(2), 'hex'), digest(code)]);
   }
   const program = core.flat().map(appendCell);
@@ -71,7 +72,6 @@ try {
     records.push(appendCell(data));
   }
   const catalog = cellsFrom(Buffer.concat(records)).map(appendCell);
-  fs.writeSync(accounts, ']\n');
 
   const history = Buffer.from('e2e4');
   const job = digest(Buffer.from('GL3 private known Stockfish opening e2e4'));
