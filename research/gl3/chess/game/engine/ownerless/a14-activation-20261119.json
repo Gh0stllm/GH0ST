@@ -38,8 +38,8 @@
     "walletSignedMaximumFeeEth": "0.000005254942020000"
   },
   "delayedActivation": {
-    "status": "waiting-for-safe-root-and-validator-promotion",
-    "governanceMarkerSubmitted": false,
+    "status": "canonical-inbox-receipt-awaiting-gl3-activation",
+    "governanceMarkerSubmitted": true,
     "preActivationValidationCheckpoint": {
       "GlobalState": {
         "BlockHash": "0xdd12d840583b8081ff3cc1d0a25b2b281181fe6993a22d863a81fecef4e4c596",
@@ -56,7 +56,7 @@
     "activationReviewRequiresVerifiedCandidateOnlyRoot": true,
     "sameParentNetworkPromotionInputs": {
       "scope": "Read-only simulations for ordinary empty Inbox messages. Neither payload is the A14 activation marker.",
-      "unsubmitted": true,
+      "unsubmitted": false,
       "transactions": [
         {
           "payload": "0x03",
@@ -72,6 +72,16 @@
         }
       ],
       "secondInputRequiresCandidateRootAssertionAfterFirst": true
+    },
+    "parentReceipt": {
+      "transactionHash": "0x0eea0617324f33404b188ccdca6f28703339978a723c827352232ffa6051f061",
+      "robinhoodBlock": 117749301,
+      "robinhoodBlockHash": "0x75f870b5bc0467636b74ea835e38641348d5632a4c8befa633978b455103daba",
+      "delayedMessageIndex": "1593",
+      "valueEth": "0",
+      "gasUsed": 116127,
+      "actualFeeWei": "2323469016000",
+      "exactInboxAndBridgeEventsVerified": true
     }
   },
   "publicRpcReadChecksWhileAwaitingWallet": {
@@ -204,7 +214,7 @@
     "parentFinalizedHeadAtVerification": 117722969
   },
   "promotionBatchThree": {
-    "status": "consumed-canonical-parent-batch-awaiting-finality",
+    "status": "consumed-finalized-on-robinhood",
     "reason": "latest checkpoint still contained both proof roots after Assertion B finalized",
     "transactionHash": "0xd330c91ac236f14c85bcd89950e80a1deb6b2919ab813abcc3fa9735617d64be",
     "robinhoodBlock": 117731709,
@@ -221,7 +231,8 @@
       "number": 1585,
       "transactionHash": "0x514f99128a2123b75c73017ca550d6ead6c896d0a69f138596df1f6f3ef47276",
       "block": 117736987,
-      "afterDelayedMessagesRead": "1592"
+      "afterDelayedMessagesRead": "1592",
+      "finalized": true
     }
   },
   "productionValidatorCheckpoint": {
