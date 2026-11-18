@@ -1,4 +1,4 @@
-//! Run the exact first 40 quanta on the private replay worker and report the
+//! Run the exact opening group on the private replay worker and report the
 //! complete read set. An isolated Nitro execution still verifies the trace.
 
 mod support;
@@ -9,7 +9,7 @@ use gl3_stockfish_stylus::{
     checkpoint_tree::MAX_PAGES,
     interpreter::{guest::Stockfish, Limits, Machine},
     memory::{Page, PageBackend, PagedMemory, PAGE_SIZE},
-    search::{run_group, Cursor},
+    search::{run_bounded_group, Cursor, QUANTA_PER_TRANSACTION},
     witness_wire::{self, NodeInput, PageInput, TRANSACTION_BYTES},
 };
 use serde_json::json;
@@ -126,6 +126,13 @@ fn run(args: &[std::ffi::OsString]) -> Result<()> {
         .to_str()
         .ok_or("Invalid instruction ceiling")?
         .parse()?;
+    let quanta: u32 = match args.get(7) {
+        Some(quantity) => quantity.to_str().ok_or("Invalid group size")?.parse()?,
+        None => QUANTA_PER_TRANSACTION,
+    };
+    if !(1..=QUANTA_PER_TRANSACTION).contains(&quanta) {
+        return Err("Group size must be between 1 and 40 quanta".into());
+    }
     let mut backend = TraceMemory {
         source: &source,
         read: BTreeMap::new(),
@@ -153,7 +160,7 @@ fn run(args: &[std::ffi::OsString]) -> Result<()> {
             },
         );
         let mut guest = Stockfish::new(machine, fuel);
-        let step = run_group(&mut guest, Cursor::default(), 0, Some(b"e2e4"))
+        let step = run_bounded_group(&mut guest, Cursor::default(), 0, Some(b"e2e4"), quanta)
             .map_err(|error| format!("Exact guest group failed: {error:?}"))?;
         guest
             .memory()
@@ -161,8 +168,8 @@ fn run(args: &[std::ffi::OsString]) -> Result<()> {
             .map_err(|_| "Could not flush trace pages")?;
         (step, fuel - guest.fuel_left(), guest.memory().len())
     };
-    if step.cursor.quanta != 40 || step.decision.is_some() {
-        return Err("First 40-quantum cursor differed".into());
+    if step.cursor.quanta != quanta || step.decision.is_some() {
+        return Err("Opening group cursor differed".into());
     }
     let wall = start.elapsed().as_secs_f64();
     let zero = [0; PAGE_SIZE];
@@ -245,7 +252,7 @@ fn run(args: &[std::ffi::OsString]) -> Result<()> {
         fs::write(output.join("witness.bin"), packet)?;
     }
     let report = json!({
-        "scope": "Exact pinned guest executed offline for the first 40 quanta, with no Nitro metering, receipts, or subsequent groups",
+        "scope": "Exact pinned guest executed offline for the opening group, with no Nitro metering, receipts, or subsequent groups",
         "quanta": step.cursor.quanta,
         "observedNodes": step.cursor.observed_nodes,
         "guestInstructions": instructions,
@@ -272,8 +279,8 @@ fn run(args: &[std::ffi::OsString]) -> Result<()> {
 
 fn main() -> Result<()> {
     let args: Vec<_> = std::env::args_os().skip(1).collect();
-    if args.len() != 7 {
-        return Err("Pass CORE_CELLS CONTROL_INDEX RUNTIME_INDEX RAW_SEED ARCHIVE_DIR NEW_OUTPUT_DIR INSTRUCTION_CEILING".into());
+    if !(7..=8).contains(&args.len()) {
+        return Err("Pass CORE_CELLS CONTROL_INDEX RUNTIME_INDEX RAW_SEED ARCHIVE_DIR NEW_OUTPUT_DIR INSTRUCTION_CEILING [QUANTA]".into());
     }
     let trace = std::thread::Builder::new()
         .stack_size(64 * 1024 * 1024)

@@ -123,6 +123,36 @@ transaction sizes and mixed-traffic speed remain unmeasured.
 
 ## Private Runpod rehearsal
 
+### Pausing inside a Stockfish quantum
+
+The existing transaction formats keep their 40-quantum default. Modes 3
+and 4 support smaller whole-quantum batches. On Runpod the exact first
+quantum alone used **148,334,919 guest instructions**, which corresponds
+to at least **56.4 million gas** at the prior dispatch-only rate. A smaller
+whole-quantum batch cannot fit the 32 million gas limit for this opening.
+
+Mode 5 can stop the same interpreter between guest instructions. The
+[machine snapshot](src/interpreter/suspend.rs) retains the program counter,
+operand values, locals, call frames and branch labels. The
+[Stockfish driver](src/interpreter/sliced_guest.rs) records which guest
+export is running and its intermediate state. The on-chain head commits
+both snapshots alongside the authenticated memory root, mutable globals,
+move identity and cumulative instruction count. The next transaction
+must supply the exact committed state and page proof.
+
+The [trace example](examples/trace_instruction_slices.rs) derives two
+consecutive inputs from the pinned initialization for `e2e4`, independently
+checks their memory proofs and records both expected state commitments.
+The [private receipt runner](tools/rehearse_first_group.mjs) checks the two
+signed transactions, their committed heads, and that the bytes emitted
+in the first receipt are the exact continuation used by the second call.
+The first two 20,000-instruction slices used **6,436,074** and **5,710,792**
+compute gas in signed transactions of **4,710** and **16,673 bytes**.
+This proves stock Stylus cold resume within one opening quantum. The
+standalone prototype has not completed an on-chain move.
+
+### Earlier group execution
+
 The [code-backed checkpoint rehearsal](evidence/code-backed-first-group-20261118.json)
 reduced the signed opening search transaction to **4,758 bytes**. The
 private Nitro node admitted it and reverted at **32,000,000 L2 gas**.

@@ -21,6 +21,8 @@ pub struct GroupRequest<'a> {
     pub trusted_checkpoint: Digest,
     pub prior: Checkpoint,
     pub expected_start: u32,
+    /// Number of quanta to execute before committing the next head.
+    pub quanta: u32,
     /// Provided by the contract's authoritative game history for group one.
     pub opening_history: Option<&'a [u8]>,
     pub max_witness_pages: usize,
@@ -74,12 +76,13 @@ pub fn run_authenticated_group<
     let result =
         execute::<_, _, ROM_RESIDENT, LINK_CACHE, RAM_RESIDENT>(code, &request, &mut backend)?;
     let checkpoint = backend
-        .finish(
+        .finish_bounded(
             hash,
             result.step.cursor,
             result.globals,
             result.memory_bytes,
             result.step.decision.is_some(),
+            request.quanta,
         )
         .map_err(ReplayError::Checkpoint)?;
     Ok(GroupOutcome {
@@ -142,12 +145,13 @@ pub fn run_archived_group<
     let result =
         execute::<_, _, ROM_RESIDENT, LINK_CACHE, RAM_RESIDENT>(code, &request, &mut backend)?;
     let commit = backend
-        .finish(
+        .finish_bounded(
             hash,
             result.step.cursor,
             result.globals,
             result.memory_bytes,
             result.step.decision.is_some(),
+            request.quanta,
         )
         .map_err(ReplayError::Checkpoint)?;
     Ok((
@@ -180,11 +184,12 @@ fn execute<
             .map_err(ReplayError::Paging)?;
         let machine = Machine::new(code, memory, &mut globals, request.interpreter_limits);
         let mut guest = Stockfish::new(machine, request.instruction_budget);
-        let step = search::run_group(
+        let step = search::run_bounded_group(
             &mut guest,
             prior.cursor,
             request.expected_start,
             request.opening_history,
+            request.quanta,
         )
         .map_err(ReplayError::Search)?;
         guest.memory().flush().map_err(ReplayError::Paging)?;

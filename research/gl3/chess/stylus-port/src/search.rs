@@ -56,15 +56,33 @@ pub fn run_group<G: Guest>(
     expected_start: u32,
     opening_history: Option<&[u8]>,
 ) -> Result<Step, GroupError<G::Error>> {
+    run_bounded_group(
+        guest,
+        prior,
+        expected_start,
+        opening_history,
+        QUANTA_PER_TRANSACTION,
+    )
+}
+
+/// Change the checkpoint interval while preserving the reviewed search.
+pub fn run_bounded_group<G: Guest>(
+    guest: &mut G,
+    prior: Cursor,
+    expected_start: u32,
+    opening_history: Option<&[u8]>,
+    quanta: u32,
+) -> Result<Step, GroupError<G::Error>> {
     if prior.quanta != expected_start
         || (prior.quanta == 0) != opening_history.is_some()
         || (prior.quanta == 0 && prior.observed_nodes != 0)
+        || !(1..=QUANTA_PER_TRANSACTION).contains(&quanta)
     {
         return Err(GroupError::BadStart);
     }
     let limit = prior
         .quanta
-        .checked_add(QUANTA_PER_TRANSACTION)
+        .checked_add(quanta)
         .ok_or(GroupError::CursorOverflow)?;
     let mut cursor = prior;
     while cursor.quanta < limit {
@@ -164,5 +182,28 @@ mod tests {
             run_group(&mut guest, Cursor::default(), 0, Some(b"e2e4")),
             Err(GroupError::IncompleteDecision),
         );
+    }
+
+    #[test]
+    fn smaller_batches_preserve_terminal_cursor_and_decision() {
+        let make_guest = || Fixture {
+            steps: 0,
+            finish_at: 3,
+            final_nodes: 24_000_033,
+        };
+        let mut guest = make_guest();
+        let expected = run_group(&mut make_guest(), Cursor::default(), 0, Some(b"e2e4")).unwrap();
+        for invalid in [0, QUANTA_PER_TRANSACTION + 1] {
+            assert_eq!(
+                run_bounded_group(&mut guest, Cursor::default(), 0, Some(b"e2e4"), invalid),
+                Err(GroupError::BadStart)
+            );
+        }
+        assert_eq!(guest.steps, 0);
+        let first = run_bounded_group(&mut guest, Cursor::default(), 0, Some(b"e2e4"), 1).unwrap();
+        assert_eq!(first.cursor.quanta, 1);
+        assert_eq!(first.decision, None);
+        let terminal = run_bounded_group(&mut guest, first.cursor, 1, None, 2).unwrap();
+        assert_eq!(terminal, expected);
     }
 }

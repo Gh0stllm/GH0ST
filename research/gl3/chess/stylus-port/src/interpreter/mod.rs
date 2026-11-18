@@ -9,10 +9,14 @@ mod memory_ops;
 mod numeric;
 pub mod rom_code;
 mod simd;
+pub mod slice_group;
+pub mod sliced_guest;
+mod suspend;
 #[cfg(test)]
 mod tests;
 
 pub type Value = u128;
+pub use suspend::SnapshotError;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct Signature {
@@ -88,6 +92,11 @@ pub enum Trap<C, M> {
 type VmTrap<C, M> = Trap<<C as Executable>::Error, <M as GuestMemory>::Error>;
 type VmResult<T, C, M> = Result<T, VmTrap<C, M>>;
 
+pub enum InvocationProgress<'a> {
+    Pending,
+    Returned(&'a [Value]),
+}
+
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum Kind {
     Function,
@@ -145,6 +154,10 @@ impl<'a, C: Executable, M: GuestMemory> Machine<'a, C, M> {
         &mut self.memory
     }
 
+    pub fn is_active(&self) -> bool {
+        !self.calls.is_empty()
+    }
+
     /// Invoke a guest export. `fuel` is an instruction screen shared across
     /// invocations. Nitro separately meters the actual interpreter. If this
     /// traps, the caller must discard all state writes in this transaction.
@@ -154,7 +167,16 @@ impl<'a, C: Executable, M: GuestMemory> Machine<'a, C, M> {
         args: &[Value],
         fuel: &mut u64,
     ) -> VmResult<&[Value], C, M> {
-        if !self.calls.is_empty() || args.len() > self.limits.values {
+        self.start(function, args)?;
+        match self.run_for(fuel)? {
+            InvocationProgress::Pending => Err(Trap::Fuel),
+            InvocationProgress::Returned(values) => Ok(values),
+        }
+    }
+
+    /// Enter an export without executing any guest instructions.
+    pub fn start(&mut self, function: u32, args: &[Value]) -> VmResult<(), C, M> {
+        if self.is_active() || args.len() > self.limits.values {
             return Err(Trap::ResourceLimit);
         }
         let function = self.lookup(function)?;
@@ -163,12 +185,20 @@ impl<'a, C: Executable, M: GuestMemory> Machine<'a, C, M> {
         }
         self.values.clear();
         self.values.extend_from_slice(args);
-        self.enter(function)?;
-        while !self.calls.is_empty() {
-            *fuel = fuel.checked_sub(1).ok_or(Trap::Fuel)?;
+        self.enter(function)
+    }
+
+    /// Stop at the next instruction boundary when fuel is exhausted. A
+    /// pending call retains its stack and may be resumed with a new budget.
+    pub fn run_for(&mut self, fuel: &mut u64) -> VmResult<InvocationProgress<'_>, C, M> {
+        while self.is_active() {
+            if *fuel == 0 {
+                return Ok(InvocationProgress::Pending);
+            }
+            *fuel -= 1;
             self.step()?;
         }
-        Ok(&self.values)
+        Ok(InvocationProgress::Returned(&self.values))
     }
 
     fn lookup(&mut self, index: u32) -> VmResult<Function, C, M> {

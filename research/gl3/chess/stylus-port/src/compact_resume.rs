@@ -6,7 +6,7 @@ use alloc::vec::Vec;
 use crate::checkpoint_tree::{self, Digest, Keccak, LeafChange, DEPTH};
 use crate::memory::{Page, PageBackend, PAGE_SIZE};
 use crate::resume::{Checkpoint, Globals, ResumeError};
-use crate::search::Cursor;
+use crate::search::{Cursor, QUANTA_PER_TRANSACTION};
 use crate::witness_wire::{self, Archive, CompactProof, InlineArchive, Mode, WireError, WirePage};
 
 #[derive(Debug, Eq, PartialEq)]
@@ -182,19 +182,76 @@ impl<'a, A: Archive> CompactResume<'a, A> {
     }
 
     pub fn finish(
-        mut self,
+        self,
         hash: &mut impl Keccak,
         cursor: Cursor,
         globals: Globals,
         memory_bytes: u32,
         complete: bool,
     ) -> Result<CommittedPages, CompactError> {
+        self.finish_bounded(
+            hash,
+            cursor,
+            globals,
+            memory_bytes,
+            complete,
+            QUANTA_PER_TRANSACTION,
+        )
+    }
+
+    pub fn finish_bounded(
+        self,
+        hash: &mut impl Keccak,
+        cursor: Cursor,
+        globals: Globals,
+        memory_bytes: u32,
+        complete: bool,
+        quanta: u32,
+    ) -> Result<CommittedPages, CompactError> {
         if self.fault {
             return Err(ResumeError::Faulted.into());
         }
         let count = self
             .prior
-            .check_transition(cursor, memory_bytes, complete)?;
+            .check_transition(cursor, memory_bytes, complete, quanta)?;
+        self.finish_checked(hash, cursor, globals, memory_bytes, complete, count)
+    }
+
+    /// The micro-slice driver authenticates and commits its separate state
+    /// and must provide actual forward guest-instruction progress.
+    pub(crate) fn finish_slice(
+        self,
+        hash: &mut impl Keccak,
+        cursor: Cursor,
+        globals: Globals,
+        memory_bytes: u32,
+        complete: bool,
+        instructions: u64,
+    ) -> Result<CommittedPages, CompactError> {
+        if self.fault {
+            return Err(ResumeError::Faulted.into());
+        }
+        if instructions == 0 {
+            return Err(ResumeError::InvalidProgress.into());
+        }
+        let count = if cursor == self.prior.cursor && !complete {
+            self.prior.check_memory_length(memory_bytes)?
+        } else {
+            self.prior
+                .check_transition(cursor, memory_bytes, complete, 1)?
+        };
+        self.finish_checked(hash, cursor, globals, memory_bytes, complete, count)
+    }
+
+    fn finish_checked(
+        mut self,
+        hash: &mut impl Keccak,
+        cursor: Cursor,
+        globals: Globals,
+        memory_bytes: u32,
+        complete: bool,
+        count: usize,
+    ) -> Result<CommittedPages, CompactError> {
         let mut scratch = [0; PAGE_SIZE];
         for entry in &mut self.pages {
             if let Some(page) = &entry.overlay {

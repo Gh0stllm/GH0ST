@@ -70,15 +70,21 @@ impl Checkpoint {
         cursor: Cursor,
         memory_bytes: u32,
         complete: bool,
+        quanta: u32,
     ) -> Result<usize, ResumeError> {
         let steps = cursor.quanta.saturating_sub(self.cursor.quanta);
-        if steps == 0
-            || steps > QUANTA_PER_TRANSACTION
-            || (!complete && steps != QUANTA_PER_TRANSACTION)
+        if !(1..=QUANTA_PER_TRANSACTION).contains(&quanta)
+            || steps == 0
+            || steps > quanta
+            || (!complete && steps != quanta)
             || cursor.observed_nodes < self.cursor.observed_nodes
         {
             return Err(ResumeError::InvalidProgress);
         }
+        self.check_memory_length(memory_bytes)
+    }
+
+    pub(crate) fn check_memory_length(&self, memory_bytes: u32) -> Result<usize, ResumeError> {
         if !valid_memory_length(memory_bytes) || memory_bytes < self.memory_bytes {
             return Err(ResumeError::InvalidMemoryLength);
         }
@@ -241,12 +247,31 @@ impl<'a, 'page> ResumeBackend<'a, 'page> {
         memory_bytes: u32,
         complete: bool,
     ) -> Result<Checkpoint, ResumeError> {
+        self.finish_bounded(
+            hash,
+            cursor,
+            globals,
+            memory_bytes,
+            complete,
+            QUANTA_PER_TRANSACTION,
+        )
+    }
+
+    pub fn finish_bounded(
+        self,
+        hash: &mut impl Keccak,
+        cursor: Cursor,
+        globals: Globals,
+        memory_bytes: u32,
+        complete: bool,
+        quanta: u32,
+    ) -> Result<Checkpoint, ResumeError> {
         if self.faulted {
             return Err(ResumeError::Faulted);
         }
         let pages = self
             .prior
-            .check_transition(cursor, memory_bytes, complete)?;
+            .check_transition(cursor, memory_bytes, complete, quanta)?;
         if self
             .pages
             .iter()

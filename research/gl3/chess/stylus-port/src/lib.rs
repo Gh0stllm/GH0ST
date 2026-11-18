@@ -14,5 +14,6 @@ pub mod memory;
 pub mod resume;
 pub mod rom;
 pub mod search;
+pub mod slice_transaction;
 pub mod transaction;
 pub mod witness_wire;

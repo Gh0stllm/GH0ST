@@ -92,6 +92,46 @@ fn func(entry: u32, end: u32, params: u16) -> Function {
     }
 }
 
+#[test]
+fn cold_instruction_resume_preserves_locals_and_call_frames() {
+    // Outer: return inner(40). Inner: return its argument + 2.
+    let bytes = [0x41, 40, 0x10, 1, 0x0b, 0x20, 0, 0x41, 2, 0x6a, 0x0b];
+    let code = || Code {
+        bytes: &bytes,
+        start: func(0, 4, 0),
+        call: Some(func(5, 10, 1)),
+        link: None,
+    };
+    let mut globals = [];
+    let mut first = vm(code(), &mut globals);
+    first.start(0, &[]).unwrap();
+    let mut fuel = 3;
+    assert!(matches!(
+        first.run_for(&mut fuel).unwrap(),
+        InvocationProgress::Pending
+    ));
+    assert!(first.is_active());
+    assert_eq!(fuel, 0);
+    let state = first.snapshot().unwrap();
+
+    let mut globals = [];
+    let mut fresh = vm(code(), &mut globals);
+    assert_eq!(
+        fresh.restore(&state[..state.len() - 1]),
+        Err(SnapshotError::Format)
+    );
+    assert!(!fresh.is_active());
+    fresh.restore(&state).unwrap();
+    assert_eq!(fresh.snapshot().unwrap(), state);
+    let mut fuel = 20;
+    match fresh.run_for(&mut fuel).unwrap() {
+        InvocationProgress::Returned(result) => assert_eq!(result, &[42]),
+        InvocationProgress::Pending => panic!("nested call did not finish"),
+    }
+    assert!(!fresh.is_active());
+    assert_eq!(fuel, 16);
+}
+
 fn vm<'a>(code: Code<'a>, globals: &'a mut [Value]) -> Machine<'a, Code<'a>, Memory> {
     Machine::new(
         code,
