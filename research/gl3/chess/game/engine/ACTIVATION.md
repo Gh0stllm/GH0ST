@@ -1,5 +1,17 @@
 # A14 activation candidate
 
+## Live GL3 ownership
+
+`ArbOwnerPublic.getAllChainOwners()` returned only the zero address on
+live GL3 at block **20,629**. The launch procedure deliberately removed
+the child chain owner. The ordinary owner-scheduled activation path in
+this candidate therefore applies to a private rehearsal. Live activation
+requires a separate candidate that binds only the A14 upgrade and
+bootstrap to the existing parent authority while preserving GL3's
+renunciation. [Live owner read](activation/live-owner-20261118.json)
+
+## Isolated activation
+
 GL3's deployed parent proof root tracks stock ArbOS 61. The private A14
 fixture registers its precompile before genesis. Carrying that fixture into
 a live node would change historical state. A runtime-only method guard also
