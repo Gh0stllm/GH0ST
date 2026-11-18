@@ -11,6 +11,8 @@ use crate::memory::{Page, PAGE_SIZE};
 use crate::rom::{BytecodeRom, CodeHost, IndexedArchive};
 
 pub const TRANSACTION_BYTES: usize = 95_000;
+/// Large witnesses are read from immutable on-chain bytecode only.
+pub const CODE_WITNESS_BYTES: usize = 512 * 1024;
 const MAGIC: &[u8; 4] = b"GW01";
 const HEADER_BYTES: usize = 6;
 const PAGE_HEADER_BYTES: usize = 6;
@@ -168,11 +170,14 @@ pub(crate) struct WirePage<'a> {
     pub(crate) bytes: &'a [u8],
 }
 
-pub(crate) fn split_packet(
-    packet: &[u8],
-    allowance: usize,
-) -> Result<(Vec<WirePage<'_>>, &[u8]), WireError> {
-    if packet.len() > allowance || packet.len() >= TRANSACTION_BYTES {
+pub(crate) struct PacketPages<'a> {
+    pub(crate) count: usize,
+    pub(crate) remaining: &'a [u8],
+    previous: Option<u32>,
+}
+
+pub(crate) fn packet_pages(packet: &[u8], allowance: usize) -> Result<PacketPages<'_>, WireError> {
+    if packet.len() > allowance.min(CODE_WITNESS_BYTES) {
         return Err(WireError::OverBudget);
     }
     let header = packet.get(..HEADER_BYTES).ok_or(WireError::Truncated)?;
@@ -180,35 +185,44 @@ pub(crate) fn split_packet(
         return Err(WireError::BadHeader);
     }
     let count = usize::from(u16::from_be_bytes([header[4], header[5]]));
-    let mut remaining = &packet[HEADER_BYTES..];
+    let remaining = &packet[HEADER_BYTES..];
     if count > remaining.len() / PAGE_HEADER_BYTES {
         return Err(WireError::Truncated);
     }
 
-    let mut pages: Vec<WirePage<'_>> = Vec::new();
-    pages
-        .try_reserve_exact(count)
-        .map_err(|_| WireError::Allocation)?;
-    for _ in 0..count {
-        let (header, rest) = remaining
+    Ok(PacketPages {
+        count,
+        remaining,
+        previous: None,
+    })
+}
+
+impl<'a> PacketPages<'a> {
+    pub(crate) fn next_page(&mut self) -> Result<Option<WirePage<'a>>, WireError> {
+        if self.count == 0 {
+            return Ok(None);
+        }
+        let (header, rest) = self
+            .remaining
             .split_at_checked(PAGE_HEADER_BYTES)
             .ok_or(WireError::Truncated)?;
         let index = u32::from_be_bytes([0, header[0], header[1], header[2]]);
-        if index as usize >= MAX_PAGES || pages.last().is_some_and(|page| index <= page.index) {
+        if index as usize >= MAX_PAGES || self.previous.is_some_and(|previous| index <= previous) {
             return Err(WireError::PageOrder);
         }
         let mode = Mode::from_byte(header[3] & !WRITABLE)?;
         let length = usize::from(u16::from_be_bytes([header[4], header[5]]));
         let (bytes, rest) = rest.split_at_checked(length).ok_or(WireError::Truncated)?;
-        pages.push(WirePage {
+        self.count -= 1;
+        self.remaining = rest;
+        self.previous = Some(index);
+        Ok(Some(WirePage {
             index,
             writable: header[3] & WRITABLE != 0,
             mode,
             bytes,
-        });
-        remaining = rest;
+        }))
     }
-    Ok((pages, remaining))
 }
 
 pub fn zero_subtrees(hash: &mut impl Keccak) -> [Digest; DEPTH as usize + 1] {
@@ -299,7 +313,7 @@ pub fn encode(
         siblings
             .iter()
             .map(|(level, value)| NodeInput::Digest(*level, *value)),
-        allowance,
+        allowance.min(TRANSACTION_BYTES - 1),
     )
 }
 
@@ -315,7 +329,23 @@ pub fn encode_archived<'a>(
         pages.len(),
         pages.iter().copied(),
         siblings.iter().copied(),
-        allowance,
+        allowance.min(TRANSACTION_BYTES - 1),
+    )
+}
+
+/// Encode a witness intended for immutable code cells. The transaction only
+/// carries a manifest. The verifier still authenticates it against the root.
+pub fn encode_code_witness<'a>(
+    hash: &mut impl Keccak,
+    pages: &[(u32, bool, PageInput<'a>)],
+    siblings: &[NodeInput],
+) -> Result<Vec<u8>, WireError> {
+    encode_packet(
+        hash,
+        pages.len(),
+        pages.iter().copied(),
+        siblings.iter().copied(),
+        CODE_WITNESS_BYTES,
     )
 }
 
@@ -326,8 +356,11 @@ fn encode_packet<'a>(
     siblings: impl Iterator<Item = NodeInput>,
     allowance: usize,
 ) -> Result<Vec<u8>, WireError> {
-    let max = allowance.min(TRANSACTION_BYTES - 1);
-    if max < HEADER_BYTES || count > (max - HEADER_BYTES) / PAGE_HEADER_BYTES {
+    let max = allowance;
+    if max < HEADER_BYTES
+        || count > (max - HEADER_BYTES) / PAGE_HEADER_BYTES
+        || count > u16::MAX as usize
+    {
         return Err(WireError::OverBudget);
     }
     let mut output = Vec::new();

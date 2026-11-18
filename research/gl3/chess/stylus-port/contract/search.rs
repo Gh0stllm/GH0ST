@@ -13,11 +13,12 @@ use gl3_stockfish_stylus::interpreter::{
 };
 use gl3_stockfish_stylus::resume::Checkpoint;
 use gl3_stockfish_stylus::rom::{
-    Address, BytecodeRom, CodeHash, CodeHost, IndexedArchive, FUNCTION_INDEX_BYTES,
+    Address, BytecodeRom, CodeHash, CodeHost, IndexedArchive, Shard, FUNCTION_INDEX_BYTES,
+    SHARD_RECORD_BYTES,
 };
 use gl3_stockfish_stylus::search::Decision;
 use gl3_stockfish_stylus::transaction::{
-    decode_advance, encode_header, CHECKPOINT_BYTES, CHECKPOINT_SLOT, CONFIG_SLOT,
+    decode_advance, encode_header, AdvanceWitness, CHECKPOINT_BYTES, CHECKPOINT_SLOT, CONFIG_SLOT,
 };
 use gl3_stockfish_stylus::witness_wire::TRANSACTION_BYTES;
 
@@ -148,12 +149,32 @@ fn advance(input: &[u8]) -> Result<Digest, u8> {
             .map_err(|_| 2u8)?;
     let archive = IndexedArchive::<_, 2>::new(Host, directory, input.config.archive_bytes)
         .map_err(|_| 2u8)?;
+    let mut published = Vec::new();
+    let (witness, code_backed) = match input.witness {
+        AdvanceWitness::Inline(packet) => (packet, false),
+        AdvanceWitness::Code { bytes, manifest } => {
+            let shards: Vec<_> = manifest
+                .chunks_exact(SHARD_RECORD_BYTES)
+                .map(|record| Shard::parse(record.try_into().unwrap()))
+                .collect();
+            published.resize(bytes as usize, 0);
+            BytecodeRom::<_, 1>::new(Host, &shards, bytes)
+                .map_err(|_| 2u8)?
+                .read(0, &mut published)
+                .map_err(|_| 2u8)?;
+            (published.as_slice(), true)
+        }
+    };
     let request = GroupRequest {
         trusted_checkpoint: before,
         prior: input.prior,
         expected_start: input.prior.cursor.quanta,
         opening_history: (input.prior.cursor.quanta == 0).then_some(input.config.history),
-        max_witness_pages: TRANSACTION_BYTES / 6,
+        max_witness_pages: if code_backed {
+            u16::MAX as usize
+        } else {
+            TRANSACTION_BYTES / 6
+        },
         interpreter_limits: Limits {
             values: 32_768,
             locals: 32_768,
@@ -168,14 +189,18 @@ fn advance(input: &[u8]) -> Result<Digest, u8> {
         code,
         &mut Host,
         request,
-        input.witness,
-        input.witness.len(),
+        witness,
+        witness.len(),
         2 * 1024 * 1024,
         archive,
     )
     .map_err(|_| 3u8)?;
     let after = out.checkpoint.commitment(&mut Host);
-    publish_pages(after, &pages);
+    // Code-backed calls keep the authenticated inputs in chain state. The
+    // exact next page image is reproducible by replaying the mined call.
+    if !code_backed {
+        publish_pages(after, &pages);
+    }
     publish_head(
         before,
         after,

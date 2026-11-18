@@ -6,7 +6,7 @@ use crate::checkpoint_tree::{Digest, Keccak};
 use crate::resume::Checkpoint;
 use crate::rom::{Shard, PAYLOAD_BYTES, SHARD_RECORD_BYTES};
 use crate::search::Cursor;
-use crate::witness_wire::TRANSACTION_BYTES;
+use crate::witness_wire::{CODE_WITNESS_BYTES, TRANSACTION_BYTES};
 
 pub const CONFIG_SLOT: Digest = [0x6c; 32];
 pub const CHECKPOINT_SLOT: Digest = [0x6d; 32];
@@ -14,6 +14,7 @@ pub const CORE_SHARDS: usize = 51;
 pub const CONFIG_HEADER_BYTES: usize = 42;
 pub const CHECKPOINT_BYTES: usize = 72;
 const ADVANCE: u8 = 1;
+const ADVANCE_FROM_CODE: u8 = 2;
 
 pub struct Config<'a> {
     pub job: Digest,
@@ -37,7 +38,12 @@ pub enum InputError {
 pub struct Advance<'a> {
     pub config: Config<'a>,
     pub prior: Checkpoint,
-    pub witness: &'a [u8],
+    pub witness: AdvanceWitness<'a>,
+}
+
+pub enum AdvanceWitness<'a> {
+    Inline(&'a [u8]),
+    Code { bytes: u32, manifest: &'a [u8] },
 }
 
 pub fn decode_advance<'a>(
@@ -49,7 +55,7 @@ pub fn decode_advance<'a>(
     if raw.len() >= TRANSACTION_BYTES || raw.len() < 3 + CONFIG_HEADER_BYTES + CHECKPOINT_BYTES {
         return Err(InputError::Length);
     }
-    if raw[0] != ADVANCE {
+    if !matches!(raw[0], ADVANCE | ADVANCE_FROM_CODE) {
         return Err(InputError::Opcode);
     }
     let config_bytes = usize::from(u16::from_be_bytes([raw[1], raw[2]]));
@@ -84,6 +90,19 @@ pub fn decode_advance<'a>(
     if stored_checkpoint == [0; 32] || prior.commitment(hash) != stored_checkpoint {
         return Err(InputError::StaleCheckpoint);
     }
+    let witness = if raw[0] == ADVANCE {
+        AdvanceWitness::Inline(witness)
+    } else {
+        let (size, manifest) = witness.split_at_checked(4).ok_or(InputError::Length)?;
+        let bytes = u32::from_be_bytes(size.try_into().unwrap());
+        let length = bytes as usize;
+        if !(6..=CODE_WITNESS_BYTES).contains(&length)
+            || manifest.len() != length.div_ceil(PAYLOAD_BYTES) * SHARD_RECORD_BYTES
+        {
+            return Err(InputError::Length);
+        }
+        AdvanceWitness::Code { bytes, manifest }
+    };
     Ok(Advance {
         config,
         prior,

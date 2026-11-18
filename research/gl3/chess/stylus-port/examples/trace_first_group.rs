@@ -232,12 +232,16 @@ fn run(args: &[std::ffi::OsString]) -> Result<()> {
         }
     }
     fs::create_dir(output)?;
-    let packet =
+    let inline =
         witness_wire::encode_archived(&mut NativeKeccak, &pages, &siblings, TRANSACTION_BYTES - 1);
-    if let Ok(packet) = &packet {
+    let code_packet = witness_wire::encode_code_witness(&mut NativeKeccak, &pages, &siblings);
+    if let Ok(packet) = &code_packet {
         if required != packet.len() {
             return Err("Wire size expectation differed from encoded packet".into());
         }
+        fs::write(output.join("code-witness.bin"), packet)?;
+    }
+    if let Ok(packet) = &inline {
         fs::write(output.join("witness.bin"), packet)?;
     }
     let report = json!({
@@ -251,7 +255,8 @@ fn run(args: &[std::ffi::OsString]) -> Result<()> {
         "writePages": backend.writes.len(),
         "changedPages": changed_pages,
         "archivedWitnessBytes": required,
-        "packetWritten": packet.is_ok(),
+        "packetWritten": inline.is_ok(),
+        "codePacketWritten": code_packet.is_ok(),
         "journalDataBytes": journal_bytes,
         "journalSHA256": format!("{:x}", journal.finalize()),
         "logDataGasFloor": journal_bytes * 8,
@@ -273,6 +278,8 @@ fn main() -> Result<()> {
     let trace = std::thread::Builder::new()
         .stack_size(64 * 1024 * 1024)
         .spawn(move || run(&args).map_err(|error| error.to_string()))?;
-    trace.join().map_err(|_| "Native witness trace panicked")??;
+    trace
+        .join()
+        .map_err(|_| "Native witness trace panicked")??;
     Ok(())
 }

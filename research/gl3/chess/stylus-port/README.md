@@ -220,6 +220,20 @@ and the new head. An archive reader can recover those bytes from receipts
 without computing a chess move. Contract execution authenticates them
 through the committed memory root at the next call.
 
+The code-backed entry point accepts a bounded manifest of immutable
+witness cells. It authenticates the same proof and runs the same guest
+instructions as the inline entry point. A successful code-backed call
+emits the checkpoint head and count of changed pages. A replayer can
+recover the exact next image from the mined call, its on-chain inputs
+and the pinned guest. A later witness must still match the committed root.
+This avoids emitting page bodies as duplicate logs. The cost of publishing
+the witness cells is separate from the cost of advancing the search.
+
+The 294,385-byte opening witness needs twelve cells. Its manifest adds
+628 bytes to the 4,021-byte header. All 34 library tests passed on Runpod,
+including the larger code-backed wire parser. The seeded private
+transaction measures the resulting signed size and execution gas.
+
 The immutable archive's code hashes are stored in a code-resident
 directory. A call supplies only the fixed-size engine manifest and the
 directory's outer manifest. This avoids repeating a whole-archive list of

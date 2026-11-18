@@ -39,19 +39,25 @@ const config = fs.readFileSync(path.join(importDir, 'config.bin'));
 const head = fs.readFileSync(path.join(importDir, 'checkpoint.bin'));
 const witness = activationOnly ? null : fs.readFileSync(witnessPath);
 const trace = activationOnly ? null : readJson(tracePath);
+const codeBacked = !activationOnly && Boolean(setup.codeWitnessBytes);
+const codeManifest = codeBacked ? fs.readFileSync(path.join(importDir, 'code-witness-manifest.bin')) : null;
 if (head.length !== 72 || !program.initializedSearch || program.configCommitment !== setup.configCommitment
     || program.initialCheckpoint !== setup.initialCheckpoint
     || (witness && witness.subarray(0, 4).toString() !== 'GW01')) {
   throw new Error('Wrong rehearsal inputs or initialized package');
 }
-if (trace && (trace.quanta !== 40 || !trace.packetWritten || trace.archivedWitnessBytes !== witness.length
+if (trace && (trace.quanta !== 40 || !(codeBacked ? trace.codePacketWritten : trace.packetWritten)
+    || trace.archivedWitnessBytes !== witness.length
     || !/^[a-f0-9]{64}$/.test(trace.journalSHA256))) {
   throw new Error('Trace differs from the first-group witness');
 }
 const prefix = Buffer.alloc(3);
-prefix[0] = 1;
+prefix[0] = codeBacked ? 2 : 1;
 prefix.writeUInt16BE(config.length, 1);
-const calldata = witness ? Buffer.concat([prefix, config, head, witness]) : null;
+if (codeBacked && (codeManifest.readUInt32BE(0) !== witness.length || setup.codeWitnessBytes !== witness.length)) {
+  throw new Error('Manifest does not describe the exact witness');
+}
+const calldata = witness ? Buffer.concat([prefix, config, head, codeManifest ?? witness]) : null;
 if (calldata && calldata.length >= MAX_SIGNED) throw new Error('The first group calldata alone exceeds admission');
 const signer = new Wallet(process.env.GH0ST_PRIVATE_REHEARSAL_SIGNER || '');
 if (signer.address.toLowerCase() !== setup.signerAddress) throw new Error('Signer differs from the ephemeral funded address');
@@ -72,7 +78,7 @@ async function rpc(method, params = []) {
 
 const arbSys = new Interface(['function arbOSVersion() view returns (uint256)']);
 const arbWasm = new Interface(['function activateProgram(address) payable returns (uint16,uint256)',
-  'function programVersion(address) view returns (uint16)']);
+  'function programVersion(address) view returns (uint16)', 'function inkPrice() view returns (uint32)']);
 const nodeInterface = new Interface(['function gasEstimateL1Component(address,bool,bytes) returns (uint64,uint256,uint256)']);
 const genesis = await rpc('eth_getBlockByNumber', ['0x0', false]);
 if (BigInt(await rpc('eth_chainId')) !== CHAIN || !/^0x[0-9a-f]{64}$/i.test(genesis?.hash || '')
@@ -81,8 +87,26 @@ if (BigInt(await rpc('eth_chainId')) !== CHAIN || !/^0x[0-9a-f]{64}$/i.test(gene
   throw new Error('RPC did not confirm the isolated ArbOS 61 chain');
 }
 
+if (codeBacked) {
+  const payloadBytes = 24_575;
+  const records = Math.ceil(witness.length / payloadBytes);
+  if (codeManifest.length !== 4 + 52 * records) throw new Error('Incorrect code-witness manifest length');
+  for (let i = 0; i < records; i++) {
+    const position = 4 + i * 52;
+    const address = hexlify(codeManifest.subarray(position, position + 20));
+    const pin = hexlify(codeManifest.subarray(position + 20, position + 52));
+    const code = Buffer.from(getBytes(await rpc('eth_getCode', [address, 'latest'])));
+    const part = witness.subarray(i * payloadBytes, (i + 1) * payloadBytes);
+    if (code[0] !== 0 || !code.subarray(1).equals(part) || keccak256(code) !== pin) {
+      throw new Error('Code-witness cell does not match the traced read set');
+    }
+  }
+}
+
 const report = { scope: activationOnly ? 'private stock Nitro activation only' : 'private stock Nitro first Stockfish group',
-  genesis: genesis.hash, chainId: Number(CHAIN), witnessBytes: witness?.length ?? null, transactions: {},
+  genesis: genesis.hash, chainId: Number(CHAIN), witnessBytes: witness?.length ?? null,
+  codeBacked, calldataBytes: calldata?.length ?? null, transactions: {},
+  inkPerGas: Number(BigInt(await rpc('eth_call', [{ to: ARB_WASM, data: arbWasm.encodeFunctionData('inkPrice') }, 'latest']))),
   activationPassed: false, fullMove: false, publicDeployment: false, passed: false };
 let nonce = Number(BigInt(await rpc('eth_getTransactionCount', [signer.address, 'pending'])));
 
@@ -210,12 +234,23 @@ try {
       throw new Error('Header commitment or exact trace counters differ');
     }
     const pagesTopic = id('GL3StockfishCheckpointPagesV1');
-    report.journal = verifyJournal(ownLogs.filter(log => log.topics[0] === pagesTopic), newHead, event.readUInt32BE(154));
+    const pageLogs = ownLogs.filter(log => log.topics[0] === pagesTopic);
+    const changed = event.readUInt32BE(154);
+    if (codeBacked) {
+      if (pageLogs.length !== 0 || changed !== trace.changedPages) throw new Error('Incorrect replayable head log');
+      report.journal = { changedPages: changed, bytes: 0 };
+    } else {
+      report.journal = verifyJournal(pageLogs, newHead, changed);
+    }
     report.nextCheckpoint = hexlify(checkpoint);
     report.passed = true;
   }
 } catch (error) {
   report.error = String(error.message).slice(0, 240);
+  const first = report.transactions.first40?.receipt;
+  if (first?.status === '0x0') {
+    report.checkpointAfterRevert = await rpc('eth_getStorageAt', [report.address, HEAD_SLOT, first.blockNumber]);
+  }
   process.exitCode = 1;
 } finally {
   fs.writeFileSync(output, JSON.stringify(report, null, 2) + '\n', { flag: 'wx' });

@@ -14,10 +14,10 @@ const ROM_DIGESTS = [
 ];
 
 const args = process.argv.slice(2);
-if (args.length !== 7) {
-  throw new Error('Pass ETHERS_PACKAGE_JSON CORE_CELLS CONTROL_INDEX RUNTIME_INDEX ARCHIVE_DIR PRIVATE_TEST_SIGNER NEW_OUTPUT_DIR');
+if (args.length !== 7 && args.length !== 8) {
+  throw new Error('Pass ETHERS_PACKAGE_JSON CORE_CELLS CONTROL_INDEX RUNTIME_INDEX ARCHIVE_DIR PRIVATE_TEST_SIGNER NEW_OUTPUT_DIR [CODE_WITNESS]');
 }
-const [ethersPackage, coreDir, controls, runtime, archiveDir, signer, output] = args;
+const [ethersPackage, coreDir, controls, runtime, archiveDir, signer, output, witnessPath] = args;
 const { getAddress, keccak256 } = createRequire(path.resolve(ethersPackage))('ethers');
 const signerAddress = getAddress(signer).toLowerCase();
 const digest = bytes => Buffer.from(keccak256(bytes).slice(2), 'hex');
@@ -92,12 +92,24 @@ try {
   committed.writeUInt32LE(manifest.memoryBytes, 36);
   const before = digest(Buffer.concat([Buffer.from('GL3_STYLUS_CHECKPOINT_V1'), configHash, job, root, committed]));
 
+  let codeWitnessBytes = 0;
+  if (witnessPath) {
+    const witness = fs.readFileSync(witnessPath);
+    if (witness.length > 512 * 1024 || witness.length < 6 || witness.subarray(0, 4).toString() !== 'GW01') {
+      throw new Error('Invalid code-backed witness');
+    }
+    const length = Buffer.alloc(4);
+    length.writeUInt32BE(witness.length);
+    const codeManifest = Buffer.concat([length, ...cellsFrom(witness).map(appendCell)]);
+    fs.writeFileSync(path.join(output, 'code-witness-manifest.bin'), codeManifest, { flag: 'wx' });
+    codeWitnessBytes = witness.length;
+  }
   fs.writeFileSync(path.join(output, 'config.bin'), configuration, { flag: 'wx' });
   fs.writeFileSync(path.join(output, 'checkpoint.bin'), checkpoint, { flag: 'wx' });
   fs.writeFileSync(path.join(output, 'init.json'), JSON.stringify({ NextBlockNumber: 0, AccountsPath: 'accounts.json' }), { flag: 'wx' });
   const report = { scope: 'offline state import for an isolated rehearsal', signerAddress,
     configCommitment: encodeHex(configHash), initialCheckpoint: encodeHex(before),
-    initialMemoryRoot: manifest.memoryRoot, job: encodeHex(job), genesisCodeCells: cells,
+    initialMemoryRoot: manifest.memoryRoot, job: encodeHex(job), genesisCodeCells: cells, codeWitnessBytes,
     bytesBeforeWitness: 3 + configuration.length + checkpoint.length,
     transactionsSubmitted: 0 };
   fs.writeFileSync(path.join(output, 'rehearsal.json'), JSON.stringify(report, null, 2) + '\n', { flag: 'wx' });

@@ -44,9 +44,7 @@ impl FixtureHost {
             return Err("Unknown fixture address");
         }
         let index = u32::from_be_bytes(address[16..].try_into().unwrap());
-        self.0
-            .get(index as usize)
-            .ok_or("Missing fixture address")
+        self.0.get(index as usize).ok_or("Missing fixture address")
     }
 }
 
@@ -100,7 +98,10 @@ fn commit_group(
         address[16..].copy_from_slice(&(host.len() as u32).to_be_bytes());
         let code_hash = NativeKeccak.digest(&cell);
         shards.push(Shard { address, code_hash });
-        host.push(FixtureCell { bytes: cell, hash: code_hash });
+        host.push(FixtureCell {
+            bytes: cell,
+            hash: code_hash,
+        });
     }
     require_digest(&payload, expected);
     (shards, payload.len() as u32)

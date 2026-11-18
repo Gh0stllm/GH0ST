@@ -108,17 +108,17 @@ impl<'a, A: Archive> CompactResume<'a, A> {
         if prior.commitment(hash) != trusted {
             return Err(ResumeError::WrongCheckpointIdentity.into());
         }
-        let (wire, proof) = witness_wire::split_packet(packet, witness_allowance)?;
-        if wire.len() > page_limit {
+        let mut wire = witness_wire::packet_pages(packet, witness_allowance)?;
+        if wire.count > page_limit {
             return Err(ResumeError::WitnessCapacity.into());
         }
         let zeros = witness_wire::zero_subtrees(hash);
         let mut pages = Vec::new();
         pages
-            .try_reserve_exact(wire.len())
+            .try_reserve_exact(wire.count)
             .map_err(|_| WireError::Allocation)?;
         let mut scratch = [0; PAGE_SIZE];
-        for entry in wire {
+        while let Some(entry) = wire.next_page()? {
             let old = if entry.mode == Mode::Zero && entry.bytes.is_empty() {
                 zeros[0]
             } else {
@@ -144,7 +144,7 @@ impl<'a, A: Archive> CompactResume<'a, A> {
         let mut backend = Self {
             prior,
             pages,
-            proof,
+            proof: wire.remaining,
             zeros,
             overlay_limit,
             overlay_capacity: 0,
@@ -571,5 +571,29 @@ mod tests {
             witness_wire::decode_page(Mode::Runs, &[255; 33], &mut [0; PAGE_SIZE]),
             Err(WireError::BadPage)
         );
+    }
+
+    #[test]
+    fn published_packet_retains_pages_above_the_inline_limit() {
+        let zero = [0; PAGE_SIZE];
+        let pages: Vec<_> = (0..16_000u32)
+            .map(|index| (index, index % 2 == 0, PageInput::Inline(&zero)))
+            .collect();
+        assert_eq!(
+            witness_wire::encode_archived(&mut FixtureHash, &pages, &[], 100_000),
+            Err(WireError::OverBudget),
+        );
+        let packet = witness_wire::encode_code_witness(&mut FixtureHash, &pages, &[]).unwrap();
+        assert!(witness_wire::packet_pages(&packet, 94_999).is_err());
+        let mut decoded = witness_wire::packet_pages(&packet, packet.len()).unwrap();
+        for (index, writable, _) in pages {
+            let row = decoded.next_page().unwrap().unwrap();
+            assert_eq!(
+                (row.index, row.writable, row.mode),
+                (index, writable, Mode::Zero)
+            );
+        }
+        assert!(decoded.next_page().unwrap().is_none());
+        assert!(decoded.remaining.is_empty());
     }
 }
