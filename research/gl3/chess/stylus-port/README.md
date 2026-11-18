@@ -16,6 +16,22 @@ contract. The prepared model, engine and continuation must reproduce the
 
 ## Private Runpod rehearsal
 
+The [code-backed checkpoint rehearsal](evidence/code-backed-first-group-20261118.json)
+reduced the signed opening search transaction to **4,758 bytes**. The
+private Nitro node admitted it and reverted at **32,000,000 L2 gas**.
+An isolated replay returned out of gas, and the stored checkpoint matched
+its previous value. The 294,385-byte witness occupied twelve immutable
+genesis cells. Publishing those cells as contract code would require at
+least **58,879,400 gas** for code deposit, separately from search.
+
+The exact 40-quantum host trace executed **5,927,060,296 guest
+instructions**. In the activated artifact, the interpreter dispatches
+each one through a charged Wasm call. That instruction alone accounts
+for a **2,252,282,912 L2 gas lower bound** for a completed group at the
+rehearsal's 10,000 ink per gas. The remaining execution and checkpoint
+costs are additional. The full move and mixed-traffic test are blocked
+at the first group. [Pinned Nitro pricing](https://github.com/OffchainLabs/nitro/blob/5f02f3f03076343061f167e81b8e82ec5518064b/crates/prover/src/programs/meter.rs#L363-L395)
+
 [The stock Nitro rehearsal](evidence/private-activation-20261118.json) loaded
 the exact checkpoint archive and mined the canonical search contract in a
 **23,864-byte signed deployment transaction**, using **5,208,580 L2 compute
@@ -232,7 +248,7 @@ the witness cells is separate from the cost of advancing the search.
 The 294,385-byte opening witness needs twelve cells. Its manifest adds
 628 bytes to the 4,021-byte header. All 34 library tests passed on Runpod,
 including the larger code-backed wire parser. The seeded private
-transaction measures the resulting signed size and execution gas.
+receipt and dispatch bound are recorded above.
 
 The immutable archive's code hashes are stored in a code-resident
 directory. A call supplies only the fixed-size engine manifest and the
