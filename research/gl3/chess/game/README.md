@@ -48,9 +48,9 @@ genesis. Applying that initial state to an existing rollup requires a
 separate deterministic migration delivered with the runtime upgrade. The
 [engine overlay](engine/README.md) includes candidate source for the
 [scheduled activation](engine/ACTIVATION.md) and the
-[pinned seed migration](engine/SEED-MIGRATION.md). The candidate is separate
-from the private startup profile and awaits a matching native and proof
-build. [Mainnet status](engine/MAINNET.md)
+[pinned seed migration](engine/SEED-MIGRATION.md). The native candidate
+[caught up to the safe GL3 head](engine/FOLLOWER.md). The paired proof
+build and coordinated activation remain open. [Mainnet status](engine/MAINNET.md)
 
 The research build tooling can prepare native execution and its matched
 replay machine from the same coordinator source. The profile writes its

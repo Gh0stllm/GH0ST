@@ -32,9 +32,9 @@ Stockfish module is used for native execution and proving.
 python3 research/gl3/chess/build_replay.py --sliced --game-coordinator --candidate-arbos-version 62
 ```
 
-The candidate source has no scheduled activation. Compilation, replay over
-the upgrade boundary and approval of a matching production proof root remain
-open. See the [mainnet observation and handoff constraints](MAINNET.md).
+The native candidate has compiled and [replayed to the live safe head](FOLLOWER.md).
+The matching proof build, replay over the upgrade boundary, and coordinated
+activation remain open. See the [mainnet observation and handoff constraints](MAINNET.md).
 
 The [read-only follower](FOLLOWER.md) replays existing GL3 batches while the
 production sequencer continues to serve the chain.

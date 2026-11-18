@@ -30,3 +30,11 @@ Compare block hashes and state roots at shared block heights. The
 follower reads posted batches at Robinhood's safe frontier and can lag
 unposted GL3 blocks. The follower does not select a new proof root or
 schedule A14. [Production activation constraints](MAINNET.md)
+
+## Same-pod sync confirmed on 2026-11-18
+
+At 17:20:16 UTC, the follower reached GL3 safe block **20,628** with
+`eth_syncing` returning `false`. Its block hash and state root matched
+production. The production RPC continued serving block **20,629**, one
+block ahead of the safe frontier at that observation.
+[Build and replay evidence](follower-evidence-20261118.json)
