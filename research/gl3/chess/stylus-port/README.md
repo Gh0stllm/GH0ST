@@ -23,6 +23,23 @@ Its Wasm size report excludes the two immutable model and initialization
 segments, which the builder exports separately. The Wasm variants leave
 paging to the host and measure executable size before activation work.
 
+All three [isolated Runpod builds](evidence/aot-compiled-20261118.json)
+exceeded the stock package limits with both initialization segments
+already removed from the executable.
+
+| Build | Raw Wasm | Brotli payload |
+| --- | ---: | ---: |
+| `-O2` | 4,989,302 B | 582,077 B |
+| `-Oz` | 1,796,532 B | 341,839 B |
+| `-Oz -flto` | 1,756,616 B | 343,090 B |
+| Stock limit | 262,144 B | 98,292 B |
+
+The size-optimized builds cut raw size by up to 65%. The stock packer
+rejected all three before activation at the decompressed size check,
+including with four-fragment support enabled. The compressed payloads
+also exceed the four-fragment capacity. The AOT build has no on-chain
+gas, signed transaction size or block-cadence result.
+
 On an isolated Linux worker with WABT 1.0.42 source, the pinned `wasm2c`
 output, WASI SDK 25, a C compiler and Python `brotli` installed, run from
 `stylus-port` with the source paths and a fresh output directory.

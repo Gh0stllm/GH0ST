@@ -135,14 +135,15 @@ def main():
     wasi_inputs = [wasi_runtime / source.name if source.parent == runtime else source for source in inputs]
     variants = {}
     for profile, opt, link_time in (("O2", "O2", []), ("Oz", "Oz", []), ("Oz-lto", "Oz", ["-flto"])):
-        flags = ["-I" + str(wasi_runtime), *common, f"-{opt}", "-mno-simd128", "-fno-vectorize",
-                 "-fno-slp-vectorize", "-ffunction-sections", "-fdata-sections", *link_time]
+        flags = ["-I" + str(wasi_runtime), *common, "-D_WASI_EMULATED_MMAN", f"-{opt}",
+                 "-mno-simd128", "-fno-vectorize", "-fno-slp-vectorize", "-Wno-pass-failed",
+                 "-ffunction-sections", "-fdata-sections", *link_time]
         objects = build_objects(args.wasi_clang, flags, wasi_inputs, args.output / profile, args.jobs)
         wasm_file = args.output / f"compiled-{profile}.wasm"
         run([args.wasi_clang, "-nostartfiles", "-Wl,--no-entry", "-Wl,--strip-all",
-             "-Wl,--unresolved-symbols=import-functions", "-Wl,-z,stack-size=1572864",
+             "-Wl,--allow-undefined", "-Wl,-z,stack-size=1572864",
              "-Wl,--max-memory=8388608", f"-{opt}", *link_time, *[f"-Wl,--export={name}" for name in BINDINGS],
-             *objects, "-o", wasm_file])
+             *objects, "-lwasi-emulated-mman", "-o", wasm_file])
         wasm = wasm_file.read_bytes()
         compressed = brotli.compress(wasm, quality=11, lgwin=22)
         if brotli.decompress(compressed) != wasm:

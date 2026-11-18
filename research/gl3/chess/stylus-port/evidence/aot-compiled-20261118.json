@@ -1,0 +1,78 @@
+{
+  "schema": "gh0st.stylus.aot-rehearsal.v1",
+  "scope": "Compiled Wasm size and stock packaging limits on a disposable Runpod CPU worker",
+  "worker": {
+    "provider": "Runpod",
+    "cpuModel": "AMD Ryzen Threadripper 7960X 24-Cores",
+    "vCPUs": 4,
+    "memoryGiB": 16,
+    "computeUSDPerHour": 0.184,
+    "authorisedBudgetUSD": 1
+  },
+  "build": {
+    "scope": "AOT code sizing with external guest-memory bindings. Native parity uses the exact seed in a local host.",
+    "guestSHA256": "1d650410655d93624801a0fa45d64d72ec5d209115672b5848f010037da5e5bc",
+    "modelSHA256": "1a298aa575a085434d29027978dc36867fe9c5bcea9376654b7a8eba1e52dfc2",
+    "nativeLibrarySHA256": "994fbe68896eb6005946387f86f2744fb6d77ad7ef78cbcef8a9649de21b8e54",
+    "wasiCompiler": "clang version 19.1.5-wasi-sdk (https://github.com/llvm/llvm-project ab4b5a2db582958af1ee308a790cfdb42bd24720)",
+    "maxStockWasmBytes": 262144,
+    "maxStockBrotliPayloadBytes": 98292,
+    "variants": {
+      "O2": {
+        "wasmBytes": 4989302,
+        "wasmSHA256": "80405f70f303e76c2d22f2915b77818ec22292dbea1a6879486364ef6b0355b5",
+        "brotliBytes": 582077,
+        "withinStockSizeLimits": false,
+        "codeSectionBytes": 4972501,
+        "dataSectionBytes": 12947
+      },
+      "Oz": {
+        "wasmBytes": 1796532,
+        "wasmSHA256": "80af6f43be00249fe03aa500b22b134c5a5247a39b403f7652c1b30b0d5fc24f",
+        "brotliBytes": 341839,
+        "withinStockSizeLimits": false,
+        "codeSectionBytes": 1779600,
+        "dataSectionBytes": 12947
+      },
+      "Oz-lto": {
+        "wasmBytes": 1756616,
+        "wasmSHA256": "82b9a0b5a3ca28edc25c5c0d0d889ac1852822f98dcb7094d024bbdfd87b1778",
+        "brotliBytes": 343090,
+        "withinStockSizeLimits": false,
+        "codeSectionBytes": 1743235,
+        "dataSectionBytes": 10279
+      }
+    },
+    "elapsedSeconds": 107.90356439724565,
+    "stylusActivated": false,
+    "publicDeployment": false
+  },
+  "packageChecks": {
+    "O2": {
+      "exitCode": 1,
+      "reason": "Probe packaging stopped: Wasm must fit the 262144-byte precompression limit",
+      "packageWritten": false
+    },
+    "Oz": {
+      "exitCode": 1,
+      "reason": "Probe packaging stopped: Wasm must fit the 262144-byte precompression limit",
+      "packageWritten": false
+    },
+    "Oz-lto": {
+      "exitCode": 1,
+      "reason": "Probe packaging stopped: Wasm must fit the 262144-byte precompression limit",
+      "packageWritten": false
+    }
+  },
+  "trial": {
+    "fullMoveGasVerified": false,
+    "fullMoveSignedTransactionsUnder95000BytesVerified": false,
+    "contractColdResumeVerified": false,
+    "mixedTrafficCadenceVerified": false,
+    "activationAttempted": false,
+    "publicDeployment": false,
+    "productionPodAccessed": false,
+    "chainHalted": false,
+    "publicTransactions": 0
+  }
+}
