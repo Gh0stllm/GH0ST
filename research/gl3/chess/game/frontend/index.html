@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Play White against on-chain Stockfish on GL3.">
+  <title>GH0ST Chess · GL3</title>
+  <link rel="stylesheet" href="./style.css">
+  <script type="module" src="./player.js"></script>
+</head>
+<body>
+  <main class="shell">
+    <header class="hero">
+      <div>
+        <p class="brand">GH0ST <span>· GL3</span></p>
+        <h1>Chess</h1>
+        <p class="muted">Stockfish 19 · 24 million nodes per move</p>
+      </div>
+      <button id="connect" type="button" disabled>Connect wallet</button>
+    </header>
+    <p id="notice" class="notice" role="status">Loading release details…</p>
+
+    <div class="arena">
+      <section aria-label="Board">
+        <div class="board-heading"><strong id="turn">No game selected</strong><time id="deadline"></time></div>
+        <div class="board-shell">
+          <div id="board" class="board" role="group" aria-label="Chessboard" hidden></div>
+          <p id="empty-board" class="empty">Load a game to see its board.</p>
+        </div>
+        <div id="game-actions" class="actions" hidden>
+          <button id="draw" type="button" disabled>Claim draw</button>
+          <button id="resign" type="button" disabled>Resign</button>
+          <button id="timeout" type="button" disabled>Claim timeout</button>
+        </div>
+      </section>
+      <aside class="desk">
+        <section class="panel" aria-labelledby="entry-title">
+          <h2 id="entry-title">Enter the challenge</h2>
+          <dl class="figures">
+            <div><dt>Checkmate prize</dt><dd>1,000,000 GH0ST</dd></div>
+            <div><dt>Entry</dt><dd>25,000 GH0ST</dd></div>
+          </dl>
+          <div class="actions">
+            <button id="enter" class="primary" type="button" disabled>Enter game</button>
+            <button id="refresh" type="button" disabled>Refresh</button>
+          </div>
+          <form id="load">
+            <label for="game-id">Game ID</label>
+            <div class="actions"><input id="game-id" placeholder="0x…" spellcheck="false" autocomplete="off"><button id="load-button" disabled>Load game</button></div>
+          </form>
+        </section>
+        <section class="panel" aria-labelledby="engine-title">
+          <h2 id="engine-title">Stockfish search</h2>
+          <p class="muted" id="engine-state">No search selected.</p>
+          <div class="actions">
+            <button id="progress" type="button" disabled>Inspect search</button>
+            <button id="engine-action" type="button" hidden disabled></button>
+            <button id="release" type="button" hidden disabled>Release finished game</button>
+          </div>
+        </section>
+        <section class="panel" aria-labelledby="payout-title">
+          <h2 id="payout-title">Payout</h2>
+          <p id="credit" class="muted">Connect your wallet to view your balance.</p>
+          <button id="claim" type="button" disabled>Claim GH0ST</button>
+        </section>
+      </aside>
+    </div>
+
+    <section id="recovery" class="panel recovery" aria-labelledby="receipt-title" hidden>
+      <h2 id="receipt-title">Pending transaction</h2>
+      <p id="receipt-text" class="muted"></p>
+      <form id="resolve">
+        <label for="transaction-hash">Transaction hash</label>
+        <div class="actions"><input id="transaction-hash" placeholder="0x…" spellcheck="false" autocomplete="off"><button id="resolve-button">Reconcile</button></div>
+      </form>
+    </section>
+    <section class="panel history" aria-labelledby="history-title">
+      <h2 id="history-title">Moves</h2>
+      <ol id="moves"></ol>
+    </section>
+    <p id="last-transaction" hidden><a id="explorer" href="https://scan.gh0st.fyi/">View receipt on GL3 ↗</a></p>
+    <noscript>Enable JavaScript to load the verified game and connect a wallet.</noscript>
+  </main>
+
+  <dialog id="promotion">
+    <form method="dialog">
+      <h2>Promote pawn</h2>
+      <div class="actions">
+        <button value="q">Queen</button><button value="r">Rook</button>
+        <button value="b">Bishop</button><button value="n">Knight</button>
+        <button value="">Cancel</button>
+      </div>
+    </form>
+  </dialog>
+</body>
+</html>
