@@ -3,6 +3,7 @@
 
 use alloc::vec::Vec;
 
+pub mod group;
 pub mod guest;
 mod memory_ops;
 mod numeric;

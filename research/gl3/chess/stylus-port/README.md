@@ -42,7 +42,9 @@ contract. The prepared model, engine and continuation must reproduce the
   exports for the existing 40-quantum driver.
 - [Cold resume](src/resume.rs) authenticates the checkpoint header and
   supplied old pages before execution. It isolates page writes until the
-  new root is sealed, and a missing witness prevents a commit.
+  new root is sealed, and a missing witness prevents a commit. The
+  [group runner](src/interpreter/group.rs) connects those checks to the
+  pinned Stockfish exports, flushes changed pages and derives the new root.
 
 ## Validation
 
@@ -53,6 +55,11 @@ matched native WebAssembly across 2,688 differential test vectors.
 The inspector found 197 opcode kinds in the pinned guest, including 52
 SIMD instructions. The remaining 10 SIMD opcodes are memory operations
 and constants handled by the interpreter.
+A [ROM smoke run](examples/rom_smoke.rs) executed 56 instructions from the
+original guest, including its Asyncify resume exports, with an authenticated
+4 KiB memory witness. The original stack pointer was 120,685,200 and the
+Asyncify state changed `0 → 1 → 0 → 2 → 0`. The run exercised the actual
+function cells and checkpoint reads alongside the earlier isolated tests.
 A small fixture against the pinned generated C header passed
 memory access, overlapping copy, growth and trap checks. The Go reference
 command compiled with the pinned guest embedded. The full Stylus engine
@@ -111,8 +118,14 @@ and updates the root with the same proof. Cold resume still depends on
 getting the pages to the contract. Nitro's [default sequencer limit](https://github.com/OffchainLabs/nitro/blob/v3.12.2/execution/gethexec/sequencer.go#L218-L226)
 is 95,000 raw transaction bytes, which holds at most 23 raw 4 KiB pages
 before signature, proof, or request framing. A receipt archive or replay
-can recover past logs for witnesses. Exact 40-quantum input sizes need a
-real engine read trace.
+can recover past logs for witnesses. The [existing exact guest trace](../sliced/evidence/simd-dirty-cost.json)
+already recorded 1,919 changed pages in the first quantum of the same
+`e2e4` opening. This raw-witness adapter requires the old 4 KiB input for
+each page it writes. That is at least **7,860,224 bytes** for the first
+quantum, before read-only pages and proofs, over 82 times the 95,000-byte
+envelope. The calculation rules out the current raw input format for the
+first 40-quantum transaction. It measures neither compressed witnesses nor
+contract execution gas.
 
 ## Checkpoint gas probe
 
