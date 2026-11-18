@@ -148,8 +148,17 @@ signed transactions, their committed heads, and that the bytes emitted
 in the first receipt are the exact continuation used by the second call.
 The first two 20,000-instruction slices used **6,436,074** and **5,710,792**
 compute gas in signed transactions of **4,710** and **16,673 bytes**.
-This proves stock Stylus cold resume within one opening quantum. The
-standalone prototype has not completed an on-chain move.
+The two 50,000-instruction slices also passed, using **13,838,737** and
+**15,507,138** compute gas in **4,985-** and **36,538-byte** signed
+transactions. Together they committed the same exact head as a single
+100,000-instruction transaction. The next 100,000-instruction call
+reverted at the gas cap. See the [private receipt evidence](evidence/instruction-slices-20261118.json).
+
+At a fixed 50,000 instructions per transaction, the measured first
+quantum would take at least **2,967 transactions**, and the prior first-40
+trace would take at least **118,542**. Those are transaction counts for the
+tested fixed budget. The complete on-chain move, public deployment and
+mixed-traffic timing are still open.
 
 ### Earlier group execution
 
