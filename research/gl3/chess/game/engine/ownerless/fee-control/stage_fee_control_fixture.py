@@ -113,13 +113,21 @@ FEE_TESTS = r"""
 	signedUpdate, err := feeABI.Pack("setPostingPrice", replacement, new(big.Int).Add(replacement, big.NewInt(1)))
 	Require(t, err)
 	ordinaryFeeTx := builder.L2Info.PrepareTxTo("Owner", &feeAddress, 1_000_000, new(big.Int), signedUpdate)
-	Require(t, client.SendTransaction(ctx, ordinaryFeeTx))
-	ordinaryFeeReceipt, err := bind.WaitMined(ctx, client, ordinaryFeeTx)
-	Require(t, err)
-	if ordinaryFeeReceipt.Status != types.ReceiptStatusFailed {
-		t.Fatal("an ordinary signed GL3 transaction changed the posting price")
+	if err := client.SendTransaction(ctx, ordinaryFeeTx); err != nil {
+		if !strings.Contains(err.Error(), "execution reverted") {
+			t.Fatalf("signed fee call failed for an unexpected reason: %v", err)
+		}
+	} else {
+		ordinaryFeeReceipt, err := bind.WaitMined(ctx, client, ordinaryFeeTx)
+		Require(t, err)
+		if ordinaryFeeReceipt.Status != types.ReceiptStatusFailed {
+			t.Fatal("an ordinary signed GL3 transaction changed the posting price")
+		}
 	}
-	assertOwners(ordinaryFeeReceipt.BlockNumber)
+	if readPrice(nil).Cmp(replacement) != 0 {
+		t.Fatal("the signed fee call changed the posting price even though it failed")
+	}
+	assertOwners(nil)
 	feePreReplay := record("fee-before", feeBefore, nil)
 	feeActivationReplay := record("fee-activation", feeAfter, feeActivationMessage.MessageIndex)
 	feeUpdateReplay := record("fee-update", feeChild.BlockNumber, feeIndex)

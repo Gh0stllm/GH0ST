@@ -1,8 +1,8 @@
 # GL3 posting fee governance
 
 This proposal restores the ability to set the GL3 data-posting price through
-existing Robinhood governance. A separate consensus upgrade must be built and
-replayed before any live signing review. The deployed GL3 owner list remains
+existing Robinhood governance. The ArbOS 63 candidate was built and replayed
+on the same pod in a separate workspace. Live activation needs its own review. The deployed GL3 owner list remains
 `[0x0000000000000000000000000000000000000000]`.
 
 ## Verified starting point
@@ -74,5 +74,6 @@ fee transition.
    the Robinhood signing review. Check parent finality, validator adoption,
    the price on both public RPCs, and the effect of the next batch report.
 
-**Status** Design and live authority verification. Consensus code, replay
-results, and a mainnet signing review are pending.
+**Status** The same-pod candidate passed the private activation and six proof
+replays. Both production RPCs remained readable at the checks. Live handoff
+and activation are pending. [Build evidence](fee-control/build-evidence-20261119.json)

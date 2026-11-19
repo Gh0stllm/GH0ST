@@ -1,0 +1,200 @@
+{
+  "scope": "Same-pod build and private regression with the candidate files isolated from the live node.",
+  "candidateArbOSVersion": 63,
+  "priorArbOSVersion": 62,
+  "candidatePrecompile": "0x0000000000000000000000000000000000000a15",
+  "moduleRoot": "0x51c5e0bcc151e3372771977386519abbd78a43d0796f7eeaa5ae931f77b41657",
+  "artifactSHA256": {
+    "nitro-fee": "253e8f2cec946cbeaeb442f5eb4f111e5476d1521e3a3f5f9404de8f113a803e",
+    "replay.wasm": "5ab201e063eb33a0c91cdd0f28c48a6c094dd081e799606c1fc1ac95a16f3524",
+    "machine.v2.wavm.br": "6cdbe6471fb6dc96ae0708f0fc986d24b05e9d22976066242e802e200cea2a0a",
+    "until-host-io-state.bin": "abdc5f356bb80213f2c1c9e2baa37c77e848f383af5d7fef98088a31d390d8cf"
+  },
+  "activation": {
+    "markerKeccak256": "0x42962a62120683ed3d04055cd6423755f31d6798b3bd80c553c0952ddf9c3c3e",
+    "internalStartBlockSelector": "0x3aef8da6",
+    "postingPriceSetter": "0xc837ba67",
+    "childOwner": "0x0000000000000000000000000000000000000000",
+    "authority": "canonical delayed Robinhood executor transaction"
+  },
+  "fixture": {
+    "moduleRoot": "0x51c5e0bcc151e3372771977386519abbd78a43d0796f7eeaa5ae931f77b41657",
+    "nativeCapturePassed": true,
+    "foreignFeeActivationRejected": true,
+    "signedFeeChangeRejected": true,
+    "staleFeeRejected": true,
+    "zeroFeeRejected": true,
+    "feeOldPrice": "17798314",
+    "feeNewPrice": "8899157",
+    "feeActivation": {
+      "arbOS": 63,
+      "block": 11,
+      "blockHash": "0x1dcc24f562150256f8d955e12b437b5ff1da4b466e8c15e39724c26d050e0f8f",
+      "expectedEndState": {
+        "BlockHash": "0x1dcc24f562150256f8d955e12b437b5ff1da4b466e8c15e39724c26d050e0f8f",
+        "SendRoot": "0x0000000000000000000000000000000000000000000000000000000000000000",
+        "Batch": 7,
+        "PosInBatch": 0
+      },
+      "input": "input-fee-activation.json",
+      "parentHash": "0x1ef2a788002839884ffdc0d6ecbca4903495905683f2965cbf2038217841906c",
+      "stateRoot": "0xe1fe3d1cfeffbe1fb6980e0f198f135bb1b2db81c705f055d0e0de575cfe99de"
+    },
+    "feeUpdate": {
+      "arbOS": 63,
+      "block": 13,
+      "blockHash": "0x56e33d1d2386a44ac4a02fc7fe6ebc577c2673a2131c7a50af9c416c7f931984",
+      "expectedEndState": {
+        "BlockHash": "0x56e33d1d2386a44ac4a02fc7fe6ebc577c2673a2131c7a50af9c416c7f931984",
+        "SendRoot": "0x0000000000000000000000000000000000000000000000000000000000000000",
+        "Batch": 8,
+        "PosInBatch": 0
+      },
+      "input": "input-fee-update.json",
+      "parentHash": "0xe9f4ff4ff374f7aa2e326dd215457cea2ebc0a6a29c17a179ab16d9826f9239f",
+      "stateRoot": "0x677eac0380629017cc135e3f2a35d676e0fc91c5aef1ed881b200c9316fa4808"
+    },
+    "a14EngineAndInstallerPreserved": true,
+    "ownerListRemainsRenounced": true,
+    "terminalSequencerRejectionTested": true
+  },
+  "proofReplays": {
+    "before": {
+      "expectedEndState": {
+        "BlockHash": "0x639a7a1b2898b24b4d845abe1cb984f6f1a89b517880fd73729ab610a7fb7a00",
+        "SendRoot": "0x0000000000000000000000000000000000000000000000000000000000000000",
+        "Batch": 2,
+        "PosInBatch": 1
+      },
+      "inputSHA256": "87d3ae50dd26e302afd2b0aacb756116910b033828fccb9b28034226b6f963ad",
+      "proofSHA256": "13a28816418445a61fed84ce09e42d4db0c73b7bec27ec491bb339243aef0ef5"
+    },
+    "after": {
+      "expectedEndState": {
+        "BlockHash": "0xaee2e07f11bf750b41b3504e7a173070c1626fff810a6d5a3a0019ebdac7fc25",
+        "SendRoot": "0x0000000000000000000000000000000000000000000000000000000000000000",
+        "Batch": 3,
+        "PosInBatch": 0
+      },
+      "inputSHA256": "f8cf2cf7420efd3ad8edecf00c4b46c04186f22ecbc452727a56f9211d10a696",
+      "proofSHA256": "6eb285c3e11b0671f34cc056d7f20c3106163f1f57f8f182186978fed81f6d54"
+    },
+    "bootstrap": {
+      "expectedEndState": {
+        "BlockHash": "0xbb894d0545a0e060766ebcf44960777bd189cf98aeb5e026e3ee0fc5ed9ccf8f",
+        "SendRoot": "0x0000000000000000000000000000000000000000000000000000000000000000",
+        "Batch": 4,
+        "PosInBatch": 0
+      },
+      "inputSHA256": "98bbcd02b8fde65448c26850e6228406ce038da68f7baf1c62aae79d53da50cc",
+      "proofSHA256": "8a80166c697634aa83697ca078149dd8d6362f3c5b1e46a5bb34eb9f85e7d09e"
+    },
+    "fee-before": {
+      "expectedEndState": {
+        "BlockHash": "0x1ef2a788002839884ffdc0d6ecbca4903495905683f2965cbf2038217841906c",
+        "SendRoot": "0x0000000000000000000000000000000000000000000000000000000000000000",
+        "Batch": 6,
+        "PosInBatch": 1
+      },
+      "inputSHA256": "4aec4291cfbf9d4fdecc21f261c004f365c40b1ffec016d78ae0bbb63fe5b852",
+      "proofSHA256": "e095f46fba510412f25b60a07bc5eb65ef258d37f1f117253b31f93d34dae984"
+    },
+    "fee-activation": {
+      "expectedEndState": {
+        "BlockHash": "0x1dcc24f562150256f8d955e12b437b5ff1da4b466e8c15e39724c26d050e0f8f",
+        "SendRoot": "0x0000000000000000000000000000000000000000000000000000000000000000",
+        "Batch": 7,
+        "PosInBatch": 0
+      },
+      "inputSHA256": "91893449cdd739a8f2410233629d2d82067199e569161024cc4877fcd3271b9e",
+      "proofSHA256": "88e659233f95686c1786999365747738b042f2b2ee5b686e4b8a2a5b32b991ff"
+    },
+    "fee-update": {
+      "expectedEndState": {
+        "BlockHash": "0x56e33d1d2386a44ac4a02fc7fe6ebc577c2673a2131c7a50af9c416c7f931984",
+        "SendRoot": "0x0000000000000000000000000000000000000000000000000000000000000000",
+        "Batch": 8,
+        "PosInBatch": 0
+      },
+      "inputSHA256": "89b2b8cd7e67b8201c7fbc66707175d1123c16610d039c24d51676a699faea33",
+      "proofSHA256": "9046acc3705907761ff000f6e730ab4799ddd2fa4d81c5903e7a1e2b186a97fd"
+    }
+  },
+  "productionReadChecks": {
+    "duringBuild": [
+      {
+        "route": 0,
+        "http": 200,
+        "chain": "0x4726d9",
+        "height": 20641,
+        "hash": "0x3c7d7e8a0b00f92789f2791e428af93d7a4486c97c73d5b2383d8703a8058cc7",
+        "a14": "0xfe",
+        "reservedFeeAddress": "0x"
+      },
+      {
+        "route": 1,
+        "http": 200,
+        "chain": "0x4726d9",
+        "height": 20641,
+        "hash": "0x3c7d7e8a0b00f92789f2791e428af93d7a4486c97c73d5b2383d8703a8058cc7",
+        "a14": "0xfe",
+        "reservedFeeAddress": "0x"
+      }
+    ],
+    "afterBuildAndPrivateReplay": [
+      {
+        "route": 0,
+        "http": 200,
+        "chain": "0x4726d9",
+        "height": 20641,
+        "hash": "0x3c7d7e8a0b00f92789f2791e428af93d7a4486c97c73d5b2383d8703a8058cc7",
+        "a14": "0xfe",
+        "reservedFeeAddress": "0x"
+      },
+      {
+        "route": 1,
+        "http": 200,
+        "chain": "0x4726d9",
+        "height": 20641,
+        "hash": "0x3c7d7e8a0b00f92789f2791e428af93d7a4486c97c73d5b2383d8703a8058cc7",
+        "a14": "0xfe",
+        "reservedFeeAddress": "0x"
+      }
+    ]
+  },
+  "liveHandoffExecuted": false,
+  "liveActivationExecuted": false,
+  "batchCompression": {
+    "liveOverrideFound": false,
+    "configuredMaxDelay": "10s",
+    "defaultTiers": [
+      {
+        "backlog": 0,
+        "level": 11,
+        "recompressionLevel": 11
+      },
+      {
+        "backlog": 21,
+        "level": 6,
+        "recompressionLevel": 11
+      },
+      {
+        "backlog": 41,
+        "level": 6,
+        "recompressionLevel": 6
+      },
+      {
+        "backlog": 61,
+        "level": 4,
+        "recompressionLevel": 6
+      }
+    ],
+    "sampleMethod": "Offline whole-batch compression model using 96 authenticated Stockfish chunks, synthetic signatures and a roughly 94.8 KB compressed batch limit.",
+    "sampleChunkCount": 96,
+    "sampleLevel6CompressedBytes": 2894785,
+    "sampleLevel11CompressedBytes": 2757966,
+    "sampleLevel11ByteReductionPercent": 4.73,
+    "pricing": "Batch Brotli changes the Robinhood calldata bill. GL3's per-transaction posting fee uses its separate consensus compression setting.",
+    "liveConfigurationChanged": false
+  }
+}
