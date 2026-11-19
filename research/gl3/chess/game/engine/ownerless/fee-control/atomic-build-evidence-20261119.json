@@ -1,0 +1,103 @@
+{
+  "scope": "Isolated same-pod ArbOS 63 build, exact reset at the authenticated activation block, and six matching proof replays.",
+  "moduleRoot": "0x751a1cfefeda19c1813ad5147e3bebd41953262dd284e4e78a9f7d55f6e2ff67",
+  "candidateArbOSVersion": 63,
+  "priorArbOSVersion": 62,
+  "targetWeiPerParentGas": "937500000000000",
+  "artifactSHA256": {
+    "nitro-fee": "66c7c4b5dca9a3c25e187528dcb4150464c818a327f3c4e6f74c5b3c253aca38",
+    "replay.wasm": "adb34261be7e635c452052a6d9b35c7ac3adb58de3b3915235c47bf97e896579",
+    "machine.v2.wavm.br": "16f0fcdb6a06bdc013a7c041e818b02cdf98121c4f3c70f4e959b193a5e4cd0c",
+    "until-host-io-state.bin": "0f42ee237c510de859b8f5fd2752a0d37feea67269b07dffd9572616b63728a4"
+  },
+  "fixture": {
+    "nativeCapturePassed": true,
+    "foreignFeeActivationRejected": true,
+    "signedFeeChangeRejected": true,
+    "staleFeeRejected": true,
+    "zeroFeeRejected": true,
+    "feeActivationPrice": "937500000000000",
+    "feeActivation": {
+      "arbOS": 63,
+      "block": 11,
+      "blockHash": "0x5ec281371b3b16b324b04c1018324fc96910b795b817d3429c30747943834232",
+      "expectedEndState": {
+        "BlockHash": "0x5ec281371b3b16b324b04c1018324fc96910b795b817d3429c30747943834232",
+        "SendRoot": "0x0000000000000000000000000000000000000000000000000000000000000000",
+        "Batch": 7,
+        "PosInBatch": 0
+      },
+      "input": "input-fee-activation.json",
+      "parentHash": "0x6763cbde25eb7b979f213c5968fe87b387e19062236637d0f8ea15e1a1cf5bfa",
+      "stateRoot": "0xfc6e0557c94723a0c35f1dab0162cc0ee2ba4b12d0952d29a344122ed37fb8dd"
+    },
+    "feeOldPrice": "937500000000000",
+    "feeNewPrice": "8899157",
+    "feePriceEventVerified": true
+  },
+  "targetGh0stPerCompressedByte": "0.015",
+  "productionHandoffExecuted": false,
+  "mainnetActivationVerified": false,
+  "proofReplays": {
+    "before": {
+      "expectedEndState": {
+        "BlockHash": "0x7b563d601633dca1b23e9145ec9195e00353b0d7370809fd74c4fcba23b7f0cc",
+        "SendRoot": "0x0000000000000000000000000000000000000000000000000000000000000000",
+        "Batch": 2,
+        "PosInBatch": 0
+      },
+      "inputSHA256": "894d02841f0f29186554afd78ea1affd4bb9b2a07eb3e0b6fb0c3edf44f1bf0c",
+      "proofSHA256": "25e5ed5a743b75e944a016981abfb8d2e51e6e081d547de4cc666c35ee032233"
+    },
+    "after": {
+      "expectedEndState": {
+        "BlockHash": "0xc18417b01dda29f440bca30f6d47149d540248e6f0d52e17beeca438868ae8c0",
+        "SendRoot": "0x0000000000000000000000000000000000000000000000000000000000000000",
+        "Batch": 2,
+        "PosInBatch": 1
+      },
+      "inputSHA256": "f26ebf8d383bccf329a3a9ae7db5b583f1a1242262c42efccdc192030ae8c13c",
+      "proofSHA256": "2a8f14fdf4f3f4d5beae425c3834af030464f6de9b09cace525ef26e60e96b19"
+    },
+    "bootstrap": {
+      "expectedEndState": {
+        "BlockHash": "0xdf72ceeed77825d339a3e5c5e4f62f3443a6f48f3c32e150356098059cc66926",
+        "SendRoot": "0x0000000000000000000000000000000000000000000000000000000000000000",
+        "Batch": 4,
+        "PosInBatch": 0
+      },
+      "inputSHA256": "b66191feca9813ba99e1b1074f8ac25447145b24cfcbfbbb6bb265cff0b884bc",
+      "proofSHA256": "691f9b5af204996d4ef015f8a6959d81f6f66eb90afecc734a37232abe2e3e6c"
+    },
+    "fee-before": {
+      "expectedEndState": {
+        "BlockHash": "0x6763cbde25eb7b979f213c5968fe87b387e19062236637d0f8ea15e1a1cf5bfa",
+        "SendRoot": "0x0000000000000000000000000000000000000000000000000000000000000000",
+        "Batch": 6,
+        "PosInBatch": 1
+      },
+      "inputSHA256": "aa04379443812168f3e76fcfa5a49ae89d9f165068a3bb6ac69e9c2ec5190124",
+      "proofSHA256": "45b31ace388ad28381ec2ffcb972a98de26491baaa3fc432bd1387516eedcbd5"
+    },
+    "fee-activation": {
+      "expectedEndState": {
+        "BlockHash": "0x5ec281371b3b16b324b04c1018324fc96910b795b817d3429c30747943834232",
+        "SendRoot": "0x0000000000000000000000000000000000000000000000000000000000000000",
+        "Batch": 7,
+        "PosInBatch": 0
+      },
+      "inputSHA256": "40eaed98abbcae23069ef3ee2f78660edf43ba4877a5f2fdb3e99f65aed0c1ce",
+      "proofSHA256": "21635484dde2b56fadd640626e6f385bd012f4a2add54b7a5045d775f73225c8"
+    },
+    "fee-update": {
+      "expectedEndState": {
+        "BlockHash": "0xcf97c7050d0ab22dd93e959334fa5958c32e69592afb76a49206ad062ee64a0b",
+        "SendRoot": "0x0000000000000000000000000000000000000000000000000000000000000000",
+        "Batch": 8,
+        "PosInBatch": 0
+      },
+      "inputSHA256": "debf1ef07d3a67e904bc69c85962adb48b39ae8630ddb6dd38580fad5fc8c1b5",
+      "proofSHA256": "9209af8eef0274d0d731f0776efb1f68ebf2d3870896cfcf3dee7fefe83000bb"
+    }
+  }
+}

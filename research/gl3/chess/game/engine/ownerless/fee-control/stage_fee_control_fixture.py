@@ -49,7 +49,7 @@ FEE_TESTS = r"""
 	Require(t, err)
 	readPrice := func(height *big.Int) *big.Int {
 		t.Helper()
-		b, err := client.CallContract(ctx, ethereum.CallMsg{To: &feeAddress, Data: feeView, Gas: 1_000_000}, height)
+		b, err := client.CallContract(ctx, ethereum.CallMsg{To: &feeAddress, Data: feeView, Gas: 1_000_000, SkipL1Charging: true}, height)
 		Require(t, err)
 		values, err := feeABI.Unpack("postingPrice", b)
 		Require(t, err)
@@ -59,7 +59,7 @@ FEE_TESTS = r"""
 	Require(t, err)
 	feeCodeAfter, err := client.CodeAt(ctx, feeAddress, feeAfter)
 	Require(t, err)
-	feeViewBefore, err := client.CallContract(ctx, ethereum.CallMsg{To: &feeAddress, Data: feeView, Gas: 1_000_000}, feeBefore)
+	feeViewBefore, err := client.CallContract(ctx, ethereum.CallMsg{To: &feeAddress, Data: feeView, Gas: 1_000_000, SkipL1Charging: true}, feeBefore)
 	Require(t, err)
 	if len(feeCodeBefore) != 0 || len(feeViewBefore) != 0 || !bytes.Equal(feeCodeAfter, []byte{byte(vm.INVALID)}) {
 		t.Fatal("fee precompile dispatch or code changed outside the new version boundary")
@@ -75,10 +75,8 @@ FEE_TESTS = r"""
 	if initialPrice.Cmp(big.NewInt(937_500_000_000_000)) != 0 {
 		t.Fatal("the authorized activation did not atomically set 0.015 GH0ST per compressed byte")
 	}
-	replacement := new(big.Int).Div(initialPrice, big.NewInt(2))
-	if replacement.Sign() == 0 {
-		replacement.SetInt64(2)
-	}
+	// Keep the signed rejection test affordable on the fixture's low execution base fee.
+	replacement := big.NewInt(8_899_157)
 	priceUpdate, err := feeABI.Pack("setPostingPrice", initialPrice, replacement)
 	Require(t, err)
 	feeParent, feeChild, feeIndex := sendDelayedCall(feeAddress, priceUpdate, types.ReceiptStatusSuccessful)
@@ -159,6 +157,12 @@ def build_fixture(base):
     source = replace_once(source, "GL3_A14_OWNERLESS_BOUNDARY_OUT", "GL3_FEE_CONTROL_BOUNDARY_OUT")
     source = replace_once(source, "GL3_A14_OWNERLESS_WASM_ROOT", "GL3_FEE_CONTROL_WASM_ROOT")
     source = replace_once(source, "context.Background(), 4*time.Minute", "context.Background(), 8*time.Minute")
+    # Simulated reads need no posting gas. The test's artificial execution
+    # base fee would otherwise push the requested read past its gas budget.
+    source = replace_once(source, 'From: from, To: &address, Data: statusCall, Gas: 1_000_000,',
+                          'From: from, To: &address, Data: statusCall, Gas: 1_000_000, SkipL1Charging: true,')
+    source = replace_once(source, 'To: &address, Data: data, Gas: 1_000_000}, height)',
+                          'To: &address, Data: data, Gas: 1_000_000, SkipL1Charging: true}, height)')
     start = source.index("\tsetInstaller := func(")
     end = source.index('\tinstaller := builder.L2Info.GetAddress("Owner")', start)
     old = source[start:end]
