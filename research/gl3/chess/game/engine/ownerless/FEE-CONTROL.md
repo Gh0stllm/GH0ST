@@ -47,6 +47,16 @@ batch poster's ETH balance.
 
 [Nitro posting price updates](https://raw.githubusercontent.com/OffchainLabs/nitro/v3.12.2/arbos/l1pricing/l1pricing.go#L438-L481)
 
+## A14 compatibility
+
+The [current activation overlay](../stage_activation.py) selects A14 at
+ArbOS 62 by exact version equality. If the fee upgrade adds a new ArbOS
+version, its runtime must explicitly carry forward the A14 precompile and
+its authorization rules. Replay at version 62 must retain its original
+activation and dispatch behavior. The isolated test must verify that the
+Stockfish module, seed cursor, and A14 methods remain accessible after the
+fee transition.
+
 ## Evidence before a live review
 
 1. Build the node and proving machine from the same pinned source. Select the
