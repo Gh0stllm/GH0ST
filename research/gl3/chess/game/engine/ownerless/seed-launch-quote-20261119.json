@@ -192,5 +192,53 @@
     "prizeGh0st": "1000000",
     "treasuryTransactionGasAdditional": true,
     "status": "awaiting-treasury-funding-and-one-signature-review"
+  },
+  "directSequencerComparison": {
+    "observedGl3Block": 20641,
+    "observedGl3BlockHash": "0x3c7d7e8a0b00f92789f2791e428af93d7a4486c97c73d5b2383d8703a8058cc7",
+    "bothPublicEndpointsAgreed": true,
+    "observedRobinhoodBlock": 117960277,
+    "liveSeedCursor": 0,
+    "assumptions": "The entire pinned seed was encoded locally into transaction-shaped envelopes with synthetic signature fields and compressed separately at Brotli level zero. The frozen-price comparison uses GL3's observed posting price and the existing execution model. It does not forecast the fee controller or reproduce whole-batch compression.",
+    "sizes": {
+      "chunks": 7113,
+      "indexSha256": "0x94312e07ee47ba2a5bfe8db9ffc0dab684fc323710b70464362bbdc453780092",
+      "totalCalldataBytes": 298312548,
+      "nonzeroCallDataBytes": 260561034,
+      "totalEnvelopeBytes": 299153355,
+      "allChunkBrotli0Bytes": 210575796,
+      "maxBrotli0Bytes": 64734,
+      "minBrotli0Bytes": 701,
+      "lastBrotli0Bytes": 8481,
+      "maxCalldata": 66116,
+      "firstFiveCompressedBytes": [
+        18731,
+        23227,
+        56546,
+        48978,
+        61237
+      ]
+    },
+    "gl3": {
+      "gasPriceWei": "10000000000000",
+      "compressedBytePriceWei": "219519310451393664",
+      "posterOnlyAtUnchangedPriceGh0st": "46225453.535673",
+      "modeledExecutionGh0st": "637000",
+      "totalImportAtUnchangedPriceGh0st": "46862453.535673",
+      "totalWithPrizeAtUnchangedPriceGh0st": "47862453.535673",
+      "priceDecreaseRequiredWithPrizePercent": "91.506",
+      "maximumAffordableAveragePostingGh0stPerByteWithPrize": "0.018645280",
+      "pricingSurplusWei": "-169343010364719084640000",
+      "maxExecutionGasPerTransaction": 32000000
+    },
+    "robinhood": {
+      "batchPosterBalanceEth": "0.004756780278312082",
+      "posterAuthorized": true,
+      "baseFeeWei": "20006000",
+      "sameBytesAsNonzeroCalldataReferenceEth": "0.067404470",
+      "note": "Actual joint batch compression, submission costs, and batch timing would need live evidence. The independent ETH budget of the batch poster remains relevant when the user pays in GH0ST."
+    },
+    "feeController": "Nitro updates poster price when spending reports are processed. The duration of the initial rate and the average rate for this workload are unmeasured.",
+    "status": "read-only comparison; no launch transactions signed or submitted"
   }
 }
