@@ -50,6 +50,8 @@ def main():
     parser.add_argument("new_output_directory", type=Path)
     parser.add_argument("--max-steps", type=int, default=8_000_000_000)
     parser.add_argument("--include-bootstrap", action="store_true")
+    parser.add_argument("--label", dest="labels", action="append",
+                        help="Replay the named input and allow repetition for other inputs.")
     args = parser.parse_args()
     if args.max_steps <= 0:
         parser.error("--max-steps must be positive")
@@ -73,7 +75,9 @@ def main():
         raise ValueError("The machine returned a different module root")
 
     args.new_output_directory.mkdir(mode=0o700)
-    labels = ("before", "after", "bootstrap") if args.include_bootstrap else ("before", "after")
+    labels = args.labels or (("before", "after", "bootstrap") if args.include_bootstrap else ("before", "after"))
+    if len(set(labels)) != len(labels) or any(not re.fullmatch(r"[a-z][a-z0-9-]*", label) for label in labels):
+        parser.error("Replay labels must be distinct lowercase file labels.")
     cases = {
         label: replay(args.prover, machine, args.recording_directory / f"input-{label}.json",
                       args.new_output_directory, label, args.max_steps)
