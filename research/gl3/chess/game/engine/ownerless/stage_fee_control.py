@@ -133,7 +133,11 @@ var PrecompiledAddressesGL3PostingFees []common.Address""",
 			if stateDB.GetCodeSize(addr) != 0 || stateDB.GetNonce(addr) != 0 {
 				return fmt.Errorf("GL3 posting fee address already contains code or a nonce: %w", ErrFatalNodeOutOfDate)
 			}
-			// The versioned marker loop installs the new precompile. A14 and pricing state are retained.""",
+			// Apply the reviewed initial reset in the same block as the parent-authorized migration.
+			if err := state.L1PricingState().SetPricePerUnit(big.NewInt(gl3PostingPriceAtActivation)); err != nil {
+				return err
+			}
+			// The versioned marker loop installs the new precompile.""",
         ),
     ),
     "arbos/internal_tx.go": (

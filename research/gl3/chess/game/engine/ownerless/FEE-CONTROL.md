@@ -34,6 +34,11 @@ execution semantics.
   Require it to match current state when applied. Emit the old and new values
   for public verification. Review the exact units and price bounds with the
   release.
+- The first activation resets the price to **0.015 GH0ST per compressed byte**
+  in the same block as the authenticated migration. The proving root binds
+  the exact reset value. This avoids signing an old-price snapshot that could
+  expire during proving-root promotion. Later price changes use the exact
+  prior-price check above.
 - Preserve the zero owner list, the bridge and withdrawal rules, the A14
   seed and coordinator state, and the execution base fee. Keep Nitro's
   existing batch-report pricing controller active.
@@ -66,14 +71,13 @@ fee transition.
    and the first fee update. Match block, state and send roots and inbox
    positions. Verify that ordinary sequenced callers, unrelated parent
    signers, and stale price requests are rejected.
-3. Rehearse an isolated handoff with a single writer, continuous production
-   of blocks, and both public RPCs serving reads. The previous A14 rollout
-   included an approved write pause. This upgrade needs separate evidence
-   for a handoff without one.
+3. Rehearse the handoff and preserve read access on both public RPCs throughout
+   the separately approved brief write pause.
 4. Freeze the proof root, activation method, and exact first price action for
    the Robinhood signing review. Check parent finality, validator adoption,
    the price on both public RPCs, and the effect of the next batch report.
 
-**Status** The same-pod candidate passed the private activation and six proof
-replays. Both production RPCs remained readable at the checks. Live handoff
-and activation are pending. [Build evidence](fee-control/build-evidence-20261119.json)
+**Status** The earlier fee-control candidate passed private activation and six
+proof replays. The atomic reset changes the proving root and requires fresh
+proof evidence. Live handoff and activation are pending.
+[Earlier build evidence](fee-control/build-evidence-20261119.json)

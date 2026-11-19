@@ -10,6 +10,9 @@ import (
 
 var gl3PostingFeesParentApprovalNamespace = []byte("GL3_POSTING_FEES_PARENT_APPROVAL_V1")
 
+// 0.015 GH0ST per compressed byte at 16 parent calldata gas units per byte.
+const gl3PostingPriceAtActivation = 937_500_000_000_000
+
 func (state *ArbosState) gl3PostingFeesParentApproved() (bool, error) {
 	approved, err := state.backingStorage.OpenSubStorage(gl3PostingFeesParentApprovalNamespace).GetUint64ByUint64(0)
 	return approved == 1, err

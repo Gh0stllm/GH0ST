@@ -72,6 +72,9 @@ FEE_TESTS = r"""
 	assertOwners(feeAfter)
 
 	initialPrice := readPrice(feeAfter)
+	if initialPrice.Cmp(big.NewInt(937_500_000_000_000)) != 0 {
+		t.Fatal("the authorized activation did not atomically set 0.015 GH0ST per compressed byte")
+	}
 	replacement := new(big.Int).Div(initialPrice, big.NewInt(2))
 	if replacement.Sign() == 0 {
 		replacement.SetInt64(2)
@@ -179,6 +182,7 @@ def build_fixture(base):
     source = replace_once(source, '\t\t"seedMigrationExecuted": false', r'''		"feePreActivation": feePreReplay, "feeActivation": feeActivationReplay, "feeUpdate": feeUpdateReplay,
 		"feeActivationParentTransaction": feeActivationReceipt.TxHash, "feeUpdateParentTransaction": feeParent.TxHash,
 		"foreignFeeActivationRejected": true, "signedFeeChangeRejected": true, "staleFeeRejected": true, "zeroFeeRejected": true,
+		"feeActivationPrice": initialPrice.String(),
 		"feeOldPrice": initialPrice.String(), "feeNewPrice": replacement.String(), "feePriceEventVerified": true,
 		"seedMigrationExecuted": false''')
     return source
