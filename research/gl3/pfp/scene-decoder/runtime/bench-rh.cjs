@@ -60,15 +60,16 @@ async function rpc(method, params = []) {
     assert(methods.has(method), 'Read-only RPC methods only');
     const requestId = ++nextId;
     const body = JSON.stringify({ jsonrpc: '2.0', id: requestId, method, params });
-    for (let attempt = 0; attempt < 3; attempt++) {
+    for (let attempt = 0; attempt < 5; attempt++) {
         const response = await fetch(rpcUrl, {
             method: 'POST', redirect: 'error', signal: AbortSignal.timeout(50_000),
             headers: { 'content-type': 'application/json' },
             body,
         });
-        if ([429, 502, 503, 504].includes(response.status) && attempt < 2) {
+        if ([429, 502, 503, 504].includes(response.status) && attempt < 4) {
+            const retryAfter = Number(response.headers.get('retry-after'));
             await response.body?.cancel();
-            await delay(400 * (attempt + 1));
+            await delay(Math.max(Math.min(retryAfter || 0, 10) * 1000, 700 * (attempt + 1)) + (requestId % 7) * 90);
             continue;
         }
         assert(response.ok, method + ' HTTP ' + response.status);
@@ -76,8 +77,8 @@ async function rpc(method, params = []) {
         assert.equal(reply.id, requestId);
         if (reply.error) {
             const message = reply.error.message || 'RPC error';
-            if (/rate limit|too many requests|temporarily unavailable/i.test(message) && attempt < 2) {
-                await delay(400 * (attempt + 1));
+            if (/rate limit|too many requests|temporarily unavailable/i.test(message) && attempt < 4) {
+                await delay(700 * (attempt + 1) + (requestId % 7) * 90);
                 continue;
             }
             throw new Error(method + ': ' + message + (reply.error.data ? ' (' + JSON.stringify(reply.error.data) + ')' : ''));
@@ -182,37 +183,59 @@ async function main() {
     assert.match(runtime, /^0x[0-9a-f]+$/i);
     const runtimeAccount = { address: target, code: runtime };
     const samples = [];
+    const testedHeads = new Map([[anchor, head.hash]]);
     const operation = 'generateAndRecord';
     assert(decoder.abi.getFunction(operation));
-    for (const vector of fixture.vectors) {
+    async function measure(vector, sampleHead) {
         // Only the selected expert and the shared data can be read by one call.
         const state = stateFor([runtimeAccount, ...kernels, shards[vector.style], shards[expertCount]]);
         const encode = decoder.abi.encodeFunctionData(operation, [vector.prompt, vector.seed]);
         const call = { to: target, gas: toQuantity(maxGas), data: encode };
         const [result, gas] = await Promise.all([
-            rpc('eth_call', [call, anchor, state]),
-            rpc('eth_estimateGas', [call, anchor, state]),
+            rpc('eth_call', [call, sampleHead.number, state]),
+            rpc('eth_estimateGas', [call, sampleHead.number, state]),
         ]);
         const [pixels, palette] = decoder.abi.decodeFunctionResult(operation, result);
         assert.equal(pixels, vector.pixelsHex.toLowerCase(), 'Pixel mismatch for ' + vector.caption);
         assert.equal(palette, vector.paletteHex.toLowerCase(), 'Palette mismatch for ' + vector.caption);
         const estimate = BigInt(gas);
         assert(0n < estimate && estimate <= maxGas, 'Complete image exceeds maximum transaction gas');
-        const sample = {
+        return {
             caption: vector.caption, split: vector.split, prompt: vector.prompt, seed: vector.seed, style: vector.style,
+            block: Number(BigInt(sampleHead.number)), blockHash: sampleHead.hash,
             matchesReference: true, imageHash: keccak256(concat([pixels, palette])),
             pixelsSHA256: sha(Buffer.from(pixels.slice(2), 'hex')),
             paletteSHA256: sha(Buffer.from(palette.slice(2), 'hex')),
             estimatedGas: Number(estimate), estimatedETHAtSampledPrice: formatEther(estimate * gasPriceWei),
             gasBelowTransactionCap: Number(maxGas - estimate),
         };
-        samples.push(sample);
-        console.log(JSON.stringify(sample));
     }
-    assert.equal((await rpc('eth_getBlockByNumber', [anchor, false])).hash, head.hash, 'Pinned Robinhood block changed');
+    let sampleHead = head;
+    for (let start = 0; start < fixture.vectors.length; start += 2) {
+        const batch = fixture.vectors.slice(start, start + 2);
+        for (let attempt = 0; ; attempt++) {
+            const rows = await Promise.allSettled(batch.map(vector => measure(vector, sampleHead)));
+            const failures = rows.filter(row => row.status === 'rejected');
+            if (!failures.length) {
+                testedHeads.set(sampleHead.number, sampleHead.hash);
+                for (const { value } of rows) {
+                    samples.push(value);
+                    console.log(JSON.stringify(value));
+                }
+                break;
+            }
+            // The public endpoint can prune recent state while a batch is being tested.
+            const permanent = failures.find(row => !/layer stale|missing trie node/i.test(row.reason.message));
+            if (permanent || attempt >= 2) throw (permanent ?? failures[0]).reason;
+            sampleHead = await rpc('eth_getBlockByNumber', ['latest', false]);
+        }
+    }
+    for (const [number, hash] of testedHeads) {
+        assert.equal((await rpc('eth_getBlockByNumber', [number, false])).hash, hash, 'Pinned Robinhood block changed');
+    }
     const evidence = {
         kind: 'read-only-robinhood-complete-inference',
-        scope: 'Each estimate covers a single complete generateAndRecord call, including its image-hash event. State overrides supply undeployed model shards and runtime. No transaction was broadcast. Deployment, future gas-price changes and any frontend fee policy are excluded.',
+        scope: 'Each estimate covers a single complete generateAndRecord call, including its image-hash event. State overrides supply undeployed model shards and runtime. No transaction was broadcast. ETH equivalents use the initial sampled gas price. Deployment and any frontend fee policy are excluded.',
         chainId: Number(BigInt(network)), block: Number(BigInt(anchor)), blockHash: head.hash,
         blockTimestamp: new Date(Number(BigInt(head.timestamp)) * 1000).toISOString(),
         gasPriceWei: gasPriceWei.toString(), blockBaseFeeWei: BigInt(head.baseFeePerGas).toString(),
