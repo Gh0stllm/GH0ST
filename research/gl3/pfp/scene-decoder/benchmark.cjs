@@ -160,7 +160,11 @@ async function main() {
     console.log(JSON.stringify(evidence));
 }
 
-main().catch(error => {
-    console.error(error.message);
-    process.exitCode = 1;
-});
+module.exports = { compileKernel: compile };
+
+if (require.main === module) {
+    main().catch(error => {
+        console.error(error.message);
+        process.exitCode = 1;
+    });
+}

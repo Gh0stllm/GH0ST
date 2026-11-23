@@ -57,6 +57,16 @@ def noise_features(fields, seed):
     return np.frombuffer(digest[:16], dtype=np.uint8).astype(np.int16) - 128
 
 
+def apply_tints(pixels, fields):
+    """Map a subject's three learned shade roles to the requested color."""
+    indices = np.arange(32, dtype=np.uint8)
+    for role, tint in enumerate(fields[2:4]):
+        start = 8 + 3 * role
+        offset = 8 + 3 * tint
+        indices[start:start + 3] = np.arange(offset, offset + 3)
+    return indices[pixels]
+
+
 def layer(inputs, encoded):
     weight, scale, bias = encoded
     return ((inputs @ weight.T) * scale >> 16) + bias
@@ -81,7 +91,7 @@ class FrozenDecoder:
             size = rows * width
             self.embeddings[name] = np.frombuffer(shared[offset:offset + size], dtype=np.int8).reshape(rows, width)
             offset += size
-        assert offset == adapters and shared[header:header + 9] == b"GH0STSD1\x00"
+        assert offset == adapters and shared[header:header + 9] == b"GH0STSD2\x00"
         self.adapter_bytes = shared[adapters:header]
 
     def features(self, fields, seed):
@@ -116,4 +126,4 @@ class FrozenDecoder:
             x = np.clip((x * gain >> 8) + bias, 0, 8192)
         ids = layer(x, self.head).argmax(axis=-1)
         pixels = self.codebook[style, ids].transpose(0, 2, 1, 3).reshape(32, 32)
-        return pixels, self.palettes[palette], ids
+        return apply_tints(pixels, fields), self.palettes[palette], ids

@@ -15,7 +15,7 @@ from torch.nn import functional as F
 import art
 from quant import (
     EMBEDDINGS, EXPERT_BYTES, EXPERTS, PACK_BYTES, SHARED_BYTES, FrozenDecoder,
-    encode_layer, noise_features, pack_u5, prompt_number,
+    apply_tints, encode_layer, noise_features, pack_u5, prompt_number,
 )
 
 
@@ -100,7 +100,7 @@ class SceneDecoder(nn.Module):
                 offset = np.clip(np.rint(array(self.offsets[style, index]) * 1024), -32768, 32767).astype("<i2")
                 shared += gain.tobytes() + offset.tobytes()
         assert len(shared) == SHARED_BYTES - 640
-        header = b"GH0STSD1\x00" + sha256(json.dumps(vocab, sort_keys=True).encode()).digest()
+        header = b"GH0STSD2\x00" + sha256(json.dumps(vocab, sort_keys=True).encode()).digest()
         shared += header.ljust(640, b"\0")
         pack = b"".join(experts) + shared
         assert len(pack) == PACK_BYTES
@@ -138,13 +138,17 @@ def extract_patches(pixels):
 
 
 def dictionary(train_patches):
-    # Learn a discrete vocabulary from original patch frequencies. Downweight
-    # uniform backdrop tiles, preserving enough entries for foreground shapes.
+    # Keep the common flat regions and learn the remaining entries from
+    # template frequencies, prioritizing patches with visible subjects.
     choices, counts = np.unique(train_patches.reshape(-1, 16), axis=0, return_counts=True)
     uniform = np.all(choices == choices[:, :1], axis=1)
-    priority = counts * np.where(uniform, 0.10, 1.0)
+    foreground = (choices >= 8).sum(1)
+    priority = counts * (1 + 0.25 * foreground)
     assert len(choices) >= 128
-    return choices[np.argsort(-priority, kind="stable")[:128]]
+    ranked = np.flatnonzero(~uniform)
+    ranked = ranked[np.argsort(-priority[ranked], kind="stable")]
+    flat = np.flatnonzero(uniform)
+    return choices[np.concatenate((flat, ranked[:128 - len(flat)]))]
 
 
 def labels(patches, codebook):
@@ -153,7 +157,9 @@ def labels(patches, codebook):
     chosen = np.empty(len(unique), dtype=np.uint8)
     for start in range(0, len(unique), 1024):
         tiles = unique[start:start + 1024]
-        distance = (tiles[:, None, :] != codebook[None, :, :]).sum(2)
+        difference = tiles[:, None, :] != codebook[None, :, :]
+        importance = np.where((tiles[:, None, :] >= 8) | (codebook[None, :, :] >= 8), 3, 1)
+        distance = (difference * importance).sum(2)
         chosen[start:start + len(tiles)] = distance.argmin(1)
     return chosen[inverse].reshape(-1, 8, 8)
 
@@ -167,8 +173,12 @@ def build_data(count, heldout, seed, cache_path):
     for style in range(EXPERTS):
         start = monotonic()
         rows = generate_prompts(rng, style, count, "train") + generate_prompts(rng, style, heldout, "held-out")
-        images = np.stack([art.render(*prompt, item_seed) for prompt, item_seed in rows])
-        assert images.dtype == np.uint8 and images.shape == (count + heldout, 32, 32) and images.max() < 32
+        # In the learned dictionary the two slots have stable shade roles.
+        # The same patch can be rendered in many tints by the contract.
+        images = np.stack([
+            art.render(*prompt[:2], 0, 1, *prompt[4:], item_seed) for prompt, item_seed in rows
+        ])
+        assert images.dtype == np.uint8 and images.shape == (count + heldout, 32, 32) and images.max() < 14
         patches = extract_patches(images)
         codebook = dictionary(patches[:count])
         records = {
@@ -205,6 +215,8 @@ def assess(pack, data, count):
             pixels, palette, ids = decoder.generate(fields, seed)
             target = data["labels"][style, i]
             ideal = decoder.codebook[style, target].transpose(0, 2, 1, 3).reshape(32, 32)
+            original = apply_tints(original, fields)
+            ideal = apply_tints(ideal, fields)
             exact = int(np.count_nonzero(pixels == original))
             foreground = original >= 8
             matched_foreground = int(np.count_nonzero((pixels == original) & foreground))
@@ -244,9 +256,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--dataset", type=Path, required=True)
-    parser.add_argument("--examples-per-style", type=int, default=3072)
+    parser.add_argument("--examples-per-style", type=int, default=4096)
     parser.add_argument("--held-out-per-style", type=int, default=128)
-    parser.add_argument("--steps-per-style", type=int, default=480)
+    parser.add_argument("--steps-per-style", type=int, default=1080)
     parser.add_argument("--batch", type=int, default=48)
     parser.add_argument("--seed", type=int, default=500031)
     parser.add_argument("--device", choices=("mps", "cpu"), default="mps")
@@ -263,8 +275,13 @@ def main():
     prompts = torch.as_tensor(data["prompts"][:, :count], dtype=torch.long, device=device)
     noise = torch.as_tensor(data["noise"][:, :count], dtype=torch.float32, device=device) / 128
     target = torch.as_tensor(data["labels"][:, :count], dtype=torch.long, device=device)
+    foreground = np.stack([
+        (extract_patches(images[:count]) >= 8).mean(-1).reshape(count, 8, 8)
+        for images in data["images"]
+    ])
+    patch_weights = torch.as_tensor(1 + 4 * np.sqrt(foreground), dtype=torch.float32, device=device)
     frequencies = np.stack([np.bincount(t.reshape(-1), minlength=128) for t in data["labels"][:, :count]])
-    weights = np.power(np.maximum(frequencies, 64), -0.26)
+    weights = np.power(np.maximum(frequencies, 64), -0.21)
     class_weights = torch.as_tensor(weights / weights.mean(1, keepdims=True), dtype=torch.float32, device=device)
     model = SceneDecoder().to(device)
     optimizer = torch.optim.AdamW(model.parameters(), lr=0.003, weight_decay=0.0005)
@@ -277,7 +294,9 @@ def main():
             indices = torch.as_tensor(rng.integers(count, size=args.batch), device=device)
             optimizer.zero_grad(set_to_none=True)
             logits = model(prompts[style, indices], noise[style, indices], style, step >= steps * 0.72)
-            loss = F.cross_entropy(logits, target[style, indices], weight=class_weights[style])
+            weights = patch_weights[style, indices]
+            losses_by_patch = F.cross_entropy(logits, target[style, indices], weight=class_weights[style], reduction="none")
+            loss = (losses_by_patch * weights).sum() / weights.sum()
             loss.backward()
             optimizer.step()
             scheduler.step()
