@@ -1,6 +1,6 @@
 # GH0ST Scene Decoder
 
-The [trained 500 KB model and sample gallery](evidence/) are available alongside the [500 KB design](500kb.md). The original compact design and measurements are recorded below as a baseline.
+The [native 64 × 64 layered model](v3/) is the current 500 KB design. Its predecessor and the original compact design are retained as [32 × 32 research baselines](evidence/).
 
 A proposed single-pass model for prompt-directed 32 × 32 pixel art on Robinhood Chain. It sits between the 19.7 KB decoder and the 2.98 MB M-P1 Q5 diffusion model. This design targets **roughly 80 KB** for the model package and **397,312 multiply-accumulates** per image.
 

@@ -1,6 +1,6 @@
 # GH0ST Scene Decoder · 32 × 32 research baseline
 
-The user rejected this candidate's visual quality. It remains in the research branch for comparison, with deployment on hold while the 64 × 64 layered model is developed.
+Visual review found coarse or incomplete subject shapes in this candidate. It remains in the research branch for comparison alongside the [native 64 × 64 layered model](../v3/).
 
 - [Quantized model pack](pack500.bin) · 500,000 bytes · SHA-256 `46d823ec0ad9585c4496ff75e22606a78041f724dd218d209083ad28de9658cd`
 - [Sample gallery](model-samples.png) · 14 selected held-out model outputs at 32 × 32, enlarged for viewing
