@@ -1,26 +1,32 @@
-# GH0ST PFP generator
+# GH0ST Image Studio
 
-The generator accepts a 16-byte seed and eight user-controlled traits. It runs a small quantized neural decoder in a GL3 contract and returns 1,024 pixels using a black, amber, and ivory palette. A web client can hash a phrase to a seed, call the contract, and draw the returned bitmap at any display size. A seed and trait byte reproduce the same PFP under the same immutable model.
+The generator runs a quantized 32×32 pixel-art decoder in a GL3 contract. The model covers twelve subjects, eight independently switchable modifiers, and seed-driven variation. Each subject can be an avatar or a standalone image.
 
-## Input controls
+## Prompt and inputs
 
-| Bit | Trait | 0 | 1 |
-| --- | --- | --- | --- |
-| 0 | Eyes | Calm | Glowing |
-| 1 | Mouth | Still | Grin |
-| 2 | Headpiece | Halo | Horns |
-| 3 | Frame | Brackets | Visor |
-| 4 | Signal | Quiet | Glitch |
-| 5 | Emblem | Dot | Diamond |
-| 6 | Background | Clean | Stars |
-| 7 | Accent | Amber | Ivory |
+The client takes the first supported subject in a phrase, applies explicit modifier words, and hashes the complete phrase into a 16-byte seed. Subjects and modifiers can also be picked directly. The contract receives the subject, modifier byte and seed. Together with the immutable model, those three values reproduce the image.
 
-The phrase is a reproducible seed. The trait controls supply the semantic inputs. The API accepts a raw seed with leading zeroes preserved. The seed and trait byte define 2^136 possible input pairs. Output diversity is measured from samples because multiple inputs can yield the same pixels.
+| ID | Subject |
+| --- | --- |
+| 0 | Ghost |
+| 1 | Cat |
+| 2 | Robot |
+| 3 | Alien |
+| 4 | Skull |
+| 5 | Owl |
+| 6 | Fox |
+| 7 | Rocket |
+| 8 | Planet |
+| 9 | Mountain |
+| 10 | Castle |
+| 11 | Flower |
+
+Modifier bits 0 through 7 are Glow, Stars, Sparks, Frame, Halo, Emblem, Scanlines and Ivory accents. The subject vocabulary defines what the model can draw. Additional words influence the seed.
 
 ## Contract format
 
-`generate(bytes16 seed, uint8 style) returns (bytes)` returns 256 bytes. Pixel index `32 * y + x` is encoded as two bits, beginning with the least significant pair in each byte. Palette indices are `0` for black, `1` for amber, and `2` for ivory.
+`generate(bytes16 seed, uint8 subject, uint8 style) returns (bytes)` returns 256 bytes. Pixel index `32 * y + x` is encoded as two bits, beginning with the least significant pair in each byte. Palette indices 0, 1 and 2 represent black, amber and ivory.
 
-The decoder consumes seed byte values minus 128, followed by eight style bits encoded as −127 or +127, with the lowest bit first. It computes a 24 → 16 → 2,048 dense network. The model blob contains 384 signed int8 input weights, 16 little-endian signed int32 hidden biases, 32,768 signed int8 output weights, and 2,048 little-endian signed int32 output biases. Matrices are stored by output row. The hidden layer shifts right by seven and clamps to [0, 127]. Two output logits per pixel control foreground and ivory, with zero treated as the lower class.
+The decoder takes seed byte values minus 128, followed by eight style bits encoded as −127 or +127. A shared 24 → 16 integer projection shifts each positive activation by seven bits and clamps to 127. Each subject has a supervised decoder head with two logits per pixel, one for foreground and one for ivory. The ROM stores each trained head's constant pixels and its exact sparse output thresholds as immutable contract data.
 
-Read-only previews execute the contract through GL3 RPC. A transaction can execute the same inference and emit the output hash. The immutable weights and fixed-point decoder make both paths reproducible from the same inputs.
+Read-only previews execute the contract through GL3 RPC. A transaction can execute the same inference and emit the output hash.
