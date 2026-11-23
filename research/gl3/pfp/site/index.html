@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#100e0d">
+  <meta name="description" content="Generate 32×32 pixel art from a prompt and a neural model on GL3.">
+  <title>GH0ST Image Studio</title>
+  <link rel="stylesheet" href="./style.css">
+  <script type="module" src="./studio.mjs"></script>
+</head>
+<body>
+  <header class="masthead">
+    <a class="brand" href="https://l3.gh0st.fyi/" aria-label="GH0ST L3">
+      <span class="brand-icon" aria-hidden="true">[··]</span> GH0ST
+    </a>
+    <nav aria-label="Network">
+      <a href="https://scan.gh0st.fyi/">Explorer</a>
+      <a href="https://github.com/Gh0stllm/GH0ST/tree/research/GH0ST-L3-GL3/research/gl3/pfp">Source</a>
+    </nav>
+  </header>
+  <main>
+    <h1>Image Studio<span>.</span></h1>
+    <p class="intro">Describe a pixel image. The GL3 contract generates it from your subject, style, and seed.</p>
+    <div class="studio">
+      <section class="viewer" aria-label="Image preview">
+        <div class="display">
+          <div class="rail"><span id="image-subject">IMAGE</span><span>32 × 32</span></div>
+          <div class="artboard">
+            <canvas id="avatar" width="512" height="512" role="img" aria-label="32 by 32 generated pixel image"></canvas>
+          </div>
+          <div class="rail"><span id="image-source">PREVIEW</span><span id="style-code">STYLE 00</span></div>
+        </div>
+        <div class="exports">
+          <button type="button" id="download" disabled>Download PNG</button>
+          <button type="button" id="share" disabled>Copy parameters</button>
+        </div>
+      </section>
+      <form class="controls" id="generator">
+        <label class="field" for="phrase">Image prompt or 16-byte hex seed</label>
+        <div class="seed-row">
+          <input id="phrase" name="phrase" type="text" maxlength="128" value="rocket with stars and glow" aria-describedby="input-hint" spellcheck="false" required>
+          <button id="random" type="button">Random seed</button>
+        </div>
+        <p class="hint" id="input-hint">Try “rocket with stars”, “glowing cat”, or “mountain with a halo”. The whole phrase changes the seed.</p>
+        <label class="field subject-field" for="subject">Subject
+          <select id="subject" name="subject"></select>
+        </label>
+        <fieldset>
+          <legend>Modifiers</legend>
+          <div class="traits" id="traits"></div>
+        </fieldset>
+        <button id="generate" class="primary" type="submit" disabled>Generate on GL3</button>
+        <p id="status" role="status" aria-live="polite">Checking generator…</p>
+      </form>
+    </div>
+  </main>
+</body>
+</html>
