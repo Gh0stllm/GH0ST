@@ -38,3 +38,5 @@ node bench-rh.cjs evidence/pack500.bin evidence/vectors.json evidence/robinhood.
 ```
 
 The benchmark uses Robinhood's read-only RPC and compares every pixel and palette byte against the frozen model reference. It tests the transaction entry point with the image-hash event. Simulation accounts are temporary. Mainnet deployment remains pending.
+
+The [Image Studio source](../../site/) renders the packed pixels and verifies the event commitment for a recorded image. The preview configuration requires a verified deployed address and runtime code hash before enabling mainnet generation. The [release verifier](release/verify.cjs) checks all nine canonical deployment receipts, exact code, model ID, and the eight reference images before the production Studio is connected.
