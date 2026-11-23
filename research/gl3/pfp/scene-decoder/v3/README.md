@@ -37,6 +37,10 @@ python train.py --output evidence
 node bench-rh.cjs evidence/pack500.bin evidence/vectors.json evidence/robinhood.json
 ```
 
-The benchmark uses Robinhood's read-only RPC and compares every pixel and palette byte against the frozen model reference. It tests the transaction entry point with the image-hash event. Simulation accounts are temporary. Mainnet deployment remains pending.
+The benchmark uses Robinhood's read-only RPC and compares every pixel and palette byte against the frozen model reference. It tests the transaction entry point with the image-hash event. The benchmark uses temporary accounts for simulation.
 
-The [Image Studio source](../../site/) renders the packed pixels and verifies the event commitment for a recorded image. The preview configuration requires a verified deployed address and runtime code hash before enabling mainnet generation. The [release verifier](release/verify.cjs) checks all nine canonical deployment receipts, exact code, model ID, and the eight reference images before the production Studio is connected.
+## Robinhood mainnet release
+
+The inference contract is `0x6a075d8FA663CeEC054C21E322F8A653E00167d7` on chain 4663. Its eight weights contracts and inference contract used **108,670,880 gas** across nine confirmed creation transactions. The total fee paid was **0.002352387731564 ETH**. The deployed model reproduced the exact pixels and palettes for all eight reference images at block 121630860. [Deployment receipts and live read-back](evidence/deployment.json).
+
+The [Image Studio source](../../site/) binds the deployed address and runtime code hash. It renders packed pixels from the contract and verifies the event commitment when a user records an image. The [release verifier](release/verify.cjs) checks the creation receipts, bytecode, model ID and image outputs.
