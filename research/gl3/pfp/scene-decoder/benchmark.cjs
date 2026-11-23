@@ -98,7 +98,12 @@ function fixture(width, outputs, tokens) {
 }
 
 async function main() {
-    const evidencePath = process.argv[2] ?? join(__dirname, 'robinhood-dense.json');
+    const args = process.argv.slice(2);
+    const compact500 = args[0] === '--500kb';
+    if (compact500) args.shift();
+    assert(args.length <= 1, 'Usage: node benchmark.cjs [--500kb] [evidence.json]');
+    const evidenceName = compact500 ? 'robinhood-dense-500kb.json' : 'robinhood-dense.json';
+    const evidencePath = args[0] ?? join(__dirname, evidenceName);
     const [network, genesis, head, gasPrice, gasLimit] = await Promise.all([
         rpc('eth_chainId'), rpc('eth_getBlockByNumber', ['0x0', false]),
         rpc('eth_getBlockByNumber', ['latest', false]), rpc('eth_gasPrice'),
@@ -112,7 +117,7 @@ async function main() {
     const shapes = [
         { layer: 'scene conditioning', width: 96, outputs: 512, tokens: 1, repetitions: 2 },
         { layer: 'pointwise mixing', width: 32, outputs: 32, tokens: 64, repetitions: 2 },
-        { layer: 'patch logits', width: 32, outputs: 64, tokens: 64, repetitions: 1 },
+        { layer: 'patch logits', width: 32, outputs: compact500 ? 128 : 64, tokens: 64, repetitions: 1 },
     ];
     const samples = await Promise.all(shapes.map(async shape => {
         const { width, outputs, tokens, repetitions } = shape;
@@ -145,6 +150,7 @@ async function main() {
     const denseGas = samples.reduce((sum, sample) => sum + sample.estimatedGasPerCall * sample.repetitions, 0);
     const evidence = {
         kind: 'read-only Robinhood state-override estimates for standalone dense layers using synthetic weights',
+        modelPreset: compact500 ? 'one of seven scene experts and a 128-patch head' : 'one scene decoder and a 64-patch head',
         scope: 'The subtotal includes the separate call overhead and excludes spatial mixing, rescaling, biases, prompt processing, patch selection, pixel output and any writes.',
         chainId: Number(BigInt(network)), block: Number(BigInt(anchor)), blockHash: head.hash,
         compiler: solc.version(), gasPriceWei: BigInt(gasPrice).toString(), maxTransactionGas: Number(maxGas),

@@ -1,5 +1,7 @@
 # GH0ST Scene Decoder
 
+The [500 KB model design](500kb.md) is the current target. The original compact design and measurements are recorded below as a baseline.
+
 A proposed single-pass model for prompt-directed 32 × 32 pixel art on Robinhood Chain. It sits between the 19.7 KB decoder and the 2.98 MB M-P1 Q5 diffusion model. This design targets **roughly 80 KB** for the model package and **397,312 multiply-accumulates** per image.
 
 An example supported prompt is “A red fox to the left of a blue crystal under a night sky.” The initial vocabulary covers two subjects, a spatial relation, a background, a style and a palette. Prompt entry can show the recognized fields before the user submits them on-chain.
