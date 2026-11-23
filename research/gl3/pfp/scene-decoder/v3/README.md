@@ -16,6 +16,18 @@ The pack is **500,000 bytes**, partitioned into seven 69,632-byte style shards a
 
 Training fits the subject and background encodings independently on the source layers. The frozen export matched 99.39% of pixels across 252 source subject layers and 100% across 56 source background layers. The sample scenes are fresh compositions of those trained layers. The measured percentages describe reconstruction of the source artwork.
 
+## Robinhood estimates
+
+All eight images, covering seven styles and all three layouts, matched the reference pixel and palette bytes exactly. Each was a complete `generateAndRecord` simulation in a single transaction. The model pack and contract code were supplied through state overrides at Robinhood block **121624746**. The sampled gas price was **21,692,000 wei per gas**.
+
+| Operation | Estimated gas | Estimated ETH |
+| --- | ---: | ---: |
+| One-subject image | 9,970,672–10,076,646 | 0.00021628–0.00021858 |
+| Two-subject image | 11,827,156–11,976,482 | 0.00025655–0.00025979 |
+| Deploy all eight weight shards and the inference contract | 109,543,852 | 0.00237623 |
+
+Deployment is nine transactions. The largest creation estimate is 15,155,575 gas, within Robinhood's 32-million-gas transaction limit. The inference contract creation alone is 776,658 gas. The [full benchmark](evidence/robinhood.json) includes each image and creation estimate with bytecode hashes and the block anchor. Fees depend on the gas price at execution.
+
 ## Reproduce
 
 Run with Python, PyTorch, NumPy, and Pillow. The model uses an Apple GPU by default. The same command accepts `--device cpu`.
