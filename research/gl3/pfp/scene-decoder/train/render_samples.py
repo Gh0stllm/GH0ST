@@ -56,24 +56,21 @@ def lines(draw, text, face, width):
 
 def read_gallery(evidence):
     fixtures = json.loads((evidence / "vectors.json").read_text())["vectors"]
-    frames = np.load(evidence / "sample-frames.npy", allow_pickle=False)
-    if not fixtures or frames.shape != (len(fixtures), 2, 32, 32, 4) or frames.dtype != np.uint8:
-        raise ValueError("Unexpected sample frame shape or dtype")
+    if not fixtures:
+        raise ValueError("No packed model samples")
 
     styles = defaultdict(list)
-    for fixture, frame in zip(fixtures, frames[:, 0]):
+    for fixture in fixtures:
         pixels = bytes.fromhex(fixture["pixelsHex"].removeprefix("0x"))
         palette = bytes.fromhex(fixture["paletteHex"].removeprefix("0x"))
         if len(pixels) != 640 or len(palette) != 128 or sha256(pixels).hexdigest() != fixture["pixelSha256"]:
             raise ValueError(f"Invalid packed output for {fixture['caption']}")
         rgba = np.frombuffer(palette, dtype=np.uint8).reshape(32, 4)[unpack_u5(pixels)].reshape(32, 32, 4)
-        if not np.array_equal(frame, rgba):
-            raise ValueError(f"Sample frame differs from the quantized output for {fixture['caption']}")
         style = int(fixture["style"])
         if not 0 <= style < len(STYLES):
             raise ValueError(f"Unknown style ID {style}")
         caption, background, _ = fixture["caption"].split(" · ", 2)
-        styles[style].append((caption, background, frame, bool(fixture["twoSubjects"])))
+        styles[style].append((caption, background, rgba, bool(fixture["twoSubjects"])))
 
     for group in styles.values():
         if len(group) > 2:
