@@ -1,0 +1,183 @@
+{
+  "upstream_revision": "b0ba29f8994082ab1af89351bcce9f2d86919269",
+  "browser_source_sha256": "1ededf81877ac8a623ef35057fa0fba94dd9e0189e1443e28861cb882bd06c77",
+  "pack_sha256": "14b714ef8c016b1a321becfa5397d18d9011878e03d46a00eda1cdf68e6491a1",
+  "pack_bytes": 2976901,
+  "config": {
+    "width": 192,
+    "depth": 8,
+    "heads": 4,
+    "patch": 1,
+    "mlp_ratio": 4,
+    "text_dim": 64,
+    "text_len": 12,
+    "n_vocab": 10947
+  },
+  "inference": {
+    "dimensions": [
+      16,
+      16,
+      4
+    ],
+    "sequence_tokens": 269,
+    "caption_tokens": 12,
+    "patch_tokens": 256,
+    "denoising_steps": 16,
+    "forward_branches": 2,
+    "forward_passes": 32,
+    "time_grid_numerators": [
+      300,
+      281,
+      262,
+      243,
+      224,
+      205,
+      186,
+      167,
+      148,
+      129,
+      110,
+      91,
+      72,
+      53,
+      34,
+      15,
+      0
+    ],
+    "time_grid_denominator": 300,
+    "guidance_numerator": 3,
+    "guidance_denominator": 2
+  },
+  "projections": {
+    "caption": {
+      "dimensions_mkn": [
+        12,
+        64,
+        192
+      ],
+      "invocations": 2,
+      "macs": 294912,
+      "output_values": 4608,
+      "scale_group_partials": 4608
+    },
+    "time": {
+      "dimensions_mkn": [
+        1,
+        192,
+        192
+      ],
+      "invocations": 32,
+      "macs": 1179648,
+      "output_values": 6144,
+      "scale_group_partials": 6144
+    },
+    "pixel_input": {
+      "dimensions_mkn": [
+        256,
+        4,
+        192
+      ],
+      "invocations": 32,
+      "macs": 6291456,
+      "output_values": 1572864,
+      "scale_group_partials": 1572864
+    },
+    "block_qkv": {
+      "dimensions_mkn": [
+        269,
+        192,
+        576
+      ],
+      "invocations": 256,
+      "macs": 7615807488,
+      "output_values": 39665664,
+      "scale_group_partials": 39665664
+    },
+    "block_proj": {
+      "dimensions_mkn": [
+        269,
+        192,
+        192
+      ],
+      "invocations": 256,
+      "macs": 2538602496,
+      "output_values": 13221888,
+      "scale_group_partials": 13221888
+    },
+    "block_fc1": {
+      "dimensions_mkn": [
+        269,
+        192,
+        768
+      ],
+      "invocations": 256,
+      "macs": 10154409984,
+      "output_values": 52887552,
+      "scale_group_partials": 52887552
+    },
+    "block_fc2": {
+      "dimensions_mkn": [
+        269,
+        768,
+        192
+      ],
+      "invocations": 256,
+      "macs": 10154409984,
+      "output_values": 13221888,
+      "scale_group_partials": 52887552
+    },
+    "pixel_output": {
+      "dimensions_mkn": [
+        256,
+        192,
+        4
+      ],
+      "invocations": 32,
+      "macs": 6291456,
+      "output_values": 32768,
+      "scale_group_partials": 32768
+    }
+  },
+  "dot_product_totals": {
+    "linear_macs": 30477287424,
+    "attention_qk_macs": 3556687872,
+    "attention_av_macs": 3556687872,
+    "all_macs": 37590663168
+  },
+  "selected_non_matrix_counts": {
+    "softmax_rows": 275456,
+    "softmax_logits": 74097664,
+    "softmax_exp_evaluations": 74097664,
+    "softmax_weight_divisions": 74097664,
+    "layer_norm_rows": 145920,
+    "layer_norm_values": 28016640,
+    "layer_norm_square_roots": 145920,
+    "mlp_relu_values": 52887552,
+    "time_encoding_angles": 1536,
+    "time_silu_values": 3072,
+    "guidance_rgba_values": 16384,
+    "euler_rgba_values": 16384,
+    "box_muller_normal_pairs": 512,
+    "box_muller_prng_draws": 1024,
+    "palette_distance_comparisons_if_all_pixels_opaque": 1048576
+  },
+  "observation": "Counts describe the browser algorithm. Optimizations such as caching the unconditional caption projection or sharing each step's pixel projection between the two branches must be accounted separately.",
+  "assumptions": {
+    "gas_price_wei": 22264000,
+    "transaction_gas_limit": 32000000
+  },
+  "illustrative_only": {
+    "scalar_mul_add": {
+      "scope": "One EVM MUL plus one ADD per logical dot-product term. This charges arithmetic alone for a specific scalar implementation. Packing can change that opcode count. It is neither a measured estimate nor a lower bound on optimized inference.",
+      "illustrative_arithmetic_gas": 300725305344,
+      "illustrative_ETH_at_sampled_price": "6.695348198178816",
+      "32M_equivalent_transactions": 9398
+    },
+    "effective_one_gas_per_mac": {
+      "scope": "Example sensitivity at an effective one gas per logical MAC. This rate is an assumption, not a kernel measurement. It excludes storage, fixed-point nonlinearities, and transaction overhead.",
+      "assumed_arithmetic_gas": 37590663168,
+      "illustrative_ETH_at_sampled_price": "0.836918524772352",
+      "32M_equivalent_transactions": 1175
+    }
+  }
+}

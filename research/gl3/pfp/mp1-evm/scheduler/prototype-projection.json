@@ -1,0 +1,129 @@
+{
+  "kind": "standalone-prototype-call-extrapolation",
+  "scope": "Assumes each modeled stage runs in an independent invocation with the same gas as the matched-shape read-only fixture. The model's real activation values, calldata density, cache reuse, and storage access could change gas. This is not an observed or optimized image quote and is not a lower bound for a redesigned executor.",
+  "unmodeled": [
+    "quantized scale/bias completion and residual operations",
+    "caption lookup and input, time, and output projections",
+    "position/time embeddings, noise creation, and palette matching",
+    "shard-boundary splits and job/checkpoint storage"
+  ],
+  "pricing_gas_price_wei": 22012000,
+  "pricing_block": 121598791,
+  "modeled_prototype_calls": 263968,
+  "logical_mac_coverage": {
+    "modeled": 37576605696,
+    "total": 37590663168
+  },
+  "stages": [
+    {
+      "stage": "raw_block_linear_32x128x192",
+      "fixture_block": 121599652,
+      "fixture": "authentic-weight-and-synthetic-activations",
+      "calls_in_prototype_schedule": 30720,
+      "logical_macs_in_modeled_work": 24159191040,
+      "gas_per_fixture_call": 26682547,
+      "projected_gas": 819687843840,
+      "projected_ETH": "18.04296881860608"
+    },
+    {
+      "stage": "raw_block_linear_32x64x192",
+      "fixture_block": 121599652,
+      "fixture": "authentic-weight-and-synthetic-activations",
+      "calls_in_prototype_schedule": 12288,
+      "logical_macs_in_modeled_work": 4831838208,
+      "gas_per_fixture_call": 13727275,
+      "projected_gas": 168680755200,
+      "projected_ETH": "3.7130007834624"
+    },
+    {
+      "stage": "raw_block_linear_13x128x192",
+      "fixture_block": 121599652,
+      "fixture": "authentic-weight-and-synthetic-activations",
+      "calls_in_prototype_schedule": 3840,
+      "logical_macs_in_modeled_work": 1226833920,
+      "gas_per_fixture_call": 11871603,
+      "projected_gas": 45586955520,
+      "projected_ETH": "1.00346006490624"
+    },
+    {
+      "stage": "raw_block_linear_13x64x192",
+      "fixture_block": 121599652,
+      "fixture": "authentic-weight-and-synthetic-activations",
+      "calls_in_prototype_schedule": 1536,
+      "logical_macs_in_modeled_work": 245366784,
+      "gas_per_fixture_call": 6101111,
+      "projected_gas": 9371306496,
+      "projected_ETH": "0.206281198589952"
+    },
+    {
+      "stage": "attention_4_queries",
+      "fixture_block": 121598791,
+      "fixture": "repeated-authentic-blue-crystal-query",
+      "calls_in_prototype_schedule": 68608,
+      "logical_macs_in_modeled_work": 7086931968,
+      "gas_per_fixture_call": 22580668,
+      "projected_gas": 1549214470144,
+      "projected_ETH": "34.101308916809728"
+    },
+    {
+      "stage": "attention_1_query",
+      "fixture_block": 121598791,
+      "fixture": "authentic-blue-crystal",
+      "calls_in_prototype_schedule": 1024,
+      "logical_macs_in_modeled_work": 26443776,
+      "gas_per_fixture_call": 6695867,
+      "projected_gas": 6856567808,
+      "projected_ETH": "0.150926770589696"
+    },
+    {
+      "stage": "normalize",
+      "fixture_block": 121598791,
+      "fixture": "authentic-blue-crystal",
+      "calls_in_prototype_schedule": 145920,
+      "logical_macs_in_modeled_work": 0,
+      "gas_per_fixture_call": 396667,
+      "projected_gas": 57881648640,
+      "projected_ETH": "1.27409084986368"
+    },
+    {
+      "stage": "silu",
+      "fixture_block": 121598791,
+      "fixture": "synthetic",
+      "calls_in_prototype_schedule": 16,
+      "logical_macs_in_modeled_work": 0,
+      "gas_per_fixture_call": 279790,
+      "projected_gas": 4476640,
+      "projected_ETH": "0.00009853979968"
+    },
+    {
+      "stage": "euler",
+      "fixture_block": 121598791,
+      "fixture": "authentic-blue-crystal",
+      "calls_in_prototype_schedule": 16,
+      "logical_macs_in_modeled_work": 0,
+      "gas_per_fixture_call": 1530210,
+      "projected_gas": 24483360,
+      "projected_ETH": "0.00053892772032"
+    }
+  ],
+  "unmeasured_stages": [
+    {
+      "stage": "caption",
+      "macs": 294912
+    },
+    {
+      "stage": "time",
+      "macs": 1179648
+    },
+    {
+      "stage": "pixel_input",
+      "macs": 6291456
+    },
+    {
+      "stage": "pixel_output",
+      "macs": 6291456
+    }
+  ],
+  "modeled_prototype_subtotal_gas": 2657308507648,
+  "modeled_prototype_subtotal_ETH": "58.492674870347776"
+}
