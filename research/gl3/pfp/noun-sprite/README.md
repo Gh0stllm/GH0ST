@@ -10,4 +10,4 @@ The model is deployed at [`0x00C2dC9E8402f14616C14b4d046362CAdE1914B7`](https://
 
 Live calls to the deployed model reproduced **14 of 14** reference images byte for byte. The release verifier read back the exact child runtime hashes and model configuration. [Deployment and output evidence](deployment-verified.json) · [Test vectors](vectors.json) · [Release verifier](verify-deployment.cjs)
 
-[Image Studio source](site/) is staged for production activation.
+[Animal Sprites is live in Image Studio](https://gh0st.fyi/image-studio/?model=animal&prompt=a%20fox&seed=7). The production release binds the canonical receipt, model ID, code commitment, and runtime hash before enabling generation. [Studio source](site/) · [Production release evidence](site/release.json)

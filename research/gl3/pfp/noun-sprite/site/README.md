@@ -1,3 +1,5 @@
 # Image Studio integration
 
-This staged release preserves the original Robinhood mode and adds short-prompt generations for 100 animals. Sample output pixels come from the frozen [test vectors](../vectors.json). The live animal model binding requires the canonical atomic factory receipt, child address, pinned model ID, code commitment and runtime code. The public site is updated after the deployment is signed and verified.
+Animal Sprites is live at [Image Studio](https://gh0st.fyi/image-studio/). The production config binds the verified Robinhood child contract and its canonical deployment receipt. The release preserves the original model and installs the animal prompt mode alongside it.
+
+[Published release evidence](release.json) · [Live Robinhood deployment and image checks](../deployment-verified.json)
