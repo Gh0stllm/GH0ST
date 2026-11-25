@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#100e0d">
+  <meta name="description" content="Make pixel art with GH0ST on Robinhood Chain. Describe an animal or use the original sprite generator.">
+  <title>GH0ST Image Studio</title>
+  <link rel="stylesheet" href="./style.css">
+  <script type="module" src="./studio.mjs"></script>
+</head>
+<body>
+  <header class="masthead">
+    <a class="brand" href="https://gh0st.fyi/" aria-label="GH0ST">
+      <span class="brand-icon" aria-hidden="true">[··]</span> GH0ST
+    </a>
+    <nav aria-label="Network">
+      <a href="https://robin.etherscan.io/">Explorer</a>
+      <a href="https://github.com/Gh0stllm/GH0ST/tree/research/GH0ST-L3-GL3/research/gl3/pfp">Source</a>
+    </nav>
+  </header>
+  <main>
+    <h1>Image Studio<span>.</span></h1>
+    <p class="intro" id="model-intro">Make 32×32 pixel art with the original GH0ST model on Robinhood Chain. Choose from 12 subjects and eight modifiers.</p>
+    <div class="model-picker" role="group" aria-label="Image model">
+      <button id="animal-mode" type="button" aria-pressed="false" aria-controls="animal-studio">Animal sprites</button>
+      <button id="original-mode" type="button" aria-pressed="true" aria-controls="original-studio">Original model</button>
+    </div>
+    <div class="studio" id="original-studio">
+      <section class="viewer" aria-label="Image preview">
+        <div class="display">
+          <div class="rail"><span id="image-subject">IMAGE</span><span>32 × 32</span></div>
+          <div class="artboard">
+            <canvas id="avatar" width="512" height="512" role="img" aria-label="32 by 32 pixel image"></canvas>
+          </div>
+          <div class="rail"><span id="image-source">PREVIEW</span><span id="style-code"></span></div>
+        </div>
+        <div class="exports">
+          <button type="button" id="download" disabled>Download PNG</button>
+          <button type="button" id="share" disabled>Copy parameters</button>
+        </div>
+        <a id="proof" class="proof" hidden target="_blank" rel="noopener noreferrer">View transaction</a>
+      </section>
+      <form class="controls" id="generator">
+        <label class="field" for="prompt">Describe your sprite</label>
+        <div class="seed-row">
+          <input id="prompt" name="prompt" type="text" maxlength="160" placeholder="A glowing cat with stars" aria-describedby="prompt-hint">
+          <button id="apply-prompt" type="button">Apply prompt</button>
+        </div>
+        <p class="hint" id="prompt-hint">The prompt selects a supported subject and modifiers. The whole phrase sets the seed.</p>
+        <label class="trait">Subject<select id="subject" name="subject"></select></label>
+        <fieldset class="modifiers">
+          <legend>Modifiers</legend>
+          <div id="modifiers" class="modifier-grid"></div>
+        </fieldset>
+        <label class="field seed-label" for="seed">Seed</label>
+        <div class="seed-row">
+          <input id="seed" name="seed" type="text" maxlength="34" spellcheck="false" required>
+          <button id="random" type="button">Random seed</button>
+        </div>
+        <button id="generate" class="primary" type="submit" disabled>Preview on Robinhood</button>
+        <button id="record" class="record" type="button" disabled>Record on Robinhood</button>
+        <p id="status" role="status" aria-live="polite">Checking generator…</p>
+      </form>
+    </div>
+    <div class="studio" id="animal-studio" hidden>
+      <section class="viewer" aria-label="Animal sprite preview">
+        <div class="display">
+          <div class="rail"><span>ANIMAL SPRITE</span><span>48 × 48</span></div>
+          <div class="artboard">
+            <canvas id="animal-avatar" width="48" height="48" role="img" aria-label="48 by 48 sprite preview"></canvas>
+          </div>
+          <div class="rail"><span id="animal-source">PREVIEW</span><span id="animal-seed-label"></span></div>
+        </div>
+        <div class="exports">
+          <button type="button" id="animal-download" disabled>Download PNG</button>
+          <button type="button" id="animal-share" disabled>Copy sprite link</button>
+        </div>
+        <div class="proof-links">
+          <a id="animal-deploy-proof" class="proof" hidden target="_blank" rel="noopener noreferrer">Model deployment</a>
+          <a id="animal-proof" class="proof" hidden target="_blank" rel="noopener noreferrer">View transaction</a>
+        </div>
+      </section>
+      <form class="controls" id="animal-generator">
+        <label class="field" for="animal-prompt">Describe your sprite</label>
+        <div class="seed-row">
+          <input id="animal-prompt" name="prompt" type="text" maxlength="160" placeholder="Draw a purple fox" required autocomplete="off" aria-describedby="animal-hint">
+        </div>
+        <p class="hint" id="animal-hint">Name one supported animal. Add a color to change its main palette.</p>
+        <div id="animal-examples" class="prompt-examples" aria-label="Example prompts"></div>
+        <details class="animal-list">
+          <summary>Supported animals</summary>
+          <p id="animal-names"></p>
+        </details>
+        <label class="field seed-label" for="animal-seed">Seed</label>
+        <div class="seed-row">
+          <input id="animal-seed" name="seed" type="text" maxlength="18" spellcheck="false" required>
+          <button id="animal-random" type="button">Random seed</button>
+        </div>
+        <button id="animal-generate" class="primary" type="submit" disabled>Preview on Robinhood</button>
+        <button id="animal-record" class="record" type="button" disabled>Record on Robinhood</button>
+        <p id="animal-status" role="status" aria-live="polite">Checking generator…</p>
+      </form>
+    </div>
+  </main>
+</body>
+</html>
