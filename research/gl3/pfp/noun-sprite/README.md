@@ -1,13 +1,13 @@
 # GH0ST / Short-prompt sprites
 
-An immutable 48×48 text-to-sprite model for Robinhood Chain. It resolves 100 supported animal names and appearance traits, predicts a drawing plan with a quantized neural network, then renders the pixels in Solidity. Generic synthetic layouts trained the planner. Named profiles were held out of drawing training.
+GH0ST generates 48×48 sprites from 100 supported animal names and color requests. The [frozen manifest](manifest.json) pins the seven data shards. The appearance dictionary contains the curated traits used by a trained drawing planner and renderer. [Appearance dictionary and references](LEXICON.md)
 
 ![Actual samples](samples.png)
 
-The [frozen manifest](manifest.json) pins the seven model shards. [Robinhood simulations](robinhood.json) recorded 14 byte-exact generations at 4.85–5.83 million gas per image. [Appearance dictionary and references](LEXICON.md).
+## Robinhood deployment
 
-## Deployment preparation
+The model is deployed at [`0x00C2dC9E8402f14616C14b4d046362CAdE1914B7`](https://robinhoodchain.blockscout.com/address/0x00C2dC9E8402f14616C14b4d046362CAdE1914B7) on chain 4663. One atomic transaction installed the seven shards, matrix kernel, and model. The canonical receipt used **10,344,756 gas**, with a fee of **0.000212501977752 ETH**, in block **123,148,460**. [Robinhood receipt](https://robinhoodchain.blockscout.com/tx/0xeb24fc76c53c00aa58c3f70b6dc00c6acb5a05eabc564d9ae80f74122eeb7fcf)
 
-A single atomic creation installs the seven shards, the matrix kernel, and the model contract. The [read-only preflight](deployment-estimate.json) estimated 10,981,470 gas at block 123,144,472, about 0.000230 ETH at the sampled price. The 49,035-byte deployment fit the 49,152-byte initcode limit and returned successfully in simulation. The [release verifier](verify-deployment.cjs) checks the eventual receipt, exact deployed runtime hashes, model configuration and output pixels before Image Studio activation.
+Live calls to the deployed model reproduced **14 of 14** reference images byte for byte. The release verifier read back the exact child runtime hashes and model configuration. [Deployment and output evidence](deployment-verified.json) · [Test vectors](vectors.json) · [Release verifier](verify-deployment.cjs)
 
-This checkpoint records a deployment simulation and the pending wallet review.
+[Image Studio source](site/) is staged for production activation.
