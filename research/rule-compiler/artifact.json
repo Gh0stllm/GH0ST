@@ -1,0 +1,53 @@
+{
+  "schema": "gh0st-rule-artifact-v1",
+  "source": "(qty * 100) * (if tier == 1 then 95 else if tier == 2 then 90 else 100) / 100\n",
+  "sourceSha256": "8eff003c250c390251a20b7da20319927bdba703dfc63d085c2afdc88ddc7608",
+  "solidity": "// SPDX-License-Identifier: MIT\npragma solidity 0.8.30;\n\ncontract Quote {\n    function quote(uint8 qty, uint8 tier) external pure returns (uint32) {\n        return uint32((((uint256(qty) * uint256(100)) * ((uint256(tier) == uint256(1)) ? uint256(95) : ((uint256(tier) == uint256(2)) ? uint256(90) : uint256(100)))) / uint256(100)));\n    }\n}\n",
+  "javascript": "export function quote(qty, tier) {\n  if (![qty, tier].every(x => Number.isInteger(x) && x >= 0 && x <= 255)) throw RangeError(\"Expected uint8 inputs\");\n  return Math.floor(((qty * 100) * ((tier === 1) ? 95 : ((tier === 2) ? 90 : 100))) / 100);\n}\n",
+  "solc": "0.8.30+commit.73712a01.Emscripten.clang",
+  "settings": {
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "evmVersion": "shanghai",
+    "outputSelection": {
+      "*": {
+        "*": [
+          "abi",
+          "evm.bytecode.object",
+          "evm.deployedBytecode.object"
+        ]
+      }
+    }
+  },
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "uint8",
+          "name": "qty",
+          "type": "uint8"
+        },
+        {
+          "internalType": "uint8",
+          "name": "tier",
+          "type": "uint8"
+        }
+      ],
+      "name": "quote",
+      "outputs": [
+        {
+          "internalType": "uint32",
+          "name": "",
+          "type": "uint32"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x6080604052348015600e575f5ffd5b5061016c8061001c5f395ff3fe608060405234801561000f575f5ffd5b5060043610610029575f3560e01c8063c7e328d41461002d575b5f5ffd5b61004061003b3660046100c3565b610059565b60405163ffffffff909116815260200160405180910390f35b5f606460018360ff16146100805760028360ff1614610079576064610083565b605a610083565b605f5b610091606460ff87166100f4565b61009b91906100f4565b6100a59190610117565b90505b92915050565b803560ff811681146100be575f5ffd5b919050565b5f5f604083850312156100d4575f5ffd5b6100dd836100ae565b91506100eb602084016100ae565b90509250929050565b80820281158282048414176100a857634e487b7160e01b5f52601160045260245ffd5b5f8261013157634e487b7160e01b5f52601260045260245ffd5b50049056fea2646970667358221220350e150a5c3be1999fda2b2fb4c5848f9b2c4152a9482e843ef7e4e116a849fc64736f6c634300081e0033",
+  "deployedBytecode": "0x608060405234801561000f575f5ffd5b5060043610610029575f3560e01c8063c7e328d41461002d575b5f5ffd5b61004061003b3660046100c3565b610059565b60405163ffffffff909116815260200160405180910390f35b5f606460018360ff16146100805760028360ff1614610079576064610083565b605a610083565b605f5b610091606460ff87166100f4565b61009b91906100f4565b6100a59190610117565b90505b92915050565b803560ff811681146100be575f5ffd5b919050565b5f5f604083850312156100d4575f5ffd5b6100dd836100ae565b91506100eb602084016100ae565b90509250929050565b80820281158282048414176100a857634e487b7160e01b5f52601160045260245ffd5b5f8261013157634e487b7160e01b5f52601260045260245ffd5b50049056fea2646970667358221220350e150a5c3be1999fda2b2fb4c5848f9b2c4152a9482e843ef7e4e116a849fc64736f6c634300081e0033",
+  "runtimeKeccak256": "0x99cffc1649eff77f62d07bb997cf01a6634f7f5b95c86cfa30ef0f11db021b4b"
+}
