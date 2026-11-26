@@ -1,0 +1,53 @@
+{
+  "schema": "gh0st-rule-artifact-v1",
+  "source": "qty * (if tier == 1 then 95 else if tier == 2 then 90 else 100)\n",
+  "sourceSha256": "f29097ad7834ef406c8fcb4c0fc43fe2c7ee7fe51a2746d137d8ba5fa206235b",
+  "solidity": "// SPDX-License-Identifier: MIT\npragma solidity 0.8.30;\n\ncontract Quote {\n    function quote(uint8 qty, uint8 tier) external pure returns (uint32) {\n        return uint32((uint256(qty) * ((uint256(tier) == uint256(1)) ? uint256(95) : ((uint256(tier) == uint256(2)) ? uint256(90) : uint256(100)))));\n    }\n}\n",
+  "javascript": "export function quote(qty, tier) {\n  if (![qty, tier].every(x => Number.isInteger(x) && x >= 0 && x <= 255)) throw RangeError(\"Expected uint8 inputs\");\n  return (qty * ((tier === 1) ? 95 : ((tier === 2) ? 90 : 100)));\n}\n",
+  "solc": "0.8.30+commit.73712a01.Emscripten.clang",
+  "settings": {
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "evmVersion": "shanghai",
+    "outputSelection": {
+      "*": {
+        "*": [
+          "abi",
+          "evm.bytecode.object",
+          "evm.deployedBytecode.object"
+        ]
+      }
+    }
+  },
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "uint8",
+          "name": "qty",
+          "type": "uint8"
+        },
+        {
+          "internalType": "uint8",
+          "name": "tier",
+          "type": "uint8"
+        }
+      ],
+      "name": "quote",
+      "outputs": [
+        {
+          "internalType": "uint32",
+          "name": "",
+          "type": "uint32"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x6080604052348015600e575f5ffd5b506101228061001c5f395ff3fe6080604052348015600e575f5ffd5b50600436106026575f3560e01c8063c7e328d414602a575b5f5ffd5b60396035366004609e565b6052565b60405163ffffffff909116815260200160405180910390f35b5f60018260ff161460735760028260ff1614606d5760646076565b605a6076565b605f5b60819060ff851660ca565b90505b92915050565b803560ff811681146099575f5ffd5b919050565b5f5f6040838503121560ae575f5ffd5b60b583608a565b915060c160208401608a565b90509250929050565b8082028115828204841417608457634e487b7160e01b5f52601160045260245ffdfea2646970667358221220416da54504d5566d485988b92afdde5ce04cdd76607209d8d2e6750d5fe169ad64736f6c634300081e0033",
+  "deployedBytecode": "0x6080604052348015600e575f5ffd5b50600436106026575f3560e01c8063c7e328d414602a575b5f5ffd5b60396035366004609e565b6052565b60405163ffffffff909116815260200160405180910390f35b5f60018260ff161460735760028260ff1614606d5760646076565b605a6076565b605f5b60819060ff851660ca565b90505b92915050565b803560ff811681146099575f5ffd5b919050565b5f5f6040838503121560ae575f5ffd5b60b583608a565b915060c160208401608a565b90509250929050565b8082028115828204841417608457634e487b7160e01b5f52601160045260245ffdfea2646970667358221220416da54504d5566d485988b92afdde5ce04cdd76607209d8d2e6750d5fe169ad64736f6c634300081e0033",
+  "runtimeKeccak256": "0x71a64fca1cfd36864154b769a793492650bd0495f0dbd4775736cc5e401db415"
+}
