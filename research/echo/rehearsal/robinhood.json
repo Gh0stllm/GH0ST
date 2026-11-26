@@ -1,0 +1,159 @@
+{
+  "schema": "gh0st.echo.rh-rehearsal.v1",
+  "scope": "Unsigned eth_simulateV1 call on the public Robinhood mainnet RPC. The generated blocks share state only within the simulation. They are not mainnet receipts. Gas figures are simulated EVM gas, not a published transaction fee.",
+  "chainId": 4663,
+  "genesisHash": "0xaad15f3d702aaea00caf3e9bb56395efe9127bc3b31b24921abf1eee3409305c",
+  "rpcURL": "https://rpc.mainnet.chain.robinhood.com",
+  "observedAt": "2026-11-26T18:06:29.199Z",
+  "baseBlock": 123681731,
+  "baseHash": "0x30bf6155f1e6fcef92047bd25ee6a87f53a3b6300642660121f0ae35e44c7941",
+  "baseTimestamp": 1795716384,
+  "simulatedContract": "0xE1053E9b0dAA8851aDEA6ABa50Cb28993e355499",
+  "creationCodeHash": "0x57611d7f1ffc2c49b785f8035b67b4cc80d3211ebed7ada69455b43ab93c08a9",
+  "runtimeCodeHash": "0x7f383b3ee9d072ccc5567e16ab815f3ee2ba5f4fff46135f38a38de929d0bc76",
+  "compiler": "0.8.30+commit.73712a01.Emscripten.clang",
+  "sourceSha256": "38f97d33a8c80bdbccdb601f9278226bd9bc60383e6d350c7dd6b461187bc09d",
+  "archive": "UURR..L",
+  "runner": "RRRRRR",
+  "lateRunner": "......RRRRRR",
+  "checks": [
+    {
+      "label": "deploy",
+      "simulatedBlock": 123681732,
+      "sender": "0x1635d72e06d15ad25ec3d8bfff64cce3835f5cf4",
+      "result": "pass",
+      "gasUsed": 714729,
+      "runtimeHash": "0x7f383b3ee9d072ccc5567e16ab815f3ee2ba5f4fff46135f38a38de929d0bc76"
+    },
+    {
+      "label": "archive",
+      "simulatedBlock": 123681733,
+      "sender": "0x09dba1793f6f370b3be5272f3108cfe2f674b648",
+      "result": "pass",
+      "gasUsed": 95924,
+      "decoded": [
+        "1"
+      ],
+      "events": [
+        {
+          "name": "RunRecorded",
+          "args": [
+            "1",
+            "0x09dBA1793f6f370B3Be5272F3108cfe2f674b648",
+            "0x555552522e2e4c"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "readArchive",
+      "simulatedBlock": 123681734,
+      "sender": "0x648b5f0334567049cd40335d2f64b6e5b971de87",
+      "result": "pass",
+      "gasUsed": 28988,
+      "decoded": [
+        "0x09dBA1793f6f370B3Be5272F3108cfe2f674b648",
+        "0x555552522e2e4c"
+      ]
+    },
+    {
+      "label": "archiveCount",
+      "simulatedBlock": 123681734,
+      "sender": "0x648b5f0334567049cd40335d2f64b6e5b971de87",
+      "result": "pass",
+      "gasUsed": 23356,
+      "decoded": [
+        "1"
+      ]
+    },
+    {
+      "label": "previewMiss",
+      "simulatedBlock": 123681734,
+      "sender": "0x648b5f0334567049cd40335d2f64b6e5b971de87",
+      "result": "pass",
+      "gasUsed": 37680,
+      "decoded": [
+        false,
+        "31",
+        "11"
+      ]
+    },
+    {
+      "label": "lateRunner",
+      "simulatedBlock": 123681734,
+      "sender": "0x648b5f0334567049cd40335d2f64b6e5b971de87",
+      "result": "revert",
+      "gasUsed": 42043,
+      "error": "MissedExit"
+    },
+    {
+      "label": "selfPair",
+      "simulatedBlock": 123681734,
+      "sender": "0x09dba1793f6f370b3be5272f3108cfe2f674b648",
+      "result": "revert",
+      "gasUsed": 26656,
+      "error": "OwnGhost"
+    },
+    {
+      "label": "stillUncleared",
+      "simulatedBlock": 123681734,
+      "sender": "0x648b5f0334567049cd40335d2f64b6e5b971de87",
+      "result": "pass",
+      "gasUsed": 24157,
+      "decoded": [
+        false
+      ]
+    },
+    {
+      "label": "previewWin",
+      "simulatedBlock": 123681735,
+      "sender": "0x648b5f0334567049cd40335d2f64b6e5b971de87",
+      "result": "pass",
+      "gasUsed": 35302,
+      "decoded": [
+        true,
+        "34",
+        "12"
+      ]
+    },
+    {
+      "label": "clear",
+      "simulatedBlock": 123681735,
+      "sender": "0x648b5f0334567049cd40335d2f64b6e5b971de87",
+      "result": "pass",
+      "gasUsed": 62960,
+      "decoded": [
+        true
+      ],
+      "events": [
+        {
+          "name": "RoomCleared",
+          "args": [
+            "1",
+            "0x648b5f0334567049CD40335D2F64B6E5B971DE87",
+            "0x09dBA1793f6f370B3Be5272F3108cfe2f674b648",
+            "0x525252525252"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "verifyClear",
+      "simulatedBlock": 123681735,
+      "sender": "0x648b5f0334567049cd40335d2f64b6e5b971de87",
+      "result": "pass",
+      "gasUsed": 24157,
+      "decoded": [
+        true
+      ]
+    },
+    {
+      "label": "repeatedClear",
+      "simulatedBlock": 123681735,
+      "sender": "0x648b5f0334567049cd40335d2f64b6e5b971de87",
+      "result": "revert",
+      "gasUsed": 28921,
+      "error": "AlreadyCleared"
+    }
+  ]
+}
