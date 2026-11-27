@@ -3,6 +3,7 @@
 const { createHash } = require('node:crypto');
 const { access, readFile, stat, writeFile } = require('node:fs/promises');
 const { parse, evaluate } = require('./compiler.cjs');
+const { readBoundedJson } = require('./orbio-response.cjs');
 
 const ENDPOINT = 'https://api.orbio.so/api/v1/chat/completions';
 const MODEL = 'anthropic/claude-sonnet-4.5';
@@ -28,9 +29,13 @@ function checkedSource(input) {
   return { source:input, tree };
 }
 
+function sameExpression(original, candidate) {
+  return original.replace(/\s/g, '') === candidate.replace(/\s/g, '');
+}
+
 function verifyProposal(original, candidate) {
   const a = checkedSource(original), b = checkedSource(candidate);
-  if(a.source.replace(/\s/g, '') === b.source.replace(/\s/g, '')) throw Error('The proposal repeats the original rule.');
+  if(sameExpression(a.source, b.source)) throw Error('The proposal repeats the original rule.');
   const digest = createHash('sha256');
   const row = Buffer.alloc(256 * 4);
   for(let qty = 0; qty < 256; qty++) {
@@ -60,8 +65,7 @@ async function requestProposal(original, send = fetch) {
       {role:'system',content:prompt}, {role:'user',content:JSON.stringify({expression:source})}
     ]})
   });
-  if(!response.ok) throw Error('Orbio returned HTTP '+response.status+'.');
-  const body = await response.json();
+  const body = await readBoundedJson(response);
   const content = body?.choices?.[0]?.message?.content;
   if(typeof content !== 'string' || Buffer.byteLength(content)>MAX_SOURCE+256) throw Error('Orbio returned an invalid candidate.');
   let proposal;
@@ -69,12 +73,16 @@ async function requestProposal(original, send = fetch) {
   if(!proposal || Object.keys(proposal).length!==1 || !Object.hasOwn(proposal,'expression')) {
     throw Error('Orbio returned an unexpected candidate format.');
   }
-  const verified = verifyProposal(source, proposal.expression);
   const usage = {};
   for(const n of ['prompt_tokens','completion_tokens','total_tokens']) {
     if(Number.isSafeInteger(body.usage?.[n]) && body.usage[n]>=0) usage[n]=body.usage[n];
   }
-  return { kind:'reviewable-proposal', provider:'Orbio', requestedModel:MODEL, usage, ...verified };
+  const metadata = { provider:'Orbio', requestedModel:MODEL, usage };
+  if (typeof proposal.expression === 'string' && sameExpression(source, proposal.expression)) {
+    checkedSource(proposal.expression);
+    return { kind:'unchanged', ...metadata, originalSha256:sha256(source) };
+  }
+  return { kind:'reviewable-proposal', ...metadata, ...verifyProposal(source, proposal.expression) };
 }
 
 async function main() {

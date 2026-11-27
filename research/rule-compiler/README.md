@@ -54,4 +54,6 @@ The optional server-side command sends a parsed rule to Orbio and asks for an eq
 node orbio.cjs quote.rule proposed.json
 ```
 
+A successful request can return a verified proposal or an unchanged result. An unchanged result includes usage and the original rule hash. The client reads at most 32 KiB of response data before JSON decoding.
+
 The command reads ORBIO_API_KEY from the environment. Keep it in a secret store. The published candidate was handwritten. The gateway integration was exercised with a simulated response. No funded Orbio request was made for this report.
